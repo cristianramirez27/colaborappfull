@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="44dp"
+    android:layout_height="44dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iconoEncuesta"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_poll_black_36dp" />
+
+        <TextView
+            android:id="@+id/txvCenter"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignEnd="@+id/iconoEncuesta"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-3dp"
+            android:fontFamily="@font/lineto_circular_pro_bold"
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:background="@drawable/bg_circle_notifications"
+            android:gravity="center"
+            android:visibility="visible"
+            android:textSize="8sp" />
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

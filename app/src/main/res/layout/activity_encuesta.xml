@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp">
+
+    <include
+        android:id="@+id/toolbarInclude"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/progressEncuesta"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@+id/toolbarInclude"
+        android:background="@color/colorPrimaryCoppelAzul2"
+        android:backgroundTint="@color/colorBackgroundCoppelBlanco"
+        android:max="100"
+        android:progress="25"
+        android:progressTint="@color/colorPrimaryCoppelAzul2"
+        android:visibility="visible"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressEncuesta"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/labelPreguntaActual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="pregunta 1 de 3"
+            android:textColor="@color/colorSecundaryCoppelGris"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/labelEncuesta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelPreguntaActual"
+            android:layout_marginTop="16dp"
+            android:text="Encuesta:"
+            android:textColor="@color/colorTextCoppelNegro"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/labelEncuestaDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelEncuesta"
+            android:layout_marginTop="24dp"
+            android:text=""
+            android:textColor="@color/colorTextCoppelNegro"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/labelError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelEncuestaDesc"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/colorTextCoppelNegro"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/labelPregunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/labelError"
+            android:layout_marginTop="24dp"
+            android:text="cargando..."
+            android:textColor="@color/colorTextCoppelNegro"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/listPreguntas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/labelPregunta"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="64dp"
+            tools:listitem="@layout/fila_lista_respuestas"></ListView>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="97dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorPrimaryCoppelAzul"
+        android:elevation="8dp"
+        android:text="Siguiente"
+        android:textColor="@color/colorSecundaryCoppelBlanco"
+
+        />
+
+    <Button
+        android:id="@+id/btnEnviarEncuesta"
+        android:layout_width="144dp"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorPrimaryCoppelAzul"
+        android:elevation="8dp"
+        android:text="Enviar ENcuesta"
+        android:textColor="@color/colorSecundaryCoppelBlanco"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    tools:context=".views.fragments.LoanSavingFundFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <include layout="@layout/view_connection_error" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ctlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/txvLoanMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/loan_margin"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline74"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvLoanMarginValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline74"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvLoanMargin" />
+
+            <TextView
+                android:id="@+id/txvBuyMargin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/buy_margin"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline75"
+                app:layout_constraintStart_toStartOf="@+id/guideline74"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvBuyMarginValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline75"
+                app:layout_constraintStart_toStartOf="@+id/guideline74"
+                app:layout_constraintTop_toBottomOf="@+id/txvBuyMargin" />
+
+            <TextView
+                android:id="@+id/txvEnterpriseFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/enterprise_fund"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline75"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvEnterpriseFoundValue"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline75"
+                app:layout_constraintTop_toBottomOf="@+id/txvEnterpriseFound" />
+
+            <TextView
+                android:id="@+id/txvCurrentAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/current_account"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline74"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvLoanMarginValue"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvCurrentAccountValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline74"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txvCurrentAccount" />
+
+            <TextView
+                android:id="@+id/txvAdditionalSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/additional_saving"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline75"
+                app:layout_constraintStart_toStartOf="@+id/guideline74"
+                app:layout_constraintTop_toBottomOf="@+id/txvBuyMarginValue"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvAdditionalSavingValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline75"
+                app:layout_constraintStart_toStartOf="@+id/guideline74"
+                app:layout_constraintTop_toBottomOf="@+id/txvAdditionalSaving" />
+
+            <TextView
+                android:id="@+id/txvEmployeeFound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="@string/employee_fund"
+                android:textColor="@color/colorSavingHeaderText"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline75"
+                app:layout_constraintTop_toBottomOf="@+id/txvEnterpriseFoundValue"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/txvEmployeeFoundValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="$0.00"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline75"
+                app:layout_constraintTop_toBottomOf="@+id/txvEmployeeFound" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline74"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline75"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.66" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/flChildFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/comunicadoFila"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="8dp">
+
+    <ImageView
+        android:id="@+id/imgVideoPreview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/ic_image_grey_300_24dp" />
+
+    <TextView
+        android:id="@+id/labelTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgVideoPreview"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="8dp"
+        android:text="Episodio #1"
+        android:textColor="@color/colorPrimaryCoppelAzul"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/labelEncabezado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgVideoPreview"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="8dp"
+        android:text="                        Descubre la nueva mentalidad Coppel"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/labelFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelTitulo"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="16dp"
+        android:text="12 MAYO 2018"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/labelVisitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labelTitulo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundbackgroud"
+        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp"
+        android:text="4.2 M Visitas"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:textSize="11sp" />
+
+    <View
+        android:id="@+id/divisor"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/labelVisitas"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorBackgroundCoppelGris2" />
+
+</RelativeLayout>

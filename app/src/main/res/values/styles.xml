@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlueCoppel</item>
+        <item name="colorAccent">@color/colorYellowCoppel</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_left_arrow_black</item>
+    </style>
+
+    <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+
+    <!-- Visionarios -->
+
+    <!--<style name="Widget">-->
+        <!--<item name="textAppearance">?textAppearance</item>-->
+    <!--</style>-->
+    <!-- Bordered ink button -->
+    <!--<style name="Widget.Material.Button">-->
+        <!--<item name="background">@drawable/btn_default_material</item>-->
+        <!--<item name="textAppearance">?attr/textAppearanceButton</item>-->
+        <!--<item name="minHeight">48dip</item>-->
+        <!--<item name="minWidth">88dip</item>-->
+        <!--<item name="stateListAnimator">@anim/button_state_list_anim_material</item>-->
+        <!--<item name="focusable">true</item>-->
+        <!--<item name="clickable">true</item>-->
+        <!--<item name="gravity">center_vertical|center_horizontal</item>-->
+    <!--</style>-->
+
+
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryBlueCoppel">#004695</color>
+    <color name="colorSecondBlueCoppel">#0063b5</color>
+    <color name="colorThirdBlueCoppel">#0074c7</color>
+    <color name="colorFourthBlueCoppel">#0385d9</color>
+    <color name="colorFifthBlueCoppel">#1093e6</color>
+    <color name="colorBlueLight">#0a9dd5</color>
+    <color name="colorBackgroundSplash">#026bb5</color>
+    <color name="colorYellowCoppel">#fddd2e</color>
+    <color name="colorTextTranslucent">#61ffffff</color>
+    <color name="colorRedLight">#eb5757</color>
+    <color name="colorBackgroundDialogs">#98000000</color>
+    <color name="colorBackgroundFragments">#f6f7f9</color>
+    <color name="colorTextGray">#969696</color>
+    <color name="colorTextGrayDark">#5f6062</color>
+    <color name="colorBackgroundGray">#e6e8ef</color>
+    <color name="colorSavingHeaderText">#5f6062</color>
+    <color name="colorRed">#b00020</color>
+    <color name="colorOrange">#fd7700</color>
+    <color name="colorBackgroundFavorites">#f2f1f1</color>
+
+    <color name="transparentIndicatorSelected">#80FFFFFF</color>
+    <color name="transparentIndicator">#B3FFFFFF</color>
+    <!-- Visionarios -->
+    <color name="colorPrimaryCoppelNaranja">#F2994A</color>
+    <color name="colorPrimaryCoppelAmarillo">#fddd2e</color>
+    <color name="colorPrimaryCoppelAzul">#0065ae</color>
+    <color name="colorPrimaryCoppelAzul2">#2281C5</color>
+    <color name="colorSecundaryCoppelBlanco">#F2F2F2</color>
+    <color name="colorSecundaryCoppelAmarillo">#FEC62A</color>
+    <color name="colorSecundaryCoppelGris">#838282</color>
+    <color name="colorSecundaryCoppelVerde">#6DC310</color>
+    <color name="colorSecundaryCoppelGris2">#c4c4c4</color>
+
+    <color name="colorBackgroundCoppelBlanco">#ffffff</color>
+    <color name="colorBackgroundCoppelBlanco2">#FCFCFC</color>
+
+    <color name="colorBackgroundCoppelGris">#F7F7F7</color>
+    <color name="colorTextCoppelNegro">#4F4F4F</color>
+    <color name="colorBackgroundCoppelGris2">#E0E0E0</color>
+    <color name="colorBackgroundCoppelNegro">#000000</color>
+
+</resources>

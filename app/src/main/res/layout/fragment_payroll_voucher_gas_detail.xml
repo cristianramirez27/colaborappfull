@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherGasDetailFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ctlContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="Date"
+            android:textColor="@color/colorSecondBlueCoppel"
+            android:textSize="21sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline86"
+            app:layout_constraintTop_toTopOf="@+id/guideline48" />
+
+        <ImageView
+            android:id="@+id/imgvMail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imgvDownload"
+            app:layout_constraintTop_toTopOf="@+id/guideline48"
+            app:srcCompat="@drawable/ic_email_gray" />
+
+        <ImageView
+            android:id="@+id/imgvDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/guideline87"
+            app:layout_constraintTop_toTopOf="@+id/guideline48"
+            app:srcCompat="@drawable/ic_download_gray" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvUnits"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/ctlSubtotal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline88" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ctlSubtotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline110"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/txvdSubtotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline112"
+                app:layout_constraintStart_toStartOf="@+id/guideline111"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/txvdFactor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline112"
+                app:layout_constraintStart_toStartOf="@+id/guideline111"
+                app:layout_constraintTop_toBottomOf="@+id/txvdSubtotal" />
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/txvdAdditionalSaving"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline112"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline111"
+                app:layout_constraintTop_toBottomOf="@+id/txvdFactor" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline111"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline112"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline48"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.03" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline86"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline87"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline88"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.12" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline110"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.97" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <include
+        layout="@layout/view_connection_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

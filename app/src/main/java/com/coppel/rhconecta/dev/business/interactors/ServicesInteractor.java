@@ -1,0 +1,1269 @@
+package com.coppel.rhconecta.dev.business.interactors;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
+import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
+import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersSignatureRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
+import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
+import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
+import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.business.models.LoginResponse;
+import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherBonusResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherDownloadResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherGasResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherPTUResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherRosterResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherSavingFundResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherSendMailResponse;
+import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
+import com.coppel.rhconecta.dev.business.utils.ServicesError;
+import com.coppel.rhconecta.dev.business.utils.ServicesGeneralValidations;
+import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
+import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
+import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class ServicesInteractor {
+
+    private Context context;
+    private Retrofit retrofit;
+    private IServiceListener iServiceListener;
+    private IServicesRetrofitMethods iServicesRetrofitMethods;
+    private ServicesGeneralValidations servicesGeneralValidations;
+    private ServicesUtilities servicesUtilities;
+    private String token;
+
+    public ServicesInteractor(Context context) {
+        this.context = context;
+        servicesUtilities = new ServicesUtilities();
+        retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
+        iServicesRetrofitMethods = retrofit.create(IServicesRetrofitMethods.class);
+        servicesGeneralValidations = new ServicesGeneralValidations();
+    }
+
+    /* *******************************************************************************************************************************************************
+     *****************************************************               Login            ********************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param email    User email
+     * @param password User password
+     *
+     * Update 2 Noviembre 2018
+     * @param executeInBackground flag to indicate if login is execute in background
+     */
+    public void getLoginValidation(String email, String password,boolean executeInBackground) {
+        getLogin(email, password,executeInBackground);
+    }
+
+    /**
+     * Make a request to get login
+     *
+     * @param email    User email
+     * @param password User password
+     *
+     */
+    private void getLogin(String email, String password, final boolean executeInBackground) {
+        final int type = ServicesRequestType.LOGIN;
+        iServicesRetrofitMethods.getLogin(buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                try {
+                    LoginResponse loginResponse = (LoginResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoginResponse.class);
+
+                    if (loginResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getLoginResponse(loginResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response,executeInBackground);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response,executeInBackground);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getLoginResponse(LoginResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getLoginSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_login), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Login method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getLoginSuccess(LoginResponse response, int type) {
+        ServicesResponse<LoginResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Constructs the model to be sent for the login request
+     *
+     * @param email    User email
+     * @param password User password
+     * @return CoppelServicesLoginRequest Request model
+     */
+    public CoppelServicesLoginRequest buildLoginRequest(String email, String password) {
+        CoppelServicesLoginRequest coppelServicesLoginRequest = new CoppelServicesLoginRequest();
+
+        coppelServicesLoginRequest.setEmail(email);
+        coppelServicesLoginRequest.setPassword(password);
+        coppelServicesLoginRequest.setApp("rhconecta");
+
+        return coppelServicesLoginRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     *****************************************************          Profile          *************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     * @param token          User token
+     */
+    public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
+        this.token = token;
+        getProfile(employeeNumber, employeeEmail);
+    }
+
+    /**
+     * Make a request to get profile
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     */
+    private void getProfile(String employeeNumber, String employeeEmail) {
+        final int type = ServicesRequestType.PROFILE;
+        iServicesRetrofitMethods.getProfile(token, buildProfileRequest(employeeNumber, employeeEmail)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    ProfileResponse profileResponse = (ProfileResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ProfileResponse.class);
+                    if (profileResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getProfileResponse(profileResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getProfileResponse(ProfileResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getProfileSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Profile method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getProfileSuccess(ProfileResponse response, int type) {
+        ServicesResponse<ProfileResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Constructs the model to be sent for the profile request
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User emai
+     * @return CoppelServicesProfileRequest Request model
+     */
+    public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail) {
+        CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
+
+        coppelServicesProfileRequest.setNum_empleado(employeeNumber);
+        coppelServicesProfileRequest.setCorreo(employeeEmail);
+
+        return coppelServicesProfileRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************          Payroll Voucher      ***********************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param typePetition   Type Petition
+     * @param token          User token
+     */
+    public void getPayrollVoucherValidation(String employeeNumber, int typePetition, String token) {
+        this.token = token;
+        getPayrollVoucher(employeeNumber, typePetition, token);
+    }
+
+    /**
+     * Make a request to get voucher
+     *
+     * @param employeeNumber User Number
+     * @param typePetition   Type Petition
+     * @param token          User token
+     */
+    private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
+
+        final int type = ServicesRequestType.PAYROLL_VOUCHER;
+        iServicesRetrofitMethods.getPayrollVoucher(token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    VoucherResponse voucherResponse = (VoucherResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponse.class);
+                    if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getPayrollVoucherResponse(voucherResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherResponse(VoucherResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.PAYROLL_VOUCHER);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Voucher method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherSuccess(VoucherResponse response, int type) {
+        ServicesResponse<VoucherResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Constructs the model to be sent for the voucher request
+     *
+     * @param employeeNumber User Number
+     * @param typePetition   Type Petition
+     * @return CoppelServicesPayrollVoucherRequest Request model
+     */
+    public CoppelServicesPayrollVoucherRequest buildPayrollVoucherRequest(String employeeNumber, int typePetition) {
+        CoppelServicesPayrollVoucherRequest coppelServicesPayrollVoucherRequest = new CoppelServicesPayrollVoucherRequest();
+
+        coppelServicesPayrollVoucherRequest.setNum_empleado(employeeNumber);
+        coppelServicesPayrollVoucherRequest.setSolicitud(typePetition);
+
+        return coppelServicesPayrollVoucherRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     **************************************************         Payroll Voucher Detail       *****************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param email          User email
+     * @param typeConstancy  Type Constancy
+     * @param request        Type Request
+     * @param shippingOption Type ShippingOption
+     * @param date           Date
+     * @param data           Extra Data
+     * @param token          User token
+     */
+    public void getPayrollVoucherDetailValidation(String employeeNumber, String email, int typeConstancy, int request, int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
+        this.token = token;
+        getPayrollVoucherDetail(employeeNumber, email, typeConstancy, request, shippingOption, date, data, token);
+    }
+
+    /**
+     * Make a request to get voucher detail
+     *
+     * @param employeeNumber User Number
+     * @param email          User email
+     * @param typeConstancy  Type Constancy
+     * @param request        Type Request
+     * @param shippingOption Type ShippingOption
+     * @param date           Date
+     * @param data           Extra Data
+     * @param token          User token
+     */
+    private void getPayrollVoucherDetail(String employeeNumber, String email, final int typeConstancy, int request, final int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
+
+        iServicesRetrofitMethods.getPayrollVoucherDetail(token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if (typeConstancy == 1) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherRosterResponse voucherRosterResponse = (VoucherRosterResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherRosterResponse.class);
+                            if (voucherRosterResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherRosterDetailResponse(voucherRosterResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL);
+                    }
+
+                } else if (typeConstancy == 2) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherSavingFundResponse voucherSavingFundResponse = (VoucherSavingFundResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherSavingFundResponse.class);
+                            if (voucherSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherSavingFundDetailResponse(voucherSavingFundResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_SENDMAIL_DETAIL);
+                    }
+
+                } else if (typeConstancy == 3) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherGasResponse voucherGasResponse = (VoucherGasResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherGasResponse.class);
+                            if (voucherGasResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherGasDetailResponse(voucherGasResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_GAS_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_GAS_SENDMAIL_DETAIL);
+                    }
+
+                } else if (typeConstancy == 4) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherPTUResponse voucherPTUResponse = (VoucherPTUResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherPTUResponse.class);
+                            if (voucherPTUResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherPTUDetailResponse(voucherPTUResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_PTU_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_PTU_SENDMAIL_DETAIL);
+                    }
+
+                } else if (typeConstancy == 5) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherAlimonyResponse voucherAlimonyResponse = (VoucherAlimonyResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherAlimonyResponse.class);
+                            if (voucherAlimonyResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherAlimonyDetailResponse(voucherAlimonyResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_SENDMAIL_DETAIL);
+                    }
+
+                } else if (typeConstancy == 6) {
+                    if (shippingOption == 0) {
+                        try {
+                            VoucherBonusResponse voucherBonusResponse = (VoucherBonusResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherBonusResponse.class);
+                            if (voucherBonusResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                getPayrollVoucherBonusDetailResponse(voucherBonusResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL);
+                            } else {
+                                sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
+                            }
+                        } catch (Exception e) {
+                            sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
+                        }
+                    } else if (shippingOption == 1) {
+                        getDownloadVoucher(response, ServicesRequestType.PAYROLL_VOUCHER_BONUS_DOWNLOAD_DETAIL);
+                    } else if (shippingOption == 2) {
+                        getSendDetail(response, ServicesRequestType.PAYROLL_VOUCHER_BONUS_SENDMAIL_DETAIL);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.PAYROLL_VOUCHER_DETAIL));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherRosterDetailResponse(VoucherRosterResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherRosterDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherSavingFundDetailResponse(VoucherSavingFundResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherSavingFundDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherGasDetailResponse(VoucherGasResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherGasDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherPTUDetailResponse(VoucherPTUResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherPTUDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherAlimonyDetailResponse(VoucherAlimonyResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherAlimonyDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherBonusDetailResponse(VoucherBonusResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherBonusDetailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Voucher Roster Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherRosterDetailSuccess(VoucherRosterResponse response, int type) {
+        ServicesResponse<VoucherRosterResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Handles a successful response of the Voucher Saving Fund Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherSavingFundDetailSuccess(VoucherSavingFundResponse response, int type) {
+        ServicesResponse<VoucherSavingFundResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Handles a successful response of the Voucher Gas Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherGasDetailSuccess(VoucherGasResponse response, int type) {
+        ServicesResponse<VoucherGasResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+
+    }
+
+    /**
+     * Handles a successful response of the Voucher PTU Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherPTUDetailSuccess(VoucherPTUResponse response, int type) {
+        ServicesResponse<VoucherPTUResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Handles a successful response of the Voucher Alimony Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherAlimonyDetailSuccess(VoucherAlimonyResponse response, int type) {
+        ServicesResponse<VoucherAlimonyResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Handles a successful response of the Voucher Bonus Detail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherBonusDetailSuccess(VoucherBonusResponse response, int type) {
+        ServicesResponse<VoucherBonusResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Constructs the model to be sent for the Payroll Voucher Detail request
+     *
+     * @param employeeNumber User Number
+     * @param email          User email
+     * @param typeConstancy  Type Constancy
+     * @param request        Type Request
+     * @param shippingOption Type ShippingOption
+     * @param date           Date
+     * @param data           Extra Data
+     * @return General Request model
+     */
+    public CoppelServicesPayrollVoucherDetailRequest buildPayrollVoucherDetailRequest(String employeeNumber, String email, int typeConstancy, int request, int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data) {
+        CoppelServicesPayrollVoucherDetailRequest coppelServicesPayrollVoucherDetailRequest = new CoppelServicesPayrollVoucherDetailRequest();
+
+        coppelServicesPayrollVoucherDetailRequest.setNum_empleado(employeeNumber);
+        coppelServicesPayrollVoucherDetailRequest.setCorreo(email);
+        coppelServicesPayrollVoucherDetailRequest.setTipo_Constancia(typeConstancy);
+        coppelServicesPayrollVoucherDetailRequest.setSolicitud(request);
+        coppelServicesPayrollVoucherDetailRequest.setOpcionEnvio(shippingOption);
+        coppelServicesPayrollVoucherDetailRequest.setFecha(date);
+        coppelServicesPayrollVoucherDetailRequest.setDatos(data);
+
+        return coppelServicesPayrollVoucherDetailRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Send Voucher Mail          *******************************************************************
+     *********************************************************************************************************************************************************/
+
+    public void getSendDetail(Response<JsonObject> response, int servicesRequestType) {
+
+        try {
+            CoppelGeneralParameterResponse coppelGeneralParameterResponse = (CoppelGeneralParameterResponse) servicesUtilities.parseToObjectClass(response.body().toString(), CoppelGeneralParameterResponse.class);
+            if (coppelGeneralParameterResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                VoucherSendMailResponse voucherSendMailResponse = (VoucherSendMailResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherSendMailResponse.class);
+                setPayrollVoucherToEmailResponse(voucherSendMailResponse, response.code(), servicesRequestType);
+            } else {
+                sendGenericError(servicesRequestType, response);
+            }
+
+        } catch (Exception e) {
+            sendGenericError(servicesRequestType, response);
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    private void setPayrollVoucherToEmailResponse(VoucherSendMailResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherSendMailSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher_send_mail), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Send Mail method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherSendMailSuccess(VoucherSendMailResponse response, int type) {
+        ServicesResponse<VoucherSendMailResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Download Voucher           *******************************************************************
+     *********************************************************************************************************************************************************/
+
+    public void getDownloadVoucher(Response<JsonObject> response, int servicesRequestType) {
+        try {
+            CoppelGeneralParameterResponse coppelGeneralParameterResponse = (CoppelGeneralParameterResponse) servicesUtilities.parseToObjectClass(response.body().toString(), CoppelGeneralParameterResponse.class);
+            if (coppelGeneralParameterResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherDownloadResponse.class);
+                setPayrollVoucherDownloadResponse(voucherDownloadResponse, response.code(), servicesRequestType);
+            } else {
+                sendGenericError(servicesRequestType, response);
+            }
+
+        } catch (Exception e) {
+            sendGenericError(servicesRequestType, response);
+        }
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    private void setPayrollVoucherDownloadResponse(VoucherDownloadResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getPayrollVoucherDownloadSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_voucher_download), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Download Voucher method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getPayrollVoucherDownloadSuccess(VoucherDownloadResponse response, int type) {
+        ServicesResponse<VoucherDownloadResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Loans / Saving Fund          *****************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param token          User token
+     */
+    public void getLoansSavingFundValidation(String employeeNumber, String token) {
+        this.token = token;
+        getLoansSavingFund(employeeNumber, token);
+    }
+
+    /**
+     * Make a request to get Loans/SavingFund
+     *
+     * @param employeeNumber User Number
+     * @param token          User token
+     */
+    private void getLoansSavingFund(String employeeNumber, String token) {
+
+        iServicesRetrofitMethods.getLoansSavingFund(token, buildPayrollVoucherRequest(employeeNumber)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    LoanSavingFundResponse loanSavingFundResponse = (LoanSavingFundResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoanSavingFundResponse.class);
+                    if (loanSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getLoanSavingFundResponse(loanSavingFundResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLoanSavingFundResponse(LoanSavingFundResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LOAN_SAVINGFUND);
+
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getLoanSavingFundSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Loans/SavingFund method
+     *
+     * @param response Server response
+     */
+    public void getLoanSavingFundSuccess(LoanSavingFundResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LOAN_SAVINGFUND);
+
+        if (response != null && response != null) {
+
+            LoanSavingFundResponse voucherResponse = response;
+
+            if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<LoanSavingFundResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(voucherResponse);
+                servicesResponse.setType(ServicesRequestType.LOAN_SAVINGFUND);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(voucherResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_voucher));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the Loans/SavingFund request
+     *
+     * @param employeeNumber User Number
+     * @return General Request model
+     */
+    public CoppelServicesLoanSavingFundRequest buildPayrollVoucherRequest(String employeeNumber) {
+        CoppelServicesLoanSavingFundRequest coppelServicesLoanSavingFundRequest = new CoppelServicesLoanSavingFundRequest();
+
+        coppelServicesLoanSavingFundRequest.setNum_empleado(employeeNumber);
+
+        return coppelServicesLoanSavingFundRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Recovery Password          *******************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Make a request to get url recover password
+     */
+    public void getRecoverPassword() {
+
+        iServicesRetrofitMethods.getRecoveryPassword(buildRecoveryPasswordRequest()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                int type = ServicesRequestType.RECOVERY_PASSWORD;
+                try {
+                    RecoveryPasswordResponse recoveryPasswordResponse = (RecoveryPasswordResponse) servicesUtilities.parseToObjectClass(response.body().toString(), RecoveryPasswordResponse.class);
+
+                    if (recoveryPasswordResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                        getRecoveryPasswordResponse(recoveryPasswordResponse, response.code(), type);
+
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.RECOVERY_PASSWORD));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getRecoveryPasswordResponse(RecoveryPasswordResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getRecoveryPasswordSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_recover_password), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Recovery Password method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getRecoveryPasswordSuccess(RecoveryPasswordResponse response, int type) {
+        ServicesResponse<RecoveryPasswordResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
+    }
+
+    /**
+     * Constructs the model to be sent for the recovery password
+     *
+     * @return General Request model
+     */
+    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest() {
+        CoppelServicesRecoveryPasswordRequest coppelServicesRecoveryPasswordRequest = new CoppelServicesRecoveryPasswordRequest();
+        coppelServicesRecoveryPasswordRequest.setSolicitud(1);
+        return coppelServicesRecoveryPasswordRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***************************************************          Letters Validate Signature          ********************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     */
+    public void getLettersValidateSignatureValidation(int numEmpleado) {
+        final ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+        //String validation = servicesGeneralValidations.validatePassword(password, context);
+        String validation = ServicesConstants.SUCCESS;
+        if (validation.equals(ServicesConstants.SUCCESS)) {
+            getLettersValidateSignature(numEmpleado);
+        } else {
+            servicesError.setMessage(validation);
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private void getLettersValidateSignature(int numEmpleado) {
+
+        iServicesRetrofitMethods.getLettersValidationSignature("token", buildLettersSignatureRequest(numEmpleado)).enqueue(new Callback<LetterSignatureResponse>() {
+            @Override
+            public void onResponse(Call<LetterSignatureResponse> call, Response<LetterSignatureResponse> response) {
+
+                getLettersValidationSignatureResponse(response);
+            }
+
+            @Override
+            public void onFailure(Call<LetterSignatureResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LETTERSVALIDATIONSIGNATURE));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLettersValidationSignatureResponse(Response<LetterSignatureResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLettersSignatureValidationSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Letters Signature Validation method
+     *
+     * @param response Server response
+     */
+    public void getLettersSignatureValidationSuccess(Response<LetterSignatureResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+
+        if (response != null && response.body() != null) {
+
+            LetterSignatureResponse letterSignatureResponse = response.body();
+
+            if (letterSignatureResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                ServicesResponse<LetterSignatureResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterSignatureResponse);
+                servicesResponse.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+                iServiceListener.onResponse(servicesResponse);
+
+            } else {
+                servicesError.setMessage(letterSignatureResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @return General Request model
+     */
+    public CoppelServicesLettersSignatureRequest buildLettersSignatureRequest(int employeeNumber) {
+        CoppelServicesLettersSignatureRequest coppelServicesLettersSignatureRequest = new CoppelServicesLettersSignatureRequest();
+        coppelServicesLettersSignatureRequest.setNum_empleado(employeeNumber);
+        return coppelServicesLettersSignatureRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Letters Config          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     * @param tipoCarta   Type letter
+     */
+    public void getLettersConfigValidation(int numEmpleado, int tipoCarta) {
+        final ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSCONFIG);
+        //String validation = servicesGeneralValidations.validatePassword(password, context);
+        String validation = ServicesConstants.SUCCESS;
+        if (validation.equals(ServicesConstants.SUCCESS)) {
+            getLettersConfig(numEmpleado, tipoCarta);
+        } else {
+            servicesError.setMessage(validation);
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private void getLettersConfig(int numEmpleado, int tipoCarta) {
+
+        iServicesRetrofitMethods.getLettersConfig("token", buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
+            @Override
+            public void onResponse(Call<LetterConfigResponse> call, Response<LetterConfigResponse> response) {
+                getLettersConfigResponse(response);
+            }
+
+            @Override
+            public void onFailure(Call<LetterConfigResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LETTERSCONFIG));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLettersConfigResponse(Response<LetterConfigResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSCONFIG);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLettersConfigSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Letters Config method
+     *
+     * @param response Server response
+     */
+    public void getLettersConfigSuccess(Response<LetterConfigResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERSCONFIG);
+
+        if (response != null && response.body() != null) {
+
+            LetterConfigResponse letterConfigResponse = response.body();
+
+            if (letterConfigResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                ServicesResponse<LetterConfigResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterConfigResponse);
+                servicesResponse.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+                iServiceListener.onResponse(servicesResponse);
+
+            } else {
+                servicesError.setMessage(letterConfigResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @param tipoCarta      Type letter
+     * @return General Request model
+     */
+    public CoppelServicesLettersConfigRequest buildLettersConfigRequest(int employeeNumber, int tipoCarta) {
+        CoppelServicesLettersConfigRequest coppelServicesLettersConfigRequest = new CoppelServicesLettersConfigRequest();
+        coppelServicesLettersConfigRequest.setNum_empleado(employeeNumber);
+        coppelServicesLettersConfigRequest.setTipo_carta(tipoCarta);
+        return coppelServicesLettersConfigRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          General Methods          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /* ServiceListener */
+    public void setOnServiceListener(IServiceListener iServiceListener) {
+        this.iServiceListener = iServiceListener;
+    }
+
+    /* Generic Error Service */
+    public void sendGenericError(int type, @NonNull Response<JsonObject> response, boolean ... params) {
+        boolean executeInBackground = false;
+        if(params != null && params.length > 0){
+            executeInBackground = params[0];
+        }
+
+        ServicesError servicesError = new ServicesError();
+        servicesError.setExecuteInBackground(executeInBackground);
+        servicesError.setType(type);
+
+        try {
+            GeneralErrorResponse generalErrorResponse = (GeneralErrorResponse) servicesUtilities.parseToObjectClass(response.body().toString(), GeneralErrorResponse.class);
+            servicesError.setMessage(sendMessageFromCode(generalErrorResponse.getData().getResponse().getErrorCode(), generalErrorResponse.getData().getResponse().getUserMessage()));
+            servicesError.setType(sendTypeTokenResponse(generalErrorResponse.getData().getResponse().getErrorCode(), type));
+            iServiceListener.onError(servicesError);
+        } catch (Exception e) {
+            servicesError.setMessage(context.getString(R.string.error_generic_service));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /* Parse code response service to message*/
+    public String sendMessageFromCode(int errorCode, String userMessage) {
+        String message = "";
+
+        if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {
+            message = context.getString(R.string.error_generic_service);
+        } else {
+            message = userMessage;
+        }
+        return message;
+    }
+
+    /* Parse code response service to validate token*/
+    public int sendTypeTokenResponse(int errorCode, int type) {
+        if (errorCode == -6) {
+            return type = ServicesRequestType.INVALID_TOKEN;
+        } else {
+            return type;
+        }
+    }
+
+}

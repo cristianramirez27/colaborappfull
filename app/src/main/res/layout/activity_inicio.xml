@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp">
+
+    <include
+        android:id="@+id/toolbarInclude"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarInclude"
+        android:background="@color/colorBackgroundCoppelBlanco2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carouselView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@color/colorBackgroundCoppelBlanco"
+                app:autoPlay="true"
+                app:fillColor="@color/colorPrimaryCoppelAzul2"
+                app:pageColor="#00000000"
+                app:pageTransformInterval="1500"
+                app:pageTransformer="depth"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="@color/colorPrimaryCoppelAzul"
+                app:strokeWidth="1dp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/imagen_video"
+                android:visibility="gone"
+
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/textFavoritos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="MIS FAVORITOS"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_widgets_black_36dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="32dp"
+
+                >
+
+                <LinearLayout
+                    android:id="@+id/visionariosMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:onClick="startVisionarios"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_visionarios" />
+
+                    <TextView
+                        android:id="@+id/textVisionarios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Visionarios"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/badgeVisionarios"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignRight="@+id/visionariosMenu"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginRight="-10dp"
+                    android:src="@drawable/ic_punto_rojo"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/countBadgeVisionarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/visionariosMenu"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="0dp"
+                    android:text="0"
+                    android:textColor="@color/colorSecundaryCoppelBlanco"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/comunicadosMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:onClick="startComunicados"
+                    android:orientation="vertical"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_comunicados" />
+
+                    <TextView
+
+                        android:id="@+id/textComunicados"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Comunicados"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/badgeComunicados"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignRight="@+id/comunicadosMenu"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginRight="-10dp"
+                    android:src="@drawable/ic_punto_rojo"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/countBadgeComunicados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/comunicadosMenu"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="0dp"
+                    android:text="0"
+                    android:textColor="@color/colorSecundaryCoppelBlanco"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_cartaslaborales" />
+
+                    <TextView
+                        android:id="@+id/textCartasLaborales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cartas\n laborales"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="16dp"
+                android:background="@color/colorSecundaryCoppelGris2" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="32dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/id_estadodecuenta" />
+
+                    <TextView
+                        android:id="@+id/textEstadoDeCuenta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Estado de \nCuenta"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_beneficios" />
+
+                    <TextView
+                        android:id="@+id/textBeneficios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Beneficios"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_fondodeahorro" />
+
+                    <TextView
+                        android:id="@+id/textFondoAhorro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fondo\nde ahorro"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryCoppelAzul2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

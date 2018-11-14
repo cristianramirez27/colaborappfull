@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">ColaborApp</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="enrollment_message">
+        Para registrarte ingresa a la opción en intranet llamada “Registro de colaboradores coppel.com”,
+        sigue las instrucciones y vuelve a Coppel Conecta para ingresar usando el correo electrónico y la contraseña que acabas de generar.
+    </string>
+    <string name="go_to_coppel">Ir a coppel.com</string>
+    <string name="employee_number">N. de empleado</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+    <string name="forgot_my_password">Olvidé mi contraseña</string>
+    <string name="sign_in">¿Aún no te registras? Crea tu cuenta</string>
+    <string name="title_home">Inicio</string>
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_close">Drawer Close</string>
+    <string name="menu_title_analytic">Analítica</string>
+    <string name="collaborator_number">N. Colaborador</string>
+    <string name="profile">Perfil</string>
+    <string name="center">Centro</string>
+    <string name="position">Puesto</string>
+    <string name="enterprise">Empresa</string>
+    <string name="erh">ERH</string>
+    <string name="manager">Gerente</string>
+    <string name="admission_date">Fecha de ingreso</string>
+    <string name="seniority_date">Fecha de antigüedad</string>
+    <string name="rfc">RFC</string>
+    <string name="curp">CURP</string>
+    <string name="nss">NSS</string>
+    <string name="mail">Correo</string>
+    <string name="email">Correo electrónico</string>
+    <string name="collaborator">Colaborador:</string>
+    <string name="notices">Comunicados</string>
+    <string name="account_status">Estado de cuenta</string>
+    <string name="benefits">Beneficios</string>
+    <string name="visionaries">Visionarios</string>
+    <string name="poll">Encuesta</string>
+    <string name="my_favorites">Mis favoritos</string>
+    <string name="accept">Aceptar</string>
+    <string name="attention">Atención</string>
+    <string name="logout_sure">¿Estás seguro de que deseas salir?</string>
+    <string name="get_out">Salir</string>
+    <string name="back">Regresar</string>
+    <string name="permissions_needed">Es necesario que acepte los permisos para continuar</string>
+    <string name="error_save_image">Ocurrió un error al guardar la imagen</string>
+    <string name="select_image">Seleccione una imagen</string>
+    <string name="loan_saving_fund">Préstamos/Fondo de ahorro</string>
+    <string name="loan_margin">Margen de\ncrédito</string>
+    <string name="buy_margin">Margen de\ncompra</string>
+    <string name="enterprise_fund">Fondo de la\nempresa</string>
+    <string name="current_account">Cuenta\ncorriente</string>
+    <string name="additional_saving">Ahorro\nadicional</string>
+    <string name="employee_fund">Fondo del\ntrabajador</string>
+    <string name="remove">Retirar</string>
+    <string name="add">Abonar</string>
+    <string name="admin_family_access">Administrar acceso de familiares que pueden comprar con descuento</string>
+    <string name="menu_title_message">Mensajes</string>
+    <string name="payroll_voucher">Comprobante de nómina</string>
+    <string name="employment_letters">Cartas laborales</string>
+    <string name="connection_error">Error de conexión</string>
+    <string name="press_to_refresh">El contenido no pudo ser cargado, oprime para intentar de nuevo.</string>
+    <string name="payroll">Nómina</string>
+    <string name="bonus">Aguinaldo</string>
+    <string name="bonus_capitalize">AGUINALDO</string>
+    <string name="saving_fund">Fondo de ahorro</string>
+    <string name="gas">Gasolina</string>
+    <string name="ptu">PTU</string>
+    <string name="alimony">Pensión alimenticia</string>
+    <string name="loading">Cargando...</string>
+    <string name="income">Ingresos</string>
+    <string name="salary">Sueldo</string>
+    <string name="advace_payment">Anticipo de reparto</string>
+    <string name="pantry">Despensa en efectivo</string>
+    <string name="deductions">Deducciones</string>
+    <string name="isr">ISR</string>
+    <string name="imss">IMSS</string>
+    <string name="cc_discount">Descuento del CC</string>
+    <string name="total_pay">Total a pagar</string>
+    <string name="hello">Hola</string>
+    <string name="db_name">connecta_coppel</string>
+    <string name="send">Enviar</string>
+    <string name="send_to">El comprobante se enviará a </string>
+    <string name="voucher_ready">Comprobante listo</string>
+    <string name="voucher_sent">Comprobante enviado</string>
+    <string name="voucher_download">Comprobante descargado</string>
+    <string name="voucher_sent_fail">Envío de correo no se realizó</string>
+    <string name="voucher_download_fail">Descarga de constancia no se realizó</string>
+    <string name="download">Descargar</string>
+    <string name="additional_saving_fund">Ahorro adicional</string>
+    <string name="additional_special_saving_fund">Ahorro adicional especial</string>
+    <string name="voucher">Vale</string>
+    <string name="provider">Proveedor</string>
+    <string name="bill">Factura</string>
+    <string name="city">Ciudad</string>
+    <string name="date">Fecha</string>
+    <string name="lot">Importe</string>
+    <string name="factor">Factor</string>
+    <string name="a_saving">A. Adicional</string>
+    <string name="select_beneficiary_name">Selecciona el nombre del beneficiario</string>
+    <string name="incorrect_data_beneficiary">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
+    <string name="next">Siguiente</string>
+    <string name="error_save_file">Ocurrió un error al guardar el archivo</string>
+    <string name="share">Compartir</string>
+    <string name="retention_base">Base para aplicar la retención</string>
+    <string name="alimony_percent">% de pensión alimenticia</string>
+    <string name="alimony_retention">Retención por pensión alimenticia</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="unit">Unidad</string>
+    <string name="amount">Monto</string>
+    <string name="concept">Concepto</string>
+    <string name="expenses">Egresos</string>
+    <string name="profit_sharing">Reparto de utilidades</string>
+    <string name="anti_distribution_liquidation">Liquidación anti reparto</string>
+    <string name="totals">Totales</string>
+    <string name="neto">Neto</string>
+    <string name="expired_session">La sesión ha expirado.</string>
+    <string name="current_count">Cuenta corriente</string>
+    <string name="enterprise_funds">Fondo de la empresa</string>
+    <string name="employe_fund">Fondo del trabajador</string>
+    <string name="margins">Margenes</string>
+    <string name="autocop">Autocop</string>
+    <string name="employe_fund_faer">Fondo Trabajador Faer</string>
+    <string name="enterprise_fund_faer">Fondo Empresa Faer</string>
+
+    <!-- Uppercase Words -->
+    <string-array name="uppercase_words">
+        <item>IMSS</item>
+        <item>ISR</item>
+    </string-array>
+
+    <!-- Error -->
+    <string name="error_bad_request">Error, la solicitud no cumple con la información requerida para está petición.</string>
+    <string name="error_unauthorized">Error, la solicitud no cuenta con los privilegios necesarios.</string>
+    <string name="error_not_found">Error, el recurso solicitado no ha sido encontrado.</string>
+    <string name="server_error">Error contactando el servidor, intente de nuevo más tarde.</string>
+    <string name="network_error">Error, por favor verifíca tu conexión a internet.</string>
+    <string name="error_serialization">Error, la respuestá no tiene un formato adecuado.</string>
+    <string name="error_unknown">Ocurrió un error desconocido.</string>
+    <string name="error_generic_service"> Servicio no disponible en este momento, intente más tarde.</string>
+
+    <!-- Login -->
+    <string name="error_login">No se pudo obtener la información de login.</string>
+    <string name="error_account_null">Error, debes iniciar sesión primero.</string>
+    <string name="error_password">Por favor ingresa tu contraseña.</string>
+    <string name="error_email">Por favor ingresa tu correo.</string>
+    <string name="invalid_email">El correo debe incluir un signo @, asegurate de que sea un formato de correo válido.</string>
+    <string name="invalid_password">La contraseña debe tener mínimo 8 caracteres y debe incluir una mínuscula, una mayúscula y un número.</string>
+
+    <!-- Recover Password -->
+    <string name="error_recover_password">No se pudo obtener la información para recuperar contraseña.</string>
+
+    <!-- Profile -->
+    <string name="error_profile">No se pudo obtener la información de perfil.</string>
+    <string name="logout">Cerrar sesión</string>
+
+    <!-- Voucher -->
+    <string name="error_voucher">No se pudo obtener la información del comprobante de nómina.</string>
+    <string name="error_voucher_send_mail">No se pudo enviar comprobante de nómina.</string>
+    <string name="error_voucher_download">No se pudo descargar comprobante de nómina.</string>
+
+    <!-- Letters validation signature -->
+    <string name="error_letters">No se pudo obtener la información de cartas laborales.</string>
+
+    <string name="note_beneficiary">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

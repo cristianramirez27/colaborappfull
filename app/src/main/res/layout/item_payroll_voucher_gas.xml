@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp">
+
+    <TextView
+        android:id="@+id/txvDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="Date"
+        android:textColor="@color/colorSecondBlueCoppel"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline83"
+        app:layout_constraintStart_toStartOf="@+id/guideline108"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorBackgroundGray"
+        app:layout_constraintEnd_toStartOf="@+id/guideline83"
+        app:layout_constraintStart_toStartOf="@+id/guideline82"
+        app:layout_constraintTop_toBottomOf="@+id/txvDate" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline82"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline83"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline108"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+</android.support.constraint.ConstraintLayout>

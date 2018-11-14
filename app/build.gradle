@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.coppel.rhconecta.dev"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 19
+        versionName "1.9.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildToolsVersion '28.0.3'
+}
+
+dependencies {
+
+    // Android
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support:support-v4:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support:exifinterface:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support:recyclerview-v7:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support:cardview-v7:${rootProject.ext.supportAndroidVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${rootProject.ext.constraintLayoutVersion}"
+
+    // ButterKnife
+    implementation "com.jakewharton:butterknife:${rootProject.ext.butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.butterKnifeVersion}"
+
+    // SquareUp
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.okhttpInterceptorVersion}"
+    implementation "com.squareup:otto:${rootProject.ext.ottoVersion}"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.ext.glideVersion}"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:${rootProject.ext.lottieVersion}"
+
+    // CameraView
+    implementation "com.otaliastudios:cameraview:${rootProject.ext.cameraViewVersion}"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
+    implementation "com.google.firebase:firebase-database:${rootProject.ext.firebaseDatabaseVersion}"
+    implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
+    // PageIndicator
+    implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
+
+    // Testing
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Visionarios
+    implementation 'com.synnapps:carouselview:0.1.5'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.github.ed-george:AndroidVimeoExtractor:1.1.2'
+
+}
+
+realm {
+    syncEnabled = true
+}
+
+apply plugin: 'com.google.gms.google-services'
