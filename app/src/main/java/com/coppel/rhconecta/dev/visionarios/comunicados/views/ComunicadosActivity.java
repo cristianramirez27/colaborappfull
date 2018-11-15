@@ -48,6 +48,13 @@ public class ComunicadosActivity extends AppCompatActivity implements Comunicado
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.getComunicadosLocal();
+        presenter.getEncuestaLocal();
+
+    }
     void initializeToolBar() {
         surveyInboxView = (SurveyInboxView) findViewById(R.id.surveyInbox);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

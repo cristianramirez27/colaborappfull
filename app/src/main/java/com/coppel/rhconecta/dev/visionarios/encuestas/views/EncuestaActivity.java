@@ -84,7 +84,7 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
     public void onBackPressed() { //DESHABILITA EL BOTON DE REGRESAR
 
         if (true) {
-            //TODO
+            finish();
         } else {
             super.onBackPressed();
         }
