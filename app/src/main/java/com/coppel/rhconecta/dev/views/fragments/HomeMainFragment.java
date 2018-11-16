@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.modelview.BannerItem;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
@@ -74,6 +76,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     private ArrayList<Video> videosLanding = new ArrayList<Video>();
     private ArrayList<Comunicado> comunicadosLanding = new ArrayList<Comunicado>();
 
+    int[] notifications;
     @BindView(R.id.vpBanner)
     ViewPager vpBanner;
     @BindView(R.id.tabIndicator)
@@ -99,22 +102,28 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        itemsCarousel.clear();//Eliminamos los elementos del carrusel.
+        presenter.guardarLogin();
+
+    }
+
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
         ButterKnife.bind(this, view);
         parent = (HomeActivity) getActivity();
         profileResponse = parent.getProfileResponse();
-        initMenu();
         imgvArrowLeft.setOnClickListener(this);
         imgvArrowRight.setOnClickListener(this);
-
         presenter = new InicioPresenter(this);
-
-
-        presenter.guardarLogin();
-
+        notifications = new int[]{0,0};
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
+        initMenu();
+        presenter.guardarLogin();
 
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setOnClickListener(new View.OnClickListener() {
@@ -143,7 +152,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
             }
         }, 60000);*/
 
-
         return view;
     }
 
@@ -162,7 +170,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
             for (ItemCarousel item : itemsCarousel) {
                 String imagenUrl;
                 if (item.getTypeItem() == 1) {
-                    imagenUrl = comunicadosLanding.get(item.getIdxItem()).getImagen_aviso_preview();
+                    imagenUrl = comunicadosLanding.get(item.getIdxItem()).getImagen_aviso_landing();
                 } else {
                     imagenUrl = videosLanding.get(item.getIdxItem()).getImagen_video_preview();
                 }
@@ -206,7 +214,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         rcvMenu.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         rcvMenu.setLayoutManager(gridLayoutManager);
-        homeMenuRecyclerViewAdapter = new HomeMenuRecyclerViewAdapter(getContext(), MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false), gridLayoutManager.getSpanCount());
+        homeMenuRecyclerViewAdapter = new HomeMenuRecyclerViewAdapter(getContext(), MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications), gridLayoutManager.getSpanCount());
         homeMenuRecyclerViewAdapter.setOnItemClick(this);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new HomeMenuItemTouchHelperCallback(homeMenuRecyclerViewAdapter));
         rcvMenu.setAdapter(homeMenuRecyclerViewAdapter);
@@ -219,7 +227,9 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
                 viewBackFavorites.setLayoutParams(layoutParams);
             }
         });
+
     }
+
 
     @Override
     public void onClick(View view) {
@@ -271,11 +281,22 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showBangesComunicados(int nuevos) {
+        Log.d(TAG,"Notifications comunicados:"+nuevos);
+        notifications[0]=nuevos;
     }
 
     @Override
     public void showBangesVideos(int nuevos) {
+        Log.d(TAG,"Notifications videos visionarios:"+nuevos);
+        notifications[1]=nuevos;
+        uptadeNotificationsAdapter();
     }
+
+    private void uptadeNotificationsAdapter(){
+        homeMenuRecyclerViewAdapter.setNotification(AppConstants.OPTION_NOTICE,notifications[0]);
+        homeMenuRecyclerViewAdapter.setNotification(AppConstants.OPTION_VISIONARIES,notifications[1]);
+    }
+
 
     @Override
     public void ShowTextoDiccionario(String text, int textView) {
@@ -291,8 +312,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showVideosLanding(ArrayList<Video> videos) {
-        videosLanding = videos;
 
+        videosLanding = videos;
         if (videosLanding != null) {
             for (int i = 0; i < videosLanding.size(); i++) {
                 itemsCarousel.add(new ItemCarousel(itemsCarousel.size(), 2, i));
@@ -304,6 +325,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void showComunicadosLanding(ArrayList<Comunicado> comunicados) {
         comunicadosLanding = comunicados;
+        itemsCarousel.clear();//Eliminamos los elementos del carrusel.
 
         if (comunicadosLanding != null) {
             for (int i = 0; i < comunicadosLanding.size(); i++) {

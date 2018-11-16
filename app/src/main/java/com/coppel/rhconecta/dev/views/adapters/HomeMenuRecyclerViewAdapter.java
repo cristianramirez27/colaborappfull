@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,12 +20,14 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRecyclerViewAdapter.ViewHolder> implements View.OnTouchListener,
         View.OnLongClickListener {
@@ -56,6 +59,13 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
         viewHolder.ctlContainer.getLayoutParams().height = itemSize;
         viewHolder.imgvIcon.setImageDrawable(MenuUtilities.getIconByTag(customMenu.get(i).getTAG(), context));
         viewHolder.txvName.setText(customMenu.get(i).getName());
+        if(customMenu.get(i).getNotifications() > 0){
+            viewHolder.txvNotifications.setText(customMenu.get(i).getNotifications()+"");
+            viewHolder.txvNotifications.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.txvNotifications.setText("");
+            viewHolder.txvNotifications.setVisibility(View.INVISIBLE);
+        }
         viewHolder.itemView.setOnLongClickListener(this);
         viewHolder.itemView.setOnTouchListener(this);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -131,4 +141,28 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
     public void setOnItemClick(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
     }
+
+    public  void setNotification(String TAG,int notifications){
+        Realm realm = Realm.getDefaultInstance();
+         List<HomeMenuItem> customMenuTmp= this.getCustomMenu();
+        if (!realm.isInTransaction()) realm.beginTransaction();
+        for (int i =0;i<customMenuTmp.size();i++){
+            try{
+                if(customMenuTmp.get(i).getTAG().equals(TAG)){ // agrega notificaciones a comunicados
+                    Log.d("AdapterMenu"," notifications menu "+TAG+": "+notifications);
+
+                    customMenuTmp.get(i).setNotifications(notifications);
+                }
+
+            }catch (Exception e){
+                Log.d("AdapterMenu","Error add notifications menu adapter: "+e.getMessage());
+            }
+        }
+
+        realm.commitTransaction();
+        this.customMenu=customMenuTmp;
+        this.notifyDataSetChanged();
+
+    }
+
 }

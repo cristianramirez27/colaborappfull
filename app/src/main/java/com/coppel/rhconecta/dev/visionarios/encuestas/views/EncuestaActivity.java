@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.encuestas.adapters.AdapterRespuestas;
 import com.coppel.rhconecta.dev.visionarios.encuestas.interfaces.Encuestas;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
@@ -187,6 +189,7 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
         dialogCustom.showDialogActionNoButton("Tu encuesta se envió con éxito", "¡Gracias!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TableEncuestas tableEncuestas = new TableEncuestas(new InternalDatabase(getBaseContext()),true);
                 dialogCustom.CloseDialog();
                 finish();
             }
@@ -200,8 +203,9 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
         dialogCustom.showDialogActionNoButton(diccionario.get("errorEncuestaEnviada").toString(), "¡Gracias!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TableEncuestas tableEncuestas = new TableEncuestas(new InternalDatabase(getBaseContext()),true);
                 dialogCustom.CloseDialog();
-
+                finish();
             }
         });
     }

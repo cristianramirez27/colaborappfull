@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusableInTouchMode="true"
+
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +31,9 @@
         app:itemScale = "1.5"
         app:itemSize = "10dp"
         app:itemSelectedTint="@color/transparentIndicatorSelected"
-        app:itemTint = "@color/transparentIndicator" />
+        app:itemTint = "@color/transparentIndicator"
+
+        />
 
     <ImageView
         android:id="@+id/imgvArrowLeft"

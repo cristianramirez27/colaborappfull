@@ -136,7 +136,10 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
     @Override
     public void getUltimaEncuesta() {
 
-        JSON_ObtenerEncuestas jsonRequest = new JSON_ObtenerEncuestas(ConstantesGlobales.APLICACION_KEY);
+        TableUsuario tableUsuario = new TableUsuario(idb,false);
+        Usuario usuario = tableUsuario.select("1");
+        tableUsuario.closeDB();
+        JSON_ObtenerEncuestas jsonRequest = new JSON_ObtenerEncuestas(ConstantesGlobales.APLICACION_KEY,usuario.getNumeroempleado());
         CommunicatorObtenerEncuestas communicatorObtenerEncuestas = new CommunicatorObtenerEncuestas();
         communicatorObtenerEncuestas.ObtenerApi(jsonRequest,InicioModel.this);
     }

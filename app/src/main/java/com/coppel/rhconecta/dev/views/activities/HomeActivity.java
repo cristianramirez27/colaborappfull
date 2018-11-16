@@ -47,7 +47,9 @@ import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosActivity;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableComunicados;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
+import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
@@ -78,7 +80,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         DialogFragmentWarning.OnOptionClick,ISurveyNotification {
 
     private static final String TAG = "HomeActivity";
-
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -86,7 +87,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProfileResponse.Response profileResponse;
     private Realm realm;
     private DialogFragmentWarning dialogFragmentWarning;
-
+    private int[] notifications  ;
     private Encuesta ultimaEncuesta;
     @BindView(R.id.dlHomeContainer)
     DrawerLayout dlHomeContainer;
@@ -112,6 +113,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notifications = new int[]{0,0};
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -226,7 +228,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
         txvProfileName.setText(getString(R.string.hello) + ", " + name);
         txvCollaboratorNumber.setText(profileResponse.getColaborador());
-        HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true));
+        HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true,notifications));
         lvOptions.setAdapter(homeSlideMenuArrayAdapter);
         lvOptions.setOnItemClickListener(this);
     }
@@ -338,6 +340,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         InternalDatabase idb = new InternalDatabase(this);
         TableUsuario tableUsuario = new TableUsuario(idb, false);
+
+
         Usuario usuario = new Usuario(
                 1,
                 profileResponse.getColaborador(),
@@ -352,8 +356,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 profileResponse.getNombrePuesto(),
                 profileResponse.getEstado(),
                 profileResponse.getNombreRegion());
+
+        Usuario usuarioLocalExistente = tableUsuario.select("1");
+
+        if(!profileResponse.getColaborador().equals(usuarioLocalExistente.getNumeroempleado())){
+            TableComunicados tableComunicados = new TableComunicados(idb,true);
+            TableVideos tableVideos = new TableVideos(idb,true);
+        }
+
         tableUsuario.insertIfNotExist(usuario);
         tableUsuario.closeDB();
+
+
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

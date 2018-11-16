@@ -41,29 +41,30 @@ public class HomeBannerPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        View view = layoutInflater.inflate(R.layout.item_banner_home, container, false);
-        ButterKnife.bind(this, view);
+
+            View view = layoutInflater.inflate(R.layout.item_banner_home, container, false);
+            ButterKnife.bind(this, view);
+            GlideApp.with(context)
+                    .load(banners.get(position).getImagePath())
+                    .error(R.drawable.ic_image_grey_300_48dp)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(imgvBanner);
+            txvTitle.setText(banners.get(position).getTitle());
+            txvSubTitle.setText(banners.get(position).getSubTitle());
+            container.addView(view);
 
 
-        GlideApp.with(context)
-                .load(banners.get(position).getImagePath())
-                .error(R.drawable.ic_image_grey_300_48dp)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imgvBanner);
-        txvTitle.setText(banners.get(position).getTitle());
-        txvSubTitle.setText(banners.get(position).getSubTitle());
-        container.addView(view);
-
-
-        imgvBanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onBannerClick != null) {
-                    onBannerClick.onBannerClick(position);
+            imgvBanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onBannerClick != null) {
+                        onBannerClick.onBannerClick(position);
+                    }
                 }
-            }
-        });
-        return view;
+            });
+            return view;
+
+
     }
 
     @Override

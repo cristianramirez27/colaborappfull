@@ -90,7 +90,6 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
         presenter.getTextoLabel("cMisFavoritos", "mis favoritos", R.id.textFavoritos);
         presenter.getTextoLabel("cTitulo", "inicio", R.id.toolbar);
         presenter.getTextoLabelError("errorInternet", "Sin conexión a internet");
-
         presenter.guardarLogin();
 
     }

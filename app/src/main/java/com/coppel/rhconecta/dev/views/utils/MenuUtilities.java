@@ -3,6 +3,8 @@ package com.coppel.rhconecta.dev.views.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
@@ -14,23 +16,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+
 public class MenuUtilities {
 
-    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide) {
+    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide,int[] notifications) {
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         List<HomeMenuItem> homeMenuItems = new ArrayList<>();
         if (userPreferences != null && userPreferences.getMenuItems() != null && userPreferences.getMenuItems().size() > 0 && !isSlide) {
-            homeMenuItems.addAll(userPreferences.getMenuItems());
+
+            RealmList<HomeMenuItem> menus =  userPreferences.getMenuItems();
+            Realm realm = Realm.getDefaultInstance();
+            if (!realm.isInTransaction()) realm.beginTransaction();
+            for (int i =0;i<menus.size();i++){
+                try{
+                    if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
+                        if(notifications.length>0){
+                            menus.get(i).setNotifications(notifications[0]);
+                        }
+                    }
+
+                    if(menus.get(i).getTAG().equals(AppConstants.OPTION_VISIONARIES)){ // agrega notificaciones a videos visionarios
+                        if(notifications.length>1){
+                            menus.get(i).setNotifications(notifications[1]);
+                        }
+                    }
+                }catch (Exception e){
+                    Log.d("MenuUtilities","Error add notifications menu: "+e.getMessage());
+                }
+
+            }
+            realm.commitTransaction();
+
+            homeMenuItems.addAll(menus);
         } else {
             if (isSlide) {
                 homeMenuItems.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
             }
             homeMenuItems.addAll(Arrays.asList(
-                    new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE),
+                    new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
                     new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                     //new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
                     new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
-                    new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES)));
+                    new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1])));
         }
         return homeMenuItems;
     }

@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.txvSignIn)
     TextView txvSignIn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
