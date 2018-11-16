@@ -359,10 +359,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Usuario usuarioLocalExistente = tableUsuario.select("1");
 
-        if(!profileResponse.getColaborador().equals(usuarioLocalExistente.getNumeroempleado())){
+        if(usuarioLocalExistente != null){
+            if(!profileResponse.getColaborador().equals(usuarioLocalExistente.getNumeroempleado())){
+                TableComunicados tableComunicados = new TableComunicados(idb,true);
+                TableVideos tableVideos = new TableVideos(idb,true);
+            }
+        }else{
             TableComunicados tableComunicados = new TableComunicados(idb,true);
             TableVideos tableVideos = new TableVideos(idb,true);
         }
+
 
         tableUsuario.insertIfNotExist(usuario);
         tableUsuario.closeDB();

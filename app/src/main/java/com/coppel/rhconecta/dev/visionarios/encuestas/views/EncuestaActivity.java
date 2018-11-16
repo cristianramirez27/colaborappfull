@@ -47,6 +47,7 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
     private int progress;
     private int idxPregunta;
     private Encuesta encuesta;
+    private boolean inProgress=false;
     private int currentRespuestaSelected = -1;
     private Map<String, String> diccionario = new HashMap<String, String>();
 
@@ -161,7 +162,13 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
                     if (currentRespuestaSelected == -1) {
                         Toast.makeText(getBaseContext(), diccionario.get("errorSeleccion").toString(), Toast.LENGTH_SHORT).show();
                     } else {
-                        presenter.guardarEncuesta(preguntas);
+
+                        if(!inProgress){
+                            btnEnviarEncuesta.setVisibility(View.GONE);
+                            inProgress= true;
+                            presenter.guardarEncuesta(preguntas);
+                        }
+
                     }
                 }
             });
@@ -185,11 +192,12 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
     @Override
     public void showEncuestaGuardada(String msg) {
         this.presenter.setEncuestaVisto(encuesta);
+        TableEncuestas tableEncuestas = new TableEncuestas(new InternalDatabase(getBaseContext()),true);
+
         dialogCustom = new DialogCustom(EncuestaActivity.this, R.layout.dialog_custom_encuesta_success);
         dialogCustom.showDialogActionNoButton("Tu encuesta se envió con éxito", "¡Gracias!", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TableEncuestas tableEncuestas = new TableEncuestas(new InternalDatabase(getBaseContext()),true);
                 dialogCustom.CloseDialog();
                 finish();
             }
@@ -198,6 +206,7 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
 
     @Override
     public void showEncuestaNoGuardada(String msg) {
+
         this.presenter.setEncuestaVisto(encuesta);
         dialogCustom = new DialogCustom(EncuestaActivity.this, R.layout.dialog_custom);
         dialogCustom.showDialogActionNoButton(diccionario.get("errorEncuestaEnviada").toString(), "¡Gracias!", new View.OnClickListener() {
@@ -212,6 +221,8 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
 
     @Override
     public void showEncuestaNoGuardadaError() {
+        inProgress=false;
+        btnEnviarEncuesta.setVisibility(View.VISIBLE);
         dialogCustom = new DialogCustom(EncuestaActivity.this, R.layout.dialog_custom);
         dialogCustom.showDialogActionNoButton(diccionario.get("errorServidor").toString(), " ", new View.OnClickListener() {
             @Override
