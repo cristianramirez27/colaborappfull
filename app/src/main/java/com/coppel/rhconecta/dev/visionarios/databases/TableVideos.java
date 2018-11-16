@@ -188,7 +188,7 @@ public class TableVideos {
 
 
                 } while (cursor.moveToNext());
-                Log.d("MYSQLITE", "SELECT MULTI " + this.TABLA_NOMBRE + "  OK! CON RESULTADOS");
+                Log.d("MYSQLITE", "SELECT MULTI " + this.TABLA_NOMBRE + "  OK! CON RESULTADOS ");
 
             } else {
                 Log.d("MYSQLITE", "SELECT MULTI " + this.TABLA_NOMBRE + "  OK! SIN RESULTADOS!");

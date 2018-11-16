@@ -99,6 +99,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     public void onAttach(Context context) {
         super.onAttach(context);
         ISurveyNotification = (ISurveyNotification)context;
+
     }
 
     @Override
@@ -166,7 +167,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
         List<BannerItem> banners = new ArrayList<>();
 
-        if (itemsCarousel.size() > 0 && itemsCarousel != null) {
+        if (itemsCarousel != null && itemsCarousel.size() > 0) {
 
             for (ItemCarousel item : itemsCarousel) {
                 String imagenUrl;
@@ -267,7 +268,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public Context getContext() {
-        return getActivity().getBaseContext();
+        return parent.getBaseContext();
     }
 
     @Override
@@ -314,8 +315,15 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showVideosLanding(ArrayList<Video> videos) {
-
+         Log.d(TAG,"LANDING VIDEOS ");
         videosLanding = videos;
+        if(itemsCarousel!=null &&itemsCarousel.size()>0){
+            for(int i=0;i<itemsCarousel.size();i++){
+                if(itemsCarousel.get(i).getTypeItem()==2){
+                    itemsCarousel.remove(i);
+                }
+            }
+        }
         if (videosLanding != null) {
             for (int i = 0; i < videosLanding.size(); i++) {
                 itemsCarousel.add(new ItemCarousel(itemsCarousel.size(), 2, i));
@@ -326,6 +334,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showComunicadosLanding(ArrayList<Comunicado> comunicados) {
+        Log.d(TAG,"LANDING COMUNICADOS ");
+
         comunicadosLanding = comunicados;
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
 
