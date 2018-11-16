@@ -257,13 +257,21 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onBannerClick(int position) {
 
-        ItemCarousel item = itemsCarousel.get(position);
+        if(itemsCarousel.size()>0){
+            try{
+                ItemCarousel item = itemsCarousel.get(position);
 
-        if (item.getTypeItem() == 1) {
-            initComunicadoDetalle(comunicadosLanding.get(item.getIdxItem()));
-        } else {
-            initVideoDetalle(videosLanding.get(item.getIdxItem()));
+                if (item.getTypeItem() == 1) {
+                    initComunicadoDetalle(comunicadosLanding.get(item.getIdxItem()));
+                } else {
+                    initVideoDetalle(videosLanding.get(item.getIdxItem()));
+                }
+            }catch (Exception e ){
+                Log.d(TAG,"Banner loading");
+            }
+
         }
+
     }
 
     @Override
