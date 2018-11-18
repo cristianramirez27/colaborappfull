@@ -40,7 +40,7 @@ public class ComunicadosActivity extends AppCompatActivity implements Comunicado
         initializeToolBar();
 
         presenter = new ComunicadosPresenter(this);
-        presenter.getTextoLabel("cTitulo", "comunicados", R.id.toolbar);
+        presenter.getTextoLabel("cTitulo", "Comunicados", R.id.toolbar);
         listContenido = (ListView) findViewById(R.id.listContenido);
 
         presenter.getComunicadosLocal();

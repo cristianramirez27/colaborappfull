@@ -21,7 +21,7 @@ public class MyFirebaseConfig {
 
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference dbref = firebaseDatabase.getReference(MyFirebaseReferences.DATABASE_REFERENCE_DICCIONARIO);
-            dbref.child("config").addListenerForSingleValueEvent(new ValueEventListener() {
+            dbref.child("config").child("URL_VISIONARIOS").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {

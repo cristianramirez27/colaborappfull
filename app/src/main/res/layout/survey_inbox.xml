@@ -29,7 +29,7 @@
             android:layout_marginTop="-3dp"
             android:fontFamily="@font/lineto_circular_pro_bold"
             android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:background="@drawable/bg_circle_notifications"
+            android:background="@drawable/ic_punto_rojo"
             android:gravity="center"
             android:visibility="visible"
             android:textSize="8sp" />

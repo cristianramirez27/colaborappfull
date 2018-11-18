@@ -1,11 +1,16 @@
 package com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Events.ObtenerEncuestasEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Request.JSON_ObtenerEncuestas;
+import com.coppel.rhconecta.dev.visionarios.utils.App;
+import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import java.util.ArrayList;
@@ -20,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommunicatorObtenerEncuestas {
     private static final String TAG = "CommunicatorObtenerEncuestas";
-    private static final String SERVER_URL = ConstantesGlobales.URL_API;
+    private String SERVER_URL = ConstantesGlobales.URL_API;
 
     public void ObtenerApi(JSON_ObtenerEncuestas item, final ObtenerEncuestas_Callback callback) {
 
@@ -38,6 +43,12 @@ public class CommunicatorObtenerEncuestas {
         AddHeaderInterceptor authorization = new AddHeadAddHeaderInterceptorerInterceptor(varToken);
         httpClient.addNetworkInterceptor(authorization);*/
 
+        /*InternalDatabase idb = new InternalDatabase(App.context);
+        TableConfig tableConfig = new TableConfig(idb,false);
+        Config config = tableConfig.select("1");
+        if(config !=null){
+            SERVER_URL = config.getURL_VISIONARIOS();
+        }*/
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())

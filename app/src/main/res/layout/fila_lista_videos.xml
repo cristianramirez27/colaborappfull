@@ -39,6 +39,7 @@
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:layout_marginTop="8dp"
+        android:visibility="invisible"
         android:text="                        Descubre la nueva mentalidad Coppel"
         android:textColor="@color/colorTextCoppelNegro"
         android:textSize="15sp" />
@@ -51,11 +52,12 @@
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:layout_marginTop="16dp"
-        android:text="12 MAYO 2018"
-        android:textColor="@color/colorTextCoppelNegro"
+        android:text=""
+        android:textColor="@color/colorSecundaryCoppelGris"
         android:textSize="11sp" />
 
     <TextView
+
         android:id="@+id/labelVisitas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,11 +65,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/roundbackgroud"
-        android:paddingBottom="2dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="2dp"
-        android:text="4.2 M Visitas"
+
+        android:paddingTop="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="4dp"
+        android:text=""
         android:textColor="@color/colorTextCoppelNegro"
         android:textSize="11sp" />
 

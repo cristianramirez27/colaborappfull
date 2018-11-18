@@ -41,7 +41,7 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
         initializeToolBar();
 
         presenter = new VideosPresenter(this);
-        presenter.getTextoLabel("cTitulo", "visionarios", R.id.toolbar);
+        presenter.getTextoLabel("cTitulo", "Visionarios", R.id.toolbar);
 
         presenter.getVideosLocal();
         presenter.getEncuestaLocal();

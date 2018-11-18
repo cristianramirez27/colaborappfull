@@ -15,7 +15,9 @@ import com.coppel.rhconecta.dev.visionarios.utils.DownloadImageTask;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdapterVideos extends BaseAdapter {
 
@@ -110,9 +112,19 @@ public class AdapterVideos extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        String date=v.getFecha();
+        String fechaFormateada;
+        try {
+            String[] fechas = date.split("-");
+            fechaFormateada=fechas[2]+"/"+fechas[1]+"/"+fechas[0];
+        }
+        catch(Exception e) {
+            fechaFormateada=date.replace("-","/");
+        }
+
         holder.labelTitulo.setText(v.getTitulo());
         holder.labelEncabezado.setText("\n"+v.getDescripcion());
-        holder.labelFecha.setText(v.getFecha());
+        holder.labelFecha.setText(fechaFormateada);
         holder.labelVisitas.setText(v.getVistas()+" Vistas");
 
         return convertView;

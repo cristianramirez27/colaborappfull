@@ -24,6 +24,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
+import com.coppel.rhconecta.dev.visionarios.utils.DownloadImageTask;
 import com.coppel.rhconecta.dev.visionarios.videos.interfaces.VideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.presenters.VideosDetallePresenter;
@@ -51,7 +52,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     private TextView labelDislikes;
     private ImageView btnlike;
     private ImageView btnDislike;
-
+    private ImageView imgPreview;
     private WebView webViewVideo;
 
     private String videoEjemplo2 = "https://vimeo.com/264123984/cd7df59153";
@@ -87,14 +88,14 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
         labelDislikes = (TextView) findViewById(R.id.labelDislikes);
         btnlike = (ImageView) findViewById(R.id.btnlike);
         btnDislike = (ImageView) findViewById(R.id.btnDislike);
-
+        imgPreview = (ImageView) findViewById(R.id.imgPreview);
         webViewVideo = (WebView) findViewById(R.id.webViewVideo);
         initializeToolBar();
         video = (Video) getIntent().getSerializableExtra("video");
         presenter.showVideo(video);
         presenter.getVideoDetalle(video.getIdvideos());
         presenter.setVideoVisto(video);
-        presenter.getTextoLabel("cTitulo", "video", R.id.toolbar);
+        presenter.getTextoLabel("cTitulo", "Visionarios", R.id.toolbar);
 
         presenter.getEncuestaLocal();
 
@@ -202,7 +203,9 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                         Log.d(TAG, "Video Finish");
                         videoEnCurso = false;
                         videoCompleto = true;
+                        imgPreview.setVisibility(View.VISIBLE);
                         imgPlayVideo.setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -239,6 +242,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     public void playVideo(View v) {
         if (imgPlayVideo.getVisibility() == View.VISIBLE) {
             initializePlayer();
+            imgPreview.setVisibility(View.INVISIBLE);
             imgPlayVideo.setVisibility(View.INVISIBLE);
 
         }
@@ -247,7 +251,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     void initializeToolBar() {
         surveyInboxView = (SurveyInboxView) findViewById(R.id.surveyInbox);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Video");
+        toolbar.setTitle("Visionarios");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_36dp);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -285,9 +289,28 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     @Override
     public void showVideo(Video video) {
         if(video != null){
+
+
+            try{
+                new DownloadImageTask((ImageView) imgPreview).execute(video.getImagen_video_preview());
+            }catch (Exception e){
+                Log.d("VideoAdapter","No se ha podido descargar la imagen del video.");
+            }
+
             labelTitulo.setText(video.getTitulo());
             labelEncabezado.setText("\n"+video.getDescripcion());
-            labelFecha.setText(video.getFecha());
+
+            String date=video.getFecha();
+            String fechaFormateada;
+            try {
+                String[] fechas = date.split("-");
+                fechaFormateada=fechas[2]+"/"+fechas[1]+"/"+fechas[0];
+            }
+            catch(Exception e) {
+                fechaFormateada=date.replace("-","/");
+            }
+
+            labelFecha.setText(fechaFormateada);
             presenter.getTextoLabel("vistas","",R.id.labelVisitas);
             labelContenido.setText(Html.fromHtml(video.getDescripcion()));
             labelLikes.setText("");
@@ -305,6 +328,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     @Override
     public void showVideoDetalle(ResponseObtenerVideosDetalle videoDetalle) {
         if (videoDetalle != null) {
+
             btnlike.setOnClickListener(null);
             btnDislike.setOnClickListener(null);
             this.videoDetalle = videoDetalle;
@@ -397,7 +421,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
         } else {
             if (textView == R.id.labelVisitas) {
                 TextView textLabel = (TextView) findViewById(textView);
-                textLabel.setText(video.getVistas() + " " + text);
+                textLabel.setText(video.getVistas() + " Vistas");
             } else {
                 TextView textLabel = (TextView) findViewById(textView);
                 textLabel.setText(text);

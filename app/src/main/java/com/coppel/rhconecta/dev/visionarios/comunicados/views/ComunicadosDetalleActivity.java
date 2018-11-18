@@ -49,7 +49,7 @@ public class ComunicadosDetalleActivity extends AppCompatActivity implements Com
         imgComunicado = (ImageView) findViewById(R.id.imgComunicado);
         comunicado = (Comunicado) getIntent().getSerializableExtra("comunicado");
 
-        presenter.getTextoLabel("cTitulo", "comunicado", R.id.toolbar);
+        presenter.getTextoLabel("cTitulo", "Comunicado", R.id.toolbar);
         presenter.getTextoLabel("cHeader", "COMUNICADO", R.id.labelHeader);
 
         presenter.showComunicadosDetalle(comunicado);

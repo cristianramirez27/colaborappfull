@@ -2,6 +2,10 @@ package com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction;
 
 import android.support.annotation.NonNull;
 
+import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
+import com.coppel.rhconecta.dev.visionarios.utils.App;
+import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Events.GuardarLogActionEvent;
@@ -18,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CommunicatorGuardarLogAction {
     private static final String TAG = "CommunicatorGuardarLogAction";
-    private static final String SERVER_URL = ConstantesGlobales.URL_API;
+    private String SERVER_URL = ConstantesGlobales.URL_API;
 
 
     public void ObtenerApi(JSON_GuardarLogAction item, final GuardarLogAction_Callback callback) {
@@ -36,7 +40,13 @@ public class CommunicatorGuardarLogAction {
         /*String varToken = "688900-93827865-775a3ac0496611e894b80242ac11000e";
         AddHeaderInterceptor authorization = new AddHeadAddHeaderInterceptorerInterceptor(varToken);
         httpClient.addNetworkInterceptor(authorization);*/
-
+        /*
+        InternalDatabase idb = new InternalDatabase(App.context);
+        TableConfig tableConfig = new TableConfig(idb,false);
+        Config config = tableConfig.select("1");
+        if(config !=null){
+            SERVER_URL = config.getURL_VISIONARIOS();
+        }*/
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())

@@ -40,14 +40,25 @@ import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosDetalleActivity;
+import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
+import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.ItemCarousel;
 import com.coppel.rhconecta.dev.visionarios.inicio.presenters.InicioPresenter;
+import com.coppel.rhconecta.dev.visionarios.utils.App;
+import com.coppel.rhconecta.dev.visionarios.utils.Config;
+import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosDetalleActivity;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +117,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     public void onResume(){
         super.onResume();
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
+
         presenter.getUltimaEncuesta();
         presenter.guardarLogin();
     }
@@ -379,5 +391,45 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
                 dialogFragmentLoader.close();
         }*/
 
+    }
+
+    public  void getURL_VISIONARIOS (){
+        final String url = ConstantesGlobales.URL_API;
+        try {
+
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference dbref = firebaseDatabase.getReference(MyFirebaseReferences.DATABASE_REFERENCE_DICCIONARIO);
+            dbref.child("config").child("URL_VISIONARIOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String str = dataSnapshot.getValue(String.class);
+                        CallbackGetURL_VISIONARIOS(str);
+
+                    } else { //si no existe nodo
+                        CallbackGetURL_VISIONARIOS(url);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("CONFIG", "error");
+                    CallbackGetURL_VISIONARIOS(url);
+                }
+            });
+
+        } catch (Exception e) {
+            CallbackGetURL_VISIONARIOS(url);
+            Log.d("CONFIG", e.getMessage());
+        }
+    }
+
+    public void CallbackGetURL_VISIONARIOS(String url){
+        InternalDatabase idb = new InternalDatabase(App.context);
+        TableConfig tableConfig = new TableConfig(idb, false);
+        Config config = new Config(1,url);
+        tableConfig.insertIfNotExist(config);
+        tableConfig.closeDB();
+        presenter.guardarLogin();
     }
 }

@@ -82,9 +82,9 @@
                 android:layout_alignLeft="@+id/iconoNuevo"
                 android:layout_below="@+id/labelTitulo"
                 android:layout_marginLeft="48dp"
-                android:text="12 MAYO 2018"
+                android:text=""
                 android:textColor="@color/colorSecundaryCoppelGris"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

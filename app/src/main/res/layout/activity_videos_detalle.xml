@@ -45,6 +45,17 @@
                     tools:ignore="WebViewLayout" />
 
                 <ImageView
+                    android:id="@+id/imgPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:foregroundGravity="center"
+                    android:onClick="playVideo"
+                    android:src="@color/colorTextCoppelNegro"
+                    android:visibility="visible" />
+
+                <ImageView
                     android:id="@+id/imgPlayVideo"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
@@ -54,6 +65,8 @@
                     android:onClick="playVideo"
                     android:src="@drawable/ic_play_button"
                     android:visibility="visible" />
+
+
 
                 <ImageView
                     android:id="@+id/imgFullScreen"
@@ -77,7 +90,7 @@
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="18dp"
-                    android:text="Episodio #1"
+                    android:text=""
                     android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -87,12 +100,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginRight="18dp"
-                    android:text="                        Descubre la nueva mentalidad Coppel"
-
+                    android:text=""
+                    android:visibility="invisible"
                     android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="15sp" />
+                    android:textSize="4sp" />
 
                 <TextView
                     android:id="@+id/labelFecha"
@@ -102,21 +114,35 @@
                     android:layout_marginLeft="18dp"
                     android:layout_marginTop="18dp"
                     android:layout_marginBottom="18dp"
-                    android:text="12 DE MAYO 2018"
-                    android:textColor="@color/colorTextCoppelNegro"
+                    android:text=""
+                    android:textColor="@color/colorSecundaryCoppelGris"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/labelVisitas"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
                     android:layout_below="@+id/labelEncabezado"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="18dp"
-                    android:text="4.2 M Visitas"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="12sp" />
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+
+                        android:id="@+id/labelVisitas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text=""
+                        android:paddingTop="4dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="4dp"
+                        android:background="@drawable/roundbackgroud"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -190,18 +216,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="32dp"
-                android:text="Buenos días:
-
-Los saludo con gusto y les comento que, a partir de hoy, Diego Coppel Sullivan recibió la responsabilidad de la Dirección Comercial de Compras Muebles y Exhibición por parte de Manuel García Félix, quien seguirá a cargo de la Dirección Comercial de Compras Calzado y Mercadotecnia.
-
-Diego Coppel es licenciado en Administración de Empresas y tiene una maestría en Administración por el Instituto de Empresa en Madrid, España.
-
-En Coppel ha desempeñado el cargo de Gerente Regional de AZCP, Gerente de Zona Cedis Muebles, Gerente de Zona CSLC, así como Gerente de Tienda.
-
-En el área comercial también ha sido Comprador, Gerente Nacional de la Categoría de Celulares y es el responsable del formato C-Digital de Coppel.
-
-Les deseamos a Diego y a Manuel el mejor de los éxitos.
-"
+                android:text=""
                 android:textColor="@color/colorTextCoppelNegro"
 
                 />

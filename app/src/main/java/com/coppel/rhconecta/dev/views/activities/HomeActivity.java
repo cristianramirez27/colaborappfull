@@ -48,17 +48,26 @@ import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosActivity;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableComunicados;
+import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
+import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.inicio.presenters.InicioPresenter;
+import com.coppel.rhconecta.dev.visionarios.utils.Config;
+import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
@@ -337,8 +346,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getData() {
-
         InternalDatabase idb = new InternalDatabase(this);
+
+        TableConfig tableConfig = new TableConfig(idb, false);
+        Config config = new Config(1,ConstantesGlobales.URL_API);
+        tableConfig.insertIfNotExist(config);
+
         TableUsuario tableUsuario = new TableUsuario(idb, false);
 
 
@@ -380,6 +393,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.addToBackStack(HomeMainFragment.TAG);
         fragmentTransaction.add(R.id.flFragmentContainer, new HomeMainFragment(), HomeMainFragment.TAG).commit();
     }
+
 
 
     @Override

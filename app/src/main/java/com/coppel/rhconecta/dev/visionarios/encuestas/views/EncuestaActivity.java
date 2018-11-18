@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.encuestas.adapters.AdapterRespuestas;
@@ -50,6 +51,8 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
     private boolean inProgress=false;
     private int currentRespuestaSelected = -1;
     private Map<String, String> diccionario = new HashMap<String, String>();
+    private SurveyInboxView surveyInboxView;
+    private View bordeAmarillo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +70,14 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
         btnEnviarEncuesta = (Button) findViewById(R.id.btnEnviarEncuesta);
         progressEncuesta = (ProgressBar) findViewById(R.id.progressEncuesta);
         labelError = (TextView) findViewById(R.id.labelError);
+        bordeAmarillo = (View) findViewById(R.id.bordeAmarillo);
         initializeToolBar();
-        presenter.getTextoLabel("cTitulo", "encuesta", R.id.toolbar);
-        presenter.getTextoLabel("btnEnviar", "enviar encuesta", R.id.btnEnviarEncuesta);
+        surveyInboxView.setVisibility(View.INVISIBLE);
+        bordeAmarillo.setVisibility(View.INVISIBLE);
+        presenter.getTextoLabel("cTitulo", "Encuesta", R.id.toolbar);
+        presenter.getTextoLabel("btnEnviar", "Enviar Encuesta", R.id.btnEnviarEncuesta);
         presenter.getTextoLabel("btnSiguiente", "Siguiente", R.id.btnSiguiente);
-        presenter.getTextoLabelError("errorInternet", "sin conexión a internet", R.id.labelError);
+        presenter.getTextoLabelError("errorInternet", "Sin conexión a internet", R.id.labelError);
         presenter.getTextoLabelError("errorSeleccion", "Necesitas seleccionar una opción", 0);
         presenter.getTextoLabelError("errorServidor", "Lo sentimos, tenemos un problema en nuestros servidores, intente mas tarde", 0);
         presenter.getTextoLabelError("errorEncuestaEnviada", "Ya has llenado la encuesta previamente", 0);
@@ -95,6 +101,8 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
     }
 
     void initializeToolBar() {
+        surveyInboxView = (SurveyInboxView) findViewById(R.id.surveyInbox);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Encuesta");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_36dp);
@@ -144,7 +152,12 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
         Pregunta p = preguntas.get(idxPregunta);
         labelPreguntaActual.setText("pregunta " + (idxPregunta + 1) + " de " + preguntas.size());
         adapterRespuestas = new AdapterRespuestas(getBaseContext(), p.getRespuestas());
+
+        listPreguntas.setDivider(null);
+        listPreguntas.setDividerHeight(0);
         listPreguntas.setAdapter(adapterRespuestas);
+
+
         try {
             progress = (int) (((idxPregunta + 1) * 100) / preguntas.size());
         } catch (Exception e) {

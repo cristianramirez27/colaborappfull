@@ -26,7 +26,7 @@ public class InternalDatabase {
             this.bd = context.openOrCreateDatabase(this.BD_NOMBRE, this.context.MODE_PRIVATE, null);
         } catch (Exception e) {
 
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
     }
@@ -39,7 +39,7 @@ public class InternalDatabase {
             this.bd.execSQL(query);
         } catch (Exception e) {
             success = false;
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
 
         }
 
@@ -56,7 +56,7 @@ public class InternalDatabase {
 
 
         } catch (SQLiteException e) {
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
             return null;
         } finally {
             //release all your resources

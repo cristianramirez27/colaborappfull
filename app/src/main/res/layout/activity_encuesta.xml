@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
     <ProgressBar
         android:id="@+id/progressEncuesta"
         style="?android:attr/progressBarStyleHorizontal"
@@ -61,6 +62,7 @@
             android:layout_below="@id/labelEncuesta"
             android:layout_marginTop="24dp"
             android:text=""
+            android:visibility="gone"
             android:textColor="@color/colorTextCoppelNegro"
             android:textSize="15sp" />
 
