@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -35,6 +37,7 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
     private Video video;
     private MediaController mediacontroller;
     private VideoView videoPlayer;
+    private ImageView imgFullScreenBack;
     private boolean videoEnCurso = false;
     private boolean videoCompleto = false;
 
@@ -47,9 +50,23 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
 
         webViewVideo = (WebView) findViewById(R.id.webViewVideo);
         videoPlayer = (VideoView) findViewById(R.id.videoPlayer);
+        imgFullScreenBack  = (ImageView) findViewById(R.id.imgFullScreenBack);
         StringUrlVideo = getIntent().getStringExtra("baseUrl");
         StringHtmlVideo = getIntent().getStringExtra("videoHtml");
         video = (Video) getIntent().getSerializableExtra("video");
+
+        imgFullScreenBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoEnCurso) {
+                    if (!videoCompleto) {
+                        presenter.guardarLog(video.getIdvideos(), 2);
+                    }
+                }
+                finish();
+            }
+        });
+
         initializePlayer();
     }
 

@@ -108,7 +108,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
         presenter.getUltimaEncuesta();
         presenter.guardarLogin();
-
     }
 
 
@@ -126,7 +125,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
         initMenu();
         presenter.guardarLogin();
-
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setOnClickListener(new View.OnClickListener() {
             @Override

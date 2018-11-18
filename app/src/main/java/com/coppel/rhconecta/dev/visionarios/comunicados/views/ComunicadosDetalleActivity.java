@@ -65,7 +65,7 @@ public class ComunicadosDetalleActivity extends AppCompatActivity implements Com
     @Override
     public void showComunicadosDetalle(Comunicado comunicado) {
         if (comunicado != null) {
-            labelHeader.setText(comunicado.getEncabezado());
+            labelHeader.setText("Comunicado");
             labelTitulo.setText(comunicado.getTitulo());
             labelContenido.setText(Html.fromHtml(comunicado.getContenido()));
             try {
