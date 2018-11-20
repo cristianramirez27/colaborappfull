@@ -115,10 +115,9 @@ public class AdapterComunicados extends BaseAdapter {
 
         try {
             String[] fechas = fechaFormateada.split("-");
-            fechaFormateada=fechas[2]+"/"+fechas[1]+"/"+fechas[0];
+            fechaFormateada=fechas[2]+"-"+fechas[1]+"-"+fechas[0];
         }
         catch(Exception e) {
-            fechaFormateada=fechaFormateada.replace("-","/");
         }
 
         holder.labelTitulo.setText(c.getTitulo());

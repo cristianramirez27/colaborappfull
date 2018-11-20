@@ -99,8 +99,8 @@ public class AdapterVideos extends BaseAdapter {
             holder.labelEncabezado = (TextView) convertView.findViewById(R.id.labelEncabezado);
             holder.labelFecha = (TextView) convertView.findViewById(R.id.labelFecha);
             holder.labelVisitas = (TextView) convertView.findViewById(R.id.labelVisitas);
-
             holder.imgVideoPreview= (ImageView) convertView.findViewById(R.id.imgVideoPreview);
+
             try{
                 Log.d("VideoAdapter",v.getImagen_video_preview());
                 new DownloadImageTask((ImageView) holder.imgVideoPreview).execute(v.getImagen_video_preview());
@@ -116,10 +116,10 @@ public class AdapterVideos extends BaseAdapter {
         String fechaFormateada;
         try {
             String[] fechas = date.split("-");
-            fechaFormateada=fechas[2]+"/"+fechas[1]+"/"+fechas[0];
+            fechaFormateada=fechas[2]+"-"+fechas[1]+"-"+fechas[0];
         }
         catch(Exception e) {
-            fechaFormateada=date.replace("-","/");
+            fechaFormateada=date;
         }
 
         holder.labelTitulo.setText(v.getTitulo());

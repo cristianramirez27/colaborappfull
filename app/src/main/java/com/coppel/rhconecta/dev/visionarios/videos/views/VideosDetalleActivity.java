@@ -54,6 +54,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     private ImageView btnDislike;
     private ImageView imgPreview;
     private WebView webViewVideo;
+    private View bordeAmarillo;
 
     private String videoEjemplo2 = "https://vimeo.com/264123984/cd7df59153";
 
@@ -90,6 +91,8 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
         btnDislike = (ImageView) findViewById(R.id.btnDislike);
         imgPreview = (ImageView) findViewById(R.id.imgPreview);
         webViewVideo = (WebView) findViewById(R.id.webViewVideo);
+        bordeAmarillo = (View) findViewById(R.id.bordeAmarillo);
+
         initializeToolBar();
         video = (Video) getIntent().getSerializableExtra("video");
         presenter.showVideo(video);
@@ -249,6 +252,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     }
 
     void initializeToolBar() {
+        bordeAmarillo.setVisibility(View.GONE);
         surveyInboxView = (SurveyInboxView) findViewById(R.id.surveyInbox);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Visionarios");
@@ -304,10 +308,10 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
             String fechaFormateada;
             try {
                 String[] fechas = date.split("-");
-                fechaFormateada=fechas[2]+"/"+fechas[1]+"/"+fechas[0];
+                fechaFormateada=fechas[2]+"-"+fechas[1]+"-"+fechas[0];
             }
             catch(Exception e) {
-                fechaFormateada=date.replace("-","/");
+                fechaFormateada=date;
             }
 
             labelFecha.setText(fechaFormateada);
