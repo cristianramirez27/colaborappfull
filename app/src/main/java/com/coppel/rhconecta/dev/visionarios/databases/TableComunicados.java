@@ -84,7 +84,7 @@ public class TableComunicados {
                 " \""+obj.getNombre()+"\", " +
                 " \""+obj.getEncabezado()+"\", " +
                 " \""+obj.getTitulo()+"\", " +
-                " \""+obj.getContenido()+"\", " +
+                " '"+obj.getContenido()+"', " +
                 " \""+obj.getImagen_aviso_preview()+"\", " +
                 " \""+obj.getImagen_aviso_landing()+"\", " +
                 " \""+obj.getDate()+"\", " +
@@ -109,7 +109,7 @@ public class TableComunicados {
                 " nombre=\""+obj.getNombre()+"\", " +
                 " encabezado=\""+obj.getEncabezado()+"\", " +
                 " titulo=\""+obj.getTitulo()+"\", " +
-                " contenido=\""+obj.getContenido()+"\", " +
+                " contenido='"+obj.getContenido()+"', " +
                 " imagen_aviso_preview=\""+obj.getImagen_aviso_preview()+"\", " +
                 " imagen_aviso_landing=\""+obj.getImagen_aviso_landing()+"\", " +
                 " fecha=\""+obj.getDate()+"\", " +
