@@ -14,12 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
+            android:layout_height="match_parent">
 
             <RelativeLayout
+                android:id="@+id/layoutToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -40,16 +42,32 @@
                     android:layout_marginRight="16dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"/>
+
             </RelativeLayout>
 
 
-        </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/flFragmentContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
+            <FrameLayout
+                android:layout_below="@+id/layoutToolbar"
+                android:id="@+id/flFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
+
+
+            <View
+                android:id="@+id/bordeAmarillo"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_below="@+id/layoutToolbar"
+                android:background="@drawable/bg_gradient_grey" />
+
+        </RelativeLayout>
+
+
+
+
+
 
     </android.support.design.widget.CoordinatorLayout>
 
