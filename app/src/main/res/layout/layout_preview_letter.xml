@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="60dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:background="@color/colorBackgroundCoppelBlanco"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+
+    <TextView
+        android:id="@+id/header1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="culiacan sinaloaa 23 de agosto de 2019"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/header2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="A QUIN CORRESPONDA"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/header1"
+        android:layout_marginTop="20dp"
+        android:gravity="left"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="A QUIN CORRESPONDA"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/header2"
+        android:layout_marginTop="20dp"
+        android:gravity="left"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/footer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="A QUIN CORRESPONDA"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/body"
+        android:layout_marginTop="20dp"
+        android:textSize="12sp" />
+
+
+    <TextView
+        android:id="@+id/footer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="A QUIN CORRESPONDA"
+        android:textColor="@color/colorTextCoppelNegro"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/footer1"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:textSize="12sp" />
+
+
+
+</RelativeLayout>

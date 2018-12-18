@@ -40,5 +40,24 @@
         <!--<item name="gravity">center_vertical|center_horizontal</item>-->
     <!--</style>-->
 
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorBackgroundDialogDateTime</item>
+        <item name="colorControlActivated">#6fcf97</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MyRaidoButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="colorAccent">#6dc310</item>
+        <item name="android:textColorPrimaryDisableOnly">#61000000</item>
+        <item name="android:colorControlNormal">#61000000</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
+    <style name="CheckboxStyle" parent="AppTheme">
+        <item name="colorAccent">#6dc310</item>
+        <item name="android:textColorSecondary">#61000000</item>
+    </style>
+
 
 </resources>

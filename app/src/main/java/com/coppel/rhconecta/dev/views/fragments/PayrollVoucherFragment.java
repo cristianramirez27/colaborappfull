@@ -30,7 +30,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -50,7 +50,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class PayrollVoucherFragment extends Fragment implements IServicesContract.View, PayrollVoucherRecyclerAdapter.OnPayrollVoucherClickListener,
-        PayrollVoucherRecyclerAdapter.OnActionClickListener, DialogFragmentGetVoucher.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
+        PayrollVoucherRecyclerAdapter.OnActionClickListener, DialogFragmentGetDocument.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = PayrollVoucherFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -59,7 +59,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     private List<VoucherResponse.FechasNomina> payrolls;
     private VoucherResponse.FechasNomina payrollToGet;
     private PayrollVoucherRecyclerAdapter payrollVoucherRecyclerAdapter;
-    private DialogFragmentGetVoucher dialogFragmentGetVoucher;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private int payrollDateRequested;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -149,13 +149,13 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
                         voucherDownloadResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
                     SHARE_PDF = true;
-                    showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOADED);
+                    showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
                 } else {
                     showWarningDialog(getString(R.string.error_save_file));
                 }
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SENT);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SENT);
                 break;
         }
     }
@@ -170,10 +170,10 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
                 payrollVoucherRecyclerAdapter.notifyDataSetChanged();
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOAD_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOAD_FAIL);
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SEND_FAIL);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
@@ -202,7 +202,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     @Override
     public void onMailClick(VoucherResponse.FechasNomina payrollDate) {
         payrollToGet = payrollDate;
-        showGetVoucherDialog(DialogFragmentGetVoucher.SEND_TO);
+        showGetVoucherDialog(DialogFragmentGetDocument.SEND_TO);
     }
 
     @Override
@@ -215,9 +215,9 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     public void onSend(String email) {
         if (email != null && !email.isEmpty()) {
             requestPayrollVoucherDetails(payrollToGet, email, ServicesConstants.SHIPPING_OPTION_SEND_EMAIL);
-            dialogFragmentGetVoucher.close();
+            dialogFragmentGetDocument.close();
         } else {
-            dialogFragmentGetVoucher.setWarningMessage(getString(R.string.error_email));
+            dialogFragmentGetDocument.setWarningMessage(getString(R.string.error_email));
         }
     }
 
@@ -233,7 +233,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
             //AppUtilities.sharePDF(parent, pdf);
         }
         SHARE_PDF = false;
-        dialogFragmentGetVoucher.close();
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -270,13 +270,13 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     }
 
     private void showGetVoucherDialog(int type) {
-        dialogFragmentGetVoucher = new DialogFragmentGetVoucher();
-        dialogFragmentGetVoucher.setType(type, parent);
-        if (type == DialogFragmentGetVoucher.SEND_TO) {
-            dialogFragmentGetVoucher.setPreloadedText(parent.getProfileResponse().getCorreo());
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(type, parent);
+        if (type == DialogFragmentGetDocument.SEND_TO) {
+            dialogFragmentGetDocument.setPreloadedText(parent.getProfileResponse().getCorreo());
         }
-        dialogFragmentGetVoucher.setOnButtonClickListener(this);
-        dialogFragmentGetVoucher.show(parent.getSupportFragmentManager(), DialogFragmentGetVoucher.TAG);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     private void requestPermissions() {

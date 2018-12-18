@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog_white_rounded"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="60dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="6dp"
+            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rcvFields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@+id/layoutBtns"
+                    android:paddingBottom="10dp"
+                    android:scrollbarFadeDuration="1"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="0.5dp"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutBtns"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnActionLeft"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_blue_rounded"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:text="@string/cancel"
+                        android:textAllCaps="false"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btnActionRight"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_blue_rounded"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:text="@string/accept"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</RelativeLayout>

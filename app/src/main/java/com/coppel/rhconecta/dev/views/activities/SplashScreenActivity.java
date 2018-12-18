@@ -61,6 +61,9 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 break;
             case ServicesRequestType.PROFILE:
                 profileResponse = (ProfileResponse) response.getResponse();
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, loginResponse.getData().getResponse().getToken());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileResponse.getData().getResponse()[0].getColaborador());
+
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
                 intent.putExtra("PROFILE_RESPONSE", gson.toJson(profileResponse));

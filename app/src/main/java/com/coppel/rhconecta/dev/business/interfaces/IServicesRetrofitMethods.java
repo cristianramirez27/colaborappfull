@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersSignatureRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
@@ -9,6 +11,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequ
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
+import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.google.gson.JsonObject;
@@ -60,4 +64,14 @@ public interface IServicesRetrofitMethods {
     @Headers({"Content-Type: application/json"})
     @POST(ServicesConstants.GET_CONFIG)
     Call<LetterConfigResponse> getLettersConfig(@Header("Authorization") String toke, @Body CoppelServicesLettersConfigRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST(ServicesConstants.GET_LETTER_PREVIEW)
+    Call<LetterPreviewResponse> getLettersPreview(@Header("Authorization") String token, @Body CoppelServicesLettersPreviewRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST(ServicesConstants.GET_LETTER_GENERATE)
+    Call<LetterGenerateResponse> getLettersGenerate(@Header("Authorization") String token, @Body CoppelServicesLettersGenerateRequest servicesRequest);
+
+
 }

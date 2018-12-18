@@ -165,4 +165,50 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Employment letters-->
+    <string name="work_record">Constancia\nlaboral</string>
+    <string name="visa_passport">Visa o\nPasaporte</string>
+    <string name="bank_credit">Crédito \nbancario</string>
+    <string name="infonavit">Infonavit</string>
+    <string name="kindergarten">Guardería</string>
+
+    <string name="choose_letter">Selecciona tu carta</string>
+    <string name="customize_letter">Personaliza tu carta</string>
+    <string name="choose_letter_indication"> Selecciona el tipo de carta que deseas imprimir</string>
+
+    <string name="max_letters_print">Ya se excedió el número de impresiones.\nPonte en contacto con tu Encargada Local de Personal</string>
+
+    <string name="title_stamp_letter">Sellar</string>
+
+    <string name="question_stamp_letter">¿Necesitas tu carta sellada?</string>
+
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="sendToMail">Enviar a correo</string>
+
+    <string name="forgot_field">¿Olvidaste algo?</string>
+    <string name="edit_letter">Haz click aquí para editar</string>
+    <string name="choose_child_name">Selecciona el nombre de tu(s) hijo(s)</string>
+    <string name="choose_schedule">Selecciona tu horario laboral</string>
+
+    <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja azul</string>
+
+    <string name="start_day">Día inicial</string>
+    <string name="end_day">Día final</string>
+    <string name="start_hour">Entrada</string>
+    <string name="end_hour">Salida</string>
+    <string name="am">am</string>
+    <string name="pm">pm</string>
+    <string name="eating_time">Tiempo para comer</string>
+    <string name="date_start_holiday">Fecha de salida</string>
+    <string name="date_end_holiday">Fecha de regreso</string>
+    <string name="title_choose_holiday">Selecciona el rango de fechas de vacaciones</string>
+
+    <string name="cancel">Cancelar</string>
+
+    <string name="remember_print">Recuerda imprimir tu carta\na color</string>
+    <string name="employment_letters_title">Solicitud de carta</string>
+    <string name="employment_letters_sent">Carta enviada</string>
+    <string name="employment_letters_download">Carta descargada</string>
+    <string name="letter_download_fail">Descarga de carta no se realizó</string>
 </resources>

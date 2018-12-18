@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".views.fragments.EmploymentLettersMenuFragment">
+
+
+    <RelativeLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleLetters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/choose_letter"
+            android:textColor="@color/colorSecondBlueCoppel"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/IndicationLetters"
+            android:layout_below="@+id/titleLetters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/choose_letter_indication"
+            android:textColor="@color/colorSecondBlueCoppel"
+            android:textSize="14sp" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/IndicationLetters"
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+    </RelativeLayout>
+
+    <include
+        layout="@layout/view_connection_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+</FrameLayout>

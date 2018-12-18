@@ -37,6 +37,7 @@ import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.fragments.EmploymentLettersMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
@@ -79,6 +80,7 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
@@ -301,6 +303,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case OPTION_VISIONARIES:
                 Intent intentVisionaries = new Intent(this, VideosActivity.class);
                 startActivity(intentVisionaries);
+                break;
+
+            case OPTION_LETTERS:
+                replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
                 break;
             case OPTION_POLL:
 

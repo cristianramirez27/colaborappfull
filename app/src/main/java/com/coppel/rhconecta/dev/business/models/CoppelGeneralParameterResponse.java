@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class CoppelGeneralParameterResponse {
+import java.io.Serializable;
+
+public class CoppelGeneralParameterResponse implements Serializable{
 
     private Meta meta;
 

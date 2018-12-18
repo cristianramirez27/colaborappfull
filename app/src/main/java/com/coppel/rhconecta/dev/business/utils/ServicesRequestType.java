@@ -37,4 +37,9 @@ public class ServicesRequestType {
     public static final int RECOVERY_PASSWORD = 26;
 
     public static final int INVALID_TOKEN = 27;
+
+    /*Employments letters*/
+    public static final int LETTERPREVIEW= 28;
+    public static final int LETTERGENERATE_SENDMAIL= 29;
+    public static final int LETTERGENERATE_DOWNLOADMAIL= 30;
 }

@@ -27,17 +27,44 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_sent" />
 
-        <TextView
-            android:id="@+id/txvAction"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_book"
-            android:text="@string/voucher_ready"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline97" />
+            app:layout_constraintTop_toTopOf="@+id/guideline97">
+
+            <TextView
+                android:id="@+id/txvAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:text="@string/voucher_ready"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/txvMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txvAction"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
 
         <Button
             android:id="@+id/btnActionAccept"
@@ -54,7 +81,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline95"
             app:layout_constraintStart_toStartOf="@+id/guideline94"
-            app:layout_constraintTop_toBottomOf="@+id/txvAction" />
+            app:layout_constraintTop_toBottomOf="@+id/layoutContent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline94"
@@ -75,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.62" />
+            app:layout_constraintGuide_percent="0.58" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -29,7 +29,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherBonusRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -46,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PayrollVoucherBonusFragment extends Fragment implements IServicesContract.View, PayrollVoucherBonusRecyclerAdapter.OnBonusVoucherClickListener,
-        PayrollVoucherBonusRecyclerAdapter.OnActionClickListener, DialogFragmentGetVoucher.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
+        PayrollVoucherBonusRecyclerAdapter.OnActionClickListener, DialogFragmentGetDocument.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = PayrollVoucherBonusFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -55,7 +55,7 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
     private List<VoucherResponse.FechasAguinaldo> bonusDates;
     private PayrollVoucherBonusRecyclerAdapter payrollVoucherBonusRecyclerAdapter;
     private VoucherResponse.FechasAguinaldo bonusDateToGet;
-    private DialogFragmentGetVoucher dialogFragmentGetVoucher;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private int bonusDateRequested;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -142,13 +142,13 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
                         voucherDownloadResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
                     SHARE_PDF = true;
-                    showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOADED);
+                    showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
                 } else {
                     showWarningDialog(getString(R.string.error_save_file));
                 }
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_BONUS_SENDMAIL_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_SENT);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_SENT);
                 break;
         }
     }
@@ -163,10 +163,10 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
                 payrollVoucherBonusRecyclerAdapter.notifyDataSetChanged();
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_BONUS_DOWNLOAD_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOAD_FAIL);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOAD_FAIL);
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_BONUS_SENDMAIL_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_SEND_FAIL);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
@@ -195,7 +195,7 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
     @Override
     public void onMailClick(VoucherResponse.FechasAguinaldo bonusDate) {
         bonusDateToGet = bonusDate;
-        showGetVoucherReadyDialog(DialogFragmentGetVoucher.SEND_TO);
+        showGetVoucherReadyDialog(DialogFragmentGetDocument.SEND_TO);
     }
 
     @Override
@@ -208,9 +208,9 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
     public void onSend(String email) {
         if (email != null && !email.isEmpty()) {
             requestBonusVoucherDetail(bonusDateToGet, email, ServicesConstants.SHIPPING_OPTION_SEND_EMAIL);
-            dialogFragmentGetVoucher.close();
+            dialogFragmentGetDocument.close();
         } else {
-            dialogFragmentGetVoucher.setWarningMessage(getString(R.string.error_email));
+            dialogFragmentGetDocument.setWarningMessage(getString(R.string.error_email));
         }
     }
 
@@ -226,7 +226,7 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
             //AppUtilities.sharePDF(parent, pdf);
         }
         SHARE_PDF = false;
-        dialogFragmentGetVoucher.close();
+        dialogFragmentGetDocument.close();
     }
 
 
@@ -257,13 +257,13 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
     }
 
     private void showGetVoucherReadyDialog(int type) {
-        dialogFragmentGetVoucher = new DialogFragmentGetVoucher();
-        dialogFragmentGetVoucher.setType(type, parent);
-        if (type == DialogFragmentGetVoucher.SEND_TO) {
-            dialogFragmentGetVoucher.setPreloadedText(parent.getProfileResponse().getCorreo());
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(type, parent);
+        if (type == DialogFragmentGetDocument.SEND_TO) {
+            dialogFragmentGetDocument.setPreloadedText(parent.getProfileResponse().getCorreo());
         }
-        dialogFragmentGetVoucher.setOnButtonClickListener(this);
-        dialogFragmentGetVoucher.show(parent.getSupportFragmentManager(), DialogFragmentGetVoucher.TAG);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     private void requestPermissions() {

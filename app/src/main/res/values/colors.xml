@@ -43,5 +43,10 @@
     <color name="colorTextCoppelNegro">#4F4F4F</color>
     <color name="colorBackgroundCoppelGris2">#E0E0E0</color>
     <color name="colorBackgroundCoppelNegro">#000000</color>
+    <color name="colorBackgroundDivider">#f1f2f6</color>
+
+
+    <color name="colorBackgroundDialogDateTime">#0a9dd5</color>
+    <color name="colorDaySelect">#6fcf97</color>
 
 </resources>

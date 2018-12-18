@@ -76,9 +76,41 @@ public class LetterSignatureResponse extends CoppelGeneralParameterResponse {
     }
 
     public class RemainingLetters {
-        private String TipoCarta;
+        private int TipoCarta;
         private String Impresiones;
-        private String Limite;
-        private String Restantes;
+        private int Limite;
+        private int Restantes;
+
+        public int getTipoCarta() {
+            return TipoCarta;
+        }
+
+        public void setTipoCarta(int tipoCarta) {
+            TipoCarta = tipoCarta;
+        }
+
+        public String getImpresiones() {
+            return Impresiones;
+        }
+
+        public void setImpresiones(String impresiones) {
+            Impresiones = impresiones;
+        }
+
+        public int getLimite() {
+            return Limite;
+        }
+
+        public void setLimite(int limite) {
+            Limite = limite;
+        }
+
+        public int getRestantes() {
+            return Restantes;
+        }
+
+        public void setRestantes(int restantes) {
+            Restantes = restantes;
+        }
     }
 }

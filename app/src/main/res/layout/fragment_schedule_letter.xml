@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+
+    <TextView
+        android:id="@+id/titleLetters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="@string/choose_schedule"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:textColor="@color/colorSecondBlueCoppel"
+        android:textSize="22sp" />
+
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@+id/titleLetters"
+        android:layout_above="@+id/btnNext"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="1dp"
+        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:id="@+id/schedulelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/startDayLayout"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/background_bottom_line"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/startDayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imgVideoPreview"
+                        android:gravity="center"
+                        android:text="@string/start_day"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/startDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/startDayLabel"
+                        android:gravity="center"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_down_arrow_blue"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/endDayLayout"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_bottom_line"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/endDayLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imgVideoPreview"
+                        android:gravity="center"
+                        android:text="@string/end_day"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/endDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/endDayLabel"
+                        android:gravity="center"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/startHourLayout"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/startHourLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            android:text="@string/start_hour"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/starHour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/startHourLabel"
+                            android:gravity="center"
+                            android:layout_marginTop="6dp"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:id="@+id/rdgStartHour"
+                            android:orientation="horizontal">
+                            
+                            <RadioButton
+                                android:theme="@style/MyRaidoButton"
+                                android:id="@+id/rdbAmStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/am"
+                                android:layoutDirection="rtl"
+                                android:gravity="right|center_vertical"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:textColor="@color/colorTextGray"/>
+
+                            <RadioButton
+                                android:theme="@style/MyRaidoButton"
+                                android:id="@+id/rdbPmStart"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pm"
+                                android:layout_weight="1"
+                                android:layout_gravity="right"
+                                android:layoutDirection="rtl"
+                                android:gravity="right|center_vertical"
+                                android:textColor="@color/colorTextGray"/>
+                            
+                        </RadioGroup>
+                        
+                        
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/endHourLayout"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/endHourLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            android:text="@string/end_hour"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/endHour"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/endHourLabel"
+                            android:gravity="center"
+                            android:layout_marginTop="6dp"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:id="@+id/rdgEndHour"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:theme="@style/MyRaidoButton"
+                                android:id="@+id/rdbAmEnd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/am"
+                                android:gravity="right|center_vertical"
+                                android:layout_weight="1"
+                                android:checked="true"
+                                android:layoutDirection="rtl"
+                                android:textColor="@color/colorTextGray"/>
+
+                            <RadioButton
+                                android:theme="@style/MyRaidoButton"
+                                android:id="@+id/rdbPmEnd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/pm"
+                                android:layout_weight="1"
+                                android:layout_gravity="right"
+                                android:gravity="right|center_vertical"
+                                android:layoutDirection="rtl"
+                                android:textColor="@color/colorTextGray"/>
+
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:id="@+id/eatingTimeLayout"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/eatingTimeLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            android:text="@string/eating_time"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/eatingTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/eatingTimeLabel"
+                            android:gravity="center"
+                            android:layout_marginTop="6dp"
+                            android:textColor="@color/colorTextCoppelNegro"
+                            android:textSize="14sp" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/ic_down_arrow_blue"/>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/schedulelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:padding="18dp"
+                android:background="@drawable/background_gray_rounder">
+
+
+                <TextView
+                    android:id="@+id/labelEncabezado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgVideoPreview"
+                    android:gravity="center"
+                    android:text="@string/check_data_msg"
+                    android:textColor="@color/colorTextCoppelNegro"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_blue_rounded"
+        android:fontFamily="@font/lineto_circular_pro_book"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        />
+
+
+
+</RelativeLayout>

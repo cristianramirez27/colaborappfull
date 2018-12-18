@@ -20,14 +20,21 @@ import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DialogFragmentGetVoucher extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentGetDocument extends DialogFragment implements View.OnClickListener {
 
-    public static final String TAG = DialogFragmentGetVoucher.class.getSimpleName();
+    public static final String TAG = DialogFragmentGetDocument.class.getSimpleName();
     public static final int SEND_TO = 0;
     public static final int VOUCHER_SENT = 1;
     public static final int VOUCHER_DOWNLOADED = 2;
     public static final int VOUCHER_SEND_FAIL = 3;
     public static final int VOUCHER_DOWNLOAD_FAIL = 4;
+    /*Letters*/
+    public static final int LETTER_SENT = 5;
+    public static final int LETTER_DOWNLOADED = 6;
+    public static final int LETTER_SEND_FAIL = 7;
+    public static final int LETTER_DOWNLOAD_FAIL = 8;
+
+
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
     private Context context;
@@ -38,6 +45,8 @@ public class DialogFragmentGetVoucher extends DialogFragment implements View.OnC
     ImageView imgvAction;
     @BindView(R.id.txvAction)
     TextView txvAction;
+    @BindView(R.id.txvMsg)
+    TextView txvMsg;
     @BindView(R.id.btnActionAccept)
     Button btnActionAccept;
     @BindView(R.id.imgvClose)
@@ -49,6 +58,8 @@ public class DialogFragmentGetVoucher extends DialogFragment implements View.OnC
     @BindView(R.id.btnSendAccept)
     Button btnSendAccept;
 
+
+    private String contentText;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +69,7 @@ public class DialogFragmentGetVoucher extends DialogFragment implements View.OnC
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_fragment_get_voucher, container, false);
+        View view = inflater.inflate(selectedType == LETTER_SENT ? R.layout.dialog_fragment_get_voucher_short : R.layout.dialog_fragment_get_voucher, container, false);
         ButterKnife.bind(this, view);
         initViews(selectedType);
         if (getDialog().getWindow() != null) {
@@ -111,12 +122,55 @@ public class DialogFragmentGetVoucher extends DialogFragment implements View.OnC
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
+
+            case LETTER_SENT:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
+                txvAction.setText(getString(R.string.employment_letters_sent));
+                txvMsg.setVisibility(View.VISIBLE);
+                txvMsg.setText(contentText);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+
+            case LETTER_DOWNLOADED:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                txvMsg.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
+                txvAction.setText(getString(R.string.employment_letters_download));
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+
+
+            case LETTER_SEND_FAIL:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(getString(R.string.voucher_sent_fail));
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+            case LETTER_DOWNLOAD_FAIL:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(getString(R.string.letter_download_fail));
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
         }
     }
 
     public void setType(int type, Context context) {
         this.selectedType = type;
         this.context = context;
+    }
+
+    public void setContentText(String content) {
+        this.contentText = content;
     }
 
     public void setPreloadedText(String email) {

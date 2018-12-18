@@ -10,6 +10,8 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_IS_LOGGED_IN = "IS_LOGGED_IN";
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
+    public static final String SHARED_PREFERENCES_TOKEN = "TOKEN";
+    public static final String SHARED_PREFERENCES_NUM_COLABORADOR = "NUM_COLABORADOR";
 
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
@@ -21,12 +23,28 @@ public class AppConstants {
     public static final String OPTION_BENEFITS = "BENEFITS";
     public static final String OPTION_SAVING_FUND = "SAVING_FUND";
     public static final String OPTION_VISIONARIES = "VISIONARIES";
+    public static final String OPTION_LETTERS = "LETTERS";
     public static final String OPTION_POLL = "POLL";
 
     public static final String OPTION_BONUS = "BONUS";
     public static final String OPTION_GAS = "GAS";
     public static final String OPTION_PTU = "PTU";
     public static final String OPTION_ALIMONY = "ALIMONY";
+
+    /*Employment Letters*/
+    public static final String OPTION_WORK_RECORD = "WORK_RECORD";
+    public static final String OPTION_VISA_PASSPORT = "VISA_PASSPORT";
+    public static final String OPTION_BANK_CREDIT = "BANK_CREDIT";
+    public static final String OPTION_IMSS= "IMSS";
+    public static final String OPTION_INFONAVIT= "INFONAVIT";
+    public static final String OPTION_KINDERGARTEN = "KINDERGARTEN";
+
+    public static final int TYPE_WORK_RECORD = 1;
+    public static final int TYPE_VISA_PASSPORT = 2;
+    public static final int TYPE_BANK_CREDIT = 3;
+    public static final int TYPE_INFONAVIT=4;
+    public static final int TYPE_IMSS= 5;
+    public static final int TYPE_KINDERGARTEN = 6;
 
     public static final String DATE_FORMAT_YYYY_MM_DD_SLASH = "yyyy/MM/dd";
     public static final String DATE_FORMAT_DD_MM_YYYY_SLASH = "dd/MM/yyyy";
@@ -45,5 +63,15 @@ public class AppConstants {
     public static final String BUNDLE_BENEFICIARY_DATES = "BENEFICIARY_DATES";
     public static final String BUNDLE_BENEFICIARY = "BENEFICIARY";
     public static final String BUNDLE_SELECTED_GAS_DATE = "SELECTED_GAS_DATE";
+
+    public static final String BUNDLE_LETTER = "BUNDLE_LETTER";
+    public static final String BUNDLE_FIELDS_LETTER = "BUNDLE_FIELDS_LETTER";
+
+    public static final String KEY_STAMP = "sello";
+    public static final String KEY_CHILDREN_NAMES = "Nombre_hijos";
+    public static final String KEY_SCHEDULE = "datoshorario";
+    public static final String KEY_JOB_SCHEDULE= "horario_Laboral";
+    public static final String KEY_SECTION_SCHEDULE = "horario_Seccion";
+    public static final String KEY_HOLIDAY_PERIOD = "periodo_vacacional";
 
 }

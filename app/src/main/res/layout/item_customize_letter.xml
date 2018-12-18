@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ctlContainer"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="54dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/nameElement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/iconoEncuesta"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:textColor="@color/colorTextGrayDark"
+            android:layout_centerVertical="true"
+            android:text="Nombre"
+            android:layout_toLeftOf="@+id/layoutCheck"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:id="@+id/layoutCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+            <CheckBox
+                android:theme="@style/CheckboxStyle"
+                android:id="@+id/checkboxElement"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="-6dp"
+                android:checked="true"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBackgroundDivider"/>
+
+</RelativeLayout>

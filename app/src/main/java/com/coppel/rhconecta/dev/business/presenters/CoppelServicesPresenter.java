@@ -5,9 +5,22 @@ import android.content.Context;
 import com.coppel.rhconecta.dev.business.interactors.ServicesInteractor;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
+import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_CHILDREN_NAMES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_HOLIDAY_PERIOD;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_JOB_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_SECTION_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.KEY_STAMP;
 
 public class CoppelServicesPresenter implements IServiceListener {
 
@@ -51,15 +64,75 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getRecoverPassword();
     }
 
-    public void requestLettersValidationSignature(int numEmpleado) {
+    public void requestLettersValidationSignature(String employeeNumber, String token) {
         view.showProgress();
-        servicesInteractor.getLettersValidateSignatureValidation(numEmpleado);
+        servicesInteractor.getLettersValidateSignatureValidation(employeeNumber,token);
     }
 
-    public void requestLettersConfig(int numEmpleado, int tipoCarta) {
+    public void requestLettersConfig(String employeeNumber, int tipoCarta, String token) {
         view.showProgress();
-        servicesInteractor.getLettersConfigValidation(numEmpleado, tipoCarta);
+        servicesInteractor.getLettersConfigValidation(employeeNumber, tipoCarta,token);
     }
+
+    public void requestLettersPreviewView(String employeeNumber, int tipoCarta, List<LetterConfigResponse.Datos> fieldsLetter,
+                                          CoppelServicesLettersGenerateRequest.Data dataOptional , boolean hasStamp, String token) {
+        view.showProgress();
+        // ConfigLetterFields configLetterFields = new ConfigLetterFields();
+        Map<String,Object> data = new HashMap<>();
+        for(LetterConfigResponse.Datos dato: fieldsLetter){
+            data.put(String.valueOf(dato.getIdu_datoscartas()),dato.isSelected() ? 1 : 0);
+        }
+
+        data.put(KEY_STAMP,hasStamp? 1 : 0);
+
+            /*Agregamos los datos opcionales*/
+        if(dataOptional != null){
+
+            data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
+            data.put(KEY_SCHEDULE,dataOptional.getScheduleData());
+            data.put(KEY_JOB_SCHEDULE,dataOptional.getJobScheduleData());
+            data.put(KEY_SECTION_SCHEDULE,dataOptional.getSectionScheduleData());
+            data.put(KEY_HOLIDAY_PERIOD,dataOptional.getLetterHolidayData());
+
+
+        }
+
+
+        servicesInteractor.getLettersPreview(employeeNumber, tipoCarta,data,token);
+
+    }
+
+    public void requestLetterGenerateView(String employeeNumber, int tipoCarta, int opcionEnvio,
+                                          String correo, List<LetterConfigResponse.Datos> fieldsLetter,
+                                          CoppelServicesLettersGenerateRequest.Data dataOptional ,
+                                          boolean hasStamp, String token) {
+        view.showProgress();
+        // ConfigLetterFields configLetterFields = new ConfigLetterFields();
+        Map<String,Object> data = new HashMap<>();
+        for(LetterConfigResponse.Datos dato: fieldsLetter){
+            data.put(String.valueOf(dato.getIdu_datoscartas()),dato.isSelected() ? 1 : 0);
+        }
+        /*Agregamos valor del sello*/
+        data.put(KEY_STAMP,hasStamp? 1 : 0);
+
+          /*Agregamos los datos opcionales*/
+        if(dataOptional != null){
+
+            data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
+            data.put(KEY_SCHEDULE,dataOptional.getScheduleData());
+            data.put(KEY_JOB_SCHEDULE,dataOptional.getJobScheduleData());
+            data.put(KEY_SECTION_SCHEDULE,dataOptional.getSectionScheduleData());
+            data.put(KEY_HOLIDAY_PERIOD,dataOptional.getLetterHolidayData());
+
+
+        }
+
+        servicesInteractor.getLettersGenerate(employeeNumber, tipoCarta,opcionEnvio, correo,data,token);
+
+    }
+
+
+
 
     @Override
     public void onResponse(ServicesResponse response) {

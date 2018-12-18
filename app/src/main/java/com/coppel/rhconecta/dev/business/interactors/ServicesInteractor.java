@@ -2,12 +2,15 @@ package com.coppel.rhconecta.dev.business.interactors;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersSignatureRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
@@ -17,6 +20,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
+import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -38,7 +43,10 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -1008,36 +1016,42 @@ public class ServicesInteractor {
         return coppelServicesRecoveryPasswordRequest;
     }
 
-    /* *******************************************************************************************************************************************************
+     /* *******************************************************************************************************************************************************
      ***************************************************          Letters Validate Signature          ********************************************************
      *********************************************************************************************************************************************************/
 
     /**
      * Validates if the data are correct
      *
-     * @param numEmpleado User Number
+     * @param employeeNumber User Number
      */
-    public void getLettersValidateSignatureValidation(int numEmpleado) {
+    /*public void getLettersValidateSignatureValidation(String employeeNumber,String token) {
+        this.token = token;
         final ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
         //String validation = servicesGeneralValidations.validatePassword(password, context);
         String validation = ServicesConstants.SUCCESS;
         if (validation.equals(ServicesConstants.SUCCESS)) {
-            getLettersValidateSignature(numEmpleado);
+            getLettersValidateSignature(employeeNumber);
         } else {
             servicesError.setMessage(validation);
             iServiceListener.onError(servicesError);
         }
+    }*/
+
+    public void getLettersValidateSignatureValidation(String employeeNumber,String token) {
+        this.token = token;
+        getLettersValidateSignature(employeeNumber);
     }
 
     /**
      * Make a request to get Letters Validate Signature
      *
-     * @param numEmpleado User Number
+     * @param employeeNumber User Number
      */
-    private void getLettersValidateSignature(int numEmpleado) {
+    private void getLettersValidateSignature(String employeeNumber) {
 
-        iServicesRetrofitMethods.getLettersValidationSignature("token", buildLettersSignatureRequest(numEmpleado)).enqueue(new Callback<LetterSignatureResponse>() {
+        iServicesRetrofitMethods.getLettersValidationSignature(token, buildLettersSignatureRequest(employeeNumber)).enqueue(new Callback<LetterSignatureResponse>() {
             @Override
             public void onResponse(Call<LetterSignatureResponse> call, Response<LetterSignatureResponse> response) {
 
@@ -1104,7 +1118,7 @@ public class ServicesInteractor {
      * @param employeeNumber User Number
      * @return General Request model
      */
-    public CoppelServicesLettersSignatureRequest buildLettersSignatureRequest(int employeeNumber) {
+    public CoppelServicesLettersSignatureRequest buildLettersSignatureRequest(String employeeNumber) {
         CoppelServicesLettersSignatureRequest coppelServicesLettersSignatureRequest = new CoppelServicesLettersSignatureRequest();
         coppelServicesLettersSignatureRequest.setNum_empleado(employeeNumber);
         return coppelServicesLettersSignatureRequest;
@@ -1120,7 +1134,7 @@ public class ServicesInteractor {
      * @param numEmpleado User Number
      * @param tipoCarta   Type letter
      */
-    public void getLettersConfigValidation(int numEmpleado, int tipoCarta) {
+   /* public void getLettersConfigValidation(String numEmpleado, int tipoCarta) {
         final ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.LETTERSCONFIG);
         //String validation = servicesGeneralValidations.validatePassword(password, context);
@@ -1131,16 +1145,22 @@ public class ServicesInteractor {
             servicesError.setMessage(validation);
             iServiceListener.onError(servicesError);
         }
+    }*/
+
+    public void getLettersConfigValidation(String numEmpleado, int tipoCarta,String token) {
+        this.token = token;
+        getLettersConfig(numEmpleado,tipoCarta);
     }
+
 
     /**
      * Make a request to get Letters Validate Signature
      *
      * @param numEmpleado User Number
      */
-    private void getLettersConfig(int numEmpleado, int tipoCarta) {
+    private void getLettersConfig(String numEmpleado, int tipoCarta) {
 
-        iServicesRetrofitMethods.getLettersConfig("token", buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
+        iServicesRetrofitMethods.getLettersConfig(token, buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
             @Override
             public void onResponse(Call<LetterConfigResponse> call, Response<LetterConfigResponse> response) {
                 getLettersConfigResponse(response);
@@ -1186,7 +1206,7 @@ public class ServicesInteractor {
 
                 ServicesResponse<LetterConfigResponse> servicesResponse = new ServicesResponse<>();
                 servicesResponse.setResponse(letterConfigResponse);
-                servicesResponse.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+                servicesResponse.setType(ServicesRequestType.LETTERSCONFIG);
                 iServiceListener.onResponse(servicesResponse);
 
             } else {
@@ -1207,12 +1227,230 @@ public class ServicesInteractor {
      * @param tipoCarta      Type letter
      * @return General Request model
      */
-    public CoppelServicesLettersConfigRequest buildLettersConfigRequest(int employeeNumber, int tipoCarta) {
+    public CoppelServicesLettersConfigRequest buildLettersConfigRequest(String employeeNumber, int tipoCarta) {
         CoppelServicesLettersConfigRequest coppelServicesLettersConfigRequest = new CoppelServicesLettersConfigRequest();
         coppelServicesLettersConfigRequest.setNum_empleado(employeeNumber);
         coppelServicesLettersConfigRequest.setTipo_carta(tipoCarta);
         return coppelServicesLettersConfigRequest;
     }
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Letters Preview          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     * @param tipoCarta   Type letter
+     * @param fields   fields to letter
+     * @param token   user token
+     */
+    public void getLettersPreview(String numEmpleado, int tipoCarta, Map<String, Object> fields, String token) {
+        this.token = token;
+        getLetterPreview(numEmpleado,tipoCarta,fields);
+    }
+
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private void getLetterPreview(String numEmpleado, int tipoCarta, Map<String, Object> fields) {
+
+        iServicesRetrofitMethods.getLettersPreview(token, buildLetterPreviewRequest(numEmpleado, tipoCarta,fields)).enqueue(new Callback<LetterPreviewResponse>() {
+            @Override
+            public void onResponse(Call<LetterPreviewResponse> call, Response<LetterPreviewResponse> response) {
+                getLetterPreviewResponse(response);
+            }
+
+            @Override
+            public void onFailure(Call<LetterPreviewResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LETTERSCONFIG));
+            }
+        });
+    }
+
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLetterPreviewResponse(Response<LetterPreviewResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERPREVIEW);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLetterPreviewSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+
+    /**
+     * Handles a successful response of the Letters Config method
+     *
+     * @param response Server response
+     */
+    public void getLetterPreviewSuccess(Response<LetterPreviewResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERPREVIEW);
+
+        if (response != null && response.body() != null) {
+
+            LetterPreviewResponse letterPreviewResponse = response.body();
+
+            if (letterPreviewResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                ServicesResponse<LetterPreviewResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterPreviewResponse);
+                servicesResponse.setType(ServicesRequestType.LETTERPREVIEW);
+                iServiceListener.onResponse(servicesResponse);
+
+            } else {
+                servicesError.setMessage(letterPreviewResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @param tipoCarta      Type letter
+     * @param fields      fields to letter
+     * @return General Request model
+     */
+    public CoppelServicesLettersPreviewRequest buildLetterPreviewRequest(String employeeNumber, int tipoCarta, Map<String, Object>  fields) {
+        CoppelServicesLettersPreviewRequest coppelServicesLettersPreviewRequest = new CoppelServicesLettersPreviewRequest();
+        coppelServicesLettersPreviewRequest.setNum_empleado(employeeNumber);
+        coppelServicesLettersPreviewRequest.setTipo_carta(tipoCarta);
+        coppelServicesLettersPreviewRequest.setDatos(fields);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(coppelServicesLettersPreviewRequest);
+        Log.d("PREVIEW",json.toString());
+
+        return coppelServicesLettersPreviewRequest;
+    }
+
+
+
+       /* *******************************************************************************************************************************************************
+     ***********************************************          Letters Generate          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     * @param tipoCarta   Type letter
+     * @param fields   fields to letter
+     * @param token   user token
+     */
+    public <T>  void getLettersGenerate(String numEmpleado, int tipoCarta,int opcionEnvio, String correo, Map<String, T > fields, String token) {
+        this.token = token;
+        getLetterGenerate(numEmpleado,tipoCarta,opcionEnvio,correo,fields);
+    }
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private <T> void getLetterGenerate(String numEmpleado, int tipoCarta,final int opcionEnvio, String correo, Map<String, T >  data) {
+        iServicesRetrofitMethods.getLettersGenerate(token, buildLetterGenerateRequest(numEmpleado, tipoCarta, opcionEnvio, correo,data)).enqueue(new Callback<LetterGenerateResponse>() {
+            @Override
+            public void onResponse(Call<LetterGenerateResponse> call, Response<LetterGenerateResponse> response) {
+                getLetterGenerateResponse(response,opcionEnvio);
+            }
+            @Override
+            public void onFailure(Call<LetterGenerateResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t,
+                        opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLetterGenerateResponse(Response<LetterGenerateResponse> response, int opcionEnvio) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType( opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLetterGenerateSuccess(response,opcionEnvio);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Letters Config method
+     *
+     * @param response Server response
+     */
+    public void getLetterGenerateSuccess(Response<LetterGenerateResponse> response , int opcionEnvio) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType( opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+
+        if (response != null && response.body() != null) {
+
+            LetterGenerateResponse letterGenerateResponse = response.body();
+            if (letterGenerateResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<LetterGenerateResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterGenerateResponse);
+                servicesResponse.setType( opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                        ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(letterGenerateResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @param tipoCarta      Type letter
+     * @param data      fields to letter
+     * @return General Request model
+     */
+    public <T> CoppelServicesLettersGenerateRequest buildLetterGenerateRequest(String employeeNumber, int tipoCarta, int opcionEnvio, String correo, Map<String, T>  data) {
+        CoppelServicesLettersGenerateRequest coppelServicesLettersGenerateRequest = new CoppelServicesLettersGenerateRequest();
+        coppelServicesLettersGenerateRequest.setNum_empleado(employeeNumber);
+        coppelServicesLettersGenerateRequest.setTipo_carta(tipoCarta);
+        coppelServicesLettersGenerateRequest.setCorreo(correo);
+        coppelServicesLettersGenerateRequest.setOpcionEnvio(opcionEnvio);
+        coppelServicesLettersGenerateRequest.setDatos(data);
+
+
+        Gson gson = new Gson();
+        String json = gson.toJson(coppelServicesLettersGenerateRequest);
+        Log.d("PREVIEW",json.toString());
+
+        return coppelServicesLettersGenerateRequest;
+    }
+
 
     /* *******************************************************************************************************************************************************
      ***********************************************          General Methods          ************************************************************************

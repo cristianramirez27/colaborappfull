@@ -28,7 +28,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherAlimonyBeneficiaryAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implements IServicesContract.View, PayrollVoucherAlimonyBeneficiaryAdapter.OnVoucherAlimonyBeneficiaryClickListener,
-        PayrollVoucherAlimonyBeneficiaryAdapter.OnActionClickListener, DialogFragmentWarning.OnOptionClick, DialogFragmentGetVoucher.OnButtonClickListener {
+        PayrollVoucherAlimonyBeneficiaryAdapter.OnActionClickListener, DialogFragmentWarning.OnOptionClick, DialogFragmentGetDocument.OnButtonClickListener {
 
     public static final String TAG = PayrollVoucherAlimonyBeneficiaryFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -58,7 +58,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     private DialogFragmentLoader dialogFragmentLoader;
     private PayrollVoucherAlimonyBeneficiaryAdapter payrollVoucherAlimonyBeneficiaryAdapter;
     private VoucherResponse.FechasPensione beneficiaryDateToGet;
-    private DialogFragmentGetVoucher dialogFragmentGetVoucher;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private int beneficiaryDateRequested;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -141,13 +141,13 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                         voucherDownloadResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
                     SHARE_PDF = true;
-                    showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOADED);
+                    showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
                 } else {
                     showWarningDialog(getString(R.string.error_save_file));
                 }
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SENT);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SENT);
                 break;
         }
     }
@@ -162,10 +162,10 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 payrollVoucherAlimonyBeneficiaryAdapter.notifyDataSetChanged();
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DOWNLOAD_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOAD_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOAD_FAIL);
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SEND_FAIL);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
@@ -194,7 +194,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     @Override
     public void onMailClick(VoucherResponse.FechasPensione beneficiaryDate) {
         beneficiaryDateToGet = beneficiaryDate;
-        showGetVoucherDialog(DialogFragmentGetVoucher.SEND_TO);
+        showGetVoucherDialog(DialogFragmentGetDocument.SEND_TO);
     }
 
     @Override
@@ -207,9 +207,9 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     public void onSend(String email) {
         if (email != null && !email.isEmpty()) {
             requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, email, ServicesConstants.SHIPPING_OPTION_SEND_EMAIL);
-            dialogFragmentGetVoucher.close();
+            dialogFragmentGetDocument.close();
         } else {
-            dialogFragmentGetVoucher.setWarningMessage(getString(R.string.error_email));
+            dialogFragmentGetDocument.setWarningMessage(getString(R.string.error_email));
         }
     }
 
@@ -225,7 +225,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
             //AppUtilities.sharePDF(parent, pdf);
         }
         SHARE_PDF = false;
-        dialogFragmentGetVoucher.close();
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -255,13 +255,13 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     }
 
     private void showGetVoucherDialog(int type) {
-        dialogFragmentGetVoucher = new DialogFragmentGetVoucher();
-        dialogFragmentGetVoucher.setType(type, parent);
-        if (type == DialogFragmentGetVoucher.SEND_TO) {
-            dialogFragmentGetVoucher.setPreloadedText(parent.getProfileResponse().getCorreo());
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(type, parent);
+        if (type == DialogFragmentGetDocument.SEND_TO) {
+            dialogFragmentGetDocument.setPreloadedText(parent.getProfileResponse().getCorreo());
         }
-        dialogFragmentGetVoucher.setOnButtonClickListener(this);
-        dialogFragmentGetVoucher.show(parent.getSupportFragmentManager(), DialogFragmentGetVoucher.TAG);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     private void requestPermissions() {

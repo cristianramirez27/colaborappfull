@@ -59,6 +59,7 @@ public class MenuUtilities {
                     new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                     //new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
                     new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
+                    new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                     new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1])));
         }
         return homeMenuItems;
@@ -100,6 +101,27 @@ public class MenuUtilities {
             case AppConstants.OPTION_ALIMONY:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_alimony);
                 break;
+            case AppConstants.OPTION_LETTERS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_cartaslaborales);
+                break;
+            case AppConstants.OPTION_WORK_RECORD:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_constancia_laboral);
+                break;
+            case AppConstants.OPTION_VISA_PASSPORT:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_visa_pasaporte);
+                break;
+            case AppConstants.OPTION_BANK_CREDIT:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_credito_bancario);
+                break;
+            case AppConstants.OPTION_IMSS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_imss);
+                break;
+            case AppConstants.OPTION_INFONAVIT:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_infonavit);
+                break;
+            case AppConstants.OPTION_KINDERGARTEN:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_guarderia);
+                break;
         }
         return icon;
     }
@@ -127,4 +149,15 @@ public class MenuUtilities {
         return menuItems;
     }
 
+    public static List<HomeMenuItem> getEmploymentLettersMenu(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new HomeMenuItem(context.getString(R.string.work_record), AppConstants.OPTION_WORK_RECORD));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.visa_passport), AppConstants.OPTION_VISA_PASSPORT));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.bank_credit), AppConstants.OPTION_BANK_CREDIT));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.imss), AppConstants.OPTION_IMSS));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.infonavit), AppConstants.OPTION_INFONAVIT));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.kindergarten), AppConstants.OPTION_KINDERGARTEN));
+
+        return menuItems;
+    }
 }
