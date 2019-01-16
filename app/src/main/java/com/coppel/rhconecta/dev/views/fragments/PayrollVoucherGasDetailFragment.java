@@ -107,6 +107,13 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
         txvdSubtotal.setEndTextSize(18F);
         txvdFactor.setEndTextSize(16F);
         txvdAdditionalSaving.setEndTextSize(16F);
+
+        /*Se cambia estilo de totales*/
+        txvdFactor.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdFactor.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdAdditionalSaving.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdAdditionalSaving.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+
         txvdSubtotal.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_bold));
         txvdSubtotal.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_bold));
         rcvUnits.setHasFixedSize(true);

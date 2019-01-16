@@ -1,8 +1,11 @@
 package com.coppel.rhconecta.dev.views.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 
@@ -59,6 +62,8 @@ public class TextUtilities {
         }
     }
 
+
+
     public static String insertDecimalPoint(String number) {
         try {
             StringBuilder stringBuilder = new StringBuilder(number);
@@ -106,6 +111,18 @@ public class TextUtilities {
         } catch (Exception e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+
+    public static void adjustFontScale(Context context, Configuration configuration) {
+        if (configuration.fontScale != 1) {
+            configuration.fontScale = 1;
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            wm.getDefaultDisplay().getMetrics(metrics);
+            metrics.scaledDensity = configuration.fontScale * metrics.density;
+            context.getResources().updateConfiguration(configuration, metrics);
         }
     }
 }

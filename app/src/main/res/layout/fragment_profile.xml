@@ -88,6 +88,7 @@
                 android:fontFamily="@font/lineto_circular_pro_bold"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
+                android:textStyle=""
                 android:textSize="26sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline30"
                 app:layout_constraintStart_toStartOf="@+id/guideline24"

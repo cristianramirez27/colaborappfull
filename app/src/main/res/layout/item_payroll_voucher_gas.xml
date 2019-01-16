@@ -5,6 +5,23 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp">
+
+
+        <ImageView
+            android:id="@+id/imgvArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txvTitle"
+            app:layout_constraintStart_toStartOf="@+id/guideline79"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/txvDate"
         android:layout_width="0dp"

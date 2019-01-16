@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTURecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTUV2RecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
@@ -64,6 +66,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     private boolean WARNING_PERMISSIONS;
     private boolean SHARE_PDF;
     private boolean EXPIRED_SESSION;
+    private boolean NETWORK_ERROR;
     private File pdf;
     @BindView(R.id.rcvPayroll)
     RecyclerView rcvPayroll;
@@ -155,7 +158,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     }
 
     @Override
-    public void showError(ServicesError coppelServicesError) {
+    public void showError(final ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL:
                 VoucherResponse.FechasUtilidade ptuDate = ptuDates.get(ptuDateRequested);
@@ -169,6 +172,23 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_SENDMAIL_DETAIL:
                 showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
                 break;
+
+            case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
+
+                NETWORK_ERROR = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(PayrollVoucherPTUFragment.this);
+                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    }
+                }, 1500);
+
+                break;
+
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
@@ -239,7 +259,10 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
+        }else if(NETWORK_ERROR) {
+            getActivity().onBackPressed();
+
+        }else if (WARNING_PERMISSIONS) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
                 AppUtilities.openAppSettings(parent);
