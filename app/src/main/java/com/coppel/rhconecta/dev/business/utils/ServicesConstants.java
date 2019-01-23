@@ -7,13 +7,10 @@ public class ServicesConstants {
 
     /**TESTING ENVIROMENT*/
     public static final String URL_BASE = "http://qa-apipos.coppel.com:9000/";
-    //public static final String GET_LOGIN = "appcoppel/api/v1/inicioSesion";
       public static final String GET_LOGIN = "rhconecta/api/v1/inicioSesion";
-   // public static final String GET_PROFILE = "appcoppel/api/v1/perfilColaboradorConsulta";
     public static final String GET_PROFILE = "rhconecta/api/v2/perfilColaboradorConsulta";
     public static final String GET_LETTERS_VALIDATE_SIGNATURE = "appcoppel/api/v1/cartasValidarFirma";
-    public static final String GET_CONFIG = "appcoppel/api/v1/cartasConfig";
-   // public static final String GET_VOUCHER = "appcoppel/api/v1/comprobantesNomina";
+    public static final String GET_CONFIG = "appcoppel/api/v2/cartasConfig";
     public static final String GET_VOUCHER = "rhconecta/api/v2/comprobantesNomina";
     public static final String GET_LOANSAVINGFUND = "rhconecta/api/v2/fondoAhorroConsulta";
     public static final String GET_RECOVERY_PASSWORD = "rhconecta/api/v2/recuperacontra";

@@ -66,7 +66,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     private boolean WARNING_PERMISSIONS;
     private boolean SHARE_PDF;
     private boolean EXPIRED_SESSION;
-    private boolean NETWORK_ERROR;
+    private boolean GO_BACK;
     private File pdf;
     @BindView(R.id.rcvPayroll)
     RecyclerView rcvPayroll;
@@ -175,7 +175,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
 
             case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
 
-                NETWORK_ERROR = true;
+                GO_BACK = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -259,7 +259,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        }else if(NETWORK_ERROR) {
+        }else if(GO_BACK) {
             getActivity().onBackPressed();
 
         }else if (WARNING_PERMISSIONS) {

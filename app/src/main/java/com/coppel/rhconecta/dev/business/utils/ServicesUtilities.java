@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 public class ServicesUtilities {
     /**
@@ -51,8 +52,10 @@ public class ServicesUtilities {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(requestType);
 
-        if (t instanceof IOException) {
+        if(t instanceof UnknownHostException){
             servicesError.setMessage(context.getString(R.string.network_error));
+        } else if (t instanceof IOException) {
+            servicesError.setMessage(context.getString(R.string.error_generic_service));
         } else if (t instanceof IllegalStateException) {
             servicesError.setMessage(context.getString(R.string.error_serialization));
         } else {

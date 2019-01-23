@@ -38,12 +38,16 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ServicesInteractor {
 
@@ -100,7 +104,6 @@ public class ServicesInteractor {
                     } else {
                         sendGenericError(type, response,executeInBackground);
                     }
-
                 } catch (Exception e) {
                     sendGenericError(type, response,executeInBackground);
                 }
@@ -249,9 +252,12 @@ public class ServicesInteractor {
      */
     public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail) {
         CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
-
         coppelServicesProfileRequest.setNum_empleado(employeeNumber);
         coppelServicesProfileRequest.setCorreo(employeeEmail);
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        if(tokenFirebase!= null && !tokenFirebase.isEmpty()){
+            coppelServicesProfileRequest.setId_firebase(tokenFirebase);
+        }
 
         return coppelServicesProfileRequest;
     }
@@ -936,9 +942,9 @@ public class ServicesInteractor {
     /**
      * Make a request to get url recover password
      */
-    public void getRecoverPassword() {
+    public void getRecoverPassword(int clave) {
 
-        iServicesRetrofitMethods.getRecoveryPassword(buildRecoveryPasswordRequest()).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getRecoveryPassword(buildRecoveryPasswordRequest(clave)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -1002,9 +1008,10 @@ public class ServicesInteractor {
      *
      * @return General Request model
      */
-    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest() {
+    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest(int clave) {
         CoppelServicesRecoveryPasswordRequest coppelServicesRecoveryPasswordRequest = new CoppelServicesRecoveryPasswordRequest();
-        coppelServicesRecoveryPasswordRequest.setSolicitud(1);
+        coppelServicesRecoveryPasswordRequest.setSolicitud(2);
+        coppelServicesRecoveryPasswordRequest.setClave(clave);
         return coppelServicesRecoveryPasswordRequest;
     }
 

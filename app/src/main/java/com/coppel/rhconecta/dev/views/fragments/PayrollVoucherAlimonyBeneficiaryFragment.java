@@ -4,6 +4,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -69,6 +70,8 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     private File pdf;
     @BindView(R.id.rcvAlimonyBeneficiary)
     RecyclerView rcvAlimonyBeneficiary;
+
+    private boolean GO_BACK;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -153,7 +156,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     }
 
     @Override
-    public void showError(ServicesError coppelServicesError) {
+    public void showError(final ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL:
                 VoucherResponse.FechasPensione beneficiaryDate = beneficiaryDates.get(beneficiaryDateRequested);
@@ -170,6 +173,22 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
+                break;
+
+            case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
+
+                GO_BACK = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(PayrollVoucherAlimonyBeneficiaryFragment.this);
+                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    }
+                }, 1500);
+
                 break;
         }
     }
@@ -237,7 +256,9 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
+        } else if(GO_BACK) {
+         getActivity().onBackPressed();
+         } else if (WARNING_PERMISSIONS) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
                 AppUtilities.openAppSettings(parent);

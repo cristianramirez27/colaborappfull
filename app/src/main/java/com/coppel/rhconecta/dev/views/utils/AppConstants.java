@@ -10,6 +10,7 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_IS_LOGGED_IN = "IS_LOGGED_IN";
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
+    public static final String SHARED_PREFERENCES_FIREBASE_TOKEN = "FIREBASE_TOKEN";
 
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";

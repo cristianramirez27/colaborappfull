@@ -56,6 +56,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogIn;
     @BindView(R.id.txvSignIn)
     TextView txvSignIn;
+    @BindView(R.id.txvJoin)
+    TextView txvJoin;
+
     @BindView(R.id.flLoginFragmentContainer)
     FrameLayout flLoginFragmentContainer;
 
@@ -73,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         cedtPassword.setOnEditorActionListener(this);
         btnLogIn.setOnClickListener(this);
         txvSignIn.setOnClickListener(this);
+        txvJoin.setOnClickListener(this);
         txvForgotPassword.setOnClickListener(this);
     }
 
@@ -120,8 +124,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 addFragment(new EnrollmentFragment(), EnrollmentFragment.TAG);
                 break;
             case R.id.txvForgotPassword:
-                coppelServicesPresenter.requestRecoveryPassword();
+                coppelServicesPresenter.requestRecoveryPassword(18);
                 break;
+
+            case R.id.txvJoin:
+                coppelServicesPresenter.requestRecoveryPassword(24);
+                break;
+
         }
     }
 
