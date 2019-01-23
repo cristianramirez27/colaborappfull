@@ -229,7 +229,13 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             case ServicesRequestType.LETTERGENERATE_SENDMAIL:
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponseSend= (LetterGenerateResponse) response.getResponse();
-                showGetVoucherReadyDialog(DialogFragmentGetDocument.LETTER_SENT,letterGenerateResponseSend.getData().getResponse().getMensaje());
+
+                String message = letterGenerateResponseSend.getData().getResponse().getMensaje();
+                if(message.contains("Enviado correctamente.\n")){
+                    message = message.replace("Enviado correctamente.\n","");
+                }
+
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.LETTER_SENT,message);
                 break;
         }
     }
@@ -380,7 +386,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
 
     private  void onMailClick(){
-        showGetVoucherReadyDialog(DialogFragmentGetDocument.SEND_TO,"");
+        showGetVoucherReadyDialog(DialogFragmentGetDocument.SEND_TO_LETTER,"");
     }
 
     private  void onDownloadClick(){
