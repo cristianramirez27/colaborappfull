@@ -208,7 +208,10 @@
 
     <string name="remember_print">Recuerda imprimir tu carta\na color</string>
     <string name="employment_letters_title">Solicitud de carta</string>
-    <string name="employment_letters_sent">Carta enviada</string>
+    <string name="employment_letters_sent">Enviado correctamente</string>
     <string name="employment_letters_download">Carta descargada</string>
     <string name="letter_download_fail">Descarga de carta no se realizó</string>
+
+
+    <string name="send_to_letter">La carta se enviará a </string>
 </resources>

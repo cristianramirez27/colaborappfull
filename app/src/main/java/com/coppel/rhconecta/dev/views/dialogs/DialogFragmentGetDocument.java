@@ -33,7 +33,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public static final int LETTER_DOWNLOADED = 6;
     public static final int LETTER_SEND_FAIL = 7;
     public static final int LETTER_DOWNLOAD_FAIL = 8;
-
+    public static final int SEND_TO_LETTER = 9;
 
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
@@ -58,6 +58,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     @BindView(R.id.btnSendAccept)
     Button btnSendAccept;
 
+    @BindView(R.id.textView)
+    TextView textViewSendTo;
 
     private String contentText;
     @Override
@@ -90,6 +92,18 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 imgvClose.setOnClickListener(this);
                 btnSendAccept.setOnClickListener(this);
                 break;
+            case SEND_TO_LETTER:
+                ctlReady.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(View.VISIBLE);
+                textViewSendTo.setText(getString(R.string.send_to_letter));
+                editTextEmail.setWhiteMode();
+                if(email != null && !email.isEmpty()) {
+                    editTextEmail.setText(email);
+                }
+                imgvClose.setOnClickListener(this);
+                btnSendAccept.setOnClickListener(this);
+                break;
+
             case VOUCHER_SENT:
                 ctlReady.setVisibility(View.VISIBLE);
                 ctlSentTo.setVisibility(View.GONE);

@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
@@ -71,6 +73,13 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @BindView(R.id.imgvRefresh)
     ImageView imgvRefresh;
 
+    @BindView(R.id.txvConnectionError)
+    TextView txvConnectionError;
+    @BindView(R.id.txvPressToRefresh)
+    TextView txvPressToRefresh;
+
+
+
     private com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification ISurveyNotification;
     private DialogFragmentWarning dialogFragmentWarning;
 
@@ -112,6 +121,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
         if (letterSignatureResponse == null) {
             coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
         }
+
     }
 
     @Override
@@ -127,6 +137,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @Override
     public void onItemClick(String tag) {
         int typeLetter = 0;
+
         switch (tag) {
 
             case AppConstants.OPTION_WORK_RECORD:
@@ -161,14 +172,29 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
 
     @Override
     public void showResponse(ServicesResponse response) {
-        rcvOptions.setVisibility(View.VISIBLE);
-        ctlConnectionError.setVisibility(View.GONE);
+
         switch (response.getType()) {
             case ServicesRequestType.LETTERSVALIDATIONSIGNATURE:
-                letterSignatureResponse = (LetterSignatureResponse) response.getResponse();
-                menuItems.addAll(MenuUtilities.getEmploymentLettersMenu(parent));
-                employmentLettersMenuRecyclerAdapter.notifyItemRangeInserted(employmentLettersMenuRecyclerAdapter.getItemCount(), menuItems.size());
-                break;
+
+                if(((LetterSignatureResponse)response.getResponse()).getData().getResponse().getClave() == 5 ||
+                        ((LetterSignatureResponse)response.getResponse()).getData().getResponse().getClave() == 9){
+
+                    imgvRefresh.setVisibility(View.GONE);
+                    txvConnectionError.setVisibility(View.GONE);
+                    txvPressToRefresh.setText(((LetterSignatureResponse)response.getResponse()).getData().getResponse().getMensaje());
+                    rcvOptions.setVisibility(View.GONE);
+                    ctlConnectionError.setVisibility(View.VISIBLE);
+                }else {
+
+                    rcvOptions.setVisibility(View.VISIBLE);
+                    ctlConnectionError.setVisibility(View.GONE);
+                    letterSignatureResponse = (LetterSignatureResponse) response.getResponse();
+                    menuItems.addAll(MenuUtilities.getEmploymentLettersMenu(parent));
+                    employmentLettersMenuRecyclerAdapter.notifyItemRangeInserted(employmentLettersMenuRecyclerAdapter.getItemCount(), menuItems.size());
+
+
+                }
+                 break;
         }
     }
 

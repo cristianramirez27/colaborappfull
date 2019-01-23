@@ -33,6 +33,8 @@ public class LetterSignatureResponse extends CoppelGeneralParameterResponse {
         private ArrayList<RemainingLetters> CartasRestantes;
         private String errorCode;
         private String userMessage;
+        private String Mensaje;
+        private int Clave;
 
         public String getIdu_clave() {
             return idu_clave;
@@ -72,6 +74,22 @@ public class LetterSignatureResponse extends CoppelGeneralParameterResponse {
 
         public void setUserMessage(String userMessage) {
             this.userMessage = userMessage;
+        }
+
+        public String getMensaje() {
+            return Mensaje;
+        }
+
+        public void setMensaje(String mensaje) {
+            Mensaje = mensaje;
+        }
+
+        public int getClave() {
+            return Clave;
+        }
+
+        public void setClave(int clave) {
+            Clave = clave;
         }
     }
 

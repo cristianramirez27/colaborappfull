@@ -44,6 +44,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 
 public class PreviewLetterFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener{
@@ -140,21 +141,32 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
         String txtHeader1 = dataLetter.getResponse().getEncabezado1().replace("\n\n", System.getProperty("line.separator"));
         String txtHeader2 = dataLetter.getResponse().getEncabezado2().replace("\n\n", System.getProperty("line.separator"));
         String bodyJusfify = "<html><body><p align=\"justify\">" + dataLetter.getResponse().getCuerpo() + "</p></body></html>";
-        String txtFooter1 = dataLetter.getResponse().getPie1().replace("\n\n", System.getProperty("line.separator"));
+        String txtFooter1= null;
+
+
+        if(typeLetter == TYPE_KINDERGARTEN ) {
+            txtFooter1 = dataLetter.getResponse().getPie1();
+            txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
+        }else {
+            txtFooter1 = dataLetter.getResponse().getPie1().replace("\n\n", System.getProperty("line.separator"));
+        }
+
         String txtFooter2 = dataLetter.getResponse().getPie2().replace("\n\n", System.getProperty("line.separator"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify, Html.FROM_HTML_MODE_COMPACT));
-            footer1.setText(txtFooter1);
+            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
+            else{ footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
 
         } else {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify));
-            footer1.setText(txtFooter1);
+            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
+            else { footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
         }
         }
@@ -390,7 +402,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
         dialogFragmentGetDocument = new DialogFragmentGetDocument();
         dialogFragmentGetDocument.setContentText(content);
         dialogFragmentGetDocument.setType(type, parent);
-        if (type == DialogFragmentGetDocument.SEND_TO) {
+        if (type == DialogFragmentGetDocument.SEND_TO_LETTER) {
             String userEmail = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_EMAIL);
             dialogFragmentGetDocument.setPreloadedText(userEmail);
         }
@@ -404,7 +416,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         coppelServicesPresenter.requestLetterGenerateView(numEmployer,typeLetter,actionLetter,
-                email,previewDataVO.getFieldsLetter(),null,previewDataVO.isHasStamp(),token);
+                email,previewDataVO.getFieldsLetter(),typeLetter == TYPE_KINDERGARTEN ?   previewDataVO.getDataOptional() : null,previewDataVO.isHasStamp(),token);
 
     }
 

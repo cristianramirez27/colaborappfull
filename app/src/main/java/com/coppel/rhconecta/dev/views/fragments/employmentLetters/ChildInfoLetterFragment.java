@@ -167,7 +167,7 @@ public class ChildInfoLetterFragment extends Fragment implements View.OnClickLis
     @Override
     public void showProgress() {
         dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+       dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override

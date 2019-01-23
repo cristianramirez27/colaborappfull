@@ -197,6 +197,12 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
                 previewDataVO.setDataLetter(letterPreviewResponse.getData());
                 previewDataVO.setFieldsLetter(parent.getPreviewDataVO().getFieldsLetter());
                 previewDataVO.setHasStamp(hasStamp);
+
+                /***/
+                PreviewDataVO previewDataVOOParent = parent.getPreviewDataVO();
+                CoppelServicesLettersGenerateRequest.Data dataOptional =  previewDataVOOParent.getDataOptional();
+
+                previewDataVO.setDataOptional(dataOptional);
                 ILettersNavigation.showFragmentAtPosition(4,previewDataVO);
                 break;
         }
@@ -225,13 +231,13 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void showProgress() {
-        dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+       dialogFragmentLoader = new DialogFragmentLoader();
+       dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override
     public void hideProgress() {
-        dialogFragmentLoader.close();
+       dialogFragmentLoader.close();
     }
 
 

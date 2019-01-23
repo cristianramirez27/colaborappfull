@@ -30,4 +30,13 @@ public class ServicesRetrofitManager {
                 .build();
         return retrofit;
     }
+
+    public Retrofit getRetrofitAPI2() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.mocky.io/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+        return retrofit;
+    }
 }
