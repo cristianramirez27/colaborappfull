@@ -7,8 +7,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 31
-        versionName "2.0.4"
+        versionCode 32
+        versionName "2.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -66,6 +66,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
     implementation "com.google.firebase:firebase-database:${rootProject.ext.firebaseDatabaseVersion}"
     implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
+    implementation "com.google.firebase:firebase-config:${rootProject.ext.firebaseConfigVersion}"
     // PageIndicator
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
 

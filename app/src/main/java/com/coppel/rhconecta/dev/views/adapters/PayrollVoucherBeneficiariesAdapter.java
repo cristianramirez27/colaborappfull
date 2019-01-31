@@ -1,7 +1,9 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
 
@@ -21,9 +24,11 @@ public class PayrollVoucherBeneficiariesAdapter extends RecyclerView.Adapter<Pay
     private List<VoucherResponse.DatosPencion> beneficiaries;
     private OnBeneficiaryClickListener onBeneficiaryClickListener;
     private int selectedPosition = -1;
+    private Context context;
 
-    public PayrollVoucherBeneficiariesAdapter(List<VoucherResponse.DatosPencion> beneficiaries) {
+    public PayrollVoucherBeneficiariesAdapter(List<VoucherResponse.DatosPencion> beneficiaries,Context context) {
         this.beneficiaries = beneficiaries;
+        this.context = context;
     }
 
     @NonNull
@@ -36,7 +41,7 @@ public class PayrollVoucherBeneficiariesAdapter extends RecyclerView.Adapter<Pay
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.txtName.setText(beneficiaries.get(i).getNom_beneficiario());
+        viewHolder.txtName.setText(TextUtilities.capitalizeText(context,beneficiaries.get(i).getNom_beneficiario()));
         viewHolder.cbBeneficiary.setChecked(i == selectedPosition);
         viewHolder.cbBeneficiary.setOnClickListener(new View.OnClickListener() {
             @Override

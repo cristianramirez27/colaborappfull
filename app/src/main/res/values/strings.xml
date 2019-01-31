@@ -165,6 +165,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <!-- Employment letters-->
     <string name="work_record">Constancia\nlaboral</string>
     <string name="visa_passport">Visa o\nPasaporte</string>
@@ -214,4 +215,8 @@
 
 
     <string name="send_to_letter">La carta se enviará a </string>
+
+
+    <string name="join_us">Sé parte de nuestro equipo</string>
+
 </resources>

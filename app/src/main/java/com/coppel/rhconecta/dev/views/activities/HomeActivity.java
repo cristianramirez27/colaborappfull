@@ -121,6 +121,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.surveyInbox)
     SurveyInboxView surveyInboxView;
 
+    @BindView(R.id.titleToolbar)
+    TextView titleToolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -316,7 +320,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setToolbarTitle(String title) {
-        tbActionBar.setTitle(title);
+
+        titleToolbar.setText(title);
+       // tbActionBar.setTitle(title);
     }
 
     public LoginResponse.Response getLoginResponse() {

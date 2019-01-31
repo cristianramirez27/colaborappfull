@@ -4,6 +4,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -67,6 +68,7 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
     private boolean WARNING_PERMISSIONS;
     private boolean SHARE_PDF;
     private boolean EXPIRED_SESSION;
+    private boolean GO_BACK;
     private File pdf;
     private List<GasUnit> units;
     private PayrollVoucherGasDetailRecyclerAdapter payrollVoucherGasDetailRecyclerAdapter;
@@ -107,6 +109,13 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
         txvdSubtotal.setEndTextSize(18F);
         txvdFactor.setEndTextSize(16F);
         txvdAdditionalSaving.setEndTextSize(16F);
+
+        /*Se cambia estilo de totales*/
+        txvdFactor.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdFactor.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdAdditionalSaving.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+        txvdAdditionalSaving.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_book));
+
         txvdSubtotal.setStartFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_bold));
         txvdSubtotal.setEndFont(ResourcesCompat.getFont(parent, R.font.lineto_circular_pro_bold));
         rcvUnits.setHasFixedSize(true);
@@ -225,7 +234,7 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
     }
 
     @Override
-    public void showError(ServicesError coppelServicesError) {
+    public void showError(final ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL:
                 ctlContainer.setVisibility(View.GONE);
@@ -240,6 +249,22 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
+                break;
+
+            case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
+
+                GO_BACK = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(PayrollVoucherGasDetailFragment.this);
+                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    }
+                }, 400);
+
                 break;
         }
     }
@@ -289,6 +314,9 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
+        } else if(GO_BACK) {
+        getActivity().onBackPressed();
+
         } else if (WARNING_PERMISSIONS) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {

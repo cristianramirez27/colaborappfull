@@ -38,6 +38,7 @@ ext {
     lottieVersion = "2.5.5"
     cameraViewVersion = "1.5.1"
     firebaseCoreVersion = "16.0.3"
+    firebaseConfigVersion = "16.0.0"
     firebaseDatabaseVersion = "16.0.2"
     firebaseMessagingVersion = "17.3.2"
 }

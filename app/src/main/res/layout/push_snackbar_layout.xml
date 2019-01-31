@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_notinvasive"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/push_snackbar_height"
+    android:background="@color/colorRed"
+    android:clickable="true"
+    android:visibility="visible">
+
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_push_snackbar">
+
+        <ImageView
+            android:id="@+id/imgPuskSnackbar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:padding="8dp"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|center_vertical"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:maxLines="5"
+            android:layout_toLeftOf="@+id/imgPuskSnackbar"
+            android:textColor="@color/colorBackgroundCoppelBlanco" />
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -33,15 +33,41 @@
                     app:contentInsetStart="0dp"
                     app:contentInsetStartWithNavigation="0dp"
                     app:title="@string/title_home"
-                    app:titleTextAppearance="@style/Toolbar.TitleText" />
+                    app:titleTextAppearance="@style/Toolbar.TitleText" >
 
-                <com.coppel.rhconecta.dev.views.customviews.SurveyInboxView
-                    android:id="@+id/surveyInbox"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/titleToolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#333333"
+                            android:fontFamily="@font/lineto_circular_pro_book"
+                            android:textSize="15sp"
+                            android:layout_centerVertical="true"
+                            android:textStyle="normal"
+                            android:layout_toLeftOf="@+id/surveyInbox"
+                            android:text="@string/title_home"/>
+
+
+                        <com.coppel.rhconecta.dev.views.customviews.SurveyInboxView
+                            android:id="@+id/surveyInbox"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"/>
+
+
+                    </RelativeLayout>
+
+
+
+                </android.support.v7.widget.Toolbar>
+
+
 
             </RelativeLayout>
 
@@ -76,6 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:visibility="gone"
         android:background="@android:color/white">
 
         <android.support.constraint.ConstraintLayout

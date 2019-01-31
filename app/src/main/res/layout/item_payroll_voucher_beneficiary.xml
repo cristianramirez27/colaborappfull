@@ -12,7 +12,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:textSize="13.5sp"
         android:maxLines="1"
         android:ellipsize="end"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"

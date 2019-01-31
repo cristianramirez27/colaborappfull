@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="500dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:background="@drawable/background_dialogs">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/txtTitleNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="4"
+            android:layout_marginTop="@dimen/margin_big"
+            android:padding="4dp"
+            android:visibility="visible"
+            android:text="Este es el titulo del alert"
+            android:layout_marginLeft="5dp" />
+
+
+        <TextView
+            android:id="@+id/txtMessageNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_big"
+            android:maxLength="1000"
+            android:layout_marginBottom="18dp"
+            android:layout_marginRight="@dimen/margin_doble"
+            android:visibility="visible"
+            android:maxLines="7"
+            android:autoLink="phone|email"
+            android:textColorLink="@color/colorBlueLight"
+            android:layout_marginLeft="@dimen/margin_doble" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/margin_regular">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/generic_padig"
+            android:paddingTop="@dimen/generic_padig"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnOne"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btns"
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_marginLeft="@dimen/margin_big"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/margin_medium"/>
+
+
+            <Button
+                android:id="@+id/btnTwo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btns"
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_marginLeft="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_medium"/>
+
+
+
+            <Button
+                android:id="@+id/btnThree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btns"
+                android:layout_marginRight="@dimen/margin_big"
+                android:layout_marginLeft="@dimen/margin_big"
+                android:layout_weight="1"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

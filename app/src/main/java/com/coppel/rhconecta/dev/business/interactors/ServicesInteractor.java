@@ -44,6 +44,8 @@ import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
 import com.google.gson.Gson;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.gson.JsonObject;
 
 import java.util.Map;
@@ -52,6 +54,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ServicesInteractor {
 
@@ -97,7 +101,7 @@ public class ServicesInteractor {
      */
     private void getLogin(String email, String password, final boolean executeInBackground) {
         final int type = ServicesRequestType.LOGIN;
-        iServicesRetrofitMethods.getLogin(buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getLogin(ServicesConstants.GET_LOGIN,buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
@@ -108,7 +112,6 @@ public class ServicesInteractor {
                     } else {
                         sendGenericError(type, response,executeInBackground);
                     }
-
                 } catch (Exception e) {
                     sendGenericError(type, response,executeInBackground);
                 }
@@ -193,7 +196,7 @@ public class ServicesInteractor {
      */
     private void getProfile(String employeeNumber, String employeeEmail) {
         final int type = ServicesRequestType.PROFILE;
-        iServicesRetrofitMethods.getProfile(token, buildProfileRequest(employeeNumber, employeeEmail)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -257,9 +260,12 @@ public class ServicesInteractor {
      */
     public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail) {
         CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
-
         coppelServicesProfileRequest.setNum_empleado(employeeNumber);
         coppelServicesProfileRequest.setCorreo(employeeEmail);
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        if(tokenFirebase!= null && !tokenFirebase.isEmpty()){
+            coppelServicesProfileRequest.setId_firebase(tokenFirebase);
+        }
 
         return coppelServicesProfileRequest;
     }
@@ -290,7 +296,7 @@ public class ServicesInteractor {
     private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
 
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -396,7 +402,7 @@ public class ServicesInteractor {
      */
     private void getPayrollVoucherDetail(String employeeNumber, String email, final int typeConstancy, int request, final int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
 
-        iServicesRetrofitMethods.getPayrollVoucherDetail(token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucherDetail(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -854,7 +860,7 @@ public class ServicesInteractor {
      */
     private void getLoansSavingFund(String employeeNumber, String token) {
 
-        iServicesRetrofitMethods.getLoansSavingFund(token, buildPayrollVoucherRequest(employeeNumber)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getLoansSavingFund(ServicesConstants.GET_LOANSAVINGFUND,token, buildPayrollVoucherRequest(employeeNumber)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -944,9 +950,9 @@ public class ServicesInteractor {
     /**
      * Make a request to get url recover password
      */
-    public void getRecoverPassword() {
+    public void getRecoverPassword(int clave) {
 
-        iServicesRetrofitMethods.getRecoveryPassword(buildRecoveryPasswordRequest()).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getRecoveryPassword(ServicesConstants.GET_RECOVERY_PASSWORD,buildRecoveryPasswordRequest(clave)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -1010,9 +1016,10 @@ public class ServicesInteractor {
      *
      * @return General Request model
      */
-    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest() {
+    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest(int clave) {
         CoppelServicesRecoveryPasswordRequest coppelServicesRecoveryPasswordRequest = new CoppelServicesRecoveryPasswordRequest();
-        coppelServicesRecoveryPasswordRequest.setSolicitud(1);
+        coppelServicesRecoveryPasswordRequest.setSolicitud(2);
+        coppelServicesRecoveryPasswordRequest.setClave(clave);
         return coppelServicesRecoveryPasswordRequest;
     }
 
@@ -1051,7 +1058,7 @@ public class ServicesInteractor {
      */
     private void getLettersValidateSignature(String employeeNumber) {
 
-        iServicesRetrofitMethods.getLettersValidationSignature(token, buildLettersSignatureRequest(employeeNumber)).enqueue(new Callback<LetterSignatureResponse>() {
+        iServicesRetrofitMethods.getLettersValidationSignature(ServicesConstants.GET_LETTERS_VALIDATE_SIGNATURE,token, buildLettersSignatureRequest(employeeNumber)).enqueue(new Callback<LetterSignatureResponse>() {
             @Override
             public void onResponse(Call<LetterSignatureResponse> call, Response<LetterSignatureResponse> response) {
 
@@ -1160,7 +1167,7 @@ public class ServicesInteractor {
      */
     private void getLettersConfig(String numEmpleado, int tipoCarta) {
 
-        iServicesRetrofitMethods.getLettersConfig(token, buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
+        iServicesRetrofitMethods.getLettersConfig(ServicesConstants.GET_CONFIG,token, buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
             @Override
             public void onResponse(Call<LetterConfigResponse> call, Response<LetterConfigResponse> response) {
                 getLettersConfigResponse(response);
@@ -1260,7 +1267,7 @@ public class ServicesInteractor {
      */
     private void getLetterPreview(String numEmpleado, int tipoCarta, Map<String, Object> fields) {
 
-        iServicesRetrofitMethods.getLettersPreview(token, buildLetterPreviewRequest(numEmpleado, tipoCarta,fields)).enqueue(new Callback<LetterPreviewResponse>() {
+        iServicesRetrofitMethods.getLettersPreview(ServicesConstants.GET_LETTER_PREVIEW,token, buildLetterPreviewRequest(numEmpleado, tipoCarta,fields)).enqueue(new Callback<LetterPreviewResponse>() {
             @Override
             public void onResponse(Call<LetterPreviewResponse> call, Response<LetterPreviewResponse> response) {
                 getLetterPreviewResponse(response);
@@ -1368,7 +1375,7 @@ public class ServicesInteractor {
      * @param numEmpleado User Number
      */
     private <T> void getLetterGenerate(String numEmpleado, int tipoCarta,final int opcionEnvio, String correo, Map<String, T >  data) {
-        iServicesRetrofitMethods.getLettersGenerate(token, buildLetterGenerateRequest(numEmpleado, tipoCarta, opcionEnvio, correo,data)).enqueue(new Callback<LetterGenerateResponse>() {
+        iServicesRetrofitMethods.getLettersGenerate(ServicesConstants.GET_LETTER_GENERATE,token, buildLetterGenerateRequest(numEmpleado, tipoCarta, opcionEnvio, correo,data)).enqueue(new Callback<LetterGenerateResponse>() {
             @Override
             public void onResponse(Call<LetterGenerateResponse> call, Response<LetterGenerateResponse> response) {
                 getLetterGenerateResponse(response,opcionEnvio);

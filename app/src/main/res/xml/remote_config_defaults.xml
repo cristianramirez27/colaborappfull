@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>ENDPOINT_BENEFICIOS</key>
+        <value>beneficiosConsulta</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_VALIDARFIRMA</key>
+        <value>cartasValidarFirma</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_PREVIEW</key>
+        <value>cartasVistaPrevia</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_CARTASGENERAR</key>
+        <value>cartasGenerar</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_CARTASCONFIG</key>
+        <value>cartasConfig</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_PAYSHEET</key>
+        <value>comprobantesNomina</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_SAVINGS</key>
+        <value>fondoAhorroConsulta</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_PROFILE</key>
+        <value>perfilColaboradorConsulta</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_PASSWORD_RECOVER</key>
+        <value>recuperacontra</value>
+    </entry>
+    <entry>
+        <key>ENDPOINT_LOGIN</key>
+        <value>inicioSesion</value>
+    </entry>
+    <entry>
+        <key>URL_MAIN_LOGIN</key>
+        <value>http://qa-apipos.coppel.com:9000/rhconecta/api/v1/</value>
+    </entry>
+    <entry>
+        <key>URL_MAIN</key>
+        <value>http://qa-apipos.coppel.com:9000/rhconecta/api/v2/</value>
+    </entry>
+</defaultsMap>
+    <!-- END xml_defaults -->

@@ -32,6 +32,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCamera;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.CameraUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.Arrays;
 
@@ -119,7 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         } else {
             AppUtilities.loadServiceProfileImage(parent, profileResponse.getFotoperfil(), imgvProfile);
         }
-        txvName.setText(profileResponse.getNombreColaborador());
+        txvName.setText(TextUtilities.capitalizeText(getActivity(),profileResponse.getNombreColaborador()));
         txvCollaboratorNumberValue.setText(profileResponse.getColaborador());
         txvCenterValue.setText(profileResponse.getCentro() + " - " + profileResponse.getNombreCentro());
         txvPositionValue.setText(profileResponse.getPuesto() + " - " + profileResponse.getNombrePuesto());
@@ -128,7 +129,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         /**Se oculta la etiqueta de ERH en caso de que no se obtenga valor en dicho atributo*/
         if(profileResponse.getNombreErh() != null && !profileResponse.getNombreErh().isEmpty()){
             txvErh.setVisibility(View.VISIBLE);
-            txvErhValue.setText(profileResponse.getNombreErh());
+            //txvErhValue.setText(profileResponse.getNombreErh());
+            txvErhValue.setText(String.format("%s - %s",String.valueOf(profileResponse.getErh()), profileResponse.getNombreErh()));
             txvErhValue.setVisibility(View.VISIBLE);
         }else {
             txvErh.setVisibility(View.GONE);

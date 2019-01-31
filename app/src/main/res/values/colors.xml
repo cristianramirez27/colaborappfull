@@ -48,5 +48,5 @@
 
     <color name="colorBackgroundDialogDateTime">#0a9dd5</color>
     <color name="colorDaySelect">#6fcf97</color>
-
+    <color name="transparent">#00FFFFFF</color>
 </resources>

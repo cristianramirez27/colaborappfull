@@ -1,0 +1,13 @@
+<resources>
+
+    <dimen name="margin_doble">25dp</dimen>
+    <dimen name="margin_regular">30dp</dimen>
+    <dimen name="margin_big">24dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <!-- Botones -->
+    <dimen name="height_btns">56dp</dimen>
+    <dimen name="generic_padig">8dp</dimen>
+    <dimen name="push_snackbar_height">80dp</dimen>
+    <dimen name="padding_push_snackbar">12dp</dimen>
+</resources>
+

@@ -58,10 +58,10 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getLoansSavingFundValidation(employeeNumber, token);
     }
 
-    public void requestRecoveryPassword()
+    public void requestRecoveryPassword(int clave)
     {
         view.showProgress();
-        servicesInteractor.getRecoverPassword();
+        servicesInteractor.getRecoverPassword(clave);
     }
 
     public void requestLettersValidationSignature(String employeeNumber, String token) {

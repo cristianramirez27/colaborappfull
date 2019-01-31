@@ -71,7 +71,7 @@ public class PayrollVoucherAlimonyFragment extends Fragment implements View.OnCl
             beneficiaries = new ArrayList<>();
         }
         ISurveyNotification.getSurveyIcon().setVisibility(View.INVISIBLE);
-        PayrollVoucherBeneficiariesAdapter payrollVoucherBeneficiariesAdapter = new PayrollVoucherBeneficiariesAdapter(beneficiaries);
+        PayrollVoucherBeneficiariesAdapter payrollVoucherBeneficiariesAdapter = new PayrollVoucherBeneficiariesAdapter(beneficiaries,getActivity());
         payrollVoucherBeneficiariesAdapter.setOnBeneficiaryClickListener(this);
         rcvBeneficiaries.setAdapter(payrollVoucherBeneficiariesAdapter);
         btnNext.setOnClickListener(this);

@@ -22,6 +22,8 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="whateverString">
+        android:configChanges="fontScale"
+        android:theme="@style/AppTheme">
         <activity
             android:name=".views.activities.SplashScreenActivity"
             android:screenOrientation="portrait"
@@ -93,7 +95,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
+            android:resource="@drawable/ic_notification_v1" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondBlueCoppel" />
