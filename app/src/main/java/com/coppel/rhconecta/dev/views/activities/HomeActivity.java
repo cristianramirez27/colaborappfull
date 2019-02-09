@@ -42,6 +42,7 @@ import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
+import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
@@ -300,6 +301,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
                 break;
             case OPTION_BENEFITS:
+                replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
                 break;
             case OPTION_SAVING_FUND:
                 replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);

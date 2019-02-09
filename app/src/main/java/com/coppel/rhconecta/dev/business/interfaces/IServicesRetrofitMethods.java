@@ -1,5 +1,11 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
@@ -24,7 +30,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
-public interface IServicesRetrofitMethods {
+public interface IServicesRetrofitMethods  <T>{
 
     //************************** getLogin **************************
     @Headers("Content-Type: application/json")
@@ -73,6 +79,28 @@ public interface IServicesRetrofitMethods {
     @Headers({"Content-Type: application/json"})
     @POST
     Call<LetterGenerateResponse> getLettersGenerate(@Url String url,@Header("Authorization") String token, @Body CoppelServicesLettersGenerateRequest servicesRequest);
+
+
+    //************************** Benefits **************************
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsStates(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsStatesRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsCity(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsCityRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsCategories(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsCategoriesRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsDiscounts(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsDiscountsRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsCompany(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsCompanyRequest servicesRequest);
 
 
 }

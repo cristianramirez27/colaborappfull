@@ -57,7 +57,7 @@ public class MenuUtilities {
             homeMenuItems.addAll(Arrays.asList(
                     new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
                     new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
-                    //new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
+                    new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
                     new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
                     new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                     new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1])));

@@ -16,6 +16,8 @@ public class ServicesRequestType {
     public static final int PAYROLL_VOUCHER_ALIMONY_DETAIL = 12;
     public static final int LOAN_SAVINGFUND = 13;
 
+    public static final int BENEFITS = 14;
+
     public static final int PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL = 14;
     public static final int PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL = 15;
 

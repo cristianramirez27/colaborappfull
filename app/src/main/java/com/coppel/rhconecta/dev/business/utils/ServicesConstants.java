@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.business.utils;
 
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASGENERAR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN;
@@ -41,6 +42,7 @@ public class ServicesConstants {
     public static  String GET_VOUCHER = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PAYSHEET);
     public static  String GET_LOANSAVINGFUND = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_SAVINGS);
     public static  String GET_RECOVERY_PASSWORD = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER);
+    public static  String GET_BENEFITS = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS);
 
 
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);

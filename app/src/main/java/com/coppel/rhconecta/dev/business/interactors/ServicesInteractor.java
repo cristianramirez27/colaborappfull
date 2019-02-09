@@ -5,9 +5,26 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
+import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsBaseResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
@@ -1458,6 +1475,326 @@ public class ServicesInteractor {
         return coppelServicesLettersGenerateRequest;
     }
 
+    /******************************************************/
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Benefits          *****************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param benefitsRequestData BenefitsRequestData Number
+     * @param token          User token
+     */
+    public void getBenefits(BenefitsRequestData benefitsRequestData, String token) {
+        this.token = token;
+        switch (benefitsRequestData.getSolicitud()){
+            case  1:
+                getBenefitsStatesRequest(benefitsRequestData, token);
+                break;
+            case  2:
+                getBenefitsCitiesRequest(benefitsRequestData, token);
+                break;
+            case  3:
+                getBenefitsCategoriesRequest(benefitsRequestData, token);
+                break;
+            case  4:
+                getBenefitsDiscountsRequest(benefitsRequestData, token);
+                break;
+            case  5:
+                getBenefitsCompanyRequest(benefitsRequestData, token);
+                break;
+        }
+
+    }
+
+
+    private void getBenefitsStatesRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsStates(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsStatesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsCitiesRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsCity(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCityRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    /**
+     * Make a request to get Loans/SavingFund
+     *
+     * @param benefitsRequestData BenefitsRequestData Number
+     * @param token          User token
+     */
+    private void getBenefitsCategoriesRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsCategories(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCategoriesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                     BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                             //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsDiscountsRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsDiscounts(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsDiscountsRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+
+    private void getBenefitsCompanyRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsCompany(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getBenefitsResponse(BenefitsBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.BENEFITS);
+
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getBenefitsSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Loans/SavingFund method
+     *
+     * @param response Server response
+     */
+    public void getBenefitsSuccess(BenefitsBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.BENEFITS);
+
+        if (response != null && response != null) {
+
+            BenefitsBaseResponse benefitsBaseResponse = response;
+            if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<BenefitsBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(benefitsBaseResponse);
+                servicesResponse.setType(ServicesRequestType.BENEFITS);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(""/*benefitsBaseResponse.getData().getResponse().getUserMessage()*/);
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_voucher));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the Loans/SavingFund request
+     *
+     * @param benefitsRequestData {BenefitsRequestData} request
+     * @return General Request model
+     */
+    public CoppelServicesBenefitsBaseRequest buildBenefitsRequest(BenefitsRequestData benefitsRequestData) {
+        CoppelServicesBenefitsBaseRequest coppelServicesBenefitsRequest = null;
+
+        int solicitud = benefitsRequestData.getSolicitud();
+
+        switch (benefitsRequestData.getBenefits_type()){
+
+            case BENEFITS_STATES:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsStatesRequest(solicitud);
+                break;
+            case BENEFITS_CITY:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCityRequest(solicitud,benefitsRequestData.getNum_estado());
+                break;
+            case BENEFITS_CATEGORIES:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad());
+                break;
+            case BENEFITS_DISCOUNTS:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsDiscountsRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getClave_servicio());
+                break;
+            case BENEFITS_COMPANY:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCompanyRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getClave_servicio(),
+                        String.valueOf(benefitsRequestData.getIdempresa()));
+                break;
+            case BENEFITS_ADVERTISING:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsAdvertisingRequest(solicitud,
+                        benefitsRequestData.getIdempresa());
+                break;
+
+            case BENEFITS_SEARCH:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsSearchRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getDes_busqueda());
+                break;
+        }
+
+        return coppelServicesBenefitsRequest;
+    }
+
+    public Class getBenefitsResponse(BenefitsType benefitsType) {
+        BenefitsBaseResponse benefitsBaseResponse = null;
+
+        Class clazz = null;
+        switch (benefitsType){
+
+            case BENEFITS_STATES:
+                benefitsBaseResponse = new BenefitsStatesResponse();
+                clazz = BenefitsStatesResponse.class;
+                break;
+            case BENEFITS_CITY:
+                benefitsBaseResponse = new BenefitsCitiesResponse();
+                clazz = BenefitsCitiesResponse.class;
+
+                break;
+            case BENEFITS_CATEGORIES:
+                benefitsBaseResponse = new BenefitsCategoriesResponse();
+                clazz = BenefitsCategoriesResponse.class;
+
+                break;
+            case BENEFITS_DISCOUNTS:
+                benefitsBaseResponse = new BenefitsDiscountsResponse();
+                clazz = BenefitsDiscountsResponse.class;
+
+                break;
+            case BENEFITS_COMPANY:
+                benefitsBaseResponse = new BenefitsCompaniesResponse();
+                clazz = BenefitsCompaniesResponse.class;
+
+                break;
+            case BENEFITS_ADVERTISING:
+                benefitsBaseResponse = new BenefitsAdvertisingResponse();
+                clazz = BenefitsAdvertisingResponse.class;
+
+                break;
+
+           // case BENEFITS_SEARCH:
+            //    benefitsBaseResponse = new BenefitsStatesResponse();
+             //   break;
+        }
+
+        return clazz;
+    }
+
+
+
+    /******************************************************/
 
     /* *******************************************************************************************************************************************************
      ***********************************************          General Methods          ************************************************************************

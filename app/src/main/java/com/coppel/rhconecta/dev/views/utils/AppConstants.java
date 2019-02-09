@@ -64,6 +64,8 @@ public class AppConstants {
     public static final String BUNDLE_BENEFICIARY_DATES = "BENEFICIARY_DATES";
     public static final String BUNDLE_BENEFICIARY = "BENEFICIARY";
     public static final String BUNDLE_SELECTED_GAS_DATE = "SELECTED_GAS_DATE";
+    public static final String BUNDLE_SELECTED_CATEGORY_BENEFITS = "BUNDLE_SELECTED_CATEGORY_BENEFITS";
+    public static final String BUNDLE_SELECTED_BENEFIT_DATA= "BUNDLE_SELECTED_BENEFIT_DATA";
 
     public static final String BUNDLE_LETTER = "BUNDLE_LETTER";
     public static final String BUNDLE_FIELDS_LETTER = "BUNDLE_FIELDS_LETTER";

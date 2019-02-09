@@ -219,4 +219,11 @@
 
     <string name="join_us">Sé parte de nuestro equipo</string>
 
+    <string name="hint_search">Introduce una búsqueda</string>
+
+    <string name="are_you_in_culiacan">¿No estás en Culiacán?</string>
+    <string name="change_city"><u>Cambia de ciudad</u></string>
+    <string name="discount_sample">30%\nde descuento</string>
+
+
 </resources>
