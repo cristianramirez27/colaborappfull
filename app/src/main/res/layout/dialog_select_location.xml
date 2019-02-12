@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_gravity="center
+"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="310dp"
+        android:layout_height="280dp"
+        android:paddingTop="16dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@drawable/background_blue_light_rounded"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_bold"
+            android:gravity="center"
+            android:text="¿Dónde estás?"
+            android:textColor="@android:color/white"
+            android:textSize="26sp" />
+
+        <RelativeLayout
+            android:id="@+id/layoutState"
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:background="@drawable/background_line_bottom"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="48dp"
+            android:clickable="true">
+
+            <EditText
+                android:id="@+id/state"
+                android:layout_width="match_parent"
+                android:duplicateParentState="true"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:background="@null"
+                android:hint="Selecciona el estado"
+                android:textColorHint="@color/hint_text_color"
+                android:enabled="false"
+                android:clickable="false"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:layout_height="60dp">
+            </EditText>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:duplicateParentState="true"
+                android:clickable="false"
+                android:padding="6dp"
+                android:src="@drawable/ic_down_arrow_white_2"/>
+
+            <View
+                android:id="@+id/viewState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_below="@+id/layoutState"
+            android:id="@+id/layoutCity"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/background_line_bottom"
+            android:clickable="true">
+
+            <EditText
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:enabled="false"
+                android:duplicateParentState="true"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:hint="Selecciona la ciudad"
+                android:textSize="16sp"
+                android:background="@null"
+                android:textAllCaps="false"
+                android:textColorHint="@color/hint_text_color"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:layout_height="60dp"/>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:duplicateParentState="true"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_down_arrow_white_2"/>
+
+            <View
+                android:id="@+id/viewCity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="4dp"
+            android:layout_marginBottom="24dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btnLeftOption"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_white_rounded"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:textColor="@color/colorSecondBlueCoppel"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btnRightOption"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_white_rounded"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="@string/accept"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:textColor="@color/colorSecondBlueCoppel"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

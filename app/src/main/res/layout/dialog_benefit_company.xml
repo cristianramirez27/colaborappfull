@@ -4,134 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     android:minHeight="460dp"
-    android:layout_margin="20dp">
+    android:elevation="8dp">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/card_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/card_back" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/card_front"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:layout_margin="2dp"
-        android:background="@drawable/background_dialog_white_rounded">
+        android:gravity="center">
+        <include layout="@layout/card_front" />
 
-        <ImageView
-            android:id="@+id/icClose"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_close_blue"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"/>
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_below="@+id/icClose"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/placeholder_category"/>
-
-        <RelativeLayout
-            android:layout_below="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btnAdvertising">
-
-            <TextView
-                android:id="@+id/txtDiscount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_bold"
-                android:gravity="center"
-                android:text="@string/discount_sample"
-                android:lines="2"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="26sp" />
-
-            <TextView
-                android:layout_below="@+id/txtDiscount"
-                android:id="@+id/txtDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="en maestría online internacional"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
-
-            <TextView
-                android:layout_below="@+id/txtDescription"
-                android:id="@+id/txtInformation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="Más información:"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+    </FrameLayout>
 
 
-            <TextView
-                android:layout_below="@+id/txtInformation"
-                android:id="@+id/txtNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="www.itesm.com.mx/preadmisión"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
-            <TextView
-                android:layout_below="@+id/txtNote"
-                android:id="@+id/txtAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="www.itesm.com.mx/preadmisión"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
-
-            <TextView
-                android:layout_below="@+id/txtAddress"
-                android:id="@+id/txtPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="www.itesm.com.mx/preadmisión"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
-
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/btnAdvertising"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_btns"
-            android:background="@color/colorSecondBlueCoppel"
-            android:fontFamily="@font/lineto_circular_pro_medium"
-            android:text="Publicidad de la empresa"
-            android:textAllCaps="false"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
 
 </RelativeLayout>

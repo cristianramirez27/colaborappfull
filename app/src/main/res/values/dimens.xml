@@ -11,5 +11,9 @@
     <dimen name="padding_push_snackbar">12dp</dimen>
 
     <dimen name="margin_general">20dp</dimen>
+
+    <integer name="anim_length">3000</integer>
+    <integer name="anim_length_half">1500</integer>
+
 </resources>
 

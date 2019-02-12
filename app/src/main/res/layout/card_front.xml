@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@drawable/background_dialog_white_rounded"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/icClose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_close_blue"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_below="@+id/icClose"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/placeholder_category"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_above="@+id/btnAdvertising">
+
+            <TextView
+                android:id="@+id/txtDiscountQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_bold"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:maxLines="1"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="30sp" />
+            <TextView
+                android:layout_below="@+id/txtDiscountQuantity"
+                android:id="@+id/txtDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_bold"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_below="@+id/txtDiscount"
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+            <TextView
+                android:layout_below="@+id/txtDescription"
+                android:id="@+id/txtInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:text="Más información:"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+
+            <TextView
+                android:layout_below="@+id/txtInformation"
+                android:id="@+id/txtNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="80dp"
+                android:scrollbars="vertical"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+            <TextView
+                android:layout_below="@+id/txtNote"
+                android:id="@+id/txtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="80dp"
+                android:layout_marginTop="4dp"
+                android:scrollbars="vertical"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+            <TextView
+                android:layout_below="@+id/txtAddress"
+                android:id="@+id/txtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="60dp"
+                android:autoLink="phone"
+                android:scrollbars="vertical"
+                android:textColorLink="@color/colorPrimaryCoppelAzul"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="13sp"
+                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnAdvertising"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btns"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/colorSecondBlueCoppel"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="Publicidad de la empresa"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

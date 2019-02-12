@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
@@ -1504,10 +1505,39 @@ public class ServicesInteractor {
             case  5:
                 getBenefitsCompanyRequest(benefitsRequestData, token);
                 break;
+
+            case  6:
+                getBenefitsSearchRequest(benefitsRequestData, token);
+                break;
+
+            case  7:
+                getBenefitsAdvertisingRequest(benefitsRequestData, token);
+                break;
         }
 
     }
 
+    private void getBenefitsAdvertisingRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsAdvertising(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsAdvertisingRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
 
     private void getBenefitsStatesRequest(BenefitsRequestData benefitsRequestData, String token) {
         iServicesRetrofitMethods.getBenefitsStates(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsStatesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
@@ -1626,6 +1656,33 @@ public class ServicesInteractor {
 
     private void getBenefitsCompanyRequest(BenefitsRequestData benefitsRequestData, String token) {
         iServicesRetrofitMethods.getBenefitsCompany(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsSearchRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsSearch(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsSearchRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -1784,9 +1841,10 @@ public class ServicesInteractor {
 
                 break;
 
-           // case BENEFITS_SEARCH:
-            //    benefitsBaseResponse = new BenefitsStatesResponse();
-             //   break;
+            case BENEFITS_SEARCH:
+                benefitsBaseResponse = new BenefitsSearchResponse();
+                clazz = BenefitsSearchResponse.class;
+                break;
         }
 
         return clazz;

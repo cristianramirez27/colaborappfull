@@ -70,6 +70,11 @@
             android:name=".views.activities.ConfigLetterActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".views.activities.DialogAlertActivity"
+            android:theme="@style/AppTheme.Transparent"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.coppel.rhconecta.dev.fileprovider"

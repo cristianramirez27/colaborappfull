@@ -1,10 +1,12 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
@@ -101,6 +103,14 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getBenefitsCompany(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsCompanyRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsAdvertising(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsAdvertisingRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitsSearch(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsSearchRequest servicesRequest);
 
 
 }

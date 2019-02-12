@@ -35,6 +35,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public static final int LETTER_DOWNLOAD_FAIL = 8;
     public static final int SEND_TO_LETTER = 9;
 
+    public static final int NO_RESULT_BENEFITS = 10;
+
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
     private Context context;
@@ -175,6 +177,17 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
+
+            case NO_RESULT_BENEFITS:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(contentText);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+
+
         }
     }
 

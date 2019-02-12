@@ -10,10 +10,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,7 +27,9 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -40,7 +45,10 @@ import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.FieldLetterRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectLocation;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectState;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherGasDetailFragment;
@@ -56,7 +64,9 @@ import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CATEGORIES;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CITY;
+import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_SEARCH;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_STATES;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
@@ -64,7 +74,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTE
 
 public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
-        DialogFragmentSelectState.OnButonOptionClick {
+        DialogFragmentSelectState.OnButonOptionClick ,DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
+        DialogFragmentGetDocument.OnButtonClickListener{
 
     public static final String TAG = BenefitsFragment.class.getSimpleName();
     private DialogFragmentLoader dialogFragmentLoader;
@@ -74,7 +85,10 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     private DialogFragmentWarning dialogFragmentWarning;
     private DialogFragmentSelectState dialogFragmentSelectState;
+    private DialogFragmentSelectLocation dialogFragmentSelectLocation;
     private BenefitsRequestData benefitsRequestData;
+
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
 
     private HomeActivity parent;
 
@@ -121,10 +135,31 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         rcvBenefits.setAdapter(benefitsRecyclerAdapter);
         rcvBenefits.setOnClickListener(this);
         titleChangeCity.setOnClickListener(this);
+        edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(edtSearch.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
 
+    private void performSearch(String search) {
+        BenefitsRequestData benefitsRequestData = new BenefitsRequestData(BENEFITS_SEARCH,6,stateSelected,citySelected);
+        benefitsRequestData.setDes_busqueda(search);
+        edtSearch.clearFocus();
+        InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -167,7 +202,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.titleChangeCity:
-                selectState();
+                showSelectLocation();
                 break;
         }
     }
@@ -205,6 +240,21 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                     }
 
                     showSelectCity(citiesAvailables);
+
+                }else if(response.getResponse() instanceof BenefitsSearchResponse){
+
+                    List<BenefitsCategoriesResponse.Category> listCategory = ((BenefitsSearchResponse)response.getResponse()).getData().getResponse().getCategorias();
+
+                    if(listCategory.size() == 1 && listCategory.get(0).getCve() == 0){
+                        showGetVoucherDialog(listCategory.get(0).getDescripcion());
+                    }else {
+
+                        for(BenefitsCategoriesResponse.Category category : ((BenefitsSearchResponse)response.getResponse()).getData().getResponse().getCategorias()){
+                            categories.add(category);
+                        }
+
+                        benefitsRecyclerAdapter.notifyDataSetChanged();
+                    }
 
                 }
 
@@ -308,6 +358,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
+    private void showSelectLocation(){
+        dialogFragmentSelectLocation = DialogFragmentSelectLocation.getInstance();
+        dialogFragmentSelectLocation.setOnSelectLocationsButtonsClickListener(this);
+        dialogFragmentSelectLocation.show(parent.getSupportFragmentManager(), DialogFragmentSelectLocation.TAG);
+    }
+
     private void showSelectState( List<BenefitsStatesResponse.States> statesList){
         StatesData statesData = new StatesData();
         statesData.setData(statesList);
@@ -334,14 +390,56 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onRightOptionStateClick(LocationEntity data) {
         if(data instanceof BenefitsStatesResponse.States){
             stateSelected = String.valueOf(((BenefitsStatesResponse.States)data).getId_es());
-            String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-            coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_CITY,2,stateSelected),token);
+            dialogFragmentSelectLocation.setState((BenefitsStatesResponse.States)data);
+            dialogFragmentSelectState.close();
         } else if(data instanceof BenefitsCitiesResponse.City){
             dialogFragmentSelectState.close();
             citySelected =  String.valueOf( ((BenefitsCitiesResponse.City)data).getId_es());
-            requestCategories(stateSelected,citySelected);
-
+            dialogFragmentSelectLocation.setCity((BenefitsCitiesResponse.City)data);
+            dialogFragmentSelectState.close();
         }
+    }
+
+    /**Location*/
+    @Override
+    public void onSelectLocation() {
+        requestCategories(stateSelected,citySelected);
+        dialogFragmentSelectLocation.close();
+    }
+
+    @Override
+    public void onSelectState() {
+        selectState();
+    }
+
+    @Override
+    public void onSelectCity(BenefitsStatesResponse.States state) {
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_CITY,2,stateSelected),token);
+    }
+
+    @Override
+    public void closeSelectLocationDialog() {
+        dialogFragmentSelectLocation.close();
+    }
+
+    private void showGetVoucherDialog(String msg) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(NO_RESULT_BENEFITS, parent);
+        dialogFragmentGetDocument.setContentText(msg);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+
+        dialogFragmentGetDocument.close();
 
     }
 }

@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments.benefits;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.Benefits;
+import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
@@ -29,6 +31,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.DialogAlertActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.DiscountsRecyclerAdapter;
@@ -47,6 +50,7 @@ import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_COMPANY;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_DISCOUNTS;
+import static com.coppel.rhconecta.dev.views.activities.DialogAlertActivity.KEY_COMPANY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -60,7 +64,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     private DiscountsRecyclerAdapter discountsRecyclerAdapter;
 
     private DialogFragmentWarning dialogFragmentWarning;
-    private DialogFragmentCompany dialogFragmentCompany;
+
 
     private HomeActivity parent;
 
@@ -176,6 +180,14 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+
+    private void showCompanyDialog(BenefitsCompaniesResponse.Company company) {
+        Intent intent = new Intent(getActivity(), DialogAlertActivity.class);
+        intent.putExtra(KEY_COMPANY, company);
+        startActivity(intent);
+
+    }
+
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
@@ -248,10 +260,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    private void showCompanyDialog(BenefitsCompaniesResponse.Company company){
-        dialogFragmentCompany = DialogFragmentCompany.getInstance(company);
-        dialogFragmentCompany.show(parent.getSupportFragmentManager(), DialogFragmentCompany.TAG);
-    }
+
 
     private void requestDiscounts(BenefitsCategoriesResponse.Category category){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
@@ -259,10 +268,15 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
                 String.valueOf(category.getCve())), token);
     }
 
+
+
+
     @Override
     public void onCategoryClick(BenefitsDiscountsResponse.Discount discount) {
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_COMPANY,
                 5,benefitsRequestData.getNum_estado(),benefitsRequestData.getNum_ciudad(),benefitsRequestData.getClave_servicio(),discount.getId_empresa()),token);
     }
+
+
 }
