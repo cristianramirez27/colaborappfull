@@ -119,6 +119,23 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
             String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
             coppelServicesPresenter.requestLettersConfig(numEmployer,typeLetter,token);
         }
+
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(dialogFragmentLoader != null && dialogFragmentLoader.isVisible()){
+                        hideProgress();
+                    }
+
+                }
+            }, 30000);
+
+        }catch (Exception e){
+
+        }
+
     }
 
     @Override

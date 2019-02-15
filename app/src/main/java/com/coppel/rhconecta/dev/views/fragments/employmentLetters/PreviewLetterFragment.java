@@ -44,7 +44,12 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_INFONAVIT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_VISA_PASSPORT;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD;
 
 public class PreviewLetterFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener{
@@ -216,7 +221,8 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponse= (LetterGenerateResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.bonus).replace(" ", "_"),
+                String nameFile = String.format("Constancia_%s",getName());
+                pdf = AppUtilities.savePDFFileLetter(nameFile.replace(" ", "_"),
                         letterGenerateResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
                     SHARE_PDF = true;
@@ -229,7 +235,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             case ServicesRequestType.LETTERGENERATE_SENDMAIL:
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponseSend= (LetterGenerateResponse) response.getResponse();
-
                 String message = letterGenerateResponseSend.getData().getResponse().getMensaje();
                 if(message.contains("Enviado correctamente.\n")){
                     message = message.replace("Enviado correctamente.\n","");
@@ -276,7 +281,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             case ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL:
                 showGetVoucherReadyDialog(DialogFragmentGetDocument.LETTER_DOWNLOAD_FAIL,"");
                 break;
-
 
             case ServicesRequestType.LETTERGENERATE_SENDMAIL:
                 showGetVoucherReadyDialog(DialogFragmentGetDocument.LETTER_SEND_FAIL,"");
@@ -335,14 +339,11 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onLeftOptionClick() {
                         dialogFragmentWarning.close();
-
                         if (SHARE_PDF) {
                             AppUtilities.openPDF(parent, pdf);
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
-
-
                         getActivity().finish();
                     }
                     @Override
@@ -354,7 +355,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
-
                         getActivity().finish();
                     }
                 });
@@ -423,6 +423,26 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         coppelServicesPresenter.requestLetterGenerateView(numEmployer,typeLetter,actionLetter,
                 email,previewDataVO.getFieldsLetter(),typeLetter == TYPE_KINDERGARTEN ?   previewDataVO.getDataOptional() : null,previewDataVO.isHasStamp(),token);
+
+    }
+
+    private String getName(){
+            switch (typeLetter){
+                case TYPE_WORK_RECORD:
+                    return getString(R.string.file_work_record);
+                case TYPE_VISA_PASSPORT:
+                    return getString(R.string.file_visa_passport);
+                case TYPE_BANK_CREDIT:
+                    return getString(R.string.file_bank_credit);
+                case TYPE_IMSS:
+                    return getString(R.string.file_imss);
+                case TYPE_INFONAVIT:
+                    return getString(R.string.file_infonavit);
+                case TYPE_KINDERGARTEN:
+                    return getString(R.string.file_kindergarten);
+
+                default: return "";
+        }
 
     }
 

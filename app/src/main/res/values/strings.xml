@@ -169,7 +169,7 @@
     <!-- Employment letters-->
     <string name="work_record">Constancia\nlaboral</string>
     <string name="visa_passport">Visa o\nPasaporte</string>
-    <string name="bank_credit">Crédito \nbancario</string>
+    <string name="bank_credit">Crédito\nbancario</string>
     <string name="infonavit">Infonavit</string>
     <string name="kindergarten">Guardería</string>
 
@@ -218,5 +218,12 @@
 
 
     <string name="join_us">Sé parte de nuestro equipo</string>
+
+    <string name="file_work_record">Constancia_laboral</string>
+    <string name="file_visa_passport">Visa_Pasaporte</string>
+    <string name="file_bank_credit">Crédito_bancario</string>
+    <string name="file_infonavit">Infonavit</string>
+    <string name="file_imss">IMSS</string>
+    <string name="file_kindergarten">Guardería</string>
 
 </resources>
