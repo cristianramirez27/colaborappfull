@@ -1,96 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
+    android:fillViewport="true"
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.PayrollVoucherFragment">
 
-
-    <TextView
-        android:id="@+id/titleLetters"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_medium"
-        android:text="@string/choose_child_name"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="22sp" />
-
-
-    <android.support.v7.widget.CardView
-        android:layout_below="@+id/titleLetters"
-        android:layout_above="@+id/btnNext"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="60dp"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="1dp"
-        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+        android:layout_height="match_parent">
 
         <RelativeLayout
+            android:layout_above="@id/btnNext"
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcvChilds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
+            <TextView
+                android:id="@+id/titleLetters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="@string/choose_child_name"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/colorSecondBlueCoppel"
+                android:textSize="22sp" />
 
             <RelativeLayout
-                android:layout_below="@+id/rcvChilds"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:padding="18dp"
-                android:background="@drawable/background_gray_rounder">
+                android:layout_height="match_parent"
+                android:layout_below="@+id/titleLetters">
 
-
-                <TextView
-                    android:id="@+id/labelEncabezado"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardview"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgVideoPreview"
-                    android:gravity="center"
-                    android:text="@string/check_data_msg"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="14sp" />
+                    android:layout_alignParentTop="true"
+                    app:cardElevation="8dp"
+                    app:cardCornerRadius="1dp"
+                    app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rcvChilds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <RelativeLayout
+                            android:layout_below="@+id/rcvChilds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp"
+                            android:padding="16dp"
+                            android:background="@drawable/background_gray_rounder">
+
+                            <TextView
+                                android:id="@+id/labelEncabezado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                android:padding="2dp"
+                                android:text="@string/check_data_msg"
+                                android:textColor="@color/colorTextCoppelNegro"
+                                android:textSize="13sp" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
             </RelativeLayout>
 
-
-
         </RelativeLayout>
 
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/background_blue_rounded"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:text="@string/next"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
-
-
-    </android.support.v7.widget.CardView>
-
-
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/background_blue_rounded"
-        android:fontFamily="@font/lineto_circular_pro_book"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp"
-        android:text="@string/next"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        />
-
-
-
-</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

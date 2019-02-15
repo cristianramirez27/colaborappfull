@@ -138,6 +138,25 @@ public class AppUtilities {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static File savePDFFileLetter(String name, String base64) {
+        try {
+            File path = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.APP_FOLDER);
+            path.mkdirs();
+            File pdf = new File(path, name + ".pdf");
+            byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
+            FileOutputStream os;
+            os = new FileOutputStream(pdf);
+            os.write(pdfAsBytes);
+            os.flush();
+            os.close();
+            return pdf;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+    }
+
     public static void sharePDF(Context context, File pdf) {
         Uri uri = FileProvider.getUriForFile(context, AppConstants.FILEPROVIDER, pdf);
         Intent intent = new Intent(Intent.ACTION_SEND);

@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_ADVERTISING;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_DISCOUNTS;
 import static com.coppel.rhconecta.dev.views.customviews.PushInvasiveDialog.KEY_PUSH_DATA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
@@ -78,12 +79,12 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
 
     @Override
     public void onCategoryClick(BenefitsCompaniesResponse.Company company) {
-  //      requestAdvertising(company);
+        requestAdvertising(company);
     }
 
     private void requestAdvertising(BenefitsCompaniesResponse.Company company){
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getBenefits( new BenefitsRequestData(BENEFITS_DISCOUNTS,7,company.getEmpresa()), token);
+        coppelServicesPresenter.getBenefits( new BenefitsRequestData(BENEFITS_ADVERTISING,7,company.getEmpresa()), token);
     }
 
     @Override

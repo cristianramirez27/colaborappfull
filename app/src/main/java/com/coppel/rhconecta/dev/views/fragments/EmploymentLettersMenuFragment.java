@@ -160,7 +160,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                 break;
         }
 
-        if(!hasAvailablePrints(TYPE_WORK_RECORD)){
+        if(!hasAvailablePrints(typeLetter)){
             showAlertPrints();
             return;
         }
@@ -263,9 +263,9 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                     }
                 });
                 dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                dialogFragmentLoader.close();
+
             }
-        }, 1500);
+        }, 200);
     }
 
     private boolean hasAvailablePrints(int typeLetter){

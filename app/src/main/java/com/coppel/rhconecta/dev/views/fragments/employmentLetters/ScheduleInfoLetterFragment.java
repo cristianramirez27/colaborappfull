@@ -193,13 +193,13 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
 
     @Override
     public void showProgress() {
-        dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+      //  dialogFragmentLoader = new DialogFragmentLoader();
+       // dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override
     public void hideProgress() {
-        dialogFragmentLoader.close();
+     //   dialogFragmentLoader.close();
     }
 
     public void setDataSchedule(LetterConfigResponse.DatosHorario datosHorario){

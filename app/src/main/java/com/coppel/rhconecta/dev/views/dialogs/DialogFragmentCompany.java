@@ -36,6 +36,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView icClose;
     @BindView(R.id.image)
     ImageView image;
+    @BindView(R.id.imageFull)
+    ImageView imageFull;
+
     @BindView(R.id.txtDiscountQuantity)
     TextView txtDiscountQuantity;
     @BindView(R.id.txtDiscount)
@@ -158,9 +161,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             case R.id.btnAdvertising:
                 //Se muestra la publicidad de la empresa
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
-                loadAnimations();
-                changeCameraDistance();
-                flipCard();
                 break;
         }
     }
@@ -171,6 +171,10 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     public void setAdvertising(BenefitsAdvertisingResponse.Advertising advertising) {
         this.advertising = advertising;
+        Picasso.with(getContext()).load(advertising.getRuta()).into(imageFull);
+        loadAnimations();
+        changeCameraDistance();
+        flipCard();
     }
 
     public interface OnBenefitsAdvertisingClickListener {

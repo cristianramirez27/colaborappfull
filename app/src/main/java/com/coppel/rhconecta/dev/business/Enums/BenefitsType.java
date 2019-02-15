@@ -12,8 +12,8 @@ public enum BenefitsType implements Serializable {
     BENEFITS_CATEGORIES,
     BENEFITS_DISCOUNTS,
     BENEFITS_COMPANY,
+    BENEFITS_SEARCH,
     BENEFITS_ADVERTISING,
-    BENEFITS_SEARCH
 
 
 }
