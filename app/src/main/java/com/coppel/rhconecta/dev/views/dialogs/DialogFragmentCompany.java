@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -175,6 +176,15 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         loadAnimations();
         changeCameraDistance();
         flipCard();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                close();
+            }
+        }, 4000);
+
     }
 
     public interface OnBenefitsAdvertisingClickListener {

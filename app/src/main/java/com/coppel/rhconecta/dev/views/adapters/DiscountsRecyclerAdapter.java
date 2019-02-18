@@ -60,10 +60,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
                 onBenefitsDiscountsClickListener.onCategoryClick(currentItem);
             }
         });
-
     }
-
-
 
     public List<BenefitsDiscountsResponse.Discount> getBenefits(){
         return discounts;
@@ -85,7 +82,6 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.cardViewDiscounts)
         CardView cardViewDiscounts;
         @BindView(R.id.imageBenefits)
@@ -93,12 +89,10 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         @BindView(R.id.discount)
         TextView discount;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
     }
 
     public void setOnBenefitsDiscountsClickListener(OnBenefitsDiscountsClickListener onBenefitsDiscountsClickListener) {
