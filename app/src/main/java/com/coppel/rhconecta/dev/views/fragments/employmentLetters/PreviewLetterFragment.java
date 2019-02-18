@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -95,6 +96,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
     private boolean successGenerate = false;
     private int typeLetter;
     private PreviewDataVO previewDataVO;
+    private long mLastClickTime = 0;
     private com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation ILettersNavigation;
 
     @Override
@@ -206,9 +208,20 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                 ILettersNavigation.showFragmentAtPosition(0,null);
                 break;
             case R.id.btnSend:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 onMailClick();
                 break;
             case R.id.btnDownload:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 onDownloadClick();
                 break;
         }

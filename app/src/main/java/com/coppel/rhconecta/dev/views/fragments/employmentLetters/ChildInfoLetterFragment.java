@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.fragments.employmentLetters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ public class ChildInfoLetterFragment extends Fragment implements View.OnClickLis
     private LetterConfigResponse letterConfigResponse;
     private List<LetterChildrenDataVO> childrenDataVOList;
     private ChildInfoLetterRecyclerAdapter childInfoLetterRecyclerAdapter;
+    private long mLastClickTime = 0;
 
     @BindView(R.id.rcvChilds)
     RecyclerView rcvChilds;
@@ -128,6 +130,11 @@ public class ChildInfoLetterFragment extends Fragment implements View.OnClickLis
 
         switch (v.getId()){
             case R.id.btnNext:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 if(childInfoLetterRecyclerAdapter.hasFielsdSelected()){
                     ILettersNavigation.showFragmentAtPosition(2,getData());

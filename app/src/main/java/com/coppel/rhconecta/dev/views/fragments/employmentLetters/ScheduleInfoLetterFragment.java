@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.fragments.employmentLetters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -81,6 +82,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
     @BindView(R.id.btnNext)
     Button btnNext;
 
+    private long mLastClickTime = 0;
     private DialogFragmentScheduleData dialogFragmentScheduleData;
     private LetterConfigResponse.DatosHorario datosHorario;
     private com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation ILettersNavigation;
@@ -178,6 +180,12 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
                 break;
 
             case R.id.btnNext:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 goNextStep();
                 break;
         }

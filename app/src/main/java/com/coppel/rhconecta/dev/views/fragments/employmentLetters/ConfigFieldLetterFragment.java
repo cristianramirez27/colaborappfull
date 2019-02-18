@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -54,6 +55,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     private LetterConfigResponse letterConfigResponse;
     private List<LetterConfigResponse.Datos> fieldsLetter;
     private FieldLetterRecyclerAdapter fieldLetterRecyclerAdapter;
+    private long mLastClickTime = 0;
 
     private DialogFragmentWarning dialogFragmentWarning;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -130,7 +132,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
                     }
 
                 }
-            }, 30000);
+            }, 15000);
 
         }catch (Exception e){
 
@@ -159,6 +161,12 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnNext:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 if(fieldLetterRecyclerAdapter.hasFielsdSelected()){
                     if(typeLetter != TYPE_KINDERGARTEN){
                         showAlertStampLetter();
