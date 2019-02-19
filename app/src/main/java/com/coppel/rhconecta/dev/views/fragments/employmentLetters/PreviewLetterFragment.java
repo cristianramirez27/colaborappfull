@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments.employmentLetters;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -234,7 +235,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponse= (LetterGenerateResponse) response.getResponse();
-                String nameFile = String.format("Constancia_%s",getName());
+                String nameFile = String.format("%s",getName());
                 pdf = AppUtilities.savePDFFileLetter(nameFile.replace(" ", "_"),
                         letterGenerateResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
@@ -277,6 +278,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             @Override
                             public void onRightOptionClick() {
                                 dialogFragmentWarning.close();
+                                getActivity().setResult(Activity.RESULT_OK);
                                 getActivity().finish();
                             }
                         });
@@ -357,6 +359,8 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
+
+                        getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
                     @Override
@@ -368,6 +372,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
+                        getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
                 });
@@ -389,7 +394,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onAccept() {
-
         dialogFragmentGetDocument.close();
         if(successGenerate) {
             successGenerate = false;

@@ -192,7 +192,7 @@
     <string name="choose_child_name">Selecciona el nombre de tu(s) hijo(s)</string>
     <string name="choose_schedule">Selecciona tu horario laboral</string>
 
-    <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja azul</string>
+    <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
 
     <string name="start_day">Día inicial</string>
     <string name="end_day">Día final</string>
@@ -221,9 +221,9 @@
 
     <string name="file_work_record">Constancia_laboral</string>
     <string name="file_visa_passport">Visa_Pasaporte</string>
-    <string name="file_bank_credit">Crédito_bancario</string>
+    <string name="file_bank_credit">Credito_bancario</string>
     <string name="file_infonavit">Infonavit</string>
     <string name="file_imss">IMSS</string>
-    <string name="file_kindergarten">Guardería</string>
+    <string name="file_kindergarten">Guarderia</string>
 
 </resources>

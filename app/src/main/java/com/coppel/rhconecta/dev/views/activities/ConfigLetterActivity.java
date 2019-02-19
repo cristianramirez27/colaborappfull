@@ -92,7 +92,6 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
 
         LetterConfigResponse configResponse = (LetterConfigResponse) data;
         ChildInfoLetterFragment childInfoLetterFragment = (ChildInfoLetterFragment) ((PagerAdapter)viewPager.getAdapter()).getFragmentAtPosition(1);
-
         ScheduleInfoLetterFragment scheduleInfoLetterFragment = (ScheduleInfoLetterFragment) ((PagerAdapter)viewPager.getAdapter()).getFragmentAtPosition(2);
         childInfoLetterFragment.setDataChild(configResponse.getData().getResponse().getDatosGuarderia().getNombre_hijos());
         scheduleInfoLetterFragment.setDataSchedule(configResponse.getData().getResponse().getDatosGuarderia().getDatoshorario());

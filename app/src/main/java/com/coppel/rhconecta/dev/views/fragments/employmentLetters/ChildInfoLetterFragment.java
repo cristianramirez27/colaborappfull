@@ -131,7 +131,7 @@ public class ChildInfoLetterFragment extends Fragment implements View.OnClickLis
         switch (v.getId()){
             case R.id.btnNext:
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1200){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();

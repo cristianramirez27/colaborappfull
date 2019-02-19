@@ -304,7 +304,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
     private PreviewDataVO getData(){
         PreviewDataVO previewDataVO = parent.getPreviewDataVO();
         CoppelServicesLettersGenerateRequest.Data dataOptional =  previewDataVO.getDataOptional();
-        String hourStart = String.format("%s %s",endHour.getText().toString(),rdbAmStart.isChecked() ? "am" : "pm");
+        String hourStart = String.format("%s %s",starHour.getText().toString(),rdbAmStart.isChecked() ? "am" : "pm");
         String hourEnd = String.format("%s %s",endHour.getText().toString(), rdbAmEnd.isChecked() ? "am" : "pm");
         LetterJobScheduleData letterJobScheduleData = new LetterJobScheduleData(hourStart,hourEnd);
         LetterScheduleData scheduleData = new LetterScheduleData(eatingTime.getText().toString());

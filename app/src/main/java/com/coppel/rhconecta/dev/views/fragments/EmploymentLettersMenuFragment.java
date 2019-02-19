@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -44,6 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
@@ -58,6 +60,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD
 public class EmploymentLettersMenuFragment extends Fragment implements IServicesContract.View,
         EmploymentLettersMenuRecyclerAdapter.OnItemClick, View.OnClickListener, DialogFragmentWarning.OnOptionClick {
 
+    public static final int REQUEST_LETTER = 839;
     public static final String TAG = EmploymentLettersMenuFragment.class.getSimpleName();
     private HomeActivity parent;
     private DialogFragmentLoader dialogFragmentLoader;
@@ -78,7 +81,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @BindView(R.id.txvPressToRefresh)
     TextView txvPressToRefresh;
 
-
+    private long mLastClickTime = 0;
 
     private com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification ISurveyNotification;
     private DialogFragmentWarning dialogFragmentWarning;
@@ -117,11 +120,9 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (letterSignatureResponse == null) {
             coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
         }
-
     }
 
     @Override
@@ -137,6 +138,11 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @Override
     public void onItemClick(String tag) {
         int typeLetter = 0;
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (tag) {
 
@@ -167,7 +173,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
 
         Intent intentConfigLetter = new Intent(getActivity(), ConfigLetterActivity.class);
         intentConfigLetter.putExtra(BUNDLE_LETTER,typeLetter);
-        startActivity(intentConfigLetter);
+        startActivityForResult(intentConfigLetter,REQUEST_LETTER);
     }
 
     @Override
@@ -277,5 +283,18 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
         }
 
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_LETTER && resultCode == RESULT_OK){
+            if (coppelServicesPresenter != null) {
+                coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
+            }
+        }
+
+
     }
 }

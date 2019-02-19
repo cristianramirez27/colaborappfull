@@ -145,10 +145,20 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
 
             case R.id.dateStartHolidayLayout:
 
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showDatePicker(true);
                 break;
 
             case R.id.dateEndHolidayLayout:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 if(dateStartHoliday.getText() != null || !dateStartHoliday.getText().toString().isEmpty()) {
                     showDatePicker(false);
