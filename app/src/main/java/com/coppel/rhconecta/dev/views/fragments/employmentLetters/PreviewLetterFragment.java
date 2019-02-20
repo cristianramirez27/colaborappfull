@@ -157,6 +157,8 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }else {
             txtFooter1 = dataLetter.getResponse().getPie1().replace("\n\n", System.getProperty("line.separator"));
+            //txtFooter1 = dataLetter.getResponse().getPie1();
+            txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }
 
         String txtFooter2 = dataLetter.getResponse().getPie2().replace("\n\n", System.getProperty("line.separator"));
@@ -165,16 +167,18 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify, Html.FROM_HTML_MODE_COMPACT));
-            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
-            else{ footer1.setText(txtFooter1); }
+           // if(typeLetter == TYPE_KINDERGARTEN )
+                footer1.setText(Html.fromHtml(txtFooter1));
+            //else{ footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
 
         } else {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify));
-            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
-            else { footer1.setText(txtFooter1); }
+            //if(typeLetter == TYPE_KINDERGARTEN )
+            // footer1.setText(Html.fromHtml(txtFooter1));
+           // else { footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
         }
         }
@@ -235,7 +239,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponse= (LetterGenerateResponse) response.getResponse();
-                String nameFile = String.format("%s",getName());
+                String nameFile = String.format("Constancia_%s",getName());
                 pdf = AppUtilities.savePDFFileLetter(nameFile.replace(" ", "_"),
                         letterGenerateResponse.getData().getResponse().getPdf());
                 if (pdf != null) {
@@ -457,7 +461,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                     return getString(R.string.file_infonavit);
                 case TYPE_KINDERGARTEN:
                     return getString(R.string.file_kindergarten);
-
                 default: return "";
         }
 

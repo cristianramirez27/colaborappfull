@@ -19,19 +19,19 @@
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
         android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
 
 
     <android.support.v7.widget.CardView
-        android:layout_below="@+id/titleLetters"
-        android:layout_above="@+id/btnNext"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="8dp"
+        android:layout_above="@+id/btnNext"
+        android:layout_below="@+id/titleLetters"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
         app:cardCornerRadius="1dp"
-        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+        app:cardElevation="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -40,17 +40,18 @@
 
             <ScrollView
                 android:id="@+id/scrollContent"
-                android:layout_above="@+id/containerMessage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_above="@+id/containerMessage">
 
                 <LinearLayout
                     android:id="@+id/schedulelayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
@@ -58,17 +59,17 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingTop="6dp">
 
                         <RelativeLayout
                             android:id="@+id/startDayLayout"
-                            android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
+                            android:layout_weight="1"
                             android:background="@drawable/background_bottom_line"
-                            android:layout_weight="1">
+                            android:clickable="true">
 
                             <TextView
                                 android:id="@+id/startDayLabel"
@@ -79,33 +80,36 @@
                                 android:text="@string/start_day"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/startDay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/startDayLabel"
-                                android:gravity="center"
                                 android:layout_marginTop="6dp"
+                                android:gravity="center"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
 
 
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/endDayLayout"
-                            android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/background_bottom_line"
                             android:layout_marginLeft="8dp"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
                             <TextView
                                 android:id="@+id/endDayLabel"
                                 android:layout_width="wrap_content"
@@ -115,21 +119,23 @@
                                 android:text="@string/end_day"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/endDay"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/endDayLabel"
-                                android:gravity="center"
                                 android:layout_marginTop="6dp"
+                                android:gravity="center"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -137,18 +143,19 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
 
                         <RelativeLayout
                             android:id="@+id/startHourLayout"
-                            android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_gravity="bottom"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
                             android:background="@drawable/background_bottom_line"
-                            android:layout_weight="1">
+                            android:clickable="true">
+
                             <TextView
                                 android:id="@+id/startHourLabel"
                                 android:layout_width="wrap_content"
@@ -158,61 +165,64 @@
                                 android:text="@string/start_hour"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/starHour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/startHourLabel"
-                                android:gravity="center"
                                 android:layout_marginTop="6dp"
+                                android:gravity="center"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
                         </RelativeLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/background_bottom_line"
-                            android:layout_marginLeft="8dp"
                             android:layout_gravity="bottom"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:orientation="horizontal">
 
                             <RadioGroup
+                                android:id="@+id/rdgStartHour"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="2dp"
-                                android:id="@+id/rdgStartHour"
                                 android:orientation="horizontal">
 
                                 <RadioButton
-                                    android:theme="@style/MyRaidoButton"
                                     android:id="@+id/rdbAmStart"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/am"
-                                    android:layoutDirection="rtl"
-                                    android:gravity="right|center_vertical"
                                     android:layout_weight="1"
                                     android:checked="true"
-                                    android:textColor="@color/colorTextGray"/>
+                                    android:gravity="right|center_vertical"
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/am"
+                                    android:textColor="@color/colorTextGray"
+                                    android:theme="@style/MyRaidoButton" />
 
                                 <RadioButton
-                                    android:theme="@style/MyRaidoButton"
                                     android:id="@+id/rdbPmStart"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/pm"
-                                    android:layout_weight="1"
                                     android:layout_gravity="right"
-                                    android:layoutDirection="rtl"
+                                    android:layout_weight="1"
                                     android:gravity="right|center_vertical"
-                                    android:textColor="@color/colorTextGray"/>
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/pm"
+                                    android:textColor="@color/colorTextGray"
+                                    android:theme="@style/MyRaidoButton" />
 
                             </RadioGroup>
 
@@ -224,18 +234,19 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
 
                         <RelativeLayout
                             android:id="@+id/endHourLayout"
-                            android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
                             android:layout_gravity="bottom"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
                             android:background="@drawable/background_bottom_line"
-                            android:layout_weight="1">
+                            android:clickable="true">
+
                             <TextView
                                 android:id="@+id/endHourLabel"
                                 android:layout_width="wrap_content"
@@ -245,61 +256,64 @@
                                 android:text="@string/end_hour"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/endHour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/endHourLabel"
-                                android:gravity="center"
                                 android:layout_marginTop="6dp"
+                                android:gravity="center"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
                         </RelativeLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/background_bottom_line"
-                            android:layout_marginLeft="8dp"
                             android:layout_gravity="bottom"
-                            android:orientation="horizontal"
-                            android:layout_weight="1">
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:orientation="horizontal">
 
                             <RadioGroup
+                                android:id="@+id/rdgEndHour"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="2dp"
-                                android:id="@+id/rdgEndHour"
                                 android:orientation="horizontal">
 
                                 <RadioButton
-                                    android:theme="@style/MyRaidoButton"
                                     android:id="@+id/rdbAmEnd"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/am"
-                                    android:gravity="right|center_vertical"
                                     android:layout_weight="1"
                                     android:checked="true"
+                                    android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
-                                    android:textColor="@color/colorTextGray"/>
+                                    android:text="@string/am"
+                                    android:textColor="@color/colorTextGray"
+                                    android:theme="@style/MyRaidoButton" />
 
                                 <RadioButton
-                                    android:theme="@style/MyRaidoButton"
                                     android:id="@+id/rdbPmEnd"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/pm"
-                                    android:layout_weight="1"
                                     android:layout_gravity="right"
+                                    android:layout_weight="1"
                                     android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
-                                    android:textColor="@color/colorTextGray"/>
+                                    android:text="@string/pm"
+                                    android:textColor="@color/colorTextGray"
+                                    android:theme="@style/MyRaidoButton" />
 
                             </RadioGroup>
 
@@ -312,18 +326,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="4dp">
 
 
                         <RelativeLayout
                             android:id="@+id/eatingTimeLayout"
-                            android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
+                            android:layout_weight="1"
                             android:background="@drawable/background_bottom_line"
-                            android:layout_weight="1">
+                            android:clickable="true">
 
                             <TextView
                                 android:id="@+id/eatingTimeLabel"
@@ -334,21 +348,23 @@
                                 android:text="@string/eating_time"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <TextView
                                 android:id="@+id/eatingTime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/eatingTimeLabel"
-                                android:gravity="center"
                                 android:layout_marginTop="6dp"
+                                android:gravity="center"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:textSize="14sp" />
+
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue"/>
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
 
                         </RelativeLayout>
 
@@ -364,13 +380,13 @@
                 android:id="@+id/containerMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
                 android:layout_alignParentBottom="true"
-                android:padding="18dp"
-                android:background="@drawable/background_gray_rounder">
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/background_gray_rounder"
+                android:padding="18dp">
 
 
                 <TextView
@@ -383,15 +399,8 @@
                     android:textColor="@color/colorTextCoppelNegro"
                     android:textSize="14sp" />
 
-
             </RelativeLayout>
-
-
-
         </RelativeLayout>
-
-
-
 
     </android.support.v7.widget.CardView>
 
@@ -408,9 +417,6 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        android:layout_alignParentBottom="true"
-        />
-
-
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

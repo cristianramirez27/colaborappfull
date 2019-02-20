@@ -219,11 +219,11 @@
 
     <string name="join_us">Sé parte de nuestro equipo</string>
 
-    <string name="file_work_record">Constancia_laboral</string>
+    <string name="file_work_record">Laboral</string>
     <string name="file_visa_passport">Visa_Pasaporte</string>
-    <string name="file_bank_credit">Credito_bancario</string>
+    <string name="file_bank_credit">Credito_Bancario</string>
     <string name="file_infonavit">Infonavit</string>
-    <string name="file_imss">IMSS</string>
+    <string name="file_imss">AltaUltimo_Movto_IMSS.</string>
     <string name="file_kindergarten">Guarderia</string>
 
 </resources>
