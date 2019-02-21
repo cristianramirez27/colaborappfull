@@ -223,7 +223,7 @@
     <string name="file_visa_passport">Visa_Pasaporte</string>
     <string name="file_bank_credit">Credito_Bancario</string>
     <string name="file_infonavit">Infonavit</string>
-    <string name="file_imss">AltaUltimo_Movto_IMSS.</string>
+    <string name="file_imss">AltaUltimo_Movto_IMSS</string>
     <string name="file_kindergarten">Guarderia</string>
 
 </resources>

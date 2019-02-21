@@ -195,6 +195,8 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                     rcvOptions.setVisibility(View.VISIBLE);
                     ctlConnectionError.setVisibility(View.GONE);
                     letterSignatureResponse = (LetterSignatureResponse) response.getResponse();
+                    menuItems.clear();
+
                     menuItems.addAll(MenuUtilities.getEmploymentLettersMenu(parent));
                     employmentLettersMenuRecyclerAdapter.notifyItemRangeInserted(employmentLettersMenuRecyclerAdapter.getItemCount(), menuItems.size());
 
