@@ -146,29 +146,42 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
     if(previewDataVO != null){
         LetterPreviewResponse.Data dataLetter = previewDataVO.getDataLetter();
-        String txtHeader1 = dataLetter.getResponse().getEncabezado1().replace("\n\n", System.getProperty("line.separator"));
-        String txtHeader2 = dataLetter.getResponse().getEncabezado2().replace("\n\n", System.getProperty("line.separator"));
+        String txtHeader1 = dataLetter.getResponse().getEncabezado1().replaceAll("\n\n", "<br />");
+        String txtHeader2 = dataLetter.getResponse().getEncabezado2().replaceAll("\n\n", "<br />");
         String bodyJusfify = "<html><body><p align=\"justify\">" + dataLetter.getResponse().getCuerpo() + "</p></body></html>";
         String txtFooter1= null;
 
 
         if(typeLetter == TYPE_KINDERGARTEN ) {
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+           // txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
             txtFooter1 = dataLetter.getResponse().getPie1();
             txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }else {
-            txtFooter1 = dataLetter.getResponse().getPie1().replace("\n\n", System.getProperty("line.separator"));
-            //txtFooter1 = dataLetter.getResponse().getPie1();
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+            txtFooter1 = dataLetter.getResponse().getPie1();
             txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }
 
-        String txtFooter2 = dataLetter.getResponse().getPie2().replace("\n\n", System.getProperty("line.separator"));
+        String txtFooter2 = dataLetter.getResponse().getPie2().replaceAll("\n\n","<br />");
+
+
+        /**/
+         txtHeader1 = txtHeader1.replaceAll("<br />", "");
+         txtHeader2 = txtHeader2.replaceAll("<br />", "");
+         bodyJusfify =bodyJusfify.replaceAll("<br />", "");
+         if(txtFooter1 != null)txtFooter1 = txtFooter1.replaceAll("\n\n", "<br />");
+         txtFooter2 = txtFooter2.replaceAll("<br />", "");
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify, Html.FROM_HTML_MODE_COMPACT));
            // if(typeLetter == TYPE_KINDERGARTEN )
-                footer1.setText(Html.fromHtml(txtFooter1));
+               if(txtFooter1 != null && !txtFooter1.isEmpty()) footer1.setText(Html.fromHtml(txtFooter1));
             //else{ footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
 
@@ -177,7 +190,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify));
             //if(typeLetter == TYPE_KINDERGARTEN )
-            // footer1.setText(Html.fromHtml(txtFooter1));
+            if(txtFooter1 != null && !txtFooter1.isEmpty())footer1.setText(Html.fromHtml(txtFooter1));
            // else { footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
         }
