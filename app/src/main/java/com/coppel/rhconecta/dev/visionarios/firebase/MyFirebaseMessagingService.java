@@ -31,6 +31,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONObject;
 
 import java.util.Map;
+import java.util.Random;
 
 import static com.coppel.rhconecta.dev.business.Enums.PushType.INVASIVE;
 import static com.coppel.rhconecta.dev.business.Enums.PushType.NOINVASIVE;
@@ -43,13 +44,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (remoteMessage.getNotification() != null) {
                 try {
 
-                    Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
-                            remoteMessage.getNotification().getTitle(),
-                            remoteMessage.getNotification().getBody(),
-                            NotificationCreator.getPendindIntent(CoppelApp.getContext(),
-                                     MainActivity.class )).build();
-                    NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(778, notification);
+                    if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
 
+                        Random rand = new Random();
+                        int idNotification = rand.nextInt(999);
+                        Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
+                                remoteMessage.getNotification().getTitle(),
+                                remoteMessage.getNotification().getBody(),
+                                NotificationCreator.getPendindIntent(CoppelApp.getContext(),
+                                        MainActivity.class )).build();
+                        NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
+
+                   }
 
                    // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
                 } catch (Exception ex) {
