@@ -41,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
@@ -79,10 +80,11 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
         ILettersNavigation = (com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation) context;
     }
 
-    public static ConfigFieldLetterFragment getInstance(int tipoCarta){
+    public static ConfigFieldLetterFragment getInstance(int tipoCarta,LetterConfigResponse letterConfigResponse){
         ConfigFieldLetterFragment fragment = new ConfigFieldLetterFragment();
         Bundle args = new Bundle();
         args.putInt(BUNDLE_LETTER,tipoCarta);
+        args.putSerializable(BUNDLE_RESPONSE_CONFIG_LETTER,letterConfigResponse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,6 +104,11 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
         rcvFields.setAdapter(fieldLetterRecyclerAdapter);
         btnNext.setOnClickListener(this);
 
+        ServicesResponse response = new ServicesResponse();
+        response.setType(ServicesRequestType.LETTERSCONFIG);
+        response.setResponse(letterConfigResponse);
+        showResponse(response);
+
         return view;
     }
 
@@ -110,17 +117,17 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         typeLetter = getArguments().getInt(BUNDLE_LETTER);
-
+        letterConfigResponse = (LetterConfigResponse) getArguments().getSerializable(BUNDLE_RESPONSE_CONFIG_LETTER);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (letterConfigResponse == null) {
+      /*  if (letterConfigResponse == null) {
             String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
             String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
             coppelServicesPresenter.requestLettersConfig(numEmployer,typeLetter,token);
-        }
+        }*/
 
         try {
             new Handler().postDelayed(new Runnable() {
@@ -189,7 +196,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
             case ServicesRequestType.LETTERSCONFIG:
-                letterConfigResponse = (LetterConfigResponse) response.getResponse();
+               // letterConfigResponse = (LetterConfigResponse) response.getResponse();
                 for(LetterConfigResponse.Datos datos : letterConfigResponse.getData().getResponse().getDatosCarta()){
                     datos.setSelected(datos.getIdu_defaultdatoscarta() == 1);
                     fieldsLetter.add(datos);
@@ -257,7 +264,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
 
     @Override
     public void hideProgress() {
-        dialogFragmentLoader.close();
+       if(dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
 
 

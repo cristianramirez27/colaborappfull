@@ -42,6 +42,8 @@ public class AppConfig {
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
 
+    public final static int CLAVE_LETTER_MAX = 4;
+
 
     /**Se almacenan los endpoints*/
     public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig){

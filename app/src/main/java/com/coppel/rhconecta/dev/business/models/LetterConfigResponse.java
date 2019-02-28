@@ -14,7 +14,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
         this.data = data;
     }
 
-    public class Data {
+    public class Data  implements Serializable{
 
         private Response response;
         private List<DatosHorarios> datosHorarios;
@@ -32,7 +32,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Response {
+    public class Response  implements Serializable {
         private String Clave;
         private String Mensaje;
         private Datos[] datosCarta;
@@ -56,7 +56,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
             Mensaje = mensaje;
         }
 
-        public Datos[] getDatosCarta() {
+        public Datos[]  getDatosCarta() {
             return datosCarta;
         }
 
@@ -89,7 +89,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Datos {
+    public class Datos  implements Serializable {
         private int idu_datoscartas;
         private int idu_defaultdatoscarta;
         private String nom_datoscartas;
@@ -162,7 +162,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
     }
 
 
-    public class DatosGuarderia {
+    public class DatosGuarderia  implements Serializable{
         private List<LetterChildrenData> Nombre_hijos;
         private DatosHorario datoshorario;
 
@@ -184,7 +184,7 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse {
     }
 
 
-    public class DatosHorario {
+    public class DatosHorario  implements Serializable{
         private List<HorarioComida> horario_Comida;
         private List<HorarioLaboral> horario_Laboral;
         private List<HorarioSeccion> horario_Seccion;
