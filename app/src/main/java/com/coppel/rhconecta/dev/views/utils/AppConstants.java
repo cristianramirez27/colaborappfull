@@ -12,6 +12,8 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
     public static final String SHARED_PREFERENCES_TOKEN = "TOKEN";
     public static final String SHARED_PREFERENCES_NUM_COLABORADOR = "NUM_COLABORADOR";
+    public static final String SHARED_PREFERENCES_STATE_COLABORADOR = "STATE_COLABORADOR ";
+    public static final String SHARED_PREFERENCES_CITY_COLABORADOR = "CITY_COLABORADOR";
     public static final String SHARED_PREFERENCES_FIREBASE_TOKEN = "FIREBASE_TOKEN";
 
     public static final String APP_FOLDER = "ConectaCoppel";
@@ -21,7 +23,7 @@ public class AppConstants {
     public static final String OPTION_HOME = "HOME";
     public static final String OPTION_NOTICE = "NOTICE";
     public static final String OPTION_PAYROLL_VOUCHER = "PAYROLL_VOUCHER";
-    public static final String OPTION_BENEFITS = "BENEFITS";
+    public static final String OPTION_BENEFITS = "BENEFIT";
     public static final String OPTION_SAVING_FUND = "SAVING_FUND";
     public static final String OPTION_VISIONARIES = "VISIONARIES";
     public static final String OPTION_LETTERS = "LETTERS";

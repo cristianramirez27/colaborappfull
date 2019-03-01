@@ -172,7 +172,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     public void setAdvertising(BenefitsAdvertisingResponse.Advertising advertising) {
         this.advertising = advertising;
-        Picasso.with(getContext()).load(advertising.getRuta()).into(imageFull);
+        Picasso.with(getContext()).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad ).into(imageFull);
         loadAnimations();
         changeCameraDistance();
         flipCard();
@@ -182,8 +182,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             public void run() {
 
                 close();
+                getActivity().finish();
             }
-        }, 4000);
+        }, 5000);
 
     }
 

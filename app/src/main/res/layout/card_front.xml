@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:scrollbars="vertical"
         android:background="@drawable/background_dialog_white_rounded"
         android:padding="8dp">
 
@@ -25,113 +25,121 @@
             android:layout_below="@+id/icClose"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/placeholder_category"/>
 
-        <RelativeLayout
-            android:layout_below="@+id/image"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_above="@+id/btnAdvertising">
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_above="@+id/btnAdvertising"
+            android:layout_below="@+id/image">
 
-            <TextView
-                android:id="@+id/txtDiscountQuantity"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_bold"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:maxLines="1"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="30sp" />
-            <TextView
-                android:layout_below="@+id/txtDiscountQuantity"
-                android:id="@+id/txtDiscount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_bold"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="14sp" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
-            <TextView
-                android:layout_below="@+id/txtDiscount"
-                android:id="@+id/txtDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+                <TextView
+                    android:id="@+id/txtDiscountQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_bold"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:maxLines="1"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="30sp" />
+                <TextView
+                    android:layout_below="@+id/txtDiscountQuantity"
+                    android:id="@+id/txtDiscount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_bold"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:layout_below="@+id/txtDescription"
-                android:id="@+id/txtInformation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:text="Más información:"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+                <TextView
+                    android:layout_below="@+id/txtDiscount"
+                    android:id="@+id/txtDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:gravity="center"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
-
-            <TextView
-                android:layout_below="@+id/txtInformation"
-                android:id="@+id/txtNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="80dp"
-                android:scrollbars="vertical"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
-
-            <TextView
-                android:layout_below="@+id/txtNote"
-                android:id="@+id/txtAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="80dp"
-                android:layout_marginTop="4dp"
-                android:scrollbars="vertical"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
-
-            <TextView
-                android:layout_below="@+id/txtAddress"
-                android:id="@+id/txtPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="60dp"
-                android:autoLink="phone"
-                android:scrollbars="vertical"
-                android:textColorLink="@color/colorPrimaryCoppelAzul"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:gravity="center"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+                <TextView
+                    android:layout_below="@+id/txtDescription"
+                    android:id="@+id/txtInformation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:gravity="center"
+                    android:text="Más información:"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_below="@+id/txtInformation"
+                    android:id="@+id/txtNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="80dp"
+                    android:scrollbars="vertical"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:gravity="center"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+                <TextView
+                    android:layout_below="@+id/txtNote"
+                    android:id="@+id/txtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="80dp"
+                    android:layout_marginTop="4dp"
+                    android:scrollbars="vertical"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:gravity="center"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+                <TextView
+                    android:layout_below="@+id/txtAddress"
+                    android:id="@+id/txtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="60dp"
+                    android:autoLink="phone"
+                    android:scrollbars="vertical"
+                    android:textColorLink="@color/colorPrimaryCoppelAzul"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:gravity="center"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+
 
         <Button
             android:id="@+id/btnAdvertising"

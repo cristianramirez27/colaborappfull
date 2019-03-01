@@ -41,6 +41,8 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.resources.db.RealmHelper;
+import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
@@ -71,6 +73,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
@@ -125,7 +128,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         parent = (HomeActivity) getActivity();
-        parent.setToolbarTitle("dsada");
+        parent.setToolbarTitle(getString(R.string.benefits));
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         rcvBenefits.setHasFixedSize(true);
         rcvBenefits.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -164,6 +167,14 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);;
+        citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);;
+        if(stateSelected.equals("0"))
+            stateSelected = "2";
+        if(citySelected.equals("0"))
+            citySelected = "104";
+
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
@@ -1635,7 +1636,13 @@ public class ServicesInteractor {
 
                     BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
                     //getBenefitsResponse(benefitsRequestData.getBenefits_type());
-                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                    if(benefitsBaseResponse == null){
+                        BenefitsEmptyResponse benefitsEmptyResponse =  (BenefitsEmptyResponse) servicesUtilities.parseToObjectClass(response.body().toString(),BenefitsEmptyResponse.class);
+
+
+                        getBenefitsResponse(benefitsEmptyResponse, response.code());
+                    }else if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
                         sendGenericError(ServicesRequestType.BENEFITS, response);

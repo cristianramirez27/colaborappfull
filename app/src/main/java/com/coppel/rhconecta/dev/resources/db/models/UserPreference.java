@@ -26,9 +26,9 @@ public class UserPreference extends RealmObject {
     public RealmList<HomeMenuItem> getMenuItems() {
         RealmList<HomeMenuItem> tempList = new RealmList<>();
         for(HomeMenuItem menuItem: menuItems) {
-            if(!menuItem.getTAG().equals(AppConstants.OPTION_BENEFITS)) {
+          //  if(!menuItem.getTAG().equals(AppConstants.OPTION_BENEFITS)) {
                 tempList.add(menuItem);
-            }
+           // }
         }
         return tempList;
     }

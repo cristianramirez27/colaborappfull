@@ -24,6 +24,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.Discounts;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
@@ -36,6 +37,7 @@ import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.DiscountsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -51,11 +53,13 @@ import butterknife.ButterKnife;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_COMPANY;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_DISCOUNTS;
 import static com.coppel.rhconecta.dev.views.activities.DialogAlertActivity.KEY_COMPANY;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class DiscountsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick ,DiscountsRecyclerAdapter.OnBenefitsDiscountsClickListener {
+        DialogFragmentWarning.OnOptionClick ,DiscountsRecyclerAdapter.OnBenefitsDiscountsClickListener,DialogFragmentGetDocument.OnButtonClickListener {
 
     public static final String TAG = DiscountsFragment.class.getSimpleName();
     private DialogFragmentLoader dialogFragmentLoader;
@@ -74,7 +78,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     TextView title;
     @BindView(R.id.description)
     TextView description;
-
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     BenefitsCategoriesResponse.Category categorySelected;
     private BenefitsRequestData benefitsRequestData;
 
@@ -98,7 +102,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         parent = (HomeActivity) getActivity();
-        parent.setToolbarTitle("dsada");
+        parent.setToolbarTitle(getString(R.string.benefits));
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         rcvDiscounts.setHasFixedSize(true);
         rcvDiscounts.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -176,6 +180,10 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
                   List<BenefitsCompaniesResponse.Company> listCompany = ((BenefitsCompaniesResponse)response.getResponse() ).getData().getResponse();
                   if(!listCompany.isEmpty())
                     showCompanyDialog(listCompany.get(0));
+                }else if(response.getResponse() instanceof BenefitsEmptyResponse){
+
+                    showEmptyDialog(((BenefitsEmptyResponse)response.getResponse()).getData().getResponse());
+
                 }
         }
     }
@@ -279,4 +287,23 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     }
 
 
+    private void showEmptyDialog(String content) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText(content);
+        dialogFragmentGetDocument.setType(NO_RESULT_BENEFITS, parent);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+        dialogFragmentGetDocument.close();
+        getActivity().onBackPressed();
+
+    }
 }

@@ -9,16 +9,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_dialog_white_rounded"
-        android:padding="8dp">
+
+        android:padding="2dp"
+        android:background="@drawable/background_dialog_white_rounded">
 
 
     <ImageView
         android:id="@+id/imageFull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:src="@drawable/placeholder_discount"/>
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/img_publicidad"/>
 
     </RelativeLayout>
 
