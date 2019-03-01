@@ -1,11 +1,13 @@
 package com.coppel.rhconecta.dev.views.fragments.employmentLetters;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -95,6 +97,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
     private boolean successGenerate = false;
     private int typeLetter;
     private PreviewDataVO previewDataVO;
+    private long mLastClickTime = 0;
     private com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation ILettersNavigation;
 
     @Override
@@ -143,35 +146,52 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
     if(previewDataVO != null){
         LetterPreviewResponse.Data dataLetter = previewDataVO.getDataLetter();
-        String txtHeader1 = dataLetter.getResponse().getEncabezado1().replace("\n\n", System.getProperty("line.separator"));
-        String txtHeader2 = dataLetter.getResponse().getEncabezado2().replace("\n\n", System.getProperty("line.separator"));
+        String txtHeader1 = dataLetter.getResponse().getEncabezado1().replaceAll("\n\n", "<br />");
+        String txtHeader2 = dataLetter.getResponse().getEncabezado2().replaceAll("\n\n", "<br />");
         String bodyJusfify = "<html><body><p align=\"justify\">" + dataLetter.getResponse().getCuerpo() + "</p></body></html>";
         String txtFooter1= null;
 
 
         if(typeLetter == TYPE_KINDERGARTEN ) {
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+           // txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
             txtFooter1 = dataLetter.getResponse().getPie1();
             txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }else {
-            txtFooter1 = dataLetter.getResponse().getPie1().replace("\n\n", System.getProperty("line.separator"));
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+            //txtFooter1 = dataLetter.getResponse().getPie1().replaceAll("\n", "<br />");
+            txtFooter1 = dataLetter.getResponse().getPie1();
+            txtFooter1 = "<html><body><p align=\"justify\">" + txtFooter1 + "</p></body></html>";
         }
 
-        String txtFooter2 = dataLetter.getResponse().getPie2().replace("\n\n", System.getProperty("line.separator"));
+        String txtFooter2 = dataLetter.getResponse().getPie2().replaceAll("\n\n","<br />");
+
+
+        /**/
+         txtHeader1 = txtHeader1.replaceAll("<br />", "");
+         txtHeader2 = txtHeader2.replaceAll("<br />", "");
+         bodyJusfify =bodyJusfify.replaceAll("<br />", "");
+         if(txtFooter1 != null)txtFooter1 = txtFooter1.replaceAll("\n\n", "<br />");
+         txtFooter2 = txtFooter2.replaceAll("<br />", "");
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify, Html.FROM_HTML_MODE_COMPACT));
-            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
-            else{ footer1.setText(txtFooter1); }
+           // if(typeLetter == TYPE_KINDERGARTEN )
+               if(txtFooter1 != null && !txtFooter1.isEmpty()) footer1.setText(Html.fromHtml(txtFooter1));
+            //else{ footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
 
         } else {
             header1.setText(txtHeader1);
             header2.setText(txtHeader2);
             body.setText(Html.fromHtml(bodyJusfify));
-            if(typeLetter == TYPE_KINDERGARTEN ) footer1.setText(Html.fromHtml(txtFooter1));
-            else { footer1.setText(txtFooter1); }
+            //if(typeLetter == TYPE_KINDERGARTEN )
+            if(txtFooter1 != null && !txtFooter1.isEmpty())footer1.setText(Html.fromHtml(txtFooter1));
+           // else { footer1.setText(txtFooter1); }
             footer2.setText(txtFooter2);
         }
         }
@@ -206,9 +226,20 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                 ILettersNavigation.showFragmentAtPosition(0,null);
                 break;
             case R.id.btnSend:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 onMailClick();
                 break;
             case R.id.btnDownload:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 onDownloadClick();
                 break;
         }
@@ -264,6 +295,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             @Override
                             public void onRightOptionClick() {
                                 dialogFragmentWarning.close();
+                                getActivity().setResult(Activity.RESULT_OK);
                                 getActivity().finish();
                             }
                         });
@@ -344,6 +376,8 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
+
+                        getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
                     @Override
@@ -355,6 +389,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                             //AppUtilities.sharePDF(parent, pdf);
                         }
                         SHARE_PDF = false;
+                        getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
                 });
@@ -376,7 +411,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onAccept() {
-
         dialogFragmentGetDocument.close();
         if(successGenerate) {
             successGenerate = false;
@@ -440,7 +474,6 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                     return getString(R.string.file_infonavit);
                 case TYPE_KINDERGARTEN:
                     return getString(R.string.file_kindergarten);
-
                 default: return "";
         }
 

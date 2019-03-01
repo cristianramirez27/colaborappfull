@@ -24,12 +24,8 @@ public class NotificationCreator {
     public final static int REQUEST_CODE_PUSH = 777;
     public final static String KEY_PUSH_DATA = "_KEY_PUSH_DATA";
 
-    public static PendingIntent getPendindIntent(Context context, Class clazz, PushData pushData){
+    public static PendingIntent getPendindIntent(Context context, Class clazz){
         Intent resultIntent = new Intent(context, clazz);
-        if(pushData.getLoginRequired().equals("0")){
-          //  resultIntent.putExtra(KEY_SECTION,EVENT_GO_HOME);
-        }
-        resultIntent.putExtra(KEY_PUSH_DATA,pushData);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         context,
@@ -54,8 +50,9 @@ public class NotificationCreator {
                         //.setSubText(content)
                         .setSmallIcon(getSmallIconId())
                         .setSound(uriSound)
-                        .setLargeIcon(BitmapFactory.decodeResource(CoppelApp.getContext().getResources(), R.mipmap.ic_launcher))
-                        .setColor(Color.parseColor("#bb162b"))
+                        .setLargeIcon(BitmapFactory.decodeResource(CoppelApp.getContext().getResources(), R.drawable.icn_notificaciones_blanco))
+                        .setColor(Color.parseColor("#004695"))
+                        .setChannelId("channel_general")
                         .setAutoCancel(true);
 
         return builder;
@@ -65,7 +62,7 @@ public class NotificationCreator {
     private static int getSmallIconId() {
 
         boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-        return whiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
+        return whiteIcon ? R.drawable.icn_notificaciones_blanco : R.drawable.icn_notificaciones_blanco;
 
     }
 

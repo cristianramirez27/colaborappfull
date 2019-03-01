@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_INFONAVIT;
@@ -36,6 +37,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
     ViewPager viewPager;
     private  int typeLetter;
     private PreviewDataVO previewDataVO;
+    private LetterConfigResponse letterConfigResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
         setContentView(R.layout.activity_config_letter);
         ButterKnife.bind(this);
         typeLetter = getIntent().getIntExtra(BUNDLE_LETTER,0);
-
+        letterConfigResponse= (LetterConfigResponse) getIntent().getSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER);
         setSupportActionBar(tbActionBar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -57,7 +59,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
     private void initPaging(int typeLetter) {
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        ConfigFieldLetterFragment configFieldLetterFragment = ConfigFieldLetterFragment.getInstance(typeLetter);
+        ConfigFieldLetterFragment configFieldLetterFragment = ConfigFieldLetterFragment.getInstance(typeLetter,letterConfigResponse);
         pagerAdapter.addFragment(configFieldLetterFragment);
 
         if(typeLetter == TYPE_KINDERGARTEN){
@@ -92,7 +94,6 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
 
         LetterConfigResponse configResponse = (LetterConfigResponse) data;
         ChildInfoLetterFragment childInfoLetterFragment = (ChildInfoLetterFragment) ((PagerAdapter)viewPager.getAdapter()).getFragmentAtPosition(1);
-
         ScheduleInfoLetterFragment scheduleInfoLetterFragment = (ScheduleInfoLetterFragment) ((PagerAdapter)viewPager.getAdapter()).getFragmentAtPosition(2);
         childInfoLetterFragment.setDataChild(configResponse.getData().getResponse().getDatosGuarderia().getNombre_hijos());
         scheduleInfoLetterFragment.setDataSchedule(configResponse.getData().getResponse().getDatosGuarderia().getDatoshorario());

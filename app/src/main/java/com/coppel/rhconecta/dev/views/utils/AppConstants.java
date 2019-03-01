@@ -72,6 +72,8 @@ public class AppConstants {
     public static final String BUNDLE_LETTER = "BUNDLE_LETTER";
     public static final String BUNDLE_FIELDS_LETTER = "BUNDLE_FIELDS_LETTER";
 
+    public static final String BUNDLE_RESPONSE_CONFIG_LETTER = "BUNDLE_RESPONSE_CONFIG_LETTER";
+
     public static final String KEY_STAMP = "sello";
     public static final String KEY_CHILDREN_NAMES = "Nombre_hijos";
     public static final String KEY_SCHEDULE = "datoshorario";

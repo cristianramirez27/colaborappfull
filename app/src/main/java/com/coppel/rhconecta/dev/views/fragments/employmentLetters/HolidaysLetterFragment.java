@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -60,7 +61,7 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
     RelativeLayout dateStartHolidayLayout;
     @BindView(R.id.dateEndHolidayLayout)
     RelativeLayout dateEndHolidayLayout;
-
+    private long mLastClickTime = 0;
 
     @BindView(R.id.dateStartHoliday)
     TextView dateStartHoliday;
@@ -144,10 +145,20 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
 
             case R.id.dateStartHolidayLayout:
 
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showDatePicker(true);
                 break;
 
             case R.id.dateEndHolidayLayout:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 if(dateStartHoliday.getText() != null || !dateStartHoliday.getText().toString().isEmpty()) {
                     showDatePicker(false);
@@ -158,6 +169,11 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.btnNext:
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1300){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
 
                 goNextStep();
 
@@ -231,13 +247,13 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
 
     @Override
     public void showProgress() {
-   //    dialogFragmentLoader = new DialogFragmentLoader();
-    //   dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+       dialogFragmentLoader = new DialogFragmentLoader();
+       dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override
     public void hideProgress() {
-   //    dialogFragmentLoader.close();
+       dialogFragmentLoader.close();
     }
 
 
@@ -312,7 +328,7 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
                 });
                 dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
             }
-        }, 200);
+        }, 100);
     }
 
 

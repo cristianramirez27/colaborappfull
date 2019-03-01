@@ -11,9 +11,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
@@ -59,6 +61,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.txvJoin)
     TextView txvJoin;
 
+
+    @BindView(R.id.mainContainer)
+    RelativeLayout mainContainer;
+
     @BindView(R.id.flLoginFragmentContainer)
     FrameLayout flLoginFragmentContainer;
 
@@ -78,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txvSignIn.setOnClickListener(this);
         txvJoin.setOnClickListener(this);
         txvForgotPassword.setOnClickListener(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     private void login() {
@@ -112,6 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fragmentTransaction.addToBackStack(TAG);
         fragmentTransaction.add(R.id.flLoginFragmentContainer, fragment, TAG).commit();
         flLoginFragmentContainer.setVisibility(View.VISIBLE);
+        mainContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -214,8 +222,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(flLoginFragmentContainer.getVisibility() == View.GONE)
             finish();
-        else
+        else {
             flLoginFragmentContainer.setVisibility(View.GONE);
+            mainContainer.setVisibility(View.VISIBLE);
+        }
 
 
     }

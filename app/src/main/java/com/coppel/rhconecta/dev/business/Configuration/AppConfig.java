@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.business.Configuration;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 
 import com.coppel.rhconecta.dev.CoppelApp;
@@ -39,6 +41,8 @@ public class AppConfig {
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
+
+    public final static int CLAVE_LETTER_MAX = 4;
 
 
     /**Se almacenan los endpoints*/
@@ -96,5 +100,17 @@ public class AppConfig {
         pushSnackBarConfig.setColorText(CoppelApp.getContext().getResources().getColor(R.color.colorBackgroundCoppelBlanco));
         pushSnackBarConfig.setColor(CoppelApp.getContext().getResources().getColor(R.color.colorRed));
         return pushSnackBarConfig;
+    }
+
+    public static String getVersionApp(){
+        PackageManager manager = CoppelApp.getContext().getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(CoppelApp.getContext().getPackageName(), 0);
+            return  info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

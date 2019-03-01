@@ -14,7 +14,7 @@ public class CoppelGeneralParameterResponse implements Serializable{
         this.meta = meta;
     }
 
-    public class Meta {
+    public class Meta implements Serializable{
 
         private String status;
 

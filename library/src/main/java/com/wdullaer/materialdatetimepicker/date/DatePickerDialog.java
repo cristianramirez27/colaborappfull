@@ -76,6 +76,8 @@ public class DatePickerDialog extends DialogFragment implements
     private static final int MONTH_AND_DAY_VIEW = 0;
     private static final int YEAR_VIEW = 1;
 
+    private  View view;
+
     private static final String KEY_SELECTED_YEAR = "year";
     private static final String KEY_SELECTED_MONTH = "month";
     private static final String KEY_SELECTED_DAY = "day";
@@ -375,7 +377,7 @@ public class DatePickerDialog extends DialogFragment implements
 //        int viewRes = mVersion == Version.VERSION_1 ? R.layout.mdtp_date_picker_dialog : R.layout.mdtp_date_picker_dialog_v2;
         int viewRes = R.layout.mdtp_date_picker_dialog_v2;
 
-        View view = inflater.inflate(viewRes, container, false);
+        view = inflater.inflate(viewRes, container, false);
         // All options have been set at this point: round the initial selection if necessary
         mCalendar = mDateRangeLimiter.setToNearestDate(mCalendar);
 
@@ -383,7 +385,7 @@ public class DatePickerDialog extends DialogFragment implements
         mDatePickerHeaderView = view.findViewById(R.id.mdtp_date_picker_header);
         mMonthAndDayView = view.findViewById(R.id.mdtp_date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
-        mSelectedMonthTextView = view.findViewById(R.id.mdtp_date_picker_month);
+        mSelectedMonthTextView = view.findViewById(R.id.mdtp_date_picker_month_v1);
         mSelectedDayTextView = view.findViewById(R.id.mdtp_date_picker_day);
         mYearView = view.findViewById(R.id.mdtp_date_picker_year);
         mYearView.setOnClickListener(this);
@@ -609,7 +611,13 @@ public class DatePickerDialog extends DialogFragment implements
                             mLocale));
                 }
             }
-            mSelectedMonthTextView.setText(MONTH_FORMAT.format(mCalendar.getTime()));
+            if(mSelectedMonthTextView == null)
+                mSelectedMonthTextView = view.findViewById(R.id.mdtp_date_picker_month_v1);
+
+            if(mSelectedMonthTextView != null)
+                mSelectedMonthTextView.setText(MONTH_FORMAT.format(mCalendar.getTime()));
+
+            if(mSelectedDayTextView != null)
             mSelectedDayTextView.setText(DAY_FORMAT.format(mCalendar.getTime()));
         }
 

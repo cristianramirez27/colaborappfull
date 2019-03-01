@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -44,7 +45,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.CLAVE_LETTER_MAX;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_INFONAVIT;
@@ -58,6 +64,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD
 public class EmploymentLettersMenuFragment extends Fragment implements IServicesContract.View,
         EmploymentLettersMenuRecyclerAdapter.OnItemClick, View.OnClickListener, DialogFragmentWarning.OnOptionClick {
 
+    public static final int REQUEST_LETTER = 839;
     public static final String TAG = EmploymentLettersMenuFragment.class.getSimpleName();
     private HomeActivity parent;
     private DialogFragmentLoader dialogFragmentLoader;
@@ -78,10 +85,13 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @BindView(R.id.txvPressToRefresh)
     TextView txvPressToRefresh;
 
-
+    private long mLastClickTime = 0;
+    private int typeLetterSelected = 0;
 
     private com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification ISurveyNotification;
     private DialogFragmentWarning dialogFragmentWarning;
+
+    private LetterConfigResponse letterConfigResponse;
 
     @Override
     public void onAttach(Context context) {
@@ -117,11 +127,9 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         if (letterSignatureResponse == null) {
             coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
         }
-
     }
 
     @Override
@@ -137,6 +145,11 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     @Override
     public void onItemClick(String tag) {
         int typeLetter = 0;
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (tag) {
 
@@ -160,14 +173,17 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                 break;
         }
 
-        if(!hasAvailablePrints(typeLetter)){
+        /*Se invoca el servicio para ver el detalle de cada carta laboral*/
+
+        requestDetailLetter(typeLetter);
+       /* if(!hasAvailablePrints(typeLetter)){
             showAlertPrints();
             return;
         }
 
         Intent intentConfigLetter = new Intent(getActivity(), ConfigLetterActivity.class);
         intentConfigLetter.putExtra(BUNDLE_LETTER,typeLetter);
-        startActivity(intentConfigLetter);
+        startActivityForResult(intentConfigLetter,REQUEST_LETTER);*/
     }
 
     @Override
@@ -189,12 +205,32 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                     rcvOptions.setVisibility(View.VISIBLE);
                     ctlConnectionError.setVisibility(View.GONE);
                     letterSignatureResponse = (LetterSignatureResponse) response.getResponse();
+                    menuItems.clear();
+
                     menuItems.addAll(MenuUtilities.getEmploymentLettersMenu(parent));
                     employmentLettersMenuRecyclerAdapter.notifyItemRangeInserted(employmentLettersMenuRecyclerAdapter.getItemCount(), menuItems.size());
 
 
                 }
                  break;
+            /**Se valida la respuesta del detalle de la carta*/
+            case ServicesRequestType.LETTERSCONFIG:
+                letterConfigResponse = (LetterConfigResponse) response.getResponse();
+                if(letterConfigResponse.getData().getResponse().getClave() != null &&
+                        (letterConfigResponse.getData().getResponse().getClave().equals(String.valueOf(CLAVE_LETTER_MAX)))){
+                    showAlertPrints(letterConfigResponse.getData().getResponse().getMensaje());
+                }else {
+
+                    Intent intentConfigLetter = new Intent(getActivity(), ConfigLetterActivity.class);
+                    intentConfigLetter.putExtra(BUNDLE_RESPONSE_CONFIG_LETTER,letterConfigResponse);
+                    intentConfigLetter.putExtra(BUNDLE_LETTER,typeLetterSelected);
+                    startActivityForResult(intentConfigLetter,REQUEST_LETTER);
+                }
+
+                hideProgress();
+                break;
+
+
         }
     }
 
@@ -244,12 +280,12 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     }
 
 
-    private void showAlertPrints(){
+    private void showAlertPrints(String message){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.max_letters_print), getString(R.string.accept));
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message/*getString(R.string.max_letters_print)*/, getString(R.string.accept));
                 dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
                     @Override
                     public void onLeftOptionClick() {
@@ -277,5 +313,25 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
         }
 
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_LETTER && resultCode == RESULT_OK){
+            if (coppelServicesPresenter != null) {
+                coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
+            }
+        }
+    }
+
+    /*Se invoca el servicio antes de abrir el detalle de la carta*/
+    private void requestDetailLetter(int typeLetter){
+        letterConfigResponse = null;
+        this.typeLetterSelected = typeLetter;
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        coppelServicesPresenter.requestLettersConfig(numEmployer,typeLetter,token);
     }
 }

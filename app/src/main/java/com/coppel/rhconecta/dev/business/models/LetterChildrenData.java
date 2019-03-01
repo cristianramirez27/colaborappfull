@@ -1,10 +1,12 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import java.io.Serializable;
+
 /**
  * Created by faustolima on 29/11/18.
  */
 
-public class LetterChildrenData {
+public class LetterChildrenData  implements Serializable {
 
     private String nombre_completo;
 
