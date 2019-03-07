@@ -17,11 +17,15 @@ import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.business.utils.ImageLoaderUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 
 public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecyclerAdapter.ViewHolder> {
 
@@ -47,14 +51,15 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
         final BenefitsCategoriesResponse.Category currentItem = categories.get(i);
         viewHolder.name.setText(currentItem.getNombre());
         viewHolder.description.setText(currentItem.getDescripcion());
+       // Picasso.with(getContext()).load(currentItem.getLogo()).placeholder(R.drawable.placeholder_category ).into(viewHolder.imageBenefits);
 
+        ImageLoaderUtil.loadPictureFromURLPlaceholder(context,currentItem.getLogo(),viewHolder.imageBenefits,R.drawable.placeholder_category);
         viewHolder.cardViewBenefits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBenefitsCategoryClickListener.onCategoryClick(currentItem);
             }
         });
-        //viewHolder.checkboxElement.setEnabled(currentItem.getOpc_estatus() == 1 ? true : false);
     }
 
 

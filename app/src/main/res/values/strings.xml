@@ -222,6 +222,7 @@
     <string name="hint_search">Introduce una búsqueda</string>
 
     <string name="are_you_in_culiacan">¿No estás en Culiacán?</string>
+    <string name="are_you_in_">¿No estás en</string>
     <string name="change_city"><u>Cambia de ciudad</u></string>
     <string name="discount_sample">30%\nde descuento</string>
 
@@ -232,5 +233,7 @@
     <string name="file_infonavit">Infonavit</string>
     <string name="file_imss">AltaUltimo_Movto_IMSS</string>
     <string name="file_kindergarten">Guarderia</string>
+
+    <string name="error_empty_search">El campo no puede estar vacío</string>
 
 </resources>

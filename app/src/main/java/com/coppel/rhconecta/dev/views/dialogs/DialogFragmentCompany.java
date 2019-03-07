@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -35,6 +36,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     public static final String KEY_COMPANY = "KEY_COMPANY";
     @BindView(R.id.icClose)
     ImageView icClose;
+    @BindView(R.id.icClosePublicity)
+    ImageView icClosePublicity;
+
     @BindView(R.id.image)
     ImageView image;
     @BindView(R.id.imageFull)
@@ -66,6 +70,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     View mCardFrontLayout;
     @BindView(R.id.card_back)
     View mCardBackLayout;
+
+    private long mLastClickTime = 0;
 
     public static DialogFragmentCompany getInstance(BenefitsCompaniesResponse.Company company){
         DialogFragmentCompany dialogFragmentCompany = new DialogFragmentCompany();
@@ -131,6 +137,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
 
         btnAdvertising.setOnClickListener(this);
+        icClosePublicity.setOnClickListener(this);
 
 
         icClose.setOnClickListener(new View.OnClickListener() {
@@ -158,11 +165,23 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     @Override
     public void onClick(View view) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         switch (view.getId()) {
             case R.id.btnAdvertising:
                 //Se muestra la publicidad de la empresa
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
+            case R.id.icClosePublicity:
+                close();
+                getActivity().finish();
+                break;
+
         }
     }
 
@@ -177,14 +196,14 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         changeCameraDistance();
         flipCard();
 
-        new Handler().postDelayed(new Runnable() {
+      /*  new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 close();
                 getActivity().finish();
             }
-        }, 5000);
+        }, 5000);*/
 
     }
 

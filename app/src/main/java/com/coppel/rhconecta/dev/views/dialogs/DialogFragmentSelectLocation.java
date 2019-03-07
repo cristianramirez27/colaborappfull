@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -52,6 +53,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     private OnSelectLocationsButtonsClickListener onSelectLocationsButtonsClickListener;
     private  BenefitsStatesResponse.States stateSelected;
 
+    private long mLastClickTime = 0;
 
     public static DialogFragmentSelectLocation getInstance(){
         DialogFragmentSelectLocation dialogFragmentCompany = new DialogFragmentSelectLocation();
@@ -96,8 +98,16 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
 
     @Override
     public void onClick(View view) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         switch (view.getId()) {
             case R.id.btnLeftOption:
+
+
                 close();
                 break;
             case R.id.btnRightOption:

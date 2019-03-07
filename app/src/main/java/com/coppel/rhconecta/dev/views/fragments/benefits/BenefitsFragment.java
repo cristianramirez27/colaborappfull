@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -73,6 +74,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
@@ -95,16 +97,23 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     private HomeActivity parent;
 
+    private long mLastClickTime = 0;
+
     @BindView(R.id.rcvBenefits)
     RecyclerView rcvBenefits;
     @BindView(R.id.edtSearch)
     EditText edtSearch;
     @BindView(R.id.titleChangeCity)
     TextView titleChangeCity;
+    @BindView(R.id.txtCity)
+    TextView txtCity;
+    @BindView(R.id.errorMessage)
+    TextView errorMessage;
 
-    private String stateSelected = "2";
-    private String citySelected = "104";
 
+    private static String stateSelected = "";
+    private static String citySelected = "";
+    private static String citySelectedName = "";
 
     private List<BenefitsCategoriesResponse.Category> categories;
     private List<BenefitsStatesResponse.States> statesAvailables;
@@ -155,25 +164,29 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void performSearch(String search) {
-        BenefitsRequestData benefitsRequestData = new BenefitsRequestData(BENEFITS_SEARCH,6,stateSelected,citySelected);
-        benefitsRequestData.setDes_busqueda(search);
-        edtSearch.clearFocus();
-        InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+
+        mLastClickTime = SystemClock.elapsedRealtime();
+        if(search != null && !search.isEmpty()){
+            errorMessage.setVisibility(View.INVISIBLE);
+            BenefitsRequestData benefitsRequestData = new BenefitsRequestData(BENEFITS_SEARCH,6,stateSelected,citySelected);
+            benefitsRequestData.setDes_busqueda(search);
+            edtSearch.clearFocus();
+            InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
+            String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+            coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+        }else {
+            errorMessage.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);;
-        citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);;
-        if(stateSelected.equals("0"))
-            stateSelected = "2";
-        if(citySelected.equals("0"))
-            citySelected = "104";
 
     }
 
@@ -181,6 +194,17 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (benefitsCategoriesResponse == null) {
+            if(citySelectedName != null && !citySelectedName.isEmpty()){
+                txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),citySelectedName));
+            }else {
+                stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);;
+                citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);;
+                if(stateSelected.equals("0"))
+                    stateSelected = "2";
+                if(citySelected.equals("0"))
+                    citySelected = "104";
+            }
+
             requestCategories(stateSelected,citySelected);
            }
     }
@@ -213,6 +237,11 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.titleChangeCity:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
                 showSelectLocation();
                 break;
         }
@@ -352,6 +381,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onCategoryClick(BenefitsCategoriesResponse.Category category) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         DiscountsFragment discountsFragment = new DiscountsFragment();
         Bundle bundle = new Bundle();
         bundle.putString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, new Gson().toJson(category));
@@ -406,6 +441,8 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         } else if(data instanceof BenefitsCitiesResponse.City){
             dialogFragmentSelectState.close();
             citySelected =  String.valueOf( ((BenefitsCitiesResponse.City)data).getId_es());
+            citySelectedName = capitalizeText(getActivity(),String.valueOf( ((BenefitsCitiesResponse.City)data).getNombre()));
+            txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),citySelectedName));
             dialogFragmentSelectLocation.setCity((BenefitsCitiesResponse.City)data);
             dialogFragmentSelectState.close();
         }
@@ -452,5 +489,11 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
         dialogFragmentGetDocument.close();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        citySelectedName = "";
     }
 }

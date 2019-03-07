@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp"
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.PayrollVoucherFragment">
 
@@ -15,7 +14,9 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_margin="@dimen/margin_general"
+        android:layout_marginLeft="@dimen/margin_general"
+        android:layout_marginTop="@dimen/margin_general"
+        android:layout_marginRight="@dimen/margin_general"
         app:cardElevation="8dp"
         app:cardCornerRadius="1dp"
         app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
@@ -47,22 +48,36 @@
                 android:layout_centerVertical="true"
                 android:layout_height="wrap_content" />
 
-
         </RelativeLayout>
 
 
     </android.support.v7.widget.CardView>
 
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardViewSearch"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:text="@string/error_empty_search"
+        android:padding="4dp"
+        android:visibility="invisible"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorRed"
+        android:textSize="11sp" />
+
 
     <RelativeLayout
         android:id="@+id/layoutChangeCity"
-        android:layout_below="@+id/cardViewSearch"
+        android:layout_below="@+id/errorMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="center">
 
         <TextView
-            android:id="@+id/txtCuliacan"
+            android:id="@+id/txtCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lineto_circular_pro_medium"
@@ -76,7 +91,7 @@
             android:id="@+id/titleChangeCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/txtCuliacan"
+            android:layout_toRightOf="@+id/txtCity"
             android:fontFamily="@font/lineto_circular_pro_medium"
             android:text="@string/change_city"
             android:padding="4dp"
@@ -89,7 +104,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcvBenefits"
-        android:layout_marginTop="20dp"
         android:layout_below="@+id/layoutChangeCity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

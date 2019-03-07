@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -68,7 +69,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     private DiscountsRecyclerAdapter discountsRecyclerAdapter;
 
     private DialogFragmentWarning dialogFragmentWarning;
-
+    private long mLastClickTime = 0;
 
     private HomeActivity parent;
 
@@ -114,12 +115,10 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         Bundle bundle = getArguments();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS) != null){
             categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS),BenefitsCategoriesResponse.Category.class);
-            requestDiscounts(categorySelected);
+            benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA),BenefitsRequestData.class);
             title.setText(categorySelected.getNombre());
             description.setText(categorySelected.getDescripcion());
-
-            benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA),BenefitsRequestData.class);
-
+            requestDiscounts(categorySelected);
 
         }
 
@@ -272,7 +271,9 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
 
     private void requestDiscounts(BenefitsCategoriesResponse.Category category){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getBenefits( new BenefitsRequestData(BENEFITS_DISCOUNTS,4,"2","104",
+        coppelServicesPresenter.getBenefits( new BenefitsRequestData(BENEFITS_DISCOUNTS,4,
+                benefitsRequestData.getNum_estado(),
+                benefitsRequestData.getNum_ciudad(),
                 String.valueOf(category.getCve())), token);
     }
 
@@ -281,6 +282,11 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onCategoryClick(BenefitsDiscountsResponse.Discount discount) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_COMPANY,
                 5,benefitsRequestData.getNum_estado(),benefitsRequestData.getNum_ciudad(),benefitsRequestData.getClave_servicio(),discount.getId_empresa()),token);
@@ -302,6 +308,12 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onAccept() {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         dialogFragmentGetDocument.close();
         getActivity().onBackPressed();
 

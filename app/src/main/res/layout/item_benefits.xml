@@ -22,8 +22,7 @@
                 android:layout_centerVertical="true"
                 android:padding="4dp"
                 android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:src="@drawable/placeholder_category"/>
+                android:adjustViewBounds="true"/>
 
 
             <View
@@ -51,11 +50,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lineto_circular_pro_medium"
-                android:text="Obtén descuentos en las mejores escuelas de Culiacán"
                 android:layout_alignParentBottom="true"
                 android:padding="4dp"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:layout_marginLeft="16dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginBottom="10dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/colorBackgroundCoppelBlanco"
