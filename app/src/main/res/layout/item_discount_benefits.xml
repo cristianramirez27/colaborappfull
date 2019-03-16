@@ -13,8 +13,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="1dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp"
         app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
 
         <RelativeLayout
@@ -23,12 +23,12 @@
 
             <ImageView
                 android:id="@+id/imageBenefits"
-                android:layout_width="109dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:padding="2dp"
-                android:scaleType="centerInside"
+                android:padding="3dp"
+                android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
                 android:layout_margin="4dp"
                 android:src="@drawable/placeholder_discount"/>

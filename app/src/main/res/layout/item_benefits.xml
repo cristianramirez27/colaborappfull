@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cardViewBenefits"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         app:cardElevation="8dp"
@@ -20,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:padding="4dp"
+                android:src="@drawable/placeholder_category"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
 

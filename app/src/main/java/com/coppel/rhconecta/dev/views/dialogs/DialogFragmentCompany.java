@@ -105,7 +105,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         if(company.getRuta() != null && !company.getRuta().isEmpty())
             Picasso.with(getApplicationContext()).load(company.getRuta())
                     .placeholder(R.drawable.placeholder_discount)
-                    .error(R.drawable.placeholder_discount).fit().centerCrop().into(image);
+                    .error(R.drawable.placeholder_discount).into(image);
 
         String discount = company.getDescuento();
         String discountQuantity = "";
@@ -159,7 +159,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
         return dialog;
     }
 

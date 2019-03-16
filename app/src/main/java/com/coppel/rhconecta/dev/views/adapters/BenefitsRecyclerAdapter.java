@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecyclerAdapter.ViewHolder> {
 
@@ -52,8 +53,11 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
         viewHolder.name.setText(currentItem.getNombre());
         viewHolder.description.setText(currentItem.getDescripcion());
        // Picasso.with(getContext()).load(currentItem.getLogo()).placeholder(R.drawable.placeholder_category ).into(viewHolder.imageBenefits);
+        Picasso.with(getApplicationContext()).load(currentItem.getLogo())
+                .placeholder(R.drawable.placeholder_category)
+                .error(R.drawable.placeholder_category).into(viewHolder.imageBenefits);
 
-        ImageLoaderUtil.loadPictureFromURLPlaceholder(context,currentItem.getLogo(),viewHolder.imageBenefits,R.drawable.placeholder_category);
+       // ImageLoaderUtil.loadPictureFromURLPlaceholder(context,currentItem.getLogo(),viewHolder.imageBenefits,R.drawable.placeholder_category);
         viewHolder.cardViewBenefits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

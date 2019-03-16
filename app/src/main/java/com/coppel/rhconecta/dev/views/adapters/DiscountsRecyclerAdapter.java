@@ -52,7 +52,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         if(currentItem.getRuta() != null && !currentItem.getRuta().isEmpty())
          Picasso.with(getApplicationContext()).load(currentItem.getRuta())
                  .placeholder(R.drawable.placeholder_discount)
-                 .error(R.drawable.placeholder_discount).fit().centerCrop().into(viewHolder.imageBenefits);
+                 .error(R.drawable.placeholder_discount).into(viewHolder.imageBenefits);
 
         viewHolder.cardViewDiscounts.setOnClickListener(new View.OnClickListener(){
             @Override

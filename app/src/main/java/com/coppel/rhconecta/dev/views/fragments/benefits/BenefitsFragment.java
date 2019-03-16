@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,6 +113,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @BindView(R.id.errorMessage)
     TextView errorMessage;
 
+    @BindView(R.id.ctlContent)
+    RelativeLayout ctlContent;
+    @BindView(R.id.ctlConnectionError)
+    ConstraintLayout ctlConnectionError;
+    @BindView(R.id.imgvRefresh)
+    ImageView imgvRefresh;
 
     private static String stateSelected = "";
     private static String citySelected = "";
@@ -160,6 +169,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
             }
         });
 
+        imgvRefresh.setOnClickListener(this);
         return view;
     }
 
@@ -244,11 +254,17 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
                 showSelectLocation();
                 break;
+
+            case R.id.imgvRefresh:
+                requestCategories(stateSelected,citySelected);
+                break;
         }
     }
 
     @Override
     public void showResponse(ServicesResponse response) {
+        ctlConnectionError.setVisibility(View.GONE);
+        ctlContent.setVisibility(View.VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.BENEFITS:
                 categories.clear();
@@ -330,9 +346,23 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 }, 500);
 
                 break;
+
             case ServicesRequestType.INVALID_TOKEN:
                // EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
+                break;
+
+            default:
+                ctlConnectionError.setVisibility(View.VISIBLE);
+                ctlContent.setVisibility(View.GONE);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideProgress();
+                    }
+                }, 800);
+
                 break;
         }
 

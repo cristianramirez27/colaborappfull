@@ -119,7 +119,9 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
                 break;
 
             case R.id.viewCity:
-                onSelectLocationsButtonsClickListener.onSelectCity(this.stateSelected);
+                if(this.stateSelected != null ) {
+                    onSelectLocationsButtonsClickListener.onSelectCity(this.stateSelected);
+                }
                 break;
         }
     }
