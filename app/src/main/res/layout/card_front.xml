@@ -56,7 +56,7 @@
                     android:fontFamily="@font/lineto_circular_pro_bold"
                     android:gravity="center"
                     android:layout_marginTop="20dp"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:textColor="@color/colorTextGrayDark"
                     android:textSize="30sp" />
                 <TextView

@@ -50,6 +50,12 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     Button btnLeftOption;
     @BindView(R.id.btnRightOption)
     Button btnRightOption;
+
+    @BindView(R.id.stateError)
+    TextView stateError;
+    @BindView(R.id.cityError)
+    TextView cityError;
+
     private OnSelectLocationsButtonsClickListener onSelectLocationsButtonsClickListener;
     private  BenefitsStatesResponse.States stateSelected;
 
@@ -80,6 +86,8 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
         btnLeftOption.setOnClickListener(this);
         viewState.setOnClickListener(this);
         viewCity.setOnClickListener(this);
+        viewCity.setEnabled(false);
+        viewCity.setAlpha(0.2f);
     }
 
     public void close() {
@@ -111,7 +119,27 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
                 close();
                 break;
             case R.id.btnRightOption:
-                onSelectLocationsButtonsClickListener.onSelectLocation();
+
+               /* if(state.getText() == null || !state.getText().toString().isEmpty()){
+                    stateError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if(city.getText() == null || !city.getText().toString().isEmpty()){
+                    cityError.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                stateError.setVisibility(View.INVISIBLE);
+                cityError.setVisibility(View.INVISIBLE);*/
+                if(state.getText().toString().isEmpty()
+                   || city.getText().toString().isEmpty()){
+                    return;
+                }else {
+                    onSelectLocationsButtonsClickListener.onSelectLocation();
+                }
+
+
                 break;
 
             case R.id.viewState:
@@ -129,6 +157,9 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     public void setState(BenefitsStatesResponse.States stateSelected){
         this.stateSelected =stateSelected;
         state.setText(stateSelected.getNombre());
+
+        viewCity.setEnabled(true);
+        viewCity.setAlpha(1f);
     }
 
 

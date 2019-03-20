@@ -417,12 +417,17 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
+        if(!edtSearch.getText().toString().isEmpty())
+            edtSearch.setText("");
+
         DiscountsFragment discountsFragment = new DiscountsFragment();
         Bundle bundle = new Bundle();
         bundle.putString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, new Gson().toJson(category));
         bundle.putString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, new Gson().toJson(benefitsRequestData));
         discountsFragment.setArguments(bundle);
         parent.replaceFragment(discountsFragment, DiscountsFragment.TAG);
+
+
     }
 
     private void selectState(){
