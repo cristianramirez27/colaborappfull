@@ -68,5 +68,10 @@
         <item name="android:textColorSecondary">#61000000</item>
     </style>
 
+    <style name="MainTabText">
+        <item name="android:textColor">@color/colorTextCoppelNegro</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
 </resources>

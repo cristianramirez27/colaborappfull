@@ -36,6 +36,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public static final int SEND_TO_LETTER = 9;
 
     public static final int NO_RESULT_BENEFITS = 10;
+    public static final int NO_REFUSE_REMOVE = 11;
 
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
@@ -79,6 +80,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
         }
+
         return view;
     }
 
@@ -187,7 +189,14 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 btnActionAccept.setOnClickListener(this);
                 break;
 
-
+            case NO_REFUSE_REMOVE:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(contentText);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
         }
     }
 

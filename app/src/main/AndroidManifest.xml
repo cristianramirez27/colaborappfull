@@ -74,6 +74,11 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|adjustPan" />
 
+        <activity
+            android:name=".views.activities.FondoAhorroActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.coppel.rhconecta.dev.fileprovider"

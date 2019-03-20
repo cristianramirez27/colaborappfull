@@ -12,6 +12,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_SAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VALIDARFIRMA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WITHDRAWSAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
@@ -43,6 +44,8 @@ public class ServicesConstants {
     public static  String GET_LOANSAVINGFUND = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_SAVINGS);
     public static  String GET_RECOVERY_PASSWORD = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER);
     public static  String GET_BENEFITS = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS);
+    public static  String GET_WITHDRAWSAVINGS= AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS);
+
 
 
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);

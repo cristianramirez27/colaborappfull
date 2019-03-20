@@ -8,6 +8,10 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyReq
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
@@ -111,6 +115,26 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getBenefitsSearch(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsSearchRequest servicesRequest);
+
+
+    //************************** Benefits **************************
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getConsultaRetiro(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaRetiroRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getGuardarRetiro(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGuardarRetiroRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getConsultarAhorroAdicional(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaAhorroAdicionalRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getGuardarAhorro(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGuardarAhorroRequest servicesRequest);
+
 
 
 }

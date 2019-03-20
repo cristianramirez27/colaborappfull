@@ -18,6 +18,8 @@ public class ServicesRequestType {
 
     public static final int BENEFITS = 14;
 
+    public static final int WITHDRAWSAVING = 15;
+
     public static final int PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL = 14;
     public static final int PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL = 15;
 

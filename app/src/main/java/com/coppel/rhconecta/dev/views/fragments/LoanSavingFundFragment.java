@@ -91,9 +91,9 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         coppelServicesPresenter.requestLoansSavingFund(parent.getProfileResponse().getColaborador(),
                 parent.getLoginResponse().getToken());
         childFragmentManager = getChildFragmentManager();
-        //fragmentTransaction = childFragmentManager.beginTransaction();
-        //fragmentTransaction.addToBackStack(LoanSavingFundMainChildFragment.TAG);
-        //fragmentTransaction.add(R.id.flChildFragmentContainer, new LoanSavingFundMainChildFragment(), LoanSavingFundMainChildFragment.TAG).commit();
+        fragmentTransaction = childFragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(LoanSavingFundMainChildFragment.TAG);
+        fragmentTransaction.add(R.id.flChildFragmentContainer, new LoanSavingFundMainChildFragment(), LoanSavingFundMainChildFragment.TAG).commit();
         imgvRefresh.setOnClickListener(this);
         return view;
     }

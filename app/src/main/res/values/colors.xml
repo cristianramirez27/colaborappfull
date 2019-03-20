@@ -55,4 +55,6 @@
     <color name="black_transparency_seven">#85000000</color>
 
     <color name="hint_text_color">#e9edf2</color>
+    <color name="disable_text_color">#9b9b9b</color>
+
 </resources>

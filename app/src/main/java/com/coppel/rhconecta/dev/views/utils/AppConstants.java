@@ -73,6 +73,7 @@ public class AppConstants {
     public static final String BUNDLE_FIELDS_LETTER = "BUNDLE_FIELDS_LETTER";
 
     public static final String BUNDLE_RESPONSE_CONFIG_LETTER = "BUNDLE_RESPONSE_CONFIG_LETTER";
+    public static final String BUNDLE_TYPE_SAVING_OPTION = "BUNDLE_TYPE_SAVING_OPTION";
 
     public static final String KEY_STAMP = "sello";
     public static final String KEY_CHILDREN_NAMES = "Nombre_hijos";

@@ -49,7 +49,9 @@
     <string name="buy_margin">Margen de\ncompra</string>
     <string name="enterprise_fund">Fondo de la\nempresa</string>
     <string name="current_account">Cuenta\ncorriente</string>
-    <string name="additional_saving">Ahorro\nadicional</string>
+    <string name="additional_saving">Ahorro adicional</string>
+
+    <string name="additional_saving_title">Ahorro\nadicional</string>
     <string name="employee_fund">Fondo del\ntrabajador</string>
     <string name="remove">Retirar</string>
     <string name="add">Abonar</string>
@@ -235,5 +237,25 @@
     <string name="file_kindergarten">Guarderia</string>
 
     <string name="error_empty_search">El campo no puede estar vacío</string>
+
+    <!--Fondo de ahorro-->
+
+    <string name="removeFrom">Retirar de:</string>
+    <string name="totalRemove">Total Importe:</string>
+    <string name="btnDoRemove">Realizar retiro</string>
+    <string name="add_amount_monthly">Agrega tu cuota de ahorro mensual</string>
+    <string name="current_amount_monthly">Tu cuota de ahorro actual es:</string>
+    <string name="btnAddAditionalSave">Agregar</string>
+
+    <string name="payment_way">Método de pago</string>
+
+    <string name="acount_title">Cuenta\ncorriente</string>
+    <string name="aditional_title">Ahorro\nadicional</string>
+    <string name="worker_title">Fondo del\ntrabajador</string>
+
+    <string name="want_remove">Quiero disponer</string>
+
+    <string name="max_saving">Tu máxima cuota de ahorro es de</string>
+    <string name="new_saving">Tu nueva cuota es de</string>
 
 </resources>

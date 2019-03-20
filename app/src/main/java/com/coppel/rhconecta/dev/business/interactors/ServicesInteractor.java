@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
+import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
@@ -18,7 +19,9 @@ import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
+import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
@@ -27,6 +30,10 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyReq
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
@@ -38,6 +45,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequ
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarAhorroResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -46,6 +55,7 @@ import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
+import com.coppel.rhconecta.dev.business.models.RetiroResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherBonusResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherDownloadResponse;
@@ -55,6 +65,8 @@ import com.coppel.rhconecta.dev.business.models.VoucherResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherRosterResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherSendMailResponse;
+import com.coppel.rhconecta.dev.business.models.WithDrawSavingBaseResponse;
+import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesGeneralValidations;
@@ -74,6 +86,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_ABONO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_AHORRO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_ABONO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_AHORRO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ServicesInteractor {
@@ -1856,6 +1874,237 @@ public class ServicesInteractor {
 
         return clazz;
     }
+
+
+
+    /******************************************************/
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Fondo Ahorro          *****************************************************************
+     *********************************************************************************************************************************************************/
+    public void getFondoAhorro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        this.token = token;
+
+        switch (fondoAhorroData.getWithDrawSavingType()){
+            case CONSULTA_RETIRO:
+                getConsultaRetiro(fondoAhorroData,token);
+                break;
+            case GUARDAR_RETIRO:
+               getGuardarRetiro(fondoAhorroData,token);
+                break;
+            case CONSULTA_ABONO:
+               getConsultaRetiro(fondoAhorroData,token);
+                break;
+            case GUARDAR_ABONO:
+               getConsultaRetiro(fondoAhorroData,token);
+                break;
+            case CONSULTA_AHORRO:
+                getConsultaAhorroAdicional(fondoAhorroData,token);
+                break;
+            case GUARDAR_AHORRO:
+               getGuardarAhorro(fondoAhorroData,token);
+                break;
+        }
+    }
+
+
+    private void getConsultaRetiro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultaRetiro(ServicesConstants.GET_WITHDRAWSAVINGS,token,(CoppelServicesConsultaRetiroRequest)buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse =   (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getGuardarRetiro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getGuardarRetiro(ServicesConstants.GET_WITHDRAWSAVINGS,token,(CoppelServicesGuardarRetiroRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse =   (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getConsultaAhorroAdicional(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultarAhorroAdicional(ServicesConstants.GET_WITHDRAWSAVINGS,token,(CoppelServicesConsultaAhorroAdicionalRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse =   (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+    private void getGuardarAhorro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getGuardarAhorro(ServicesConstants.GET_WITHDRAWSAVINGS,token,(CoppelServicesGuardarAhorroRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse =   (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    public void getSavingResponse(WithDrawSavingBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getSavingSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    public void getSavingSuccess(WithDrawSavingBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+
+        if (response != null && response != null) {
+
+            WithDrawSavingBaseResponse withDrawSavingBaseResponse = response;
+            if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<WithDrawSavingBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(withDrawSavingBaseResponse);
+                servicesResponse.setType(ServicesRequestType.WITHDRAWSAVING);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(""/*benefitsBaseResponse.getData().getResponse().getUserMessage()*/);
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_voucher));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public CoppelServicesBaseFondoAhorroRequest buildWithDrawRequest(WithDrawSavingRequestData withDrawSavingRequestData) {
+        CoppelServicesBaseFondoAhorroRequest coppelServicesBaseFondoAhorroRequest = null;
+
+        int solicitud = withDrawSavingRequestData.getOpcion();
+
+        switch (withDrawSavingRequestData.getWithDrawSavingType()){
+
+            case CONSULTA_RETIRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaRetiroRequest(withDrawSavingRequestData.getNum_empleado(),solicitud);
+                break;
+            case GUARDAR_RETIRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarRetiroRequest(
+                        withDrawSavingRequestData.getNum_empleado(),
+                        solicitud,withDrawSavingRequestData.getImp_margencredito(),
+                        withDrawSavingRequestData.getImp_ahorroadicional());
+                break;
+            case CONSULTA_ABONO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaRetiroRequest("",solicitud);
+                break;
+            case GUARDAR_ABONO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaRetiroRequest("",solicitud);
+                break;
+            case CONSULTA_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaAhorroAdicionalRequest(withDrawSavingRequestData.getNum_empleado(),solicitud);
+                break;
+            case GUARDAR_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarAhorroRequest(withDrawSavingRequestData.getNum_empleado(),solicitud,withDrawSavingRequestData.getImp_cuotaahorro());
+                break;
+
+        }
+
+        return coppelServicesBaseFondoAhorroRequest;
+    }
+
+    public Class getWithDrawSavingResponse(WithDrawSavingType withDrawSavingType) {
+        Class clazz = null;
+        switch (withDrawSavingType){
+            case CONSULTA_RETIRO:
+                clazz = RetiroResponse.class;
+                break;
+            case GUARDAR_RETIRO:
+                clazz = GuardarRetiroResponse.class;
+                break;
+            case CONSULTA_ABONO:
+                clazz = BenefitsStatesResponse.class;
+                break;
+            case GUARDAR_ABONO:
+                clazz = BenefitsStatesResponse.class;
+                break;
+            case CONSULTA_AHORRO:
+                clazz = ConsultaAhorroAdicionalResponse.class;
+                break;
+            case GUARDAR_AHORRO:
+                clazz = GuardarAhorroResponse.class;
+                break;
+        }
+
+        return clazz;
+    }
+
+
 
 
 

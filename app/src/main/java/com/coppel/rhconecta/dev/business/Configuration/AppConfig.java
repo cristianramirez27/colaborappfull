@@ -29,6 +29,7 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 public class AppConfig {
 
 
+    public final static String ENDPOINT_WITHDRAWSAVINGS = "ENDPOINT_WITHDRAWSAVINGS";
     public final static String ENDPOINT_BENEFICIOS = "ENDPOINT_BENEFICIOS";
     public final static String ENDPOINT_VALIDARFIRMA = "ENDPOINT_VALIDARFIRMA";
     public final static String ENDPOINT_PREVIEW = "ENDPOINT_PREVIEW";
@@ -47,6 +48,9 @@ public class AppConfig {
 
     /**Se almacenan los endpoints*/
     public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig){
+
+
+        String fondoConsulta = mFirebaseRemoteConfig.getString(ENDPOINT_WITHDRAWSAVINGS);
         String beneficios = mFirebaseRemoteConfig.getString(ENDPOINT_BENEFICIOS);
         String validarFirma = mFirebaseRemoteConfig.getString(ENDPOINT_VALIDARFIRMA);
         String preview = mFirebaseRemoteConfig.getString(ENDPOINT_PREVIEW);
@@ -59,6 +63,7 @@ public class AppConfig {
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS,fondoConsulta);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VALIDARFIRMA,validarFirma);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PREVIEW,preview);

@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,7 +45,45 @@ public class EditTextMoney extends ConstraintLayout {
         edtQuantity.setText(quantity);
     }
 
+    public void setEnableQuantity(boolean enable) {
+        edtQuantity.setTextSize(22);
+        edtQuantity.setEnabled(enable);
+    }
+
+
+    public void setInformativeQuantity(String value) {
+        edtQuantity.setTextColor(getResources().getColor(R.color.disable_text_color));
+        edtQuantity.setBackground(null);
+        edtQuantity.setText(value);
+    }
+
+    public void setSizeQuantity(float size) {
+        edtQuantity.setTextSize(size);
+    }
+
+    public void setHint(String hint) {
+        edtQuantity.setHint(hint);
+    }
+
+    public void setFont(String font) {
+       // edtQuantity.setFon(hint);
+        Typeface type = Typeface.createFromAsset(getContext().getAssets(),font);
+        edtQuantity.setTypeface(type);
+    }
+
+    public void setPaddinRigthTitle(){
+
+        txvTitle.setPadding(30,8,0,8);
+    }
+
     public void setTitleGravity(int gravity){
         txvTitle.setGravity(gravity);
+    }
+
+    public String getQuantity(){
+        if(edtQuantity.getText() != null)
+        return edtQuantity.getText().toString();
+
+        return "";
     }
 }

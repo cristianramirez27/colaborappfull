@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,9 +11,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
+import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,13 +48,22 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
 
     @Override
     public void onClick(View view) {
+
+        int optionSelected = 0;
         switch (view.getId()) {
             case R.id.btnRemove:
+                optionSelected = 1;
                 break;
             case R.id.btnAdd:
+                optionSelected = 2;
                 break;
             case R.id.btnAdditionalSaving:
+                optionSelected = 3;
                 break;
         }
+
+        Intent intentFondo = new Intent(getActivity(), FondoAhorroActivity.class);
+        intentFondo.putExtra(BUNDLE_TYPE_SAVING_OPTION,optionSelected);
+        startActivity(intentFondo);
     }
 }
