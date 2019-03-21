@@ -82,4 +82,10 @@ public class AppConstants {
     public static final String KEY_SECTION_SCHEDULE = "horario_Seccion";
     public static final String KEY_HOLIDAY_PERIOD = "periodo_vacacional";
 
+
+    public static final String BUNDLE_CLV_ABONAR = "BUNDLE_CLV_ABONAR";
+    public static final String BUNDLE_DATOS_OPT_ABONAR = "BUNDLE_DATOS_OPT_ABONAR";
+    public static final String BUNDLE_SAVINFOUND = "BUNDLE_SAVINFOUND";
+
+
 }

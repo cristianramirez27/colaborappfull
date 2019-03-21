@@ -93,7 +93,8 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         childFragmentManager = getChildFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(LoanSavingFundMainChildFragment.TAG);
-        fragmentTransaction.add(R.id.flChildFragmentContainer, new LoanSavingFundMainChildFragment(), LoanSavingFundMainChildFragment.TAG).commit();
+        //LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
+        //fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
         imgvRefresh.setOnClickListener(this);
         return view;
     }
@@ -142,6 +143,11 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
                         Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getAhorroAdicional()))));
                 txvEmployeeFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
                         Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoTrabajador()))));
+
+                LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
+                fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
+
+
                 break;
         }
     }

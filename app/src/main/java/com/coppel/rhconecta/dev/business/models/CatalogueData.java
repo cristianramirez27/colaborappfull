@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by faustolima on 29/11/18.
  */
 
-public class StatesData<T> implements Serializable {
+public class CatalogueData<T> implements Serializable {
 
     private T data;
 

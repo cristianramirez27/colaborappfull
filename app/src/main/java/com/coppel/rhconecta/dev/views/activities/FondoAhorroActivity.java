@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
 import com.coppel.rhconecta.dev.views.adapters.PagerAdapter;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment;
@@ -29,6 +30,7 @@ import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
@@ -46,6 +48,7 @@ public class FondoAhorroActivity extends AppCompatActivity  {
     private FragmentTransaction fragmentTransaction;
 
     private  int optionSelected;
+    private LoanSavingFundResponse loanSavingFundResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,7 @@ public class FondoAhorroActivity extends AppCompatActivity  {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-
+        loanSavingFundResponse = (LoanSavingFundResponse) getIntent().getSerializableExtra(BUNDLE_SAVINFOUND);
         optionSelected =  getIntent().getIntExtra(BUNDLE_TYPE_SAVING_OPTION,0);
 
         childFragmentManager = getSupportFragmentManager();
@@ -84,23 +87,8 @@ public class FondoAhorroActivity extends AppCompatActivity  {
     }
 
 
-    public String getTitleLetter(){
-
-        switch (optionSelected){
-            case TYPE_WORK_RECORD:
-                    return getString(R.string.work_record);
-                case TYPE_VISA_PASSPORT:
-                    return getString(R.string.visa_passport);
-                case TYPE_BANK_CREDIT:
-                     return getString(R.string.bank_credit);
-                case TYPE_IMSS:
-                     return getString(R.string.imss);
-                case TYPE_INFONAVIT:
-                     return getString(R.string.infonavit);
-                case TYPE_KINDERGARTEN:
-                     return getString(R.string.kindergarten);
-
-                    default: return "";
-        }
+    public LoanSavingFundResponse getLoanSavingFundResponse(){
+        return loanSavingFundResponse;
     }
+
 }

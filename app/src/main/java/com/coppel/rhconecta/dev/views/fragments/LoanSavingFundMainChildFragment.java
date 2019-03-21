@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
+import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 
 /**
@@ -33,6 +37,24 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
     Button btnAdd;
     @BindView(R.id.btnAdditionalSaving)
     Button btnAdditionalSaving;
+
+    private LoanSavingFundResponse loanSavingFundResponse;
+
+
+    public static LoanSavingFundMainChildFragment getInstance(LoanSavingFundResponse loanSavingFundResponse){
+        LoanSavingFundMainChildFragment fragment = new LoanSavingFundMainChildFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_SAVINFOUND,loanSavingFundResponse);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        loanSavingFundResponse = (LoanSavingFundResponse) getArguments().getSerializable(BUNDLE_SAVINFOUND);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -64,6 +86,7 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
 
         Intent intentFondo = new Intent(getActivity(), FondoAhorroActivity.class);
         intentFondo.putExtra(BUNDLE_TYPE_SAVING_OPTION,optionSelected);
+        intentFondo.putExtra(BUNDLE_SAVINFOUND,loanSavingFundResponse);
         startActivity(intentFondo);
     }
 }

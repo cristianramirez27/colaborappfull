@@ -30,9 +30,10 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="3dp"
             android:textSize="13sp"
+            android:gravity="center"
+            android:layout_gravity="center"
             android:textAllCaps="false"
-            android:singleLine="true"
-            android:text="Deposito" />
+            android:maxLines="2" />
     </LinearLayout>
 
 </LinearLayout>

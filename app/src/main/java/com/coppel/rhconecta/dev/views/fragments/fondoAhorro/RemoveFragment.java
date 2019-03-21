@@ -11,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
+import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
@@ -43,6 +46,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +65,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 
 public class RemoveFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener {
+        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener,ICalculatetotal {
 
     public static final String TAG = RemoveFragment.class.getSimpleName();
     private FondoAhorroActivity parent;
@@ -109,6 +113,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentFondoAhorro dialogFragmentFondoAhorro;
 
+    private RetiroResponse retiroResponse;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -130,7 +136,6 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         parent.setToolbarTitle("Retirar");
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnRemove.setOnClickListener(this);
-
         return view;
     }
 
@@ -152,10 +157,17 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
         coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
 
+        //Seteamos los valores de margen de credito y ahorro adicional
         txtCreditMargin.setText("Disponible en Margen de crédito");
-         txtValueCreditMargin.setText("$18,000");
+        txtValueCreditMargin.setText(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
+        txvLoanMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
         txtAditionaSave.setText("Disponible en Ahorro adicional");
-        txtValueAditionaSave.setText("$21,000");
+        txtValueAditionaSave.setText(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
+        txvAditionalSaveValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
 
         edtRetiroProceso.setTitleGravity(Gravity.LEFT);
         edtRetiro.setTitleGravity(Gravity.LEFT);
@@ -172,7 +184,16 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         edtRetiroAhorroProceso.setSizeQuantity(22);
         edtRetiroAhorro.setSizeQuantity(22);
 
+
+        setEnableButton(false);
+        setFocusChangeListener(edtRetiro);
+        setFocusChangeListener(edtRetiroProceso);
+        setFocusChangeListener(edtRetiroAhorro);
+        setFocusChangeListener(edtRetiroAhorroProceso);
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -203,7 +224,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         int margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiro.getQuantity()) : 0;
-        int ahorroAdicional = !edtRetiro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorro.getQuantity()) : 0;
+        int ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorro.getQuantity()) : 0;
 
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
                 GUARDAR_RETIRO,3,numEmployer,margenCredito,ahorroAdicional);
@@ -216,7 +237,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         switch (response.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
                 if(response.getResponse() instanceof  RetiroResponse){
-                    RetiroResponse retiroResponse = (RetiroResponse)response.getResponse();
+                    retiroResponse = (RetiroResponse)response.getResponse();
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     if(retiroResponse.getData().getResponse().getDes_mensaje() != null &&
                             !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty()){
@@ -285,6 +306,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiro.setHint("Ingresa una cantidad");
             edtRetiro.setEnableQuantity(true);
             edtRetiroProceso.setVisibility(View.GONE);
+
+            edtRetiroProceso.setTextWatcherMoney(this);
+            edtRetiro.setTextWatcherMoney(this);
         }
 
         if(retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0){
@@ -299,6 +323,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroAhorro.setHint("Ingresa una cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
             edtRetiroAhorroProceso.setVisibility(View.GONE);
+
+
         }
 
         totalImporte.setText(String.format("%s $%d",getString(R.string.totalRemove),retiroResponse.getData().getResponse().getImp_total()));
@@ -360,4 +386,51 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
+    private void setFocusChangeListener(EditTextMoney editTextMoney){
+
+        editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setEnableButton(count > 0 ? true : false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        editTextMoney.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus)
+                    editTextMoney.setTextWatcherMoney(RemoveFragment.this);
+            }
+        });
+    }
+
+    private void setEnableButton(boolean isEnable){
+        btnRemove.setEnabled(isEnable);
+        btnRemove.setBackgroundResource(isEnable ? R.drawable.background_blue_rounded : R.drawable.background_disable_rounded);
+    }
+
+    @Override
+    public void calculate() {
+        String contentMargin = retiroResponse.getData().getResponse().getImp_margencredito() > 0 ? edtRetiroProceso.getQuantity() : edtRetiro.getQuantity();
+        String contentAhorro= retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0 ? edtRetiroAhorroProceso.getQuantity() : edtRetiroAhorro.getQuantity();
+
+        Double margin = !contentMargin.isEmpty() ? Double.parseDouble(contentMargin) : 0.0;
+        Double ahorro = !contentAhorro.isEmpty() ? Double.parseDouble(contentAhorro) : 0.0;
+        Double total = margin + ahorro;
+
+        totalImporte.setText(TextUtilities.getNumberInCurrencyFormat(total));
+
+    }
 }

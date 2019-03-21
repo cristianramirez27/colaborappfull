@@ -12,11 +12,10 @@ import com.coppel.rhconecta.dev.business.interfaces.IEnumTab;
  * @author flima on 22/05/2017.
  */
 
-public enum ElementsDepositTab implements IEnumTab {
+public enum ElementsDepositSimpleTab implements IEnumTab {
 
     CORRIENTE(R.string.acount_title,NO_ICON),
-    AHORRO(R.string.aditional_title,NO_ICON),
-    TRABAJADOR(R.string.worker_title, NO_ICON);
+    AHORRO(R.string.aditional_title,NO_ICON);
 
 
     @StringRes
@@ -25,7 +24,7 @@ public enum ElementsDepositTab implements IEnumTab {
     @DrawableRes
     private int icon;
 
-    private ElementsDepositTab(@StringRes int name, @DrawableRes int icon) {
+    private ElementsDepositSimpleTab(@StringRes int name, @DrawableRes int icon) {
         this.name = name;
         this.icon = icon;
     }

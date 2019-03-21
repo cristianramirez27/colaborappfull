@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarAhorroResponse;
@@ -34,6 +37,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +49,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class AditionalSaveFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick {
+        DialogFragmentWarning.OnOptionClick,ICalculatetotal {
 
     public static final String TAG = AditionalSaveFragment.class.getSimpleName();
     private FondoAhorroActivity parent;
@@ -108,6 +112,10 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
         parent.setToolbarTitle("Ahorro adicional");
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnAdd.setOnClickListener(this);
+        txvAditionalSaveValue.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
+        setFocusChangeListener(edtAhorroActualProceso);
+        setFocusChangeListener(edtAhorroActualCambiar);
+        setEnableButton(false);
 
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
@@ -116,6 +124,9 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                 CONSULTA_AHORRO,7,numEmployer);
 
         coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+
+
+
 
         return view;
     }
@@ -224,6 +235,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                         edtAhorroActualCambiar.setSizeQuantity(22);
                         edtAhorroActualCambiar.setHint("Ingresa otra cantidad");
                         edtAhorroActualCambiar.setEnableQuantity(true);
+                        btnAdd.setText("Cambiar");
 
                     }else {
                         edtAhorroActualProceso.setVisibility(View.VISIBLE);
@@ -231,8 +243,8 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                         edtAhorroActualCambiar.setSizeQuantity(22);
                         edtAhorroActualProceso.setHint("Ingresa una cantidad");
                         edtAhorroActualProceso.setEnableQuantity(true);
-
                         edtAhorroActualCambiar.setVisibility(View.GONE);
+                        btnAdd.setText("Agregar");
 
                     }
                 }else if(response.getResponse() instanceof GuardarAhorroResponse){
@@ -327,5 +339,43 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
     }
 
 
+    private void setFocusChangeListener(EditTextMoney editTextMoney){
 
+        editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setEnableButton(count > 0 ? true : false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        editTextMoney.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus)
+                    editTextMoney.setTextWatcherMoney(AditionalSaveFragment.this);
+            }
+        });
+    }
+
+
+    private void setEnableButton(boolean isEnable){
+        btnAdd.setEnabled(isEnable);
+        btnAdd.setBackgroundResource(isEnable ? R.drawable.background_blue_rounded : R.drawable.background_disable_rounded);
+    }
+
+    @Override
+    public void calculate() {
+
+    }
 }

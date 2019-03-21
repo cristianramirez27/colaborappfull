@@ -14,7 +14,9 @@ import android.widget.Button;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
+import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
+import com.coppel.rhconecta.dev.views.adapters.PaymentsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.StatesRecyclerAdapter;
 
 import java.util.List;
@@ -22,9 +24,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DialogFragmentSelectState extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentSelectPayment extends DialogFragment implements View.OnClickListener {
 
-    public static final String TAG = DialogFragmentSelectState.class.getSimpleName();
+    public static final String TAG = DialogFragmentSelectPayment.class.getSimpleName();
     public static final String KEY_DATA = "KEY_DATA";
     public static final String KEY_LAYOUT = "KEY_LAYOUT";
     private OnButonOptionClick onButtonClickListener;
@@ -36,16 +38,16 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
     Button btnActionLeft;
     @BindView(R.id.btnActionRight)
     Button btnActionRight;
-    private CatalogueData statesData;
-    private List<LocationEntity> locationEntities;
-    private StatesRecyclerAdapter statesRecyclerAdapter;
+    private   CatalogueData catalogueData;
+    private List<ConsultaMetodosPagoResponse.PaymentWay> paymentWays;
+    private PaymentsRecyclerAdapter paymentsRecyclerAdapter;
     private String contentText;
     private int iResLayout;
 
 
 
-    public static DialogFragmentSelectState newInstance(CatalogueData statesData, int iResLayout){
-        DialogFragmentSelectState fragmentScheduleData = new DialogFragmentSelectState();
+    public static DialogFragmentSelectPayment newInstance(CatalogueData statesData, int iResLayout){
+        DialogFragmentSelectPayment fragmentScheduleData = new DialogFragmentSelectPayment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_DATA,statesData);
         args.putInt(KEY_LAYOUT,iResLayout);
@@ -58,8 +60,8 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreen);
         iResLayout = getArguments().getInt(KEY_LAYOUT);
-        statesData = (CatalogueData) getArguments().getSerializable(KEY_DATA);
-        locationEntities =  (List<LocationEntity>)statesData.getData();
+        catalogueData = (CatalogueData) getArguments().getSerializable(KEY_DATA);
+        paymentWays =  (List<ConsultaMetodosPagoResponse.PaymentWay>)catalogueData.getData();
     }
 
 
@@ -79,8 +81,8 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
     private void initViews() {
         rcvFields.setHasFixedSize(true);
         rcvFields.setLayoutManager(new LinearLayoutManager(getContext()));
-        statesRecyclerAdapter = new StatesRecyclerAdapter(getContext(), locationEntities);
-        rcvFields.setAdapter(statesRecyclerAdapter);
+        paymentsRecyclerAdapter = new PaymentsRecyclerAdapter(getContext(), paymentWays);
+        rcvFields.setAdapter(paymentsRecyclerAdapter);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
     }
@@ -96,10 +98,10 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
         if (onButtonClickListener != null) {
             switch (view.getId()) {
                 case R.id.btnActionLeft:
-                    onButtonClickListener.onLeftOptionStateClick();
+                    onButtonClickListener.onLeftOptionPaymentClick();
                     break;
                 case R.id.btnActionRight:
-                    onButtonClickListener.onRightOptionStateClick(statesRecyclerAdapter.getSelectedSchedule());
+                    onButtonClickListener.onRightOptionPaymentClick(paymentsRecyclerAdapter.getSelectedPayment());
                     break;
                 case R.id.imgvClose:
                     close();
@@ -110,9 +112,9 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
 
     public interface OnButonOptionClick {
 
-        void onLeftOptionStateClick();
+        void onLeftOptionPaymentClick();
 
-        void onRightOptionStateClick(LocationEntity data);
+        void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data);
     }
 
     public void setOnButtonClickListener(OnButonOptionClick onButtonClickListener) {

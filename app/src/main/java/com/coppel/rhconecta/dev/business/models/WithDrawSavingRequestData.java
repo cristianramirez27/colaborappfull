@@ -15,6 +15,12 @@ public class WithDrawSavingRequestData implements Serializable{
     private int imp_ahorroadicional;
     private int imp_cuotaahorro;
 
+    private int clv_abonar;
+
+    private int imp_fondoempleado;
+    private int imp_cuentacorriente;
+    private int clv_retiro;
+
 
 
     public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, String num_empleado) {
@@ -30,6 +36,19 @@ public class WithDrawSavingRequestData implements Serializable{
         this.num_empleado = num_empleado;
         this.imp_margencredito = imp_margencredito;
         this.imp_ahorroadicional = imp_ahorroadicional;
+    }
+
+    public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, int clv_abonar) {
+        this.withDrawSavingType = withDrawSavingType;
+        this.opcion = opcion;
+        this.clv_abonar = clv_abonar;
+    }
+
+    public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, String num_empleado, int clv_abonar) {
+        this.withDrawSavingType = withDrawSavingType;
+        this.opcion = opcion;
+        this.num_empleado = num_empleado;
+        this.clv_abonar = clv_abonar;
     }
 
     public WithDrawSavingType getWithDrawSavingType() {
@@ -79,5 +98,37 @@ public class WithDrawSavingRequestData implements Serializable{
 
     public void setImp_cuotaahorro(int imp_cuotaahorro) {
         this.imp_cuotaahorro = imp_cuotaahorro;
+    }
+
+    public int getClv_abonar() {
+        return clv_abonar;
+    }
+
+    public void setClv_abonar(int clv_abonar) {
+        this.clv_abonar = clv_abonar;
+    }
+
+    public int getImp_fondoempleado() {
+        return imp_fondoempleado;
+    }
+
+    public void setImp_fondoempleado(int imp_fondoempleado) {
+        this.imp_fondoempleado = imp_fondoempleado;
+    }
+
+    public int getImp_cuentacorriente() {
+        return imp_cuentacorriente;
+    }
+
+    public void setImp_cuentacorriente(int imp_cuentacorriente) {
+        this.imp_cuentacorriente = imp_cuentacorriente;
+    }
+
+    public int getClv_retiro() {
+        return clv_retiro;
+    }
+
+    public void setClv_retiro(int clv_retiro) {
+        this.clv_retiro = clv_retiro;
     }
 }

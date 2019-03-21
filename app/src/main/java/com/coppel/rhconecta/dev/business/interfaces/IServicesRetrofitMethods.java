@@ -8,8 +8,11 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyReq
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
@@ -134,6 +137,19 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getGuardarAhorro(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGuardarAhorroRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getConsultarAbono(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaAbonoRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getGuardarAbono(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGuardarAbonoRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getConsultarMetodo(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaMetodoPagoRequest servicesRequest);
 
 
 

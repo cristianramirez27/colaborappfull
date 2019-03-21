@@ -21,9 +21,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.ElementsDepositSimpleTab;
 import com.coppel.rhconecta.dev.business.Enums.ElementsDepositTab;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.ConsultaAbonoResponse;
+import com.coppel.rhconecta.dev.business.models.DatosAbonoOpcion;
 import com.coppel.rhconecta.dev.business.models.ViewPagerData;
+import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -32,9 +36,11 @@ import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
 import com.coppel.rhconecta.dev.views.customviews.GenericPagerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.GenericTabLayout;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +49,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_ABONO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_METODOS_PAGO;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_ABONO;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class AbonoFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick {
+        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener  {
 
     public static final String TAG = AbonoFragment.class.getSimpleName();
     private FondoAhorroActivity parent;
@@ -56,7 +68,6 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     private DialogFragmentWarning dialogFragmentWarning;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     private boolean WARNING_PERMISSIONS;
-
     private boolean EXPIRED_SESSION;
     private List<Fragment> fragmentList;
     private GenericPagerAdapter mainViewPagerAdapter;
@@ -66,7 +77,29 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
+    @BindView(R.id.btnDeposit)
+    Button btnDeposit;
 
+
+    @BindView(R.id.txvLoanValueCurrentAcount)
+    TextView txvLoanValueCurrentAcount;
+    @BindView(R.id.txvLoanValueAditional)
+    TextView txvLoanValueAditional;
+    @BindView(R.id.txvBuyMargin7)
+    TextView txvLoanTitleEmployer;
+
+    @BindView(R.id.txvLoanValueEmployer)
+    TextView txvLoanValueEmployer;
+
+    @BindView(R.id.txvLoanValueMargin)
+    TextView txvLoanValueMargin;
+    @BindView(R.id.txvLoanValueEnterprise)
+    TextView txvLoanValueEnterprise;
+
+    private boolean hasEmployerOption = false;
+
+
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
 
     @Override
     public void onAttach(Context context) {
@@ -88,8 +121,6 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         parent = (FondoAhorroActivity) getActivity();
         parent.setToolbarTitle("Abonar");
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
-
-
         return view;
     }
 
@@ -103,16 +134,40 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        txvLoanValueCurrentAcount.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getCuentaCorriente()))));
+        txvLoanValueAditional.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
+        txvLoanValueMargin.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
+        txvLoanValueEnterprise.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa()))));
+        txvLoanValueEmployer.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador()))));
+
+        //hasEmployerOption = parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador() < parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa();
+        txvLoanTitleEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
+        txvLoanValueEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
+
+        btnDeposit.setOnClickListener(this);
+
+        /*Consulta */
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
+                CONSULTA_ABONO,4,numEmployer);
+        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+
+    }
+
+
+    private void configUI(ConsultaAbonoResponse response){
         //scrollView.setFillViewport (true);
-
         fragmentList = new ArrayList<>();
-        fragmentList.add(AbonoTipoFragment.getInstance());
-        fragmentList.add(AbonoTipoFragment.getInstance());
-        fragmentList.add(AbonoTipoFragment.getInstance());
+        ConsultaAbonoResponse.Response data = response.getData().getResponse();
 
-        ViewPagerData viewPagerData =  new ViewPagerData<>(fragmentList, ElementsDepositTab.values());
+        fragmentList.add(AbonoTipoFragment.getInstance(1,new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar())));
+        fragmentList.add(AbonoTipoFragment.getInstance(2,new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar())));
+        if(hasEmployerOption) fragmentList.add(AbonoTipoFragment.getInstance(3,new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar())));
+
+        ViewPagerData viewPagerData =  new ViewPagerData<>(fragmentList,hasEmployerOption ? ElementsDepositTab.values() : ElementsDepositSimpleTab.values());
         loadViewPager(viewPagerData);
-
     }
 
     private void loadViewPager( ViewPagerData viewPagerData){
@@ -127,6 +182,27 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         tabLayout.setSelectedTabIndicatorHeight(6);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryCoppelAzul));
         tabLayout.setVisibility(VISIBLE);
+
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+                ((AbonoTipoFragment)fragmentList.get(i)).initFragment();
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     @Override
@@ -149,7 +225,7 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnAdd:
+            case R.id.btnDeposit:
 
                 break;
         }
@@ -159,7 +235,23 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
 
-            case ServicesRequestType.LETTERPREVIEW:
+            case ServicesRequestType.WITHDRAWSAVING:
+
+                if(response.getResponse() instanceof ConsultaAbonoResponse){
+                    //Se muestra el mensaje de Des_abonoProceso si tiene valor
+                    if(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_abonoProceso() != null
+                            && !(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_abonoProceso().isEmpty())){
+                        showAlertDialog(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_abonoProceso());
+                    }
+
+                    //Si se obtiene un mensaje en la propiedad Des_mensaje, se despliega.
+                    if(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_mensaje() != null
+                    && !(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_mensaje().isEmpty())){
+                        showWarningDialog(((ConsultaAbonoResponse) response.getResponse()).getData().getResponse().getDes_mensaje());
+                    }
+
+                    configUI((ConsultaAbonoResponse)response.getResponse());
+                }
 
                 break;
         }
@@ -179,6 +271,15 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
 
         hideProgress();
+    }
+
+
+    private void showAlertDialog(String msg) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(MSG_ABONO, parent);
+        dialogFragmentGetDocument.setContentText(msg);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     @Override
@@ -220,6 +321,13 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
+    @Override
+    public void onSend(String email) {
 
+    }
 
+    @Override
+    public void onAccept() {
+        dialogFragmentGetDocument.close();
+    }
 }

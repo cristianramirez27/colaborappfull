@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
+import com.coppel.rhconecta.dev.business.utils.MoneyTextWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,9 +84,60 @@ public class EditTextMoney extends ConstraintLayout {
     }
 
     public String getQuantity(){
-        if(edtQuantity.getText() != null)
-        return edtQuantity.getText().toString();
+        if(edtQuantity.getText() != null) {
+
+            String content = edtQuantity.getText().toString().replace(",","");
+            content =  content.replace("$","");
+            content = content.replace(" ","");
+
+            return content.trim();
+
+        }
 
         return "";
+    }
+
+    public void setTextWatcherMoney(ICalculatetotal  ICalculatetotal){
+        edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+      //  edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity));
+        edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity,ICalculatetotal));
+
+
+      /*  edtQuantity.addTextChangedListener(new TextWatcher(){
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                String current = edtQuantity.getText().toString();
+                if(!s.toString().equals(current)){
+                    edtQuantity.removeTextChangedListener(this);
+
+                    String cleanString = s.toString().replaceAll("[$,.]", "");
+
+                    double parsed = Double.parseDouble(cleanString);
+                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+
+                    current = formatted;
+                    edtQuantity.setText(formatted);
+                    edtQuantity.setSelection(formatted.length());
+
+                    edtQuantity.addTextChangedListener(this);
+                }
+            }
+        });*/
+
+
+    }
+
+
+    public EditText getEdtQuantity() {
+        return edtQuantity;
     }
 }

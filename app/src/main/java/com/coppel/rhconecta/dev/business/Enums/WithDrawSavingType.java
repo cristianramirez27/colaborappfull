@@ -10,10 +10,10 @@ public enum WithDrawSavingType implements Serializable {
     CONSULTA_RETIRO,
     GUARDAR_RETIRO,
     CONSULTA_ABONO,
-    CONSULTAR_FORMAS_PAGO,
     GUARDAR_ABONO,
     CONSULTA_AHORRO,
-    GUARDAR_AHORRO
+    GUARDAR_AHORRO,
+    CONSULTA_METODOS_PAGO
 
 
 }
