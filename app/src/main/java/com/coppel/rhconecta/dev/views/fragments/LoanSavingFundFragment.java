@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -17,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.ISelectedOption;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
@@ -32,11 +35,16 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+import static com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment.REQUEST_SAVING;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LoanSavingFundFragment extends Fragment implements IServicesContract.View, View.OnClickListener,
-        DialogFragmentWarning.OnOptionClick {
+        DialogFragmentWarning.OnOptionClick,ISelectedOption {
 
     public static final String TAG = LoanSavingFundFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -77,6 +85,9 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
     ConstraintLayout ctlConnectionError;
     @BindView(R.id.imgvRefresh)
     ImageView imgvRefresh;
+
+
+    private boolean firstTime = true;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -130,6 +141,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         flChildFragmentContainer.setVisibility(View.VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.LOAN_SAVINGFUND:
+
                 loanSavingFundResponse = (LoanSavingFundResponse) response.getResponse();
                 txvLoanMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
                         Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getMargenCredito()))));
@@ -144,8 +156,13 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
                 txvEmployeeFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
                         Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoTrabajador()))));
 
-                LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
-                fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
+                if(firstTime){
+                    firstTime = false;
+                    LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
+                    loanSavingFundMainChildFragment.setISelectedOption(this);
+                    fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
+
+                }
 
 
                 break;
@@ -190,6 +207,19 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         }
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /**Actualizamos la informacion */
+       // if(requestCode == REQUEST_SAVING && requestCode == RESULT_OK){
+            coppelServicesPresenter.requestLoansSavingFund(parent.getProfileResponse().getColaborador(),
+                    parent.getLoginResponse().getToken());
+        //}
+
+    }
+
     @Override
     public void onLeftOptionClick() {
     }
@@ -198,4 +228,15 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
     public void onRightOptionClick() {
         AppUtilities.closeApp(parent);
     }
+
+
+    @Override
+    public void openOption(int optionSelected) {
+        Intent intentFondo = new Intent(getActivity(), FondoAhorroActivity.class);
+        intentFondo.putExtra(BUNDLE_TYPE_SAVING_OPTION,optionSelected);
+        intentFondo.putExtra(BUNDLE_SAVINFOUND,loanSavingFundResponse);
+        startActivityForResult(intentFondo,REQUEST_SAVING);
+    }
+
+
 }

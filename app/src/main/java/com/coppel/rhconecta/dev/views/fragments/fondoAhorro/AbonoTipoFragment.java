@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.IButtonControl;
 import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
@@ -35,6 +39,10 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectPayment;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectState;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +75,16 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
 
     @BindView(R.id.edtAbonoActual)
     EditTextMoney edtAbonoActual;
-    @BindView(R.id.edtAbonoCambiar)
-    EditTextMoney edtAbonoCambiar;
+    @BindView(R.id.edtAbonoProceso)
+    EditTextMoney edtAbonoProceso;
     @BindView(R.id.viewPaymentWay)
     View viewPaymentWay;
     @BindView(R.id.payment)
     EditText payment;
+    @BindView(R.id.totalImporte)
+    TextView totalImporte;
+
+
 
     private DialogFragmentSelectPayment dialogFragmentSelectPayment;
 
@@ -81,7 +93,7 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
 
     private boolean isWatchingKeyboard;
 
-
+private IButtonControl IButtonControl;
 
     private ConsultaMetodosPagoResponse consultaMetodosPagoResponse;
 
@@ -108,6 +120,21 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+
+        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(0)));
+
+      /*  KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // some code depending on keyboard visiblity status
+                        if(!isOpen)
+                            calculate();
+                    }
+                });*/
+
+
         return view;
     }
 
@@ -124,46 +151,85 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
         super.onViewCreated(view, savedInstanceState);
         parent = (FondoAhorroActivity) getActivity();
 
-        edtAbonoActual.setTitleGravity(Gravity.LEFT);
-        edtAbonoCambiar.setTitleGravity(Gravity.LEFT);
-        edtAbonoActual.setPaddinRigthTitle();
-        edtAbonoCambiar.setPaddinRigthTitle();
-
-        if(this.clv_Abonar == 1)
-            initFragment();
+         initFragment();
 
         //ViewPagerData viewPagerData =  new ViewPagerData<>(fragmentList, ElementsMainTab.values());
 
     }
 
     public void initFragment(){
+        IButtonControl.enableButton(false);
+        edtAbonoActual.setTitleGravity(Gravity.LEFT);
+        edtAbonoProceso.setTitleGravity(Gravity.LEFT);
+        edtAbonoActual.setPaddinRigthTitle();
+        edtAbonoProceso.setPaddinRigthTitle();
         edtAbonoActual.setInformativeMode("Quiero abonar","");
-        edtAbonoCambiar.setInformativeMode("Cambiar abono","");
+       // edtAbonoCambiar.setInformativeMode("Cambiar abono","");
         edtAbonoActual.setEnableQuantity(true);
-        edtAbonoCambiar.setEnableQuantity(true);
-        edtAbonoCambiar.setHint("Ingresa una cantidad");
+        edtAbonoProceso.setEnableQuantity(true);
+        //edtAbonoCambiar.setHint("Ingresa una cantidad");
 
         viewPaymentWay.setOnClickListener(this);
+        setFocusChangeListener(edtAbonoActual);
 
 
         if(datosAbonoOpcion.getImporte() > 0){
-            edtAbonoActual.setVisibility(View.VISIBLE);
-            edtAbonoActual.setInformativeMode(
+            edtAbonoProceso.setVisibility(View.VISIBLE);
+            edtAbonoProceso.setInformativeMode(
                     datosAbonoOpcion.getDes_proceso(), "");
-            edtAbonoActual.setInformativeQuantity(String.format("$%d",datosAbonoOpcion.getImporte()));
-            edtAbonoCambiar.setInformativeMode(datosAbonoOpcion.getDes_cambiar(),"");
-            edtAbonoCambiar.setHint("Ingresa una cantidad");
-            edtAbonoCambiar.setEnableQuantity(true);
+            edtAbonoProceso.setInformativeQuantity(String.format("$%d",datosAbonoOpcion.getImporte()));
+            edtAbonoActual.setInformativeMode(datosAbonoOpcion.getDes_cambiar(),"");
+            edtAbonoActual.setHint("Ingresa una cantidad");
+            edtAbonoActual.setEnableQuantity(true);
         }else {
 
-            edtAbonoCambiar.setInformativeMode(getString(R.string.want_deposit), "");
-            edtAbonoCambiar.setHint("Ingresa una cantidad");
-            edtAbonoCambiar.setEnableQuantity(true);
-            edtAbonoActual.setVisibility(View.GONE);
-            edtAbonoActual.setTextWatcherMoney(this);
-            edtAbonoCambiar.setTextWatcherMoney(this);
+            edtAbonoActual.setInformativeMode(getString(R.string.want_deposit), "");
+            edtAbonoActual.setHint("Ingresa una cantidad");
+            edtAbonoActual.setEnableQuantity(true);
+            edtAbonoProceso.setVisibility(View.GONE);
+            edtAbonoActual.setTextWatcherMoney();
         }
 
+
+        if(this.clv_Abonar == 1)
+            loadPayments();
+    }
+
+    private void setFocusChangeListener(EditTextMoney editTextMoney){
+
+        editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                IButtonControl.enableButton(count > 2 ? true : false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        editTextMoney.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus)
+                    editTextMoney.setTextWatcherMoney();
+            }
+        });
+    }
+
+    public void setIButtonControl(IButtonControl IButtonControl) {
+        this.IButtonControl = IButtonControl;
+    }
+
+    public void loadPayments(){
         /*Consultamos formas de pago*/
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
@@ -208,9 +274,6 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
         if(consultaMetodosPagoResponse != null){
             showSelectPayment(consultaMetodosPagoResponse.getData().getResponse());
         }
-
-        Toast.makeText(getActivity(), "Open payment", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -234,7 +297,7 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
-            case ServicesRequestType.LETTERSCONFIG:
+            case ServicesRequestType.WITHDRAWSAVING:
 
                 break;
             case ServicesRequestType.INVALID_TOKEN:
@@ -301,14 +364,43 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data) {
+    public void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data, int position) {
 
+        indexPaymentSelected = position;
         payment.setText(data.getNom_retiro());
         dialogFragmentSelectPayment.close();
     }
 
     @Override
     public void calculate() {
+        String content = edtAbonoActual.getQuantity();
+        Double importe = !content.isEmpty() ? Double.parseDouble(content) : 0.0;
+        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(importe)));
+    }
 
+    public DatosAbonoOpcion getDatosAbonoOpcion() {
+        return datosAbonoOpcion;
+    }
+
+    public void setDatosAbonoOpcion(DatosAbonoOpcion datosAbonoOpcion) {
+        this.datosAbonoOpcion = datosAbonoOpcion;
+    }
+
+    public int getClv_Abonar() {
+        return clv_Abonar;
+    }
+
+    public void setClv_Abonar(int clv_Abonar) {
+        this.clv_Abonar = clv_Abonar;
+    }
+
+    public ConsultaMetodosPagoResponse.PaymentWay getPaymentSelected(){
+
+        return consultaMetodosPagoResponse.getData().getResponse().get(indexPaymentSelected);
+
+    }
+
+    public double getAmount(){
+        return !edtAbonoActual.getQuantity().isEmpty() ?  Double.parseDouble(edtAbonoActual.getQuantity()) : 0.0;
     }
 }

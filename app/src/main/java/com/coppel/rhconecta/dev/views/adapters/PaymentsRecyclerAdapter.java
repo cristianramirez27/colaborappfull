@@ -23,10 +23,10 @@ public class PaymentsRecyclerAdapter extends RecyclerView.Adapter<PaymentsRecycl
 
     private Context context;
     private int selectedPosition = -1;
-
     private List<ConsultaMetodosPagoResponse.PaymentWay> paymentWays;
+
     public PaymentsRecyclerAdapter(Context context, List<ConsultaMetodosPagoResponse.PaymentWay> payments) {
-        this.paymentWays = paymentWays;
+        this.paymentWays = payments;
         this.context = context;
     }
 
@@ -103,6 +103,18 @@ public class PaymentsRecyclerAdapter extends RecyclerView.Adapter<PaymentsRecycl
         return null;
     }
 
+    public int getSelectedPositionPayment(){
+
+        for(int i = 0; i< paymentWays.size() ; i++){
+            ConsultaMetodosPagoResponse.PaymentWay paymentWay = paymentWays.get(i);
+            if(paymentWay.isSelected()){
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
     @Override
     public int getItemCount() {
         return paymentWays.size();
@@ -119,7 +131,6 @@ public class PaymentsRecyclerAdapter extends RecyclerView.Adapter<PaymentsRecycl
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.ctlContainer)
         RelativeLayout ctlContainer;
         @BindView(R.id.checkboxElement)

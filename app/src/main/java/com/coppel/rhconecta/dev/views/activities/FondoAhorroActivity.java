@@ -8,6 +8,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
@@ -79,7 +84,12 @@ public class FondoAhorroActivity extends AppCompatActivity  {
 
         fragmentTransaction.add(R.id.contentFragment, fragmentSelected, RemoveFragment.TAG).commit();
 
+
+
+
     }
+
+
 
 
     public void setToolbarTitle(String title) {

@@ -326,7 +326,7 @@
                                     app:tabMaxWidth="0dp"/>
                             </LinearLayout>
 
-                                <android.support.v4.view.ViewPager
+                                <com.coppel.rhconecta.dev.views.customviews.NoSwipeViewPager
                                     android:id="@+id/viewpager"
                                     android:layout_width="match_parent"
                                     android:layout_height="300dp"
@@ -351,7 +351,7 @@
                     android:layout_marginLeft="40dp"
                     android:background="@drawable/background_blue_rounded"
                     android:fontFamily="@font/lineto_circular_pro_book"
-                    android:text="@string/btnDoRemove"
+                    android:text="@string/btnDoDeposit"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"/>

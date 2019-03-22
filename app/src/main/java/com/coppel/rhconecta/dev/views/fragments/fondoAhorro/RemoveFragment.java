@@ -2,23 +2,31 @@ package com.coppel.rhconecta.dev.views.fragments.fondoAhorro;
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +55,9 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +88,14 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
     private boolean WARNING_PERMISSIONS;
 
+
+    @BindView(R.id.ctlConnectionError)
+    ConstraintLayout ctlConnectionError;
+    @BindView(R.id.layoutMain)
+    LinearLayout layoutMain;
+    @BindView(R.id.imgvRefresh)
+    ImageView imgvRefresh;
+
     @BindView(R.id.txvLoanMarginValue)
     TextView txvLoanMarginValue;
     @BindView(R.id.txvAditionalSaveValue)
@@ -90,8 +109,6 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     TextView txtAditionaSave;
     @BindView(R.id.txtValueAditionaSave)
     TextView txtValueAditionaSave;
-
-
 
     @BindView(R.id.edtRetiroProceso)
     EditTextMoney edtRetiroProceso;
@@ -136,6 +153,18 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         parent.setToolbarTitle("Retirar");
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnRemove.setOnClickListener(this);
+        imgvRefresh.setOnClickListener(this);
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // some code depending on keyboard visiblity status
+                        if(!isOpen)
+                            calculate();
+                    }
+                });
+
         return view;
     }
 
@@ -149,13 +178,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-
-        WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
-                CONSULTA_RETIRO,2,numEmployer);
-
-        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+         loadContent();
 
         //Seteamos los valores de margen de credito y ahorro adicional
         txtCreditMargin.setText("Disponible en Margen de crédito");
@@ -211,11 +234,33 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    private void loadContent(){
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
+                CONSULTA_RETIRO,2,numEmployer);
+        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnRemove:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+
+                mLastClickTime = SystemClock.elapsedRealtime();
                 guardarRetiro();
+                break;
+
+            case R.id.imgvRefresh:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+
+                mLastClickTime = SystemClock.elapsedRealtime();
+                loadContent();
                 break;
         }
     }
@@ -234,6 +279,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     @Override
     public void showResponse(ServicesResponse response) {
+        ctlConnectionError.setVisibility(View.GONE);
+        layoutMain.setVisibility(View.VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
                 if(response.getResponse() instanceof  RetiroResponse){
@@ -241,7 +288,6 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     if(retiroResponse.getData().getResponse().getDes_mensaje() != null &&
                             !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty()){
-
                         showWarningDialog(retiroResponse.getData().getResponse().getDes_mensaje());
                     }
                     configurationUI(retiroResponse);
@@ -267,7 +313,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     private void showAlertDialog(GuardarRetiroResponse response) {
         dialogFragmentFondoAhorro = new DialogFragmentFondoAhorro();
-        dialogFragmentFondoAhorro.initView(response);
+        dialogFragmentFondoAhorro.initView(response.getData().getResponse().getDes_mensaje(),
+                response.getData().getResponse().getClv_folio(),
+                response.getData().getResponse().getFec_captura(),
+                response.getData().getResponse().getHrs_captura());
         dialogFragmentFondoAhorro.setOnOptionClick(new DialogFragmentFondoAhorro.OnOptionClick() {
             @Override
             public void onAccept() {
@@ -275,11 +324,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 getActivity().finish();
             }
         });
-
         dialogFragmentFondoAhorro.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
-
-
 
     @Override
     public void onSend(String email) {
@@ -306,9 +352,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiro.setHint("Ingresa una cantidad");
             edtRetiro.setEnableQuantity(true);
             edtRetiroProceso.setVisibility(View.GONE);
-
-            edtRetiroProceso.setTextWatcherMoney(this);
-            edtRetiro.setTextWatcherMoney(this);
+            edtRetiro.setTextWatcherMoney();
         }
 
         if(retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0){
@@ -323,8 +367,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroAhorro.setHint("Ingresa una cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
             edtRetiroAhorroProceso.setVisibility(View.GONE);
-
-
+            edtRetiroAhorro.setTextWatcherMoney();
         }
 
         totalImporte.setText(String.format("%s $%d",getString(R.string.totalRemove),retiroResponse.getData().getResponse().getImp_total()));
@@ -334,8 +377,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
-            case ServicesRequestType.LETTERSCONFIG:
-
+            case ServicesRequestType.WITHDRAWSAVING:
+                ctlConnectionError.setVisibility(View.VISIBLE);
+                layoutMain.setVisibility(View.GONE);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
@@ -388,6 +432,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     private void setFocusChangeListener(EditTextMoney editTextMoney){
 
+
+
         editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -396,7 +442,11 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setEnableButton(count > 0 ? true : false);
+                boolean isEnable = false;
+                if(edtRetiro.getQuantity().length() >0 || edtRetiroAhorro.getQuantity().length() >0 )
+                    isEnable = true;
+
+                setEnableButton(isEnable);
             }
 
             @Override
@@ -411,7 +461,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if(hasFocus)
-                    editTextMoney.setTextWatcherMoney(RemoveFragment.this);
+                    editTextMoney.setTextWatcherMoney();
             }
         });
     }
@@ -423,14 +473,12 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     @Override
     public void calculate() {
-        String contentMargin = retiroResponse.getData().getResponse().getImp_margencredito() > 0 ? edtRetiroProceso.getQuantity() : edtRetiro.getQuantity();
-        String contentAhorro= retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0 ? edtRetiroAhorroProceso.getQuantity() : edtRetiroAhorro.getQuantity();
+        String contentMargin = edtRetiro.getQuantity();
+        String contentAhorro= edtRetiroAhorro.getQuantity();
 
-        Double margin = !contentMargin.isEmpty() ? Double.parseDouble(contentMargin) : 0.0;
-        Double ahorro = !contentAhorro.isEmpty() ? Double.parseDouble(contentAhorro) : 0.0;
-        Double total = margin + ahorro;
-
-        totalImporte.setText(TextUtilities.getNumberInCurrencyFormat(total));
-
+        int margin = !contentMargin.isEmpty() ? Integer.parseInt(contentMargin) : 0;
+        int ahorro = !contentAhorro.isEmpty() ?Integer.parseInt(contentAhorro) : 0;
+        int total = margin + ahorro;
+        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(total)));
     }
 }

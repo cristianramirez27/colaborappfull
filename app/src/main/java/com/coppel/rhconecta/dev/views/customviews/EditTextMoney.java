@@ -3,7 +3,9 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -97,10 +99,10 @@ public class EditTextMoney extends ConstraintLayout {
         return "";
     }
 
-    public void setTextWatcherMoney(ICalculatetotal  ICalculatetotal){
+    public void setTextWatcherMoney(){
         edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
-      //  edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity));
-        edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity,ICalculatetotal));
+
+        edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity));
 
 
       /*  edtQuantity.addTextChangedListener(new TextWatcher(){

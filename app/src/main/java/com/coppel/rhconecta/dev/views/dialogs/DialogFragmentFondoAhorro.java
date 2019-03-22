@@ -31,6 +31,11 @@ public class DialogFragmentFondoAhorro extends DialogFragment implements View.On
     @BindView(R.id.btnActionAccept)
     Button btnActionAccept;
 
+    private String title= "";
+    private String folio= "";
+    private String date= "";
+    private String time= "";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,16 +52,23 @@ public class DialogFragmentFondoAhorro extends DialogFragment implements View.On
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
         }
+
+        btnActionAccept.setOnClickListener(this);
+        txvAction.setText(title);
+        txvFolio.setText(String.format("Folio: %s",folio));
+        txvFecha.setText(String.format("Fecha: %s",date));
+        txvHora.setText(String.format("Hora: %s",time));
+
+
         return view;
     }
 
-    public void initView(GuardarRetiroResponse response) {
+    public void initView(String title,String folio,String date,String time) {
 
-        btnActionAccept.setOnClickListener(this);
-         txvAction.setText(response.getData().getResponse().getDes_mensaje());
-        txvFolio.setText(response.getData().getResponse().getClv_folio());
-        txvFecha.setText(response.getData().getResponse().getFec_captura());
-        txvHora.setText(response.getData().getResponse().getHrs_captura());
+        this.title = title;
+        this.folio = folio;
+        this.date = date;
+        this.time = time;
     }
 
     public void close() {

@@ -84,6 +84,16 @@ public class TextUtilities {
         return currency;
     }
 
+    public static String getNumberInCurrencyFormaNoDecimal(double value) {
+        String currency;
+        Locale locale = new Locale("es", "MX");
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
+        currencyFormat.setMaximumFractionDigits(10);//Avoid round
+        currencyFormat.setMinimumFractionDigits(0);
+        currency = currencyFormat.format(value);
+        return currency;
+    }
+
     public static String dateFormatter(Date date, String outFormat) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(outFormat, localeMX);
         return simpleDateFormat.format(date);

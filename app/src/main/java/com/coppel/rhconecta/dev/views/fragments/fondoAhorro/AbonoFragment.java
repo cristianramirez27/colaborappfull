@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments.fondoAhorro;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -23,9 +24,12 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.ElementsDepositSimpleTab;
 import com.coppel.rhconecta.dev.business.Enums.ElementsDepositTab;
+import com.coppel.rhconecta.dev.business.interfaces.IButtonControl;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ConsultaAbonoResponse;
 import com.coppel.rhconecta.dev.business.models.DatosAbonoOpcion;
+import com.coppel.rhconecta.dev.business.models.GuardarAbonoResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 import com.coppel.rhconecta.dev.business.models.ViewPagerData;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
@@ -36,11 +40,17 @@ import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
 import com.coppel.rhconecta.dev.views.customviews.GenericPagerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.GenericTabLayout;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAbono;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentFondoAhorro;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,22 +58,26 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_ABONO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_METODOS_PAGO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_ABONO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_AHORRO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_ABONO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class AbonoFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener  {
+        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener ,IButtonControl {
 
     public static final String TAG = AbonoFragment.class.getSimpleName();
     private FondoAhorroActivity parent;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
     private long mLastClickTime = 0;
+
 
     private DialogFragmentWarning dialogFragmentWarning;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -98,8 +112,10 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
     private boolean hasEmployerOption = false;
 
+    private DialogFragmentAbono dialogFragmentAbono;
 
     private DialogFragmentGetDocument dialogFragmentGetDocument;
+    private DialogFragmentFondoAhorro dialogFragmentFondoAhorro;
 
     @Override
     public void onAttach(Context context) {
@@ -121,6 +137,19 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         parent = (FondoAhorroActivity) getActivity();
         parent.setToolbarTitle("Abonar");
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // some code depending on keyboard visiblity status
+                        if(!isOpen)
+                            ((AbonoTipoFragment)mainViewPagerAdapter.getItem(viewpager.getCurrentItem())).calculate();
+                    }
+                });
+
+
         return view;
     }
 
@@ -134,6 +163,7 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setEnableButton(false);
 
         txvLoanValueCurrentAcount.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getCuentaCorriente()))));
         txvLoanValueAditional.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
@@ -141,7 +171,8 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         txvLoanValueEnterprise.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa()))));
         txvLoanValueEmployer.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador()))));
 
-        //hasEmployerOption = parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador() < parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa();
+       hasEmployerOption = Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador())
+                < Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa());
         txvLoanTitleEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
         txvLoanValueEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
 
@@ -161,10 +192,20 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         //scrollView.setFillViewport (true);
         fragmentList = new ArrayList<>();
         ConsultaAbonoResponse.Response data = response.getData().getResponse();
+        AbonoTipoFragment AbonarCorrienteFragment  = AbonoTipoFragment.getInstance(1,new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar()));
+        AbonarCorrienteFragment.setIButtonControl(this);
 
-        fragmentList.add(AbonoTipoFragment.getInstance(1,new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar())));
-        fragmentList.add(AbonoTipoFragment.getInstance(2,new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar())));
-        if(hasEmployerOption) fragmentList.add(AbonoTipoFragment.getInstance(3,new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar())));
+        AbonoTipoFragment AbonarAhorroFragment  = AbonoTipoFragment.getInstance(2,new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar()));
+        AbonarAhorroFragment.setIButtonControl(this);
+
+
+        fragmentList.add(AbonarCorrienteFragment);
+        fragmentList.add(AbonarAhorroFragment);
+        if(hasEmployerOption){
+            AbonoTipoFragment AbonarTrabajadorFragment  = AbonoTipoFragment.getInstance(3,new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar()));
+            AbonarTrabajadorFragment.setIButtonControl(this);
+            fragmentList.add(AbonarTrabajadorFragment);
+        }
 
         ViewPagerData viewPagerData =  new ViewPagerData<>(fragmentList,hasEmployerOption ? ElementsDepositTab.values() : ElementsDepositSimpleTab.values());
         loadViewPager(viewPagerData);
@@ -192,10 +233,7 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
             @Override
             public void onPageSelected(int i) {
-
-                ((AbonoTipoFragment)fragmentList.get(i)).initFragment();
-
-
+                ((AbonoTipoFragment)fragmentList.get(i)).loadPayments();
             }
 
             @Override
@@ -227,7 +265,58 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         switch (v.getId()){
             case R.id.btnDeposit:
 
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                    return;
+                }
+
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                deposit();
                 break;
+        }
+    }
+
+    private void deposit(){
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
+                GUARDAR_ABONO,6,numEmployer);
+
+        AbonoTipoFragment fragmentCurrent = (AbonoTipoFragment) mainViewPagerAdapter.getItem(viewpager.getCurrentItem());
+
+        if(fragmentCurrent.getClv_Abonar() == 1){
+            withDrawSavingRequestData.setImp_cuentacorriente(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+        }else if(fragmentCurrent.getClv_Abonar() == 2){
+            withDrawSavingRequestData.setImp_ahorroadicional(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+        }else if(fragmentCurrent.getClv_Abonar() == 3){
+            withDrawSavingRequestData.setImp_fondoempleado(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+        }
+
+        withDrawSavingRequestData.setClv_retiro(fragmentCurrent.getPaymentSelected().getClv_retiro());
+
+        //Validamos clv_retiro 1 y 2
+        if(fragmentCurrent.getPaymentSelected().getClv_retiro() == 1 || fragmentCurrent.getPaymentSelected().getClv_retiro() == 2){
+
+            if(fragmentCurrent.getPaymentSelected().getImp_disponible() < fragmentCurrent.getAmount() ){
+                showAlertDialog("No cuenta con saldo disponible");
+                return;
+            }
+
+
+            showAlertDialogPayment(fragmentCurrent.getPaymentSelected().getNom_retiro(),
+                    TextUtilities.getNumberInCurrencyFormat(fragmentCurrent.getAmount()),
+                    new DialogFragmentAbono.OnOptionClick() {
+                        @Override
+                        public void onAccept() {
+                            dialogFragmentAbono.close();
+                            coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                                dialogFragmentAbono.close();
+                        }
+                    });
         }
     }
 
@@ -251,10 +340,37 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
                     }
 
                     configUI((ConsultaAbonoResponse)response.getResponse());
+                }else if(response.getResponse() instanceof GuardarAbonoResponse){
+
+                    if (((GuardarAbonoResponse) response.getResponse()).getData().getResponse().getClv_folio().isEmpty() ||
+                            ((GuardarAbonoResponse) response.getResponse()).getData().getResponse().getClv_folio().equals("0")) {
+                        showAlertDialog( ((GuardarAbonoResponse) response.getResponse()).getData().getResponse().getDes_mensaje());
+                    }else {
+                        showAlertDialogSuccess( (GuardarAbonoResponse) response.getResponse());
+                    }
+
                 }
 
                 break;
         }
+    }
+
+
+
+    private void showAlertDialogSuccess(GuardarAbonoResponse response) {
+        dialogFragmentFondoAhorro = new DialogFragmentFondoAhorro();
+        dialogFragmentFondoAhorro.initView(response.getData().getResponse().getDes_mensaje(),
+                response.getData().getResponse().getClv_folio(),
+                response.getData().getResponse().getFec_captura(),
+                response.getData().getResponse().getHrs_captura());
+        dialogFragmentFondoAhorro.setOnOptionClick(new DialogFragmentFondoAhorro.OnOptionClick() {
+            @Override
+            public void onAccept() {
+                dialogFragmentFondoAhorro.close();
+                getActivity().finish();
+            }
+        });
+        dialogFragmentFondoAhorro.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     @Override
@@ -330,4 +446,29 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     public void onAccept() {
         dialogFragmentGetDocument.close();
     }
+
+
+    private void showAlertDialogPayment(String title,String amount, DialogFragmentAbono.OnOptionClick optionClick) {
+        dialogFragmentAbono = new DialogFragmentAbono();
+        dialogFragmentAbono.setTxvTitle(title);
+        dialogFragmentAbono.setTxtAmount(amount);
+        dialogFragmentAbono.setOnOptionClick(optionClick);
+        dialogFragmentAbono.setVisibleCancelButton(VISIBLE);
+        dialogFragmentAbono.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
+    }
+
+
+    private void setEnableButton(boolean isEnable){
+        btnDeposit.setEnabled(isEnable);
+        btnDeposit.setBackgroundResource(isEnable ? R.drawable.background_blue_rounded : R.drawable.background_disable_rounded);
+    }
+
+
+
+    @Override
+    public void enableButton(boolean isEnable) {
+        setEnableButton(isEnable);
+    }
+
+
 }

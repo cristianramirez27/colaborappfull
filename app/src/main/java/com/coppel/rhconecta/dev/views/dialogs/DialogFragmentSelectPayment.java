@@ -101,7 +101,7 @@ public class DialogFragmentSelectPayment extends DialogFragment implements View.
                     onButtonClickListener.onLeftOptionPaymentClick();
                     break;
                 case R.id.btnActionRight:
-                    onButtonClickListener.onRightOptionPaymentClick(paymentsRecyclerAdapter.getSelectedPayment());
+                    onButtonClickListener.onRightOptionPaymentClick(paymentsRecyclerAdapter.getSelectedPayment(),paymentsRecyclerAdapter.getSelectedPositionPayment());
                     break;
                 case R.id.imgvClose:
                     close();
@@ -114,7 +114,7 @@ public class DialogFragmentSelectPayment extends DialogFragment implements View.
 
         void onLeftOptionPaymentClick();
 
-        void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data);
+        void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data, int position);
     }
 
     public void setOnButtonClickListener(OnButonOptionClick onButtonClickListener) {

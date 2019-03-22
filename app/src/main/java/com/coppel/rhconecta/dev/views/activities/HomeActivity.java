@@ -414,4 +414,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public SurveyInboxView getSurveyIcon() {
         return surveyInboxView;
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+    }
 }

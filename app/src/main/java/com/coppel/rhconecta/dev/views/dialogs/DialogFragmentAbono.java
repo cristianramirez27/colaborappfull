@@ -12,17 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
-import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.GONE;
 
-public class DialogFragmentAhorroAdicional extends DialogFragment implements View.OnClickListener {
+public class DialogFragmentAbono extends DialogFragment implements View.OnClickListener {
 
-    public static final String TAG = DialogFragmentAhorroAdicional.class.getSimpleName();
+    public static final String TAG = DialogFragmentAbono.class.getSimpleName();
     private OnOptionClick onOptionClick;
     @BindView(R.id.imgvAction)
     ImageView imgvAction;
@@ -58,7 +56,7 @@ public class DialogFragmentAhorroAdicional extends DialogFragment implements Vie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_fragment_ahorro_adicional, container, false);
+        View view = inflater.inflate(R.layout.dialog_fragment_abono, container, false);
         ButterKnife.bind(this, view);
         setCancelable(false);
         if (getDialog().getWindow() != null) {
@@ -72,17 +70,9 @@ public class DialogFragmentAhorroAdicional extends DialogFragment implements Vie
     public void initView() {
         btnActionCancel.setOnClickListener(this);
         btnActionAccept.setOnClickListener(this);
-
-
         btnActionCancel.setVisibility(visibilityCancel);
         txvTitle.setText(title);
-        txvSubtitle.setText(subtitle);
-        txvMessage.setText(msg);
         txtAmount.setText(amoun);
-        txvTitle.setVisibility(title.isEmpty() ? GONE : View.VISIBLE);
-        txvSubtitle.setVisibility(subtitle.isEmpty() ? GONE : View.VISIBLE);
-        txvMessage.setVisibility(msg.isEmpty() ? GONE : View.VISIBLE);
-        txtAmount.setVisibility(amoun.isEmpty() ? GONE : View.VISIBLE);
 
         if(iResIcon > 0){
             imgvAction.setImageResource(iResIcon);

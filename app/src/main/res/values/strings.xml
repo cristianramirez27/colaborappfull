@@ -247,7 +247,7 @@
     <string name="add_amount_monthly">Agrega tu cuota de ahorro mensual</string>
     <string name="current_amount_monthly">Tu cuota de ahorro actual es:</string>
     <string name="btnAddAditionalSave">Agregar</string>
-
+    <string name="btnDoDeposit">Realizar abono</string>
     <string name="payment_way">Método de pago</string>
 
     <string name="acount_title">Cuenta\ncorriente</string>
