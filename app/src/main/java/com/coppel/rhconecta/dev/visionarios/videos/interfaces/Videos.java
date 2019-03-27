@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.visionarios.videos.interfaces;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
@@ -11,6 +12,8 @@ public interface Videos {
 
     interface View {
         void showVideos(ArrayList<Video> videos);
+
+        void cargarVideos(ArrayList<Video> videos, Bitmap[] imagenes);
 
         Context getContext();
 
