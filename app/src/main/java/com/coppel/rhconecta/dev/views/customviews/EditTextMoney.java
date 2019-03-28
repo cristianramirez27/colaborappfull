@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -101,6 +102,10 @@ public class EditTextMoney extends ConstraintLayout {
 
     public void setTextWatcherMoney(){
         edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        InputFilter[] filterArray = new InputFilter[1];
+        filterArray[0] = new InputFilter.LengthFilter(12);
+        edtQuantity.setFilters(filterArray);
 
         edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity));
 

@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="@+id/txvConnectionError"
         app:layout_constraintStart_toStartOf="@+id/txvConnectionError"
         app:layout_constraintTop_toTopOf="@+id/guideline72"
-        app:srcCompat="@drawable/ic_refresh_gray" />
+        app:srcCompat="@drawable/ic_error_conexion" />
 
     <TextView
         android:id="@+id/txvConnectionError"

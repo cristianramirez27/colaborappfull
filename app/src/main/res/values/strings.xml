@@ -258,5 +258,7 @@
     <string name="want_deposit">Quiero abonar</string>
     <string name="max_saving">Tu máxima cuota de ahorro es de</string>
     <string name="new_saving">Tu nueva cuota es de</string>
+    <string name="paymentway_select">Selecciona un método de pago</string>
+    <string name="confirm">Confirmar</string>
 
 </resources>

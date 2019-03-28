@@ -41,6 +41,7 @@ import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
 import com.coppel.rhconecta.dev.business.models.RetiroResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -343,9 +344,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroProceso.setVisibility(View.VISIBLE);
             edtRetiroProceso.setInformativeMode(
                     retiroResponse.getData().getResponse().getDes_proceso(), "");
-            edtRetiroProceso.setInformativeQuantity(String.format("$%d",retiroResponse.getData().getResponse().getImp_margencredito()));
+            edtRetiroProceso.setInformativeQuantity(String.format("$%s",retiroResponse.getData().getResponse().getImp_margencredito()));
             edtRetiro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
-            edtRetiro.setHint("Ingresa una cantidad");
+            edtRetiro.setHint("Ingresa otra cantidad");
             edtRetiro.setEnableQuantity(true);
         }else {
             edtRetiro.setInformativeMode(getString(R.string.want_remove), "");
@@ -358,9 +359,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         if(retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0){
             edtRetiroAhorroProceso.setInformativeMode(
                     retiroResponse.getData().getResponse().getDes_proceso(), "");
-            edtRetiroAhorroProceso.setInformativeQuantity(String.format("$%d",retiroResponse.getData().getResponse().getImp_ahorroadicional()));
+            edtRetiroAhorroProceso.setInformativeQuantity(String.format("$%s",retiroResponse.getData().getResponse().getImp_ahorroadicional()));
             edtRetiroAhorro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
-            edtRetiroAhorro.setHint("Ingresa una cantidad");
+            edtRetiroAhorro.setHint("Ingresa otra cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
         }else {
             edtRetiroAhorro.setInformativeMode(getString(R.string.want_remove), "");
@@ -370,22 +371,26 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroAhorro.setTextWatcherMoney();
         }
 
-        totalImporte.setText(String.format("%s $%d",getString(R.string.totalRemove),retiroResponse.getData().getResponse().getImp_total()));
+        totalImporte.setText(String.format("%s $%s",getString(R.string.totalRemove),String.valueOf(retiroResponse.getData().getResponse().getImp_total())));
 
     }
 
     @Override
     public void showError(ServicesError coppelServicesError) {
-        switch (coppelServicesError.getType()) {
-            case ServicesRequestType.WITHDRAWSAVING:
-                ctlConnectionError.setVisibility(View.VISIBLE);
-                layoutMain.setVisibility(View.GONE);
-                break;
-            case ServicesRequestType.INVALID_TOKEN:
-                EXPIRED_SESSION = true;
-                showWarningDialog(getString(R.string.expired_session));
-                break;
-        }
+
+            if(coppelServicesError.getMessage() != null ){
+                switch (coppelServicesError.getType()) {
+                    case ServicesRequestType.WITHDRAWSAVING:
+                        ctlConnectionError.setVisibility(View.VISIBLE);
+                        layoutMain.setVisibility(View.GONE);
+                        break;
+                    case ServicesRequestType.INVALID_TOKEN:
+                        EXPIRED_SESSION = true;
+                        showWarningDialog(getString(R.string.expired_session));
+                        break;
+                }
+
+            }
 
 
         hideProgress();
@@ -459,9 +464,11 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         editTextMoney.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
-                if(hasFocus)
+                if(hasFocus){
                     editTextMoney.setTextWatcherMoney();
+                    DeviceManager.showKeyBoard(getActivity());
+                }
+
             }
         });
     }
@@ -475,10 +482,40 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     public void calculate() {
         String contentMargin = edtRetiro.getQuantity();
         String contentAhorro= edtRetiroAhorro.getQuantity();
+        int margin;
+        int ahorro;
+        try{
+            margin = !contentMargin.isEmpty() ? Integer.parseInt(contentMargin) : 0;
+        }catch (Exception e){
+            margin = 0;
+        }
 
-        int margin = !contentMargin.isEmpty() ? Integer.parseInt(contentMargin) : 0;
-        int ahorro = !contentAhorro.isEmpty() ?Integer.parseInt(contentAhorro) : 0;
+
+
+        try{
+            ahorro = !contentAhorro.isEmpty() ?Integer.parseInt(contentAhorro) : 0;
+        }catch (Exception e){
+            ahorro = 0;
+        }
+
+
         int total = margin + ahorro;
         totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(total)));
+
+
+        if((int) Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())) < margin ||
+                (int)Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional())) < ahorro) {
+
+            setEnableButton(false);
+
+            showAlertDialog("No cuenta con saldo disponible");
+
+            return;
+
+        }
+
+
+
+
     }
 }

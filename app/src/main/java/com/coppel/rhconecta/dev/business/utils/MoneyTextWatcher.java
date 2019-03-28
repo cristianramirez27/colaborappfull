@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class MoneyTextWatcher implements TextWatcher {
     private final WeakReference<EditText> editTextWeakReference;
-    private static String prefix = "$ ";
+    private static String prefix = "$";
     private static final int MAX_LENGTH = 20;
     private String previousCleanString;
 
@@ -56,18 +56,20 @@ public class MoneyTextWatcher implements TextWatcher {
       //  editText.removeTextChangedListener(this);
 
         String str = s.toString();
-        if (str.length() < prefix.length()) {
+       /* if (str.length() < prefix.length()) {
             editText.setText(prefix);
             editText.setSelection(prefix.length());
             return;
-        }
+        }*/
         if (str.equals(prefix)) {
+            str = str.replace(prefix, "");
+            editText.setText(str);
             return;
         }
         // cleanString this the string which not contain prefix and ,
         String cleanString = str.replace(prefix, "").replaceAll("[,]", "");
         // for prevent afterTextChanged recursive call
-        if (cleanString.equals(previousCleanString) || cleanString.isEmpty()) {
+        if (cleanString.equals(previousCleanString) || cleanString.isEmpty() ) {
             return;
         }
         previousCleanString = cleanString;

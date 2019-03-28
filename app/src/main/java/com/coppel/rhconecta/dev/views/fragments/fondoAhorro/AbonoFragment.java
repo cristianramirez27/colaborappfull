@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
@@ -94,13 +96,19 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     @BindView(R.id.btnDeposit)
     Button btnDeposit;
 
-
+    @BindView(R.id.ctlConnectionError)
+    ConstraintLayout ctlConnectionError;
+    @BindView(R.id.layoutMain)
+    RelativeLayout layoutMain;
     @BindView(R.id.txvLoanValueCurrentAcount)
     TextView txvLoanValueCurrentAcount;
     @BindView(R.id.txvLoanValueAditional)
     TextView txvLoanValueAditional;
     @BindView(R.id.txvBuyMargin7)
     TextView txvLoanTitleEmployer;
+    @BindView(R.id.txvBuyMargin4)
+    TextView txvLoanTitleEnterprise;
+
 
     @BindView(R.id.txvLoanValueEmployer)
     TextView txvLoanValueEmployer;
@@ -173,8 +181,13 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
        hasEmployerOption = Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador())
                 < Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa());
+
         txvLoanTitleEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
         txvLoanValueEmployer.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
+
+        txvLoanTitleEnterprise.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
+        txvLoanValueEnterprise.setVisibility(hasEmployerOption ? View.VISIBLE :View.INVISIBLE);
+
 
         btnDeposit.setOnClickListener(this);
 
@@ -192,17 +205,21 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         //scrollView.setFillViewport (true);
         fragmentList = new ArrayList<>();
         ConsultaAbonoResponse.Response data = response.getData().getResponse();
-        AbonoTipoFragment AbonarCorrienteFragment  = AbonoTipoFragment.getInstance(1,new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar()));
+        AbonoTipoFragment AbonarCorrienteFragment  = AbonoTipoFragment.getInstance(
+                1,
+                new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirocuentacorriente()));
         AbonarCorrienteFragment.setIButtonControl(this);
 
-        AbonoTipoFragment AbonarAhorroFragment  = AbonoTipoFragment.getInstance(2,new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar()));
+        AbonoTipoFragment AbonarAhorroFragment  = AbonoTipoFragment.getInstance(2,
+                new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retiroahorroadicional()));
         AbonarAhorroFragment.setIButtonControl(this);
 
 
         fragmentList.add(AbonarCorrienteFragment);
         fragmentList.add(AbonarAhorroFragment);
         if(hasEmployerOption){
-            AbonoTipoFragment AbonarTrabajadorFragment  = AbonoTipoFragment.getInstance(3,new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar()));
+            AbonoTipoFragment AbonarTrabajadorFragment  = AbonoTipoFragment.getInstance(3,
+                    new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirofondotrabajador()));
             AbonarTrabajadorFragment.setIButtonControl(this);
             fragmentList.add(AbonarTrabajadorFragment);
         }
@@ -285,11 +302,11 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         AbonoTipoFragment fragmentCurrent = (AbonoTipoFragment) mainViewPagerAdapter.getItem(viewpager.getCurrentItem());
 
         if(fragmentCurrent.getClv_Abonar() == 1){
-            withDrawSavingRequestData.setImp_cuentacorriente(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+            withDrawSavingRequestData.setImp_cuentacorriente((int)fragmentCurrent.getAmount());
         }else if(fragmentCurrent.getClv_Abonar() == 2){
-            withDrawSavingRequestData.setImp_ahorroadicional(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+            withDrawSavingRequestData.setImp_ahorroadicional((int)fragmentCurrent.getAmount());
         }else if(fragmentCurrent.getClv_Abonar() == 3){
-            withDrawSavingRequestData.setImp_fondoempleado(fragmentCurrent.getDatosAbonoOpcion().getImporte());
+            withDrawSavingRequestData.setImp_fondoempleado((int)fragmentCurrent.getAmount());
         }
 
         withDrawSavingRequestData.setClv_retiro(fragmentCurrent.getPaymentSelected().getClv_retiro());
@@ -297,14 +314,15 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         //Validamos clv_retiro 1 y 2
         if(fragmentCurrent.getPaymentSelected().getClv_retiro() == 1 || fragmentCurrent.getPaymentSelected().getClv_retiro() == 2){
 
-            if(fragmentCurrent.getPaymentSelected().getImp_disponible() < fragmentCurrent.getAmount() ){
+            double importe = fragmentCurrent.getAmount();
+            if(fragmentCurrent.getPaymentSelected().getImp_disponible() < importe){
                 showAlertDialog("No cuenta con saldo disponible");
                 return;
             }
 
 
             showAlertDialogPayment(fragmentCurrent.getPaymentSelected().getNom_retiro(),
-                    TextUtilities.getNumberInCurrencyFormat(fragmentCurrent.getAmount()),
+                    TextUtilities.getNumberInCurrencyFormaNoDecimal(fragmentCurrent.getAmount()),
                     new DialogFragmentAbono.OnOptionClick() {
                         @Override
                         public void onAccept() {
@@ -322,6 +340,10 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
     @Override
     public void showResponse(ServicesResponse response) {
+
+        ctlConnectionError.setVisibility(View.GONE);
+        layoutMain.setVisibility(View.VISIBLE);
+
         switch (response.getType()) {
 
             case ServicesRequestType.WITHDRAWSAVING:
@@ -376,8 +398,9 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
-            case ServicesRequestType.LETTERSCONFIG:
-
+            case ServicesRequestType.WITHDRAWSAVING:
+                ctlConnectionError.setVisibility(View.VISIBLE);
+                layoutMain.setVisibility(View.GONE);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;

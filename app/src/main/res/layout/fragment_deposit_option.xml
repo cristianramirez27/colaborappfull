@@ -92,6 +92,7 @@
                        android:clickable="false"
                        android:layout_centerVertical="true"
                        android:padding="6dp"
+                       android:id="@+id/arrowDown"
                        android:src="@drawable/ic_down_arrow_blue"/>
 
                    <View

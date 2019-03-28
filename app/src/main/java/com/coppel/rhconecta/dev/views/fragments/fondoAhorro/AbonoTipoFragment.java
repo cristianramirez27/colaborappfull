@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
 import com.coppel.rhconecta.dev.business.models.DatosAbonoOpcion;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -50,6 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_METODOS_PAGO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_CLV_ABONAR;
@@ -83,6 +86,10 @@ public class AbonoTipoFragment extends Fragment implements View.OnClickListener,
     EditText payment;
     @BindView(R.id.totalImporte)
     TextView totalImporte;
+    @BindView(R.id.arrowDown)
+    ImageView arrowDown;
+
+
 
 
 
@@ -173,13 +180,48 @@ private IButtonControl IButtonControl;
         setFocusChangeListener(edtAbonoActual);
 
 
+      initValues();
+
+
+        payment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String str = payment.getText().toString();
+
+                if(!(str.toString().compareToIgnoreCase(getString(R.string.paymentway_select)) == 0) && edtAbonoActual.getQuantity().length() > 0){
+
+                    IButtonControl.enableButton(true);
+
+                }else {
+                    IButtonControl.enableButton(false);
+                }
+            }
+        });
+
+        if(this.clv_Abonar == 1)
+            loadPayments();
+    }
+
+
+    private void initValues(){
         if(datosAbonoOpcion.getImporte() > 0){
-            edtAbonoProceso.setVisibility(View.VISIBLE);
+            edtAbonoProceso.setVisibility(VISIBLE);
             edtAbonoProceso.setInformativeMode(
                     datosAbonoOpcion.getDes_proceso(), "");
             edtAbonoProceso.setInformativeQuantity(String.format("$%d",datosAbonoOpcion.getImporte()));
             edtAbonoActual.setInformativeMode(datosAbonoOpcion.getDes_cambiar(),"");
-            edtAbonoActual.setHint("Ingresa una cantidad");
+            edtAbonoActual.setHint("Ingresa otra cantidad");
             edtAbonoActual.setEnableQuantity(true);
         }else {
 
@@ -189,12 +231,7 @@ private IButtonControl IButtonControl;
             edtAbonoProceso.setVisibility(View.GONE);
             edtAbonoActual.setTextWatcherMoney();
         }
-
-
-        if(this.clv_Abonar == 1)
-            loadPayments();
     }
-
     private void setFocusChangeListener(EditTextMoney editTextMoney){
 
         editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
@@ -205,7 +242,11 @@ private IButtonControl IButtonControl;
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                IButtonControl.enableButton(count > 2 ? true : false);
+
+                if(count > 0 && !(payment.getText().toString().compareToIgnoreCase(getString(R.string.paymentway_select))==0) )
+                    IButtonControl.enableButton(true  );
+                else
+                    IButtonControl.enableButton(false  );
             }
 
             @Override
@@ -219,8 +260,11 @@ private IButtonControl IButtonControl;
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                if(hasFocus)
+                if(hasFocus){
                     editTextMoney.setTextWatcherMoney();
+                    DeviceManager.showKeyBoard(getActivity());
+                }
+
             }
         });
     }
@@ -230,6 +274,7 @@ private IButtonControl IButtonControl;
     }
 
     public void loadPayments(){
+        initValues();
         /*Consultamos formas de pago*/
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
@@ -284,20 +329,40 @@ private IButtonControl IButtonControl;
 
                 if(response.getResponse() instanceof ConsultaMetodosPagoResponse){
                     consultaMetodosPagoResponse = (ConsultaMetodosPagoResponse) response.getResponse();
-                    if(consultaMetodosPagoResponse.getData().getResponse().size() > 0) {
+                    if(consultaMetodosPagoResponse.getData().getResponse().size() > 1) {
+
+                        if(datosAbonoOpcion.getClv_retiro() > 0 ){
+
+                            for(int i = 0 ; i < consultaMetodosPagoResponse.getData().getResponse().size() ; i++){
+                                ConsultaMetodosPagoResponse.PaymentWay paymentWay = consultaMetodosPagoResponse.getData().getResponse().get(i);
+                                if(paymentWay.getClv_retiro() == datosAbonoOpcion.getClv_retiro()){
+                                        indexPaymentSelected = i;
+                                        payment.setText(paymentWay.getNom_retiro());
+                                }
+                            }
+
+                        }else {
+                                payment.setText(getString(R.string.paymentway_select));
+                        }
+
+                    }else {
                         payment.setText(consultaMetodosPagoResponse.getData().getResponse().get(indexPaymentSelected).getNom_retiro());
                     }
 
                     viewPaymentWay.setEnabled(consultaMetodosPagoResponse.getData().getResponse().size() > 1 ? true : false);
+                    arrowDown.setVisibility(consultaMetodosPagoResponse.getData().getResponse().size() > 1  ? VISIBLE : View.INVISIBLE);
                 }
                 break;
         }
     }
 
+
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
+
+                showWarningDialog(coppelServicesError.getMessage());
 
                 break;
             case ServicesRequestType.INVALID_TOKEN:

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 import com.coppel.rhconecta.dev.business.models.RetiroResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -225,7 +227,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
 
         amountSave = Integer.parseInt(content);
         showAlertDialog(getString(R.string.attention), "",
-                    getString(R.string.new_saving),TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(content)),0,true, new DialogFragmentAhorroAdicional.OnOptionClick() {
+                    getString(R.string.new_saving),TextUtilities.getNumberInCurrencyFormaNoDecimal(Double.parseDouble(content)),"Confirmar",0,true, new DialogFragmentAhorroAdicional.OnOptionClick() {
                         @Override
                         public void onAccept() {
                             String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
@@ -291,7 +293,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                     String subtitle =  des_mensaje.substring(0,des_mensaje.indexOf('.'));
                     String msg =  des_mensaje.substring(des_mensaje.indexOf('.')+1,des_mensaje.indexOf('$'));
                     String amount  =  des_mensaje.substring(des_mensaje.indexOf('$'),des_mensaje.length());
-                    showAlertDialog("", subtitle, msg, amount,R.drawable.ic_sent,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
+                    showAlertDialog("", subtitle, msg, amount,"Aceptar",R.drawable.ic_sent,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
                         @Override
                         public void onAccept() {
                             dialogFragmentAhorroAdicional.close();
@@ -312,13 +314,14 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
     }
 
 
-    private void showAlertDialog(String title,String subtitle,String msg,String amount,int icon,boolean cancelBtn,DialogFragmentAhorroAdicional.OnOptionClick onOptionClick) {
+    private void showAlertDialog(String title,String subtitle,String msg,String amount,String btnAccept,int icon,boolean cancelBtn,DialogFragmentAhorroAdicional.OnOptionClick onOptionClick) {
         dialogFragmentAhorroAdicional = new DialogFragmentAhorroAdicional();
         dialogFragmentAhorroAdicional.setTxvTitle(title);
         dialogFragmentAhorroAdicional.setTxvSubtitle(subtitle);
         dialogFragmentAhorroAdicional.setTxvMessage(msg);
         dialogFragmentAhorroAdicional.setTxtAmount(amount);
         dialogFragmentAhorroAdicional.setiResIcon(icon);
+        dialogFragmentAhorroAdicional.setBtnTitle(btnAccept);
         dialogFragmentAhorroAdicional.setOnOptionClick(onOptionClick);
         dialogFragmentAhorroAdicional.setVisibleCancelButton(cancelBtn ? VISIBLE : GONE);
         dialogFragmentAhorroAdicional.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
@@ -342,7 +345,24 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
         }
 
 
-        hideProgress();
+        try {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(dialogFragmentLoader != null && dialogFragmentLoader.isVisible()){
+                        hideProgress();
+                    }
+
+                }
+            }, 1200);
+
+        }catch (Exception e){
+
+        }
+
+
+
     }
 
     @Override
@@ -408,8 +428,11 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                if(hasFocus)
+                if(hasFocus){
                     editTextMoney.setTextWatcherMoney();
+                    DeviceManager.showKeyBoard(getActivity());
+                }
+
             }
         });
     }
@@ -437,8 +460,8 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                 setEnableButton(false);
                 showAlertDialog(getString(R.string.attention), "",
                         getString(R.string.max_saving),
-                        TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(String.valueOf(consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()))),
-                        0,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
+                        TextUtilities.getNumberInCurrencyFormaNoDecimal(Double.parseDouble(String.valueOf(consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()))),
+                        "Aceptar",0,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
                             @Override
                             public void onAccept() {
                                 dialogFragmentAhorroAdicional.close();

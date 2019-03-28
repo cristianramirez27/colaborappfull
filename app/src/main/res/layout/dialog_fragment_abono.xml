@@ -37,13 +37,27 @@
             android:paddingRight="30dp">
 
             <TextView
-                android:id="@+id/txvSubtitle"
+                android:id="@+id/txvHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="12dp"
+                android:padding="2dp"
+                android:text="Atención"
+                android:textColor="@android:color/white"
+                android:textSize="26sp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txvSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="center"
                 android:text="Tu forma de pago es:"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
@@ -127,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_rounded"
                 android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="@string/accept"
+                android:text="@string/confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/colorSecondBlueCoppel"
                 android:textSize="16sp" />

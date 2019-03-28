@@ -39,7 +39,7 @@ public class DialogFragmentAhorroAdicional extends DialogFragment implements Vie
     @BindView(R.id.btnActionCancel)
     Button btnActionCancel;
 
-
+    private String btnTitle = "";
     private String title = "";
     private String subtitle = "";
     private String msg = "";
@@ -79,6 +79,8 @@ public class DialogFragmentAhorroAdicional extends DialogFragment implements Vie
         txvSubtitle.setText(subtitle);
         txvMessage.setText(msg);
         txtAmount.setText(amoun);
+
+        btnActionAccept.setText(btnTitle);
         txvTitle.setVisibility(title.isEmpty() ? GONE : View.VISIBLE);
         txvSubtitle.setVisibility(subtitle.isEmpty() ? GONE : View.VISIBLE);
         txvMessage.setVisibility(msg.isEmpty() ? GONE : View.VISIBLE);
@@ -145,6 +147,9 @@ public class DialogFragmentAhorroAdicional extends DialogFragment implements Vie
     }
 
 
+    public void setBtnTitle(String btnTitle) {
+        this.btnTitle = btnTitle;
+    }
 
     public void setVisibleCancelButton(int visibility){
         visibilityCancel = visibility;

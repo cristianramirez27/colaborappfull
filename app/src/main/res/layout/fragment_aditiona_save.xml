@@ -10,7 +10,7 @@
     android:scrollbars="none"
     tools:context=".views.fragments.LoanSavingFundFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -22,6 +22,7 @@
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <LinearLayout
@@ -180,6 +181,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </ScrollView>
