@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
 import com.coppel.rhconecta.dev.visionarios.inicio.views.InicioActivity;
@@ -34,11 +35,14 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
     ListView listContenido;
     Encuesta ultimaEncuesta;
     private SurveyInboxView surveyInboxView;
+    DialogFragmentLoader dialogFragmentLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_videos);
+        dialogFragmentLoader = new DialogFragmentLoader();
+        dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
         listContenido = (ListView) findViewById(R.id.listContenido);
         initializeToolBar();
 
@@ -58,6 +62,8 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
                 urls[x]= videos.get(x).getImagen_video_preview();
             }
             new DownloadImagesTask(this,videos).execute(urls);
+        }else{
+            dialogFragmentLoader.close();
         }
     }
 
@@ -74,6 +80,7 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
             });
 
         }
+        dialogFragmentLoader.close();
     }
 
     /**
