@@ -27,7 +27,7 @@ public class ConsultaAbonoResponse extends WithDrawSavingBaseResponse {
     public class Response {
         private int imp_cuentacorriente;
         private int clv_retirocuentacorriente;
-        private int imp_ahorroadicional;
+        private int imp_ahorroadiciona;
         private int clv_retiroahorroadicional;
         private int imp_fondotrabajador;
         private int clv_retirofondotrabajador;
@@ -53,11 +53,11 @@ public class ConsultaAbonoResponse extends WithDrawSavingBaseResponse {
         }
 
         public int getImp_ahorroadicional() {
-            return imp_ahorroadicional;
+            return imp_ahorroadiciona;
         }
 
         public void setImp_ahorroadicional(int imp_ahorroadicional) {
-            this.imp_ahorroadicional = imp_ahorroadicional;
+            this.imp_ahorroadiciona = imp_ahorroadicional;
         }
 
         public int getClv_retiroahorroadicional() {

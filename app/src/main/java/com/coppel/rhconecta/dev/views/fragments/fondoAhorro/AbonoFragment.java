@@ -204,14 +204,24 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
     private void configUI(ConsultaAbonoResponse response){
         //scrollView.setFillViewport (true);
         fragmentList = new ArrayList<>();
+
+        int impCorriente;
+        int impAhorro;
+        int impFondoTrabajador;
+
         ConsultaAbonoResponse.Response data = response.getData().getResponse();
+
+        impCorriente = data.getImp_cuentacorriente();
+        impAhorro = data.getImp_ahorroadicional();
+        impFondoTrabajador = data.getImp_fondotrabajador();
+
         AbonoTipoFragment AbonarCorrienteFragment  = AbonoTipoFragment.getInstance(
                 1,
-                new DatosAbonoOpcion(data.getImp_cuentacorriente(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirocuentacorriente()));
+                new DatosAbonoOpcion(impCorriente,data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirocuentacorriente()));
         AbonarCorrienteFragment.setIButtonControl(this);
 
         AbonoTipoFragment AbonarAhorroFragment  = AbonoTipoFragment.getInstance(2,
-                new DatosAbonoOpcion(data.getImp_ahorroadicional(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retiroahorroadicional()));
+                new DatosAbonoOpcion(impAhorro,data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retiroahorroadicional()));
         AbonarAhorroFragment.setIButtonControl(this);
 
 
@@ -219,16 +229,26 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         fragmentList.add(AbonarAhorroFragment);
         if(hasEmployerOption){
             AbonoTipoFragment AbonarTrabajadorFragment  = AbonoTipoFragment.getInstance(3,
-                    new DatosAbonoOpcion(data.getImp_fondotrabajador(),data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirofondotrabajador()));
+                    new DatosAbonoOpcion(impFondoTrabajador,data.getDes_proceso(),data.getDes_cambiar(),data.getClv_retirofondotrabajador()));
             AbonarTrabajadorFragment.setIButtonControl(this);
             fragmentList.add(AbonarTrabajadorFragment);
         }
 
+        int tabSelected = 0;
+
+        if(impCorriente > 0)
+            tabSelected = 0;
+        if(impAhorro > 0)
+            tabSelected = 1;
+        if(impFondoTrabajador > 1 && hasEmployerOption)
+            tabSelected = 2;
+
+
         ViewPagerData viewPagerData =  new ViewPagerData<>(fragmentList,hasEmployerOption ? ElementsDepositTab.values() : ElementsDepositSimpleTab.values());
-        loadViewPager(viewPagerData);
+        loadViewPager(viewPagerData,tabSelected);
     }
 
-    private void loadViewPager( ViewPagerData viewPagerData){
+    private void loadViewPager( ViewPagerData viewPagerData,int tabSelected){
         mainViewPagerAdapter = new GenericPagerAdapter<>(getActivity(), getChildFragmentManager(), fragmentList, viewPagerData.getTabData());
         viewpager.setAdapter(mainViewPagerAdapter);
         viewpager.setOffscreenPageLimit(viewPagerData.getTabData().length - 1);
@@ -240,7 +260,6 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         tabLayout.setSelectedTabIndicatorHeight(6);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryCoppelAzul));
         tabLayout.setVisibility(VISIBLE);
-
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -258,6 +277,10 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
             }
         });
+
+        //Seteamos el tab que tiene datos
+        viewpager.setCurrentItem(tabSelected);
+
     }
 
     @Override

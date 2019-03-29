@@ -66,6 +66,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
@@ -270,7 +271,20 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         int margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiro.getQuantity()) : 0;
+
+        //Revisamos si hay que reenviar el valor anterior
+        if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
+            margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroProceso.getQuantity()) : 0;
+        }
+
         int ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorro.getQuantity()) : 0;
+
+
+        //Revisamos si hay que reenviar el valor anterior
+        if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
+            ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorroProceso.getQuantity()) : 0;
+        }
+
 
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
                 GUARDAR_RETIRO,3,numEmployer,margenCredito,ahorroAdicional);
@@ -281,7 +295,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     @Override
     public void showResponse(ServicesResponse response) {
         ctlConnectionError.setVisibility(View.GONE);
-        layoutMain.setVisibility(View.VISIBLE);
+        layoutMain.setVisibility(VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
                 if(response.getResponse() instanceof  RetiroResponse){
@@ -341,7 +355,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private void configurationUI(RetiroResponse retiroResponse ){
 
         if(retiroResponse.getData().getResponse().getImp_margencredito() > 0){
-            edtRetiroProceso.setVisibility(View.VISIBLE);
+            edtRetiroProceso.setVisibility(VISIBLE);
             edtRetiroProceso.setInformativeMode(
                     retiroResponse.getData().getResponse().getDes_proceso(), "");
             edtRetiroProceso.setInformativeQuantity(String.format("$%s",retiroResponse.getData().getResponse().getImp_margencredito()));
@@ -381,7 +395,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             if(coppelServicesError.getMessage() != null ){
                 switch (coppelServicesError.getType()) {
                     case ServicesRequestType.WITHDRAWSAVING:
-                        ctlConnectionError.setVisibility(View.VISIBLE);
+                        ctlConnectionError.setVisibility(VISIBLE);
                         layoutMain.setVisibility(View.GONE);
                         break;
                     case ServicesRequestType.INVALID_TOKEN:
