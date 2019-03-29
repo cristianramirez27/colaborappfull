@@ -202,6 +202,7 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                                 imgPlayVideo.setVisibility(View.VISIBLE);
                             }
                         }else{
+                            videoPlayer.seekTo(posicion);
                             videoPlayer.start();
                             videoEnCurso = true;
                         }
@@ -224,6 +225,8 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                         videoCompleto = true;
                         imgPreview.setVisibility(View.VISIBLE);
                         imgPlayVideo.setVisibility(View.VISIBLE);
+                        posicion = 0;
+                        videoPlayer.seekTo(posicion);
 
                     }
                 });
@@ -460,6 +463,12 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                 if(imgPlayVideo.getVisibility() == View.VISIBLE){
                     imgPlayVideo.setVisibility(View.VISIBLE);
                 }
+            if ((boolean)data.getSerializableExtra("videoEnCurso") == true) {
+                initializePlayer();
+                imgPreview.setVisibility(View.INVISIBLE);
+                imgPlayVideo.setVisibility(View.INVISIBLE);
+
+            }
         }
     }
 }

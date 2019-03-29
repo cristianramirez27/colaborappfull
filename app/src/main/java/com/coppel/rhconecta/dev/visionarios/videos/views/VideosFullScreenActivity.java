@@ -87,6 +87,7 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
         Intent resultaData = new Intent();
         resultaData.putExtra("minutos", videoPlayer.getCurrentPosition());
         resultaData.putExtra("fullscreen", true);
+        resultaData.putExtra("videoEnCurso", videoEnCurso);
         setResult(AppCompatActivity.RESULT_OK, resultaData);
         finish();
 
