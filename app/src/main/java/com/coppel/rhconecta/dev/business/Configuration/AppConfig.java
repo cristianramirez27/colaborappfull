@@ -41,6 +41,11 @@ public class AppConfig {
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
+    
+        //VISIONARIOS
+    public final static String VISIONARIOS_URL = "VISIONARIOS_URL";
+    public final static String APLICACION_KEY = "APLICACION_KEY";
+
 
     public final static int CLAVE_LETTER_MAX = 4;
 
@@ -59,6 +64,10 @@ public class AppConfig {
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
+        //VISIONARIOS
+        String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
+        String aplicacion_key = mFirebaseRemoteConfig.getString(APLICACION_KEY);
+
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VALIDARFIRMA,validarFirma);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PREVIEW,preview);
@@ -71,6 +80,10 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
+        //VISIONARIOS
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL,visionarios_url);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY,aplicacion_key);
+
     }
 
    /* public static void setConfigurationDefault(){
