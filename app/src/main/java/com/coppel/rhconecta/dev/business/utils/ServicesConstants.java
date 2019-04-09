@@ -46,6 +46,8 @@ public class ServicesConstants {
     public static  String GET_BENEFITS = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS);
     public static  String GET_WITHDRAWSAVINGS= AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS);
 
+    public static  String WS_LOGOUT = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE);
+
 
 
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);

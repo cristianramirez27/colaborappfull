@@ -152,5 +152,10 @@ public interface IServicesRetrofitMethods  <T>{
     Call<JsonObject> getConsultarMetodo(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaMetodoPagoRequest servicesRequest);
 
 
+    //************************** logout **************************
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> logout(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesProfileRequest servicesRequest);
+
 
 }
