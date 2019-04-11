@@ -3,6 +3,8 @@ package com.coppel.rhconecta.dev.visionarios.videos.models;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
@@ -31,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
 public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDetalle_Callback, GuardarLogAction_Callback {
     private String TAG = "VideosDetalleModel";
     private VideosDetalle.Presenter presenter;
@@ -52,7 +56,7 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
         Usuario usuario = tableUsuario.select("1");
 
         if (usuario != null) {
-            JSON_ObtenerVideosDetalle jsonRequest = new JSON_ObtenerVideosDetalle(ConstantesGlobales.APLICACION_KEY, idvideo, usuario.getNumeroempleado());
+            JSON_ObtenerVideosDetalle jsonRequest = new JSON_ObtenerVideosDetalle(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), idvideo, usuario.getNumeroempleado());
             CommunicatorObtenerVideosDetalle communicatorObtenerVideosDetalle = new CommunicatorObtenerVideosDetalle();
             communicatorObtenerVideosDetalle.ObtenerApi(jsonRequest, VideosDetalleModel.this);
         } else {
@@ -89,7 +93,7 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
         Usuario usuario = tableUsuario.select("1");
 
         if (usuario != null) {
-            JSON_GuardarLogAction jsonRequest = new JSON_GuardarLogAction(ConstantesGlobales.APLICACION_KEY, Integer.parseInt(usuario.getNumeroempleado()), idvideo, tipolog);
+            JSON_GuardarLogAction jsonRequest = new JSON_GuardarLogAction(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), Integer.parseInt(usuario.getNumeroempleado()), idvideo, tipolog);
 
             CommunicatorGuardarLogAction communicatorGuardarLogAction = new CommunicatorGuardarLogAction();
             communicatorGuardarLogAction.ObtenerApi(jsonRequest, VideosDetalleModel.this);
@@ -109,7 +113,7 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
         Usuario usuario = tableUsuario.select("1");
 
         if (usuario != null) {
-            JSON_GuardarLogAction jsonRequest = new JSON_GuardarLogAction(ConstantesGlobales.APLICACION_KEY, Integer.parseInt(usuario.getNumeroempleado()), idvideo, tipolog);
+            JSON_GuardarLogAction jsonRequest = new JSON_GuardarLogAction(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), Integer.parseInt(usuario.getNumeroempleado()), idvideo, tipolog);
             CommunicatorGuardarLogAction communicatorGuardarLogAction = new CommunicatorGuardarLogAction();
             communicatorGuardarLogAction.ObtenerApi(jsonRequest, VideosDetalleModel.this);
         } else {

@@ -21,6 +21,7 @@ public interface Videos {
 
         void ShowTextoDiccionario(String text, int textView);
 
+
     }
 
     interface Presenter {

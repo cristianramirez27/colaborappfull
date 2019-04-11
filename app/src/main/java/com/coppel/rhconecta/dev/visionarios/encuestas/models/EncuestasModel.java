@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.visionarios.encuestas.models;
 
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
@@ -29,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
 public class EncuestasModel implements Encuestas.Model, ObtenerEncuestasPreguntas_Callback, GuardarEncuesta_Callback {
 
     private String TAG = "EncuestasModel";
@@ -47,7 +51,7 @@ public class EncuestasModel implements Encuestas.Model, ObtenerEncuestasPregunta
     @Override
     public void getPreguntas(int idencuesta) {
 
-        JSON_ObtenerEncuestasPreguntas jsonRequest = new JSON_ObtenerEncuestasPreguntas(ConstantesGlobales.APLICACION_KEY, idencuesta);
+        JSON_ObtenerEncuestasPreguntas jsonRequest = new JSON_ObtenerEncuestasPreguntas(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), idencuesta);
         CommunicatorObtenerEncuestasPreguntas communicatorObtenerEncuestasPreguntas = new CommunicatorObtenerEncuestasPreguntas();
         communicatorObtenerEncuestasPreguntas.ObtenerApi(jsonRequest, EncuestasModel.this);
 
@@ -70,7 +74,7 @@ public class EncuestasModel implements Encuestas.Model, ObtenerEncuestasPregunta
         Usuario usuario = tableUsuario.select("1");
 
         if (usuario != null) {
-            JSON_GuardarEncuesta jsonRequest = new JSON_GuardarEncuesta(usuario.getNumeroempleado(), dataForm, ConstantesGlobales.APLICACION_KEY);
+            JSON_GuardarEncuesta jsonRequest = new JSON_GuardarEncuesta(usuario.getNumeroempleado(), dataForm, AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
             CommunicatorGuardarEncuesta communicatorGuardarEncuesta = new CommunicatorGuardarEncuesta();
             communicatorGuardarEncuesta.ObtenerApi(jsonRequest, EncuestasModel.this);
         } else {

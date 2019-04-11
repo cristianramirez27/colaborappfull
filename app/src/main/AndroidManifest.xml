@@ -21,9 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
-        android:appComponentFactory="whateverString">
-        android:configChanges="fontScale"
-        android:theme="@style/AppTheme">
+        android:appComponentFactory="whateverString"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <activity
             android:name=".views.activities.SplashScreenActivity"
             android:screenOrientation="portrait"

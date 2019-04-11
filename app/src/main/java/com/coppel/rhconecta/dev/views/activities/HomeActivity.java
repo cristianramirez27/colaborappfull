@@ -29,6 +29,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -55,6 +58,7 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
+import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseConfig;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
@@ -71,6 +75,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -79,6 +85,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
@@ -87,6 +94,9 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_V
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
         DialogFragmentWarning.OnOptionClick,ISurveyNotification {
@@ -363,7 +373,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         InternalDatabase idb = new InternalDatabase(this);
 
         TableConfig tableConfig = new TableConfig(idb, false);
-        Config config = new Config(1,ConstantesGlobales.URL_API);
+        Config config = new Config(1,AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL));
         tableConfig.insertIfNotExist(config);
 
         TableUsuario tableUsuario = new TableUsuario(idb, false);
@@ -414,4 +424,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public SurveyInboxView getSurveyIcon() {
         return surveyInboxView;
     }
+
+
+
 }

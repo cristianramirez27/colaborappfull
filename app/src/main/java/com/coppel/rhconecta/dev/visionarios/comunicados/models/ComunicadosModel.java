@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.visionarios.comunicados.models;
 
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.CommunicatorObtenerComunicados;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.ObtenerComunicados_Callback;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
@@ -20,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ComunicadosModel implements Comunicados.Model, ObtenerComunicados_Callback {
 
@@ -101,7 +105,7 @@ public class ComunicadosModel implements Comunicados.Model, ObtenerComunicados_C
     public void getComunicados() {
         if (presenter != null) {
 
-            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(ConstantesGlobales.APLICACION_KEY);
+            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
             CommunicatorObtenerComunicados communicatorObtenerComunicados = new CommunicatorObtenerComunicados();
             communicatorObtenerComunicados.ObtenerApi(jsonRequest, ComunicadosModel.this);
 

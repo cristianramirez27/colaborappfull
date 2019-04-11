@@ -68,6 +68,17 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (dialogFragmentLoader != null) {
+            dialogFragmentLoader.dismissAllowingStateLoss();
+        }
+    }
+
+    @Override public void onDestroy() { super.onDestroy(); Runtime.getRuntime().gc(); }
+
+    @Override
     public void cargarVideos(ArrayList<Video> videos, Bitmap[] imagenes) {
         if (videos != null) {
             adapterVideos = new AdapterVideos(getBaseContext(), videos, imagenes);

@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.visionarios.videos.models;
 
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
@@ -21,6 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class VideosModel implements Videos.Model,ObtenerVideos_Callback {
 
@@ -56,7 +60,7 @@ public class VideosModel implements Videos.Model,ObtenerVideos_Callback {
     @Override
     public void getVideos() {
 
-        JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(ConstantesGlobales.APLICACION_KEY);
+        JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
         CommunicatorObtenerVideos communicatorObtenerVideos = new CommunicatorObtenerVideos();
         communicatorObtenerVideos.ObtenerApi(jsonRequest,VideosModel.this);
 

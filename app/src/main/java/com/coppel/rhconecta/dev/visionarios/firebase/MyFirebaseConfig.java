@@ -1,7 +1,12 @@
 package com.coppel.rhconecta.dev.visionarios.firebase;
 
+import android.app.Activity;
+import android.app.Application;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
+import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
+import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,8 +20,8 @@ public class MyFirebaseConfig {
     }
 
 
-    public static String getURL_VISIONARIOS (){
-        final String url = ConstantesGlobales.URL_API;
+    public static void getURL_VISIONARIOS (final Activity activity){
+        final String url = "";
         try {
 
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -25,26 +30,41 @@ public class MyFirebaseConfig {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        String str = dataSnapshot.getValue(String.class);
-                        //return str;
+                        String url_new = dataSnapshot.getValue(String.class);
+                        InternalDatabase idb = new InternalDatabase(activity.getApplicationContext());
 
+                        TableConfig tableConfig = new TableConfig(idb,false);
+                        Config config = new Config(1,url_new);
+                        tableConfig.insertIfNotExist(config);
+
+                        Log.d("CONFIG VISIONARIOS","SE OBTUBO CORRECTAMENTE EL URL "+url_new);
 
                     } else { //si no existe nodo
-                       //return url;
+                        InternalDatabase idb = new InternalDatabase(activity.getApplicationContext());
+                        TableConfig tableConfig = new TableConfig(idb,false);
+                        Config config = new Config(1,"");
+                        tableConfig.insertIfNotExist(config);
+                        Log.d("CONFIG VISIONARIOS","NO EXISTE EL NODO EN FIREBASE: URL_VISIONARIOS");
+
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.d("DICCIONARIO", "error");
-                    //return url;
+                    InternalDatabase idb = new InternalDatabase(activity.getApplicationContext());
+                    TableConfig tableConfig = new TableConfig(idb,false);
+                    Config config = new Config(1,"");
+                    tableConfig.insertIfNotExist(config);
+                    Log.d("CONFIG VISIONARIOS", "error al obtener url visionarios");
                 }
             });
 
         } catch (Exception e) {
-           // return url;
-            Log.d("DICCIONARIO", e.getMessage());
+            InternalDatabase idb = new InternalDatabase(activity.getApplicationContext());
+            TableConfig tableConfig = new TableConfig(idb,false);
+            Config config = new Config(1,"");
+            tableConfig.insertIfNotExist(config);
+            Log.d("CONFIG VISIONARIOS", "ERROR AL OBTENER URL VISIONARIOS"+e.getMessage());
         }
-        return url;
     }
 }
