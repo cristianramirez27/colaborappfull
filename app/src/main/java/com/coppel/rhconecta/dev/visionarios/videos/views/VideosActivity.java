@@ -64,6 +64,8 @@ public class VideosActivity extends AppCompatActivity implements Videos.View {
             new DownloadImagesTask(this,videos).execute(urls);
         }else{
             dialogFragmentLoader.close();
+            Toast.makeText(getBaseContext(), "No hay videos disponibles", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
     }
 

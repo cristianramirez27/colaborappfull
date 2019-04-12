@@ -44,8 +44,8 @@ public class DialogFragmentLoader extends DialogFragment {
     }
 
     public void close() {
-        if (getDialog() != null && isVisible()) {
+       // if (getDialog() != null && isVisible()) {
             dismiss();
-        }
+       // }
     }
 }
