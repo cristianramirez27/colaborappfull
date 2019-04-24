@@ -126,7 +126,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         eatingTimeLayout.setOnClickListener(this);
         btnNext.setOnClickListener(this);
 
-        btnNext.setVisibility(View.INVISIBLE);
+    //    btnNext.setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -297,14 +297,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
                 break;
         }
 
-        String dayStart =  startDay.getText()!= null ? startDay.getText().toString() : "";
-        String dayEnd =  endDay.getText()!= null ? endDay.getText().toString() : "";
-        String hourStart =  starHour.getText()!= null && !starHour.getText().toString().isEmpty() ? String.format("%s %s",starHour.getText().toString() ,
-                rdbAmStart.isChecked() ? "AM" : "PM"): "";
-        String hourEnd =  endHour.getText()!= null && !endHour.getText().toString().isEmpty() ? String.format("%s %s",endHour.getText().toString() ,
-                rdbAmEnd.isChecked() ? "AM" : "PM"): "";
 
-        calculateHours(dayStart,dayEnd,hourStart,hourEnd);
 
         dialogFragmentScheduleData.close();
     }
@@ -315,10 +308,24 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
            (starHour.getText() != null && !starHour.getText().toString().isEmpty()) &&
            (endHour.getText() != null && !endHour.getText().toString().isEmpty()) &&
            (eatingTime.getText() != null && !eatingTime.getText().toString().isEmpty())){
-            ILettersNavigation.showFragmentAtPosition(3,getData());
+
+
+            validateTime();
+
         }else {
             Toast.makeText(getActivity(),"Debes llenar todos los datos",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void validateTime(){
+        String dayStart =  startDay.getText()!= null ? startDay.getText().toString() : "";
+        String dayEnd =  endDay.getText()!= null ? endDay.getText().toString() : "";
+        String hourStart =  starHour.getText()!= null && !starHour.getText().toString().isEmpty() ? String.format("%s %s",starHour.getText().toString() ,
+                rdbAmStart.isChecked() ? "AM" : "PM"): "";
+        String hourEnd =  endHour.getText()!= null && !endHour.getText().toString().isEmpty() ? String.format("%s %s",endHour.getText().toString() ,
+                rdbAmEnd.isChecked() ? "AM" : "PM"): "";
+
+        calculateHours(dayStart,dayEnd,hourStart,hourEnd);
     }
 
     private PreviewDataVO getData(){
@@ -340,14 +347,15 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         if(!startDay.isEmpty() && !endDay.isEmpty() && !startHour.isEmpty() && !endHour.isEmpty()){
             int dayNumbers = getNumberDays(startDay, endDay);
             int numberHours = getHoursCount(startHour, endHour);
-
             int total =  dayNumbers * numberHours;
 
             if(total > 48){
                 showMessageUser(getString(R.string.max_hours_job));
-                btnNext.setVisibility(View.INVISIBLE);
+               // btnNext.setVisibility(View.INVISIBLE);
             }else {
-                btnNext.setVisibility(View.VISIBLE);
+
+                ILettersNavigation.showFragmentAtPosition(3,getData());
+               // btnNext.setVisibility(View.VISIBLE);
             }
         }
 

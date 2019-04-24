@@ -76,6 +76,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
+
 
 public class ServicesInteractor {
 
@@ -188,6 +190,7 @@ public class ServicesInteractor {
         coppelServicesLoginRequest.setEmail(email);
         coppelServicesLoginRequest.setPassword(password);
         coppelServicesLoginRequest.setApp("rhconecta");
+        coppelServicesLoginRequest.setVersion(getVersionApp());
 
         return coppelServicesLoginRequest;
     }

@@ -5,6 +5,7 @@ public class CoppelServicesLoginRequest {
     private String email;
     private String password;
     private String app;
+    private String version;
 
     public String getEmail() {
         return email;
@@ -28,5 +29,13 @@ public class CoppelServicesLoginRequest {
 
     public void setApp(String app) {
         this.app = app;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }
