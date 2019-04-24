@@ -71,7 +71,7 @@ public class PayrollVoucherSavingFundRecyclerAdapter extends RecyclerView.Adapte
         }
 
         private void bind(final VoucherResponse.FechaCorteCuenta savingFundDate) {
-            extHeader.setSingleText(savingFundDate.getSfechanominanombre2());
+            extHeader.setSingleText(savingFundDate.getSfechanominanombre());
             ctlContainer.setVisibility(View.VISIBLE);
             ctlConnectionError.setVisibility(View.GONE);
             showFail(savingFundDate);

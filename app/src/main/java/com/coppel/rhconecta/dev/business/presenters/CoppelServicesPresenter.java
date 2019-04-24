@@ -44,6 +44,11 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getProfileValidation(employeeNumber, employeeEmail, token);
     }
 
+    public void requestLogOut(String employeeNumber, String employeeEmail, String token) {
+        view.showProgress();
+        servicesInteractor.getLogoutValidation(employeeNumber, employeeEmail, token);
+    }
+
     public void requestPayrollVoucher(String employeeNumber, int typePetition, String token) {
         view.showProgress();
         servicesInteractor.getPayrollVoucherValidation(employeeNumber, typePetition, token);
@@ -86,7 +91,7 @@ public class CoppelServicesPresenter implements IServiceListener {
 
         data.put(KEY_STAMP,hasStamp? 1 : 0);
 
-            /*Agregamos los datos opcionales*/
+        /*Agregamos los datos opcionales*/
         if(dataOptional != null){
 
             data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
@@ -116,7 +121,7 @@ public class CoppelServicesPresenter implements IServiceListener {
         /*Agregamos valor del sello*/
         data.put(KEY_STAMP,hasStamp? 1 : 0);
 
-          /*Agregamos los datos opcionales*/
+        /*Agregamos los datos opcionales*/
         if(dataOptional != null){
 
             data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
@@ -137,7 +142,6 @@ public class CoppelServicesPresenter implements IServiceListener {
         view.showProgress();
         servicesInteractor.getBenefits(data,token);
     }
-
 
 
     @Override

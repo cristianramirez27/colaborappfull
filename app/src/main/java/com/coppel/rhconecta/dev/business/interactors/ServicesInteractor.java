@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
@@ -44,6 +45,7 @@ import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
+import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
@@ -74,7 +76,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ServicesInteractor {
 
@@ -204,7 +205,7 @@ public class ServicesInteractor {
      */
     public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        getProfile(employeeNumber, employeeEmail);
+        getProfile(employeeNumber, employeeEmail,1);
     }
 
     /**
@@ -213,9 +214,9 @@ public class ServicesInteractor {
      * @param employeeNumber User Number
      * @param employeeEmail  User email
      */
-    private void getProfile(String employeeNumber, String employeeEmail) {
+    private void getProfile(String employeeNumber, String employeeEmail,int option) {
         final int type = ServicesRequestType.PROFILE;
-        iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail,option)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -277,16 +278,96 @@ public class ServicesInteractor {
      * @param employeeEmail  User emai
      * @return CoppelServicesProfileRequest Request model
      */
-    public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail) {
+    public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail,int option) {
         CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
         coppelServicesProfileRequest.setNum_empleado(employeeNumber);
         coppelServicesProfileRequest.setCorreo(employeeEmail);
-        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        //Se agrega parámetro de opcion 09/04/2019
+        coppelServicesProfileRequest.setOpcion(option);
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
         if(tokenFirebase!= null && !tokenFirebase.isEmpty()){
             coppelServicesProfileRequest.setId_firebase(tokenFirebase);
         }
 
         return coppelServicesProfileRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     *****************************************************          Cerrar sesión          *************************************************************************
+     *********************************************************************************************************************************************************/
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     * @param token          User token
+     */
+    public void getLogoutValidation(String employeeNumber, String employeeEmail, String token) {
+        this.token = token;
+        logOut(employeeNumber, employeeEmail,2);
+    }
+
+    /**
+     * Make a request to get profile
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     */
+    private void logOut(String employeeNumber, String employeeEmail,int option) {
+        final int type = ServicesRequestType.LOGOUT;
+        iServicesRetrofitMethods.logout(ServicesConstants.WS_LOGOUT,token, buildProfileRequest(employeeNumber, employeeEmail,option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    LogoutResponse logoutResponse = (LogoutResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LogoutResponse.class);
+                    if (logoutResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getLogoutResponse(logoutResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getLogoutResponse(LogoutResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getLogoutSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Profile method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getLogoutSuccess(LogoutResponse response, int type) {
+        ServicesResponse<LogoutResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
     }
 
     /* *******************************************************************************************************************************************************
@@ -1042,7 +1123,7 @@ public class ServicesInteractor {
         return coppelServicesRecoveryPasswordRequest;
     }
 
-     /* *******************************************************************************************************************************************************
+    /* *******************************************************************************************************************************************************
      ***************************************************          Letters Validate Signature          ********************************************************
      *********************************************************************************************************************************************************/
 
@@ -1371,7 +1452,7 @@ public class ServicesInteractor {
 
 
 
-       /* *******************************************************************************************************************************************************
+    /* *******************************************************************************************************************************************************
      ***********************************************          Letters Generate          ************************************************************************
      *********************************************************************************************************************************************************/
 
@@ -1607,8 +1688,8 @@ public class ServicesInteractor {
 
                 try {
 
-                     BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
-                             //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
@@ -1856,7 +1937,6 @@ public class ServicesInteractor {
 
         return clazz;
     }
-
 
 
     /******************************************************/

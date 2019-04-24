@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.fragments.employmentLetters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,8 +31,10 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentScheduleData;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +42,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.utils.DateTimeUtil.getHoursCount;
+import static com.coppel.rhconecta.dev.business.utils.DateTimeUtil.getNumberDays;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 
-public class ScheduleInfoLetterFragment extends Fragment implements View.OnClickListener, IServicesContract.View,DialogFragmentScheduleData.OnButonOptionClick {
+public class ScheduleInfoLetterFragment extends Fragment implements View.OnClickListener,
+
+        IServicesContract.View,DialogFragmentScheduleData.OnButonOptionClick, DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = ScheduleInfoLetterFragment.class.getSimpleName();
     private ConfigLetterActivity parent;
@@ -82,6 +89,8 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
     @BindView(R.id.btnNext)
     Button btnNext;
 
+    private DialogFragmentWarning dialogFragmentWarning;
+
     private long mLastClickTime = 0;
     private DialogFragmentScheduleData dialogFragmentScheduleData;
     private LetterConfigResponse.DatosHorario datosHorario;
@@ -116,6 +125,8 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         endHourLayout.setOnClickListener(this);
         eatingTimeLayout.setOnClickListener(this);
         btnNext.setOnClickListener(this);
+
+        btnNext.setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -286,6 +297,15 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
                 break;
         }
 
+        String dayStart =  startDay.getText()!= null ? startDay.getText().toString() : "";
+        String dayEnd =  endDay.getText()!= null ? endDay.getText().toString() : "";
+        String hourStart =  starHour.getText()!= null && !starHour.getText().toString().isEmpty() ? String.format("%s %s",starHour.getText().toString() ,
+                rdbAmStart.isChecked() ? "AM" : "PM"): "";
+        String hourEnd =  endHour.getText()!= null && !endHour.getText().toString().isEmpty() ? String.format("%s %s",endHour.getText().toString() ,
+                rdbAmEnd.isChecked() ? "AM" : "PM"): "";
+
+        calculateHours(dayStart,dayEnd,hourStart,hourEnd);
+
         dialogFragmentScheduleData.close();
     }
 
@@ -314,5 +334,40 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         dataOptional.setScheduleData(scheduleData);
         dataOptional.setSectionScheduleData(letterSectionScheduleData);
         return previewDataVO;
+    }
+
+    private void calculateHours(String startDay,String endDay,String startHour,String endHour){
+        if(!startDay.isEmpty() && !endDay.isEmpty() && !startHour.isEmpty() && !endHour.isEmpty()){
+            int dayNumbers = getNumberDays(startDay, endDay);
+            int numberHours = getHoursCount(startHour, endHour);
+
+            int total =  dayNumbers * numberHours;
+
+            if(total > 48){
+                showMessageUser(getString(R.string.max_hours_job));
+                btnNext.setVisibility(View.INVISIBLE);
+            }else {
+                btnNext.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
+
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(ScheduleInfoLetterFragment.this);
+                dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            }
+        }, 100);
+    }
+
+    @Override
+    public void onRightOptionClick() {
+        dialogFragmentWarning.close();
+
     }
 }

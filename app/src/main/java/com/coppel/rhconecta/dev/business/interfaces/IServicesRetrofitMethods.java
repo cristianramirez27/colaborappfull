@@ -112,5 +112,10 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> getBenefitsSearch(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsSearchRequest servicesRequest);
 
+    //************************** logout **************************
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> logout(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesProfileRequest servicesRequest);
+
 
 }

@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -22,15 +23,58 @@ import io.realm.RealmList;
 public class MenuUtilities {
 
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide,int[] notifications) {
+
+        /*Setamos el menu por default*/
+        List<HomeMenuItem> listMenuDefault = Arrays.asList(
+                new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
+                new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
+                new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
+                new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
+                new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
+                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
+
+        HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
+
+        for(HomeMenuItem item : listMenuDefault){
+            mapNames.put(item.getTAG(),item);
+        }
+
+
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         List<HomeMenuItem> homeMenuItems = new ArrayList<>();
         if (userPreferences != null && userPreferences.getMenuItems() != null && userPreferences.getMenuItems().size() > 0 && !isSlide) {
 
             RealmList<HomeMenuItem> menus =  userPreferences.getMenuItems();
+
+            List<String> listMenuSavedtTAG = new ArrayList<>();
+            for(HomeMenuItem item : menus){
+                listMenuSavedtTAG.add(item.getTAG());
+            }
+
+
+
+            /**Validamos si se agregaron todos los items del menu en las preferencias, en caso contrario, lo agregamos*/
+            if(listMenuSavedtTAG.size() < listMenuDefault.size()){
+                for (HomeMenuItem homeMenuItem : listMenuDefault){
+                    if(!listMenuSavedtTAG.contains(homeMenuItem.getTAG())){
+                        menus.add(homeMenuItem);
+                    }
+                }
+            }
+
+
             Realm realm = Realm.getDefaultInstance();
             if (!realm.isInTransaction()) realm.beginTransaction();
             for (int i =0;i<menus.size();i++){
                 try{
+
+
+                    /*Actualizamos el nombre de las opciones del menu guardadas*/
+                    if(menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0){
+                        menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
+                    }
+
+
                     if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
                         if(notifications.length>0){
                             menus.get(i).setNotifications(notifications[0]);
@@ -54,13 +98,7 @@ public class MenuUtilities {
             if (isSlide) {
                 homeMenuItems.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
             }
-            homeMenuItems.addAll(Arrays.asList(
-                    new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
-                    new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
-                    new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
-                    new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
-                    new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
-                    new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1])));
+            homeMenuItems.addAll(listMenuDefault);
         }
         return homeMenuItems;
     }

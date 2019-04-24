@@ -35,7 +35,7 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         private String tarjeta;
         private String tipoCliente;
         private String token;
-        private String errorCode;
+        private int errorCode;
         private String userMessage;
 
         public String getApp() {
@@ -110,11 +110,11 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
             this.token = token;
         }
 
-        public String getErrorCode() {
+        public int getErrorCode() {
             return errorCode;
         }
 
-        public void setErrorCode(String errorCode) {
+        public void setErrorCode(int errorCode) {
             this.errorCode = errorCode;
         }
 

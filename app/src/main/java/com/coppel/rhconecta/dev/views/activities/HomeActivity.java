@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -29,16 +30,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
-import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
+import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.ServicesError;
+import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
+import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EmploymentLettersMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
@@ -58,7 +64,6 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
-import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseConfig;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
@@ -75,8 +80,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -85,7 +88,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
@@ -95,10 +97,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
-
-
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
+public class HomeActivity extends AppCompatActivity implements  IServicesContract.View,View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
         DialogFragmentWarning.OnOptionClick,ISurveyNotification {
 
     private static final String TAG = "HomeActivity";
@@ -132,9 +131,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.surveyInbox)
     SurveyInboxView surveyInboxView;
 
+    private boolean requestLogout = false;
+
+    private DialogFragmentLoader dialogFragmentLoader;
+
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
+    private CoppelServicesPresenter coppelServicesPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +149,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         getWindow().setBackgroundDrawable(null);
         initFirebase();
+
+        coppelServicesPresenter = new CoppelServicesPresenter(this, this);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -280,6 +286,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         getString(R.string.back), getString(R.string.get_out));
                 dialogFragmentWarning.setOnOptionClick(this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                requestLogout = true;
                 break;
         }
     }
@@ -334,7 +341,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void setToolbarTitle(String title) {
 
         titleToolbar.setText(title);
-       // tbActionBar.setTitle(title);
+        // tbActionBar.setTitle(title);
     }
 
     public LoginResponse.Response getLoginResponse() {
@@ -348,11 +355,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onLeftOptionClick() {
         dialogFragmentWarning.close();
+        if(requestLogout) {
+            requestLogout = false;
+        }
     }
 
     @Override
     public void onRightOptionClick() {
-        AppUtilities.closeApp(this);
+        if(requestLogout){
+            requestLogout = false;
+            /*Se implementa llamada a endpoint de cerrar sesión*/
+            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+            coppelServicesPresenter.requestLogOut( profileResponse.getColaborador(), profileResponse.getCorreo(),token);
+        }
+        dialogFragmentWarning.close();
     }
 
     private void initFirebase() {
@@ -426,5 +442,50 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+
+    }
+
+
+    @Override
+    public void showResponse(ServicesResponse response) {
+        switch (response.getType()) {
+            case ServicesRequestType.LOGOUT:
+                LogoutResponse logoutResponse = (LogoutResponse) response.getResponse();
+                hideProgress();
+                AppUtilities.closeApp(this);
+                break;
+        }
+    }
+
+    @Override
+    public void showError(ServicesError coppelServicesError) {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                hideProgress();
+            }
+        }, 500);
+    }
+
+    @Override
+    public void showProgress() {
+        dialogFragmentLoader = new DialogFragmentLoader();
+        dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
+    }
+
+    @Override
+    public void hideProgress() {
+
+        if(dialogFragmentLoader != null)
+            dialogFragmentLoader.close();
+    }
 }

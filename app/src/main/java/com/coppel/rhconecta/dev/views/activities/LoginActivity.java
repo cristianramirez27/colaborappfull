@@ -80,6 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //VISIONARIOS
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
+    private  boolean finishApp = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,8 +163,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (response.getType()) {
             case ServicesRequestType.LOGIN:
                 loginResponse = (LoginResponse) response.getResponse();
-                coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
-                break;
+                if(loginResponse.getData().getResponse().getErrorCode() == -10){
+                    finishApp = true;
+                    showMessageUser(loginResponse.getData().getResponse().getUserMessage());
+                }else {
+                    coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
+                }
+                 break;
             case ServicesRequestType.PROFILE:
                 ProfileResponse profileResponse = (ProfileResponse) response.getResponse();
                 Intent intent = new Intent(this, HomeActivity.class);
@@ -222,7 +229,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onRightOptionClick() {
+
         dialogFragmentWarning.close();
+
+        if(finishApp){
+            finishApp = false;
+            finish();
+        }
     }
 
     @Override
@@ -243,6 +256,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(LoginActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                dialogFragmentLoader.close();
+            }
+        }, 1500);
+    }
 
     //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS
     private void initRemoteConfig(){

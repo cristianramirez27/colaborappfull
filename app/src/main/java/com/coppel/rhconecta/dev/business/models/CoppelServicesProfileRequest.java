@@ -5,6 +5,7 @@ public class CoppelServicesProfileRequest {
     private String num_empleado;
     private String correo;
     private String id_firebase;
+    private int opcion;
 
     public String getNum_empleado() {
         return num_empleado;
@@ -28,5 +29,13 @@ public class CoppelServicesProfileRequest {
 
     public void setId_firebase(String id_firebase) {
         this.id_firebase = id_firebase;
+    }
+
+    public int getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(int opcion) {
+        this.opcion = opcion;
     }
 }
