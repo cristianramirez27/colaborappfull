@@ -325,7 +325,9 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         String hourEnd =  endHour.getText()!= null && !endHour.getText().toString().isEmpty() ? String.format("%s %s",endHour.getText().toString() ,
                 rdbAmEnd.isChecked() ? "AM" : "PM"): "";
 
-        calculateHours(dayStart,dayEnd,hourStart,hourEnd);
+        String lunchTime =  eatingTime.getText()!= null && !eatingTime.getText().toString().isEmpty() ? String.format("%s",eatingTime.getText().toString()) : "0";
+
+        calculateHours(dayStart,dayEnd,hourStart,hourEnd,lunchTime);
     }
 
     private PreviewDataVO getData(){
@@ -343,11 +345,23 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
         return previewDataVO;
     }
 
-    private void calculateHours(String startDay,String endDay,String startHour,String endHour){
+    private void calculateHours(String startDay,String endDay,String startHour,String endHour,String lunchTime){
         if(!startDay.isEmpty() && !endDay.isEmpty() && !startHour.isEmpty() && !endHour.isEmpty()){
             int dayNumbers = getNumberDays(startDay, endDay);
             int numberHours = getHoursCount(startHour, endHour);
-            int total =  dayNumbers * numberHours;
+            double hoursLunch = 0.0;
+            if(!lunchTime.equals("0")){
+                String []timeLunchPart = lunchTime.split(":");
+
+                hoursLunch += Integer.parseInt(timeLunchPart[0]);
+
+                if(timeLunchPart[1].equals("30")){
+                    hoursLunch+= 0.5;
+                }
+
+            }
+
+            double total =  (dayNumbers * numberHours) - (hoursLunch *dayNumbers) ;
 
             if(total > 48){
                 showMessageUser(getString(R.string.max_hours_job));
