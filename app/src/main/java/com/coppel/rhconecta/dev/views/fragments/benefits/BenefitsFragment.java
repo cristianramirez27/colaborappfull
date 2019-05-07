@@ -209,9 +209,9 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
             }else {
                 stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);;
                 citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);;
-                if(stateSelected.equals("0"))
+                if(stateSelected== null || (stateSelected != null &&  stateSelected.equals("0")))
                     stateSelected = "2";
-                if(citySelected.equals("0"))
+                if(citySelected== null || (citySelected != null && citySelected.equals("0")))
                     citySelected = "104";
             }
 
