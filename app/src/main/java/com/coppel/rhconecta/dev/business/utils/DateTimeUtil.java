@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.utils;
 
 
+import android.util.Log;
+
 import com.coppel.rhconecta.dev.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -27,6 +29,16 @@ public class DateTimeUtil {
             "Octubre",
             "Novimebre",
             "Diciembre",
+    };
+
+    private static String[] days = new String[]{
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes",
+            "Sábado",
+            "Domingo"
     };
 
     public static DatePickerDialog getMaterialDatePicker(DatePickerDialog.OnDateSetListener callback){
@@ -125,6 +137,47 @@ public class DateTimeUtil {
 
 
         return dateAsString;
+    }
+
+    public static int getNumberDays(String startDay,String endDay){
+        int dayStart = 0;
+        int dayEnd = 0;
+        for(int i = 0 ; i <  days.length ; i++){
+            if(days[i].compareToIgnoreCase(startDay) == 0){
+                dayStart = i;
+            }
+
+            if(days[i].compareToIgnoreCase(endDay) == 0){
+                dayEnd = i;
+            }
+
+        }
+
+
+        return  (dayEnd - dayStart)+ 1;
+
+    }
+
+    public static int getHoursCount(String startTime,String endTime){
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa",Locale.ENGLISH);
+            Date date1 = simpleDateFormat.parse(startTime);
+            Date date2 = simpleDateFormat.parse(endTime);
+
+            long difference = date2.getTime() - date1.getTime();
+            int days = (int) (difference / (1000 * 60 * 60 * 24));
+            int hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            int min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+
+            hours = (hours < 0 ? -hours : hours);
+            Log.i("======= Hours", " :: " + hours);
+
+            return hours;
+
+        }catch (Exception e){
+            return 0;
+        }
     }
 
 }

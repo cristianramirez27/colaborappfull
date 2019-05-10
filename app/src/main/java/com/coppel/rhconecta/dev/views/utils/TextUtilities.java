@@ -135,4 +135,6 @@ public class TextUtilities {
             context.getResources().updateConfiguration(configuration, metrics);
         }
     }
+
+
 }

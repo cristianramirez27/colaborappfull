@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -31,6 +32,13 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
+
+        HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
+
+        for(HomeMenuItem item : listMenuDefault){
+            mapNames.put(item.getTAG(),item);
+        }
+
 
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         List<HomeMenuItem> homeMenuItems = new ArrayList<>();
@@ -54,10 +62,19 @@ public class MenuUtilities {
                 }
             }
 
+
             Realm realm = Realm.getDefaultInstance();
             if (!realm.isInTransaction()) realm.beginTransaction();
             for (int i =0;i<menus.size();i++){
                 try{
+
+
+                    /*Actualizamos el nombre de las opciones del menu guardadas*/
+                    if(menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0){
+                        menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
+                    }
+
+
                     if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
                         if(notifications.length>0){
                             menus.get(i).setNotifications(notifications[0]);

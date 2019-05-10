@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
@@ -100,6 +101,8 @@ import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_AHORRO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 
 public class ServicesInteractor {
 
@@ -212,6 +215,7 @@ public class ServicesInteractor {
         coppelServicesLoginRequest.setEmail(email);
         coppelServicesLoginRequest.setPassword(password);
         coppelServicesLoginRequest.setApp("rhconecta");
+        coppelServicesLoginRequest.setVersion(getVersionApp());
 
         return coppelServicesLoginRequest;
     }
@@ -308,7 +312,7 @@ public class ServicesInteractor {
         coppelServicesProfileRequest.setCorreo(employeeEmail);
         //Se agrega parámetro de opcion 09/04/2019
         coppelServicesProfileRequest.setOpcion(option);
-        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
         if(tokenFirebase!= null && !tokenFirebase.isEmpty()){
             coppelServicesProfileRequest.setId_firebase(tokenFirebase);
         }
@@ -1147,7 +1151,7 @@ public class ServicesInteractor {
         return coppelServicesRecoveryPasswordRequest;
     }
 
-     /* *******************************************************************************************************************************************************
+    /* *******************************************************************************************************************************************************
      ***************************************************          Letters Validate Signature          ********************************************************
      *********************************************************************************************************************************************************/
 
@@ -1476,7 +1480,7 @@ public class ServicesInteractor {
 
 
 
-       /* *******************************************************************************************************************************************************
+    /* *******************************************************************************************************************************************************
      ***********************************************          Letters Generate          ************************************************************************
      *********************************************************************************************************************************************************/
 
@@ -1712,8 +1716,8 @@ public class ServicesInteractor {
 
                 try {
 
-                     BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
-                             //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
@@ -1961,7 +1965,6 @@ public class ServicesInteractor {
 
         return clazz;
     }
-
 
 
     /******************************************************/

@@ -21,23 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.business.utils.ServicesError;
-import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeBannerPagerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
-import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.modelview.BannerItem;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
-import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosDetalleActivity;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
@@ -50,7 +45,6 @@ import com.coppel.rhconecta.dev.visionarios.inicio.objects.ItemCarousel;
 import com.coppel.rhconecta.dev.visionarios.inicio.presenters.InicioPresenter;
 import com.coppel.rhconecta.dev.visionarios.utils.App;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosDetalleActivity;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
@@ -59,6 +53,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +61,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +75,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     private HomeMenuRecyclerViewAdapter homeMenuRecyclerViewAdapter;
     private ProfileResponse.Response profileResponse;
     private InicioPresenter presenter;
-
+    DialogFragmentLoader dialogFragmentLoader;
     private Encuesta ultimaEncuesta;
 
     private ArrayList<ItemCarousel> itemsCarousel = new ArrayList<ItemCarousel>();
@@ -126,6 +121,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        dialogFragmentLoader = new DialogFragmentLoader();
+        dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
+
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
         ButterKnife.bind(this, view);
         parent = (HomeActivity) getActivity();
@@ -171,6 +170,9 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     public void onPause() {
         super.onPause();
         RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
+        if (dialogFragmentLoader != null) {
+            dialogFragmentLoader.dismissAllowingStateLoss();
+        }
     }
 
     private void initBanner() {
@@ -311,6 +313,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         Log.d(TAG,"Notifications videos visionarios:"+nuevos);
         notifications[1]=nuevos;
         uptadeNotificationsAdapter();
+        dialogFragmentLoader.close();
     }
 
     private void uptadeNotificationsAdapter(){
@@ -393,8 +396,9 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
 
     }
 
+    //VISIONARIOS ESTA FUNCIONA YA NO SE USARÁ
     public  void getURL_VISIONARIOS (){
-        final String url = ConstantesGlobales.URL_API;
+        final String url = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL);
         try {
 
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

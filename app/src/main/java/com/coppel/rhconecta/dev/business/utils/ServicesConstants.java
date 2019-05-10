@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.business.utils;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BENEFICIOS;
@@ -14,7 +15,6 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VALIDARFIRMA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WITHDRAWSAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ServicesConstants {
 
@@ -33,22 +33,19 @@ public class ServicesConstants {
     public static final String GET_LOANSAVINGFUND = "rhconecta/api/v2/fondoAhorroConsulta";
     public static final String GET_RECOVERY_PASSWORD = "rhconecta/api/v2/recuperacontra";*/
 
-    public static  String URL_BASE = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), URL_MAIN);
-    public static  String GET_LOGIN = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN);
-    public static  String GET_PROFILE = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE);
-    public static  String GET_LETTERS_VALIDATE_SIGNATURE = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VALIDARFIRMA);
-    public static  String GET_CONFIG = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_CARTASCONFIG);
-    public static  String GET_LETTER_PREVIEW= AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PREVIEW);
-    public static  String GET_LETTER_GENERATE= AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_CARTASGENERAR);
-    public static  String GET_VOUCHER = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PAYSHEET);
-    public static  String GET_LOANSAVINGFUND = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_SAVINGS);
-    public static  String GET_RECOVERY_PASSWORD = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER);
-    public static  String GET_BENEFITS = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS);
-    public static  String GET_WITHDRAWSAVINGS= AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS);
-
-    public static  String WS_LOGOUT = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE);
-
-
+    public static  String URL_BASE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), URL_MAIN);
+    public static  String GET_LOGIN = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_LOGIN);
+    public static  String GET_PROFILE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PROFILE);
+    public static  String GET_LETTERS_VALIDATE_SIGNATURE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_VALIDARFIRMA);
+    public static  String GET_CONFIG = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_CARTASCONFIG);
+    public static  String GET_LETTER_PREVIEW= AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PREVIEW);
+    public static  String GET_LETTER_GENERATE= AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_CARTASGENERAR);
+    public static  String GET_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PAYSHEET);
+    public static  String GET_LOANSAVINGFUND = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_SAVINGS);
+    public static  String GET_RECOVERY_PASSWORD = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PASSWORD_RECOVER);
+    public static  String GET_BENEFITS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_BENEFICIOS);
+    public static  String GET_WITHDRAWSAVINGS= AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_WITHDRAWSAVINGS);
+    public static  String WS_LOGOUT = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PROFILE);
 
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
 

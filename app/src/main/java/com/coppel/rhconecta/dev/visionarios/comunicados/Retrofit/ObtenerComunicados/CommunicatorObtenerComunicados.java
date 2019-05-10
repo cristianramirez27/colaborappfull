@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunic
 
 import android.support.annotation.NonNull;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ObtenerComunicadosEvent;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
@@ -22,10 +24,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
 public class CommunicatorObtenerComunicados {
 
     private static final String TAG = "CommunicatorObtenerComunicados";
-    private String SERVER_URL = ConstantesGlobales.URL_API;
+    private String SERVER_URL = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL);
 
 
     public void ObtenerApi(JSON_ObtenerComunicados item, final ObtenerComunicados_Callback callback) {

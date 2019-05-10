@@ -2,6 +2,9 @@ package com.coppel.rhconecta.dev.visionarios.videos.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,36 +15,46 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.visionarios.utils.DownloadImageTask;
+import com.coppel.rhconecta.dev.visionarios.utils.DownloadImagesTask;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosActivity;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class AdapterVideos extends BaseAdapter {
 
-    static class ViewHolder {
+    ViewHolder holder;
+    private class ViewHolder {
         TextView labelTitulo;
         TextView labelEncabezado;
         ImageView imgVideoPreview;
         TextView labelFecha;
         TextView labelVisitas;
-
     }
 
     private static final String TAG = "CustomAdapterVideos";
     private static int convertViewCounter = 0;
 
-    private ArrayList<Video> data;
+    protected ArrayList<Video> data;
     private LayoutInflater inflater = null;
+    protected static Bitmap imagenes[];
 
-    private Context fromContext;
+    protected Context fromContext;
 
-    public AdapterVideos(Context c, ArrayList<Video> d) {
+    public AdapterVideos(Context c, ArrayList<Video> d, Bitmap[] imagenes) {
         this.data = d;
         this.fromContext = c;
         this.inflater = LayoutInflater.from(c);
+        this.imagenes = imagenes;
     }
 
     @Override
@@ -83,7 +96,6 @@ public class AdapterVideos extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder holder;
         Video v = (Video) getItem(position);
 
         if (convertView == null)
@@ -101,12 +113,6 @@ public class AdapterVideos extends BaseAdapter {
             holder.labelVisitas = (TextView) convertView.findViewById(R.id.labelVisitas);
             holder.imgVideoPreview= (ImageView) convertView.findViewById(R.id.imgVideoPreview);
 
-            try{
-                Log.d("VideoAdapter",v.getImagen_video_preview());
-                new DownloadImageTask((ImageView) holder.imgVideoPreview).execute(v.getImagen_video_preview());
-            }catch (Exception e){
-                Log.d("VideoAdapter","No se ha podido descargar la imagen del video.");
-            }
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -126,9 +132,11 @@ public class AdapterVideos extends BaseAdapter {
         holder.labelEncabezado.setText("\n"+v.getDescripcion());
         holder.labelFecha.setText(fechaFormateada);
         holder.labelVisitas.setText(v.getVistas()+" Vistas");
+        holder.imgVideoPreview.setImageBitmap(imagenes[position]);
 
         return convertView;
     }
+
 
     private View.OnClickListener onClickMetodo = new View.OnClickListener() {
         @Override

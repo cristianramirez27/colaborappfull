@@ -45,4 +45,5 @@ public class LogoutResponse extends CoppelGeneralParameterResponse {
             this.estado = estado;
         }
     }
+
 }

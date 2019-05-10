@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -34,10 +37,16 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EnrollmentFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick, EditTextPassword.OnEditorActionListener {
@@ -68,6 +77,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.flLoginFragmentContainer)
     FrameLayout flLoginFragmentContainer;
 
+    //VISIONARIOS
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
+    private  boolean finishApp = false;
 
 
     @Override
@@ -85,6 +98,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txvJoin.setOnClickListener(this);
         txvForgotPassword.setOnClickListener(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //VISIONARIOS
+        initRemoteConfig();
     }
 
     private void login() {
@@ -147,8 +163,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (response.getType()) {
             case ServicesRequestType.LOGIN:
                 loginResponse = (LoginResponse) response.getResponse();
-                coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
-                break;
+                if(loginResponse.getData().getResponse().getErrorCode() == -10){
+                    finishApp = true;
+                    showMessageUser(loginResponse.getData().getResponse().getUserMessage());
+                }else {
+                    coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
+                }
+                 break;
             case ServicesRequestType.PROFILE:
                 ProfileResponse profileResponse = (ProfileResponse) response.getResponse();
                 Intent intent = new Intent(this, HomeActivity.class);
@@ -161,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileResponse.getData().getResponse()[0].getColaborador());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profileResponse.getData().getResponse()[0].getEstado()));
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profileResponse.getData().getResponse()[0].getCiudad()));
+
 
                 cedtEmail.setText("");
                 cedtPassword.setText("");
@@ -207,7 +229,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onRightOptionClick() {
+
         dialogFragmentWarning.close();
+
+        if(finishApp){
+            finishApp = false;
+            finish();
+        }
     }
 
     @Override
@@ -226,7 +254,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             flLoginFragmentContainer.setVisibility(View.GONE);
             mainContainer.setVisibility(View.VISIBLE);
         }
-
-
     }
+
+
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(LoginActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                dialogFragmentLoader.close();
+            }
+        }, 1500);
+    }
+
+    //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS
+    private void initRemoteConfig(){
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+
+        fetchEndpoints();
+    }
+
+
+    private void fetchEndpoints() {
+        long cacheExpiration = 3600; // 1 hour in seconds.
+        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
+        // retrieve values from the service.
+        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }
+
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // After config data is successfully fetched, it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.activateFetched();
+                        } else {
+                            Log.d("RemoteConfig","Fetch Failed");
+                        }
+                        setEndpoints();
+                    }
+                });
+        // [END fetch_config_with_callback]
+    }
+
+    private void setEndpoints(){
+        setEndpointConfig(mFirebaseRemoteConfig);
+    }
+
+    //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS
+
 }

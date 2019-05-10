@@ -71,6 +71,8 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
 
     private boolean videoEnCurso = false;
     private boolean videoCompleto = false;
+    private int posicion = 0;
+    private boolean fullscreen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,8 +189,23 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         videoPlayer.requestFocus();
-                        videoPlayer.start();
-                        videoEnCurso = true;
+                        if(fullscreen){
+                            videoPlayer.seekTo(posicion);
+                            fullscreen = false;
+
+                            if(posicion != 0){
+                                videoPlayer.start();
+                                videoEnCurso = true;
+                            }else{
+                                videoEnCurso = false;
+                                imgPreview.setVisibility(View.VISIBLE);
+                                imgPlayVideo.setVisibility(View.VISIBLE);
+                            }
+                        }else{
+                            videoPlayer.seekTo(posicion);
+                            videoPlayer.start();
+                            videoEnCurso = true;
+                        }
                       /*  mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                             @Override
                             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
@@ -208,6 +225,8 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
                         videoCompleto = true;
                         imgPreview.setVisibility(View.VISIBLE);
                         imgPlayVideo.setVisibility(View.VISIBLE);
+                        posicion = 0;
+                        videoPlayer.seekTo(posicion);
 
                     }
                 });
@@ -401,11 +420,13 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
     }
 
     public void setFullScreenVideo(View v) {
+        videoPlayer.pause();
         Intent intentFullScreen = new Intent(v.getContext(), VideosFullScreenActivity.class);
         intentFullScreen.putExtra("video", video);
         intentFullScreen.putExtra("baseUrl", StringUrlVideo);
         intentFullScreen.putExtra("videoHtml", StringHtmlVideo);
-        startActivity(intentFullScreen);
+        intentFullScreen.putExtra("posicion", videoPlayer.getCurrentPosition());
+        startActivityForResult(intentFullScreen, 1);
     }
 
     @Override
@@ -429,6 +450,24 @@ public class VideosDetalleActivity extends AppCompatActivity implements VideosDe
             } else {
                 TextView textLabel = (TextView) findViewById(textView);
                 textLabel.setText(text);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == 1){
+                posicion = (int)data.getSerializableExtra("minutos");
+                fullscreen = (boolean)data.getSerializableExtra("fullscreen");
+
+                if(imgPlayVideo.getVisibility() == View.VISIBLE){
+                    imgPlayVideo.setVisibility(View.VISIBLE);
+                }
+            if ((boolean)data.getSerializableExtra("videoEnCurso") == true) {
+                initializePlayer();
+                imgPreview.setVisibility(View.INVISIBLE);
+                imgPlayVideo.setVisibility(View.INVISIBLE);
+
             }
         }
     }

@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -340,7 +341,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     public void setToolbarTitle(String title) {
 
         titleToolbar.setText(title);
-       // tbActionBar.setTitle(title);
+        // tbActionBar.setTitle(title);
     }
 
     public LoginResponse.Response getLoginResponse() {
@@ -388,7 +389,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         InternalDatabase idb = new InternalDatabase(this);
 
         TableConfig tableConfig = new TableConfig(idb, false);
-        Config config = new Config(1,ConstantesGlobales.URL_API);
+        Config config = new Config(1,AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL));
         tableConfig.insertIfNotExist(config);
 
         TableUsuario tableUsuario = new TableUsuario(idb, false);
@@ -456,7 +457,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 LogoutResponse logoutResponse = (LogoutResponse) response.getResponse();
                 hideProgress();
                 AppUtilities.closeApp(this);
-                 break;
+                break;
         }
     }
 

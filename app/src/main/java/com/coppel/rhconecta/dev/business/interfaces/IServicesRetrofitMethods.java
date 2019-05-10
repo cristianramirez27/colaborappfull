@@ -89,7 +89,6 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<LetterGenerateResponse> getLettersGenerate(@Url String url,@Header("Authorization") String token, @Body CoppelServicesLettersGenerateRequest servicesRequest);
 
-
     //************************** Benefits **************************
     @Headers({"Content-Type: application/json"})
     @POST
@@ -120,7 +119,7 @@ public interface IServicesRetrofitMethods  <T>{
     Call<JsonObject> getBenefitsSearch(@Url String url,@Header("Authorization") String token, @Body CoppelServicesBenefitsSearchRequest servicesRequest);
 
 
-    //************************** Benefits **************************
+    //************************** Fondo ahorro **************************
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getConsultaRetiro(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaRetiroRequest servicesRequest);
@@ -146,11 +145,9 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> getGuardarAbono(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGuardarAbonoRequest servicesRequest);
 
-
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getConsultarMetodo(@Url String url,@Header("Authorization") String token, @Body CoppelServicesConsultaMetodoPagoRequest servicesRequest);
-
 
     //************************** logout **************************
     @Headers({"Content-Type: application/json"})

@@ -3,6 +3,8 @@ package com.coppel.rhconecta.dev.visionarios.inicio.models;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.CommunicatorObtenerComunicados;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.ObtenerComunicados_Callback;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
@@ -40,6 +42,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, ObtenerComunicados_Callback, ObtenerVideos_Callback,GuardarLogin_Callback {
 
@@ -118,7 +122,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
     @Override
     public void getComunicados() {
         if(presenter != null){
-            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(ConstantesGlobales.APLICACION_KEY);
+            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
             CommunicatorObtenerComunicados communicatorObtenerComunicados = new CommunicatorObtenerComunicados();
             communicatorObtenerComunicados.ObtenerApi(jsonRequest,InicioModel.this);
         }
@@ -127,7 +131,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
     @Override
     public void getVideos() {
         if(presenter != null){
-            JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(ConstantesGlobales.APLICACION_KEY);
+            JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
             CommunicatorObtenerVideos communicatorObtenerVideos = new CommunicatorObtenerVideos();
             communicatorObtenerVideos.ObtenerApi(jsonRequest,InicioModel.this);
         }
@@ -139,7 +143,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
         TableUsuario tableUsuario = new TableUsuario(idb,false);
         Usuario usuario = tableUsuario.select("1");
         tableUsuario.closeDB();
-        JSON_ObtenerEncuestas jsonRequest = new JSON_ObtenerEncuestas(ConstantesGlobales.APLICACION_KEY,usuario.getNumeroempleado());
+        JSON_ObtenerEncuestas jsonRequest = new JSON_ObtenerEncuestas(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY),usuario.getNumeroempleado());
         CommunicatorObtenerEncuestas communicatorObtenerEncuestas = new CommunicatorObtenerEncuestas();
         communicatorObtenerEncuestas.ObtenerApi(jsonRequest,InicioModel.this);
     }
@@ -269,7 +273,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
             numeroEmpleado=usuario.getNumeroempleado();
         }else{
             Log.d(TAG,"ERROR: Usuario no encontrado en TableUsuario localmente");
-            numeroEmpleado=ConstantesGlobales.NUMERO_EMPLEADO;
+            numeroEmpleado="0";
         }
 
         try {
@@ -426,7 +430,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
             numeroEmpleado=usuario.getNumeroempleado();
         }else{
             Log.d(TAG,"ERROR: Usuario no encontrado en TableUsuario localmente");
-            numeroEmpleado=ConstantesGlobales.NUMERO_EMPLEADO;
+            numeroEmpleado="0";
         }
 
         try {
@@ -579,7 +583,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
         TableUsuario tableUsuario = new TableUsuario(this.idb,false);
         usuario=tableUsuario.select("1");
         if(usuario!=null) {
-            JSON_GuardarLogin jsonRequest = new JSON_GuardarLogin(ConstantesGlobales.APLICACION_KEY,
+            JSON_GuardarLogin jsonRequest = new JSON_GuardarLogin(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY),
                     usuario.getNumeroempleado(),
                     usuario.getNombre(),
                     usuario.getApellidop(),

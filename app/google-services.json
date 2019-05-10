@@ -25,15 +25,21 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coppel.rhconecta",
+                "app_store_id": "1437812036"
+              }
+            }
+          ]
         }
       }
     },
@@ -64,27 +70,21 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "905205267590-oac6k056m1qqn38h6km40v14deo2j1ms.apps.googleusercontent.com",
+              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.kokonutstudio.kokocoppel.dev"
+                "bundle_id": "com.coppel.rhconecta",
+                "app_store_id": "1437812036"
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

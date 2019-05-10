@@ -38,4 +38,6 @@ public class CoppelServicesProfileRequest {
     public void setOpcion(int opcion) {
         this.opcion = opcion;
     }
+
+
 }

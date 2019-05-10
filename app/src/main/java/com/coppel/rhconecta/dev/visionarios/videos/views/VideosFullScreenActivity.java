@@ -1,5 +1,11 @@
 package com.coppel.rhconecta.dev.visionarios.videos.views;
 
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,9 +18,11 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.VideoView;
+import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
@@ -37,9 +45,9 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
     private Video video;
     private MediaController mediacontroller;
     private VideoView videoPlayer;
-    private ImageView imgFullScreenBack;
     private boolean videoEnCurso = false;
     private boolean videoCompleto = false;
+    private int posicion = 0;
 
 
     @Override
@@ -50,23 +58,10 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
 
         webViewVideo = (WebView) findViewById(R.id.webViewVideo);
         videoPlayer = (VideoView) findViewById(R.id.videoPlayer);
-        imgFullScreenBack  = (ImageView) findViewById(R.id.imgFullScreenBack);
         StringUrlVideo = getIntent().getStringExtra("baseUrl");
         StringHtmlVideo = getIntent().getStringExtra("videoHtml");
         video = (Video) getIntent().getSerializableExtra("video");
-
-        imgFullScreenBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (videoEnCurso) {
-                    if (!videoCompleto) {
-                        presenter.guardarLog(video.getIdvideos(), 2);
-                    }
-                }
-                finish();
-            }
-        });
-
+        posicion = (int)getIntent().getSerializableExtra("posicion");
         initializePlayer();
     }
 
@@ -76,14 +71,6 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
      * */
     @Override
     public void onBackPressed() { //DESHABILITA EL BOTON DE REGRESAR
-
-        if (true) {
-            if (videoEnCurso) {
-                if (!videoCompleto) {
-                    presenter.guardarLog(video.getIdvideos(), 2);
-                }
-            }
-
             /**KokonutStudio
              * Se finaliza la activity, sin lanzar una nueva Activity de {@VideosDetalleActivity} */
            /* Intent intent = new Intent(this, VideosDetalleActivity.class);
@@ -91,11 +78,19 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
             startActivity(intent);*/
 
             //Se finaliza la activity
-            finish();
-
-        } else {
-            super.onBackPressed();
+        if(videoEnCurso){
+            if(!videoCompleto){
+                presenter.guardarLog(video.getIdvideos(),2);
+            }
         }
+
+        Intent resultaData = new Intent();
+        resultaData.putExtra("minutos", videoPlayer.getCurrentPosition());
+        resultaData.putExtra("fullscreen", true);
+        resultaData.putExtra("videoEnCurso", videoEnCurso);
+        setResult(AppCompatActivity.RESULT_OK, resultaData);
+        finish();
+
 
     }
 
@@ -173,15 +168,16 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         videoPlayer.requestFocus();
+                        videoPlayer.seekTo(posicion);
                         videoPlayer.start();
                         videoEnCurso = true;
+                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                       /*  mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
                             @Override
                             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
                                 mediacontroller.setAnchorView(videoPlayer);
                             }
                         });*/
-
                     }
                 });
 
@@ -190,8 +186,11 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
                     public void onCompletion(MediaPlayer mp) {
                         //mp.release();
                         Log.d(TAG, "Video Finish");
+                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                         videoEnCurso = false;
                         videoCompleto = true;
+                        posicion = 0;
+                        videoPlayer.seekTo(posicion);
                     }
                 });
 
@@ -229,5 +228,22 @@ public class VideosFullScreenActivity extends AppCompatActivity implements Video
     @Override
     public void ShowTextoDiccionario(String text, int textView) {
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig){
+        super.onConfigurationChanged(newConfig);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            videoPlayer.getLayoutParams().height =  (int)(250 * Resources.getSystem().getDisplayMetrics().density);
+        }else{
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            videoPlayer.getLayoutParams().height =  WindowManager.LayoutParams.FILL_PARENT;
+        }
+        mediacontroller.setAnchorView(videoPlayer);
+    }
+
+    public void setFullScreenVideoExit(View v){
+        onBackPressed();
     }
 }

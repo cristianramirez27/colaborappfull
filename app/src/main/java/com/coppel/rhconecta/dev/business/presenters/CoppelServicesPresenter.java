@@ -92,7 +92,7 @@ public class CoppelServicesPresenter implements IServiceListener {
 
         data.put(KEY_STAMP,hasStamp? 1 : 0);
 
-            /*Agregamos los datos opcionales*/
+        /*Agregamos los datos opcionales*/
         if(dataOptional != null){
 
             data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
@@ -122,7 +122,7 @@ public class CoppelServicesPresenter implements IServiceListener {
         /*Agregamos valor del sello*/
         data.put(KEY_STAMP,hasStamp? 1 : 0);
 
-          /*Agregamos los datos opcionales*/
+        /*Agregamos los datos opcionales*/
         if(dataOptional != null){
 
             data.put(KEY_CHILDREN_NAMES,dataOptional.getChildrenData());
@@ -144,12 +144,10 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getBenefits(data,token);
     }
 
-
     public void getWithDrawSaving(WithDrawSavingRequestData data, String token){
         view.showProgress();
         servicesInteractor.getFondoAhorro(data,token);
     }
-
 
     @Override
     public void onResponse(ServicesResponse response) {

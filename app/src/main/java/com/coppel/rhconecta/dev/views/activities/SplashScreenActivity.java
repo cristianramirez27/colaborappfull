@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     private ProfileResponse profileResponse;
     private Gson gson;
     private DialogFragmentWarning dialogFragmentWarning;
-
+    private  boolean finishApp = false;
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
@@ -83,12 +84,22 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
         switch (response.getType()) {
             case ServicesRequestType.LOGIN:
                 loginResponse = (LoginResponse) response.getResponse();
-                coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), loginResponse.getData().getResponse().getEmail(), loginResponse.getData().getResponse().getToken());
+
+                if(loginResponse.getData().getResponse().getErrorCode() == -10){
+                    finishApp = true;
+                    showMessageUser(loginResponse.getData().getResponse().getUserMessage());
+                }else {
+                    coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), loginResponse.getData().getResponse().getEmail(), loginResponse.getData().getResponse().getToken());
+                }
+
                 break;
             case ServicesRequestType.PROFILE:
                 profileResponse = (ProfileResponse) response.getResponse();
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, loginResponse.getData().getResponse().getToken());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileResponse.getData().getResponse()[0].getColaborador());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profileResponse.getData().getResponse()[0].getEstado()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profileResponse.getData().getResponse()[0].getCiudad()));
+
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
@@ -134,6 +145,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     public void onRightOptionClick() {
         dialogFragmentWarning.close();
         finish();
+
     }
 
 
@@ -177,5 +189,19 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     private void setEndpoints(){
         setEndpointConfig(mFirebaseRemoteConfig);
         startApp();
+    }
+
+
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(SplashScreenActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+
+            }
+        }, 1500);
     }
 }
