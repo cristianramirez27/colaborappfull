@@ -184,13 +184,29 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
         //Seteamos los valores de margen de credito y ahorro adicional
         txtCreditMargin.setText("Disponible en Margen de crédito");
-        txtValueCreditMargin.setText(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
+        String valueCreditMargin = TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())));
+
+        if(valueCreditMargin.length() >= 12)
+            txtValueCreditMargin.setTextSize(11);
+
+        txtValueCreditMargin.setText(valueCreditMargin);
+
         txvLoanMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
+
         txtAditionaSave.setText("Disponible en Ahorro adicional");
-        txtValueAditionaSave.setText(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
+        String valueAditionaSave = TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional())));
+
+
+        if(valueAditionaSave.length() >= 12)
+            txtValueAditionaSave.setTextSize(11);
+
+
+        txtValueAditionaSave.setText(valueAditionaSave);
+
+
         txvAditionalSaveValue.setText(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
 

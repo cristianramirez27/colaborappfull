@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layoutMain"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <LinearLayout
@@ -186,7 +186,7 @@
 
                             <TextView
                                 android:id="@+id/txtValueCreditMargin"
-                                android:layout_weight="2.5"
+                                android:layout_weight="2.3"
                                 android:layout_width="match_parent"
                                 android:gravity="right"
                                 android:textColor="@color/colorTextCoppelNegro"
@@ -235,7 +235,7 @@
 
                             <TextView
                                 android:id="@+id/txtValueAditionaSave"
-                                android:layout_weight="2.5"
+                                android:layout_weight="2.3"
                                 android:gravity="right"
                                 android:textColor="@color/colorTextCoppelNegro"
                                 android:fontFamily="@font/lineto_circular_pro_bold"

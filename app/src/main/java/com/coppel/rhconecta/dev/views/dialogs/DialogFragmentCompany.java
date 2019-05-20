@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Dialog;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,11 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
+import com.coppel.rhconecta.dev.views.customviews.ZoomableImageView;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.ortiz.touchview.TouchImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -42,7 +48,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     @BindView(R.id.image)
     ImageView image;
     @BindView(R.id.imageFull)
-    ImageView imageFull;
+    PhotoView imageFull;
+    @BindView(R.id.viewCover)
+    View viewCover;
 
     @BindView(R.id.txtDiscountQuantity)
     TextView txtDiscountQuantity;
@@ -191,10 +199,42 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     public void setAdvertising(BenefitsAdvertisingResponse.Advertising advertising) {
         this.advertising = advertising;
-        Picasso.with(getContext()).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad ).into(imageFull);
+
+        if(advertising.getRuta() != null && !advertising.getRuta().isEmpty()){
+            imageFull.setZoomable(true);
+        }else{
+            imageFull.setZoomable(false);
+
+            imageFull.setImageResource(R.drawable.img_publicidad);
+        }
+
+        //Picasso.with(getContext()).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad ).into(imageFull);
+        Picasso.Builder builder = new Picasso.Builder(getContext());
+        builder.listener(new Picasso.Listener()
+        {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
+            {
+                imageFull.setZoomable(false);
+                imageFull.setImageResource(R.drawable.img_publicidad);
+            }
+        });
+        builder.build().load(advertising.getRuta()).into(imageFull);
+
+
         loadAnimations();
         changeCameraDistance();
         flipCard();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCardFrontLayout.setVisibility(View.GONE);
+
+            }
+        }, 3200);
+
+
 
       /*  new Handler().postDelayed(new Runnable() {
             @Override

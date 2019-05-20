@@ -431,8 +431,11 @@ private IButtonControl IButtonControl;
     @Override
     public void onRightOptionPaymentClick(ConsultaMetodosPagoResponse.PaymentWay data, int position) {
 
-        indexPaymentSelected = position;
-        payment.setText(data.getNom_retiro());
+        if(data != null){
+            indexPaymentSelected = position;
+            payment.setText(data.getNom_retiro());
+        }
+
         dialogFragmentSelectPayment.close();
     }
 

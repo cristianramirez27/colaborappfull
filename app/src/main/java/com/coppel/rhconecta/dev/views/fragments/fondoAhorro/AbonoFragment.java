@@ -173,11 +173,28 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
         setEnableButton(false);
 
-        txvLoanValueCurrentAcount.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getCuentaCorriente()))));
-        txvLoanValueAditional.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
-        txvLoanValueMargin.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()))));
-        txvLoanValueEnterprise.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa()))));
-        txvLoanValueEmployer.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador()))));
+        String valueCurrentAcount = TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getCuentaCorriente())));
+        String valueAditional = TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional())));
+        String valueMargin = TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())));
+        String valueEnterprise = TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa())));
+        String valueEmployer = TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador())));
+
+
+        if(valueCurrentAcount.length() >= 12)
+            txvLoanValueCurrentAcount.setTextSize(11);
+        txvLoanValueCurrentAcount.setText(valueCurrentAcount);
+        if(valueAditional.length() >= 12)
+            txvLoanValueAditional.setTextSize(11);
+        txvLoanValueAditional.setText(valueAditional);
+        if(valueMargin.length() >= 12)
+            txvLoanValueMargin.setTextSize(11);
+        txvLoanValueMargin.setText(valueMargin);
+        if(valueEnterprise.length() >= 12)
+            txvLoanValueEnterprise.setTextSize(11);
+        txvLoanValueEnterprise.setText(valueEnterprise);
+        if(valueEmployer.length() >= 12)
+            txvLoanValueEmployer.setTextSize(11);
+        txvLoanValueEmployer.setText(valueEmployer);
 
        hasEmployerOption = Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoTrabajador())
                 < Double.parseDouble(parent.getLoanSavingFundResponse().getData().getResponse().getFondoEmpresa());

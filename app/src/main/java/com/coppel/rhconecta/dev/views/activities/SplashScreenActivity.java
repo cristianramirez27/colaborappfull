@@ -32,7 +32,8 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 
-public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
+public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View,
+        DialogFragmentWarning.OnOptionClick {
 
     private CoppelServicesPresenter coppelServicesPresenter;
     private LoginResponse loginResponse;
