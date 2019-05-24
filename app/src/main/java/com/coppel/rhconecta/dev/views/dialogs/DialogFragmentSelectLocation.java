@@ -76,7 +76,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_select_location, container, false);
         ButterKnife.bind(this, view);
-        setCancelable(false);
+        //setCancelable(false);
         initView();
         return view;
     }

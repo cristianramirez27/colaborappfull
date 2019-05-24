@@ -174,7 +174,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     @Override
     public void onClick(View view) {
 
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2500){
             return;
         }
 

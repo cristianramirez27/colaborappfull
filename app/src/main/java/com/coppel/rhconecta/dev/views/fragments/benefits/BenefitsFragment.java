@@ -424,6 +424,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     private void showSelectLocation(){
         dialogFragmentSelectLocation = DialogFragmentSelectLocation.getInstance();
         dialogFragmentSelectLocation.setOnSelectLocationsButtonsClickListener(this);
+        dialogFragmentSelectLocation.setCancelable(true);
         dialogFragmentSelectLocation.show(parent.getSupportFragmentManager(), DialogFragmentSelectLocation.TAG);
     }
 
