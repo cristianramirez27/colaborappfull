@@ -72,7 +72,8 @@
 <activity
             android:name=".views.activities.DialogAlertActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize|adjustPan"
+                         android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

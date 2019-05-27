@@ -13,12 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.LetterSchedulesDataVO;
+import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
-import com.coppel.rhconecta.dev.business.models.StatesData;
-import com.coppel.rhconecta.dev.views.adapters.DateTimeLettersRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.StatesRecyclerAdapter;
 
 import java.util.List;
@@ -40,7 +36,7 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
     Button btnActionLeft;
     @BindView(R.id.btnActionRight)
     Button btnActionRight;
-    private   StatesData statesData;
+    private CatalogueData statesData;
     private List<LocationEntity> locationEntities;
     private StatesRecyclerAdapter statesRecyclerAdapter;
     private String contentText;
@@ -48,7 +44,7 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
 
 
 
-    public static DialogFragmentSelectState newInstance(StatesData statesData, int iResLayout){
+    public static DialogFragmentSelectState newInstance(CatalogueData statesData, int iResLayout){
         DialogFragmentSelectState fragmentScheduleData = new DialogFragmentSelectState();
         Bundle args = new Bundle();
         args.putSerializable(KEY_DATA,statesData);
@@ -62,7 +58,7 @@ public class DialogFragmentSelectState extends DialogFragment implements View.On
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreen);
         iResLayout = getArguments().getInt(KEY_LAYOUT);
-        statesData = (StatesData) getArguments().getSerializable(KEY_DATA);
+        statesData = (CatalogueData) getArguments().getSerializable(KEY_DATA);
         locationEntities =  (List<LocationEntity>)statesData.getData();
     }
 

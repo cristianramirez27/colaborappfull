@@ -1,38 +1,24 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Dialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class DialogFragmentSelectLocation extends DialogFragment implements View.OnClickListener {
 
@@ -76,7 +62,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_select_location, container, false);
         ButterKnife.bind(this, view);
-        setCancelable(false);
+        //setCancelable(false);
         initView();
         return view;
     }

@@ -14,30 +14,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.Benefits;
-import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
-import com.coppel.rhconecta.dev.business.models.Discounts;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.DialogAlertActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.DiscountsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
@@ -56,11 +48,10 @@ import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_DISC
 import static com.coppel.rhconecta.dev.views.activities.DialogAlertActivity.KEY_COMPANY;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class DiscountsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick ,DiscountsRecyclerAdapter.OnBenefitsDiscountsClickListener,DialogFragmentGetDocument.OnButtonClickListener {
+        DialogFragmentWarning.OnOptionClick , DiscountsRecyclerAdapter.OnBenefitsDiscountsClickListener, DialogFragmentGetDocument.OnButtonClickListener {
 
     public static final String TAG = DiscountsFragment.class.getSimpleName();
     private DialogFragmentLoader dialogFragmentLoader;
@@ -114,8 +105,8 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         rcvDiscounts.setOnClickListener(this);
         Bundle bundle = getArguments();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS) != null){
-            categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS),BenefitsCategoriesResponse.Category.class);
-            benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA),BenefitsRequestData.class);
+            categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS), BenefitsCategoriesResponse.Category.class);
+            benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA), BenefitsRequestData.class);
             title.setText(categorySelected.getNombre());
             description.setText(categorySelected.getDescripcion());
             requestDiscounts(categorySelected);

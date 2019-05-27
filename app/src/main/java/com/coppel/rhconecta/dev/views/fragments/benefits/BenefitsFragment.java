@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.fragments.benefits;
 
-import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,7 +7,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,45 +17,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
-import com.coppel.rhconecta.dev.business.models.LetterSchedulesDataVO;
+import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
-import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
-import com.coppel.rhconecta.dev.business.models.StatesData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.resources.db.RealmHelper;
-import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
-import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.FieldLetterRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectLocation;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectState;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
-import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherGasDetailFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.gson.Gson;
@@ -74,15 +58,13 @@ import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_SEAR
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_STATES;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick,BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
-        DialogFragmentSelectState.OnButonOptionClick ,DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
+        DialogFragmentWarning.OnOptionClick, BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
+        DialogFragmentSelectState.OnButonOptionClick , DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
         DialogFragmentGetDocument.OnButtonClickListener{
 
     public static final String TAG = BenefitsFragment.class.getSimpleName();
@@ -442,11 +424,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     private void showSelectLocation(){
         dialogFragmentSelectLocation = DialogFragmentSelectLocation.getInstance();
         dialogFragmentSelectLocation.setOnSelectLocationsButtonsClickListener(this);
+        dialogFragmentSelectLocation.setCancelable(true);
         dialogFragmentSelectLocation.show(parent.getSupportFragmentManager(), DialogFragmentSelectLocation.TAG);
     }
 
     private void showSelectState( List<BenefitsStatesResponse.States> statesList){
-        StatesData statesData = new StatesData();
+        CatalogueData statesData = new CatalogueData();
         statesData.setData(statesList);
         dialogFragmentSelectState = DialogFragmentSelectState.newInstance(statesData, R.layout.dialog_fragment_scheduledata);
         dialogFragmentSelectState.setOnButtonClickListener(this);
@@ -455,7 +438,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     private void showSelectCity(List<BenefitsCitiesResponse.City> cities){
         dialogFragmentSelectState.close();
-        StatesData statesData = new StatesData();
+        CatalogueData statesData = new CatalogueData();
         statesData.setData(cities);
         dialogFragmentSelectState = DialogFragmentSelectState.newInstance(statesData, R.layout.dialog_fragment_scheduledata);
         dialogFragmentSelectState.setOnButtonClickListener(this);

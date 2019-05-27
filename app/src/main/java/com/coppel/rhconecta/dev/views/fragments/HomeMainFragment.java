@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.views.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -28,6 +30,7 @@ import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeBannerPagerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.modelview.BannerItem;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -67,7 +70,9 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeMainFragment extends Fragment implements View.OnClickListener, HomeMenuRecyclerViewAdapter.OnItemClick, HomeBannerPagerAdapter.OnBannerClick, Inicio.View{
+public class HomeMainFragment extends Fragment implements View.OnClickListener,
+        HomeMenuRecyclerViewAdapter.OnItemClick, HomeBannerPagerAdapter.OnBannerClick, Inicio.View,
+        DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = HomeMainFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -101,6 +106,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     //private DialogFragmentLoader dialogFragmentLoader;
     private ISurveyNotification ISurveyNotification;
 
+    private DialogFragmentWarning dialogFragmentWarning;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -112,6 +119,13 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     public void onResume(){
         super.onResume();
         itemsCarousel.clear();//Eliminamos los elementos del carrusel.
+
+
+        if(!isOnline()){
+            showConecctionError();
+            return;
+        }
+
 
         presenter.getUltimaEncuesta();
         presenter.guardarLogin();
@@ -389,10 +403,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void hideProgress() {
 
-       /* if(isAdded()){
+        if(isAdded()){
             if(dialogFragmentLoader != null)
                 dialogFragmentLoader.close();
-        }*/
+        }
 
     }
 
@@ -435,5 +449,35 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         tableConfig.insertIfNotExist(config);
         tableConfig.closeDB();
         presenter.guardarLogin();
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+
+    @Override
+    public void onLeftOptionClick() {
+
+    }
+
+    @Override
+    public void onRightOptionClick() {
+        hideProgress();
+        dialogFragmentWarning.close();
+
+    }
+
+    public void showConecctionError() {
+        /**Se agrega modificación para mostrar Login cuando las credenciales almacenadas
+         * no correspoden a las del usuario previamente autenticado.*/
+
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.network_error), getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 }
