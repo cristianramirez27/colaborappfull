@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -95,7 +96,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_benefit_company, container, false);
         ButterKnife.bind(this, view);
-        setCancelable(false);
+        setCancelable(true);
         initView();
     /*    if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
@@ -274,5 +275,13 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetLeftIn.start();
             mIsBackVisible = false;
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        //your code hear
+        onBenefitsAdvertisingClickListener.closeCategoryDialog();
+        dialog.cancel();
     }
 }
