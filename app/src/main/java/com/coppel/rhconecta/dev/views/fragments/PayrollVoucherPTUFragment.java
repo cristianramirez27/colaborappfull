@@ -29,8 +29,6 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.activities.LoginActivity;
-import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTURecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTUV2RecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;

@@ -4,28 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
-import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
-import com.coppel.rhconecta.dev.views.adapters.PagerAdapter;
-import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ChildInfoLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ConfigFieldLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.HolidaysLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.PreviewLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ScheduleInfoLetterFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AbonoFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AditionalSaveFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
@@ -33,16 +17,8 @@ import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_INFONAVIT;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_VISA_PASSPORT;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD;
 
 public class FondoAhorroActivity extends AppCompatActivity  {
 
@@ -51,7 +27,6 @@ public class FondoAhorroActivity extends AppCompatActivity  {
 
     private FragmentManager childFragmentManager;
     private FragmentTransaction fragmentTransaction;
-
     private  int optionSelected;
     private LoanSavingFundResponse loanSavingFundResponse;
 
@@ -83,14 +58,7 @@ public class FondoAhorroActivity extends AppCompatActivity  {
         }
 
         fragmentTransaction.add(R.id.contentFragment, fragmentSelected, RemoveFragment.TAG).commit();
-
-
-
-
     }
-
-
-
 
     public void setToolbarTitle(String title) {
         tbActionBar.setTitle(title);

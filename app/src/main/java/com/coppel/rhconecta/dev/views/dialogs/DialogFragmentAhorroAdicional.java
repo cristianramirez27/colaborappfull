@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
-import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

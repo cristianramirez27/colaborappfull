@@ -11,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
-
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.ShareUtil;
 

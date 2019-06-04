@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 
 import java.util.List;

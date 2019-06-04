@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
-import com.coppel.rhconecta.dev.business.models.LocationEntity;
 
 import java.util.List;
 

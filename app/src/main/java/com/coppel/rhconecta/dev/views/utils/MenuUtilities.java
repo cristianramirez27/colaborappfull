@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.views.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
@@ -31,6 +30,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
+                new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
@@ -159,6 +159,10 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_KINDERGARTEN:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_guarderia);
+                break;
+
+            case AppConstants.OPTION_EXPENSES:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_gastos_viaje);
                 break;
         }
         return icon;

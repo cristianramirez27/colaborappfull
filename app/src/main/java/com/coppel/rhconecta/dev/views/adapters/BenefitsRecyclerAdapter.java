@@ -7,17 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherResponse;
-import com.coppel.rhconecta.dev.business.utils.ImageLoaderUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,7 +19,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecyclerAdapter.ViewHolder> {

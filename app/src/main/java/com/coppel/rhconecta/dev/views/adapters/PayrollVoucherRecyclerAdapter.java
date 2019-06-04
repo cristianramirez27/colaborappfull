@@ -17,7 +17,6 @@ import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableTitle;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableHeader;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
 

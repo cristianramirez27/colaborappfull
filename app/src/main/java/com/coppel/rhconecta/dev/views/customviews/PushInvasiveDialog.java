@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.LinksNavigation;
 import com.coppel.rhconecta.dev.business.models.PushData;

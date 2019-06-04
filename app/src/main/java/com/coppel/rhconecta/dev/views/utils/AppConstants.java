@@ -27,6 +27,7 @@ public class AppConstants {
     public static final String OPTION_SAVING_FUND = "SAVING_FUND";
     public static final String OPTION_VISIONARIES = "VISIONARIES";
     public static final String OPTION_LETTERS = "LETTERS";
+    public static final String OPTION_EXPENSES = "EXPENSE";
     public static final String OPTION_POLL = "POLL";
 
     public static final String OPTION_BONUS = "BONUS";
@@ -88,4 +89,11 @@ public class AppConstants {
     public static final String BUNDLE_SAVINFOUND = "BUNDLE_SAVINFOUND";
 
 
+    /*Gastos de Viaje*/
+    public static final String BUNDLE_OPTION_TRAVEL_EXPENSES = "BUNDLE_OPTION_TRAVEL_EXPENSES";
+
+    public static final String OPTION_MANAGER = "OPTION_MANAGER";
+    public static final String OPTION_COLABORATOR = "OPTION_COLABORATOR";
+
+    public static final String OPTION_REQUETS_CONTROLS = "OPTION_REQUETS_CONTROLS";
 }

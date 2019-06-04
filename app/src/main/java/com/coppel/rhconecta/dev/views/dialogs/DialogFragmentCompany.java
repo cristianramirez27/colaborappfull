@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,13 +20,11 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class DialogFragmentCompany extends DialogFragment implements View.OnClickListener {

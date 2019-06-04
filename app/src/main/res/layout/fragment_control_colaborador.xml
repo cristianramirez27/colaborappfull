@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl
+                android:id="@+id/cardColaboratorControl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/totalAutorizado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="visible" />
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/totalComprobado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="visible" />
+
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/totalDevolucion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/verDetalles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:padding="6dp"
+                android:gravity="center"
+                android:text="Ver Detalles"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:textColor="@color/colorPrimaryCoppelAzul"
+                android:textSize="12sp" />
+
+            <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                android:id="@+id/expMotivoViaje"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layoutMotivoViaje"
+                android:background="@color/colorRed"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+
+            </LinearLayout>
+
+
+            <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                android:id="@+id/expItinerario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutItinerario"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+
+                </LinearLayout>
+
+            <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                android:id="@+id/expViajerosAdicionales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/layoutViajerosExtras"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

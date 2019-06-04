@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -21,14 +20,12 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
@@ -51,11 +48,11 @@ import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
-import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosActivity;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableComunicados;
@@ -63,32 +60,20 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
-import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
-import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
-import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
-import com.coppel.rhconecta.dev.visionarios.inicio.presenters.InicioPresenter;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
-import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.views.VideosActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
@@ -331,6 +316,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             case OPTION_LETTERS:
                 replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
                 break;
+
+            case OPTION_EXPENSES:
+                replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                break;
+
             case OPTION_POLL:
 
 

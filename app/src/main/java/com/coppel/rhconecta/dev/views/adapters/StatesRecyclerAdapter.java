@@ -11,9 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
 
 import java.util.List;

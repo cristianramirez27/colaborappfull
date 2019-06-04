@@ -2,42 +2,29 @@ package com.coppel.rhconecta.dev.views.fragments.fondoAhorro;
 
 import android.Manifest;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
-import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
 import com.coppel.rhconecta.dev.business.models.RetiroResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
@@ -45,11 +32,8 @@ import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
-import com.coppel.rhconecta.dev.views.adapters.FieldLetterRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
-import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentFondoAhorro;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -60,9 +44,6 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -70,12 +51,8 @@ import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
-import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 
 public class RemoveFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener,ICalculatetotal {

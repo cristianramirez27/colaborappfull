@@ -15,9 +15,7 @@ import android.widget.Button;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
-import com.coppel.rhconecta.dev.business.models.LocationEntity;
 import com.coppel.rhconecta.dev.views.adapters.PaymentsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.StatesRecyclerAdapter;
 
 import java.util.List;
 

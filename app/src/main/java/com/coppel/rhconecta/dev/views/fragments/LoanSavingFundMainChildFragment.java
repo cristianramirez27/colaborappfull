@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -10,22 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISelectedOption;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
-import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
-import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
-import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 
 /**
  * A simple {@link Fragment} subclass.

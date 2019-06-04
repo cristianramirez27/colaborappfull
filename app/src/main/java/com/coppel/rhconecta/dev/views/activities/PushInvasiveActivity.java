@@ -2,15 +2,14 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.PushData;
-import com.coppel.rhconecta.dev.views.customviews.PushInvasiveDialog;
 
 import butterknife.ButterKnife;
-import com.coppel.rhconecta.dev.R;
+
 import static com.coppel.rhconecta.dev.views.customviews.PushInvasiveDialog.KEY_PUSH_DATA;
 
 

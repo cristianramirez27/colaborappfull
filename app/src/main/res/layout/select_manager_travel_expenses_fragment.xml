@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btnColaborator"
+            android:id="@+id/btnRequest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
@@ -42,7 +42,7 @@
 
 
         <Button
-            android:id="@+id/btnManager"
+            android:id="@+id/btnControls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"

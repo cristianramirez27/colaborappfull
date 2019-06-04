@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +33,6 @@ import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
-import com.coppel.rhconecta.dev.views.dialogs.MyDatePickerFragment;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 

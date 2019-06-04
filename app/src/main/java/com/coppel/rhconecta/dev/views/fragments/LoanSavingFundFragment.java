@@ -35,7 +35,6 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.app.Activity.RESULT_OK;
 import static com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment.REQUEST_SAVING;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;

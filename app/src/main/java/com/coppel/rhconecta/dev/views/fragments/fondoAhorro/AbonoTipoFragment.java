@@ -14,17 +14,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IButtonControl;
 import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
 import com.coppel.rhconecta.dev.business.models.DatosAbonoOpcion;
@@ -43,10 +40,6 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,7 +47,6 @@ import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_METODOS_PAGO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_CLV_ABONAR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATOS_OPT_ABONAR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;

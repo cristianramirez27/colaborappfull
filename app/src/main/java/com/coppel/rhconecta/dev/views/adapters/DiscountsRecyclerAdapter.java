@@ -11,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.Benefits;
-import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
-import com.coppel.rhconecta.dev.business.models.Discounts;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

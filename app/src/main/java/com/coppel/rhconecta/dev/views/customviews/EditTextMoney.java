@@ -3,10 +3,8 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
 import com.coppel.rhconecta.dev.business.utils.MoneyTextWatcher;
 
 import butterknife.BindView;
