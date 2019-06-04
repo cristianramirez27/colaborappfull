@@ -70,10 +70,17 @@
             android:screenOrientation="portrait" />
 
 <activity
-            android:name=".views.activities.DialogAlertActivity"
+        android:name=".views.activities.DialogAlertActivity"
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustResize|adjustPan"
+        android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name=".views.activities.BenefitsActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|adjustPan"
-                         android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

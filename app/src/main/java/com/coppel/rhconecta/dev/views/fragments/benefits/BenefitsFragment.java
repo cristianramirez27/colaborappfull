@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments.benefits;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -32,9 +33,11 @@ import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
@@ -139,7 +142,6 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         rcvBenefits.setOnClickListener(this);
         titleChangeCity.setOnClickListener(this);
         edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-
         edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -402,12 +404,19 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         if(!edtSearch.getText().toString().isEmpty())
             edtSearch.setText("");
 
-        DiscountsFragment discountsFragment = new DiscountsFragment();
+
+        Intent intent = new Intent(getActivity(), BenefitsActivity.class);
+        intent.putExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category);
+        intent.putExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData);
+        getActivity().startActivityForResult(intent, 231);
+
+
+       /* DiscountsFragment discountsFragment = new DiscountsFragment();
         Bundle bundle = new Bundle();
         bundle.putString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, new Gson().toJson(category));
         bundle.putString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, new Gson().toJson(benefitsRequestData));
         discountsFragment.setArguments(bundle);
-        parent.replaceFragment(discountsFragment, DiscountsFragment.TAG);
+        parent.replaceFragment(discountsFragment, DiscountsFragment.TAG);*/
 
 
     }

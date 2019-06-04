@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class BenefitsDiscountsResponse extends BenefitsBaseResponse {
@@ -26,9 +27,12 @@ public class BenefitsDiscountsResponse extends BenefitsBaseResponse {
         }
     }
 
-    public class Discount{
+    public class Discount implements Serializable {
         private int id_empresa;
         private String descripciondes;
+        /*Este parametro se agrega para los resultados de la busqueda ya que el ws regresa el valor de {descripciondes}
+        en una nueva variable con este nombre {descripcionapp}*/
+        private String descripcionapp;
         private String descuento;
         private String ruta;
 
@@ -63,6 +67,14 @@ public class BenefitsDiscountsResponse extends BenefitsBaseResponse {
 
         public void setRuta(String ruta) {
             this.ruta = ruta;
+        }
+
+        public String getDescripcionapp() {
+            return descripcionapp;
+        }
+
+        public void setDescripcionapp(String descripcionapp) {
+            this.descripcionapp = descripcionapp;
         }
     }
 }

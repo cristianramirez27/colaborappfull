@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
@@ -27,6 +28,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.DialogAlertActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.DiscountsRecyclerAdapter;
@@ -62,7 +64,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     private DialogFragmentWarning dialogFragmentWarning;
     private long mLastClickTime = 0;
 
-    private HomeActivity parent;
+    private BenefitsActivity parent;
 
     @BindView(R.id.rcvDiscounts)
     RecyclerView rcvDiscounts;
@@ -93,7 +95,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         View view = inflater.inflate(R.layout.fragment_discounts, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        parent = (HomeActivity) getActivity();
+        parent = (BenefitsActivity) getActivity();
         parent.setToolbarTitle(getString(R.string.benefits));
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         rcvDiscounts.setHasFixedSize(true);
@@ -109,8 +111,12 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
             benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA), BenefitsRequestData.class);
             title.setText(categorySelected.getNombre());
             description.setText(categorySelected.getDescripcion());
-            requestDiscounts(categorySelected);
-
+            /**Se agrega validación para realizar la petición o mostrar los resultados de la busqueda*/
+            if(categorySelected.getServicios() != null && !categorySelected.getServicios().isEmpty()){
+                showResultDiscounts(categorySelected.getServicios());
+            }else {
+                requestDiscounts(categorySelected);
+            }
         }
 
         return view;
@@ -162,10 +168,9 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         switch (response.getType()) {
             case ServicesRequestType.BENEFITS:
                 if (response.getResponse() instanceof BenefitsDiscountsResponse){
-                    for(BenefitsDiscountsResponse.Discount discount : ((BenefitsDiscountsResponse)response.getResponse()).getData().getResponse()){
-                        discounts.add(discount);
-                    }
-                    discountsRecyclerAdapter.notifyDataSetChanged();
+
+                    showResultDiscounts(((BenefitsDiscountsResponse)response.getResponse()).getData().getResponse());
+
                 }else if (response.getResponse() instanceof BenefitsCompaniesResponse){
                   List<BenefitsCompaniesResponse.Company> listCompany = ((BenefitsCompaniesResponse)response.getResponse() ).getData().getResponse();
                   if(!listCompany.isEmpty())
@@ -178,6 +183,13 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+
+    private void showResultDiscounts(List<BenefitsDiscountsResponse.Discount> discountsResult){
+        for(BenefitsDiscountsResponse.Discount discount : discountsResult){
+            discounts.add(discount);
+        }
+        discountsRecyclerAdapter.notifyDataSetChanged();
+    }
 
     private void showCompanyDialog(BenefitsCompaniesResponse.Company company) {
         Intent intent = new Intent(getActivity(), DialogAlertActivity.class);
