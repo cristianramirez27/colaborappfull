@@ -21,7 +21,9 @@
             <com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl
                 android:id="@+id/cardColaboratorControl"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+
+                android:elevation="18dp"/>
 
             <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
                 android:id="@+id/totalAutorizado"
