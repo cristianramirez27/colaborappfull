@@ -7,6 +7,7 @@ import android.util.Log;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
+import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
@@ -24,6 +25,7 @@ import com.coppel.rhconecta.dev.business.models.ConsultaAbonoResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseExpensesTravelRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
@@ -37,6 +39,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoReque
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
@@ -50,6 +54,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDeta
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelBaseResponse;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarAbonoResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarAhorroResponse;
@@ -64,6 +70,7 @@ import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
 import com.coppel.rhconecta.dev.business.models.RetiroResponse;
+import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherBonusResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherDownloadResponse;
@@ -93,14 +100,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_ABONO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_AHORRO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_ABONO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_AHORRO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 
@@ -2289,6 +2288,166 @@ public class ServicesInteractor {
 
 
     /******************************************************/
+
+
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          ExpensesTravel          ************************************************************************
+     *********************************************************************************************************************************************************/
+    public void getExpensesTravel(ExpensesTravelRequestData requestData, String token) {
+        this.token = token;
+
+        switch (requestData.getExpensesTravelType()){
+            case CONSULTA_PERMISO_ROL:
+                getRol(requestData,token);
+                break;
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                getRol(requestData,token);
+                break;
+
+        }
+    }
+
+
+    private void getRol(ExpensesTravelRequestData requestData, String token) {
+        iServicesRetrofitMethods.getRolExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,(
+                CoppelServicesGetRolExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse =   (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getRequestColaborator(ExpensesTravelRequestData requestData, String token) {
+        iServicesRetrofitMethods.getRequestColaboratorExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,
+                (CoppelServicesGetColaboratorRequestExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse =   (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    public Class getExpensesTravelTypeResponse(ExpensesTravelType expensesTravelType) {
+        Class clazz = null;
+        switch (expensesTravelType){
+            case CONSULTA_PERMISO_ROL:
+                clazz = RolExpensesResponse.class;
+                break;
+
+
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                clazz = RolExpensesResponse.class;
+                break;
+
+           /* case GUARDAR_AHORRO:
+                clazz = GuardarAhorroResponse.class;
+                break;*/
+        }
+
+        return clazz;
+    }
+
+    public void getExpensesTravelResponse(ExpensesTravelBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getExpensesTravelSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getExpensesTravelSuccess(ExpensesTravelBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.EXPENSESTRAVEL);
+
+        if (response != null && response != null) {
+
+            ExpensesTravelBaseResponse expensesTravelBaseResponse = response;
+            if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<ExpensesTravelBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(expensesTravelBaseResponse);
+                servicesResponse.setType(ServicesRequestType.EXPENSESTRAVEL);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                ;//TODO Definir mensaje de error
+                servicesError.setMessage(""/*benefitsBaseResponse.getData().getResponse().getUserMessage()*/);
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage("");//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public CoppelServicesBaseExpensesTravelRequest builExpensesTravelRequest(ExpensesTravelRequestData expensesTravelRequestData) {
+        CoppelServicesBaseExpensesTravelRequest coppelServicesBaseExpensesTravelRequest = null;
+
+        int requestOption = expensesTravelRequestData.getOpcion();
+
+        switch (expensesTravelRequestData.getExpensesTravelType()){
+
+            case CONSULTA_PERMISO_ROL:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetRolExpensesRequest(expensesTravelRequestData.getNum_empleado(),requestOption);
+                break;
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetColaboratorRequestExpensesRequest(expensesTravelRequestData.getNum_empleado(),requestOption);
+                break;
+
+          /*
+            case CONSULTA_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaAhorroAdicionalRequest(withDrawSavingRequestData.getNum_empleado(),solicitud);
+                break;
+            case GUARDAR_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarAhorroRequest(withDrawSavingRequestData.getNum_empleado(),solicitud,withDrawSavingRequestData.getImp_cuotaahorro());
+                break;
+
+            case CONSULTA_METODOS_PAGO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaMetodoPagoRequest(withDrawSavingRequestData.getNum_empleado(),solicitud,withDrawSavingRequestData.getClv_abonar());
+                break;*/
+
+        }
+
+        return coppelServicesBaseExpensesTravelRequest;
+    }
+
 
     /* *******************************************************************************************************************************************************
      ***********************************************          General Methods          ************************************************************************

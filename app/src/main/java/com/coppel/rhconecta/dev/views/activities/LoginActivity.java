@@ -182,6 +182,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profileResponse.getData().getResponse()[0].getEstado()));
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profileResponse.getData().getResponse()[0].getCiudad()));
 
+                /*Almacenamos si es Gerente*/
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profileResponse.getData().getResponse()[0].getEsGte() == 1 ? true : false);
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE,  profileResponse.getData().getResponse()[0].getEsSuplente() == 1 ? true : false);
+
 
                 cedtEmail.setText("");
                 cedtPassword.setText("");

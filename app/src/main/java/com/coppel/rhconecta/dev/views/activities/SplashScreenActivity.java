@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
 
@@ -76,7 +77,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
         }
     }
 
-
     @Override
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
@@ -98,6 +98,10 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profileResponse.getData().getResponse()[0].getEstado()));
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profileResponse.getData().getResponse()[0].getCiudad()));
 
+
+                /*Almacenamos si es Gerente*/
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profileResponse.getData().getResponse()[0].getEsGte() == 1 ? true : false);
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE,  profileResponse.getData().getResponse()[0].getEsSuplente() == 1 ? true : false);
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
@@ -148,16 +152,13 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
 
 
     private void init(){
-
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
         mFirebaseRemoteConfig.setConfigSettings(configSettings);
-
         fetchEndpoints();
     }
-
 
     private void fetchEndpoints() {
         long cacheExpiration = 3600; // 1 hour in seconds.
@@ -172,8 +173,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            // After config data is successfully fetched, it must be activated before newly fetched
-                            // values are returned.
                             mFirebaseRemoteConfig.activateFetched();
                         } else {
                            Log.d("RemoteConfig","Fetch Failed");

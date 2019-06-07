@@ -281,6 +281,8 @@
 
     <string name="title_colaborator_control">Control de colaborador</string>
 
+    <string name="title_desc_reason">*Descripción del motivo de viaje</string>
+
 
 
 </resources>

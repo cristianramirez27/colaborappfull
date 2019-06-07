@@ -46,9 +46,13 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     ExpandableSimpleTitle expItinerario;
     @BindView(R.id.expViajerosAdicionales)
     ExpandableSimpleTitle expViajerosAdicionales;
-
     @BindView(R.id.layoutMotivoViaje)
     LinearLayout layoutMotivoViaje;
+    @BindView(R.id.layoutItinerario)
+    LinearLayout layoutItinerario;
+
+    @BindView(R.id.layoutViajerosExtras)
+    LinearLayout layoutViajerosExtras;
 
 
     private long mLastClickTime = 0;
@@ -79,18 +83,32 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         expMotivoViaje.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
             public void onClick() {
-                travelReasonStateChange();
+                travelReasonStateChange(expMotivoViaje,layoutMotivoViaje);
+            }
+        });
+
+        expItinerario.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
+            @Override
+            public void onClick() {
+                travelReasonStateChange(expItinerario,layoutItinerario);
+            }
+        });
+
+        expViajerosAdicionales.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
+            @Override
+            public void onClick() {
+                travelReasonStateChange(expViajerosAdicionales,layoutViajerosExtras);
             }
         });
 
         return view;
     }
 
-    private void travelReasonStateChange() {
-        if (expMotivoViaje.isExpanded()) {
-            layoutMotivoViaje.setVisibility(View.VISIBLE);
+    private void travelReasonStateChange(ExpandableSimpleTitle expandable,LinearLayout layoutToExpand) {
+        if (expandable.isExpanded()) {
+            layoutToExpand.setVisibility(View.VISIBLE);
         } else {
-            layoutMotivoViaje.setVisibility(View.GONE);
+            layoutToExpand.setVisibility(View.GONE);
         }
     }
 

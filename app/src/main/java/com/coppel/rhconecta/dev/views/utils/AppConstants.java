@@ -16,6 +16,9 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_CITY_COLABORADOR = "CITY_COLABORADOR";
     public static final String SHARED_PREFERENCES_FIREBASE_TOKEN = "FIREBASE_TOKEN";
 
+    public static final String SHARED_PREFERENCES_IS_GTE = "IS_GTE";
+    public static final String SHARED_PREFERENCES_IS_SUPLENTE = "IS_SUPLENTE";
+
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
     public static final String CONTENT_TYPE_PDF = "application/pdf";

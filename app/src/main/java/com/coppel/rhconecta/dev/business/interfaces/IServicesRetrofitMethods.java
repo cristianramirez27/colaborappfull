@@ -12,6 +12,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoReque
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
@@ -154,5 +156,14 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> logout(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesProfileRequest servicesRequest);
 
+
+    //************************** Gastos de Viaje **************************
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getRolExpensesTravel(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetRolExpensesRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getRequestColaboratorExpensesTravel(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetColaboratorRequestExpensesRequest servicesRequest);
 
 }

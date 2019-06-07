@@ -8,6 +8,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -147,6 +148,11 @@ public class CoppelServicesPresenter implements IServiceListener {
     public void getWithDrawSaving(WithDrawSavingRequestData data, String token){
         view.showProgress();
         servicesInteractor.getFondoAhorro(data,token);
+    }
+
+    public void getExpensesTravel(ExpensesTravelRequestData data, String token){
+        view.showProgress();
+        servicesInteractor.getExpensesTravel(data,token);
     }
 
     @Override

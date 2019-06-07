@@ -6,17 +6,28 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
+    android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:background="@color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/transparent"
             android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="vertical">
+
 
             <com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl
                 android:id="@+id/cardColaboratorControl"
@@ -59,19 +70,33 @@
                 android:textColor="@color/colorPrimaryCoppelAzul"
                 android:textSize="12sp" />
 
+
+        </LinearLayout>
+
             <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
                 android:id="@+id/expMotivoViaje"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/layoutMotivoViaje"
-                android:background="@color/colorRed"
                 android:layout_width="match_parent"
                 android:visibility="gone"
+                android:layout_marginTop="-3dp"
+                android:background="@color/colorBackgroundCoppelBlanco"
                 android:layout_height="wrap_content">
 
+                <include
+                    layout="@layout/item_motivo"/>
+
+                <View
+                    android:id="@+id/bordeAmarillo"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_gradient_grey" />
 
             </LinearLayout>
 
@@ -80,34 +105,60 @@
                 android:id="@+id/expItinerario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_marginTop="8dp"/>
 
-                <LinearLayout
-                    android:id="@+id/layoutItinerario"
-                    android:orientation="vertical"
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layoutItinerario"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="-3dp"
+                android:background="@color/colorBackgroundCoppelBlanco"
+                android:layout_height="wrap_content">
+
+                <com.coppel.rhconecta.dev.views.customviews.Itinerario
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.Itinerario>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_gradient_grey" />
 
-                </LinearLayout>
+            </LinearLayout>
 
             <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
                 android:id="@+id/expViajerosAdicionales"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:layout_marginTop="8dp"/>
 
-            <LinearLayout
-                android:id="@+id/layoutViajerosExtras"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/layoutViajerosExtras"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginTop="-3dp"
+                    android:background="@color/colorBackgroundCoppelBlanco"
+                    android:layout_height="wrap_content">
+
+                    <com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales>
 
 
-            </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/bg_gradient_grey" />
 
+                </LinearLayout>
 
         </LinearLayout>
 

@@ -43,6 +43,8 @@ public class AppConfig {
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
 
+    public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
+
     //VISIONARIOS
     public final static String VISIONARIOS_URL = "VISIONARIOS_URL";
     public final static String APLICACION_KEY = "APLICACION_KEY";
@@ -69,6 +71,8 @@ public class AppConfig {
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
 
+        String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
+
         //VISIONARIOS
         String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
         String aplicacion_key = mFirebaseRemoteConfig.getString(APLICACION_KEY);
@@ -86,6 +90,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
+
 
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL,visionarios_url);
