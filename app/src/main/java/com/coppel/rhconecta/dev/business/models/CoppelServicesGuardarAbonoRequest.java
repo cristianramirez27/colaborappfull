@@ -6,6 +6,7 @@ public class CoppelServicesGuardarAbonoRequest extends CoppelServicesBaseFondoAh
     private int imp_ahorroadicional;
     private int imp_fondoempleado;
     private int clv_retiro;
+    private int idu_traspaso;
 
     public CoppelServicesGuardarAbonoRequest() {
     }
@@ -21,12 +22,14 @@ public class CoppelServicesGuardarAbonoRequest extends CoppelServicesBaseFondoAh
         this.clv_retiro = clv_retiro;
     }
 
-    public CoppelServicesGuardarAbonoRequest(String num_empleado, int opcion, int imp_cuentacorriente, int imp_ahorroadicional, int imp_fondoempleado, int clv_retiro) {
+    public CoppelServicesGuardarAbonoRequest(String num_empleado, int opcion, int imp_cuentacorriente, int imp_ahorroadicional, int imp_fondoempleado, int clv_retiro,int idu_traspaso) {
         super(num_empleado, opcion);
         this.imp_cuentacorriente = imp_cuentacorriente;
         this.imp_ahorroadicional = imp_ahorroadicional;
         this.imp_fondoempleado = imp_fondoempleado;
         this.clv_retiro = clv_retiro;
+        this.idu_traspaso = idu_traspaso;
+
     }
 
     public int getImp_cuentacorriente() {
