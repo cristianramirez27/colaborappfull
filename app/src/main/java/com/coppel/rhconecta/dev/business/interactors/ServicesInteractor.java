@@ -21,6 +21,8 @@ import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
+import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
+import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaAbonoResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
@@ -39,7 +41,10 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoReque
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailControlExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailRequestExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
@@ -54,6 +59,8 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDeta
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
+import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
+import com.coppel.rhconecta.dev.business.models.DetailRequestColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelBaseResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
@@ -2303,8 +2310,20 @@ public class ServicesInteractor {
                 getRol(requestData,token);
                 break;
             case CONSULTA_COLABORADOR_SOLICITUD:
-                getRol(requestData,token);
+                getRequestColaborator(requestData,token);
                 break;
+
+            case CONSULTA_SOLICITUDES_MESES:
+                getRequestMonths(requestData,token);
+                break;
+            case CONSULTA_DETALLE_SOLICITUD:
+                getDetailRequestExpense(requestData,token);
+                break;
+
+            case CONSULTA_DETALLE_CONTROL:
+                getDetailControlExpense(requestData,token);
+                break;
+
 
         }
     }
@@ -2335,14 +2354,13 @@ public class ServicesInteractor {
         });
     }
 
-
     private void getRequestColaborator(ExpensesTravelRequestData requestData, String token) {
         iServicesRetrofitMethods.getRequestColaboratorExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,
                 (CoppelServicesGetColaboratorRequestExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
-                    ExpensesTravelBaseResponse expensesTravelBaseResponse =   (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
@@ -2361,16 +2379,104 @@ public class ServicesInteractor {
         });
     }
 
+    private void getRequestMonths(ExpensesTravelRequestData requestData, String token) {
+        iServicesRetrofitMethods.getMonthsExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,
+                (CoppelServicesGetMonthsExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getDetailRequestExpense(ExpensesTravelRequestData requestData, String token) {
+        iServicesRetrofitMethods.getDetailRequestExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,
+                (CoppelServicesDetailRequestExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getDetailControlExpense(ExpensesTravelRequestData requestData, String token) {
+        iServicesRetrofitMethods.getDetailControlExpensesTravel(ServicesConstants.GET_EXPENSES_TRAVEL,token,
+                (CoppelServicesDetailControlExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
     public Class getExpensesTravelTypeResponse(ExpensesTravelType expensesTravelType) {
         Class clazz = null;
         switch (expensesTravelType){
             case CONSULTA_PERMISO_ROL:
                 clazz = RolExpensesResponse.class;
                 break;
-
-
             case CONSULTA_COLABORADOR_SOLICITUD:
-                clazz = RolExpensesResponse.class;
+                clazz = ColaboratorRequestsListExpensesResponse.class;
+                break;
+            case CONSULTA_SOLICITUDES_MESES:
+                clazz = ColaboratorControlsMonthResponse.class;
+                break;
+
+            case CONSULTA_DETALLE_SOLICITUD:
+                clazz = DetailRequestColaboratorResponse.class;
+                break;
+
+            case CONSULTA_DETALLE_CONTROL:
+                clazz = DetailControlColaboratorResponse.class;
                 break;
 
            /* case GUARDAR_AHORRO:
@@ -2429,6 +2535,23 @@ public class ServicesInteractor {
                 break;
             case CONSULTA_COLABORADOR_SOLICITUD:
                 coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetColaboratorRequestExpensesRequest(expensesTravelRequestData.getNum_empleado(),requestOption);
+                break;
+
+            case CONSULTA_SOLICITUDES_MESES:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetMonthsExpensesRequest(expensesTravelRequestData.getNum_empleado(),requestOption,expensesTravelRequestData.getClv_mes());
+
+                break;
+
+            case CONSULTA_DETALLE_SOLICITUD:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesDetailRequestExpensesRequest(
+                        Integer.parseInt(expensesTravelRequestData.getNum_empleado()),
+                        requestOption,expensesTravelRequestData.getClv_solicitud());
+
+                break;
+
+            case CONSULTA_DETALLE_CONTROL:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesDetailControlExpensesRequest(expensesTravelRequestData.getNum_empleado(),requestOption,expensesTravelRequestData.getClv_control());
+
                 break;
 
           /*

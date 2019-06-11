@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/rootView"
-    android:padding="4dp"
     android:orientation="vertical" >
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        app:cardElevation="8dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        app:cardElevation="4dp"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
@@ -24,6 +26,7 @@
             android:visibility="visible">
 
             <RelativeLayout
+                android:id="@+id/layoutColaboratorInfo"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
@@ -102,6 +105,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom|center_horizontal"
                     android:text="Control"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/colorBackgroundCoppelNegro"
                     android:textSize="14sp"
@@ -114,8 +118,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/descripcion"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:visibility="visible"
-                    android:text="945942679941"
+                    android:text=""
                     android:textSize="14sp"
                     android:textColor="@color/colorTextGrayDark" />
 
@@ -128,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
                     android:visibility="visible"
-                    android:text="Complemento"
+                    android:text=""
                     android:textSize="14sp"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 
@@ -165,7 +170,6 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lineto_circular_pro_book"
                         android:gravity="left"
-                        android:text="CLCN-MNTY-CLCN"
                         android:textColor="@color/colorBackgroundCoppelNegro"
                         android:textSize="11sp" />
 
@@ -194,7 +198,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lineto_circular_pro_book"
-                        android:text="01/02/2017 01/02/2017"
+                        android:text=""
                         android:textColor="@color/colorBackgroundCoppelNegro"
                         android:textSize="11sp"
                         android:gravity="left"/>
@@ -221,25 +225,26 @@
 
                     <LinearLayout
                         android:id="@+id/layoutStatus"
-                        android:layout_toRightOf="@+id/imgColaborador"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:background="@drawable/backgroud_rounder_blac"
                         android:orientation="vertical"
                         android:layout_gravity="left"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginRight="13dp"
+                        android:padding="2dp"
                         android:gravity="left|center_vertical">
 
                         <TextView
                             android:id="@+id/status"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:paddingLeft="6dp"
                             android:paddingRight="6dp"
+                            android:minHeight="40dp"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_gravity="center_horizontal"
                             android:gravity="center"
-                            android:text="No\nLiquidó"
-                            android:textColor="@color/colorBackgroundCoppelBlanco"
+                            android:textColor="@color/colorBackgroundCoppelNegro"
                             android:textSize="11sp"
                             android:visibility="visible" />
 
@@ -252,7 +257,7 @@
 
     </android.support.v7.widget.CardView>
 
-</RelativeLayout>
+</LinearLayout>
 
 
 

@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:padding="8dp"
-        android:layout_height="@dimen/push_snackbar_height"
+        android:layout_height="wrap_content"
         android:visibility="visible">
 
 
@@ -27,14 +27,13 @@
                 android:id="@+id/ciudadOrigen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:layout_gravity="bottom|center_horizontal"
+                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="left|center_vertical"
+                android:minHeight="20dp"
                 android:text="CLCL (Culiacán)"
                 android:textColor="@color/colorBackgroundCoppelNegro"
                 android:textSize="11sp"
-                android:minHeight="20dp"
                 android:visibility="visible" />
 
             <TextView
@@ -99,11 +98,10 @@
 
             <ImageView
                 android:id="@+id/imgIcon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="14dp"
+                android:layout_height="13dp"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="bottom|center_horizontal"
-                app:srcCompat="@drawable/ic_autobus"
                 android:textColor="@color/colorBackgroundCoppelNegro"
                 android:textSize="11sp"
                 android:visibility="visible" />

@@ -76,6 +76,10 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
         btnColaborator.setOnClickListener(this);
         btnManager.setOnClickListener(this);
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
+
+        btnColaborator.setVisibility(View.VISIBLE);
+        btnManager.setVisibility(View.VISIBLE);
+
         return view;
     }
 
@@ -83,17 +87,10 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getRolType();
     }
 
 
-    private void getRolType(){
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
 
-        coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -115,7 +112,8 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
 
         switch (view.getId()) {
             case R.id.btnColaborator:
-                NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
+                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
+                parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
 
                 break;
 
@@ -147,7 +145,9 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
                         btnManager.setVisibility(View.VISIBLE);
                     }else {
 
-                        Log.d("","");
+                        parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                        //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
+
                     }
 
 

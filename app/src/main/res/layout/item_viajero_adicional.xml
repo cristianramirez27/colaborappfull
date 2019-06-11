@@ -24,120 +24,166 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorBackgroundGray"/>
-
             <TextView
                 android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="N. de Colaborador"
+                android:text="Número de viajeros"
+                android:paddingLeft="20dp"
                 android:textColor="@color/colorTextGrayDark"
                 android:textSize="11sp"/>
 
             <TextView
-                android:id="@+id/numColaborador"
+                android:id="@+id/numViajeros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="98457612"
+                android:text="2"
+                android:paddingLeft="20dp"
                 android:textSize="13sp"
                 android:layout_marginBottom="6dp"
                 android:textColor="@color/colorBackgroundCoppelNegro" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
                 android:background="@color/colorBackgroundGray"/>
 
-            <TextView
-                android:layout_marginTop="6dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="Nombre de Colaborador"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="11sp"/>
-
-            <TextView
-                android:id="@+id/nombreColaborador"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="María Guadalupe Teresita del niño de Jesus Rodr..."
-                android:textSize="13sp"
-                android:ellipsize="end"
-                android:lines="1"
-                android:layout_marginBottom="6dp"
-                android:textColor="@color/colorBackgroundCoppelNegro" />
         </LinearLayout>
+
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorBackgroundGray"/>
 
-            <TextView
-                android:layout_marginTop="6dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="Centro"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="11sp"/>
 
-            <TextView
-                android:id="@+id/centro"
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="CLCN Análisis Requerimiento V"
-                android:textSize="13sp"   android:layout_marginBottom="6dp"
-                android:textColor="@color/colorBackgroundCoppelNegro" />
+                android:layout_height="wrap_content">
+
+
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="N. de Colaborador"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:id="@+id/numColaborador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="98457612"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBackgroundGray"/>
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="Nombre de Colaborador"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:id="@+id/nombreColaborador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="María Guadalupe Teresita del niño de Jesus Rodr..."
+                    android:textSize="13sp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBackgroundGray"/>
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="Centro"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:id="@+id/centro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="CLCN Análisis Requerimiento V"
+                    android:textSize="13sp"   android:layout_marginBottom="6dp"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBackgroundGray"/>
+
+
+                <TextView
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:id="@+id/empalme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="*Empalme"
+                    android:textSize="13sp"
+                    android:textColor="@color/colorBlueLight" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorBackgroundGray"/>
-
-
-            <TextView
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:id="@+id/empalme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="*Empalme"
-                android:textSize="13sp"
-                android:textColor="@color/colorBlueLight" />
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -179,6 +179,16 @@ public class NavigationUtil {
         context.startActivity(intent);
     }
 
+    public static<T> void openActivityParamsSerializable(Context context, Class<T> classTarget,
+                                                         String keySerializable, Serializable objectSerializable,
+                                                         String key,String section){
+
+        Intent intent = new Intent(context, classTarget);
+        intent.putExtra(keySerializable,objectSerializable);
+        intent.putExtra(key,section);
+        context.startActivity(intent);
+    }
+
 
     public static<T> Intent getIntent(Context context, Class<T> classTarget, int... flags){
 

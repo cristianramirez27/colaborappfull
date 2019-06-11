@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +24,13 @@ public class ExpandableSimpleTitle extends ConstraintLayout implements View.OnCl
     ImageView imgvArrow;
     @BindView(R.id.txvTitle)
     TextView txvTitle;
+    @BindView(R.id.divider)
+    View divider;
+    @BindView(R.id.guideline79)
+    Guideline guideline79;
+    private boolean isBlackArrow;
+
+
 
     public ExpandableSimpleTitle(Context context) {
         super(context);
@@ -44,6 +52,28 @@ public class ExpandableSimpleTitle extends ConstraintLayout implements View.OnCl
 
     public void setText(String text1) {
         txvTitle.setText(text1);
+    }
+
+    public void setColorText(int color) {
+        txvTitle.setTextColor(color);
+    }
+
+    public void setsizeText(int size) {
+        txvTitle.setTextSize(size);
+    }
+
+    public void setVisibilityDivider(int visibility){
+        divider.setVisibility(visibility);
+    }
+
+    public void setMarginLeft(boolean margin){
+
+        guideline79.setGuidelinePercent( margin ?  0.05f: 0.00f);
+    }
+
+    public void setBlackArrow(boolean blackArrow) {
+        isBlackArrow = blackArrow;
+        imgvArrow.setImageResource( isBlackArrow ? R.drawable.ic_down_arrow_black : R.drawable.ic_down_arrow_blue);
     }
 
     @Override
@@ -96,12 +126,12 @@ public class ExpandableSimpleTitle extends ConstraintLayout implements View.OnCl
     }
 
     public void setExpandedFalse() {
-        imgvArrow.setImageResource(R.drawable.ic_down_arrow_blue);
+        imgvArrow.setImageResource( isBlackArrow ? R.drawable.ic_down_arrow_black : R.drawable.ic_down_arrow_blue);
         isExpanded = false;
     }
 
     public void setExpandedTrue() {
-        imgvArrow.setImageResource(R.drawable.ic_up_arrow_blue);
+        imgvArrow.setImageResource(  isBlackArrow ? R.drawable.ic_up_arrow_black : R.drawable.ic_up_arrow_blue);
         isExpanded = true;
     }
 }

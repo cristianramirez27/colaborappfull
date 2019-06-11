@@ -29,11 +29,14 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -48,6 +51,7 @@ import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -81,6 +85,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_V
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 public class HomeActivity extends AppCompatActivity implements  IServicesContract.View,View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
         DialogFragmentWarning.OnOptionClick,ISurveyNotification {
@@ -318,7 +324,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case OPTION_EXPENSES:
-                replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                getRolType();
                 break;
 
             case OPTION_POLL:
@@ -448,6 +454,20 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 hideProgress();
                 AppUtilities.closeApp(this);
                 break;
+
+            case ServicesRequestType.EXPENSESTRAVEL:
+
+                if(response.getResponse() instanceof RolExpensesResponse) {
+
+                    if (((RolExpensesResponse) response.getResponse()).getData().getResponse().getClv_estatus() == 1) {
+                        replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                    }else {
+                        replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                    }
+                }
+
+                break;
+
         }
     }
 
@@ -477,5 +497,13 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
         if(dialogFragmentLoader != null)
             dialogFragmentLoader.close();
+    }
+
+    private void getRolType(){
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
+        ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
+
+        coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 }

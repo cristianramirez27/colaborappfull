@@ -74,7 +74,8 @@ public class ServicesUtilities {
     public Object parseToObjectClass(String s, Class c) {
         try {
             Gson gson = new Gson();
-            return gson.fromJson(s, c);
+            Object o = gson.fromJson(s, c);
+            return o;
         } catch (JsonParseException e) {
             return null;
         }

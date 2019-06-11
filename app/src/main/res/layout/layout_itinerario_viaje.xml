@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lineto_circular_pro_book"
-        android:visibility="visible"
+        android:visibility="gone"
         android:text="Multiciudad"
         android:textSize="13sp"
         android:layout_marginLeft="12dp"
@@ -117,8 +117,9 @@
             android:layout_marginRight="8dp"
             android:layout_centerVertical="true"
             android:text="Total de Noches"
+            android:gravity="bottom"
             android:textSize="13sp"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="80dp"
             android:textColor="@color/colorBackgroundCoppelNegro" />
 
         <TextView
@@ -127,12 +128,13 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:fontFamily="@font/lineto_circular_pro_book"
             android:visibility="visible"
             android:text="5"
             android:layout_alignParentRight="true"
             android:textSize="18sp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="40dp"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorBackgroundCoppelNegro" />
 

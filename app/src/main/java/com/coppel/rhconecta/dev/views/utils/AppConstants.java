@@ -94,9 +94,18 @@ public class AppConstants {
 
     /*Gastos de Viaje*/
     public static final String BUNDLE_OPTION_TRAVEL_EXPENSES = "BUNDLE_OPTION_TRAVEL_EXPENSES";
+    public static final String BUNDLE_OPTION_DATA_TRAVEL_EXPENSES = "BUNDLE_OPTION_DATA_TRAVEL_EXPENSES";
 
     public static final String OPTION_MANAGER = "OPTION_MANAGER";
     public static final String OPTION_COLABORATOR = "OPTION_COLABORATOR";
 
-    public static final String OPTION_REQUETS_CONTROLS = "OPTION_REQUETS_CONTROLS";
+    public static final String OPTION_DETAIL_REQUETS_CONTROLS = "OPTION_DETAIL_REQUETS_CONTROLS";
+
+    public static final String OPTION_MORE_DETAIL_CONTROL= "OPTION_MORE_DETAIL_CONTROL";
+
+    public static final String OPTION_MORE_DETAIL_REQUEST= "OPTION_MORE_DETAIL_REQUEST";
+    public static final String OPTION_MORE_DETAIL_COMPLEMENT= "OPTION_MORE_DETAIL_COMPLEMENT";
+
+
+    public static final String BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL= "BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL";
 }

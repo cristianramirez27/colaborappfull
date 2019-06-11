@@ -283,6 +283,15 @@
 
     <string name="title_desc_reason">*Descripción del motivo de viaje</string>
 
+    <string name="status_save">Guardada</string>
+    <string name="status_pending">Pendiente\nGastos</string>
+    <string name="status_canceled">Cancelada</string>
+    <string name="status_refused">Rechazada</string>
+    <string name="status_active">Activo</string>
+    <string name="status_payment">Liquidó</string>
+    <string name="status_no_payment">No Liquidó</string>
+    <string name="status_dont_deposite">Cancelado No Depositado</string>
 
+    <string name="title_detail_colaborator_control">Detalle del control</string>
 
 </resources>

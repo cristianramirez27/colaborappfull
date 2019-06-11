@@ -2,18 +2,18 @@ package com.coppel.rhconecta.dev.business.models;
 
 public abstract class CoppelServicesBaseExpensesTravelRequest {
 
-    private String num_empleado;
+    private Object num_empleado;
     private int opcion;
 
     public CoppelServicesBaseExpensesTravelRequest() {
     }
 
-    public CoppelServicesBaseExpensesTravelRequest(String num_empleado, int opcion) {
+    public CoppelServicesBaseExpensesTravelRequest(Object num_empleado, int opcion) {
         this.num_empleado = num_empleado;
         this.opcion = opcion;
     }
 
-    public String getNum_empleado() {
+    public Object getNum_empleado() {
         return num_empleado;
     }
 

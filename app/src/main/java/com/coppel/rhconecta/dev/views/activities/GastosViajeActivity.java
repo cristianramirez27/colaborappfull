@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AbonoFragment;
@@ -22,10 +23,12 @@ import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRol
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLABORATOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
 public class GastosViajeActivity extends AppCompatActivity  {
@@ -35,6 +38,7 @@ public class GastosViajeActivity extends AppCompatActivity  {
     private FragmentManager childFragmentManager;
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
+    private Object data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +53,10 @@ public class GastosViajeActivity extends AppCompatActivity  {
         }
 
         TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_TRAVEL_EXPENSES);
+        data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
-        onEvent(TAG_FRAGMENT,null);
+        onEvent(TAG_FRAGMENT,data);
     }
 
     public void setToolbarTitle(String title) {
@@ -65,9 +70,12 @@ public class GastosViajeActivity extends AppCompatActivity  {
                 break;
             case OPTION_COLABORATOR:
 
-                replaceFragment(new ColaboratorControlFragment(), ColaboratorControlFragment.TAG);
+                replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
 
-                //replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+            case OPTION_DETAIL_REQUETS_CONTROLS:
+
+                replaceFragment( ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data), ColaboratorControlFragment.TAG);
+
                 break;
         }
     }

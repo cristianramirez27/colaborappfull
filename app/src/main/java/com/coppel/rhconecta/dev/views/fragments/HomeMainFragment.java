@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -153,14 +154,14 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
         });
 
 
-        /*
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 hideProgress();
             }
-        }, 60000);*/
+        }, 5000);
 
         return view;
     }
@@ -388,10 +389,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void hideProgress() {
 
-       /* if(isAdded()){
+        if(isAdded()){
             if(dialogFragmentLoader != null)
                 dialogFragmentLoader.close();
-        }*/
+        }
 
     }
 

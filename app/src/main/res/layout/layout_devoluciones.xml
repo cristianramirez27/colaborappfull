@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:id="@+id/tipoItinerario"
+        android:text="Devoluciones"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lineto_circular_pro_bold"
+        android:visibility="visible"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBackgroundCoppelNegro" />
+
+    <LinearLayout
+        android:id="@+id/headerItinerario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tipoItinerario"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="visible">
+
+
+        <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+        android:id="@+id/titleDevolutions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvDevoluciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+        android:id="@+id/totalesDevolutions"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="-8dp"
+        android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
+
+</LinearLayout>
+

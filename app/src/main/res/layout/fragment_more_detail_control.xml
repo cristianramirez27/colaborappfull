@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:orientation="vertical">
+
+
+            <com.coppel.rhconecta.dev.views.customviews.GastosComprobar
+               android:id="@+id/GastosComprobar"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.coppel.rhconecta.dev.views.customviews.GastosComprobar>
+
+            <com.coppel.rhconecta.dev.views.customviews.Devoluciones
+                android:id="@+id/Devoluciones"
+                android:visibility="visible"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.Devoluciones>
+
+
+            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                android:id="@+id/totalDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
