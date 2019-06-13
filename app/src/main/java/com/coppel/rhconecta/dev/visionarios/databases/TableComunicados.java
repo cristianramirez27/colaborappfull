@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class TableComunicados {
 
-
     private InternalDatabase db;
     private String TABLA_NOMBRE = "comunicados";
     private boolean resetOnStart = false; // SI ES TRUE ELIMINA LA TABLA PARA GENERARLA NUEVAMENTE
@@ -89,7 +88,8 @@ public class TableComunicados {
                 " \""+obj.getImagen_aviso_landing()+"\", " +
                 " \""+obj.getDate()+"\", " +
                 " \""+obj.getEstatus()+"\", " +
-                " \""+(obj.isVisto()? 1 : 0)+"\", " +
+                //" \""+(obj.isVisto()? 1 : 0)+"\", " +
+                " \""+obj.getopc_visto()+"\", " +
                 " \""+obj.getLanding_visible()+"\" ) ";
 
         Log.d("MYSQLITE QUERY",query);
@@ -115,7 +115,8 @@ public class TableComunicados {
                 " fecha=\""+obj.getDate()+"\", " +
                 " estatus=\""+obj.getEstatus()+"\", " +
                 " landing_visible=\""+obj.getLanding_visible()+"\", " +
-                " visto=\""+(obj.isVisto()? 1 : 0)+"\" WHERE idavisos="+obj.getIdavisos()+" ";
+                " visto=\""+obj.getopc_visto() +"\" WHERE idavisos="+obj.getIdavisos()+" ";
+                //" visto=\""+(obj.isVisto()? 1 : 0)+"\" WHERE idavisos="+obj.getIdavisos()+" ";
 
         if(this.db.Query(query)){
             Log.d("MYSQLITE","UPDATE  "+this.TABLA_NOMBRE+" OK!");
@@ -147,7 +148,8 @@ public class TableComunicados {
                             cursor.getString(cursor.getColumnIndex("imagen_aviso_landing")),
                             cursor.getString(cursor.getColumnIndex("fecha")),
                             cursor.getInt(cursor.getColumnIndex("estatus")),
-                            cursor.getInt(cursor.getColumnIndex("landing_visible"))
+                            cursor.getInt(cursor.getColumnIndex("landing_visible")),
+                            cursor.getInt(cursor.getColumnIndex("visto"))
                     );
                     obj.setVisto(visto);
 
@@ -196,7 +198,8 @@ public class TableComunicados {
                             cursor.getString(cursor.getColumnIndex("imagen_aviso_landing")),
                             cursor.getString(cursor.getColumnIndex("fecha")),
                             cursor.getInt(cursor.getColumnIndex("estatus")),
-                            cursor.getInt(cursor.getColumnIndex("landing_visible"))
+                            cursor.getInt(cursor.getColumnIndex("landing_visible")),
+                            cursor.getInt(cursor.getColumnIndex("visto"))
 
 
                     );

@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.visionarios.videos.models;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
@@ -11,20 +10,20 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
-import com.coppel.rhconecta.dev.visionarios.firebase.VideosFirebase;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.interfaces.VideosDetalle;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Request.JSON_ObtenerVideos;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.CommunicatorGuardarLogAction;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.GuardarLogAction_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Request.JSON_GuardarLogAction;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Response.ResponseGuardarLogAction;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.VideoVisto_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.CommunicatorObtenerVideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.ObtenerVideosDetalle_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.Request.JSON_ObtenerVideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.Response.ResponseObtenerVideosDetalle;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.VideoVisto;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
-public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDetalle_Callback, GuardarLogAction_Callback {
+public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDetalle_Callback, GuardarLogAction_Callback, VideoVisto_Callback {
     private String TAG = "VideosDetalleModel";
     private VideosDetalle.Presenter presenter;
     private InternalDatabase idb;
@@ -102,8 +101,6 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
             Log.d(TAG, "ERROR: Usuario no encontrado tn TableUsuario localmente");
 
         }
-
-
     }
 
     @Override
@@ -135,10 +132,23 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
 
             if(usuario!=null){
                 TableVideos tableVideos = new TableVideos(this.idb,false);
-                video.setVisto(true);
-                tableVideos.update(video);
+                //video.setVisto(true);
+                //tableVideos.update(video);
 
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                if(video.getOpc_visto() != 1 )
+                {
+                    video.setVisto(true);
+                    video.setOpc_visto(1);
+                    tableVideos.update(video);
+
+                    JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), usuario.getNumeroempleado(), video.getIdvideos(), video.getVistas());
+                    VideoVisto VideoVisto = new VideoVisto();
+                    VideoVisto.ObtenerApi(jsonRequest,VideosDetalleModel.this);
+                }
+
+                tableVideos.closeDB();
+
+                /*FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 final DatabaseReference dbref = firebaseDatabase.getReference(MyFirebaseReferences.DATABASE_REFERENCE);
                 ArrayList<Video> videosLocales = tableVideos.select();
                 ArrayList<VideosFirebase> videosFirebasesUpdate = new ArrayList<VideosFirebase>();
@@ -157,16 +167,13 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
                     public void onFailure(@NonNull Exception e) {
                         Log.d("FBDATABASE",e.getMessage());
                     }
-                });
+                });*/
                 Log.d("SetVisto","Video visto id:"+video.getIdvideos());
             }else{
                 Log.d(TAG,"ERROR setvisto: Usuario no encontrado tn TableUsuario localmente");
 
             }
-
-
         }
-
     }
 
     @Override
@@ -226,6 +233,11 @@ public class VideosDetalleModel implements VideosDetalle.Model, ObtenerVideosDet
 
             Log.d("DICCIONARIO", e.getMessage());
         }
+    }
+
+    @Override
+    public void VideoVistoMensaje(ArrayList<Video> result) {
+        Log.d("VideoVistoMensaje","Prueba");
     }
 }
 

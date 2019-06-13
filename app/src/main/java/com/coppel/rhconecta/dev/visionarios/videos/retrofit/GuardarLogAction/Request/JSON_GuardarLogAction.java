@@ -6,6 +6,7 @@ public class JSON_GuardarLogAction {
     private int numeroempleado;
     private int idvideo;
     private int tipolog;
+    private int idvideo;
 
     public JSON_GuardarLogAction(String aplicacionkey, int numeroempleado, int idvideo, int tipolog) {
         this.aplicacionkey = aplicacionkey;
@@ -15,6 +16,14 @@ public class JSON_GuardarLogAction {
     }
 
     public JSON_GuardarLogAction() {
+    }
+
+    public JSON_ObtenerVideos(String aplicacionkey, String numeroempleado, int idvideo, int idvideo) {
+        this.aplicacionkey = aplicacionkey;
+        this.numeroempleado = numeroempleado;
+        this.idvideo = idvideo;
+        this.idvideo = idvideo;
+
     }
 
     public String getAplicacionkey() {
@@ -47,6 +56,14 @@ public class JSON_GuardarLogAction {
 
     public void setTipolog(int tipolog) {
         this.tipolog = tipolog;
+    }
+
+    public int getIdvideo() {
+        return idvideo;
+    }
+
+    public void setIdvideo(int idvideo) {
+        this.idvideo = idvideo;
     }
 }
 

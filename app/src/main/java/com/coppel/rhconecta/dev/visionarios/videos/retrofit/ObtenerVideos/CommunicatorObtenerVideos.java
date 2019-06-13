@@ -54,7 +54,6 @@ public class CommunicatorObtenerVideos {
         InterfaceObtenerVideos service = retrofit.create(InterfaceObtenerVideos.class);
         Call<ResponseObtenerVideos> call = service.post(token, item);
 
-
         call.enqueue(new Callback<ResponseObtenerVideos>() {
             @Override
             public void onResponse(@NonNull Call<ResponseObtenerVideos> call, @NonNull Response<ResponseObtenerVideos> response) {

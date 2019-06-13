@@ -17,6 +17,8 @@ public class Comunicado implements Serializable {
 
     private boolean visto = false;
 
+    private int opc_visto = 0;
+
     public  Comunicado(){}
 
     public Comunicado(int idavisos, String nombre, String encabezado, String titulo, String contenido, String imagen_aviso_preview, String imagen_aviso_landing, String date, int estatus) {
@@ -29,10 +31,11 @@ public class Comunicado implements Serializable {
         this.imagen_aviso_landing = imagen_aviso_landing;
         this.date = date;
         this.estatus = estatus;
+
         this.visto = false;
     }
 
-    public Comunicado(int idavisos, String nombre, String encabezado, String titulo, String contenido, String imagen_aviso_preview, String imagen_aviso_landing, String date, int estatus, int landing_visible) {
+    public Comunicado(int idavisos, String nombre, String encabezado, String titulo, String contenido, String imagen_aviso_preview, String imagen_aviso_landing, String date, int estatus, int landing_visible, int iVisto) {
         this.idavisos = idavisos;
         this.nombre = nombre;
         this.encabezado = encabezado;
@@ -43,8 +46,9 @@ public class Comunicado implements Serializable {
         this.date = date;
         this.estatus = estatus;
         this.landing_visible = landing_visible;
-        this.visto = false;
+        this.opc_visto = iVisto;
 
+        this.visto = false;
     }
 
 
@@ -111,6 +115,16 @@ public class Comunicado implements Serializable {
     public void setImagen_aviso_landing(String imagen_aviso_landing) {
         this.imagen_aviso_landing = imagen_aviso_landing;
     }
+
+    public int getopc_visto() {
+        return opc_visto;
+    }
+
+    public void setopc_visto(int opc_visto) {
+        this.opc_visto = opc_visto;
+    }
+
+
 
     public String getDate() {
         return date;

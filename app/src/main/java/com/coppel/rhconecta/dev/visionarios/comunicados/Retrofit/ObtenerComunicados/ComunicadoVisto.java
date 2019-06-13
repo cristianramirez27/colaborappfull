@@ -1,17 +1,14 @@
 package com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ErrorEvent;
-import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ObtenerComunicadosEvent;
+import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ComunicadoVistoEvent;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import java.util.ArrayList;
@@ -26,12 +23,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
-public class CommunicatorObtenerComunicados {
-
+public class ComunicadoVisto {
     private static final String TAG = "CommunicatorObtenerComunicados";
     private String SERVER_URL = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL);
 
-    public void ObtenerApi(JSON_ObtenerComunicados item, final ObtenerComunicados_Callback callback) {
+
+    public void ObtenerApi(JSON_ObtenerComunicados item, final ComunicadoVisto_Callback callback) {
 
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -42,18 +39,6 @@ public class CommunicatorObtenerComunicados {
         final String token = "Bearer";
 
 
-
-        /*String varToken = "688900-93827865-775a3ac0496611e894b80242ac11000e";
-        AddHeaderInterceptor authorization = new AddHeadAddHeaderInterceptorerInterceptor(varToken);
-        httpClient.addNetworkInterceptor(authorization);*/
-
-        /*InternalDatabase idb = new InternalDatabase(App.context);
-        TableConfig tableConfig = new TableConfig(idb,false);
-        Config config = tableConfig.select("1");
-        if(config !=null){
-           SERVER_URL = config.getURL_VISIONARIOS();
-        }*/
-
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -61,40 +46,33 @@ public class CommunicatorObtenerComunicados {
                 .build();
 
 
-        InterfaceObtenerComunicados service = retrofit.create(InterfaceObtenerComunicados.class);
+        InterfaceComunicadoVisto service = retrofit.create(InterfaceComunicadoVisto.class);
         Call<ArrayList<Comunicado>> call = service.post(token, item);
 
 
         call.enqueue(new Callback<ArrayList<Comunicado>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Comunicado>> call, @NonNull Response<ArrayList<Comunicado>> response) {
-                BusProvider.getInstance().post(new ObtenerComunicadosEvent(response.body(), callback));
+                BusProvider.getInstance().post(new ComunicadoVistoEvent(response.body(), callback));
             }
 
             @Override
+            public void onFailure(Call<ArrayList<Comunicado>> call, Throwable t) {
+                String message = "Error";
+
+                if (t.getMessage() != null)
+                    message = t.getMessage();
+
+                Log.d("ComunicadoVisto",message);
+            }
+
+           /* @Override
             public void onFailure(@NonNull Call<ArrayList<Comunicado>> call, @NonNull Throwable t) {
                 String message = "Error";
                 if (t.getMessage() != null)
                     message = t.getMessage();
                 BusProvider.getInstance().post(new ErrorEvent(-2, message, callback));
-            }
+            }*/
         });
-
-
-     /*   call.enqueue(new Callback<ResponseObtenerComunicados>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseObtenerComunicados> call, @NonNull Response<ResponseObtenerComunicados> response) {
-                BusProvider.getInstance().post(new ObtenerComunicadosEvent(response.body(), callback));
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseObtenerComunicados> call, @NonNull Throwable t) {
-                String message = "Error";
-                if (t.getMessage() != null)
-                    message = t.getMessage();
-                BusProvider.getInstance().post(new ErrorEvent(-2, message,callback));
-            }
-        });*/
     }
 }
-

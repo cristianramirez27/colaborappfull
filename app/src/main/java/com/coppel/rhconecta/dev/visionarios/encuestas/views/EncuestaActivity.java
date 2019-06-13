@@ -121,7 +121,8 @@ public class EncuestaActivity extends AppCompatActivity implements Encuestas.Vie
         progressDialog.dismiss();
 
         if (preguntas != null) {
-            labelEncuesta.setText("Encuesta: " + encuesta.getNombre());
+            //labelEncuesta.setText("Encuesta: " + encuesta.getNombre());
+            labelEncuesta.setText(encuesta.getNombre());
             labelEncuestaDesc.setText("Queremos conocer tus hábitos respecto a " + encuesta.getNombre() + ", por ello, responde las siguientes preguntas y ayúdanos a mejorar.");
 
             this.preguntas = preguntas;
