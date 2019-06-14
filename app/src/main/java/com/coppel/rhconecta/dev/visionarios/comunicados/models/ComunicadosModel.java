@@ -104,12 +104,9 @@ public class ComunicadosModel implements Comunicados.Model, ObtenerComunicados_C
     @Override
     public void getComunicados() {
         if (presenter != null) {
-
             JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
             CommunicatorObtenerComunicados communicatorObtenerComunicados = new CommunicatorObtenerComunicados();
             communicatorObtenerComunicados.ObtenerApi(jsonRequest, ComunicadosModel.this);
-
-
         }
     }
 

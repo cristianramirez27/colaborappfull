@@ -9,10 +9,13 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.utils.App;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
+import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Events.ObtenerVideosEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Request.JSON_ObtenerVideos;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Response.ResponseObtenerVideos;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -25,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class CommunicatorObtenerVideos {
+
     private static final String TAG = "CommunicatorObtenerVideos";
     private String SERVER_URL = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL);
 
@@ -53,7 +57,6 @@ public class CommunicatorObtenerVideos {
 
         InterfaceObtenerVideos service = retrofit.create(InterfaceObtenerVideos.class);
         Call<ResponseObtenerVideos> call = service.post(token, item);
-
 
         call.enqueue(new Callback<ResponseObtenerVideos>() {
             @Override

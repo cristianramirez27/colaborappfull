@@ -3,6 +3,11 @@ package com.coppel.rhconecta.dev.visionarios.comunicados.models;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.ComunicadoVisto;
+import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.ComunicadoVisto_Callback;
+import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
 import com.coppel.rhconecta.dev.visionarios.comunicados.interfaces.ComunicadosDetalle;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
@@ -23,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
+public class ComunicadosDetalleModel implements ComunicadosDetalle.Model, ComunicadoVisto_Callback {
     private String TAG ="ComunicadosDetalleModel";
     private ComunicadosDetalle.Presenter presenter;
     private InternalDatabase idb;
@@ -49,9 +56,20 @@ public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
 
         if(usuario!=null){
             TableComunicados tableComunicados = new TableComunicados(this.idb,false);
-            comunicado.setVisto(true);
-            tableComunicados.update(comunicado);
 
+            if(comunicado.getopc_visto() != 1 )
+            {
+                comunicado.setVisto(true);
+                comunicado.setopc_visto(1);
+                tableComunicados.update(comunicado);
+
+                JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), usuario.getNumeroempleado(), comunicado.getIdavisos());
+                ComunicadoVisto ComunicadoVisto = new ComunicadoVisto();
+                ComunicadoVisto.ObtenerApi(jsonRequest,ComunicadosDetalleModel.this);
+            }
+
+            tableComunicados.closeDB();
+            /*
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference dbref = firebaseDatabase.getReference(MyFirebaseReferences.DATABASE_REFERENCE);
             ArrayList<Comunicado> comunicadosLocales = tableComunicados.select();
@@ -71,12 +89,11 @@ public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
                 public void onFailure(@NonNull Exception e) {
                     Log.d("FBDATABASE",e.getMessage());
                 }
-            });
+            });*/
             Log.d("SetVisto","Comunicado visto id:"+comunicado.getIdavisos());
         }else{
             Log.d(TAG,"ERROR setVito: Usuario no encontrado tn TableUsuario localmente");
         }
-
     }
 
     @Override
@@ -93,7 +110,7 @@ public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
     }
 
     @Override
-    public void getTextoLabel(final String textNode,final String defaultText,final int textView) {
+    public void getTextoLabel(final String textNode, final String defaultText, final int textView) {
         try{
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference dbref = firebaseDatabase.getReference(MyFirebaseReferences.DATABASE_REFERENCE_DICCIONARIO);
@@ -107,6 +124,7 @@ public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
                         presenter.ShowTextoDiccionario(defaultText,textView);
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.d("DICCIONARIO","error");
@@ -119,5 +137,11 @@ public class ComunicadosDetalleModel implements ComunicadosDetalle.Model{
 
             Log.d("DICCIONARIO",e.getMessage());
         }
+    }
+
+    @Override
+    public void ComunicadoVistoMensaje(ArrayList<Comunicado> result)
+    {
+        Log.d("ComunicadoVistoMensaje","Prueba");
     }
 }

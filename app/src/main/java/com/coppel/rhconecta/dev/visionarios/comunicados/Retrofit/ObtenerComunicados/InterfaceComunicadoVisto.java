@@ -10,7 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-public interface InterfaceObtenerComunicados {
-    @POST("/api/visionarios/avisosconsulta")
+public interface InterfaceComunicadoVisto {
+    @POST("/api/visionarios/avisosvisto")
     Call<ArrayList<Comunicado>> post(@Header("Authorization") String authHeader, @Body JSON_ObtenerComunicados body);
 }

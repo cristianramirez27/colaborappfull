@@ -1,7 +1,10 @@
 package com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Events;
 
+import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.ObtenerVideos_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Response.ResponseObtenerVideos;
+
+import java.util.ArrayList;
 
 public class ObtenerVideosEvent {
 
@@ -24,6 +27,4 @@ public class ObtenerVideosEvent {
     public void setServerResponse(ResponseObtenerVideos serverResponse) {
         this.serverResponse = serverResponse;
     }
-
-
 }
