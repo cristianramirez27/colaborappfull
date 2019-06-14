@@ -21,12 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">
-
+            <!--
+                            android:layout_above="@+id/btnDeposit"-->
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:isScrollContainer="false"
-                android:layout_above="@+id/btnDeposit">
+                android:isScrollContainer="false">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -289,92 +289,99 @@
                     </LinearLayout>
 
                     <RelativeLayout
-                            android:id="@+id/layoutOptions"
-                            android:layout_width="match_parent"
+                        android:id="@+id/layoutOptions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/btnDeposit"
+                        android:padding="5dp"
+                        android:layout_margin="10dp">
+
+                        <TextView
+                            android:id="@+id/removeFrom"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_above="@+id/btnDeposit"
-                            android:padding="5dp"
-                            android:layout_margin="10dp">
+                            android:fontFamily="@font/lineto_circular_pro_medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:layout_marginBottom="10dp"
+                            android:text="@string/addTo"
+                            android:textColor="@color/colorPrimaryCoppelAzul"
+                            android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/removeFrom"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lineto_circular_pro_medium"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:layout_marginBottom="10dp"
-                                android:text="@string/addTo"
-                                android:textColor="@color/colorPrimaryCoppelAzul"
-                                android:textSize="14sp" />
+                        <android.support.v7.widget.CardView
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:id="@+id/content_element"
+                            app:cardElevation="1dp"
+                            android:layout_margin="2dp"
+                            android:layout_below="@+id/removeFrom"
+                            android:layout_height="wrap_content"
+                            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+                            app:cardCornerRadius="8dp">
 
-                            <android.support.v7.widget.CardView
-                                android:orientation="horizontal"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:id="@+id/content_element"
-                                app:cardElevation="1dp"
-                                android:layout_below="@+id/removeFrom"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
-                                app:cardCornerRadius="8dp">
+                                android:layout_height="match_parent"
+                                android:padding="8dp"
+                                android:layout_margin="2dp"
+                                android:orientation="vertical">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="8dp"
-                                    android:layout_margin="2dp"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content">
 
-                                    <LinearLayout
+                                    <com.coppel.rhconecta.dev.views.customviews.GenericTabLayout
+                                        android:id="@+id/tabs"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-
-                                        <com.coppel.rhconecta.dev.views.customviews.GenericTabLayout
-                                            android:id="@+id/tabs"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            app:tabTextColor="@color/colorTextCoppelNegro"
-                                            app:tabIndicatorFullWidth="false"
-                                            app:tabSelectedTextColor="@color/colorPrimaryCoppelAzul"
-                                            app:tabMaxWidth="0dp"/>
-                                    </LinearLayout>
-
-                                    <com.coppel.rhconecta.dev.views.customviews.NoSwipeViewPager
-                                        android:id="@+id/viewpager"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="300dp"
-                                        android:background="@color/transparent"
-                                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-
+                                        android:layout_height="wrap_content"
+                                        app:tabTextColor="@color/colorTextCoppelNegro"
+                                        app:tabIndicatorFullWidth="false"
+                                        app:tabSelectedTextColor="@color/colorPrimaryCoppelAzul"
+                                        app:tabMaxWidth="0dp"/>
                                 </LinearLayout>
 
-                            </android.support.v7.widget.CardView>
+                                <com.coppel.rhconecta.dev.views.customviews.NoSwipeViewPager
+                                    android:id="@+id/viewpager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="300dp"
+                                    android:minHeight="300dp"
+                                    android:background="@color/transparent"
+                                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                        </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_gravity="bottom"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/btnDeposit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginBottom="22dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/background_blue_rounded"
+                            android:fontFamily="@font/lineto_circular_pro_book"
+                            android:text="@string/btnDoDeposit"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"/>
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </ScrollView>
-
-            <Button
-                android:id="@+id/btnDeposit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="22dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/background_blue_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="@string/btnDoDeposit"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"/>
-
-
-
 
 
 
