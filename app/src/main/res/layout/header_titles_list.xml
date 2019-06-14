@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.1"
             android:fontFamily="@font/lineto_circular_pro_book"
-            android:text="Status"
+            android:text="Estatus"
             android:textColor="@color/colorTextGray"
             android:textSize="11sp"
             android:gravity="left"/>

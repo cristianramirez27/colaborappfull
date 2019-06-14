@@ -35,7 +35,9 @@
             android:gravity="top"
             android:padding="8dp"
             android:textSize="13sp"
-            android:textAllCaps="true"
+            android:inputType="textMultiLine"
+            android:focusable="true"
+            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789 "
             android:background="@drawable/background_gray_rounded"
             android:layout_height="120dp" />
 

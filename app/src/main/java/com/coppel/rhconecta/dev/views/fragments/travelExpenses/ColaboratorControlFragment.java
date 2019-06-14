@@ -10,6 +10,9 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -59,6 +62,7 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROL;
@@ -201,6 +205,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         verDetallesComplemento.setOnClickListener(this);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
+        observationGte.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
         setTitle();
 
@@ -354,16 +359,16 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     }
 
     private void openRefuseRequest(){
+
         this.detailExpenseTravelData.setObservations(getObservations());
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeDetalleActivity.class,
+        NavigationUtil.openActivityParamsSerializableRequestCode(getActivity(), GastosViajeDetalleActivity.class,
                 BUNDLE_OPTION_DATA_TRAVEL_EXPENSES, this.detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_REFUSE_REQUEST);
+                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_REFUSE_REQUEST,888);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
     }
 
@@ -606,7 +611,37 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             layoutObservacionesGte.setVisibility(((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? VISIBLE : View.GONE);
 
             //TODO REMOVE Test
-            //layoutObservacionesGte.setVisibility(VISIBLE);
+            layoutObservacionesGte.setVisibility(VISIBLE);
+
+
+            observationGte.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if(s.toString().length() > 0){
+                        btnActionRight.setEnabled(true);
+                        btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
+                    }else {
+                        btnActionRight.setEnabled(false);
+                        btnActionRight.setBackgroundResource(R.drawable.background_darkgray_rounder);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+
+
+
 
         }
 

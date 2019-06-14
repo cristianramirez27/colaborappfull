@@ -432,18 +432,22 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
 
     @Override
     public void onRightOptionStateClick(Estatus data) {
-        estatusSelected = data;
-        dialogFragmentEstatus.close();
-        estatus.setText(estatusSelected.getNom_estatus_liq());
-        getControls();
+        if(data != null) {
+            estatusSelected = data;
+            dialogFragmentEstatus.close();
+            estatus.setText(estatusSelected.getNom_estatus_liq());
+            getControls();
+        }
     }
 
     @Override
     public void onRightOptionStateClick(Center data) {
-        centerSelected = data;
-        dialogFragmentCenter.close();
-        centro.setText(centerSelected.getNom_centro());
-        getControls();
+        if(data != null) {
+            centerSelected = data;
+            dialogFragmentCenter.close();
+            centro.setText(centerSelected.getNom_centro());
+            getControls();
+        }
     }
 
     private void performSearch(String search) {

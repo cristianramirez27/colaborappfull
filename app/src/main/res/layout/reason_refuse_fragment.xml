@@ -43,7 +43,8 @@
         android:gravity="top"
         android:padding="8dp"
         android:textSize="13sp"
-        android:textAllCaps="true"
+        android:inputType="textMultiLine"
+        android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789 "
         android:background="@drawable/background_gray_rounded"
         android:layout_height="120dp" />
 
@@ -73,14 +74,14 @@
 
         <Button
             android:id="@+id/btnActionRight"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:background="@drawable/background_blue_rounded"
             android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/accept"
             android:textAllCaps="false"
-            android:layout_marginLeft="10dp"
             android:textColor="@color/colorBackgroundCoppelBlanco"
             android:textSize="16sp" />
 

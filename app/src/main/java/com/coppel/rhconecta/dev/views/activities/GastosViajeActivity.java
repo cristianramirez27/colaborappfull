@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -68,9 +70,8 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
                 replaceFragment(new TravelExpensesManagerFragment(), PayrollVoucherMenuFragment.TAG);
                 break;
             case OPTION_COLABORATOR:
-
                 replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
-
+                break;
             case OPTION_DETAIL_REQUETS_CONTROLS:
 
                 replaceFragment( ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data), ColaboratorControlFragment.TAG);
@@ -102,7 +103,22 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
 
     @Override
     public void onBackPressed() {
-        finish();
+        int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
+        if (backStackEntryCount == 1) {
+            finish();
+        } else if (backStackEntryCount > 1) {
+            super.onBackPressed();
+        }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 888 && resultCode == RESULT_OK){
+            onEvent(OPTION_AUTHORIZE_REQUEST,null);
+        }
+
+    }
 }

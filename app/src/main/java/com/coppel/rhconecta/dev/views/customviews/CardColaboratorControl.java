@@ -202,7 +202,7 @@ public class CardColaboratorControl extends LinearLayout {
     }
 
     public void setBackgroundCard(int color){
-
+        cardview.setBackgroundColor(getContext().getResources().getColor(color));
         container_cardvide.setBackgroundColor(getContext().getResources().getColor(color));
     }
 

@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments.travelExpenses;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO;
+import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.SOLICITUD;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_EXPENSES_TRAVEL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -92,13 +97,39 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         parent = (GastosViajeDetalleActivity) getActivity();
-        parent.setToolbarTitle(getString(R.string.title_refuse_complement));
+        ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData();
+
+
+        parent.setToolbarTitle(request.getTipo() == 1 ?  getString(R.string.title_refuse_complement) :getString(R.string.title_refuse_request));
 
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
 
         //reason.setFilters(new InputFilter[]{InputFilter.AllCaps});
+        reason.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
+       /* reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length()  > 0){
+                    btnActionRight.setEnabled(true);
+                    btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
+                }else {
+                    btnActionRight.setEnabled(false);
+                    btnActionRight.setBackgroundResource(R.drawable.background_darkgray_rounder);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
+
         return view;
     }
 
@@ -207,6 +238,7 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
     @Override
     public void onAccept() {
         dialogFragmentGetDocument.close();
+        getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 

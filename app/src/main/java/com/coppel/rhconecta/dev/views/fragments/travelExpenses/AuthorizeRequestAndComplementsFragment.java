@@ -113,15 +113,9 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
         View view = inflater.inflate(R.layout.fragment_autorizar_solicitudes, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        parent = (GastosViajeActivity) getActivity();
+        ( (GastosViajeActivity) parent).setToolbarTitle(getString(R.string.title_authorize_requests_controls));
 
-        if(getActivity() instanceof HomeActivity){
-            parent = (HomeActivity) getActivity();
-            ( (HomeActivity) parent).setToolbarTitle(getString(R.string.title_authorize_requests_controls));
-        }else
-        if(getActivity() instanceof GastosViajeActivity){
-            parent = (GastosViajeActivity) getActivity();
-            ( (GastosViajeActivity) parent).setToolbarTitle(getString(R.string.title_requests_controls));
-        }
 
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
 
@@ -218,6 +212,8 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
 
                 } else if(response.getResponse() instanceof ColaboratorRequestsListExpensesResponse){
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
+                    //Limpiamos el resultado previo de la consulta
+                    requestComplementsColaborators.clear();
                     for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request :colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
                         requestComplementsColaborators.add(request);
                     }
@@ -248,11 +244,15 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
 
     @Override
     public void onRightOptionStateClick(Center data) {
-        centerSelected = data;
-        dialogFragmentCenter.close();
-        centro.setText(centerSelected.getNom_centro());
 
-        getRequestExpenses();
+        if(data != null){
+            centerSelected = data;
+            dialogFragmentCenter.close();
+            centro.setText(centerSelected.getNom_centro());
+
+            getRequestExpenses();
+        }
+
     }
 
 

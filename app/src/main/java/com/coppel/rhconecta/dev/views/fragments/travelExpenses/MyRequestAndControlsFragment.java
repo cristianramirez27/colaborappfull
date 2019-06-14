@@ -79,6 +79,12 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
     @BindView(R.id.titulosControles)
     HeaderTitlesList titulosControles;
 
+    @BindView(R.id.layoutSolicitudes)
+    LinearLayout layoutSolicitudes;
+    @BindView(R.id.layoutControles)
+    LinearLayout layoutControles;
+
+
 
 
     private ColaboratorRequestsListExpensesResponse.Months monthSelected;
@@ -225,12 +231,22 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
                 if(response.getResponse() instanceof ColaboratorRequestsListExpensesResponse){
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
 
-                    for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request :colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
-                        requestComplementsColaborators.add(request);
+                    if(!colaboratorResponse.getData().getResponse().getSolicitudes_Complementos().isEmpty()){
+                        layoutSolicitudes.setVisibility(View.VISIBLE);
+                        for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request : colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
+                            requestComplementsColaborators.add(request);
+                        }
+                    }else {
+                        layoutSolicitudes.setVisibility(View.GONE);
                     }
 
-                    for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
-                        controlColaborators.add(control);
+                    if(!colaboratorResponse.getData().getResponse().getControles().isEmpty()) {
+                        layoutControles.setVisibility(View.VISIBLE);
+                        for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
+                            controlColaborators.add(control);
+                        }
+                    }else {
+                        layoutControles.setVisibility(View.GONE);
                     }
 
                     for(ColaboratorRequestsListExpensesResponse.Months month :colaboratorResponse.getData().getResponse().getMeses()){
