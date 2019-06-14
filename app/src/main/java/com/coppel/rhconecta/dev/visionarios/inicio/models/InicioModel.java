@@ -99,7 +99,6 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
         TableVideos tableVideos = new TableVideos(this.idb,false);
         ArrayList<Video> videos= tableVideos.select();
         tableVideos.closeDB();
-
         ArrayList<Video> videosLanding = new ArrayList<Video>();
 
         int nuevos=0;
@@ -122,7 +121,10 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
     @Override
     public void getComunicados() {
         if(presenter != null){
-            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
+            TableUsuario tableUsuario = new TableUsuario(idb,false);
+            Usuario usuario = tableUsuario.select("1");
+            tableUsuario.closeDB();
+            JSON_ObtenerComunicados jsonRequest = new JSON_ObtenerComunicados(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), usuario.getNumeroempleado());
             CommunicatorObtenerComunicados communicatorObtenerComunicados = new CommunicatorObtenerComunicados();
             communicatorObtenerComunicados.ObtenerApi(jsonRequest,InicioModel.this);
         }
@@ -131,7 +133,10 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
     @Override
     public void getVideos() {
         if(presenter != null){
-            JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
+            TableUsuario tableUsuario = new TableUsuario(idb,false);
+            Usuario usuario = tableUsuario.select("1");
+            tableUsuario.closeDB();
+            JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY), usuario.getNumeroempleado());
             CommunicatorObtenerVideos communicatorObtenerVideos = new CommunicatorObtenerVideos();
             communicatorObtenerVideos.ObtenerApi(jsonRequest,InicioModel.this);
         }
@@ -139,7 +144,6 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
 
     @Override
     public void getUltimaEncuesta() {
-
         TableUsuario tableUsuario = new TableUsuario(idb,false);
         Usuario usuario = tableUsuario.select("1");
         tableUsuario.closeDB();
@@ -284,7 +288,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
 
             final TableComunicados tableComunicados = new TableComunicados(this.idb,false);
 
-        /*ELIMINA LOS COMUNICADOS LOCALES QUE NO ESTEN EN LOS NUEVOS*/
+            /*ELIMINA LOS COMUNICADOS LOCALES QUE NO ESTEN EN LOS NUEVOS*/
             ArrayList<Comunicado> comunicadosLocalesExistentes= tableComunicados.select();
             if(comunicadosLocalesExistentes != null){
                 for (int i=0;i<comunicadosLocalesExistentes.size();i++){
@@ -308,10 +312,10 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
                 tableComunicados.insertIfNotExist(obj);
             }
 
-
+            getBadgesComunicados();
 
             //guarda los registros en firebase para mantener los registros de "visto"
-            dbref.child(numeroEmpleado).child("comunicados").addListenerForSingleValueEvent(new ValueEventListener() {
+            /*dbref.child(numeroEmpleado).child("comunicados").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) { //lee firebase
 
@@ -396,10 +400,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
-            });
-
-
-
+            });*/
         } catch (Exception e) {
             Log.d("ObtenerComunicados","SUCCESS FAIL: "+e.getMessage());
         }
@@ -470,10 +471,10 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
                 tableVideos.insertIfNotExist(obj);
             }
 
-
+            getBadgesVideos();
 
             //guarda los registros en firebase para mantener los registros de "visto"
-            dbref.child(numeroEmpleado).child("videos").addListenerForSingleValueEvent(new ValueEventListener() {
+           /* dbref.child(numeroEmpleado).child("videos").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) { //lee firebase
 
@@ -552,7 +553,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
-            });
+            });*/
 
 
 

@@ -59,11 +59,11 @@ public class VideosModel implements Videos.Model,ObtenerVideos_Callback {
 
     @Override
     public void getVideos() {
-
-        JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
-        CommunicatorObtenerVideos communicatorObtenerVideos = new CommunicatorObtenerVideos();
-        communicatorObtenerVideos.ObtenerApi(jsonRequest,VideosModel.this);
-
+        if (presenter != null) {
+            JSON_ObtenerVideos jsonRequest = new JSON_ObtenerVideos(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.APLICACION_KEY));
+            CommunicatorObtenerVideos communicatorObtenerVideos = new CommunicatorObtenerVideos();
+            communicatorObtenerVideos.ObtenerApi(jsonRequest,VideosModel.this);
+        }
     }
 
     @Override

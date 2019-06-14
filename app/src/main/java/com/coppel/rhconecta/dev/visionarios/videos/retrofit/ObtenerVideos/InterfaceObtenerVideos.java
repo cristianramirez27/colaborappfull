@@ -10,8 +10,7 @@ import retrofit2.http.POST;
 
 public interface InterfaceObtenerVideos {
 
-
-    @POST("/api/visionarios/videosmenu")
+    @POST("/api/visionarios/videosconsulta2")
     Call<ResponseObtenerVideos> post(@Header("Authorization") String authHeader, @Body JSON_ObtenerVideos body);
 
 }
