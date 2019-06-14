@@ -13,7 +13,6 @@ import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.firebase.VideosFirebase;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.interfaces.VideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.CommunicatorGuardarLogAction;

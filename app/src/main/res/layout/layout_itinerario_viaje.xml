@@ -88,7 +88,7 @@
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:visibility="visible"
-                android:text="No. Noches"
+                android:text="N. Noches"
                 android:textSize="11sp"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/colorTextGrayDark" />

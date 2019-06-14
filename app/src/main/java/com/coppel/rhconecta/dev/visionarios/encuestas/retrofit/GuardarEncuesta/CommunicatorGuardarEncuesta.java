@@ -4,15 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.GuardarEncuesta.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.GuardarEncuesta.Events.GuardarEncuestaEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.GuardarEncuesta.Request.JSON_GuardarEncuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.GuardarEncuesta.Response.ResponseGuardarEncuesta;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

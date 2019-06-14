@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -54,6 +52,15 @@ public class ColaboratorControlsMonthResponse extends ExpensesTravelBaseResponse
         private String itinerario;
         private String razon_viaje;
         private String des_color;
+        private String des_colorletra;
+
+        public String getDes_colorletra() {
+            return des_colorletra;
+        }
+
+        public void setDes_colorletra(String des_colorletra) {
+            this.des_colorletra = des_colorletra;
+        }
 
         public String getDes_color() {
             return des_color;

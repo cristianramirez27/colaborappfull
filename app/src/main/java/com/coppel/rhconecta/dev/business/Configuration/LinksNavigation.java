@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
-import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.activities.WebExplorerActivity;
 import com.coppel.rhconecta.dev.visionarios.MainActivity;
 

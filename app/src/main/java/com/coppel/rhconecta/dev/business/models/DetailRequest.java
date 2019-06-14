@@ -8,6 +8,14 @@ public class DetailRequest implements Serializable {
     private String des_tipoGasto;
     private double imp_total;
 
+    private transient double newAmount;
+
+    public DetailRequest(int idu_tipoGasto, String des_tipoGasto, double imp_total) {
+        this.idu_tipoGasto = idu_tipoGasto;
+        this.des_tipoGasto = des_tipoGasto;
+        this.imp_total = imp_total;
+    }
+
     public int getIdu_tipoGasto() {
         return idu_tipoGasto;
     }
@@ -30,5 +38,13 @@ public class DetailRequest implements Serializable {
 
     public void setImp_total(double imp_total) {
         this.imp_total = imp_total;
+    }
+
+    public double getNewAmount() {
+        return newAmount;
+    }
+
+    public void setNewAmount(double newAmount) {
+        this.newAmount = newAmount;
     }
 }

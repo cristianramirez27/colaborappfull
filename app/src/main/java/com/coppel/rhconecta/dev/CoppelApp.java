@@ -3,17 +3,10 @@ package com.coppel.rhconecta.dev;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.business.utils.Foreground;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
-import com.coppel.rhconecta.dev.visionarios.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import io.realm.Realm;
 

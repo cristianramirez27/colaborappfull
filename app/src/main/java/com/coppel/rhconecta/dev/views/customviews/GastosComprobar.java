@@ -6,14 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedResume;
-import com.coppel.rhconecta.dev.business.models.Itinerary;
 import com.coppel.rhconecta.dev.views.adapters.ExpenseCheckRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ItineraryRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
@@ -49,11 +46,13 @@ public class GastosComprobar extends RelativeLayout {
         headerExpenses.setTitle2("Autorizado");
         headerExpenses.setTitle3("Comprobado");
         headerExpenses.setTitle4("Faltante");
+
+        headerExpenses.setPaddingTitle4();
     }
 
 
     public void setTotales(ExpenseAuthorizedResume expenseAuthorizedResume) {
-        totales.setTitle1("Totales");
+        totales.setTitle1("Total");
         totales.setTitle2(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(expenseAuthorizedResume.getTotalAutorizado()))));
         totales.setTitle3(TextUtilities.getNumberInCurrencyFormat(

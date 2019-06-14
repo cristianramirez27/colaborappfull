@@ -10,28 +10,26 @@ import android.support.v7.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
-import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
-import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AbonoFragment;
-import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AditionalSaveFragment;
-import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLABORATOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
-public class GastosViajeActivity extends AppCompatActivity  {
+public class GastosViajeActivity extends AppCompatActivity implements OnEventListener {
 
     @BindView(R.id.tbActionBar)
     Toolbar tbActionBar;
@@ -63,6 +61,7 @@ public class GastosViajeActivity extends AppCompatActivity  {
         tbActionBar.setTitle(title);
     }
 
+    @Override
     public void onEvent(String tag,Object data) {
         switch (tag) {
             case OPTION_MANAGER:
@@ -77,6 +76,18 @@ public class GastosViajeActivity extends AppCompatActivity  {
                 replaceFragment( ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data), ColaboratorControlFragment.TAG);
 
                 break;
+
+
+            case OPTION_AUTHORIZE_REQUEST:
+
+                replaceFragment( AuthorizeRequestAndComplementsFragment.getInstance(), AuthorizeRequestAndComplementsFragment.TAG);
+
+                break;
+
+            case OPTION_CONSULT_CONTROLS:
+                replaceFragment( ControlsLiquidationsFragment.getInstance(), AuthorizeRequestAndComplementsFragment.TAG);
+
+                break;
         }
     }
 
@@ -85,6 +96,8 @@ public class GastosViajeActivity extends AppCompatActivity  {
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.replace(R.id.contentFragment, fragment, tag).commit();
     }
+
+
 
 
     @Override

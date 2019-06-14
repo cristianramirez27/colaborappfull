@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 
 import java.util.List;
 
@@ -22,11 +22,12 @@ public class ExpensesTravelMonthsRequestRecyclerAdapter extends RecyclerView.Ada
 
     private List<ColaboratorControlsMonthResponse.ControlMonth> dataItems;
     private OnControlMonthClickListener OnControlMonthClickListener;
-
+    private boolean isColaborator;
    // private OnGasVoucherClickListener onGasVoucherClickListener;
 
-    public ExpensesTravelMonthsRequestRecyclerAdapter(List<ColaboratorControlsMonthResponse.ControlMonth> requestComplementsColaboratorList) {
+    public ExpensesTravelMonthsRequestRecyclerAdapter(List<ColaboratorControlsMonthResponse.ControlMonth> requestComplementsColaboratorList,boolean isColaborator) {
         this.dataItems = requestComplementsColaboratorList;
+        this.isColaborator = isColaborator;
     }
 
     @NonNull
@@ -41,14 +42,31 @@ public class ExpensesTravelMonthsRequestRecyclerAdapter extends RecyclerView.Ada
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.itemView.setHasTransientState(true);
         viewHolder.numSolicitud.setText(dataItems.get(i).getControl());
+
+        viewHolder.nameEmployer.setVisibility(isColaborator ? View.GONE : View.VISIBLE);
+        viewHolder.nameEmployer.setText(dataItems.get(i).getNomviajero() != null ? dataItems.get(i).getNomviajero()  : "");
+
+
+
         viewHolder.itinerario.setText(dataItems.get(i).getItinerario());
         viewHolder.fechaInicio.setText(dataItems.get(i).getFec_salida());
-        viewHolder.fechaFin.setText(dataItems.get(i).getFec_salida());
+        viewHolder.fechaFin.setText(dataItems.get(i).getFec_regreso());
 
-        Integer[] statusData = getStatusConfiguration(dataItems.get(i).getClv_estatus());
+        /*Integer[] statusData = getStatusConfiguration(dataItems.get(i).getClv_estatus());
         viewHolder.status.setText(CoppelApp.getContext().getString(statusData[0]));
         viewHolder.status.setTextColor(CoppelApp.getContext().getResources().getColor(statusData[1]));
-        viewHolder.status.setBackgroundResource(statusData[2]);
+        viewHolder.status.setBackgroundResource(statusData[2]);*/
+
+        viewHolder.status.setText(dataItems.get(i).getEstatus());
+        if(dataItems.get(i).getEstatus().length() >= 20)
+            viewHolder.status.setTextSize(7);
+        viewHolder.status.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor(dataItems.get(i).getDes_color()));
+        gd.setCornerRadius(20);
+        viewHolder.status.setBackgroundDrawable(gd);
+
+
 
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +117,8 @@ public class ExpensesTravelMonthsRequestRecyclerAdapter extends RecyclerView.Ada
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cardview)
         CardView cardview;
+        @BindView(R.id.nameEmployer)
+        TextView nameEmployer;
         @BindView(R.id.numSolicitud)
         TextView numSolicitud;
         @BindView(R.id.txtMessage)

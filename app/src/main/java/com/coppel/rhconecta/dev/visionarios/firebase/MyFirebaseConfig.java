@@ -1,13 +1,11 @@
 package com.coppel.rhconecta.dev.visionarios.firebase;
 
 import android.app.Activity;
-import android.app.Application;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -36,11 +36,23 @@ public class DetailRequestColaboratorResponse extends ExpensesTravelBaseResponse
         private List<AditionalTraveller> ViajerosAdicionales;
         private List<Acomodation> TipoHospedaje;
         private List<Observation> Observaciones;
+        private List<FotoPerfil> FotoPerfil;
+
         private int Estado;
         private String Mensaje;
 
+        private boolean isGteRol;
+
         public int getEstado() {
             return Estado;
+        }
+
+        public List<com.coppel.rhconecta.dev.business.models.FotoPerfil> getFotoPerfil() {
+            return FotoPerfil;
+        }
+
+        public void setFotoPerfil(List<com.coppel.rhconecta.dev.business.models.FotoPerfil> fotoPerfil) {
+            FotoPerfil = fotoPerfil;
         }
 
         public void setEstado(int estado) {
@@ -118,7 +130,16 @@ public class DetailRequestColaboratorResponse extends ExpensesTravelBaseResponse
         public void setItinerarioMulticiudad(List<ItinerayMulti> itinerarioMulticiudad) {
             ItinerarioMulticiudad = itinerarioMulticiudad;
         }
+
+        public boolean isGteRol() {
+            return isGteRol;
+        }
+
+        public void setGteRol(boolean gteRol) {
+            isGteRol = gteRol;
+        }
     }
+
 
 
 

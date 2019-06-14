@@ -12,7 +12,6 @@ import android.support.v4.app.NotificationCompat;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.PushData;
 
 
 /**

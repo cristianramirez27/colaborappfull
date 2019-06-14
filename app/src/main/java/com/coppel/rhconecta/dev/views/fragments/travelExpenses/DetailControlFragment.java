@@ -12,38 +12,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType;
-import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
-import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
-import com.coppel.rhconecta.dev.business.models.DetailRequestColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.Devolution;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedResume;
-import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
-import com.coppel.rhconecta.dev.business.models.Itinerary;
-import com.coppel.rhconecta.dev.business.models.ReasonTravel;
-import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.ServicesError;
-import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
-import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeDetalleActivity;
-import com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl;
 import com.coppel.rhconecta.dev.views.customviews.Devoluciones;
-import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.customviews.GastosComprobar;
-import com.coppel.rhconecta.dev.views.customviews.Itinerario;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
-import com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales;
-import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.ArrayList;
@@ -54,8 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,6 +71,7 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
         this.detailControlColaboratorResponse = (DetailControlColaboratorResponse)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
 
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

@@ -79,6 +79,11 @@ public class EditTextMoney extends ConstraintLayout {
         txvTitle.setPadding(30,8,0,8);
     }
 
+    public void setPaddingEditText(int left, int top,int right,int bottom){
+
+        edtQuantity.setPadding( left, top, right ,bottom);
+    }
+
     public void setTitleGravity(int gravity){
         txvTitle.setGravity(gravity);
     }
@@ -143,5 +148,9 @@ public class EditTextMoney extends ConstraintLayout {
 
     public EditText getEdtQuantity() {
         return edtQuantity;
+    }
+
+    public void setVisibilityTitle(int visibility){
+        txvTitle.setVisibility(visibility);
     }
 }

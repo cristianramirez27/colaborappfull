@@ -38,6 +38,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public static final int NO_RESULT_BENEFITS = 10;
     public static final int NO_REFUSE_REMOVE = 11;
     public static final int MSG_ABONO = 12;
+    public static final int MSG_EXPENSES_TRAVEL = 13;
 
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
@@ -203,6 +204,15 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 ctlReady.setVisibility(View.VISIBLE);
                 ctlSentTo.setVisibility(View.GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(contentText);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+
+            case MSG_EXPENSES_TRAVEL:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(View.GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(contentText);
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);

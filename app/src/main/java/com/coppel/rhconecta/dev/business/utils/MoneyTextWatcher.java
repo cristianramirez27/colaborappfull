@@ -5,14 +5,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
-
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.Locale;
 
 public class MoneyTextWatcher implements TextWatcher {

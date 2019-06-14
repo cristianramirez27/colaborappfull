@@ -39,10 +39,21 @@ public class DetailControlColaboratorResponse extends ExpensesTravelBaseResponse
         private List<Acomodation> TipoHospedaje;
         private List<Observation> Observaciones;
 
+
+        private List<FotoPerfil> FotoPerfil;
+
         private List<ItinerayMulti> ItinerarioMulticiudad;
 
         private int Estado;
         private String Mensaje;
+
+        public List<com.coppel.rhconecta.dev.business.models.FotoPerfil> getFotoPerfil() {
+            return FotoPerfil;
+        }
+
+        public void setFotoPerfil(List<com.coppel.rhconecta.dev.business.models.FotoPerfil> fotoPerfil) {
+            FotoPerfil = fotoPerfil;
+        }
 
         public int getEstado() {
             return Estado;

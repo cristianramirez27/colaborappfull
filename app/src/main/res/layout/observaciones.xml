@@ -42,9 +42,44 @@
             android:textSize="11sp"
             android:textColor="@color/colorTextGray" />
 
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:scrollbars="vertical"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_gravity="top"
+                android:id="@+id/txtObservacionesDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:text=""
+                android:layout_centerHorizontal="true"
+                android:textSize="13sp"
+                android:textColor="@color/colorBackgroundCoppelNegro" />
+
+        </ScrollView>
+
+
+
         <TextView
+            android:id="@+id/titleObservationGte"
             android:layout_gravity="bottom|center_horizontal"
-            android:id="@+id/txtObservacionesDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:layout_marginTop="18dp"
+            android:visibility="gone"
+            android:text="Observaciones Gerente"
+            android:layout_centerHorizontal="true"
+            android:textSize="11sp"
+            android:textColor="@color/colorTextGray" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/txtObservacionesGteDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lineto_circular_pro_book"

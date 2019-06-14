@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 
 import java.io.Serializable;

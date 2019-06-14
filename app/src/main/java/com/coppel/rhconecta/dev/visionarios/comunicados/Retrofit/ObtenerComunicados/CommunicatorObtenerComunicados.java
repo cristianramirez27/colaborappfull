@@ -8,11 +8,6 @@ import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunica
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Events.ObtenerComunicadosEvent;
 import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.Request.JSON_ObtenerComunicados;
 import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import java.util.ArrayList;
 

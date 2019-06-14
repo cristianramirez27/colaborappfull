@@ -4,11 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Events.GuardarLogActionEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Request.JSON_GuardarLogAction;

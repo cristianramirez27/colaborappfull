@@ -1,19 +1,13 @@
 package com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Events.ObtenerEncuestasEvent;
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestas.Request.JSON_ObtenerEncuestas;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import java.util.ArrayList;
 

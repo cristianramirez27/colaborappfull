@@ -10,16 +10,41 @@
     android:layout_alignParentTop="true"
     android:layout_margin="4dp">
 
-    <TextView
-        android:layout_gravity="bottom|center_horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_bold"
-        android:visibility="visible"
-        android:text="Importes"
-        android:textSize="16sp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorBackgroundCoppelNegro" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/lineto_circular_pro_bold"
+            android:visibility="visible"
+            android:text="Importes"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBackgroundCoppelNegro" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:background="@drawable/background_blue_rounded"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="Editar"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:drawableRight="@drawable/icn_edit_blanco"
+            android:textAllCaps="false"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+
 
     <LinearLayout
         android:id="@+id/headerItinerario"

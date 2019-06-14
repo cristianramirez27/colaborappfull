@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Devolution;
-import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
-import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 

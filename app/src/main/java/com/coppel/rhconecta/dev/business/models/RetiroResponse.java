@@ -1,8 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import java.io.Serializable;
-import java.util.List;
-
 public class RetiroResponse extends WithDrawSavingBaseResponse {
     private Data data;
 

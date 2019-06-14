@@ -57,6 +57,7 @@
     <color name="hint_text_color">#e9edf2</color>
     <color name="disable_text_color">#9b9b9b</color>
     <color name="colorBackgroundVerdeClaro">#daffdf</color>
+    <color name="colorBackgroundRosaClaro">#fdf3dc</color>
 
 
 </resources>

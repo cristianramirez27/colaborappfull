@@ -276,10 +276,13 @@
     <string name="travel_expenses">Gastos de viaje</string>
     <string name="travel_expenses_manager">Opciones de Gerente</string>
     <string name="title_requests_controls">Mis solicitudes y controles</string>
-
+    <string name="title_authorize_requests_controls">Autorizar solicitudes</string>
     <string name="number_colaborator">N. Colaborador:</string>
-
+    <string name="title_consult_liqui">Consulta de liquidaciones</string>
     <string name="title_colaborator_control">Control de colaborador</string>
+    <string name="title_request_expenses">Solicitud de gastos</string>
+    <string name="title_complemento_expenses">Solicitud de complemento</string>
+    <string name="title_my_control">Mi control</string>
 
     <string name="title_desc_reason">*Descripción del motivo de viaje</string>
 
@@ -291,7 +294,16 @@
     <string name="status_payment">Liquidó</string>
     <string name="status_no_payment">No Liquidó</string>
     <string name="status_dont_deposite">Cancelado No Depositado</string>
+    <string name="title_detail_colaborator_control">Detalles del control</string>
+    <string name="title_detail_colaborator_request">Detalles de solicitud</string>
+    <string name="title_detail_colaborator_complement">Detalles del complemento</string>
 
-    <string name="title_detail_colaborator_control">Detalle del control</string>
+    <string name="hint_search_name_colaborator">Busca por nombre de colaborador</string>
+    <string name="select_center">Seleccionar centro</string>
+    <string name="select_status">Seleccionar estatus</string>
+
+    <string name="title_refuse_complement">Rechazar complemento</string>
+    <string name="desc_refuse">Escribe la razón por la que rechaza este gasto de viaje</string>
+    <string name="title_reason_refuse">Motivo de Rechazo</string>
 
 </resources>

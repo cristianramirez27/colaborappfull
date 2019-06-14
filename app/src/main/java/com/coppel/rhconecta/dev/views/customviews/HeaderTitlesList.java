@@ -57,6 +57,10 @@ public class HeaderTitlesList extends LinearLayout {
         title4.setText(title);
     }
 
+    public void setPaddingTitle4(){
+        title4.setPadding(30,0,0,0);
+    }
+
 
     public void setGravityTitle1(int gravity){
         title1.setGravity(gravity);

@@ -1,18 +1,13 @@
 package com.coppel.rhconecta.dev.business.Configuration;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-
-import java.io.Serializable;
 
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 

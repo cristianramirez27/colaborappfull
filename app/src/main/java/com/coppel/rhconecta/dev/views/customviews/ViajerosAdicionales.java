@@ -5,12 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.AditionalTraveller;
 import com.coppel.rhconecta.dev.views.adapters.AditionalTravellersRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ItineraryRecyclerAdapter;
 
 import java.util.List;
 

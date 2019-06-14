@@ -4,7 +4,6 @@ import android.os.Message;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 
-
 import com.coppel.rhconecta.dev.business.Configuration.PushSnackSingleton;
 import com.coppel.rhconecta.dev.business.Enums.PushType;
 import com.coppel.rhconecta.dev.business.models.PushData;

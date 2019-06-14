@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
-import com.coppel.rhconecta.dev.business.models.Devolution;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
@@ -19,6 +17,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 
 public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecyclerAdapter.ViewHolder> {
 
@@ -39,7 +39,7 @@ public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecycler
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         //viewHolder.itemView.setHasTransientState(true);
     //dataItems.get(i).getControl()
-        viewHolder.detailAmount.setTexts(dataItems.get(i).getDes_tipoGasto(),
+        viewHolder.detailAmount.setTexts(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()),
                 TextUtilities.getNumberInCurrencyFormat(
                         Double.parseDouble(String.valueOf(dataItems.get(i).getImp_total()))));
     }
@@ -76,14 +76,14 @@ public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecycler
             ButterKnife.bind(this, itemView);
 
 
-            Typeface font = ResourcesCompat.getFont(CoppelApp.getContext(), R.font.lineto_circular_pro_book);
+            Typeface font = ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_book);
             detailAmount.setStartFont(font);
             detailAmount.setEndFont(font);
 
             detailAmount.setStartTextSize(13);
             detailAmount.setEndTextSize(13);
-            detailAmount.setStartTextColor(CoppelApp.getContext().getResources().getColor(R.color.colorSavingHeaderText));
-            detailAmount.setEndTextSize(CoppelApp.getContext().getResources().getColor(R.color.colorBackgroundCoppelNegro));
+            detailAmount.setStartTextColor(getContext().getResources().getColor(R.color.colorSavingHeaderText));
+            detailAmount.setEndTextSize(getContext().getResources().getColor(R.color.colorBackgroundCoppelNegro));
 
             /*detailAmount.setColorTitle2(R.color.colorBackgroundCoppelNegro);
             detailAmount.setColorTitle3(R.color.colorBackgroundCoppelNegro);

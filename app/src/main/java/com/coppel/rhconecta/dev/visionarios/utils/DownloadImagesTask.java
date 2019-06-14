@@ -4,14 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.visionarios.videos.interfaces.Videos;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
-import com.coppel.rhconecta.dev.visionarios.videos.presenters.VideosPresenter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

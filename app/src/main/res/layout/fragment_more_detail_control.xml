@@ -27,7 +27,7 @@
 
             <com.coppel.rhconecta.dev.views.customviews.GastosComprobar
                android:id="@+id/GastosComprobar"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -35,7 +35,7 @@
 
             <com.coppel.rhconecta.dev.views.customviews.Devoluciones
                 android:id="@+id/Devoluciones"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.Devoluciones>

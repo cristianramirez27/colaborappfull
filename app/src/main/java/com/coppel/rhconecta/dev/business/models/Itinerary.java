@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.business.models;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Itinerary implements Serializable {
 

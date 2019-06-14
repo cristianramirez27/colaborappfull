@@ -41,7 +41,6 @@ import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,6 @@ import butterknife.ButterKnife;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -154,11 +152,11 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
             }
         });
 
-        expensesTravelColaboratorRequestRecyclerAdapter = new ExpensesTravelColaboratorRequestRecyclerAdapter(requestComplementsColaborators);
+        expensesTravelColaboratorRequestRecyclerAdapter = new ExpensesTravelColaboratorRequestRecyclerAdapter(requestComplementsColaborators,true);
         expensesTravelColaboratorRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
-        expensesTravelColaboratorControlsRecyclerAdapter = new ExpensesTravelColaboratorControlsRecyclerAdapter(controlColaborators);
+        expensesTravelColaboratorControlsRecyclerAdapter = new ExpensesTravelColaboratorControlsRecyclerAdapter(controlColaborators,true);
         expensesTravelColaboratorControlsRecyclerAdapter.setOnControlSelectedClickListener(this);
-        expensesTravelColaboratorMonthsRecyclerAdapter = new ExpensesTravelColaboratorMonthsRecyclerAdapter(monthsList);
+        expensesTravelColaboratorMonthsRecyclerAdapter = new ExpensesTravelColaboratorMonthsRecyclerAdapter(monthsList,true);
         expensesTravelColaboratorMonthsRecyclerAdapter.setOnMonthClickListener(this);
         expensesTravelColaboratorMonthsRecyclerAdapter.setOnControlMonthClickListener(this);
 

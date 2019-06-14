@@ -1,20 +1,18 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
-import com.coppel.rhconecta.dev.business.models.Devolution;
+import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.views.adapters.AmountsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.DevolutionsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.ArrayList;
@@ -29,6 +27,11 @@ public class ImportesView  extends RelativeLayout  {
     RecyclerView rcvImportes;
     @BindView(R.id.totalesImports)
     TextViewDetail totalesImports;
+    @BindView(R.id.btnEdit)
+    Button btnEdit;
+
+
+    private Command actionEdit;
 
     private List<DetailRequest> detailRequestList;
 
@@ -62,9 +65,27 @@ public class ImportesView  extends RelativeLayout  {
         totalesImports.setStartFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
         totalesImports.setEndFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
 
+        btnEdit.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( actionEdit != null) {
+                    actionEdit.execute();
+                }
+            }
+        });
+
 
     }
 
+
+
+    public void setActionEdit(Command actionEdit) {
+        this.actionEdit = actionEdit;
+    }
+
+    public void setVisibilityEdit(int visibility){
+        btnEdit.setVisibility(visibility);
+    }
     public void setTotalesImportes(String totales) {
         totalesImports.setTexts("Total", TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble(totales)) );

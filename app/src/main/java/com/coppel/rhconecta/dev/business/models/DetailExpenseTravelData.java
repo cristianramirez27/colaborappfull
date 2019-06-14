@@ -10,6 +10,8 @@ public class DetailExpenseTravelData implements Serializable {
         private int clave;
         private Object data;
 
+        private String observations;
+
     public DetailExpenseTravelData(DetailExpenseTravelType detailExpenseTravelType, int clave) {
         this.detailExpenseTravelType = detailExpenseTravelType;
         this.clave = clave;
@@ -37,5 +39,13 @@ public class DetailExpenseTravelData implements Serializable {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
     }
 }

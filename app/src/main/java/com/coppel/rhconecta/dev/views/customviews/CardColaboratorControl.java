@@ -1,6 +1,9 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -8,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.utils.ImageLoaderUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +44,8 @@ public class CardColaboratorControl extends LinearLayout {
 
     @BindView(R.id.tituloControl)
     TextView tituloControl;
+    @BindView(R.id.container_cardvide)
+    LinearLayout container_cardvide;
 
 
     public CardColaboratorControl(Context context) {
@@ -67,8 +71,10 @@ public class CardColaboratorControl extends LinearLayout {
         this.cardview.setBackgroundResource(backgroundResource);
     }
 
-    public void setImgColaborador(String url) {
-        ImageLoaderUtil.loadPictureFromURL(getContext(),url,imgColaborador);
+    public void setImgColaborador(Bitmap btm) {
+
+        imgColaborador.setImageBitmap(btm);
+       // ImageLoaderUtil.loadPictureFromURL(getContext(),url,imgColaborador);
     }
 
     public void setNombreColaborador(String nombreColaborador) {
@@ -95,8 +101,20 @@ public class CardColaboratorControl extends LinearLayout {
         this.fechas.setText(fechas);
     }
 
-    public void setStatus(int type,int clv_status, String colorHexa, String status) {
-        this.status.setText(status);
+    public void setStatus(int type,int clv_status, String colorFont,String colorBackground, String statusName) {
+        //this.status.setText(status);
+
+        this.status.setText(statusName);
+        if(statusName.length() >= 20)
+            status.setTextSize(7);
+
+        this.status.setTextColor(Color.parseColor(colorFont));
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor(colorBackground));
+        gd.setCornerRadius(20);
+        this.layoutStatus.setBackgroundDrawable(gd);
+
+       /*
         Integer[] data = new  Integer[3];
 
         if(type == 1){
@@ -177,12 +195,15 @@ public class CardColaboratorControl extends LinearLayout {
                    break;
 
             }
-        }
+        }*/
 
-        this.status.setText(getContext().getString(data[0]));
-        this.status.setTextColor(getContext().getResources().getColor(data[1]));
-        this.layoutStatus.setBackgroundResource(data[2]);
 
+
+    }
+
+    public void setBackgroundCard(int color){
+
+        container_cardvide.setBackgroundColor(getContext().getResources().getColor(color));
     }
 
     public void setLayoutStatus(int iResource) {

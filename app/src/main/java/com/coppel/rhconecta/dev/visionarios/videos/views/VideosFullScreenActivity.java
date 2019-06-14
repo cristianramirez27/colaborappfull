@@ -1,13 +1,9 @@
 package com.coppel.rhconecta.dev.visionarios.videos.views;
 
-import android.app.Activity;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -15,14 +11,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.VideoView;
-import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;

@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.resources.db.models;
 
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

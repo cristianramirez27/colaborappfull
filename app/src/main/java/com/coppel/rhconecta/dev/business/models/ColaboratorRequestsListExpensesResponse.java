@@ -68,8 +68,55 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String fec_regreso;
         private String fec_salida;
         private String des_color;
+        private String des_colorletra;
         private String itinerario;
         private String razon_viaje;
+
+        private String nom_viajero;
+        private String num_autorizo;
+
+        private int num_viajero;
+
+
+        public String getDes_colorletra() {
+            return des_colorletra;
+        }
+
+        public void setDes_colorletra(String des_colorletra) {
+            this.des_colorletra = des_colorletra;
+        }
+
+        public String getNom_viajero() {
+            return nom_viajero;
+        }
+
+        public void setNom_viajero(String nom_viajero) {
+            this.nom_viajero = nom_viajero;
+        }
+
+        public String getNomviajero() {
+            return nom_viajero;
+        }
+
+        public int getNum_viajero() {
+            return num_viajero;
+        }
+
+        public void setNum_viajero(int num_viajero) {
+            this.num_viajero = num_viajero;
+        }
+
+        public void setNomviajero(String nomviajero) {
+            this.nom_viajero = nomviajero;
+        }
+
+        public String getNum_autorizo() {
+            return num_autorizo;
+        }
+
+        public void setNum_autorizo(String num_autorizo) {
+            this.num_autorizo = num_autorizo;
+        }
 
         public String getDes_color(){
             return des_color;
@@ -153,6 +200,7 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String des_motivo;
         private String estatus;
         private String des_color;
+        private String des_colorletra;
         private String fecha;
         private String fecha_rechazo;
         private String fechaautoriza;
@@ -162,7 +210,7 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String nom_motivo;
         private String nombreautorizo;
         private String nomviajero;
-        private int num_autorizo;
+        private String num_autorizo;
         private int num_destino;
         private int num_origen;
         private int num_rechazo;
@@ -172,6 +220,18 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String des_solicitud;
         private String itinerario;
         private String empalme;
+        private String nom_estatus;
+
+        private int tipoSolicitud;
+
+
+        public String getDes_colorletra() {
+            return des_colorletra;
+        }
+
+        public void setDes_colorletra(String des_colorletra) {
+            this.des_colorletra = des_colorletra;
+        }
 
         public String getDes_color() {
             return des_color;
@@ -309,11 +369,11 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
             this.nomviajero = nomviajero;
         }
 
-        public int getNum_autorizo() {
+        public String getNum_autorizo() {
             return num_autorizo;
         }
 
-        public void setNum_autorizo(int num_autorizo) {
+        public void setNum_autorizo(String num_autorizo) {
             this.num_autorizo = num_autorizo;
         }
 
@@ -388,13 +448,39 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         public void setEmpalme(String empalme) {
             this.empalme = empalme;
         }
+
+        public String getNom_estatus() {
+            return nom_estatus;
+        }
+
+        public void setNom_estatus(String nom_estatus) {
+            this.nom_estatus = nom_estatus;
+        }
+
+        public int getTipoSolicitud() {
+            return tipoSolicitud;
+        }
+
+        public void setTipoSolicitud(int tipoSolicitud) {
+            this.tipoSolicitud = tipoSolicitud;
+        }
     }
 
     public class Months{
         private int clv_mes;
         private String des_mes;
 
+        private String num_empleados;
+
         private transient boolean expand;
+
+        public String getNum_empleados() {
+            return num_empleados;
+        }
+
+        public void setNum_empleados(String num_empleados) {
+            this.num_empleados = num_empleados;
+        }
 
         private List<ColaboratorControlsMonthResponse.ControlMonth> monthRequest;
 

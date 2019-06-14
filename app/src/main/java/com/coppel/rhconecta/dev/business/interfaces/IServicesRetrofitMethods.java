@@ -1,7 +1,7 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
+import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
@@ -14,8 +14,12 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPago
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailControlExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRequestToAuthorizeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
@@ -30,11 +34,11 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDeta
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesRefuseRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
-import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -180,5 +184,35 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getDetailControlExpensesTravel(@Url String url,@Header("Authorization") String token, @Body CoppelServicesDetailControlExpensesRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getCentersExpensesTravel(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetCentersRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getRequestExpensesToAuthorize(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetRequestToAuthorizeRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getFilterControlsExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetFiltersControlRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getControlsGteExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetControlsGteRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getMonthsGteExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetControlsGteRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getAutorizedExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesAuthorizedRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getRefuseExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesRefuseRequest servicesRequest);
 
 }

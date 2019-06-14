@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class BenefitsSearchResponse extends BenefitsBaseResponse {

@@ -6,13 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Devolution;
-import com.coppel.rhconecta.dev.business.models.Itinerary;
 import com.coppel.rhconecta.dev.views.adapters.DevolutionsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ItineraryRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;

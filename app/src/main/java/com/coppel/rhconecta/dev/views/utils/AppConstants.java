@@ -18,6 +18,7 @@ public class AppConstants {
 
     public static final String SHARED_PREFERENCES_IS_GTE = "IS_GTE";
     public static final String SHARED_PREFERENCES_IS_SUPLENTE = "IS_SUPLENTE";
+    public static final String SHARED_PREFERENCES_NUM_GTE = "NUM_GTE";
 
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
@@ -101,7 +102,13 @@ public class AppConstants {
 
     public static final String OPTION_DETAIL_REQUETS_CONTROLS = "OPTION_DETAIL_REQUETS_CONTROLS";
 
+
+    public static final String OPTION_AUTHORIZE_REQUEST = "OPTION_AUTHORIZE_REQUEST";
+    public static final String OPTION_CONSULT_CONTROLS = "OPTION_CONSULT_CONTROLS";
+
     public static final String OPTION_MORE_DETAIL_CONTROL= "OPTION_MORE_DETAIL_CONTROL";
+    public static final String OPTION_REFUSE_REQUEST= "OPTION_REFUSE_REQUEST";
+    public static final String OPTION_EDIT_AMOUNTS= "OPTION_EDIT_AMOUNTS";
 
     public static final String OPTION_MORE_DETAIL_REQUEST= "OPTION_MORE_DETAIL_REQUEST";
     public static final String OPTION_MORE_DETAIL_COMPLEMENT= "OPTION_MORE_DETAIL_COMPLEMENT";

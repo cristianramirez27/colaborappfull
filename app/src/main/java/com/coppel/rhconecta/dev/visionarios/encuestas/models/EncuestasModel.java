@@ -22,7 +22,6 @@ import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestasP
 import com.coppel.rhconecta.dev.visionarios.encuestas.retrofit.ObtenerEncuestasPreguntas.Request.JSON_ObtenerEncuestasPreguntas;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

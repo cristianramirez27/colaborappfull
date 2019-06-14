@@ -1,19 +1,13 @@
 package com.coppel.rhconecta.dev.visionarios.inicio.Retrofit.GuardarLogin;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.inicio.Retrofit.GuardarLogin.Events.ErrorEvent;
 import com.coppel.rhconecta.dev.visionarios.inicio.Retrofit.GuardarLogin.Events.GuardarLoginEvent;
 import com.coppel.rhconecta.dev.visionarios.inicio.Retrofit.GuardarLogin.Request.JSON_GuardarLogin;
 import com.coppel.rhconecta.dev.visionarios.inicio.Retrofit.GuardarLogin.Response.ResponseGuardarLogin;
-import com.coppel.rhconecta.dev.visionarios.utils.App;
-import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

@@ -4,19 +4,12 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.SystemClock;
-
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Random;
-
-import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by noe_3 on 16/11/2017.

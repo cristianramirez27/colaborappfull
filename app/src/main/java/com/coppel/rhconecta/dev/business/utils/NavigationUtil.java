@@ -1,9 +1,8 @@
 package com.coppel.rhconecta.dev.business.utils;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
-import com.coppel.rhconecta.dev.R;
 
 import java.io.Serializable;
 import java.util.HashMap;

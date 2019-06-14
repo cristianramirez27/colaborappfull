@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import java.util.Map;
-
 public class CoppelServicesConsultaRetiroRequest extends CoppelServicesBaseFondoAhorroRequest {
 
     public CoppelServicesConsultaRetiroRequest() {

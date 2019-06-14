@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
@@ -26,10 +24,12 @@ public class ExpensesTravelColaboratorMonthsRecyclerAdapter extends RecyclerView
     private List<ColaboratorRequestsListExpensesResponse.Months> dataItems;
     private OnMonthClickListener OnMonthClickListener;
     private ExpensesTravelMonthsRequestRecyclerAdapter.OnControlMonthClickListener OnControlMonthClickListener;
+    private boolean isColaborator;
    // private OnGasVoucherClickListener onGasVoucherClickListener;
 
-    public ExpensesTravelColaboratorMonthsRecyclerAdapter(List<ColaboratorRequestsListExpensesResponse.Months> requestComplementsColaboratorList) {
+    public ExpensesTravelColaboratorMonthsRecyclerAdapter(List<ColaboratorRequestsListExpensesResponse.Months> requestComplementsColaboratorList,boolean isColaborator) {
         this.dataItems = requestComplementsColaboratorList;
+        this.isColaborator = isColaborator;
     }
 
     @NonNull
@@ -54,7 +54,7 @@ public class ExpensesTravelColaboratorMonthsRecyclerAdapter extends RecyclerView
 
         if(dataItems.get(i).isExpand()){
             viewHolder.layoutMonthsRequest.setVisibility(View.VISIBLE);
-            ExpensesTravelMonthsRequestRecyclerAdapter  monthsRequestList = new ExpensesTravelMonthsRequestRecyclerAdapter(dataItems.get(i).getMonthRequest());
+            ExpensesTravelMonthsRequestRecyclerAdapter  monthsRequestList = new ExpensesTravelMonthsRequestRecyclerAdapter(dataItems.get(i).getMonthRequest(),isColaborator);
             monthsRequestList.setOnControlMonthClickListener(OnControlMonthClickListener);
             viewHolder.rcvControlsPayments.setAdapter(monthsRequestList);
         }else {

@@ -11,26 +11,22 @@ import android.support.v7.widget.Toolbar;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
-import com.coppel.rhconecta.dev.business.models.DetailRequestColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.ImportsList;
-import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailControlFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailRequestComplementFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.EditImportsFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.RefuseReasonFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLABORATOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EDIT_AMOUNTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MORE_DETAIL_COMPLEMENT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MORE_DETAIL_CONTROL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MORE_DETAIL_REQUEST;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REFUSE_REQUEST;
 
 public class GastosViajeDetalleActivity extends AppCompatActivity  {
 
@@ -68,21 +64,23 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
         switch (tag) {
 
             case OPTION_MORE_DETAIL_REQUEST:
-                ImportsList importsListRequest = new ImportsList();
-                importsListRequest.setImportes( ((DetailRequestColaboratorResponse)data).getData().getResponse().getVerDetallesSolicitud());
-                replaceFragment( DetailRequestComplementFragment.getInstance(importsListRequest), DetailControlFragment.TAG);
+                replaceFragment( DetailRequestComplementFragment.getInstance((ImportsList)data), DetailControlFragment.TAG);
                 break;
             case OPTION_MORE_DETAIL_COMPLEMENT:
-                ImportsList importsListComplement = new ImportsList();
-                importsListComplement.setImportes( ((DetailRequestColaboratorResponse)data).getData().getResponse().getVerDetallesComplemento());
-                replaceFragment( DetailRequestComplementFragment.getInstance(importsListComplement), DetailControlFragment.TAG);
+                replaceFragment( DetailRequestComplementFragment.getInstance((ImportsList)data), DetailControlFragment.TAG);
 
                 break;
 
             case OPTION_MORE_DETAIL_CONTROL:
-
                 replaceFragment( DetailControlFragment.getInstance((DetailControlColaboratorResponse)data), DetailControlFragment.TAG);
+                break;
 
+            case OPTION_REFUSE_REQUEST:
+                replaceFragment( RefuseReasonFragment.getInstance((DetailExpenseTravelData)data ), RefuseReasonFragment.TAG);
+                break;
+
+            case OPTION_EDIT_AMOUNTS:
+                replaceFragment(EditImportsFragment.getInstance((ImportsList)data), EditImportsFragment.TAG);
                 break;
         }
     }

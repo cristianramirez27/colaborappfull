@@ -15,11 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,15 +31,19 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
 
     public static final String TAG = TravelExpensesManagerFragment.class.getSimpleName();
     private GastosViajeActivity parent;
-    @BindView(R.id.btnRequest)
-    Button btnRequest;
+    @BindView(R.id.btnAuthorize)
+    Button btnAuthorize;
     @BindView(R.id.btnControls)
     Button btnControls;
+
+    private OnEventListener OnEventListener;
 
     private long mLastClickTime = 0;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        OnEventListener = (OnEventListener)getActivity();
     }
 
     @Override
@@ -48,7 +55,7 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
         setHasOptionsMenu(true);
         parent = (GastosViajeActivity) getActivity();
         parent.setToolbarTitle(getString(R.string.travel_expenses_manager));
-        btnRequest.setOnClickListener(this);
+        btnAuthorize.setOnClickListener(this);
         btnControls.setOnClickListener(this);
         return view;
     }
@@ -77,13 +84,14 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
         mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
-            case R.id.btnColaborator:
-
+            case R.id.btnAuthorize:
+                OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST,null);
                 break;
 
-            case R.id.btnManager:
-
+            case R.id.btnControls:
+                OnEventListener.onEvent(OPTION_CONSULT_CONTROLS,null);
                 break;
+
         }
     }
 

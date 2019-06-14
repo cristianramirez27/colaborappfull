@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
@@ -159,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="8dp"/>
 
                 <LinearLayout
@@ -197,6 +199,7 @@
 
 
             <LinearLayout
+                android:id="@+id/layoutHospedaje"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -211,7 +214,7 @@
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="Tipo de Hospedaje"
                     android:paddingLeft="8dp"
-                    android:textColor="@color/colorTextGrayDark"
+                    android:textColor="@color/colorBackgroundCoppelNegro"
                     android:textSize="15sp"/>
 
                 <TextView
@@ -221,6 +224,7 @@
                     android:fontFamily="@font/lineto_circular_pro_book"
                     android:paddingLeft="8dp"
                     android:textSize="13sp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="6dp"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 
@@ -236,18 +240,75 @@
         </LinearLayout>
 
         <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/layoutObservaciones"
-                android:layout_width="match_parent"
-                android:visibility="visible"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
+            android:orientation="vertical"
+            android:id="@+id/layoutObservaciones"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
             android:paddingBottom="20dp"
             android:background="@color/colorBackgroundFragments"
+            android:layout_height="wrap_content">
+
+            <include
+                layout="@layout/observaciones"/>
+
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layoutObservacionesGte"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                android:background="@color/colorBackgroundFragments"
                 android:layout_height="wrap_content">
 
                 <include
-                    layout="@layout/observaciones"/>
+                    layout="@layout/observacionesgte"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutBtns"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btnActionLeft"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_blue_rounded"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:text="Rechazar"
+                        android:textAllCaps="false"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/btnActionRight"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_darkgray_rounder"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:text="Autorizar"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
 
 
             </LinearLayout>

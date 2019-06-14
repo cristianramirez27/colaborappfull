@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.business.models;
 
-import java.io.Serializable;
-
 public abstract class LocationEntity{
         protected String nombre;
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,6 +48,7 @@ public class Itinerario extends RelativeLayout {
 
     public void setTipoItinerario(String tipoItinerario) {
         this.tipoItinerario.setText(tipoItinerario);
+        this.tipoItinerario.setVisibility(VISIBLE);
     }
 
     public RecyclerView getRcvItinerario() {

@@ -2,24 +2,16 @@ package com.coppel.rhconecta.dev.visionarios.firebase;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.PushData;
-import com.coppel.rhconecta.dev.business.utils.Foreground;
-import com.coppel.rhconecta.dev.business.utils.IUPushNotificationUtil;
-import com.coppel.rhconecta.dev.business.utils.JsonManager;
 import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -28,13 +20,7 @@ import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.json.JSONObject;
-
-import java.util.Map;
 import java.util.Random;
-
-import static com.coppel.rhconecta.dev.business.Enums.PushType.INVASIVE;
-import static com.coppel.rhconecta.dev.business.Enums.PushType.NOINVASIVE;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

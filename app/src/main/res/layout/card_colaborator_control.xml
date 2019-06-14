@@ -18,7 +18,7 @@
         app:cardCornerRadius="4dp">
 
         <LinearLayout
-            android:id="@+id/container_notinvasive"
+            android:id="@+id/container_cardvide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -38,8 +38,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_circle_shadow"
-                    android:layout_alignParentLeft="true"
-                    android:src="@drawable/imagen_video"/>
+                    android:layout_alignParentLeft="true"/>
 
 
                 <RelativeLayout
@@ -54,10 +53,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left|center_vertical"
+                        android:fontFamily="@font/lineto_circular_pro_bold"
                         android:visibility="visible"
                         android:text="Gilberto Gastelun"
                         android:layout_centerHorizontal="true"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textColor="@color/colorBackgroundCoppelNegro" />
 
                     <TextView
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="left|center_vertical"
                         android:visibility="visible"
-                        android:text="945957123456"
+                        android:text=""
                         android:textSize="14sp"
                         android:textColor="@color/colorTextBlueCoppel" />
 
@@ -104,7 +104,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="bottom|center_horizontal"
-                    android:text="Control"
+                    android:text=""
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/colorBackgroundCoppelNegro"

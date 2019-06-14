@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.business.utils;
 
 import android.util.Log;
 
-import com.coppel.rhconecta.dev.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.SimpleDateFormat;

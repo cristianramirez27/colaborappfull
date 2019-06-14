@@ -6,11 +6,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.AditionalTraveller;
-import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
@@ -19,6 +16,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 
 public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseCheckRecyclerAdapter.ViewHolder> {
 
@@ -37,7 +36,7 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.gastoComprobar.setTitle1(String.valueOf(dataItems.get(i).getDes_tipoGasto()));
+        viewHolder.gastoComprobar.setTitle1(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()));
         viewHolder.gastoComprobar.setTitle2(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(dataItems.get(i).getImp_totalAutorizado()))) );
         viewHolder.gastoComprobar.setTitle3(TextUtilities.getNumberInCurrencyFormat(
@@ -86,6 +85,7 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
             gastoComprobar.setGravityTitle2(Gravity.LEFT);
             gastoComprobar.setGravityTitle3(Gravity.LEFT);
             gastoComprobar.setGravityTitle4(Gravity.LEFT);
+            gastoComprobar.setPaddingTitle4();
         }
     }
 

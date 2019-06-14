@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
 
@@ -102,6 +101,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 /*Almacenamos si es Gerente*/
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profileResponse.getData().getResponse()[0].getEsGte() == 1 ? true : false);
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE,  profileResponse.getData().getResponse()[0].getEsSuplente() == 1 ? true : false);
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profileResponse.getData().getResponse()[0].getGte()));
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
