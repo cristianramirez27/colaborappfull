@@ -40,8 +40,7 @@ public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecycler
         //viewHolder.itemView.setHasTransientState(true);
     //dataItems.get(i).getControl()
         viewHolder.detailAmount.setTexts(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()),
-                TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(String.valueOf(dataItems.get(i).getImp_total()))));
+                String.format("$%s",String.valueOf(dataItems.get(i).getImp_total())));
     }
 
     @Override

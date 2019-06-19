@@ -99,9 +99,10 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         parent = (GastosViajeDetalleActivity) getActivity();
-        parent.setToolbarTitle(getString(R.string.title_refuse_complement));
+        parent.setToolbarTitle(importsLists.getType() == 1 ?   getString(R.string.title_detail_colaborator_complement )
+                :  getString(R.string.title_detail_colaborator_request));
 
-       initValues();
+        initValues();
 
         editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),this.importsListsFilter,this);
         rcvImporte.setHasFixedSize(true);
@@ -148,14 +149,27 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
         setTotalGte(total);
     }
 
+    private double  getTotalGte(){
+        double total = 0;
+        for(Integer key : mapAmounts.keySet()){
+            total+= mapAmounts.get(key);
+        }
+
+        return total;
+    }
+
     private void saveNewAmounts(){
         List<DetailRequest> newAmounts = new ArrayList<>();
 
         for(Integer key : mapAmounts.keySet()){
-            newAmounts.add(new DetailRequest(key,"",mapAmounts.get(key)));
+            newAmounts.add(new DetailRequest(key,"",String.valueOf(mapAmounts.get(key))));
         }
+
+        newAmounts.add(new DetailRequest(-1,"",String.valueOf(getTotalGte())));
         //Actualizamos la lista de importes  para autorizar con los nuevos valores
         AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().setCapturaGerente(newAmounts);
+
+        getActivity().finish();
     }
 
     @Override
@@ -237,19 +251,25 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
     public void setTotalColaborator() {
         double total = 0;
         for(DetailRequest detailRequest : this.importsListsFilter){
-            if(detailRequest.getIdu_tipoGasto() != -1)
-                total+= detailRequest.getImp_total();
+            if(detailRequest.getIdu_tipoGasto() != -1) {
+                String totalParcial = detailRequest.getImp_total().replace(",","");
+                total += Double.parseDouble(totalParcial);
+
+            }
         }
 
-        totalColaborador.setText(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(String.valueOf(total))));
+        totalColaborador.setText( String.format("%s",TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf(total)))));
+               /* TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf())));*/
     }
 
     @Override
     public void setTotalGte(double total) {
 
-        totalGerente.setText(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(String.valueOf(total))));
+        totalGerente.setText( String.format("%s",TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf(total)))));
+               /* );*/
     }
 
     @Override
@@ -261,8 +281,6 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
     public void hideProgress() {
         if(dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
-
-
 
 
 }

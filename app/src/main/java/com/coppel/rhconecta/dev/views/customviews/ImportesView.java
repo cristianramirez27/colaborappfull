@@ -87,12 +87,11 @@ public class ImportesView  extends RelativeLayout  {
         btnEdit.setVisibility(visibility);
     }
     public void setTotalesImportes(String totales) {
-        totalesImports.setTexts("Total", TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(totales)) );
+        totalesImports.setTexts("Total",String.format("$%s",totales));
     }
 
     public void setDataRecyclerView(List<DetailRequest> importes){
-
+        detailRequestList.clear();
         for (DetailRequest detailRequest :importes)
             detailRequestList.add(detailRequest);
 

@@ -59,9 +59,8 @@ public class Devoluciones extends RelativeLayout {
     }
 
     public void setTotalesDevolutions(String totalesDevolutions) {
-        this.totalesDevolutions.setTexts("Total devoluciones",
-                TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble( totalesDevolutions)));
+        this.totalesDevolutions.setTexts("Total devoluciones",String.format("$%s",String.valueOf(totalesDevolutions)));
+
     }
 
     public void setDataRecyclerView(List<Devolution> devolutions){

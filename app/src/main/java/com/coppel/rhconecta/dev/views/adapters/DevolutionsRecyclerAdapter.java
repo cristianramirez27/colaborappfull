@@ -38,8 +38,7 @@ public class DevolutionsRecyclerAdapter extends RecyclerView.Adapter<Devolutions
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
         viewHolder.detail.setTexts(String.valueOf(dataItems.get(i).getFec_deposito()),
-                TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble( String.valueOf(dataItems.get(i).getTotal()))));
+                String.format("$%s", String.valueOf(dataItems.get(i).getTotal())));
     }
 
     @Override

@@ -46,6 +46,9 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
         if(dataItems.get(i).getTipo() == 1){
             viewHolder.numSolicitud.setText(dataItems.get(i).getCLV_CONTROL());
             viewHolder.txtMessage.setText(dataItems.get(i).getDes_solicitud());
+            viewHolder.txtMessage.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.txtMessage.setText("");
         }
         /*else{
             viewHolder.numSolicitud.setText(String.valueOf(dataItems.get(i).getClv_solicitud()));

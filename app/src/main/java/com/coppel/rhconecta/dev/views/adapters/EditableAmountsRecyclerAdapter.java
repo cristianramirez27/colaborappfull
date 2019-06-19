@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.business.interfaces.ITotalAmounts;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
+import com.coppel.rhconecta.dev.views.customviews.EditTextMoneyDecimal;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
@@ -48,8 +49,15 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
         //viewHolder.itemView.setHasTransientState(true);
     //dataItems.get(i).getControl()
         viewHolder.name.setText(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()));
+        String amount = dataItems.get(i).getImp_total().replace(",","");
+
+        viewHolder.amount.setHint(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(amount)));
+
         viewHolder.amount.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(String.valueOf(dataItems.get(i).getImp_total()))));
+                        Double.parseDouble(amount)));
+
+        viewHolder.edtNewAmount.getEdtQuantity().setHint("$0.00");
 
         setFocusChangeListener(dataItems.get(i), viewHolder.edtNewAmount);
 
@@ -85,7 +93,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
         @BindView(R.id.amount)
         TextView amount;
         @BindView(R.id.edtNewAmount)
-        EditTextMoney edtNewAmount;
+        EditTextMoneyDecimal edtNewAmount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +118,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
     }
 
 
-    private void setFocusChangeListener(DetailRequest detailRequest,EditTextMoney editTextMoney){
+    private void setFocusChangeListener(DetailRequest detailRequest,EditTextMoneyDecimal editTextMoney){
 
 
 
@@ -127,7 +135,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
                     String value =  editTextMoney.getEdtQuantity().getText().toString();
                     value = value.replace("$","");
                     value = value.replace(",","");
-                    value = value.replace(".","");
+                    //value = value.replace(".","");
                     value = value.trim();
                     detailRequest.setNewAmount(Double.parseDouble(value));
                     ITotalAmounts.setValueGte(detailRequest.getIdu_tipoGasto(),detailRequest.getNewAmount());

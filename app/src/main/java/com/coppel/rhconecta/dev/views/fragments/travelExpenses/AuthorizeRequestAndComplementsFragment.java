@@ -201,11 +201,17 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
                         if(centersResponse.getData().getResponse().getCentros().size() == 1){
                             centerSelected = centersResponse.getData().getResponse().getCentros().get(0);
                             centro.setText(centersResponse.getData().getResponse().getCentros().get(0).getNom_centro());
+
+                            getRequestExpenses();
                         }else {
 
                             if(showCenterDialog) {
                                 showCenterDialog = false;
                                 showCenters(centersResponse.getData().getResponse().getCentros());
+                            }else {
+                                centerSelected = centersResponse.getData().getResponse().getCentros().get(0);
+                                centro.setText(centersResponse.getData().getResponse().getCentros().get(0).getNom_centro());
+                                getRequestExpenses();
                             }
                         }
                     }

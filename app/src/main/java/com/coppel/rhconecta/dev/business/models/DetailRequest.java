@@ -6,11 +6,11 @@ public class DetailRequest implements Serializable {
 
     private int idu_tipoGasto;
     private String des_tipoGasto;
-    private double imp_total;
+    private String imp_total;
 
     private transient double newAmount;
 
-    public DetailRequest(int idu_tipoGasto, String des_tipoGasto, double imp_total) {
+    public DetailRequest(int idu_tipoGasto, String des_tipoGasto, String imp_total) {
         this.idu_tipoGasto = idu_tipoGasto;
         this.des_tipoGasto = des_tipoGasto;
         this.imp_total = imp_total;
@@ -32,11 +32,11 @@ public class DetailRequest implements Serializable {
         this.des_tipoGasto = des_tipoGasto;
     }
 
-    public double getImp_total() {
+    public String getImp_total() {
         return imp_total;
     }
 
-    public void setImp_total(double imp_total) {
+    public void setImp_total(String imp_total) {
         this.imp_total = imp_total;
     }
 

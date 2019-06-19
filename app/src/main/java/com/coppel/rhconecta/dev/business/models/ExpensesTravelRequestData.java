@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.business.models;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpensesTravelRequestData implements Serializable{
@@ -27,6 +28,8 @@ public class ExpensesTravelRequestData implements Serializable{
 
 
     private List<DetailRequest> CapturaGerente;
+
+    private List<DetailRequestAuthorize> CapturaGerenteFormat;
 
 
     public ExpensesTravelRequestData(ExpensesTravelType expensesTravelType, int opcion, String num_empleado) {
@@ -162,5 +165,19 @@ public class ExpensesTravelRequestData implements Serializable{
 
     public void setCapturaGerente(List<DetailRequest> capturaGerente) {
         CapturaGerente = capturaGerente;
+    }
+
+    public List<DetailRequestAuthorize> getCapturaGerenteFormat() {
+        return CapturaGerenteFormat;
+    }
+
+    public void setCapturaGerenteFormat(List<DetailRequest> capturaGerente) {
+
+        CapturaGerenteFormat = new ArrayList<>();
+        for(DetailRequest detailRequest : capturaGerente){
+            String amount = detailRequest.getImp_total().replace(",","");
+            CapturaGerenteFormat.add(new DetailRequestAuthorize(detailRequest.getIdu_tipoGasto(),Double.parseDouble(amount)));
+        }
+
     }
 }

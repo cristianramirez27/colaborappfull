@@ -30,6 +30,7 @@ import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
 import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseExpensesTravelRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
@@ -99,6 +100,7 @@ import com.coppel.rhconecta.dev.business.models.VoucherSavingFundResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherSendMailResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingBaseResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
+import com.coppel.rhconecta.dev.business.utils.JsonManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesGeneralValidations;
@@ -2631,7 +2633,7 @@ public class ServicesInteractor {
 
     private void geAuthorizedExpenses(ExpensesTravelRequestData requestData, String token) {
         iServicesRetrofitMethods.getAutorizedExpenses(ServicesConstants.GET_EXPENSES_TRAVEL,token,
-                (CoppelServicesAuthorizedRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+                (CoppelServicesAuthorizedV2Request) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
@@ -2824,9 +2826,12 @@ public class ServicesInteractor {
 
             case AUTORIZAR_SOLICITUD:
 
-                coppelServicesBaseExpensesTravelRequest = new CoppelServicesAuthorizedRequest(expensesTravelRequestData.getNum_empleado(),requestOption,expensesTravelRequestData.getNum_gerente()
+                CoppelServicesAuthorizedRequest request = new CoppelServicesAuthorizedRequest(expensesTravelRequestData.getNum_empleado(),requestOption,expensesTravelRequestData.getNum_gerente()
                         ,expensesTravelRequestData.getClv_solicitud(),expensesTravelRequestData.getNum_control(),expensesTravelRequestData.getClv_estatus(),
                         expensesTravelRequestData.getDes_observaciones(),expensesTravelRequestData.getDes_motivoRechazo(),expensesTravelRequestData.getClv_tipo(),expensesTravelRequestData.getCapturaGerente());
+
+
+                coppelServicesBaseExpensesTravelRequest =   new CoppelServicesAuthorizedV2Request(request,expensesTravelRequestData.getCapturaGerenteFormat());
                 break;
 
             case RECHAZAR_SOLICITUD:
@@ -2837,6 +2842,7 @@ public class ServicesInteractor {
                 break;
         }
 
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseExpensesTravelRequest).toString();
           return coppelServicesBaseExpensesTravelRequest;
     }
 

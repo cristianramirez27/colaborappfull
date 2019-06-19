@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
@@ -209,7 +210,7 @@ public interface IServicesRetrofitMethods  <T>{
 
     @Headers({"Content-Type: application/json"})
     @POST
-    Call<JsonObject> getAutorizedExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesAuthorizedRequest servicesRequest);
+    Call<JsonObject> getAutorizedExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesAuthorizedV2Request servicesRequest);
 
     @Headers({"Content-Type: application/json"})
     @POST

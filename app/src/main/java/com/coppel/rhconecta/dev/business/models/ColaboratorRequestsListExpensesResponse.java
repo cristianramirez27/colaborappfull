@@ -206,7 +206,7 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String fechaautoriza;
         private String fecharegreso;
         private String fechasalida;
-        private int importe;
+        private String importe;
         private String nom_motivo;
         private String nombreautorizo;
         private String nomviajero;
@@ -337,11 +337,11 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
             this.fechasalida = fechasalida;
         }
 
-        public int getImporte() {
+        public String getImporte() {
             return importe;
         }
 
-        public void setImporte(int importe) {
+        public void setImporte(String importe) {
             this.importe = importe;
         }
 

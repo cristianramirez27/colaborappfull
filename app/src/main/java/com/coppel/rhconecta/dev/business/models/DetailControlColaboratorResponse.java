@@ -162,14 +162,14 @@ public class DetailControlColaboratorResponse extends ExpensesTravelBaseResponse
 
     public class Balance  implements Serializable{
 
-        private double saldo_total;
+        private String saldo_total;
 
 
-        public double getSaldo_total() {
+        public String getSaldo_total() {
             return saldo_total;
         }
 
-        public void setSaldo_total(double saldo_total) {
+        public void setSaldo_total(String saldo_total) {
             this.saldo_total = saldo_total;
         }
     }

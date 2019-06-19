@@ -279,7 +279,7 @@
     <string name="title_authorize_requests_controls">Autorizar solicitudes</string>
     <string name="number_colaborator">N. Colaborador:</string>
     <string name="title_consult_liqui">Consulta de liquidaciones</string>
-    <string name="title_colaborator_control">Control de colaborador</string>
+    <string name="title_colaborator_control">Control del colaborador</string>
     <string name="title_request_expenses">Solicitud de gastos</string>
     <string name="title_complemento_expenses">Solicitud de complemento</string>
     <string name="title_my_control">Mi control</string>

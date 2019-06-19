@@ -39,7 +39,7 @@
             android:gravity="center"/>
 
 
-        <com.coppel.rhconecta.dev.views.customviews.EditTextMoney
+        <com.coppel.rhconecta.dev.views.customviews.EditTextMoneyDecimal
             android:id="@+id/edtNewAmount"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

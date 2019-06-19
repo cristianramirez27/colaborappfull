@@ -127,9 +127,7 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
     private void setData( DetailControlColaboratorResponse.Response data){
 
         totalDetalle.setTextsSize(14,16);
-        totalDetalle.setTexts("Saldo Total",
-                TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble( String.valueOf(data.getSaldoTotal().get(0).getSaldo_total()))));
+        totalDetalle.setTexts("Saldo Total",String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
 
         ExpenseAuthorizedResume expenseAuthorizedResume = new ExpenseAuthorizedResume();
         List<ExpenseAuthorizedDetail> expenseAuthorizedDetails = new ArrayList<>();
@@ -138,18 +136,23 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
         for(DetailRequest authorized : data.getGastoAutorizado()){
             //Total
             if(authorized.getIdu_tipoGasto() == -1){
-                expenseAuthorizedResume.setTotalAutorizado(authorized.getImp_total());
+                String total= authorized.getImp_total().replace(",","");
+                expenseAuthorizedResume.setTotalAutorizado(Double.parseDouble(total));
             }
-            expenseAuthorizedDetailHashMap.put(authorized.getIdu_tipoGasto(),new ExpenseAuthorizedDetail(authorized.getIdu_tipoGasto(),authorized.getDes_tipoGasto(),authorized.getImp_total()));
+
+            String total= authorized.getImp_total().replace(",","");
+            expenseAuthorizedDetailHashMap.put(authorized.getIdu_tipoGasto(),new ExpenseAuthorizedDetail(authorized.getIdu_tipoGasto(),authorized.getDes_tipoGasto(),Double.parseDouble(total)));
         }
 
         //Gastos comprobados
         for(DetailRequest checked : data.getGastoComprobado()){
             //Total
             if(checked.getIdu_tipoGasto() == -1){
-                expenseAuthorizedResume.setTotalComprobado(checked.getImp_total());
+                String total= checked.getImp_total().replace(",","");
+                expenseAuthorizedResume.setTotalComprobado(Double.parseDouble(total));
             }else if(expenseAuthorizedDetailHashMap.containsKey(checked.getIdu_tipoGasto())){
-                expenseAuthorizedDetailHashMap.get(checked.getIdu_tipoGasto()).setImp_totalComprobado(checked.getImp_total());
+                String total= checked.getImp_total().replace(",","");
+                expenseAuthorizedDetailHashMap.get(checked.getIdu_tipoGasto()).setImp_totalComprobado(Double.parseDouble(total));
             }
         }
 
@@ -158,13 +161,16 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
             for(DetailRequest missing : data.getFaltante()){
                 //Total
                 if(missing.getIdu_tipoGasto() == -1){
-                    expenseAuthorizedResume.setImp_totalFaltante(missing.getImp_total());
+                    String total= missing.getImp_total().replace(",","");
+                    expenseAuthorizedResume.setImp_totalFaltante(Double.parseDouble(total));
                 }else if(expenseAuthorizedDetailHashMap.containsKey(missing.getIdu_tipoGasto())){
-                    expenseAuthorizedDetailHashMap.get(missing.getIdu_tipoGasto()).setImp_totalFaltante(missing.getImp_total());
+                    String total= missing.getImp_total().replace(",","");
+                    expenseAuthorizedDetailHashMap.get(missing.getIdu_tipoGasto()).setImp_totalFaltante(Double.parseDouble(total));
                 }
             }
 
             for(Integer key : expenseAuthorizedDetailHashMap.keySet()){
+                if(key != -1)
                 expenseAuthorizedDetails.add(expenseAuthorizedDetailHashMap.get(key));
             }
 

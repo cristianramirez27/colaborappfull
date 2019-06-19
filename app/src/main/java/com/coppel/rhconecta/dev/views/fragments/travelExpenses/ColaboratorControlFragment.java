@@ -193,6 +193,27 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reCalculateTotal();
+
+    }
+
+    private void reCalculateTotal(){
+
+        if(this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR){
+            if( AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null){
+                for(DetailRequest detailRequest :  AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
+                    if(detailRequest.getIdu_tipoGasto() == -1){
+                        totalAutorizado.setTexts("Monto solicitado",String.format("$%s",detailRequest.getImp_total()));
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -523,9 +544,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
                 for(DetailRequest gastoComplemento : detail.getData().getResponse().getVerDetallesComplemento()){
                     if(gastoComplemento.getIdu_tipoGasto() == -1){
-                        totalComplemento.setTexts("Total complemento\nsolicitado",
-                                TextUtilities.getNumberInCurrencyFormat(
-                                        Double.parseDouble(String.valueOf(gastoComplemento.getImp_total()))) );
+                        totalComplemento.setTexts("Total complemento\nsolicitado",String.format("$%s",gastoComplemento.getImp_total()));
                         totalComplemento.setVisibility(VISIBLE);
                         verDetallesComplemento.setVisibility(VISIBLE);
                         break;
@@ -545,9 +564,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()){
                 for(DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()){
                     if(detallesSolicitud.getIdu_tipoGasto() == -1){
-                        totalAutorizado.setTexts("Monto solicitado",
-                                TextUtilities.getNumberInCurrencyFormat(
-                                        Double.parseDouble(String.valueOf(detallesSolicitud.getImp_total()))));
+                        totalAutorizado.setTexts("Monto solicitado",String.format("$%s",detallesSolicitud.getImp_total()));
                         totalAutorizado.setVisibility(VISIBLE);
                         break;
                     }
@@ -623,7 +640,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if(s.toString().length() > 0){
+                    if(s.toString().length() > 4){
                         btnActionRight.setEnabled(true);
                         btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
                     }else {
@@ -702,9 +719,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(detail.getData().getResponse().getGastoAutorizado() != null && !detail.getData().getResponse().getGastoAutorizado().isEmpty()){
             for(DetailRequest gastoAutorizado : detail.getData().getResponse().getGastoAutorizado()){
                 if(gastoAutorizado.getIdu_tipoGasto() == -1){
-                    totalAutorizado.setTexts("Total autorizado",
-                            TextUtilities.getNumberInCurrencyFormat(
-                                    Double.parseDouble(String.valueOf(gastoAutorizado.getImp_total()))));
+                    totalAutorizado.setTexts("Total autorizado",String.format("$%s",gastoAutorizado.getImp_total()));
 
                  /*   totalAutorizado.setTexts("Total autorizado",
                             TextUtilities.getNumberInCurrencyFormat(
@@ -719,9 +734,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(detail.getData().getResponse().getGastoComprobado() != null && !detail.getData().getResponse().getGastoComprobado().isEmpty()) {
             for (DetailRequest gastoComprobado : detail.getData().getResponse().getGastoComprobado()) {
                 if (gastoComprobado.getIdu_tipoGasto() == -1) {
-                    totalComprobado.setTexts("Total comprobado",
-                            TextUtilities.getNumberInCurrencyFormat(
-                                    Double.parseDouble(String.valueOf(gastoComprobado.getImp_total()))));
+                    totalComprobado.setTexts("Total comprobado",String.format("$%s",gastoComprobado.getImp_total()));
                     totalComprobado.setVisibility(VISIBLE);
                     break;
                 }
@@ -731,8 +744,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(detail.getData().getResponse().getDevoluciones() != null && !detail.getData().getResponse().getDevoluciones().isEmpty()) {
             for (Devolution devolution : detail.getData().getResponse().getDevoluciones()) {
                 if (devolution.getDu_tipoGasto() == -1) {
-                    totalDevolucion.setTexts("Total devolución",  TextUtilities.getNumberInCurrencyFormat(
-                            Double.parseDouble( String.valueOf(devolution.getTotal()))));
+                    totalDevolucion.setTexts("Total devolución", String.format("$%s",devolution.getTotal()));
                     totalDevolucion.setVisibility(VISIBLE);
                     break;
                 }
@@ -866,6 +878,10 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         expensesTravelRequestData.setClv_tipo(detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO ? 1 : 0);
         AuthorizedRequestColaboratorSingleton requestColaboratorSingleton = AuthorizedRequestColaboratorSingleton.getInstance();
         expensesTravelRequestData.setCapturaGerente(requestColaboratorSingleton.getCoppelServicesAuthorizedRequest().getCapturaGerente());
+        expensesTravelRequestData.setCapturaGerenteFormat(requestColaboratorSingleton.getCoppelServicesAuthorizedRequest().getCapturaGerente());
+
+
+
         coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 

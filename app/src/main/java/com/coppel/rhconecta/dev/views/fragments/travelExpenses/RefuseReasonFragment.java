@@ -109,14 +109,14 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         //reason.setFilters(new InputFilter[]{InputFilter.AllCaps});
         reason.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
-       /* reason.addTextChangedListener(new TextWatcher() {
+        reason.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().length()  > 0){
+                if(s.toString().length()  > 4){
                     btnActionRight.setEnabled(true);
                     btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
                 }else {
@@ -128,7 +128,7 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
             public void afterTextChanged(Editable s) {
 
             }
-        });*/
+        });
 
         return view;
     }

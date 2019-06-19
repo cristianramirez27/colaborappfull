@@ -78,6 +78,8 @@ public class ServicesUtilities {
             return o;
         } catch (JsonParseException e) {
             return null;
+        }catch (Exception e){
+            return null;
         }
     }
 }

@@ -8,12 +8,14 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.AuthorizedRequestColaboratorSingleton;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.models.DetailRequestColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.ImportsList;
@@ -44,6 +46,7 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
     @BindView(R.id.ImportesView)
     ImportesView Importes;
 
+    private  List<DetailRequest> requestList;
 
     private DetailRequestColaboratorResponse detailRequestColaboratorResponse;
     private ImportsList importsLists;
@@ -80,10 +83,15 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
         parent.setToolbarTitle(importsLists.getType() == 1 ?   getString(R.string.title_detail_colaborator_complement )
                 :  getString(R.string.title_detail_colaborator_request));
 
-        setData();
+       // setData();
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setData();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -121,8 +129,28 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
 
     private void setData(){
 
+        if(requestList == null)
+            requestList= new ArrayList<>();
+
+        requestList.clear();
+
+        Importes.setDataRecyclerView(requestList);
+
+        if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
+        && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()){
+            Log.i("","");
+
+            for(DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
+                for(DetailRequest amountCurrent : importsLists.getImportes()){
+                    if(amountCurrent.getIdu_tipoGasto() == detailRequest.getIdu_tipoGasto()){
+                        amountCurrent.setImp_total(String.valueOf(detailRequest.getImp_total()));
+                    }
+                }
+            }
+        }
+
         if(importsLists.getImportes()  != null && !importsLists.getImportes() .isEmpty()){
-            List<DetailRequest> requestList = new ArrayList<>();
+
             for(DetailRequest detailRequest :importsLists.getImportes()){
                 if(detailRequest.getIdu_tipoGasto() == -1){
                     Importes.setTotalesImportes(String.valueOf(detailRequest.getImp_total()));
@@ -134,7 +162,7 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
            Importes.setVisibilityEdit(importsLists.isShowEdit() ? View.VISIBLE : INVISIBLE);
             //Importes.setVisibilityEdit(importsLists.isGte() && importsLists.getStatus() == 1 ? View.VISIBLE : INVISIBLE);
             //TODO REMOVE Test
-            //Importes.setVisibilityEdit(View.VISIBLE);
+            // Importes.setVisibilityEdit(View.VISIBLE);
 
             Importes.setActionEdit(new Command() {
                 @Override
