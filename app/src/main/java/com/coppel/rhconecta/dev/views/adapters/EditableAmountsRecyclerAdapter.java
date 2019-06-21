@@ -51,13 +51,15 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
         viewHolder.name.setText(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()));
         String amount = dataItems.get(i).getImp_total().replace(",","");
 
-        viewHolder.amount.setHint(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(amount)));
+       /* viewHolder.amount.setHint(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(amount)));*/
 
         viewHolder.amount.setText(TextUtilities.getNumberInCurrencyFormat(
                         Double.parseDouble(amount)));
 
-        viewHolder.edtNewAmount.getEdtQuantity().setHint("$0.00");
+        viewHolder.edtNewAmount.getEdtQuantity().setText(TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(amount)));
+        //viewHolder.edtNewAmount.getEdtQuantity().setHint("$0.00");
 
         setFocusChangeListener(dataItems.get(i), viewHolder.edtNewAmount);
 
@@ -103,6 +105,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
             edtNewAmount.setSizeQuantity(13);
             edtNewAmount.setPaddingRelative(4,8,4,8);
 
+
             /*edtNewAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -131,15 +134,20 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(editTextMoney.getQuantity().length() >1){
+                if(editTextMoney.getQuantity().length() >0){
                     String value =  editTextMoney.getEdtQuantity().getText().toString();
                     value = value.replace("$","");
                     value = value.replace(",","");
                     //value = value.replace(".","");
                     value = value.trim();
+                   /* if(value.equals("."))
+                        value = "0.00";*/
+
                     detailRequest.setNewAmount(Double.parseDouble(value));
                     ITotalAmounts.setValueGte(detailRequest.getIdu_tipoGasto(),detailRequest.getNewAmount());
-
+                }else{
+                    detailRequest.setNewAmount(0.0);
+                    ITotalAmounts.setValueGte(detailRequest.getIdu_tipoGasto(),detailRequest.getNewAmount());
                 }
             }
 
@@ -153,9 +161,29 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-                    editTextMoney.getEdtQuantity().setSelection(editTextMoney.getEdtQuantity().getText().length());
+                    String value = editTextMoney.getEdtQuantity().getText().toString();
+                    if(editTextMoney.getEdtQuantity().getText().length() > 0)
+                        //editTextMoney.getEdtQuantity().setSelection(editTextMoney.getEdtQuantity().getText().length());
                     editTextMoney.setTextWatcherMoney();
                     DeviceManager.showKeyBoard(activity);
+                }else {
+                    String value = editTextMoney.getEdtQuantity().getText().toString();
+                /*    if(value.isEmpty()){
+                        editTextMoney.getEdtQuantity().setText("$0.00");
+                        return;
+                    }*/
+
+                    /*if(value.contains(".")){
+                        if(value.endsWith(".")){
+                            editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , "00"));
+                        }
+                        else if(value.length() -1 > 0 && value.charAt(value.length() -1 ) == '.'){
+                            editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , "0"));
+                        }
+                    }else {
+                        editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , ".00"));
+                    }*/
+
                 }
             }
         });

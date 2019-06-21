@@ -135,7 +135,8 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
         for(DetailRequest detailRequest : this.importsLists.getImportes()){
             if(detailRequest.getIdu_tipoGasto() != -1) {
                 this.importsListsFilter.add(detailRequest);
-                mapAmounts.put(detailRequest.getIdu_tipoGasto(),0.0);
+                String value = detailRequest.getImp_total().replace(",","");
+                mapAmounts.put(detailRequest.getIdu_tipoGasto(),Double.parseDouble(value));
             }
         }
         calculateTotalGte();

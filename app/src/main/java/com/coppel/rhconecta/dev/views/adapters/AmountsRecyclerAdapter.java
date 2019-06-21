@@ -23,6 +23,7 @@ import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecyclerAdapter.ViewHolder> {
 
     private List<DetailRequest> dataItems;
+    boolean isEdit;
 
     public AmountsRecyclerAdapter(List<DetailRequest> itineraryList) {
         this.dataItems = itineraryList;
@@ -39,8 +40,21 @@ public class AmountsRecyclerAdapter extends RecyclerView.Adapter<AmountsRecycler
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         //viewHolder.itemView.setHasTransientState(true);
     //dataItems.get(i).getControl()
-        viewHolder.detailAmount.setTexts(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()),
-                String.format("$%s",String.valueOf(dataItems.get(i).getImp_total())));
+
+        if(!isEdit){
+            viewHolder.detailAmount.setTexts(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()),
+                    String.format("$%s",String.valueOf(dataItems.get(i).getImp_total())));
+        }else {
+            String amount = dataItems.get(i).getImp_total().replace(",","");
+            viewHolder.detailAmount.setTexts(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()),
+                    String.format("%s", TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble( amount))));
+        }
+
+    }
+
+    public void setEdit(boolean edit) {
+        isEdit = edit;
     }
 
     @Override

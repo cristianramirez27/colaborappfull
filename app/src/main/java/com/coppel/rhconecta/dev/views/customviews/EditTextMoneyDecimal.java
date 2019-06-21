@@ -24,7 +24,7 @@ public class EditTextMoneyDecimal extends ConstraintLayout {
     @BindView(R.id.txvTitle)
     TextView txvTitle;
     @BindView(R.id.edtQuantity)
-    EditText edtQuantity;
+    CurrencyEditText edtQuantity;
     @BindView(R.id.imgvArrow)
     ImageView imgvArrow;
 
@@ -106,12 +106,12 @@ public class EditTextMoneyDecimal extends ConstraintLayout {
 
     public void setTextWatcherMoney(){
        // edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
-        edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+       /* edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(13);
         edtQuantity.setFilters(filterArray);
 
-        edtQuantity.addTextChangedListener(new MoneyDecimalV2TextWatcher(edtQuantity));
+        edtQuantity.addTextChangedListener(new MoneyDecimalV2TextWatcher(edtQuantity));*/
 
     }
 

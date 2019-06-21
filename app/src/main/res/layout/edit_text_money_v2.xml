@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/txvTitle"
         app:srcCompat="@drawable/ic_up_arrow_gray" />
 
-    <EditText
+    <com.coppel.rhconecta.dev.views.customviews.CurrencyEditText
         android:id="@+id/edtQuantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,13 +41,15 @@
         android:background="@drawable/background_gray_rounded"
         android:fontFamily="@font/lineto_circular_pro_bold"
         android:gravity="center"
-        android:paddingStart="24dp"
+        android:paddingStart="10dp"
         android:paddingTop="12dp"
-        android:paddingEnd="24dp"
+        android:paddingEnd="10dp"
         android:paddingBottom="12dp"
         android:longClickable="false"
-        android:maxLength="12"
+        android:maxLength="13"
+        app:showSymbol="true"
         android:textColor="@android:color/black"
+        android:textColorHint="@android:color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

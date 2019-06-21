@@ -30,7 +30,6 @@ public class ImportesView  extends RelativeLayout  {
     @BindView(R.id.btnEdit)
     Button btnEdit;
 
-
     private Command actionEdit;
 
     private List<DetailRequest> detailRequestList;
@@ -86,15 +85,19 @@ public class ImportesView  extends RelativeLayout  {
     public void setVisibilityEdit(int visibility){
         btnEdit.setVisibility(visibility);
     }
-    public void setTotalesImportes(String totales) {
-        totalesImports.setTexts("Total",String.format("$%s",totales));
+    public void setTotalesImportes(String totales,boolean isEdit) {
+
+        String amount = totales.replace(",","");
+        totalesImports.setTexts("Total", !isEdit  ?String.format("$%s",totales) :  String.format("%s", TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble( amount))));
     }
 
-    public void setDataRecyclerView(List<DetailRequest> importes){
+    public void setDataRecyclerView(List<DetailRequest> importes,boolean isEdit){
         detailRequestList.clear();
         for (DetailRequest detailRequest :importes)
             detailRequestList.add(detailRequest);
 
+        amountsRecyclerAdapter.setEdit(isEdit);
         amountsRecyclerAdapter.notifyDataSetChanged();
     }
 }

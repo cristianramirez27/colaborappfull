@@ -46,6 +46,8 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
     @BindView(R.id.ImportesView)
     ImportesView Importes;
 
+    boolean isEdit;
+
     private  List<DetailRequest> requestList;
 
     private DetailRequestColaboratorResponse detailRequestColaboratorResponse;
@@ -134,11 +136,12 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
 
         requestList.clear();
 
-        Importes.setDataRecyclerView(requestList);
+        Importes.setDataRecyclerView(requestList,isEdit);
 
         if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
         && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()){
-            Log.i("","");
+
+            isEdit = true;
 
             for(DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
                 for(DetailRequest amountCurrent : importsLists.getImportes()){
@@ -153,7 +156,7 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
 
             for(DetailRequest detailRequest :importsLists.getImportes()){
                 if(detailRequest.getIdu_tipoGasto() == -1){
-                    Importes.setTotalesImportes(String.valueOf(detailRequest.getImp_total()));
+                    Importes.setTotalesImportes(String.valueOf(detailRequest.getImp_total()),isEdit);
                 }else {
                     requestList.add(detailRequest);
                 }
@@ -167,11 +170,15 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
             Importes.setActionEdit(new Command() {
                 @Override
                 public void execute(Object... params) {
+
+                    isEdit = true;
                     openEditAmounts();
                 }
             });
 
-            Importes.setDataRecyclerView(requestList);
+
+
+            Importes.setDataRecyclerView(requestList,isEdit);
             Importes.setVisibility(View.VISIBLE);
         }
     }

@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -200,12 +201,22 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     }
 
     private void reCalculateTotal(){
+        boolean isEdit = false;
 
         if(this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR){
             if( AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null){
                 for(DetailRequest detailRequest :  AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
                     if(detailRequest.getIdu_tipoGasto() == -1){
-                        totalAutorizado.setTexts("Monto solicitado",String.format("$%s",detailRequest.getImp_total()));
+
+                        if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
+                                && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()) {
+                            isEdit = true;
+                        }
+
+                        String amount = detailRequest.getImp_total().replace(",","");
+                        totalAutorizado.setTexts("Monto solicitado",
+                                !isEdit  ?String.format("$%s",detailRequest.getImp_total()):
+                                        String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble( amount))));
                     }
                 }
             }

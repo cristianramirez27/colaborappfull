@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class MoneyDecimalV2TextWatcher implements TextWatcher {
     private final WeakReference<EditText> editTextWeakReference;
-    private static String prefix = "$";
+    public static String prefix = "$";
     private static final int MAX_LENGTH = 20;
     private String previousCleanString;
     private   EditText editText;
@@ -58,6 +58,13 @@ public class MoneyDecimalV2TextWatcher implements TextWatcher {
             editText.setSelection(prefix.length());
             return;
         }*/
+
+       if (str.length() == 1 && !str.contains(prefix)) {
+            editText.setText(prefix + str);
+            editText.setSelection(editText.length());
+            return;
+        }
+
         if (str.equals(prefix)) {
             str = str.replace(prefix, "");
             editText.setText(str);
@@ -72,6 +79,10 @@ public class MoneyDecimalV2TextWatcher implements TextWatcher {
         previousCleanString = cleanString;
 
         String formattedString;
+
+        if(cleanString.equals("0.00"))
+            return;
+
         if (cleanString.contains(".")) {
             formattedString = formatDecimal(cleanString);
         } else {
@@ -100,12 +111,15 @@ public class MoneyDecimalV2TextWatcher implements TextWatcher {
         DecimalFormat formatter = new DecimalFormat(prefix + "#,###." + getDecimalPattern(str),
                 new DecimalFormatSymbols(Locale.US));
         formatter.setRoundingMode(RoundingMode.DOWN);
-        return formatter.format(parsed);
+        String formated = formatter.format(parsed);
+        return formated;
     }
 
     private String getDecimalPattern(String str) {
         int decimalCount = str.length() - str.indexOf(".") - 1;
+        String decimalCurrent = str.substring(str.indexOf(".")+1,str.length());
         StringBuilder decimalPattern = new StringBuilder();
+        //decimalPattern.append(decimalCurrent);
         for (int i = 0; i < decimalCount && i < 2; i++) {
             decimalPattern.append("0");
         }
