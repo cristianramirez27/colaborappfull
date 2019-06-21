@@ -1,6 +1,6 @@
 package com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Events;
 
-import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.VideoVisto_Callback;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.VideoVisto_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction;
+package com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.util.Log;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
-import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.BusProvider;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Events.VideoVistoEvent;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Request.JSON_ObtenerVideos;
 

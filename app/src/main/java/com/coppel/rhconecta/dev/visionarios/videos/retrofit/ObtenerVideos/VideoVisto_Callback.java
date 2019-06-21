@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction;
+package com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos;
 
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 

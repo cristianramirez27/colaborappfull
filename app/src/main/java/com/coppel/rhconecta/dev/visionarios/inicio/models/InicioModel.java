@@ -288,7 +288,7 @@ public class InicioModel implements Inicio.Model,ObtenerEncuestas_Callback, Obte
 
             final TableComunicados tableComunicados = new TableComunicados(this.idb,false);
 
-        /*ELIMINA LOS COMUNICADOS LOCALES QUE NO ESTEN EN LOS NUEVOS*/
+            /*ELIMINA LOS COMUNICADOS LOCALES QUE NO ESTEN EN LOS NUEVOS*/
             ArrayList<Comunicado> comunicadosLocalesExistentes= tableComunicados.select();
             if(comunicadosLocalesExistentes != null){
                 for (int i=0;i<comunicadosLocalesExistentes.size();i++){
