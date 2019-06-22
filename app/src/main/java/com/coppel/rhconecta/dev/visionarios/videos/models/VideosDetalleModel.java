@@ -1,16 +1,21 @@
 package com.coppel.rhconecta.dev.visionarios.videos.models;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.visionarios.comunicados.Retrofit.ObtenerComunicados.ComunicadoVisto_Callback;
+import com.coppel.rhconecta.dev.visionarios.comunicados.objects.Comunicado;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableEncuestas;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
+import com.coppel.rhconecta.dev.visionarios.firebase.VideosFirebase;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
+import com.coppel.rhconecta.dev.visionarios.utils.ConstantesGlobales;
 import com.coppel.rhconecta.dev.visionarios.videos.interfaces.VideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.Request.JSON_ObtenerVideos;
 import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
@@ -18,12 +23,13 @@ import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Com
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.GuardarLogAction_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Request.JSON_GuardarLogAction;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.Response.ResponseGuardarLogAction;
-import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.VideoVisto_Callback;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.VideoVisto_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.CommunicatorObtenerVideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.ObtenerVideosDetalle_Callback;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.Request.JSON_ObtenerVideosDetalle;
 import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideosDetalle.Response.ResponseObtenerVideosDetalle;
-import com.coppel.rhconecta.dev.visionarios.videos.retrofit.GuardarLogAction.VideoVisto;
+import com.coppel.rhconecta.dev.visionarios.videos.retrofit.ObtenerVideos.VideoVisto;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

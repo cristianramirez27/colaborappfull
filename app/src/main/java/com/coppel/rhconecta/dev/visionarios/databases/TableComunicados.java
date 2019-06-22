@@ -116,7 +116,7 @@ public class TableComunicados {
                 " estatus=\""+obj.getEstatus()+"\", " +
                 " landing_visible=\""+obj.getLanding_visible()+"\", " +
                 " visto=\""+obj.getopc_visto() +"\" WHERE idavisos="+obj.getIdavisos()+" ";
-                //" visto=\""+(obj.isVisto()? 1 : 0)+"\" WHERE idavisos="+obj.getIdavisos()+" ";
+        //" visto=\""+(obj.isVisto()? 1 : 0)+"\" WHERE idavisos="+obj.getIdavisos()+" ";
 
         if(this.db.Query(query)){
             Log.d("MYSQLITE","UPDATE  "+this.TABLA_NOMBRE+" OK!");

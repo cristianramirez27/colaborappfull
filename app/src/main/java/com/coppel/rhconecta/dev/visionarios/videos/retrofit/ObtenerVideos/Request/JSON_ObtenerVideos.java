@@ -5,6 +5,7 @@ public class JSON_ObtenerVideos {
 
     private String aplicacionkey;
     private String empleado;
+    private int idvideo;
 
     private int vistas;
 
@@ -21,6 +22,13 @@ public class JSON_ObtenerVideos {
         this.empleado = empleado;
     }
 
+    public JSON_ObtenerVideos(String aplicacionkey, String empleado, int idvideo, int vistas) {
+        this.aplicacionkey = aplicacionkey;
+        this.empleado = empleado;
+        this.idvideo = idvideo;
+        this.vistas = vistas;
+
+    }
 
     public String getAplicacionkey() {
         return aplicacionkey;
@@ -36,6 +44,14 @@ public class JSON_ObtenerVideos {
 
     public void setEmpleado(String empleado) {
         this.empleado = empleado;
+    }
+
+    public int getIdvideo() {
+        return idvideo;
+    }
+
+    public void setIdvideo(int idvideo) {
+        this.idvideo = idvideo;
     }
 
     public int getVistas() {
