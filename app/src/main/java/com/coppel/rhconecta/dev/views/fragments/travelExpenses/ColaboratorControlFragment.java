@@ -151,6 +151,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     Button btnActionLeft;
     @BindView(R.id.btnActionRight)
     Button btnActionRight;
+    @BindView(R.id.txtTitleObservacionesColaborador)
+    TextView txtTitleObservacionesColaborador;
+
 
     private DialogFragmentWarning dialogFragmentWarning;
 
@@ -267,6 +270,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             }
         });
 
+
+
         return view;
     }
 
@@ -359,7 +364,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
     private void openDetail(boolean isComplement){
 
-        if(dataItem instanceof DetailRequestColaboratorResponse){
+            if(dataItem instanceof DetailRequestColaboratorResponse){
             String detail = !isComplement ? OPTION_MORE_DETAIL_REQUEST: OPTION_MORE_DETAIL_COMPLEMENT ;
 
             ImportsList importsListRequest = new ImportsList();
@@ -368,12 +373,15 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                     ((DetailRequestColaboratorResponse)dataItem).getData().getResponse().getVerDetallesComplemento());
 
             if (detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR) {
+
+                boolean isPending = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? true : false;
+
                 //Tipo = 1 para complemento
                 int tipo =  ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)this.detailExpenseTravelData.getData()).getTipo();
                 importsListRequest.setType(isComplement ? 1 : 0);
-                if(isComplement && tipo == 1){//Es solicitud
+                if(isComplement && tipo == 1 && isPending){//Es solicitud
                     importsListRequest.setShowEdit(true);
-                }else if(!isComplement && tipo == 0){
+                }else if(!isComplement && tipo == 0 && isPending){
                     importsListRequest.setShowEdit(true);
                 }else if(!isComplement && tipo == 1) {
                     importsListRequest.setShowEdit(false);
@@ -508,11 +516,11 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     private void setDataRequest(DetailRequestColaboratorResponse detail){
 
         expMotivoViaje.setText("Motivo de viaje");
-
-        expMotivoViaje.setVisibility(detail.getData().getResponse().getMotivoViaje() != null &&
+        expMotivoViaje.setVisibility(VISIBLE);
+        /*expMotivoViaje.setVisibility(detail.getData().getResponse().getMotivoViaje() != null &&
                 detail.getData().getResponse().getMotivoViaje().size() > 0 &&
                 detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo() != null &&
-                !detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo().isEmpty() ? VISIBLE : View.GONE);
+                !detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo().isEmpty() ? VISIBLE : View.GONE);*/
 
         expItinerario.setText("Itinerario");
         expViajerosAdicionales.setText("Viajeros adicionales");
@@ -609,6 +617,15 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         }
 
         hospedaje.setText(detail.getData().getResponse().getTipoHospedaje().get(0).getDes_tipoHospedaje());
+
+
+        //Se oculta etiqueta de observaciones
+        if(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador() != null && !detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador().isEmpty()){
+            txtTitleObservacionesColaborador.setVisibility(View.GONE);
+        }else {
+            txtTitleObservacionesColaborador.setVisibility(VISIBLE);
+        }
+
         txtObservacionesDescripcion.setText(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador());
 
         //Mostramos las observaciones del Gte
@@ -639,7 +656,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             layoutObservacionesGte.setVisibility(((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? VISIBLE : View.GONE);
 
             //TODO REMOVE Test
-            layoutObservacionesGte.setVisibility(VISIBLE);
+            //layoutObservacionesGte.setVisibility(VISIBLE);
 
 
             observationGte.addTextChangedListener(new TextWatcher() {
@@ -665,15 +682,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
                 }
             });
-
-
-
-
-
-
         }
-
-
     }
 
     private void setDataControl(DetailControlColaboratorResponse detail){
@@ -682,10 +691,11 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         String nomViajero = "";
         String numViajero = "";
         expMotivoViaje.setText("Motivo de viaje");
-        expMotivoViaje.setVisibility(detail.getData().getResponse().getMotivoViaje() != null &&
+        expMotivoViaje.setVisibility(VISIBLE);
+       /* expMotivoViaje.setVisibility(detail.getData().getResponse().getMotivoViaje() != null &&
                 detail.getData().getResponse().getMotivoViaje().size() > 0 &&
                 detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo() != null &&
-                !detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo().isEmpty() ? VISIBLE : View.GONE);
+                !detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo().isEmpty() ? VISIBLE : View.GONE);*/
 
         expItinerario.setText("Itinerario");
         expViajerosAdicionales.setText("Viajeros adicionales");
@@ -793,6 +803,12 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
         /* No semuestrael tipo de hospedaje ni lasobservaciones
         hospedaje.setText(detail.getData().getResponse().getTipoHospedaje().get(0).getDes_tipoHospedaje());
+        //Se oculta etiqueta de observaciones
+        if(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador() != null && !detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador().isEmpty()){
+            txtTitleObservacionesColaborador.setVisibility(View.GONE);
+        }else {
+            txtTitleObservacionesColaborador.setVisibility(VISIBLE);
+        }
         txtObservacionesDescripcion.setText(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador());
 
 */
@@ -874,15 +890,24 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             Toast.makeText(getActivity(),"Favor de ingresar sus observaciones.",Toast.LENGTH_SHORT).show();
             return;
         }
+
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
+        ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator  = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
+
+        //Se agrega numero de empleado el de la solicitud
+        numEmployer = String.valueOf(requestComplementsColaborator.getNumeviajero());
+
+
 
         ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.AUTORIZAR_SOLICITUD, 8,numEmployer);
         expensesTravelRequestData.setClv_solicitud(detailExpenseTravelData.getClave());
         expensesTravelRequestData.setNum_gerente(Integer.parseInt(numGte));
-        ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator  = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
+
         expensesTravelRequestData.setNum_control(Integer.parseInt(requestComplementsColaborator.getCLV_CONTROL()));
+
+
         expensesTravelRequestData.setClv_estatus(2);
         expensesTravelRequestData.setDes_observaciones(getObservations());/***----------**/
         expensesTravelRequestData.setDes_motivoRechazo("");

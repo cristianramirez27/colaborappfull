@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType;
@@ -79,13 +80,17 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
     @BindView(R.id.titulosControles)
     HeaderTitlesList titulosControles;
 
-    @BindView(R.id.layoutSolicitudes)
-    LinearLayout layoutSolicitudes;
-    @BindView(R.id.layoutControles)
-    LinearLayout layoutControles;
+    @BindView(R.id.layoutSolicitudesContainer)
+    LinearLayout layoutSolicitudesContainer;
+    @BindView(R.id.layoutControlesContainer)
+    LinearLayout layoutControlesContainer;
 
-
-
+    @BindView(R.id.txtNoSolicitudes)
+    TextView txtNoSolicitudes;
+    @BindView(R.id.txtNoControles)
+    TextView txtNoControles;
+    @BindView(R.id.txtNoMeses)
+    TextView txtNoMeses;
 
     private ColaboratorRequestsListExpensesResponse.Months monthSelected;
 
@@ -232,26 +237,37 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
 
                     if(!colaboratorResponse.getData().getResponse().getSolicitudes_Complementos().isEmpty()){
-                        layoutSolicitudes.setVisibility(View.VISIBLE);
+                        layoutSolicitudesContainer.setVisibility(View.VISIBLE);
+                        txtNoSolicitudes.setVisibility(View.GONE);
                         for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request : colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
                             requestComplementsColaborators.add(request);
                         }
                     }else {
-                        layoutSolicitudes.setVisibility(View.GONE);
+                        layoutSolicitudesContainer.setVisibility(View.GONE);
+                        txtNoSolicitudes.setVisibility(View.VISIBLE);
                     }
 
                     if(!colaboratorResponse.getData().getResponse().getControles().isEmpty()) {
-                        layoutControles.setVisibility(View.VISIBLE);
+                        layoutControlesContainer.setVisibility(View.VISIBLE);
                         for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
                             controlColaborators.add(control);
                         }
                     }else {
-                        layoutControles.setVisibility(View.GONE);
+                        layoutControlesContainer.setVisibility(View.GONE);
+                        txtNoControles.setVisibility(View.VISIBLE);
                     }
 
-                    for(ColaboratorRequestsListExpensesResponse.Months month :colaboratorResponse.getData().getResponse().getMeses()){
-                        monthsList.add(month);
+                    if(!colaboratorResponse.getData().getResponse().getMeses().isEmpty()){
+                        for(ColaboratorRequestsListExpensesResponse.Months month :colaboratorResponse.getData().getResponse().getMeses()){
+                            monthsList.add(month);
+                        }
+
+                        txtNoMeses.setVisibility(View.GONE);
+                    }else{
+                        txtNoMeses.setVisibility(View.VISIBLE);
                     }
+
+
 
                     expensesTravelColaboratorRequestRecyclerAdapter.notifyDataSetChanged();
                     expensesTravelColaboratorControlsRecyclerAdapter.notifyDataSetChanged();

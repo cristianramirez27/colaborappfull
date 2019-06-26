@@ -76,7 +76,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(selectedType == LETTER_SENT ? R.layout.dialog_fragment_get_voucher_short : R.layout.dialog_fragment_get_voucher, container, false);
+        View view = inflater.inflate(selectedType == LETTER_SENT ? R.layout.dialog_fragment_get_voucher_short :
+                (selectedType == MSG_EXPENSES_TRAVEL ? R.layout.dialog_fragment_expenses :R.layout.dialog_fragment_get_voucher) , container, false);
         ButterKnife.bind(this, view);
         initViews(selectedType);
         if (getDialog().getWindow() != null) {

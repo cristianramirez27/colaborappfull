@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
@@ -62,6 +64,8 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
     Button btnActionLeft;
     @BindView(R.id.btnActionRight)
     Button btnActionRight;
+    @BindView(R.id.desc)
+    TextView desc;
 
 
     private boolean EXPIRED_SESSION;
@@ -106,6 +110,8 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
 
+
+
         //reason.setFilters(new InputFilter[]{InputFilter.AllCaps});
         reason.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
@@ -116,6 +122,10 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                desc.setVisibility( s.toString().length()  > 0 ?View.INVISIBLE : View.VISIBLE);
+
+
                 if(s.toString().length()  > 4){
                     btnActionRight.setEnabled(true);
                     btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
@@ -129,6 +139,9 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
 
             }
         });
+
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         return view;
     }

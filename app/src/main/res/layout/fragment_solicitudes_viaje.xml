@@ -25,7 +25,7 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layoutSolicitudes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,22 @@
                     android:textColor="@color/colorSecondBlueCoppel"
                     android:textSize="18sp" />
 
+
+                <TextView
+                    android:layout_below="@+id/tituloSolicitudes"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoSolicitudes"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_request_complements"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
+
                 <LinearLayout
+                    android:id="@+id/layoutSolicitudesContainer"
+                    android:layout_below="@+id/tituloSolicitudes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -62,10 +77,10 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layoutControles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +97,21 @@
                     android:textColor="@color/colorSecondBlueCoppel"
                     android:textSize="18sp" />
 
+                <TextView
+                    android:layout_below="@+id/tituloControles"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoControles"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_controls"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
+
                 <LinearLayout
+                    android:id="@+id/layoutControlesContainer"
+                    android:layout_below="@+id/tituloControles"
                     android:layout_marginTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -103,7 +132,7 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         <LinearLayout
@@ -117,6 +146,18 @@
                 android:id="@+id/expMonths"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/txtNoMeses"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="@string/empty_months"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:orientation="vertical"

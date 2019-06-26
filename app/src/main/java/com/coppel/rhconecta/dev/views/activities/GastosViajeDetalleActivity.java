@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
@@ -62,6 +63,7 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
 
     public void onEvent(String tag,Object data) {
         switch (tag) {
+
 
             case OPTION_MORE_DETAIL_REQUEST:
                 replaceFragment( DetailRequestComplementFragment.getInstance((ImportsList)data), DetailControlFragment.TAG);

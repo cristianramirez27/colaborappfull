@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.MoneyDecimalTextWatcher;
 import com.coppel.rhconecta.dev.business.utils.MoneyDecimalV2TextWatcher;
 import com.coppel.rhconecta.dev.business.utils.MoneyTextWatcher;
+import com.coppel.rhconecta.dev.business.utils.NumberTextWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,9 +25,11 @@ public class EditTextMoneyDecimal extends ConstraintLayout {
     @BindView(R.id.txvTitle)
     TextView txvTitle;
     @BindView(R.id.edtQuantity)
-    CurrencyEditText edtQuantity;
+   EditText edtQuantity;
     @BindView(R.id.imgvArrow)
     ImageView imgvArrow;
+
+    NumberTextWatcher numberTextWatcher;
 
     public EditTextMoneyDecimal(Context context) {
         super(context);
@@ -106,13 +109,24 @@ public class EditTextMoneyDecimal extends ConstraintLayout {
 
     public void setTextWatcherMoney(){
        // edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
-       /* edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         InputFilter[] filterArray = new InputFilter[1];
         filterArray[0] = new InputFilter.LengthFilter(13);
         edtQuantity.setFilters(filterArray);
 
-        edtQuantity.addTextChangedListener(new MoneyDecimalV2TextWatcher(edtQuantity));*/
+        //edtQuantity.addTextChangedListener(new MoneyDecimalV2TextWatcher(edtQuantity));*/
 
+
+       if(numberTextWatcher ==null )
+        numberTextWatcher = new NumberTextWatcher(edtQuantity);
+
+        edtQuantity.addTextChangedListener(numberTextWatcher);
+
+
+    }
+
+    public void removeTextWatcher(){
+        edtQuantity.removeTextChangedListener(numberTextWatcher);
     }
 
 

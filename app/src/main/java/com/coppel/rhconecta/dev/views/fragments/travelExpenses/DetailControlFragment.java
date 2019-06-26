@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
@@ -86,7 +87,7 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
 
         totalDetalle.setTextsSize(16,16);
         totalDetalle.hideDivider();
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
 

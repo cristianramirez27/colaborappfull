@@ -307,4 +307,8 @@
     <string name="desc_refuse">Escribe la razón por la que rechaza este gasto de viaje</string>
     <string name="title_reason_refuse">Motivo de Rechazo</string>
 
+    <string name="empty_request_complements">No hay solicitudes disponibles</string>
+    <string name="empty_controls">No hay controles disponibles</string>
+
+    <string name="empty_months">No hay meses disponibles</string>
 </resources>

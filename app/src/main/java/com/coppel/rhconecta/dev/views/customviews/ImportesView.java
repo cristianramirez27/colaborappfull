@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.AuthorizedRequestColaboratorSingleton;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.views.adapters.AmountsRecyclerAdapter;

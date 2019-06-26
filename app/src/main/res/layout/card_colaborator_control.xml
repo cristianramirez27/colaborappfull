@@ -209,7 +209,7 @@
                     android:layout_toRightOf="@+id/imgColaborador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.1"
+                    android:layout_weight="1"
                     android:gravity="left"
                     android:orientation="vertical"
                     android:layout_marginLeft="18dp">
@@ -230,22 +230,22 @@
                         android:orientation="vertical"
                         android:layout_gravity="left"
                         android:layout_marginTop="3dp"
-                        android:layout_marginRight="13dp"
+                        android:layout_marginRight="8dp"
                         android:padding="2dp"
                         android:gravity="left|center_vertical">
 
                         <TextView
                             android:id="@+id/status"
                             android:layout_width="match_parent"
-                            android:paddingLeft="6dp"
-                            android:paddingRight="6dp"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp"
                             android:minHeight="40dp"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center"
                             android:textColor="@color/colorBackgroundCoppelNegro"
-                            android:textSize="11sp"
+                            android:textSize="9sp"
                             android:visibility="visible" />
 
                     </LinearLayout>

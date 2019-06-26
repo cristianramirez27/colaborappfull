@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -104,7 +105,18 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
 
         initValues();
 
-        editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),this.importsListsFilter,this);
+
+        if( AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador().isEmpty()){
+            for(DetailRequest amountCurrent : importsListsFilter){
+                AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador().add(amountCurrent);
+            }
+        }
+
+
+
+        //editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),this.importsListsFilter,this);
+        List<DetailRequest> values =  AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador();
+        editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),importsListsFilter,values ,this);
         rcvImporte.setHasFixedSize(true);
         rcvImporte.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvImporte.setAdapter(editableAmountsRecyclerAdapter);
@@ -114,6 +126,8 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         KeyboardVisibilityEvent.setEventListener(
                 getActivity(),

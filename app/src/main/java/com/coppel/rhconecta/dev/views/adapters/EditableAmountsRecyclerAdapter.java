@@ -28,13 +28,15 @@ import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<EditableAmountsRecyclerAdapter.ViewHolder> {
 
     private List<DetailRequest> dataItems;
+    private List<DetailRequest> dataItemsColaborator;
     private Activity activity;
     private ITotalAmounts ITotalAmounts;
 
-    public EditableAmountsRecyclerAdapter(Activity activity, List<DetailRequest> itineraryList,ITotalAmounts ITotalAmounts) {
+    public EditableAmountsRecyclerAdapter(Activity activity, List<DetailRequest> itineraryList, List<DetailRequest> dataItemsColaborator,ITotalAmounts ITotalAmounts) {
         this.dataItems = itineraryList;
         this.activity = activity;
         this.ITotalAmounts = ITotalAmounts;
+        this.dataItemsColaborator = dataItemsColaborator;
     }
 
     @NonNull
@@ -49,16 +51,18 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
         //viewHolder.itemView.setHasTransientState(true);
     //dataItems.get(i).getControl()
         viewHolder.name.setText(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()));
-        String amount = dataItems.get(i).getImp_total().replace(",","");
+        String amountGte = dataItems.get(i).getImp_total().replace(",","");
+
+        String amountColaborator = dataItemsColaborator.get(i).getImp_total().replace(",","");
 
        /* viewHolder.amount.setHint(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble(amount)));*/
 
         viewHolder.amount.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(amount)));
+                        Double.parseDouble(amountColaborator)));
 
         viewHolder.edtNewAmount.getEdtQuantity().setText(TextUtilities.getNumberInCurrencyFormat(
-                Double.parseDouble(amount)));
+                Double.parseDouble(amountGte)));
         //viewHolder.edtNewAmount.getEdtQuantity().setHint("$0.00");
 
         setFocusChangeListener(dataItems.get(i), viewHolder.edtNewAmount);
@@ -123,7 +127,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
 
     private void setFocusChangeListener(DetailRequest detailRequest,EditTextMoneyDecimal editTextMoney){
 
-
+       // editTextMoney.setTextWatcherMoney();
 
         editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
             @Override
@@ -140,8 +144,8 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
                     value = value.replace(",","");
                     //value = value.replace(".","");
                     value = value.trim();
-                   /* if(value.equals("."))
-                        value = "0.00";*/
+                     if(value.equals("."))
+                        value = "0.00";
 
                     detailRequest.setNewAmount(Double.parseDouble(value));
                     ITotalAmounts.setValueGte(detailRequest.getIdu_tipoGasto(),detailRequest.getNewAmount());
@@ -162,27 +166,29 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
                     String value = editTextMoney.getEdtQuantity().getText().toString();
-                    if(editTextMoney.getEdtQuantity().getText().length() > 0)
-                        //editTextMoney.getEdtQuantity().setSelection(editTextMoney.getEdtQuantity().getText().length());
+                    //if(editTextMoney.getEdtQuantity().getText().length() > 0)
+                      //  editTextMoney.getEdtQuantity().setSelection(editTextMoney.getEdtQuantity().getText().length());
+
                     editTextMoney.setTextWatcherMoney();
                     DeviceManager.showKeyBoard(activity);
                 }else {
                     String value = editTextMoney.getEdtQuantity().getText().toString();
-                /*    if(value.isEmpty()){
+                    if(value.isEmpty()){
+                        editTextMoney.removeTextWatcher();
                         editTextMoney.getEdtQuantity().setText("$0.00");
                         return;
-                    }*/
+                    }
 
-                    /*if(value.contains(".")){
+                    if(value.contains(".")){
                         if(value.endsWith(".")){
                             editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , "00"));
                         }
-                        else if(value.length() -1 > 0 && value.charAt(value.length() -1 ) == '.'){
+                        else if(value.length() -2 > 0 && value.charAt(value.length() -2 ) == '.'){
                             editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , "0"));
                         }
                     }else {
                         editTextMoney.getEdtQuantity().setText(String.format("%s%s",value , ".00"));
-                    }*/
+                    }
 
                 }
             }

@@ -1,8 +1,13 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AuthorizedRequestColaboratorSingleton {
 
     private  CoppelServicesAuthorizedRequest coppelServicesAuthorizedRequest;
+
+    private List<DetailRequest> DatosColaborador;
 
     private static final AuthorizedRequestColaboratorSingleton myInstance = new AuthorizedRequestColaboratorSingleton();
 
@@ -28,6 +33,18 @@ public class AuthorizedRequestColaboratorSingleton {
 
     public void resetValues(){
         coppelServicesAuthorizedRequest = null;
+        DatosColaborador = null;
     }
 
+    public List<DetailRequest> getDatosColaborador() {
+
+        if(DatosColaborador == null)
+            DatosColaborador = new ArrayList<>();
+
+        return DatosColaborador;
+    }
+
+    public void setDatosColaborador(List<DetailRequest> datosColaborador) {
+        DatosColaborador = datosColaborador;
+    }
 }

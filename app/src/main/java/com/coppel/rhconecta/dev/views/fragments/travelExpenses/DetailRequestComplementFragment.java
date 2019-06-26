@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.AuthorizedRequestColaboratorSingleton;
@@ -85,7 +86,9 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
         parent.setToolbarTitle(importsLists.getType() == 1 ?   getString(R.string.title_detail_colaborator_complement )
                 :  getString(R.string.title_detail_colaborator_request));
 
-       // setData();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        // setData();
         return view;
     }
 
@@ -155,6 +158,9 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
         if(importsLists.getImportes()  != null && !importsLists.getImportes() .isEmpty()){
 
             for(DetailRequest detailRequest :importsLists.getImportes()){
+
+
+
                 if(detailRequest.getIdu_tipoGasto() == -1){
                     Importes.setTotalesImportes(String.valueOf(detailRequest.getImp_total()),isEdit);
                 }else {

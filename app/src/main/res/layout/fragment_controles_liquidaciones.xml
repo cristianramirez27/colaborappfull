@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tituloCentro"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:textColor="@color/colorTextCoppelNegro"
                     android:textSize="14sp" />
@@ -131,7 +131,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tituloEstatus"
-                    android:layout_marginTop="6dp"
+
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:textColor="@color/colorTextCoppelNegro"
                     android:textSize="14sp" />
