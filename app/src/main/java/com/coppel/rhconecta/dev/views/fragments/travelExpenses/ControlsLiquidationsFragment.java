@@ -55,6 +55,8 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentEstatus;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +106,13 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
 
     @BindView(R.id.titulosControles)
     HeaderTitlesList titulosControles;
+
+    @BindView(R.id.layoutControles)
+    LinearLayout layoutControles;
+    @BindView(R.id.txtNoControls)
+    TextView txtNoControls;
+
+
 
     private DialogFragmentCenter dialogFragmentCenter;
     private Center centerSelected;
@@ -345,10 +354,22 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
 
                     controlColaborators.clear();
 
-                    for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
-                        controlColaborators.add(control);
+                    if(colaboratorResponse.getData().getResponse().getControles() != null && !colaboratorResponse.getData().getResponse().getControles().isEmpty()){
+                        for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
+                            controlColaborators.add(control);
+                        }
+                        expensesTravelColaboratorControlsRecyclerAdapter.notifyDataSetChanged();
+
+                        txtNoControls.setVisibility(View.GONE);
+                        layoutControles.setVisibility(View.VISIBLE);
+
+                    }else {
+
+
+                        txtNoControls.setVisibility(View.VISIBLE);
+                        layoutControles.setVisibility(View.GONE);
                     }
-                    expensesTravelColaboratorControlsRecyclerAdapter.notifyDataSetChanged();
+
 
                 }else if(response.getResponse() instanceof ColaboratorControlsMonthResponse){
                     ColaboratorControlsMonthResponse monthResponse = (ColaboratorControlsMonthResponse)response.getResponse();

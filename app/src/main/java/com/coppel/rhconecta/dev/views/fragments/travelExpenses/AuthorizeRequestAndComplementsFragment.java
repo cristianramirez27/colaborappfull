@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -81,6 +82,11 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
     RecyclerView rcvSolicitudes;
     @BindView(R.id.titulosSolicitudes)
     HeaderTitlesList titulosSolicitudes;
+
+    @BindView(R.id.txtNoRequest)
+TextView txtNoRequest;
+    @BindView(R.id.layoutSolicitudes)
+    LinearLayout layoutSolicitudes;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -243,10 +249,20 @@ public class AuthorizeRequestAndComplementsFragment extends Fragment implements 
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
                     //Limpiamos el resultado previo de la consulta
                     requestComplementsColaborators.clear();
-                    for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request :colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
-                        requestComplementsColaborators.add(request);
+
+                    if(colaboratorResponse.getData().getResponse().getSolicitudes_Complementos() != null && !colaboratorResponse.getData().getResponse().getSolicitudes_Complementos().isEmpty()){
+                        for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request :colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
+                            requestComplementsColaborators.add(request);
+                        }
+
+                        expensesTravelColaboratorRequestRecyclerAdapter.notifyDataSetChanged();
+                        txtNoRequest.setVisibility(View.GONE);
+                        layoutSolicitudes.setVisibility(View.VISIBLE);
+                    }else {
+                        layoutSolicitudes.setVisibility(View.GONE);
+                        txtNoRequest.setVisibility(View.VISIBLE);
                     }
-                    expensesTravelColaboratorRequestRecyclerAdapter.notifyDataSetChanged();
+
                 }
                 break;
         }
