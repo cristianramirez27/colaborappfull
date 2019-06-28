@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="whateverString"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:largeHeap="true">
         <activity
             android:name=".views.activities.SplashScreenActivity"

@@ -13,13 +13,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
@@ -39,6 +43,10 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView icClose;
     @BindView(R.id.icClosePublicity)
     ImageView icClosePublicity;
+
+
+    @BindView(R.id.scrollview)
+    ScrollView scrollview;
 
     @BindView(R.id.image)
     ImageView image;
@@ -150,6 +158,30 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 onBenefitsAdvertisingClickListener.closeCategoryDialog();
             }
         });
+
+        txtAddress.setMovementMethod(new ScrollingMovementMethod());
+
+        scrollview.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtAddress.getParent().requestDisallowInterceptTouchEvent(false);
+
+                return false;
+            }
+        });
+
+        txtAddress.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtAddress.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
     }
 
     public void close() {
@@ -204,8 +236,10 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             imageFull.setImageResource(R.drawable.img_publicidad);
         }
 
+        Glide.with(this).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad).into(imageFull);
+
         //Picasso.with(getContext()).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad ).into(imageFull);
-        Picasso.Builder builder = new Picasso.Builder(getContext());
+        /*Picasso.Builder builder = new Picasso.Builder(getContext());
         builder.listener(new Picasso.Listener()
         {
             @Override
@@ -215,7 +249,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 imageFull.setImageResource(R.drawable.img_publicidad);
             }
         });
-        builder.build().load(advertising.getRuta()).into(imageFull);
+        builder.build().load(advertising.getRuta()).into(imageFull);*/
 
 
         loadAnimations();

@@ -105,6 +105,8 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         discountsRecyclerAdapter.setOnBenefitsDiscountsClickListener(this);
         rcvDiscounts.setAdapter(discountsRecyclerAdapter);
         rcvDiscounts.setOnClickListener(this);
+
+        rcvDiscounts.getRecycledViewPool().setMaxRecycledViews(0, 0);
         Bundle bundle = getArguments();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS) != null){
             categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS), BenefitsCategoriesResponse.Category.class);
@@ -188,6 +190,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         for(BenefitsDiscountsResponse.Discount discount : discountsResult){
             discounts.add(discount);
         }
+
         discountsRecyclerAdapter.notifyDataSetChanged();
     }
 
