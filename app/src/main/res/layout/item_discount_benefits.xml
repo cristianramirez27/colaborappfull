@@ -28,7 +28,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:padding="3dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
                 android:layout_margin="4dp"
                 android:src="@drawable/placeholder_discount"/>

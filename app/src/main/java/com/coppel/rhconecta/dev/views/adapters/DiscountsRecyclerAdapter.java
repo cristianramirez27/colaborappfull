@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
@@ -54,6 +56,12 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         //viewHolder.checkboxElement.setEnabled(currentItem.getOpc_estatus() == 1 ? true : false);
         if(currentItem.getRuta() != null && !currentItem.getRuta().isEmpty()){
 
+            Glide.with(getApplicationContext()).load(currentItem.getRuta())
+                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                    .placeholder(R.drawable.placeholder_discount)
+                    .into(viewHolder.imageBenefits);
+
+            /*
             Picasso.with(getApplicationContext())
                     .load(currentItem.getRuta())
                     .networkPolicy(NetworkPolicy.OFFLINE)
@@ -81,7 +89,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
                                         }
                                     });
                         }
-                    });
+                    });*/
         }
 
        // viewHolder.setIsRecyclable(false);
