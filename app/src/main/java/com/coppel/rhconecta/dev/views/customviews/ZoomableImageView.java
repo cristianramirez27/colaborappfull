@@ -244,6 +244,7 @@ public class ZoomableImageView extends ImageView
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         width = MeasureSpec.getSize(widthMeasureSpec);
         height = View.MeasureSpec.getSize(heightMeasureSpec);
+        height = MeasureSpec.getSize(heightMeasureSpec);
         //Fit to screen.
         float scale;
         float scaleX =  width / bmWidth;

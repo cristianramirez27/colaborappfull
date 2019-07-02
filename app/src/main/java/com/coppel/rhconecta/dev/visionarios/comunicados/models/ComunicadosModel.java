@@ -110,7 +110,6 @@ public class ComunicadosModel implements Comunicados.Model, ObtenerComunicados_C
         }
     }
 
-
     @Override
     public void onSuccessObtenerComunicados(ArrayList<Comunicado> result) {
         Log.d("ObtenerComunicados", "Array SUCCESS!");

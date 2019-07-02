@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,13 +13,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
@@ -33,7 +38,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class DialogFragmentCompany extends DialogFragment implements View.OnClickListener {
@@ -44,6 +48,10 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView icClose;
     @BindView(R.id.icClosePublicity)
     ImageView icClosePublicity;
+
+
+    @BindView(R.id.scrollview)
+    ScrollView scrollview;
 
     @BindView(R.id.image)
     ImageView image;
@@ -101,7 +109,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_benefit_company, container, false);
         ButterKnife.bind(this, view);
-        setCancelable(false);
+        setCancelable(true);
         initView();
     /*    if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
@@ -155,6 +163,30 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 onBenefitsAdvertisingClickListener.closeCategoryDialog();
             }
         });
+
+        txtAddress.setMovementMethod(new ScrollingMovementMethod());
+
+        scrollview.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtAddress.getParent().requestDisallowInterceptTouchEvent(false);
+
+                return false;
+            }
+        });
+
+        txtAddress.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtAddress.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
     }
 
     public void close() {
@@ -174,7 +206,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     @Override
     public void onClick(View view) {
 
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 2500){
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1500){
             return;
         }
 
@@ -183,6 +216,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         switch (view.getId()) {
             case R.id.btnAdvertising:
                 //Se muestra la publicidad de la empresa
+                btnAdvertising.setEnabled(false);
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
             case R.id.icClosePublicity:
@@ -208,18 +242,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             imageFull.setImageResource(R.drawable.img_publicidad);
         }
 
-        //Picasso.with(getContext()).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad ).into(imageFull);
-        Picasso.Builder builder = new Picasso.Builder(getContext());
-        builder.listener(new Picasso.Listener()
-        {
-            @Override
-            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception)
-            {
-                imageFull.setZoomable(false);
-                imageFull.setImageResource(R.drawable.img_publicidad);
-            }
-        });
-        builder.build().load(advertising.getRuta()).into(imageFull);
+
+        Glide.with(this).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad).into(imageFull);
 
 
         loadAnimations();
@@ -279,5 +303,13 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetLeftIn.start();
             mIsBackVisible = false;
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        //your code hear
+        onBenefitsAdvertisingClickListener.closeCategoryDialog();
+        dialog.cancel();
     }
 }

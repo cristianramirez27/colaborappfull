@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory"
         android:appComponentFactory="whateverString"
-        android:hardwareAccelerated="false"
+        android:hardwareAccelerated="true"
         android:largeHeap="true">
         <activity
             android:name=".views.activities.SplashScreenActivity"
@@ -75,18 +75,19 @@
             android:windowSoftInputMode="adjustResize|adjustPan"
             android:screenOrientation="portrait"/>
 
+
         <activity
             android:name=".views.activities.BenefitsActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|adjustPan"
             android:screenOrientation="portrait"/>
 
-
         <activity
             android:name=".views.activities.FondoAhorroActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

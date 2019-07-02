@@ -31,6 +31,8 @@ import java.util.List;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
+
 public class AppUtilities {
 
     public static void saveStringInSharedPreferences(Context context, String key, String value) {
@@ -67,12 +69,14 @@ public class AppUtilities {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         for(String key :sharedPreferences.getAll().keySet()){
             if(!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN) ){
-                editor.remove("text").commit();
+                editor.remove(key).commit();
             }
         }
 
         //editor.clear();
        // editor.apply();
+
+         editor.apply();
     }
 
 

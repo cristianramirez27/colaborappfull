@@ -10,9 +10,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
-import com.coppel.rhconecta.dev.business.models.PushData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -25,8 +23,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_ADVERTISING;
-import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_DISCOUNTS;
-import static com.coppel.rhconecta.dev.views.customviews.PushInvasiveDialog.KEY_PUSH_DATA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 
@@ -86,7 +82,7 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
 
     private void requestAdvertising(BenefitsCompaniesResponse.Company company){
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
-        BenefitsRequestData requestData = new BenefitsRequestData (BENEFITS_ADVERTISING,7);
+        BenefitsRequestData requestData = new BenefitsRequestData(BENEFITS_ADVERTISING,7);
         requestData.setIdempresa(company.getServicios());
         coppelServicesPresenter.getBenefits(requestData, token);
     }

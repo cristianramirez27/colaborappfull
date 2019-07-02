@@ -37,6 +37,7 @@
             android:src="@drawable/placeholder_category"/>
 
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -101,7 +102,6 @@
                     android:id="@+id/txtNote"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="80dp"
                     android:scrollbars="vertical"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/lineto_circular_pro_book"
@@ -129,11 +129,9 @@
                     android:id="@+id/txtPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="60dp"
                     android:autoLink="phone"
                     android:scrollbars="vertical"
                     android:textColorLink="@color/colorPrimaryCoppelAzul"
-                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/lineto_circular_pro_book"
                     android:gravity="center"
                     android:textColor="@color/colorTextGrayDark"

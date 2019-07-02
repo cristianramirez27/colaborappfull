@@ -1716,7 +1716,7 @@ public class ServicesInteractor {
 
                 try {
 
-                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
                     //getBenefitsResponse(benefitsRequestData.getBenefits_type());
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());

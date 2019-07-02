@@ -31,7 +31,6 @@ public class CommunicatorObtenerComunicados {
     private static final String TAG = "CommunicatorObtenerComunicados";
     private String SERVER_URL = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL);
 
-
     public void ObtenerApi(JSON_ObtenerComunicados item, final ObtenerComunicados_Callback callback) {
 
 
