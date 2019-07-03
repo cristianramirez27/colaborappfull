@@ -33,6 +33,9 @@ public class AppConstants {
     public static final String OPTION_LETTERS = "LETTERS";
     public static final String OPTION_EXPENSES = "EXPENSE";
     public static final String OPTION_POLL = "POLL";
+    public static final String OPTION_HOLIDAYS = "HOLIDAYS";
+
+
 
     public static final String OPTION_BONUS = "BONUS";
     public static final String OPTION_GAS = "GAS";

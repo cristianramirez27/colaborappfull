@@ -311,4 +311,9 @@
     <string name="empty_controls">No hay controles disponibles</string>
 
     <string name="empty_months">No hay meses disponibles</string>
+
+
+    <!--Vacaciones-->
+    <string name="request_holidays">Solicitud de vaciones</string>
+    <string name="title_holidays">Vacaciones</string>
 </resources>

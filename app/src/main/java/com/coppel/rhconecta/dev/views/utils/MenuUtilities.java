@@ -19,6 +19,8 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+
 public class MenuUtilities {
 
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide,int[] notifications) {
@@ -31,6 +33,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
+                new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
@@ -163,6 +166,10 @@ public class MenuUtilities {
 
             case AppConstants.OPTION_EXPENSES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_gastos_viaje);
+                break;
+
+            case AppConstants.OPTION_HOLIDAYS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_vacaciones);
                 break;
         }
         return icon;

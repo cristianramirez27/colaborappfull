@@ -52,6 +52,7 @@ import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysRolMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -78,6 +79,7 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
@@ -318,7 +320,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 Intent intentVisionaries = new Intent(this, VideosActivity.class);
                 startActivity(intentVisionaries);
                 break;
-
             case OPTION_LETTERS:
                 replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
                 break;
@@ -327,8 +328,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 getRolType();
                 break;
 
-            case OPTION_POLL:
+            case OPTION_HOLIDAYS:
+                replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                break;
 
+            case OPTION_POLL:
 
                 break;
         }
