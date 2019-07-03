@@ -4,14 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.Discounts;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,10 +52,73 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         //viewHolder.d.setText(currentItem.getDescripciondes());
         viewHolder.discount.setText(currentItem.getDescuento());
         //viewHolder.checkboxElement.setEnabled(currentItem.getOpc_estatus() == 1 ? true : false);
-        if(currentItem.getRuta() != null && !currentItem.getRuta().isEmpty())
-         Picasso.with(getApplicationContext()).load(currentItem.getRuta())
-                 .placeholder(R.drawable.placeholder_discount)
-                 .error(R.drawable.placeholder_discount).into(viewHolder.imageBenefits);
+        if(currentItem.getRuta() != null && !currentItem.getRuta().isEmpty()){
+
+            Glide.with(getApplicationContext()).load(currentItem.getRuta())
+                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                    .placeholder(R.drawable.placeholder_discount)
+                    .into(viewHolder.imageBenefits);
+
+            /*
+            Picasso.with(getApplicationContext())
+                    .load(currentItem.getRuta())
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(viewHolder.imageBenefits, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Picasso.with(getApplicationContext())
+                                    .load(currentItem.getRuta())
+                                    .error(R.drawable.placeholder_discount)
+                                    .into(viewHolder.imageBenefits, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso","Could not fetch image");
+                                        }
+                                    });
+                        }
+                    });*/
+        }
+
+       // viewHolder.setIsRecyclable(false);
+       /* Picasso.with(getApplicationContext())
+                .load(currentItem.getRuta())
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(viewHolder.imageBenefits, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //Try again online if cache failed
+                        Picasso.with(getApplicationContext())
+                                .load(currentItem.getRuta())
+                                .error(R.drawable.placeholder_discount)
+                                .into(viewHolder.imageBenefits, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.v("Picasso","Could not fetch image");
+                                    }
+                                });
+                    }
+                });*/
 
         viewHolder.cardViewDiscounts.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,6 +158,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            setIsRecyclable(false);
         }
     }
 

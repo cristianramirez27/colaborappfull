@@ -1734,7 +1734,7 @@ public class ServicesInteractor {
 
                 try {
 
-                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
                     //getBenefitsResponse(benefitsRequestData.getBenefits_type());
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
@@ -2257,7 +2257,7 @@ public class ServicesInteractor {
             case GUARDAR_ABONO:
                 coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarAbonoRequest(withDrawSavingRequestData.getNum_empleado(),solicitud,
                         withDrawSavingRequestData.getImp_cuentacorriente(),withDrawSavingRequestData.getImp_ahorroadicional()
-                        ,withDrawSavingRequestData.getImp_fondoempleado(),withDrawSavingRequestData.getClv_retiro());
+                        ,withDrawSavingRequestData.getImp_fondoempleado(),withDrawSavingRequestData.getClv_retiro(),withDrawSavingRequestData.getIdu_traspaso());
                 break;
             case CONSULTA_AHORRO:
                 coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaAhorroAdicionalRequest(withDrawSavingRequestData.getNum_empleado(),solicitud);

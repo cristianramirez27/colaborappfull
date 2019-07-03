@@ -26,6 +26,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
 public class AppUtilities {
 
@@ -58,8 +63,24 @@ public class AppUtilities {
         editor.apply();
     }
 
+    public static void deleteSharedPreferencesWithoutFirebase(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for(String key :sharedPreferences.getAll().keySet()){
+            if(!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN) ){
+                editor.remove(key).commit();
+            }
+        }
+
+        //editor.clear();
+       // editor.apply();
+
+         editor.apply();
+    }
+
+
     public static void closeApp(Activity activity) {
-        deleteSharedPreferences(activity.getApplicationContext());
+        deleteSharedPreferencesWithoutFirebase(activity.getApplicationContext());
         activity.startActivity(new Intent(activity, LoginActivity.class));
         activity.finish();
     }

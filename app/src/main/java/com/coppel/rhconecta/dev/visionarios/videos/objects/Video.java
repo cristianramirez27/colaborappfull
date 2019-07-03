@@ -19,6 +19,8 @@ public class Video implements Serializable {
     private int landing_visible;
     private boolean visto = false;
 
+    private int opc_visto = 0;
+
     public Video() {
     }
 
@@ -37,6 +39,34 @@ public class Video implements Serializable {
         this.estrellas = estrellas;
         this.landing_visible = landing_visible;
         this.visto = false;
+    }
+
+    public Video(int idvideos, String titulo, String encabezado, int estatus, String descripcion, String duracion_h, String duracion_m, String fecha, String src, String imagen_video_preview, int vistas, int estrellas, int landing_visible, int iVisto) {
+        this.idvideos = idvideos;
+        this.titulo = titulo;
+        this.encabezado = encabezado;
+        this.estatus = estatus;
+        this.descripcion = descripcion;
+        this.duracion_h = duracion_h;
+        this.duracion_m = duracion_m;
+        this.fecha = fecha;
+        this.src = src;
+        this.imagen_video_preview = imagen_video_preview;
+        this.vistas = vistas;
+        this.estrellas = estrellas;
+        this.landing_visible = landing_visible;
+
+        this.opc_visto = iVisto;
+
+        this.visto = false;
+    }
+
+    public int getOpc_visto() {
+        return opc_visto;
+    }
+
+    public void setOpc_visto(int opc_visto) {
+        this.opc_visto = opc_visto;
     }
 
     public boolean isVisto() {

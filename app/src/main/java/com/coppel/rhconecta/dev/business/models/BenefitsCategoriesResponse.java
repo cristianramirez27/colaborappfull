@@ -46,6 +46,9 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
         private String logo;
         private String nombre;
 
+        //Se agrega para los resultados de la busqueda
+
+        private List<BenefitsDiscountsResponse.Discount> servicios;
 
         public int getCve() {
             return cve;
@@ -77,6 +80,15 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
 
         public void setNombre(String nombre) {
             this.nombre = nombre;
+        }
+
+
+        public List<BenefitsDiscountsResponse.Discount> getServicios() {
+            return servicios;
+        }
+
+        public void setServicios(List<BenefitsDiscountsResponse.Discount> servicios) {
+            this.servicios = servicios;
         }
     }
 }

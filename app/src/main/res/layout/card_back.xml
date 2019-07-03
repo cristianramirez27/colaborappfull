@@ -18,9 +18,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="14dp"
+            android:scrollbars="horizontal|vertical"
                 android:elevation="10dp">
 
-                <ImageView
+                <com.github.chrisbanes.photoview.PhotoView
                     android:id="@+id/imageFull"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

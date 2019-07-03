@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
@@ -47,6 +48,7 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         showCompanyDialog(company);
 
 
+
     }
 
     public void initViews() {
@@ -80,7 +82,7 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
 
     private void requestAdvertising(BenefitsCompaniesResponse.Company company){
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
-        BenefitsRequestData requestData = new BenefitsRequestData (BENEFITS_ADVERTISING,7);
+        BenefitsRequestData requestData = new BenefitsRequestData(BENEFITS_ADVERTISING,7);
         requestData.setIdempresa(company.getServicios());
         coppelServicesPresenter.getBenefits(requestData, token);
     }

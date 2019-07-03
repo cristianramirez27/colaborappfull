@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -220,7 +221,14 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
             content = edtAhorroActualProceso.getQuantity();
         }
 
-        amountSave = Integer.parseInt(content);
+        try {
+            amountSave = Integer.parseInt(content);
+
+        }catch (Exception e){
+
+        }
+
+
         showAlertDialog(getString(R.string.attention), "",
                     getString(R.string.new_saving),TextUtilities.getNumberInCurrencyFormaNoDecimal(Double.parseDouble(content)),"Confirmar",0,true, new DialogFragmentAhorroAdicional.OnOptionClick() {
                         @Override
@@ -411,10 +419,17 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
+                if(s.toString().isEmpty()){
+                   calculate();
+                }
+
+                Log.i("CHANGE","Text: "+ s.toString());
 
             }
         });

@@ -8,6 +8,7 @@ import com.coppel.rhconecta.dev.visionarios.videos.objects.Video;
 import java.util.ArrayList;
 
 public class TableVideos {
+
     private InternalDatabase db;
     private String TABLA_NOMBRE = "videos";
     private boolean resetOnStart = false; // SI ES TRUE ELIMINA LA TABLA PARA GENERARLA NUEVAMENTE
@@ -15,6 +16,7 @@ public class TableVideos {
     public TableVideos(InternalDatabase db, boolean resetOnStart) {
         this.db = db;
         this.db.openDB();
+
         this.resetOnStart = resetOnStart;
         if (this.resetOnStart) {
             this.dropTable();
@@ -53,7 +55,6 @@ public class TableVideos {
                 "estrellas INT NOT NULL," +
                 "landing_visible INT NOT NULL," +
                 "visto INT NOT NULL," +
-
                 "PRIMARY KEY (idvideos)) ";
 
         if (this.db.Query(query)) {
@@ -80,7 +81,8 @@ public class TableVideos {
                 " \"" + obj.getVistas() + "\", " +
                 " \"" + obj.getEstrellas() + "\", " +
                 " \"" + obj.getLanding_visible() + "\", " +
-                " \"" + (obj.isVisto() ? 1 : 0) + "\" ) ";
+                //" \"" + (obj.isVisto() ? 1 : 0) + "\" ) ";
+                " \""+obj.getOpc_visto()+ "\" ) ";
 
         if (this.db.Query(query)) {
             Log.d("MYSQLITE", "INSERT  " + this.TABLA_NOMBRE + " OK!");
@@ -105,7 +107,8 @@ public class TableVideos {
                 " vistas=\"" + obj.getVistas() + "\", " +
                 " estrellas=\"" + obj.getEstrellas() + "\", " +
                 " landing_visible=\"" + obj.getLanding_visible() + "\", " +
-                " visto=\"" + (obj.isVisto() ? 1 : 0) + "\" WHERE idvideos=" + obj.getIdvideos() + " ";
+                //" visto=\"" + (obj.isVisto() ? 1 : 0) + "\" WHERE idvideos=" + obj.getIdvideos() + " ";
+                " visto=\""+obj.getOpc_visto() + "\" WHERE idvideos=" + obj.getIdvideos() + " ";
 
         if (this.db.Query(query)) {
             Log.d("MYSQLITE", "UPDATE  " + this.TABLA_NOMBRE + " OK!");
@@ -135,7 +138,8 @@ public class TableVideos {
                             cursor.getString(cursor.getColumnIndex("imagen_video_preview")),
                             cursor.getInt(cursor.getColumnIndex("vistas")),
                             cursor.getInt(cursor.getColumnIndex("estrellas")),
-                            cursor.getInt(cursor.getColumnIndex("landing_visible"))
+                            cursor.getInt(cursor.getColumnIndex("landing_visible")),
+                            cursor.getInt(cursor.getColumnIndex("visto"))
                     );
                     obj.setVisto(visto);
 
@@ -180,7 +184,8 @@ public class TableVideos {
                             cursor.getString(cursor.getColumnIndex("imagen_video_preview")),
                             cursor.getInt(cursor.getColumnIndex("vistas")),
                             cursor.getInt(cursor.getColumnIndex("estrellas")),
-                            cursor.getInt(cursor.getColumnIndex("landing_visible"))
+                            cursor.getInt(cursor.getColumnIndex("landing_visible")),
+                            cursor.getInt(cursor.getColumnIndex("visto"))
 
                     );
                     obj.setVisto(visto);

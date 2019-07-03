@@ -20,6 +20,8 @@ public class WithDrawSavingRequestData implements Serializable{
     private int imp_cuentacorriente;
     private int clv_retiro;
 
+    //Se agrega parametro 07/07/19
+    private int idu_traspaso;
 
 
     public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, String num_empleado) {
@@ -129,5 +131,14 @@ public class WithDrawSavingRequestData implements Serializable{
 
     public void setClv_retiro(int clv_retiro) {
         this.clv_retiro = clv_retiro;
+    }
+
+
+    public int getIdu_traspaso() {
+        return idu_traspaso;
+    }
+
+    public void setIdu_traspaso(int idu_traspaso) {
+        this.idu_traspaso = idu_traspaso;
     }
 }

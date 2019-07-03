@@ -72,14 +72,21 @@
         <activity
             android:name=".views.activities.DialogAlertActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name=".views.activities.BenefitsActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".views.activities.FondoAhorroActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
-
 
         <activity
             android:name=".views.activities.GastosViajeActivity"
@@ -92,7 +99,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.coppel.rhconecta.dev.fileprovider"
