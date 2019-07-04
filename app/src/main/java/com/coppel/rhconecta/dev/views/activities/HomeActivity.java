@@ -52,6 +52,7 @@ import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysRolMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
@@ -329,7 +330,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case OPTION_HOLIDAYS:
-                replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
                 break;
 
             case OPTION_POLL:

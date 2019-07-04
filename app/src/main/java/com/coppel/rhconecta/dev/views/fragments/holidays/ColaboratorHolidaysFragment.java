@@ -39,6 +39,8 @@ import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorRequestR
 import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelMonthsRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
+import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableHeader;
+import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
@@ -57,55 +59,32 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColaboratorHolidaysFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
-        ExpensesTravelColaboratorMonthsRecyclerAdapter.OnMonthClickListener, ExpensesTravelColaboratorRequestRecyclerAdapter.OnRequestSelectedClickListener,
-        ExpensesTravelColaboratorControlsRecyclerAdapter.OnControlSelectedClickListener, ExpensesTravelMonthsRequestRecyclerAdapter.OnControlMonthClickListener {
+public class ColaboratorHolidaysFragment extends Fragment implements  View.OnClickListener, IServicesContract.View
+      {
 
     public static final String TAG = ColaboratorHolidaysFragment.class.getSimpleName();
     private AppCompatActivity parent;
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;
-    @BindView(R.id.rcvControles)
-    RecyclerView rcvControles;
 
-    @BindView(R.id.expMonths)
-    ExpandableSimpleTitle expMonths;
-    @BindView(R.id.layoutMeses)
-    LinearLayout layoutMeses;
-    @BindView(R.id.rcvMonths)
-    RecyclerView rcvMonths;
+    @BindView(R.id.titleDetail)
+    TextViewExpandableRightArrowHeader titleDetail;
 
-    @BindView(R.id.titulosSolicitudes)
-    HeaderTitlesList titulosSolicitudes;
-    @BindView(R.id.titulosControles)
-    HeaderTitlesList titulosControles;
+    @BindView(R.id.layoutDetail)
+    LinearLayout layoutDetail;
 
-    @BindView(R.id.layoutSolicitudesContainer)
-    LinearLayout layoutSolicitudesContainer;
-    @BindView(R.id.layoutControlesContainer)
-    LinearLayout layoutControlesContainer;
 
-    @BindView(R.id.txtNoSolicitudes)
-    TextView txtNoSolicitudes;
-    @BindView(R.id.txtNoControles)
-    TextView txtNoControles;
-    @BindView(R.id.txtNoMeses)
-    TextView txtNoMeses;
 
     private ColaboratorRequestsListExpensesResponse.Months monthSelected;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
 
-    private List<ColaboratorRequestsListExpensesResponse.ControlColaborator> controlColaborators;
-    private List<ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator> requestComplementsColaborators;
-    private List<ColaboratorRequestsListExpensesResponse.Months> monthsList;
+    //private List<ColaboratorRequestsListExpensesResponse.ControlColaborator> controlColaborators;
 
 
 
-    private ExpensesTravelColaboratorRequestRecyclerAdapter expensesTravelColaboratorRequestRecyclerAdapter;
-    private ExpensesTravelColaboratorControlsRecyclerAdapter expensesTravelColaboratorControlsRecyclerAdapter;
-    private ExpensesTravelColaboratorMonthsRecyclerAdapter expensesTravelColaboratorMonthsRecyclerAdapter;
+    //private ExpensesTravelColaboratorRequestRecyclerAdapter expensesTravelColaboratorRequestRecyclerAdapter;
 
     private long mLastClickTime = 0;
     @Override
@@ -117,17 +96,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_solicitudes_viaje, container, false);
+        View view = inflater.inflate(R.layout.fragment_vacaciones_colaborador, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
         if(getActivity() instanceof HomeActivity){
             parent = (HomeActivity) getActivity();
-            ( (HomeActivity) parent).setToolbarTitle(getString(R.string.title_requests_controls));
-        }else
-        if(getActivity() instanceof GastosViajeActivity){
-            parent = (GastosViajeActivity) getActivity();
-            ( (GastosViajeActivity) parent).setToolbarTitle(getString(R.string.title_requests_controls));
+            ( (HomeActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
         }
 
 
@@ -136,44 +111,22 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
-        rcvControles.setHasFixedSize(true);
-        rcvControles.setLayoutManager(new LinearLayoutManager(getContext()));
-        rcvMonths.setHasFixedSize(true);
-        rcvMonths.setLayoutManager(new LinearLayoutManager(getContext()));
-        titulosControles.setTitle1("Control");
 
-        requestComplementsColaborators = new ArrayList<>();
-        controlColaborators = new ArrayList<>();
-        monthsList = new ArrayList<>();
 
-        expMonths.setText("Controles liquidó y no liquidó:");
-        expMonths.setsizeText(18);
-        expMonths.setColorText(getResources().getColor(R.color.colorTextBlueCoppel));
-        expMonths.setVisibilityDivider(View.GONE);
-        expMonths.setMarginLeft(false);
+        titleDetail.setTexts(getString(R.string.title_holidays_days),String.format("%s %s","10",getString(R.string.title_days)));
 
-        expMonths.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
+        titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
             @Override
             public void onClick() {
-                if (expMonths.isExpanded()) {
-                    layoutMeses.setVisibility(View.VISIBLE);
+                if (titleDetail.isExpanded()) {
+                    layoutDetail.setVisibility(View.VISIBLE);
                 } else {
-                    layoutMeses.setVisibility(View.GONE);
+                    layoutDetail.setVisibility(View.GONE);
                 }
             }
         });
 
-        expensesTravelColaboratorRequestRecyclerAdapter = new ExpensesTravelColaboratorRequestRecyclerAdapter(requestComplementsColaborators,true);
-        expensesTravelColaboratorRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
-        expensesTravelColaboratorControlsRecyclerAdapter = new ExpensesTravelColaboratorControlsRecyclerAdapter(controlColaborators,true);
-        expensesTravelColaboratorControlsRecyclerAdapter.setOnControlSelectedClickListener(this);
-        expensesTravelColaboratorMonthsRecyclerAdapter = new ExpensesTravelColaboratorMonthsRecyclerAdapter(monthsList,true);
-        expensesTravelColaboratorMonthsRecyclerAdapter.setOnMonthClickListener(this);
-        expensesTravelColaboratorMonthsRecyclerAdapter.setOnControlMonthClickListener(this);
-
-        rcvSolicitudes.setAdapter(expensesTravelColaboratorRequestRecyclerAdapter);
-        rcvControles.setAdapter(expensesTravelColaboratorControlsRecyclerAdapter);
-        rcvMonths.setAdapter(expensesTravelColaboratorMonthsRecyclerAdapter);
+       // rcvSolicitudes.setAdapter(expensesTravelColaboratorRequestRecyclerAdapter);
 
 
 
@@ -189,7 +142,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_COLABORADOR_SOLICITUD, 1,numEmployer);
-        coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
+       // coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 
     @Override
@@ -236,51 +189,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                 if(response.getResponse() instanceof ColaboratorRequestsListExpensesResponse){
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
 
-                    if(!colaboratorResponse.getData().getResponse().getSolicitudes_Complementos().isEmpty()){
-                        layoutSolicitudesContainer.setVisibility(View.VISIBLE);
-                        txtNoSolicitudes.setVisibility(View.GONE);
-                        for(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator request : colaboratorResponse.getData().getResponse().getSolicitudes_Complementos()){
-                            requestComplementsColaborators.add(request);
-                        }
-                    }else {
-                        layoutSolicitudesContainer.setVisibility(View.GONE);
-                        txtNoSolicitudes.setVisibility(View.VISIBLE);
-                    }
-
-                    if(!colaboratorResponse.getData().getResponse().getControles().isEmpty()) {
-                        layoutControlesContainer.setVisibility(View.VISIBLE);
-                        for(ColaboratorRequestsListExpensesResponse.ControlColaborator control :colaboratorResponse.getData().getResponse().getControles()){
-                            controlColaborators.add(control);
-                        }
-                    }else {
-                        layoutControlesContainer.setVisibility(View.GONE);
-                        txtNoControles.setVisibility(View.VISIBLE);
-                    }
-
-                    if(!colaboratorResponse.getData().getResponse().getMeses().isEmpty()){
-                        for(ColaboratorRequestsListExpensesResponse.Months month :colaboratorResponse.getData().getResponse().getMeses()){
-                            monthsList.add(month);
-                        }
-
-                        txtNoMeses.setVisibility(View.GONE);
-                    }else{
-                        txtNoMeses.setVisibility(View.VISIBLE);
-                    }
-
-
-
-                    expensesTravelColaboratorRequestRecyclerAdapter.notifyDataSetChanged();
-                    expensesTravelColaboratorControlsRecyclerAdapter.notifyDataSetChanged();
-                    expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();
                 }else if(response.getResponse() instanceof ColaboratorControlsMonthResponse){
 
-                    ColaboratorControlsMonthResponse monthResponse = (ColaboratorControlsMonthResponse)response.getResponse();
-                    expensesTravelColaboratorMonthsRecyclerAdapter.getMonthSelected(monthSelected.getClv_mes())
-                    .setMonthRequest(monthResponse.getData().getResponse().getControles());
-                    expensesTravelColaboratorMonthsRecyclerAdapter.getMonthSelected(monthSelected.getClv_mes()).
-                            setExpand(true);
 
-                    expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();
                 }
                 break;
         }
@@ -302,58 +213,6 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         if(dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
 
-    @Override
-    public void onMonthClick(ColaboratorRequestsListExpensesResponse.Months month) {
-        monthSelected = month;
-        ColaboratorRequestsListExpensesResponse.Months  monthCurrent= expensesTravelColaboratorMonthsRecyclerAdapter.getMonthSelected(monthSelected.getClv_mes());
 
-        if(monthCurrent.isExpand()){
-            monthCurrent.setExpand(false);
-            expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();
-        }else {
 
-            for(ColaboratorRequestsListExpensesResponse.Months monthItem : expensesTravelColaboratorMonthsRecyclerAdapter.getDataItems()){
-                monthItem.setExpand(false);
-            }
-
-            String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-            String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-            ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_SOLICITUDES_MESES, 3,numEmployer);
-            expensesTravelRequestData.setClv_mes(month.getClv_mes());
-            coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
-        }
-
-    }
-
-    @Override
-    public void onRequestSelectedClick(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator) {
-
-        DetailExpenseTravelType detailExpenseTravelType = requestComplementsColaborator.getTipo() == 1 ? DetailExpenseTravelType.COMPLEMENTO : DetailExpenseTravelType.SOLICITUD;
-        DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(detailExpenseTravelType,requestComplementsColaborator.getClv_solicitud());
-        detailExpenseTravelData.setData(requestComplementsColaborator);
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,
-                BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS);
-
-    }
-
-    @Override
-    public void onControlSelectedClick(ColaboratorRequestsListExpensesResponse.ControlColaborator controlColaborator) {
-
-        DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(DetailExpenseTravelType.CONTROL,Integer.parseInt(controlColaborator.getControl()));
-        detailExpenseTravelData.setData(controlColaborator);
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,
-                BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS);
-    }
-
-    @Override
-    public void onControlMonthClick(ColaboratorControlsMonthResponse.ControlMonth controlMonth) {
-        DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(DetailExpenseTravelType.CONTROL_LIQUIDO_NOLIQUIDO,Integer.parseInt(controlMonth.getControl()));
-        detailExpenseTravelData.setData(controlMonth);
-
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,
-                BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS);
-    }
 }

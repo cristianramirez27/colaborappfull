@@ -37,6 +37,8 @@
 
                     
                     <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/layoutDetail"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"></LinearLayout>
                     
@@ -59,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lineto_circular_pro_medium"
-                    android:text="@string/title_request_complements"
+                    android:text="@string/title_dates_selected"
                     android:textColor="@color/colorSecondBlueCoppel"
                     android:textSize="18sp" />
 

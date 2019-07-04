@@ -316,4 +316,10 @@
     <!--Vacaciones-->
     <string name="request_holidays">Solicitud de vaciones</string>
     <string name="title_holidays">Vacaciones</string>
+    <string name="title_my_holidays">Mis Vacaciones</string>
+    <string name="title_dates_selected">Fechas seleccionadas</string>
+
+    <string name="title_holidays_days">Días de vacaciones</string>
+    <string name="title_days">días</string>
+
 </resources>
