@@ -331,7 +331,7 @@ private IButtonControl IButtonControl;
                     consultaMetodosPagoResponse = (ConsultaMetodosPagoResponse) response.getResponse();
                     if(consultaMetodosPagoResponse.getData().getResponse().size() > 1) {
 
-                        if(datosAbonoOpcion.getClv_retiro() > 0 ){
+                        if(datosAbonoOpcion.getClv_retiro() > 0 &&  this.clv_Abonar != 3 ){
 
                             for(int i = 0 ; i < consultaMetodosPagoResponse.getData().getResponse().size() ; i++){
                                 ConsultaMetodosPagoResponse.PaymentWay paymentWay = consultaMetodosPagoResponse.getData().getResponse().get(i);
