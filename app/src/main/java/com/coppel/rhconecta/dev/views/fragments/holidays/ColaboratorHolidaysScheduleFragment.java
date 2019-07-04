@@ -16,54 +16,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorControlsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorMonthsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorRequestRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelMonthsRequestRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
-import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
-import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableHeader;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColaboratorHolidaysFragment extends Fragment implements  View.OnClickListener, IServicesContract.View
+public class ColaboratorHolidaysScheduleFragment extends Fragment implements  View.OnClickListener, IServicesContract.View
       {
 
-    public static final String TAG = ColaboratorHolidaysFragment.class.getSimpleName();
+    public static final String TAG = ColaboratorHolidaysScheduleFragment.class.getSimpleName();
     private AppCompatActivity parent;
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;

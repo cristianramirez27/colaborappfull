@@ -17,9 +17,10 @@
         android:layout_height="match_parent"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
+        android:fillViewport="true"
         android:background="@color/transparent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
@@ -35,12 +36,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    
                     <LinearLayout
                         android:orientation="vertical"
                         android:id="@+id/layoutDetail"
+                        android:visibility="visible"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"></LinearLayout>
+                        android:layout_height="wrap_content">
+
+                    <include
+                        layout="@layout/layout_detail_holidays" />
+
+
+                    </LinearLayout>
                     
 
                 </com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader>
@@ -51,6 +58,7 @@
             <RelativeLayout
                 android:id="@+id/layoutSolicitudes"
                 android:layout_width="match_parent"
+                android:layout_above="@+id/layoutBtn"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/transparent"
@@ -97,7 +105,31 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:id="@+id/layoutBtn"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:id="@+id/btnActionLeft"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_blue_rounded"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="Agendar vacaciones"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorBackgroundCoppelBlanco"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
     </android.support.v4.widget.NestedScrollView>
