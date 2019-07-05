@@ -27,38 +27,39 @@
             android:orientation="vertical">
 
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/layoutHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
                     android:id="@+id/titleDetail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"/>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:id="@+id/layoutDetail"
-                        android:visibility="visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_below="@+id/titleDetail"
+                    android:orientation="vertical"
+                    android:id="@+id/layoutDetail"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <include
                         layout="@layout/layout_detail_holidays" />
 
 
-                    </LinearLayout>
-                    
+                </LinearLayout>
 
-                </com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader>
-
-            </LinearLayout>
+            </RelativeLayout>
 
 
             <RelativeLayout
+                android:layout_below="@+id/layoutHeader"
                 android:id="@+id/layoutSolicitudes"
                 android:layout_width="match_parent"
                 android:layout_above="@+id/layoutBtn"
+                android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/transparent"
@@ -115,7 +116,7 @@
 
 
                 <Button
-                    android:id="@+id/btnActionLeft"
+                    android:id="@+id/btnSchedule"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

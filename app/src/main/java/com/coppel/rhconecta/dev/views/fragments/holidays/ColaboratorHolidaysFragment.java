@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -37,6 +39,7 @@ import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorControls
 import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorMonthsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelMonthsRequestRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
@@ -60,7 +63,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColaboratorHolidaysFragment extends Fragment implements  View.OnClickListener, IServicesContract.View
+public class ColaboratorHolidaysFragment extends Fragment implements  View.OnClickListener,
+        IServicesContract.View,HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener
       {
 
     public static final String TAG = ColaboratorHolidaysFragment.class.getSimpleName();
@@ -86,19 +90,17 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @BindView(R.id.fechaPrimaVacacional)
     TextViewDetail fechaPrimaVacacional;
 
+    @BindView(R.id.btnSchedule)
+    Button btnSchedule;
 
 
-          private ColaboratorRequestsListExpensesResponse.Months monthSelected;
+    private ColaboratorRequestsListExpensesResponse.Months monthSelected;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
 
-    //private List<ColaboratorRequestsListExpensesResponse.ControlColaborator> controlColaborators;
-
-
-
-    //private ExpensesTravelColaboratorRequestRecyclerAdapter expensesTravelColaboratorRequestRecyclerAdapter;
-
+    private List<HolidayPeriod> holidayPeriodList;
+    private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
     private long mLastClickTime = 0;
     @Override
     public void onAttach(Context context) {
@@ -118,15 +120,10 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
             ( (HomeActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
         }
 
-
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
-
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
 
         titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
             @Override
@@ -141,7 +138,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
 
         initValues();
-       // rcvSolicitudes.setAdapter(expensesTravelColaboratorRequestRecyclerAdapter);
+
+        holidayPeriodList = new ArrayList<>();
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList);
+        holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
+
+
+        rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
 
         return view;
     }
@@ -235,6 +238,8 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         if(dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
 
+          @Override
+          public void onRequestSelectedClick(HolidayPeriod holidayPeriod) {
 
-
-}
+          }
+ }
