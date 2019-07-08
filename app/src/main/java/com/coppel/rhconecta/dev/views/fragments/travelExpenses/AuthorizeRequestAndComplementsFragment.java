@@ -129,7 +129,7 @@ TextView txtNoRequest;
 
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
-        titulosSolicitudes.setTitle1("Control");
+       // titulosSolicitudes.setTitle1("Control");
         requestComplementsColaborators = new ArrayList<>();
         expensesTravelColaboratorRequestRecyclerAdapter = new ExpensesTravelColaboratorRequestRecyclerAdapter(requestComplementsColaborators,false);
         expensesTravelColaboratorRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);

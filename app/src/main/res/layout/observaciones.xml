@@ -58,7 +58,7 @@
                 android:layout_gravity="top"
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:scrollbars="vertical"
-                android:text="@string/lorem"
+                android:text=""
                 android:textColor="@color/colorBackgroundCoppelNegro"
                 android:textSize="13sp" />
 

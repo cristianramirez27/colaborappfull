@@ -121,7 +121,7 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
         rcvImporte.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvImporte.setAdapter(editableAmountsRecyclerAdapter);
 
-        setTotalColaborator();
+        setTotalColaborator(values);
 
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         btnActionLeft.setOnClickListener(this);
@@ -263,9 +263,9 @@ public class EditImportsFragment extends Fragment implements  View.OnClickListen
 
 
     @Override
-    public void setTotalColaborator() {
+    public void setTotalColaborator( List<DetailRequest> values ) {
         double total = 0;
-        for(DetailRequest detailRequest : this.importsListsFilter){
+        for(DetailRequest detailRequest : values){
             if(detailRequest.getIdu_tipoGasto() != -1) {
                 String totalParcial = detailRequest.getImp_total().replace(",","");
                 total += Double.parseDouble(totalParcial);

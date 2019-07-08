@@ -240,6 +240,8 @@
                             android:paddingLeft="4dp"
                             android:paddingRight="4dp"
                             android:minHeight="40dp"
+                            android:padding="3dp"
+                            android:lineSpacingMultiplier="1.1"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center_horizontal"
