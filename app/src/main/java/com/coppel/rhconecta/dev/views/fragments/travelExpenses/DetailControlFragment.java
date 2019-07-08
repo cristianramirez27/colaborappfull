@@ -184,13 +184,16 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
             List<Devolution> devolucionesList = new ArrayList<>();
             double totalDevolution = 0;
             for(Devolution devolution : data.getDevoluciones()){
-                    devolucionesList.add(devolution);
-                totalDevolution+= devolution.getTotal();
-
+                    if(devolution.getDu_tipoGasto() != -1){
+                        devolucionesList.add(devolution);
+                        String value = devolution.getTotal().replace("$","");
+                        value = value.replace(",","");
+                        totalDevolution+= Double.parseDouble(value);
+                    }
             }
 
             Devoluciones.setTotalesDevolutions(String.valueOf(totalDevolution));
-            Devoluciones.setDataRecyclerView(data.getDevoluciones());
+            Devoluciones.setDataRecyclerView(devolucionesList);
             Devoluciones.setVisibility(View.VISIBLE);
         }
 

@@ -44,23 +44,25 @@
             android:textColor="@color/colorTextGray" />
 
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:scrollbars="vertical"
-            android:layout_marginTop="5dp">
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:scrollbars="vertical">
+
             <TextView
-                android:layout_gravity="top"
                 android:id="@+id/txtObservacionesDescripcion"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text=""
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="13sp"
-                android:textColor="@color/colorBackgroundCoppelNegro" />
+                android:layout_gravity="top"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:scrollbars="vertical"
+                android:text="@string/lorem"
+                android:textColor="@color/colorBackgroundCoppelNegro"
+                android:textSize="13sp" />
 
-        </ScrollView>
+        </LinearLayout>
 
 
 

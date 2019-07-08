@@ -53,7 +53,7 @@
             android:padding="8dp"
             android:textSize="13sp"
             android:inputType="textMultiLine"
-            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789 "
+            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789,.: "
             android:background="@drawable/background_gray_rounded"
             android:layout_height="120dp" />
 

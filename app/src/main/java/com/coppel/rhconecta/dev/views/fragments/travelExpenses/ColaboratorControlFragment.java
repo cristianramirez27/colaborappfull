@@ -13,15 +13,18 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -153,6 +156,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     Button btnActionRight;
     @BindView(R.id.txtTitleObservacionesColaborador)
     TextView txtTitleObservacionesColaborador;
+    @BindView(R.id.scrollViewParent)
+    ScrollView scrollViewParent;
+
 
 
     private DialogFragmentWarning dialogFragmentWarning;
@@ -206,23 +212,28 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     private void reCalculateTotal(){
         boolean isEdit = false;
 
-        if(this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR){
-            if( AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null){
-                for(DetailRequest detailRequest :  AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
-                    if(detailRequest.getIdu_tipoGasto() == -1){
+        try {
+            if (this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR) {
+                if (AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null) {
+                    for (DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()) {
+                        if (detailRequest.getIdu_tipoGasto() == -1) {
 
-                        if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
-                                && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()) {
-                            isEdit = true;
+                            if (AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
+                                    && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()) {
+                                isEdit = true;
+                            }
+
+                            String amount = detailRequest.getImp_total().replace(",", "");
+                            totalAutorizado.setTexts("Monto solicitado",
+                                    !isEdit ? String.format("$%s", detailRequest.getImp_total()) :
+                                            String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(amount))));
                         }
-
-                        String amount = detailRequest.getImp_total().replace(",","");
-                        totalAutorizado.setTexts("Monto solicitado",
-                                !isEdit  ?String.format("$%s",detailRequest.getImp_total()):
-                                        String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble( amount))));
                     }
                 }
             }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -559,7 +570,12 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
             cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundVerdeClaro);
             cardColaboratorControl.setTituloControl("Complemento");
-            cardColaboratorControl.setNumeroControl(String.valueOf(this.detailExpenseTravelData.getClave()));
+            //cardColaboratorControl.setNumeroControl(String.valueOf(this.detailExpenseTravelData.getClave()));
+
+            cardColaboratorControl.setNumeroControl(String.valueOf(
+                    ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getCLV_CONTROL()
+            ));
+
             if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
                 for(DetailRequest gastoComplemento : detail.getData().getResponse().getVerDetallesComplemento()){
                     if(gastoComplemento.getIdu_tipoGasto() == -1){
@@ -580,7 +596,15 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
             cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundRosaClaro);
             cardColaboratorControl.setTituloControl("Solicitud de viaje");
-            if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()){
+
+            String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
+
+            totalAutorizado.setTexts("Monto solicitado",String.format("$%s",importeSolicitado));
+            totalAutorizado.setVisibility(VISIBLE);
+
+            /*if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()){
+
+
                 for(DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()){
                     if(detallesSolicitud.getIdu_tipoGasto() == -1){
                         totalAutorizado.setTexts("Monto solicitado",String.format("$%s",detallesSolicitud.getImp_total()));
@@ -588,7 +612,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                         break;
                     }
                 }
-            }
+            }*/
         }
 
         ReasonTravel reasonTravel =  detail.getData().getResponse().getMotivoViaje().get(0);
@@ -627,6 +651,30 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         }
 
         txtObservacionesDescripcion.setText(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador());
+        txtObservacionesDescripcion.setMovementMethod(new ScrollingMovementMethod());
+
+        txtObservacionesDescripcion.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtObservacionesDescripcion.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
+
+
+        scrollViewParent.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                txtObservacionesDescripcion.getParent().requestDisallowInterceptTouchEvent(false);
+
+                return false;
+            }
+        });
 
         //Mostramos las observaciones del Gte
         if( detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ){
@@ -703,6 +751,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         cardColaboratorControl.setTituloControl("Control");
         if(detailExpenseTravelData.getData() instanceof ColaboratorRequestsListExpensesResponse.ControlColaborator){
             ColaboratorRequestsListExpensesResponse.ControlColaborator control = (ColaboratorRequestsListExpensesResponse.ControlColaborator) detailExpenseTravelData.getData();
+
+            cardColaboratorControl.setNumeroControl(String.valueOf(control.getControl()));
+
             cardColaboratorControl.setItinerario(String.valueOf(control.getItinerario()));
             cardColaboratorControl.setFechas(String.format("%s\n%s",control.getFec_salida(),control.getFec_regreso()));
             cardColaboratorControl.setStatus(
@@ -716,6 +767,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             numViajero = String.valueOf(control.getNum_viajero());
         }else if(detailExpenseTravelData.getData() instanceof ColaboratorControlsMonthResponse.ControlMonth){
             ColaboratorControlsMonthResponse.ControlMonth controlMonth = (ColaboratorControlsMonthResponse.ControlMonth) detailExpenseTravelData.getData();
+
+            cardColaboratorControl.setNumeroControl(String.valueOf(controlMonth.getControl()));
             cardColaboratorControl.setItinerario(String.valueOf(controlMonth.getItinerario()));
             cardColaboratorControl.setFechas(String.format("%s\n%s",controlMonth.getFec_salida(),controlMonth.getFec_regreso()));
             cardColaboratorControl.setStatus(
@@ -730,7 +783,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
         }
 
-        cardColaboratorControl.setNumeroControl(String.valueOf(detailExpenseTravelData.getClave()));
+      //  cardColaboratorControl.setNumeroControl(String.valueOf(detailExpenseTravelData.getClave()));
 
         totalAutorizado.setTextsSize(15,18);
         totalAutorizado.hideDivider();
@@ -765,7 +818,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(detail.getData().getResponse().getDevoluciones() != null && !detail.getData().getResponse().getDevoluciones().isEmpty()) {
             for (Devolution devolution : detail.getData().getResponse().getDevoluciones()) {
                 if (devolution.getDu_tipoGasto() == -1) {
-                    totalDevolucion.setTexts("Total devolución", String.format("$%s",devolution.getTotal()));
+                    totalDevolucion.setTexts("Total devolución", String.format("$%s",devolution.getImp_total()));
                     totalDevolucion.setVisibility(VISIBLE);
                     break;
                 }

@@ -310,5 +310,7 @@
     <string name="empty_request_complements">No hay solicitudes disponibles</string>
     <string name="empty_controls">No hay controles disponibles</string>
 
-    <string name="empty_months">No hay meses disponibles</string>
+    <string name="empty_months">No hay controles disponibles</string>
+
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a lobortis erat. Donec tristique metus id quam eleifend, ut iaculis lectus malesuada. Sed id mi et urna malesuada laoreet ac sit amet justo. Nulla id pulvinar mauris, a malesuada ligula. In metus leo, lacinia vitae ullamcorper ac, egestas id leo. Integer elementum dapibus rhoncus. Sed sit amet leo ultrices, suscipit neque rutrum, luctus dui. Pellentesque luctus sit amet erat in sodales. Donec tristique feugiat velit, sit amet ullamcorper ipsum viverra eget. Aliquam in purus vulputate, auctor quam eu, condimentum magna. Phasellus blandit mi urna, a dignissim nunc vehicula viverra. Fusce feugiat nisl nulla, nec scelerisque odio aliquam sit amet. Maecenas dignissim elit id felis lobortis aliquet. Vestibulum maximus ligula lacus, eleifend tempor ex rutrum at</string>
 </resources>
