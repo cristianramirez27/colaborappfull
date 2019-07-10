@@ -91,7 +91,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_vacaciones_colaborador, container, false);
+        View view = inflater.inflate(R.layout.fragment_vacaciones_agendar, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
 
