@@ -383,7 +383,12 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                     ((DetailRequestColaboratorResponse)dataItem).getData().getResponse().getVerDetallesSolicitud() :
                     ((DetailRequestColaboratorResponse)dataItem).getData().getResponse().getVerDetallesComplemento());
 
+                importsListRequest.setType(isComplement ? 1 : 0);
+                importsListRequest.setGte(false);
+
             if (detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR) {
+
+                importsListRequest.setGte(true);
 
                 boolean isPending = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? true : false;
 
@@ -576,7 +581,28 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                     ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getCLV_CONTROL()
             ));
 
-            if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
+            //Se muestra tambien el total solicitado
+            //En monto solicitado es el valor de imp_total obtenido de "VerDetallesSolicitud", donde idu_tipoGasto sea igual a -1.
+            if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()) {
+
+                for (DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()) {
+                    if (detallesSolicitud.getIdu_tipoGasto() == -1) {
+                        totalAutorizado.setTexts("Monto solicitado", String.format("$%s", detallesSolicitud.getImp_total()));
+                        totalAutorizado.setVisibility(VISIBLE);
+                        break;
+                    }
+                }
+
+            }
+
+                //Total Complemento Solicitado: Es el valor de importe obtenido de la consulta anterior (solicitudescomplementos),
+            String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
+                totalAutorizado.setTexts("Total complemento\nsolicitado",String.format("$%s",importeSolicitado));
+                totalComplemento.setVisibility(VISIBLE);
+                verDetallesComplemento.setVisibility(VISIBLE);
+
+
+            /*if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
                 for(DetailRequest gastoComplemento : detail.getData().getResponse().getVerDetallesComplemento()){
                     if(gastoComplemento.getIdu_tipoGasto() == -1){
                         totalComplemento.setTexts("Total complemento\nsolicitado",String.format("$%s",gastoComplemento.getImp_total()));
@@ -585,7 +611,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                         break;
                     }
                 }
-            }
+            }*/
         }
 
         else {
@@ -598,7 +624,6 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             cardColaboratorControl.setTituloControl("Solicitud de viaje");
 
             String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
-
             totalAutorizado.setTexts("Monto solicitado",String.format("$%s",importeSolicitado));
             totalAutorizado.setVisibility(VISIBLE);
 
