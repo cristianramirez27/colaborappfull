@@ -150,12 +150,36 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     }
 
     private void initValues(){
+        titleDetail.setTitleTextSize(17);
+        titleDetail.setValueTextSize(20);
         titleDetail.setTexts(getString(R.string.title_holidays_days),String.format("%s %s","10",getString(R.string.title_days)));
+
+
         diasDecision.setTexts(getString(R.string.title_day_availables),"8.5 dias");
+        diasDecision.setTextsSize(12,12);
+        diasDecision.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+        diasDecision.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+
+
         diasPendientesAnterior.setTexts(getString(R.string.title_days_pending_lastyear),"1 día");
+        diasPendientesAnterior.setTextsSize(12,12);
+        diasPendientesAnterior.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+        diasPendientesAnterior.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+
         diasAdicionalesPendientes.setTexts(getString(R.string.title_days_aditionals),"0 días");
+        diasAdicionalesPendientes.setTextsSize(12,12);
+        diasAdicionalesPendientes.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+        diasAdicionalesPendientes.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+
         diasAdicionalesRegistrados.setTexts(getString(R.string.title_days_aditionals_register),"0 días");
+        diasAdicionalesRegistrados.setTextsSize(12,12);
+        diasAdicionalesRegistrados.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+        diasAdicionalesRegistrados.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+
         fechaPrimaVacacional.setTexts(getString(R.string.title_bonus_date),"Viernes, 30-07-2019");
+        fechaPrimaVacacional.setTextsSize(12,12);
+        fechaPrimaVacacional.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+        fechaPrimaVacacional.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
 
     }
 

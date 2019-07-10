@@ -33,6 +33,7 @@ import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
@@ -78,6 +79,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
@@ -326,11 +329,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case OPTION_EXPENSES:
-                getRolType();
+                getRolType(EXPENSESTRAVEL);
                 break;
 
             case OPTION_HOLIDAYS:
-                replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
+
+                getRolType(HOLIDAYS);
                 break;
 
             case OPTION_POLL:
@@ -460,7 +464,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 AppUtilities.closeApp(this);
                 break;
 
-            case ServicesRequestType.EXPENSESTRAVEL:
+            case EXPENSESTRAVEL:
 
                 if(response.getResponse() instanceof RolExpensesResponse) {
 
@@ -468,6 +472,19 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                         replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                     }else {
                         replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                    }
+                }
+
+                break;
+
+            case ServicesRequestType.HOLIDAYS:
+
+                if(response.getResponse() instanceof HolidayRolCheckResponse) {
+
+                    if (((HolidayRolCheckResponse) response.getResponse()).getData().getResponse().getGerente() == 1) {
+                        replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                    }else {
+                        replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
                     }
                 }
 
@@ -504,11 +521,21 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             dialogFragmentLoader.close();
     }
 
-    private void getRolType(){
+    private void getRolType(int type){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
-        ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
 
-        coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
+        switch (type) {
+            case EXPENSESTRAVEL:
+                ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
+                coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
+                break;
+
+            case HOLIDAYS:
+                coppelServicesPresenter.getHolidays(token);
+                break;
+
+        }
+
     }
 }

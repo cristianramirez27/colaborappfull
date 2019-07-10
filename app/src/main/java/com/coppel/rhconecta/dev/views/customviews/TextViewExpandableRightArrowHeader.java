@@ -51,6 +51,15 @@ public class TextViewExpandableRightArrowHeader extends ConstraintLayout impleme
         return isExpanded;
     }
 
+
+    public void setTitleTextSize(float size){
+        txvTitle.setTextSize(size);
+    }
+
+    public void setValueTextSize(float size){
+        txvValue.setTextSize(size);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

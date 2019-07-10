@@ -310,14 +310,14 @@
     <string name="empty_request_complements">No hay solicitudes disponibles</string>
     <string name="empty_controls">No hay controles disponibles</string>
 
-    <string name="empty_months">No hay meses disponibles</string>
-
 
     <!--Vacaciones-->
     <string name="request_holidays">Solicitud de vaciones</string>
     <string name="title_holidays">Vacaciones</string>
     <string name="title_my_holidays">Mis Vacaciones</string>
     <string name="title_dates_selected">Fechas seleccionadas</string>
+    <string name="title_periods_holidays">Períodos de vacaciones</string>
+
 
     <string name="title_holidays_days">Días de vacaciones</string>
     <string name="title_days">días</string>

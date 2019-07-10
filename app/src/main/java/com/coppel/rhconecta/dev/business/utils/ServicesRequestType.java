@@ -23,6 +23,7 @@ public class ServicesRequestType {
     public static final int LOGOUT= 16;
 
     public static final int EXPENSESTRAVEL = 17;
+    public static final int HOLIDAYS = 18;
 
 
     public static final int PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL = 14;
