@@ -15,6 +15,8 @@ import com.coppel.rhconecta.dev.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+
 public class CardColaboratorControl extends LinearLayout {
 
 
@@ -104,7 +106,8 @@ public class CardColaboratorControl extends LinearLayout {
     public void setStatus(int type,int clv_status, String colorFont,String colorBackground, String statusName) {
         //this.status.setText(status);
 
-        this.status.setText(statusName);
+        //this.status.setText(statusName);
+        this.status.setText(capitalizeText(getContext(),statusName.toLowerCase()));
         if(statusName.length() >= 20)
             status.setTextSize(7);
 

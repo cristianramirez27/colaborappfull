@@ -85,7 +85,12 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
             gastoComprobar.setGravityTitle2(Gravity.LEFT);
             gastoComprobar.setGravityTitle3(Gravity.LEFT);
             gastoComprobar.setGravityTitle4(Gravity.LEFT);
-            gastoComprobar.setPaddingTitle4();
+            gastoComprobar.setPaddingTitle4(20);
+
+            gastoComprobar.setSizeTitle1(11);
+            gastoComprobar.setSizeTitle2(11);
+            gastoComprobar.setSizeTitle3(11);
+            gastoComprobar.setSizeTitle4(11);
         }
     }
 

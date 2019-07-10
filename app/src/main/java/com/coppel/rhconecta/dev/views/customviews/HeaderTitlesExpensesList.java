@@ -13,7 +13,7 @@ import com.coppel.rhconecta.dev.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HeaderTitlesList extends LinearLayout {
+public class HeaderTitlesExpensesList extends LinearLayout {
 
     @BindView(R.id.title1)
     TextView title1;
@@ -28,12 +28,12 @@ public class HeaderTitlesList extends LinearLayout {
 
 
 
-    public HeaderTitlesList(Context context) {
+    public HeaderTitlesExpensesList(Context context) {
         super(context);
         initViews();
     }
 
-    public HeaderTitlesList(Context context, AttributeSet attrs) {
+    public HeaderTitlesExpensesList(Context context, AttributeSet attrs) {
         super(context, attrs);
         initViews();
     }
@@ -61,9 +61,6 @@ public class HeaderTitlesList extends LinearLayout {
         title4.setPadding(30,0,0,0);
     }
 
-    public void setPaddingTitle4(int Left){
-        title4.setPadding(Left,0,0,0);
-    }
 
     public void setGravityTitle1(int gravity){
         title1.setGravity(gravity);

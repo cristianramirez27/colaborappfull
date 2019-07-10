@@ -25,16 +25,16 @@
     <LinearLayout
         android:id="@+id/headerItinerario"
         android:layout_width="match_parent"
-        android:padding="8dp"
+        android:padding="4dp"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:visibility="visible">
 
 
-       <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+       <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList
           android:id="@+id/headerExpenses"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList>
+           android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList>
 
 
         <android.support.v7.widget.RecyclerView

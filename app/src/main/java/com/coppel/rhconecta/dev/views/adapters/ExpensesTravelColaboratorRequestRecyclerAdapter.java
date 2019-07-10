@@ -18,6 +18,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+
 public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerView.Adapter<ExpensesTravelColaboratorRequestRecyclerAdapter.ViewHolder> {
 
     private List<ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator> dataItems;
@@ -55,7 +58,7 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
         }*/
 
         viewHolder.nameEmployer.setVisibility(isColaborator ? View.GONE : View.VISIBLE);
-        viewHolder.nameEmployer.setText(dataItems.get(i).getNomviajero() != null ? dataItems.get(i).getNomviajero()  : "");
+        viewHolder.nameEmployer.setText(dataItems.get(i).getNomviajero() != null ? capitalizeText(getContext(),dataItems.get(i).getNomviajero()) : "");
 
         viewHolder.itinerario.setText(dataItems.get(i).getItinerario());
         viewHolder.fechaInicio.setText(dataItems.get(i).getFechasalida());
@@ -69,11 +72,11 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
        // viewHolder.status.setBackgroundColor(Color.parseColor(dataItems.get(i).getDes_color()));
 
         if(!isColaborator){
-            viewHolder.status.setText(dataItems.get(i).getNom_estatus());
+            viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getNom_estatus().toLowerCase()));
             if(dataItems.get(i).getNom_estatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }else {
-            viewHolder.status.setText(dataItems.get(i).getEstatus());
+            viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase()));
             if(dataItems.get(i).getEstatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }

@@ -18,6 +18,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+
 public class ExpensesTravelColaboratorControlsRecyclerAdapter extends RecyclerView.Adapter<ExpensesTravelColaboratorControlsRecyclerAdapter.ViewHolder> {
 
     private List<ColaboratorRequestsListExpensesResponse.ControlColaborator> dataItems;
@@ -44,7 +47,7 @@ public class ExpensesTravelColaboratorControlsRecyclerAdapter extends RecyclerVi
 
         viewHolder.numSolicitud.setText(dataItems.get(i).getControl());
         viewHolder.nameEmployer.setVisibility(isColaborator ? View.GONE : View.VISIBLE);
-        viewHolder.nameEmployer.setText(dataItems.get(i).getNomviajero() != null ? dataItems.get(i).getNomviajero()  : "");
+        viewHolder.nameEmployer.setText(dataItems.get(i).getNomviajero() != null ? capitalizeText(getContext(),dataItems.get(i).getNomviajero())  : "");
 
 
         viewHolder.itinerario.setText(dataItems.get(i).getItinerario());
@@ -56,8 +59,7 @@ public class ExpensesTravelColaboratorControlsRecyclerAdapter extends RecyclerVi
         viewHolder.status.setText(CoppelApp.getContext().getString(statusData[0]));
         viewHolder.status.setTextColor(CoppelApp.getContext().getResources().getColor(statusData[1]));
         viewHolder.status.setBackgroundResource(statusData[2]);*/
-
-        viewHolder.status.setText(dataItems.get(i).getEstatus());
+        viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase()));
         if(dataItems.get(i).getEstatus().length() >= 20)
             viewHolder.status.setTextSize(7);
         viewHolder.status.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));

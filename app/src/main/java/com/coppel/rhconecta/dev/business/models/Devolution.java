@@ -6,9 +6,10 @@ public class Devolution implements Serializable {
 
     private String fec_deposito;
     private String desc_movimiento;
-    private int du_tipoGasto;
-    private double importe;
-    private double total;
+    private int idu_tipoGasto;
+    private String importe;
+    private String total;
+    private String imp_total;
 
 
     public String getFec_deposito() {
@@ -28,26 +29,34 @@ public class Devolution implements Serializable {
     }
 
     public int getDu_tipoGasto() {
-        return du_tipoGasto;
+        return idu_tipoGasto;
     }
 
     public void setDu_tipoGasto(int du_tipoGasto) {
-        this.du_tipoGasto = du_tipoGasto;
+        this.idu_tipoGasto = du_tipoGasto;
     }
 
-    public double getImporte() {
+    public String getImporte() {
         return importe;
     }
 
-    public void setImporte(double importe) {
+    public void setImporte(String importe) {
         this.importe = importe;
     }
 
-    public double getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getImp_total() {
+        return imp_total;
+    }
+
+    public void setImp_total(String imp_total) {
+        this.imp_total = imp_total;
     }
 }
