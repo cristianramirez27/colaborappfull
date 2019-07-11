@@ -589,7 +589,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundVerdeClaro);
             //cardColaboratorControl.setTituloControl("Complemento");
             cardColaboratorControl.setTituloControl("Control");
-            cardColaboratorControl.setDescripcion("Complemento");
+
+            cardColaboratorControl.setDescripcion(detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ?
+                    "Complemento" : "");
             //cardColaboratorControl.setNumeroControl(String.valueOf(this.detailExpenseTravelData.getClave()));
             cardColaboratorControl.setNumeroControl(String.valueOf(
                     ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getCLV_CONTROL()
