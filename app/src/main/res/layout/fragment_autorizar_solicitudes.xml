@@ -95,7 +95,7 @@
                     android:layout_below="@+id/tituloCentro"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:textColor="@color/colorTextCoppelNegro"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="14sp" />
 
                 <ImageView

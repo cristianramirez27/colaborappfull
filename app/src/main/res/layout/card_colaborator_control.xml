@@ -133,7 +133,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
                     android:visibility="visible"
-                    android:text=""
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:textSize="14sp"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 

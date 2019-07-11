@@ -53,6 +53,7 @@ import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCenter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentEstatus;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import org.w3c.dom.Text;
@@ -76,7 +77,7 @@ public class ControlsLiquidationsFragment extends Fragment implements  View.OnCl
         ExpensesTravelColaboratorMonthsRecyclerAdapter.OnMonthClickListener,
         ExpensesTravelColaboratorControlsRecyclerAdapter.OnControlSelectedClickListener,
         ExpensesTravelMonthsRequestRecyclerAdapter.OnControlMonthClickListener,
-DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOptionClick{
+DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOptionClick, DialogFragmentWarning.OnOptionClick{
 
     public static final String TAG = ControlsLiquidationsFragment.class.getSimpleName();
     private AppCompatActivity parent;
@@ -112,6 +113,9 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
     @BindView(R.id.txtNoControls)
     TextView txtNoControls;
 
+    @BindView(R.id.txtNoMeses)
+    TextView txtNoMeses;
+
 
 
     private DialogFragmentCenter dialogFragmentCenter;
@@ -134,6 +138,9 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
 
     private ExpensesTravelColaboratorControlsRecyclerAdapter expensesTravelColaboratorControlsRecyclerAdapter;
     private ExpensesTravelColaboratorMonthsRecyclerAdapter expensesTravelColaboratorMonthsRecyclerAdapter;
+
+    private boolean EXPIRED_SESSION;
+    private DialogFragmentWarning dialogFragmentWarning;
 
     private long mLastClickTime = 0;
     @Override
@@ -341,13 +348,18 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
                 }else if(response.getResponse() instanceof RequestsLiquiGteListExpensesResponse) {
                     RequestsLiquiGteListExpensesResponse requestsLiquiGte = (RequestsLiquiGteListExpensesResponse)response.getResponse();
                     monthsList.clear();
-                    for(ColaboratorRequestsListExpensesResponse.Months month :requestsLiquiGte.getData().getResponse().getMeses()){
-                        monthsList.add(month);
+
+                    if(requestsLiquiGte.getData().getResponse().getMeses() != null && !requestsLiquiGte.getData().getResponse().getMeses().isEmpty()) {
+                        for(ColaboratorRequestsListExpensesResponse.Months month :requestsLiquiGte.getData().getResponse().getMeses()) {
+                            monthsList.add(month);
+                        }
+                        expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();
+                        txtNoMeses.setVisibility(View.GONE);
+                        layoutMeses.setVisibility(View.VISIBLE);
+                    }else{
+                        txtNoMeses.setVisibility(View.VISIBLE);
+                        layoutMeses.setVisibility(View.GONE);
                     }
-
-                    expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();
-
-                    layoutMeses.setVisibility(View.VISIBLE);
 
                 }else if(response.getResponse() instanceof ColaboratorRequestsListExpensesResponse){
                     ColaboratorRequestsListExpensesResponse colaboratorResponse = (ColaboratorRequestsListExpensesResponse)response.getResponse();
@@ -387,7 +399,41 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
 
     @Override
     public void showError(ServicesError coppelServicesError) {
+        if(coppelServicesError.getMessage() != null ){
+            switch (coppelServicesError.getType()) {
+                case ServicesRequestType.EXPENSESTRAVEL:
+                    showWarningDialog(coppelServicesError.getMessage());
+                    break;
+                case ServicesRequestType.INVALID_TOKEN:
+                    EXPIRED_SESSION = true;
+                    showWarningDialog(getString(R.string.expired_session));
+                    break;
+            }
 
+        }
+    }
+
+
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+    }
+
+    @Override
+    public void onLeftOptionClick() {
+        dialogFragmentWarning.close();
+    }
+
+    @Override
+    public void onRightOptionClick() {
+        if (EXPIRED_SESSION) {
+            AppUtilities.closeApp(parent);
+        }else {
+            dialogFragmentWarning.close();
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -466,10 +512,10 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
     @Override
     public void onLeftOptionStateClick() {
 
-        if(dialogFragmentCenter.isVisible())
+        if(dialogFragmentCenter != null && dialogFragmentCenter.isVisible())
             dialogFragmentCenter.close();
 
-        else if(dialogFragmentEstatus.isVisible())
+        else if(dialogFragmentEstatus != null && dialogFragmentEstatus.isVisible())
             dialogFragmentEstatus.close();
 
     }

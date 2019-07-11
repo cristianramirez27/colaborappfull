@@ -141,7 +141,7 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
 
         Importes.setDataRecyclerView(requestList,isEdit);
 
-        if(this.importsLists.isGte()){ // Validamos los montos solo si es desde el Rol Gte
+        if(this.importsLists.isGte() && ((importsLists.getType() == 1) || (importsLists.getType() != 1 && !importsLists.isHasComplement()))){ // Validamos los montos solo si es desde el Rol Gte
             if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
                     && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()){
 
@@ -155,12 +155,7 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
                     }
                 }
             }
-
-
-
         }
-
-
 
         if(importsLists.getImportes()  != null && !importsLists.getImportes() .isEmpty()){
             for(DetailRequest detailRequest :importsLists.getImportes()){

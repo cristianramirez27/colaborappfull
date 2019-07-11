@@ -47,6 +47,7 @@ import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorRequestR
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCenter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
  */
 public class AuthorizeRequestAndComplementsFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
         ExpensesTravelColaboratorRequestRecyclerAdapter.OnRequestSelectedClickListener,
-        DialogFragmentCenter.OnButonOptionClick
+        DialogFragmentCenter.OnButonOptionClick, DialogFragmentWarning.OnOptionClick
 {
 
     public static final String TAG = AuthorizeRequestAndComplementsFragment.class.getSimpleName();
@@ -98,7 +99,8 @@ TextView txtNoRequest;
     private DialogFragmentCenter dialogFragmentCenter;
     private Center centerSelected;
     private boolean showCenterDialog;
-
+    private boolean EXPIRED_SESSION;
+    private DialogFragmentWarning dialogFragmentWarning;
 
     private long mLastClickTime = 0;
     @Override
@@ -270,8 +272,42 @@ TextView txtNoRequest;
 
     @Override
     public void showError(ServicesError coppelServicesError) {
+        if(coppelServicesError.getMessage() != null ){
+            switch (coppelServicesError.getType()) {
+                case ServicesRequestType.EXPENSESTRAVEL:
+                    showWarningDialog(coppelServicesError.getMessage());
+                    break;
+                case ServicesRequestType.INVALID_TOKEN:
+                    EXPIRED_SESSION = true;
+                    showWarningDialog(getString(R.string.expired_session));
+                    break;
+            }
 
+        }
     }
+
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+    }
+
+    @Override
+    public void onLeftOptionClick() {
+        dialogFragmentWarning.close();
+    }
+
+    @Override
+    public void onRightOptionClick() {
+        if (EXPIRED_SESSION) {
+            AppUtilities.closeApp(parent);
+        }else {
+            dialogFragmentWarning.close();
+            getActivity().finish();
+        }
+    }
+
 
     private void showCenters( List<Center> centers){
         CatalogueData statesData = new CatalogueData();
@@ -334,7 +370,7 @@ TextView txtNoRequest;
     @Override
     public void onRequestSelectedClick(ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator) {
 
-        DetailExpenseTravelType detailExpenseTravelType = DetailExpenseTravelType.SOLICITUD_A_AUTORIZAR;
+        DetailExpenseTravelType detailExpenseTravelType = requestComplementsColaborator.getTipo() == 1 ? DetailExpenseTravelType.COMPLEMENTO_A_AUTORIZAR :  DetailExpenseTravelType.SOLICITUD_A_AUTORIZAR;
         DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(detailExpenseTravelType,requestComplementsColaborator.getClv_solicitud());
         detailExpenseTravelData.setData(requestComplementsColaborator);
         NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,

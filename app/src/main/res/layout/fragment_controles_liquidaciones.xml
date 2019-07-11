@@ -96,7 +96,7 @@
                     android:layout_below="@+id/tituloCentro"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:textColor="@color/colorTextCoppelNegro"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -134,7 +134,7 @@
 
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:textColor="@color/colorTextCoppelNegro"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="14sp" />
 
                 <ImageView
@@ -218,6 +218,17 @@
                     android:id="@+id/expMonths"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoMeses"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_months"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
 
                 <LinearLayout
                     android:id="@+id/layoutMeses"

@@ -12,5 +12,6 @@ public enum DetailExpenseTravelType implements Serializable {
     CONTROL,
     CONTROL_LIQUIDO_NOLIQUIDO,
     SOLICITUD_A_AUTORIZAR,
+    COMPLEMENTO_A_AUTORIZAR,
     CONTROLES_GTE
 }

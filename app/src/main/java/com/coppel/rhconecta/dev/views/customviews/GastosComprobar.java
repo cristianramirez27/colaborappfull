@@ -51,6 +51,11 @@ public class GastosComprobar extends RelativeLayout {
         headerExpenses.setTitle3("Comprobado");
         headerExpenses.setTitle4("Faltante");
 
+        headerExpenses.setWeightTitle(1,1f);
+        headerExpenses.setWeightTitle(2,1f);
+        headerExpenses.setWeightTitle(3,1f);
+        headerExpenses.setWeightTitle(4,1f);
+
         initOrder();
 
         headerExpenses.setPaddingTitle4();
@@ -76,6 +81,11 @@ public class GastosComprobar extends RelativeLayout {
         totales.setSizeTitle2(10);
         totales.setSizeTitle3(10);
         totales.setSizeTitle4(10);
+
+        totales.setWeightTitle(1,1f);
+        totales.setWeightTitle(2,1f);
+        totales.setWeightTitle(3,1f);
+        totales.setWeightTitle(4,1f);
 
         totales.setColorTitle1(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle2(R.color.colorBackgroundCoppelNegro);
