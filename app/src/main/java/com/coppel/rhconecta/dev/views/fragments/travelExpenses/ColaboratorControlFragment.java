@@ -95,6 +95,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
     public static final String TAG = ColaboratorControlFragment.class.getSimpleName();
     private GastosViajeActivity parent;
+    @BindView(R.id.container)
+    LinearLayout container;
+
     @BindView(R.id.cardColaboratorControl)
     CardColaboratorControl cardColaboratorControl;
     @BindView(R.id.totalAutorizado)
@@ -765,6 +768,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 }
             });
         }
+
+
+        container.setVisibility(VISIBLE);
     }
 
     private void setDataControl(DetailControlColaboratorResponse detail){
@@ -920,6 +926,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 cardColaboratorControl.setImgColaborador(decodedByte);
             }
         }
+
+
+        container.setVisibility(VISIBLE);
     }
 
     @Override

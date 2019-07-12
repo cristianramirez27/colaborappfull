@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
 
         if(dataItems.get(i).getTipo() == 1){
             viewHolder.numSolicitud.setText(dataItems.get(i).getCLV_CONTROL());
-            viewHolder.txtMessage.setText(dataItems.get(i).getDes_solicitud());
+            viewHolder.txtMessage.setText(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_solicitud()));
             viewHolder.txtMessage.setVisibility(View.VISIBLE);
         }else {
             viewHolder.txtMessage.setText("");
