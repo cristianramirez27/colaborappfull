@@ -69,6 +69,7 @@ import butterknife.ButterKnife;
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO;
+import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO_A_AUTORIZAR;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROL;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROLES_GTE;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROL_LIQUIDO_NOLIQUIDO;
@@ -94,6 +95,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
     public static final String TAG = ColaboratorControlFragment.class.getSimpleName();
     private GastosViajeActivity parent;
+    @BindView(R.id.container)
+    LinearLayout container;
+
     @BindView(R.id.cardColaboratorControl)
     CardColaboratorControl cardColaboratorControl;
     @BindView(R.id.totalAutorizado)
@@ -213,7 +217,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         boolean isEdit = false;
 
         try {
-            if (this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR) {
+            if (this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR
+                    || this.detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR) {
                 if (AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null) {
                     for (DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()) {
                         if (detailRequest.getIdu_tipoGasto() == -1) {
@@ -224,9 +229,18 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                             }
 
                             String amount = detailRequest.getImp_total().replace(",", "");
-                            totalAutorizado.setTexts("Monto solicitado",
-                                    !isEdit ? String.format("$%s", detailRequest.getImp_total()) :
-                                            String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(amount))));
+
+                            if(this.detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ){
+                                totalAutorizado.setTexts("Monto solicitado",
+                                        !isEdit ? String.format("$%s", detailRequest.getImp_total()) :
+                                                String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(amount))));
+                            }else {
+
+                                totalComplemento.setTexts("Total complemento\nsolicitado", !isEdit ? String.format("$%s", detailRequest.getImp_total()) :
+                                        String.format("%s", TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(amount))));
+                            }
+
+
                         }
                     }
                 }
@@ -257,6 +271,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
         cardColaboratorControl.setVisibleColaboratorInfo(
                 detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ||
+                detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ||
                 detailExpenseTravelData.getDetailExpenseTravelType() == CONTROLES_GTE ? VISIBLE : View.GONE  );
 
 
@@ -303,6 +318,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             case SOLICITUD:
                 title = getString(R.string.title_request_expenses);
                 break;
+
+            case COMPLEMENTO_A_AUTORIZAR:
             case COMPLEMENTO:
                 title = getString(R.string.title_complemento_expenses);
                 break;
@@ -383,7 +400,15 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                     ((DetailRequestColaboratorResponse)dataItem).getData().getResponse().getVerDetallesSolicitud() :
                     ((DetailRequestColaboratorResponse)dataItem).getData().getResponse().getVerDetallesComplemento());
 
-            if (detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR) {
+                importsListRequest.setType(isComplement ? 1 : 0);
+                importsListRequest.setGte(false);
+
+            if (detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ||
+                    detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR) {
+
+                importsListRequest.setGte(true);
+                importsListRequest.setHasComplement(
+                        detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ? true : false);
 
                 boolean isPending = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? true : false;
 
@@ -441,6 +466,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
                 break;
 
+            case COMPLEMENTO_A_AUTORIZAR:
             case SOLICITUD_A_AUTORIZAR:
 
                 ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestData = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
@@ -532,14 +558,13 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 detail.getData().getResponse().getMotivoViaje().size() > 0 &&
                 detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo() != null &&
                 !detail.getData().getResponse().getMotivoViaje().get(0).getDes_motivo().isEmpty() ? VISIBLE : View.GONE);*/
-
         expItinerario.setText("Itinerario");
         expViajerosAdicionales.setText("Viajeros adicionales");
 
         ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) detailExpenseTravelData.getData();
         cardColaboratorControl.setItinerario(requestComplementsColaborator.getItinerario());
         cardColaboratorControl.setFechas(String.format("%s\n%s",requestComplementsColaborator.getFechasalida(),requestComplementsColaborator.getFecharegreso()));
-       if(detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR){
+       if(detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR || detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR){
            cardColaboratorControl.setStatus(
                    1,
                    ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus(),
@@ -556,27 +581,45 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
        }
 
 
-
-
-
         totalAutorizado.setTextsSize(15,18);
         totalAutorizado.hideDivider();
 
-        if(detailExpenseTravelData.getDetailExpenseTravelType() == DetailExpenseTravelType.COMPLEMENTO){
-
+        if(detailExpenseTravelData.getDetailExpenseTravelType() == DetailExpenseTravelType.COMPLEMENTO ||
+                detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR){
             AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest()
                     .setCapturaGerente(detail.getData().getResponse().getVerDetallesComplemento());
 
-
             cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundVerdeClaro);
-            cardColaboratorControl.setTituloControl("Complemento");
-            //cardColaboratorControl.setNumeroControl(String.valueOf(this.detailExpenseTravelData.getClave()));
+            //cardColaboratorControl.setTituloControl("Complemento");
+            cardColaboratorControl.setTituloControl("Control");
 
+            cardColaboratorControl.setDescripcion(detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ?
+                    "Complemento" : "");
+            //cardColaboratorControl.setNumeroControl(String.valueOf(this.detailExpenseTravelData.getClave()));
             cardColaboratorControl.setNumeroControl(String.valueOf(
                     ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getCLV_CONTROL()
             ));
 
-            if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
+            //Se muestra tambien el total solicitado
+            //En monto solicitado es el valor de imp_total obtenido de "VerDetallesSolicitud", donde idu_tipoGasto sea igual a -1.
+            if(detail.getData().getResponse().getVerDetallesSolicitud() != null ) {
+                for (DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()) {
+                    if (detallesSolicitud.getIdu_tipoGasto() == -1) {
+                        totalAutorizado.setTexts("Total autorizado", String.format("$%s", detallesSolicitud.getImp_total()));
+                        totalAutorizado.setVisibility(VISIBLE);
+                        break;
+                    }
+                }
+            }
+                //Total Complemento Solicitado: Es el valor de importe obtenido de la consulta anterior (solicitudescomplementos),
+            String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
+
+            totalComplemento.setTextsSize(15,18);
+            totalComplemento.setTexts("Total complemento\nsolicitado",String.format("$%s",importeSolicitado));
+                totalComplemento.setVisibility(VISIBLE);
+                verDetallesComplemento.setVisibility(VISIBLE);
+
+            /*if(detail.getData().getResponse().getVerDetallesComplemento() != null && !detail.getData().getResponse().getVerDetallesComplemento().isEmpty()){
                 for(DetailRequest gastoComplemento : detail.getData().getResponse().getVerDetallesComplemento()){
                     if(gastoComplemento.getIdu_tipoGasto() == -1){
                         totalComplemento.setTexts("Total complemento\nsolicitado",String.format("$%s",gastoComplemento.getImp_total()));
@@ -585,25 +628,19 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                         break;
                     }
                 }
-            }
-        }
-
-        else {
+            }*/
+        } else {
 
             AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest()
                     .setCapturaGerente(detail.getData().getResponse().getVerDetallesSolicitud());
-
 
             cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundRosaClaro);
             cardColaboratorControl.setTituloControl("Solicitud de viaje");
 
             String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
-
             totalAutorizado.setTexts("Monto solicitado",String.format("$%s",importeSolicitado));
             totalAutorizado.setVisibility(VISIBLE);
-
             /*if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()){
-
 
                 for(DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()){
                     if(detallesSolicitud.getIdu_tipoGasto() == -1){
@@ -677,7 +714,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         });
 
         //Mostramos las observaciones del Gte
-        if( detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ){
+        if( detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR  || detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ){
 
             if(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesGerente() != null &&
                     !detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesGerente().isEmpty()){
@@ -731,6 +768,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 }
             });
         }
+
+
+        container.setVisibility(VISIBLE);
     }
 
     private void setDataControl(DetailControlColaboratorResponse detail){
@@ -886,6 +926,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 cardColaboratorControl.setImgColaborador(decodedByte);
             }
         }
+
+
+        container.setVisibility(VISIBLE);
     }
 
     @Override

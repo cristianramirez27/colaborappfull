@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.CoppelApp;
@@ -111,6 +112,25 @@ public class HeaderTitlesList extends LinearLayout {
         title4.setTypeface(typeface);
     }
 
+
+
+    public void setWeightTitle(int numTitle, float weigth){
+
+        switch (numTitle){
+            case 1:
+                title1.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, weigth));
+                break;
+            case 2:
+                title2.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, weigth));
+                break;
+            case 3:
+                title3.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, weigth));
+                break;
+            case 4:
+                title4.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, weigth));
+                break;
+        }
+    }
 
     public void setSizeTitle2(float size){
         title2.setTextSize(size);

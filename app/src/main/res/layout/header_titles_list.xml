@@ -23,6 +23,7 @@
             android:text="Solicitud"
             android:textColor="@color/colorTextGray"
             android:textSize="11sp"
+            android:maxLines="1"
             android:gravity="left"/>
 
         <TextView
@@ -34,6 +35,7 @@
             android:text="Itinerario"
             android:textColor="@color/colorTextGray"
             android:textSize="11sp"
+            android:maxLines="1"
             android:gravity="left"/>
 
         <TextView
@@ -43,6 +45,7 @@
             android:layout_weight="1.1"
             android:fontFamily="@font/lineto_circular_pro_book"
             android:text="Fecha"
+            android:maxLines="1"
             android:textColor="@color/colorTextGray"
             android:textSize="11sp"
             android:gravity="left"/>
@@ -54,6 +57,7 @@
             android:layout_weight="1.1"
             android:fontFamily="@font/lineto_circular_pro_book"
             android:text="Estatus"
+            android:maxLines="1"
             android:textColor="@color/colorTextGray"
             android:textSize="11sp"
             android:gravity="left"/>

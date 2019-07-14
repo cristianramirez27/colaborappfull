@@ -9,6 +9,7 @@ public class ImportsList implements Serializable {
         private int status;
         private int type;
         private boolean isGte;
+        private boolean hasComplement;
 
 
         private boolean showEdit;
@@ -23,6 +24,14 @@ public class ImportsList implements Serializable {
 
     public boolean isGte() {
         return isGte;
+    }
+
+    public boolean isHasComplement() {
+        return hasComplement;
+    }
+
+    public void setHasComplement(boolean hasComplement) {
+        this.hasComplement = hasComplement;
     }
 
     public void setGte(boolean gte) {

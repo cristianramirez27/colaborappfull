@@ -135,6 +135,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
+
+    private boolean EXPIRED_SESSION;
+
     private CoppelServicesPresenter coppelServicesPresenter;
 
     @Override
@@ -367,13 +370,18 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void onRightOptionClick() {
-        if(requestLogout){
-            requestLogout = false;
-            /*Se implementa llamada a endpoint de cerrar sesión*/
-            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-            coppelServicesPresenter.requestLogOut( profileResponse.getColaborador(), profileResponse.getCorreo(),token);
+        if (EXPIRED_SESSION) {
+            AppUtilities.closeApp(this);
+        }else {
+            if(requestLogout){
+                requestLogout = false;
+                /*Se implementa llamada a endpoint de cerrar sesión*/
+                String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                coppelServicesPresenter.requestLogOut( profileResponse.getColaborador(), profileResponse.getCorreo(),token);
+            }
+            dialogFragmentWarning.close();
         }
-        dialogFragmentWarning.close();
+
     }
 
     private void initFirebase() {
@@ -496,17 +504,40 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void showError(ServicesError coppelServicesError) {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-                dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
-                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                hideProgress();
+        if(coppelServicesError.getMessage() != null ){
+            switch (coppelServicesError.getType()) {
+
+                case ServicesRequestType.INVALID_TOKEN:
+                    EXPIRED_SESSION = true;
+                    showWarningDialog(getString(R.string.expired_session));
+                    break;
+
+                default:
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogFragmentWarning = new DialogFragmentWarning();
+                            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                            dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
+                            dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                            hideProgress();
+                        }
+                    }, 500);
+                    break;
             }
-        }, 500);
+
+        }
+
     }
+
+
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+    }
+
 
     @Override
     public void showProgress() {

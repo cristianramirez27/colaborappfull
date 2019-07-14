@@ -141,26 +141,24 @@ public class DetailRequestComplementFragment extends Fragment implements  View.O
 
         Importes.setDataRecyclerView(requestList,isEdit);
 
-        if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
-        && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()){
+        if(this.importsLists.isGte() && ((importsLists.getType() == 1) || (importsLists.getType() != 1 && !importsLists.isHasComplement()))){ // Validamos los montos solo si es desde el Rol Gte
+            if(AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente() != null
+                    && !AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente().isEmpty()){
 
-            isEdit = true;
+                isEdit = true;
 
-            for(DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
-                for(DetailRequest amountCurrent : importsLists.getImportes()){
-                    if(amountCurrent.getIdu_tipoGasto() == detailRequest.getIdu_tipoGasto()){
-                        amountCurrent.setImp_total(String.valueOf(detailRequest.getImp_total()));
+                for(DetailRequest detailRequest : AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().getCapturaGerente()){
+                    for(DetailRequest amountCurrent : importsLists.getImportes()){
+                        if(amountCurrent.getIdu_tipoGasto() == detailRequest.getIdu_tipoGasto()){
+                            amountCurrent.setImp_total(String.valueOf(detailRequest.getImp_total()));
+                        }
                     }
                 }
             }
         }
 
         if(importsLists.getImportes()  != null && !importsLists.getImportes() .isEmpty()){
-
             for(DetailRequest detailRequest :importsLists.getImportes()){
-
-
-
                 if(detailRequest.getIdu_tipoGasto() == -1){
                     Importes.setTotalesImportes(String.valueOf(detailRequest.getImp_total()),isEdit);
                 }else {
