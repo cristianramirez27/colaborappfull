@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/mdtp_date_picker_header_height"
     android:layout_weight="1"
-    android:background="#0a9dd5"
+    android:background="#0065b2"
     android:gravity="top"
     android:padding="16dp"
     android:orientation="vertical">
@@ -30,8 +30,9 @@
         android:id="@+id/titleCustomCalendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Titulo del calendario"
-        android:textSize="14sp"
+        android:text="Marca los días o medios días en el calendario sin días de descanso"
+        android:textSize="13sp"
+        android:textStyle="bold"
         android:layout_marginBottom="4dp"
         android:textColor="#ffffff"/>
 
@@ -72,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Días seleccionados"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:layout_marginBottom="4dp"
             android:textColor="#ffffff"/>
 
@@ -82,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="6 días"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:layout_marginBottom="4dp"
             android:textColor="#ffffff"/>
 

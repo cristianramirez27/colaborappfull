@@ -21,16 +21,28 @@ import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleMonthView extends MonthView {
+
+    List<Integer> daysSelectedlist ;
 
     public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
         super(context, attr, controller);
+        daysSelectedlist = new ArrayList<>();
+
     }
 
     @Override
     public void drawMonthDay(Canvas canvas, int year, int month, int day,
                              int x, int y, int startX, int stopX, int startY, int stopY) {
-        if (mSelectedDay == day) {
+        if (mSelectedDay == day ) {
+
+            if(!daysSelectedlist.contains(mSelectedDay))
+                daysSelectedlist.add(mSelectedDay);
+
+
             canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
                     mSelectedCirclePaint);
         }
