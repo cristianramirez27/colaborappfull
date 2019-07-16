@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.AditionalTraveller;
@@ -17,7 +18,8 @@ import butterknife.ButterKnife;
 
 public class ViajerosAdicionales extends RelativeLayout {
 
-
+    @BindView(R.id.numViajeros)
+    TextView numViajeros;
     @BindView(R.id.rcvViajeros)
     RecyclerView rcvViajeros;
 
@@ -36,12 +38,18 @@ public class ViajerosAdicionales extends RelativeLayout {
     private void initViews() {
         inflate(getContext(), R.layout.layout_viajeros_adicionales, this);
         ButterKnife.bind(this);
+
+
     }
 
 
     public void setDataRecyclerView(List<AditionalTraveller> travellerList) {
         rcvViajeros.setHasFixedSize(true);
         rcvViajeros.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        if(travellerList.size() > 0)
+            numViajeros.setText(String.valueOf(travellerList.get(0).getTotal_viajeros()));
+
         AditionalTravellersRecyclerAdapter aditionalTravellersRecyclerAdapter = new AditionalTravellersRecyclerAdapter(travellerList);
         rcvViajeros.setAdapter(aditionalTravellersRecyclerAdapter);
     }

@@ -92,6 +92,8 @@ TextView txtNoRequest;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
 
+    private  CentersResponse centersResponse;
+
     private List<ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator> requestComplementsColaborators;
     private ExpensesTravelColaboratorRequestRecyclerAdapter expensesTravelColaboratorRequestRecyclerAdapter;
 
@@ -198,11 +200,14 @@ TextView txtNoRequest;
     public void onClick(View view) {
 
         switch (view.getId()){
-
             case R.id.seleccionCentroLayout:
                 showCenterDialog = true;
-                getCenters();
-                break;
+                if(centersResponse == null){
+                    getCenters();
+                }else {
+                    showCenters(centersResponse.getData().getResponse().getCentros());
+                }
+            break;
         }
 
     }
@@ -226,7 +231,7 @@ TextView txtNoRequest;
         switch (response.getType()) {
             case ServicesRequestType.EXPENSESTRAVEL:
                 if(response.getResponse() instanceof CentersResponse){
-                    CentersResponse centersResponse = (CentersResponse)response.getResponse();
+                     centersResponse = (CentersResponse)response.getResponse();
                     if(centersResponse.getData().getResponse().getCentros() != null && !centersResponse.getData().getResponse().getCentros().isEmpty()){
                         //Se toma el primeropor default si solo regresa 1 centro
                         if(centersResponse.getData().getResponse().getCentros().size() == 1){
