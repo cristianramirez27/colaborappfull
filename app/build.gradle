@@ -12,6 +12,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -32,7 +34,9 @@ android {
 dependencies {
 
     compile project(":library")
+    compile project(":componentCalendar")
     // Android
+    implementation 'com.android.support:multidex:1.0.3'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportAndroidVersion}"
     implementation "com.android.support:support-v4:${rootProject.ext.supportAndroidVersion}"

@@ -19,9 +19,11 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRequestToAuthorizeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
@@ -215,5 +217,17 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getRefuseExpenses(@Url String url,@Header("Authorization") String token, @Body CoppelServicesRefuseRequest servicesRequest);
+
+
+    //**************************Vacaciones *************************
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getRolHolidays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetRolHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetHolidaysRequest servicesRequest);
+
 
 }

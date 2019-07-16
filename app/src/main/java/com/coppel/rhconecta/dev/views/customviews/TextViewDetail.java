@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,6 +22,11 @@ public class TextViewDetail extends ConstraintLayout {
     TextView txvValue;
     @BindView(R.id.viewDivider)
     View viewDivider;
+
+    @BindView(R.id.guideline73)
+    Guideline guideline73;
+
+
 
     public TextViewDetail(Context context) {
         super(context);
@@ -48,6 +54,11 @@ public class TextViewDetail extends ConstraintLayout {
         txvValue.setTextSize(endText);
     }
 
+
+    public void setSingleLine(boolean isSingleLine) {
+        txvTitle.setSingleLine(isSingleLine);
+        txvValue.setSingleLine(isSingleLine);
+    }
 
     public void setStartText(String startText) {
         txvTitle.setText(startText);
@@ -83,5 +94,9 @@ public class TextViewDetail extends ConstraintLayout {
 
     public void hideDivider() {
         viewDivider.setVisibility(View.GONE);
+    }
+
+    public void setGuideline73(float percent){
+        guideline73.setGuidelinePercent(percent);
     }
 }

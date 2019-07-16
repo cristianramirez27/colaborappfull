@@ -30,9 +30,11 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
+import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.LogoutResponse;
@@ -563,7 +565,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case HOLIDAYS:
-                coppelServicesPresenter.getHolidays(token);
+
+                HolidayRequestData holidayRequestData = new HolidayRequestData(HolidaysType.CONSULTA_ROL,1,numEmployer);
+                coppelServicesPresenter.getHolidays(holidayRequestData,token);
                 break;
 
         }

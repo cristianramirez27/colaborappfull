@@ -107,13 +107,13 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         switch (view.getId()) {
             case R.id.btnColaborator:
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
-                parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                parent.replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysFragment.TAG);
 
                 break;
 
             case R.id.btnManager:
 
-                NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
                 break;
         }
@@ -129,25 +129,7 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
 
     @Override
     public void showResponse(ServicesResponse response) {
-        switch (response.getType()) {
 
-            case ServicesRequestType.EXPENSESTRAVEL:
-                if(response.getResponse() instanceof RolExpensesResponse){
-
-                    if(((RolExpensesResponse)response.getResponse()).getData().getResponse().getClv_estatus() == 1){
-                        btnColaborator.setVisibility(View.VISIBLE);
-                        btnManager.setVisibility(View.VISIBLE);
-                    }else {
-
-                        parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
-                        //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
-
-                    }
-
-
-                }
-                break;
-        }
     }
 
     @Override

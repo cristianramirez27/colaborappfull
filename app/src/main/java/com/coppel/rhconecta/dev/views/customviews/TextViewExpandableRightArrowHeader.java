@@ -86,12 +86,12 @@ public class TextViewExpandableRightArrowHeader extends ConstraintLayout impleme
     }
 
     public void setExpandedFalse() {
-        imgvArrow.setImageResource(R.drawable.ic_down_arrow_black);
+        imgvArrow.setImageResource(R.drawable.ic_down_arrow_blue);
         isExpanded = false;
     }
 
     public void setExpandedTrue() {
-        imgvArrow.setImageResource(R.drawable.ic_up_arrow_black);
+        imgvArrow.setImageResource(R.drawable.ic_up_arrow_blue);
         isExpanded = true;
     }
 }

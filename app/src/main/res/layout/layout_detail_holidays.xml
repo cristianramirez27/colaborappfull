@@ -4,18 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:background="@color/colorBackgroundFragments"
+    android:background="@color/colorBackgroundCoppelBlanco"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
         <LinearLayout
+            android:id="@+id/layoutData"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/transparent"
+            android:layout_marginBottom="-6dp"
             android:orientation="vertical">
 
             <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
@@ -44,5 +46,4 @@
                 android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
 
         </LinearLayout>
-
 </LinearLayout>

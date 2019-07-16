@@ -9,6 +9,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -155,9 +156,9 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getExpensesTravel(data,token);
     }
 
-    public void getHolidays( String token){
+    public void getHolidays(HolidayRequestData holidayRequestData, String token){
         view.showProgress();
-        servicesInteractor.getHolidays(token);
+        servicesInteractor.getHolidays(holidayRequestData,token);
     }
     @Override
     public void onResponse(ServicesResponse response) {

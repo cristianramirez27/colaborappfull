@@ -18,6 +18,7 @@
         android:fontFamily="@font/lineto_circular_pro_medium"
         android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:layout_marginBottom="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/txvValue"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -29,6 +30,7 @@
         android:fontFamily="@font/lineto_circular_pro_bold"
         android:gravity="end"
         android:maxLines="1"
+        android:layout_marginBottom="3dp"
         android:ellipsize="end"
         android:textColor="@android:color/black"
         android:textSize="18sp"
@@ -43,6 +45,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/txvTitle"
         app:layout_constraintStart_toEndOf="@+id/guideline72"
         app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorBackgroundGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline73"

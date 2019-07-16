@@ -51,7 +51,7 @@
         android:layout_marginRight="@dimen/mdtp_extra_time_label_margin"
         android:background="@android:color/transparent"
         android:clipChildren="false" >
-        <com.wdullaer.materialdatetimepicker.AccessibleTextView
+        <com.wdullaer.materialdatepicker.AccessibleTextView
             android:id="@+id/mdtp_hours"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         android:layout_marginLeft="@dimen/mdtp_extra_time_label_margin"
         android:layout_marginRight="@dimen/mdtp_extra_time_label_margin"
         android:background="@android:color/transparent">
-        <com.wdullaer.materialdatetimepicker.AccessibleTextView
+        <com.wdullaer.materialdatepicker.AccessibleTextView
             android:id="@+id/mdtp_minutes"
             style="@style/mdtp_time_label"
             android:layout_width="wrap_content"
@@ -145,7 +145,7 @@
         android:layout_marginLeft="@dimen/mdtp_extra_time_label_margin"
         android:layout_marginRight="@dimen/mdtp_extra_time_label_margin"
         android:background="@android:color/transparent">
-        <com.wdullaer.materialdatetimepicker.AccessibleTextView
+        <com.wdullaer.materialdatepicker.AccessibleTextView
             android:id="@+id/mdtp_seconds"
             style="@style/mdtp_time_label_small"
             android:layout_width="wrap_content"

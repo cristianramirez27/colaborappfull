@@ -8,6 +8,7 @@ import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
+import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
@@ -33,6 +34,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseExpensesTravelRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
@@ -51,9 +53,11 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRequestToAuthorizeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
@@ -77,6 +81,10 @@ import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarAbonoResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarAhorroResponse;
 import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
+import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
+import com.coppel.rhconecta.dev.business.models.HolidaysBaseResponse;
+import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -2851,16 +2859,145 @@ public class ServicesInteractor {
     /* *******************************************************************************************************************************************************
      ***********************************************          Holidays          ************************************************************************
      *********************************************************************************************************************************************************/
-    public void getHolidays(String token) {
+    public void getHolidays(HolidayRequestData holidayRequestData,String token) {
         this.token = token;
 
-       /* switch (requestData.getExpensesTravelType()){
-            case CONSULTA_PERMISO_ROL:
-                getRol(requestData,token);
+        switch (holidayRequestData.getHolidaysType()){
+            case CONSULTA_ROL:
+                getRolHolidays(holidayRequestData,token);
+                break;
 
-        }*/
+            case CONSULTA_VACACIONES:
+                getHolidaysPeriods(holidayRequestData,token);
+                break;
+
+
+        }
     }
 
+
+    private void getRolHolidays(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getRolHolidays(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,(
+                CoppelServicesGetRolHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getHolidaysPeriods(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getHolidaysPeriods(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,(
+                CoppelServicesGetHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    public void getHolidayResponse(HolidaysBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.HOLIDAYS);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getHolidaysSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getHolidaysSuccess(HolidaysBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.HOLIDAYS);
+
+        if (response != null && response != null) {
+
+            HolidaysBaseResponse holidaysBaseResponse = response;
+            if (holidaysBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<HolidaysBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(holidaysBaseResponse);
+                servicesResponse.setType(ServicesRequestType.HOLIDAYS);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                ;//TODO Definir mensaje de error
+                servicesError.setMessage(""/*benefitsBaseResponse.getData().getResponse().getUserMessage()*/);
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage("");//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+
+    public Class getHolidaysTypeResponse(HolidaysType holidaysType) {
+        Class clazz = null;
+        switch (holidaysType){
+            case CONSULTA_ROL:
+                clazz = HolidayRolCheckResponse.class;
+                break;
+
+            case CONSULTA_VACACIONES:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+        }
+
+        return clazz;
+    }
+
+    public CoppelServicesBaseHolidaysRequest builHolidayRequest(HolidayRequestData holidaysRequestData) {
+        CoppelServicesBaseHolidaysRequest coppelServicesBaseHolidaysRequest = null;
+
+        int requestOption = holidaysRequestData.getOpcion();
+
+        switch (holidaysRequestData.getHolidaysType()){
+
+            case CONSULTA_ROL:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetRolHolidaysRequest(holidaysRequestData.getNum_empleado(),requestOption);
+                break;
+
+            case CONSULTA_VACACIONES:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetHolidaysRequest(holidaysRequestData.getNum_empleado(),requestOption);
+                break;
+
+        }
+
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseHolidaysRequest).toString();
+        return coppelServicesBaseHolidaysRequest;
+    }
 
 
 

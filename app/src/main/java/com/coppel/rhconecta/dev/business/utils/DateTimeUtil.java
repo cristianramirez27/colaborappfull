@@ -3,7 +3,10 @@ package com.coppel.rhconecta.dev.business.utils;
 
 import android.util.Log;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatepicker.date.DatePickerDialog;
+import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
+
+//import com.wdullaer.materialdatepicker.date.DatePickerHolidaysDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,7 +52,24 @@ public class DateTimeUtil {
                 now.get(Calendar.DAY_OF_MONTH)
         );
 
-        //dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+        //dpd.setVersion(DatePickerHolidayDialog.Version.VERSION_2);
+
+        //dpd.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.dialog);
+
+        return dpd;
+    }
+
+
+    public static DatePickerHolidayDialog getMaterialDatePicker(DatePickerHolidayDialog.OnDateSetListener callback){
+        Calendar now = Calendar.getInstance();
+        DatePickerHolidayDialog dpd = DatePickerHolidayDialog.newInstance(
+                callback,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+
+        //dpd.setVersion(DatePickerHolidayDialog.Version.VERSION_2);
 
         //dpd.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.dialog);
 

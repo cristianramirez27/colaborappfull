@@ -34,7 +34,7 @@ import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
 
@@ -198,7 +198,7 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
         datePickerDialog.setCustomTitle(isStart ? "Inicio de vacaciones" : "Regreso de vacaciones");
         Calendar today = Calendar.getInstance();
         datePickerDialog.setMinDate( isStart ?  today : (startDate != null ? startDate : today));
-        datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+        datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
 
     }
 

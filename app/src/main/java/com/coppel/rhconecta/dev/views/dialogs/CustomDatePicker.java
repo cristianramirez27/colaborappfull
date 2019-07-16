@@ -1,6 +1,6 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatepicker.date.DatePickerDialog;
 
 /**
  * Created by faustolima on 12/13/18.
