@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.multidex.MultiDexApplication;
 
 import com.coppel.rhconecta.dev.business.utils.Foreground;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
@@ -10,7 +11,7 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import io.realm.Realm;
 
-public class CoppelApp extends Application {
+public class CoppelApp extends MultiDexApplication {
 
     private static Context contextApp;
 
