@@ -20,31 +20,45 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SimpleMonthView extends MonthView {
 
-    List<Integer> daysSelectedlist ;
+    HashMap<Integer,Boolean> daysSelectedlist;
 
     public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
         super(context, attr, controller);
-        daysSelectedlist = new ArrayList<>();
+        daysSelectedlist = new HashMap<Integer, Boolean>();
 
     }
 
     @Override
     public void drawMonthDay(Canvas canvas, int year, int month, int day,
                              int x, int y, int startX, int stopX, int startY, int stopY) {
-        if (mSelectedDay == day ) {
 
-            if(!daysSelectedlist.contains(mSelectedDay))
-                daysSelectedlist.add(mSelectedDay);
+        if(mController.isTappedSelected()){
+            if(daysSelectedlist.containsKey(mSelectedDay)){
+                daysSelectedlist.remove(mSelectedDay);
+            }else {
+                daysSelectedlist.put(mSelectedDay,false);
+            }
+        }
 
+        if (daysSelectedlist.containsKey(day)) {
+           // Toast.makeText(getContext(),"Seleccionados: " +daysSelectedlist.size(),Toast.LENGTH_SHORT).show();
 
-            canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
-                    mSelectedCirclePaint);
+            if(daysSelectedlist.get(day)){
+                canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
+                        mSelectedHalfCirclePaint);
+            }else {
+                canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
+                        mSelectedCirclePaint);
+            }
+
         }
 
         if (isHighlighted(year, month, day) && mSelectedDay != day) {
@@ -57,11 +71,19 @@ public class SimpleMonthView extends MonthView {
 
         // gray out the day number if it's outside the range.
         if (mController.isOutOfRange(year, month, day)) {
-            mMonthNumPaint.setColor(mDisabledDayTextColor);
-        } else if (mSelectedDay == day) {
-            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            //mMonthNumPaint.setColor(mDisabledDayTextColor);
             mMonthNumPaint.setColor(mSelectedDayTextColor);
-        } else if (mHasToday && mToday == day) {
+        } else if (daysSelectedlist.containsKey(day)) {
+
+            if(daysSelectedlist.get(day)){
+                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                mMonthNumPaint.setColor(mTodayNumberColor);
+            }else {
+                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                mMonthNumPaint.setColor(mSelectedDayTextColor);
+            }
+        }
+        else if (mHasToday && mToday == day) {
             mMonthNumPaint.setColor(mTodayNumberColor);
         } else {
             mMonthNumPaint.setColor(isHighlighted(year, month, day) ? mHighlightedDayTextColor : mDayTextColor);

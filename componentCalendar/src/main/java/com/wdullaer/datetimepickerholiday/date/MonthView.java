@@ -83,6 +83,8 @@ public abstract class MonthView extends View {
     protected Paint mMonthNumPaint;
     protected Paint mMonthTitlePaint;
     protected Paint mSelectedCirclePaint;
+
+    protected Paint mSelectedHalfCirclePaint;
     protected Paint mMonthDayLabelPaint;
 
     private final StringBuilder mStringBuilder;
@@ -157,7 +159,7 @@ public abstract class MonthView extends View {
             mHighlightedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_highlighted);
         }
         mSelectedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_white);
-        mTodayNumberColor = mController.getAccentColor();
+        mTodayNumberColor = ContextCompat.getColor(context, R.color.main_color_blue);
         mMonthTitleColor = ContextCompat.getColor(context, R.color.mdtp_white);
 
         mStringBuilder = new StringBuilder(50);
@@ -227,6 +229,7 @@ public abstract class MonthView extends View {
                 final int day = getDayFromLocation(event.getX(), event.getY());
                 if (day >= 0) {
                     onDayClick(day);
+                    mController.setIsTappedSelected(true);
                 }
                 break;
         }
@@ -254,7 +257,17 @@ public abstract class MonthView extends View {
         mSelectedCirclePaint.setColor(mTodayNumberColor);
         mSelectedCirclePaint.setTextAlign(Align.CENTER);
         mSelectedCirclePaint.setStyle(Style.FILL);
-        mSelectedCirclePaint.setAlpha(SELECTED_CIRCLE_ALPHA);
+        //mSelectedCirclePaint.setAlpha(SELECTED_CIRCLE_ALPHA);
+
+
+        mSelectedHalfCirclePaint = new Paint();
+        mSelectedHalfCirclePaint.setFakeBoldText(true);
+        mSelectedHalfCirclePaint.setAntiAlias(true);
+        mSelectedHalfCirclePaint.setStrokeWidth(2);
+        mSelectedHalfCirclePaint.setColor(mTodayNumberColor);
+        mSelectedHalfCirclePaint.setTextAlign(Align.CENTER);
+        mSelectedHalfCirclePaint.setStyle(Style.STROKE);
+
 
         mMonthDayLabelPaint = new Paint();
         mMonthDayLabelPaint.setAntiAlias(true);
@@ -288,7 +301,7 @@ public abstract class MonthView extends View {
      * will only update if a new value is included, except for focus month,
      * which will always default to no focus month if no value is passed in.
      */
-    public void setMonthParams(int selectedDay, int year, int month, int weekStart) {
+    public void setMonthParams(boolean isFirsTime,int selectedDay, int year, int month, int weekStart) {
         if (month == -1 && year == -1) {
             throw new InvalidParameterException("You must specify month and year for this view");
         }

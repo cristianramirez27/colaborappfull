@@ -151,7 +151,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
         if (mAdapter == null) {
             mAdapter = createMonthAdapter(mController);
         } else {
-            mAdapter.setSelectedDay(mSelectedDay);
+            mAdapter.setSelectedDay(mSelectedDay,false);
             if (pageListener != null) pageListener.onPageChanged(getMostVisiblePosition());
         }
         // refresh the view with the new parameters
@@ -216,7 +216,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
         int selectedPosition = child != null ? getChildAdapterPosition(child) : 0;
 
         if (setSelected) {
-            mAdapter.setSelectedDay(mSelectedDay);
+            mAdapter.setSelectedDay(mSelectedDay,false);
         }
 
         if (Log.isLoggable(TAG, Log.DEBUG)) {

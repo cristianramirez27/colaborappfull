@@ -77,6 +77,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private static final int MONTH_AND_DAY_VIEW = 0;
     private static final int YEAR_VIEW = 1;
 
+    private boolean isTappedSelected;
+
     private  View view;
 
     private static final String KEY_SELECTED_YEAR = "year";
@@ -1182,5 +1184,16 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     public void setCustomTitle(String title){
 
         titleCustom = title;
+    }
+
+
+    @Override
+    public void setIsTappedSelected(boolean isTappedSelected) {
+        this.isTappedSelected = isTappedSelected;
+    }
+
+    @Override
+    public boolean isTappedSelected() {
+        return this.isTappedSelected;
     }
 }

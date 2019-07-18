@@ -25,6 +25,10 @@ import java.util.TimeZone;
  */
 public interface DatePickerController {
 
+
+    void setIsTappedSelected(boolean isTappedSelected);
+    boolean isTappedSelected ();
+
     void onYearSelected(int year);
 
     void onDayOfMonthSelected(int year, int month, int day);
@@ -63,4 +67,6 @@ public interface DatePickerController {
     DatePickerHolidayDialog.Version getVersion();
 
     DatePickerHolidayDialog.ScrollOrientation getScrollOrientation();
+
+
 }

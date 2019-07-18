@@ -115,7 +115,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     public MonthAdapter(DatePickerController controller) {
         mController = controller;
         init();
-        setSelectedDay(mController.getSelectedDay());
+        setSelectedDay(mController.getSelectedDay(), false);
         setHasStableIds(true);
     }
 
@@ -124,7 +124,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
      *
      * @param day The day to highlight
      */
-    public void setSelectedDay(CalendarDay day) {
+    public void setSelectedDay(CalendarDay day, boolean isTapped) {
         mSelectedDay = day;
         notifyDataSetChanged();
     }
@@ -189,7 +189,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     protected void onDayTapped(CalendarDay day) {
         mController.tryVibrate();
         mController.onDayOfMonthSelected(day.year, day.month, day.day);
-        setSelectedDay(day);
+        setSelectedDay(day,true);
     }
 
     static class MonthViewHolder extends RecyclerView.ViewHolder {
@@ -208,7 +208,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
                 selectedDay = selectedCalendarDay.day;
             }
 
-            ((MonthView) itemView).setMonthParams(selectedDay, year, month, mController.getFirstDayOfWeek());
+            ((MonthView) itemView).setMonthParams(false,selectedDay, year, month, mController.getFirstDayOfWeek());
             this.itemView.invalidate();
         }
 
