@@ -46,12 +46,12 @@
     </LinearLayout>
 
 
-    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList
         android:id="@+id/totales"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList>
+        android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList>
 
 
 

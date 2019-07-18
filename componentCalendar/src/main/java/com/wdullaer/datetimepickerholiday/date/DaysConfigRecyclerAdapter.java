@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.adapters;
+package com.wdullaer.datetimepickerholiday.date;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,15 +10,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.coppel.rhconecta.dev.R;
-import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
+import com.wdullaer.datetimepickerholiday.R;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 
 public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRecyclerAdapter.ViewHolder> {
 
@@ -50,12 +45,14 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
 
                 if(isChecked){
                     currentItem.setHalfDay(true);
-                    viewHolder.halfDay.setBackgroundResource(R.drawable.backgroud_circle_stroke_blue);
-                    viewHolder.labelHalfDay.setTextColor(getContext().getResources().getColor(R.color.colorPrimaryBlueCoppel));
+                    viewHolder.day.setBackgroundResource(R.drawable.backgroud_circle_stroke_blue);
+                    viewHolder.day.setTextColor(context.getResources().getColor(R.color.main_color_blue));
+                    viewHolder.labelHalfDay.setTextColor(context.getResources().getColor(R.color.main_color_blue));
                 }else {
                     currentItem.setHalfDay(false);
-                    viewHolder.halfDay.setBackgroundResource(R.drawable.backgroud_circle_blue);
-                    viewHolder.labelHalfDay.setTextColor(getContext().getResources().getColor(R.color.colorBackgroundCoppelBlanco));
+                    viewHolder.day.setBackgroundResource(R.drawable.backgroud_circle_blue);
+                    viewHolder.day.setTextColor(context.getResources().getColor(R.color.mdtp_white));
+                    viewHolder.labelHalfDay.setTextColor(context.getResources().getColor(R.color.main_text_disable));
                 }
             }
         });
@@ -84,16 +81,16 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.day)
         TextView day;
-        @BindView(R.id.halfDay)
         Switch halfDay;
-        @BindView(R.id.labelHalfDay)
         TextView labelHalfDay;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+
+            day = (TextView) itemView.findViewById(R.id.day);
+            halfDay = (Switch) itemView.findViewById(R.id.halfDay);
+            labelHalfDay = (TextView) itemView.findViewById(R.id.labelHalfDay);
         }
     }
 

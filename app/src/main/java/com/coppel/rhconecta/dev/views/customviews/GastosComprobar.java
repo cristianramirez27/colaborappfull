@@ -27,7 +27,7 @@ public class GastosComprobar extends RelativeLayout {
     @BindView(R.id.rcvGastosComprobar)
     RecyclerView rcvGastosComprobar;
     @BindView(R.id.totales)
-    HeaderTitlesList totales;
+    HeaderTitlesExpensesList totales;
 
     private ExpenseAuthorizedDetail[] orderedExpenses = new ExpenseAuthorizedDetail[7];
     private HashMap<String,Integer> orderList = new HashMap<>();
@@ -86,6 +86,7 @@ public class GastosComprobar extends RelativeLayout {
         totales.setWeightTitle(2,1f);
         totales.setWeightTitle(3,1f);
         totales.setWeightTitle(4,1f);
+        totales.setPaddingTitle4(18);
 
         totales.setColorTitle1(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle2(R.color.colorBackgroundCoppelNegro);

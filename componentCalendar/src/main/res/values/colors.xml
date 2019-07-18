@@ -16,6 +16,7 @@
 -->
 <resources>
 
+    <color name="transparent">#00FFFFFF</color>
     <color name="mdtp_white">#ffffff</color>
     <color name="mdtp_background_color">@color/mdtp_white</color>
     <color name="mdtp_circle_background">@color/mdtp_background_color</color>
@@ -27,6 +28,8 @@
     <color name="mdtp_numbers_text_color">#ff212121</color>
 
     <color name="main_color_blue">#0065b2</color>
+    <color name="main_text_disable">#c3c0c4</color>
+
 
     <color name="mdtp_transparent_black">#7f000000</color>
     <color name="mdtp_accent_color">#009688</color>

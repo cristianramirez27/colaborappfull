@@ -22,6 +22,8 @@ import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
+import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -31,11 +33,14 @@ import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -69,8 +74,9 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     TextViewDetail fechaPrimaVacacional;
 
 
+    private ConfigurationHolidaysData configurationHolidaysData;
 
-          private ColaboratorRequestsListExpensesResponse.Months monthSelected;
+    private ColaboratorRequestsListExpensesResponse.Months monthSelected;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -85,6 +91,21 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    public static ColaboratorHolidaysScheduleFragment getInstance(ConfigurationHolidaysData configurationHolidaysData){
+        ColaboratorHolidaysScheduleFragment fragment = new ColaboratorHolidaysScheduleFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_OPTION_DATA_HOLIDAYS,configurationHolidaysData);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        configurationHolidaysData = (ConfigurationHolidaysData) getArguments().getSerializable(BUNDLE_OPTION_DATA_HOLIDAYS);
     }
 
     @Override
@@ -145,7 +166,6 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
 
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_COLABORADOR_SOLICITUD, 1,numEmployer);
        // coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 

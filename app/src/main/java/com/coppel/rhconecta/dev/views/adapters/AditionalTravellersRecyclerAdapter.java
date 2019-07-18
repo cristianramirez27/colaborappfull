@@ -33,12 +33,18 @@ public class AditionalTravellersRecyclerAdapter extends RecyclerView.Adapter<Adi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.numViajeros.setText(String.valueOf(dataItems.get(i).getTotal_viajeros()));
+
         viewHolder.numColaborador.setText(String.valueOf(dataItems.get(i).getNum_colaborador()));
         viewHolder.nombreColaborador.setText(dataItems.get(i).getNom_colaborador());
         viewHolder.centro.setText(dataItems.get(i).getNom_centro());
-        viewHolder.empalme.setText(dataItems.get(i).getEmpalme());
-        viewHolder.empalme.setTextColor(CoppelApp.getContext().getResources().getColor(R.color.colorPrimaryCoppelAzul));
+
+        if(!dataItems.get(i).getEmpalme().isEmpty()){
+            viewHolder.empalme.setText(dataItems.get(i).getEmpalme());
+            viewHolder.empalme.setTextColor(CoppelApp.getContext().getResources().getColor(R.color.colorPrimaryCoppelAzul));
+            viewHolder.empalme.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.empalme.setVisibility(View.GONE);
+        }
 
     }
 
@@ -64,8 +70,7 @@ public class AditionalTravellersRecyclerAdapter extends RecyclerView.Adapter<Adi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.numViajeros)
-        TextView numViajeros;
+
         @BindView(R.id.numColaborador)
         TextView numColaborador;
         @BindView(R.id.nombreColaborador)

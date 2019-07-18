@@ -21,15 +21,19 @@ import android.widget.LinearLayout;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.GastosViajeDetalleActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
@@ -37,17 +41,24 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
+import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
 //import com.wdullaer.materialdatetimepicker.date.DatePickerHolidayDialog;
 //import com.wdullaer.materialdatepicker.date.DatePickerHolidayDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -122,7 +133,6 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
         btnSchedule.setOnClickListener(this);
-
         titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
             @Override
             public void onClick() {
@@ -134,14 +144,10 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
             }
         });
 
-
         initValues();
-
         holidayPeriodList = new ArrayList<>();
         holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
-
-
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
 
         return view;
@@ -319,25 +325,35 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
           }
 
          private void openCalendar(){
-
-             DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
+                  DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
                   datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
-                  datePickerDialog.setCustomTitle("Inicio de vacaciones" );
+                  datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
+                          holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
+                  datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
+                  datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
+                  datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
                   Calendar today = Calendar.getInstance();
                   datePickerDialog.setMinDate( today);
                   datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
 
-              }
-
+        }
 
           DatePickerHolidayDialog.OnDateSetListener dateSetListenerStart = new DatePickerHolidayDialog.OnDateSetListener() {
-
 
               @Override
               public void onDateSet(DatePickerHolidayDialog view, int year, int month, int dayOfMonth) {
 
+              }
 
+              @Override
+              public void onDatesSelectedHolidays(HashMap<String, DaySelectedHoliday> daysConfiguration) {
+                  ConfigurationHolidaysData configurationHolidaysData = new ConfigurationHolidaysData();
+                  configurationHolidaysData.setHolidaysPeriodsResponse(holidaysPeriodsResponse);
+                  configurationHolidaysData.setDaysConfiguration(daysConfiguration);
 
+                  NavigationUtil.openActivityParamsSerializable(getActivity(), VacacionesActivity.class,
+                          BUNDLE_OPTION_DATA_HOLIDAYS, configurationHolidaysData,
+                          BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_COLABORATOR_SCHEDULE);
               }
           };
 

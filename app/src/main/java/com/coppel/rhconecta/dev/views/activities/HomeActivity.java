@@ -334,7 +334,14 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case OPTION_EXPENSES:
-                getRolType(EXPENSESTRAVEL);
+
+                if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
+                    replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
+                    getRolType(EXPENSESTRAVEL);
+                }else{
+                    replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                }
                 break;
 
             case OPTION_HOLIDAYS:

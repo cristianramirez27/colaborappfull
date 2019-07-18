@@ -7,10 +7,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList
         android:id="@+id/gastoComprobar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList>
+        android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList>
 
 
 

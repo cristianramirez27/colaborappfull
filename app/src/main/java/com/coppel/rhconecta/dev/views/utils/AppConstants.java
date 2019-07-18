@@ -118,4 +118,11 @@ public class AppConstants {
 
 
     public static final String BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL= "BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL";
+
+
+    /*Holidays*/
+    public static final String BUNDLE_OPTION_HOLIDAYS = "BUNDLE_OPTION_HOLIDAYS";
+    public static final String BUNDLE_OPTION_COLABORATOR_SCHEDULE = "BUNDLE_OPTION_COLABORATOR_SCHEDULE";
+    public static final String BUNDLE_OPTION_DATA_HOLIDAYS = "BUNDLE_OPTION_DATA_HOLIDAYS";
+
 }

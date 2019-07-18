@@ -161,7 +161,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="20dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="8dp"/>
 
                 <LinearLayout
@@ -169,9 +168,13 @@
                     android:id="@+id/layoutViajerosExtras"
                     android:layout_width="match_parent"
                     android:visibility="gone"
+                    android:scrollbarFadeDuration="1"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:scrollbarSize="0.5dp"
                     android:layout_marginTop="-3dp"
                     android:background="@color/colorBackgroundCoppelBlanco"
-                    android:layout_height="wrap_content">
+                    android:layout_height="164dp">
 
                     <com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales
                         android:id="@+id/viajeroAdicionales"

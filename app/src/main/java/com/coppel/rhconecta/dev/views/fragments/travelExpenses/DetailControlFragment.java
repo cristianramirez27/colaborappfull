@@ -128,47 +128,60 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
     private void setData( DetailControlColaboratorResponse.Response data){
 
         totalDetalle.setTextsSize(14,16);
-        totalDetalle.setTexts("Saldo Total",String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
+        if(data.getSaldoTotal() != null)
+            totalDetalle.setTexts("Saldo Total",String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
 
         ExpenseAuthorizedResume expenseAuthorizedResume = new ExpenseAuthorizedResume();
         List<ExpenseAuthorizedDetail> expenseAuthorizedDetails = new ArrayList<>();
         HashMap<Integer,ExpenseAuthorizedDetail> expenseAuthorizedDetailHashMap = new HashMap<>();
 
-        for(DetailRequest authorized : data.getGastoAutorizado()){
-            //Total
-            if(authorized.getIdu_tipoGasto() == -1){
+        if(data.getGastoAutorizado() != null && !data.getGastoAutorizado().isEmpty()) {
+
+            for(DetailRequest authorized : data.getGastoAutorizado()){
+                //Total
+                if(authorized.getIdu_tipoGasto() == -1){
+                    String total= authorized.getImp_total().replace(",","");
+                    expenseAuthorizedResume.setTotalAutorizado(Double.parseDouble(total));
+                }
+
                 String total= authorized.getImp_total().replace(",","");
-                expenseAuthorizedResume.setTotalAutorizado(Double.parseDouble(total));
-            }
-
-            String total= authorized.getImp_total().replace(",","");
-            expenseAuthorizedDetailHashMap.put(authorized.getIdu_tipoGasto(),new ExpenseAuthorizedDetail(authorized.getIdu_tipoGasto(),authorized.getDes_tipoGasto(),Double.parseDouble(total)));
-        }
-
-        //Gastos comprobados
-        for(DetailRequest checked : data.getGastoComprobado()){
-            //Total
-            if(checked.getIdu_tipoGasto() == -1){
-                String total= checked.getImp_total().replace(",","");
-                expenseAuthorizedResume.setTotalComprobado(Double.parseDouble(total));
-            }else if(expenseAuthorizedDetailHashMap.containsKey(checked.getIdu_tipoGasto())){
-                String total= checked.getImp_total().replace(",","");
-                expenseAuthorizedDetailHashMap.get(checked.getIdu_tipoGasto()).setImp_totalComprobado(Double.parseDouble(total));
+                expenseAuthorizedDetailHashMap.put(authorized.getIdu_tipoGasto(),new ExpenseAuthorizedDetail(authorized.getIdu_tipoGasto(),authorized.getDes_tipoGasto(),Double.parseDouble(total)));
             }
         }
+
+
+        if(data.getGastoComprobado() != null){
+            //Gastos comprobados
+            for(DetailRequest checked : data.getGastoComprobado()){
+                //Total
+                if(checked.getIdu_tipoGasto() == -1){
+                    String total= checked.getImp_total().replace(",","");
+                    expenseAuthorizedResume.setTotalComprobado(Double.parseDouble(total));
+                }else if(expenseAuthorizedDetailHashMap.containsKey(checked.getIdu_tipoGasto())){
+                    String total= checked.getImp_total().replace(",","");
+                    expenseAuthorizedDetailHashMap.get(checked.getIdu_tipoGasto()).setImp_totalComprobado(Double.parseDouble(total));
+                }
+            }
+        }
+
 
         if(data.getGastoAutorizado() != null && !data.getGastoAutorizado().isEmpty()) {
             //Gastos comprobados
-            for(DetailRequest missing : data.getFaltante()){
-                //Total
-                if(missing.getIdu_tipoGasto() == -1){
-                    String total= missing.getImp_total().replace(",","");
-                    expenseAuthorizedResume.setImp_totalFaltante(Double.parseDouble(total));
-                }else if(expenseAuthorizedDetailHashMap.containsKey(missing.getIdu_tipoGasto())){
-                    String total= missing.getImp_total().replace(",","");
-                    expenseAuthorizedDetailHashMap.get(missing.getIdu_tipoGasto()).setImp_totalFaltante(Double.parseDouble(total));
+
+            if(data.getFaltante() != null){
+                for(DetailRequest missing : data.getFaltante()){
+                    //Total
+                    if(missing.getIdu_tipoGasto() == -1){
+                        String total= missing.getImp_total().replace(",","");
+                        expenseAuthorizedResume.setImp_totalFaltante(Double.parseDouble(total));
+                    }else if(expenseAuthorizedDetailHashMap.containsKey(missing.getIdu_tipoGasto())){
+                        String total= missing.getImp_total().replace(",","");
+                        expenseAuthorizedDetailHashMap.get(missing.getIdu_tipoGasto()).setImp_totalFaltante(Double.parseDouble(total));
+                    }
                 }
             }
+
+
 
             for(Integer key : expenseAuthorizedDetailHashMap.keySet()){
                 if(key != -1)

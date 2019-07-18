@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mdtp_date_picker_view_animator"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/headerCongif"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mdtp_date_picker_header_height"
+            android:layout_weight="1"
+            android:background="#0065b2"
+            android:gravity="top"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Configura tus días"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="#ffffff"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Días seleccionados"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="#ffffff"/>
+
+                <TextView
+                    android:id="@+id/daysSelectedConfig"
+                    android:layout_weight="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="6 días"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="#ffffff"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/headerCongif"
+            android:id="@+id/rcvFields"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:scrollbarFadeDuration="1"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical"
+            android:layout_above="@+id/btnLayout"
+            android:scrollbarSize="0.5dp"/>
+
+        <LinearLayout
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="16dp">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/mdtp_cancel_back"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/background_blue_rounded"
+                    android:textColor="#ffffff"
+                    android:layout_marginRight="10dp"
+                    android:textAllCaps="false"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="18dp"
+                    android:text="Cancelar" />
+
+                <Button
+                    android:id="@+id/mdtp_ok_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_blue_rounded"
+                    android:textAllCaps="false"
+                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="18dp"
+                    android:textColor="#ffffff"
+                    android:paddingRight="18dp"
+                    android:gravity="center"
+                    android:text="Aceptar" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

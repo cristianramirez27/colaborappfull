@@ -11,6 +11,7 @@ android {
         versionCode 56
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
 
         multiDexEnabled true
 

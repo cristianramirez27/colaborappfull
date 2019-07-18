@@ -16,6 +16,8 @@
 
 package com.wdullaer.datetimepickerholiday.date;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
@@ -26,10 +28,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -51,9 +56,12 @@ import com.wdullaer.datetimepickerholiday.Utils;
 import com.wdullaer.materialdatepicker.date.AccessibleDateAnimator;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -172,7 +180,26 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private String mYearPickerDescription;
     private String mSelectYear;
 
+
+    private AnimatorSet mSetRightOut;
+    private AnimatorSet mSetLeftIn;
+    View mCardFrontLayout;
+    View mCardBackLayout;
+
+    RecyclerView recyclerViewConfig;
+    private boolean mIsBackVisible = false;
+
+
+    private List<DaySelectedHoliday> daySelectedHolidayList;
+    private HashMap<String,DaySelectedHoliday> daysSelectedMap = new HashMap<>();
+    private  DaysConfigRecyclerAdapter daysConfigRecyclerAdapter;
+    private  boolean showHalfDaysOption = true;
+    private int num_total_vacaciones;
+    private int num_diasagendados;
+
     /**
+     *
+     *
      * The callback used to indicate the user is done filling in the date.
      */
     public interface OnDateSetListener {
@@ -185,6 +212,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
          * @param dayOfMonth  The day of the month that was set.
          */
         void onDateSet(DatePickerHolidayDialog view, int year, int monthOfYear, int dayOfMonth);
+
+        void onDatesSelectedHolidays(HashMap<String,DaySelectedHoliday> daysConfiguration);
     }
 
     /**
@@ -318,6 +347,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         outState.putSerializable(KEY_LOCALE, mLocale);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -378,7 +409,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         mDefaultLimiter.setController(this);
 
 //        int viewRes = mVersion == Version.VERSION_1 ? R.layout.mdtp_date_picker_dialog : R.layout.mdtp_date_picker_dialog_v2;
-        int viewRes = R.layout.mdtp_date_picker_dialog_v2;
+        int viewRes = R.layout.dialog_holiday_calendar;
 
         view = inflater.inflate(viewRes, container, false);
         // All options have been set at this point: round the initial selection if necessary
@@ -392,6 +423,17 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         mSelectedDayTextView = view.findViewById(R.id.mdtp_date_picker_day);
         mYearView = view.findViewById(R.id.mdtp_date_picker_year);
         mYearView.setOnClickListener(this);
+
+
+        /**Custom holiday*/
+        mCardFrontLayout  = view.findViewById(R.id.card_front);
+        mCardBackLayout  = view.findViewById(R.id.card_back);
+        recyclerViewConfig  = view.findViewById(R.id.rcvFields);
+        recyclerViewConfig.setHasFixedSize(true);
+        recyclerViewConfig.setLayoutManager(new LinearLayoutManager(getActivity()));
+        daySelectedHolidayList = new ArrayList<>();
+         daysConfigRecyclerAdapter = new DaysConfigRecyclerAdapter(getActivity(), daySelectedHolidayList);
+        recyclerViewConfig.setAdapter(daysConfigRecyclerAdapter);
 
 
 
@@ -435,7 +477,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             @Override
             public void onClick(View v) {
                 tryVibrate();
-                notifyOnDateListener();
+                notifyOnDatesHolidaysListener();
                 dismiss();
             }
         });
@@ -447,15 +489,47 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                tryVibrate();
+
                 if (getDialog() != null) getDialog().cancel();
             }
         });
+
 
         cancelButton.setTypeface(TypefaceHelper.get(activity, buttonTypeface));
         //if (mCancelString != null) cancelButton.setText(mCancelString);
         //else cancelButton.setText(mCancelResid);
         cancelButton.setVisibility(isCancelable() ? View.VISIBLE : View.GONE);
+
+
+        TextView configDaysBtn = view.findViewById(R.id.configDays);
+        configDaysBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setConfigData();
+                changeView();
+            }
+        });
+
+        Button okButtonBack = view.findViewById(R.id.mdtp_ok_back);
+        okButtonBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateDaysSelection();
+                changeView();
+            }
+        });
+
+        Button cancelButtonBack = view.findViewById(R.id.mdtp_cancel_back);
+        cancelButtonBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeView();
+            }
+        });
+
+
+
+
 
         // If an accent color has not been set manually, get it from the context
         if (mAccentColor == -1) {
@@ -507,6 +581,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
         return dialog;
     }
 
@@ -1181,6 +1257,12 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         }
     }
 
+    public void notifyOnDatesHolidaysListener() {
+        if (mCallBack != null && this.daysSelectedMap != null) {
+            mCallBack.onDatesSelectedHolidays(this.daysSelectedMap);
+        }
+    }
+
     public void setCustomTitle(String title){
 
         titleCustom = title;
@@ -1195,5 +1277,99 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     @Override
     public boolean isTappedSelected() {
         return this.isTappedSelected;
+    }
+
+
+    private void changeView(){
+        loadAnimations();
+        changeCameraDistance();
+        flipCard();
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if(!mIsBackVisible){
+                    mCardFrontLayout.setVisibility(View.VISIBLE);
+                    mCardBackLayout.setVisibility(View.GONE);
+                }else {
+                    mCardFrontLayout.setVisibility(View.GONE);
+                    mCardBackLayout.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+        }, 1800);
+    }
+
+    private void changeCameraDistance() {
+        int distance = 4000;
+        float scale = getResources().getDisplayMetrics().density * distance;
+        mCardFrontLayout.setCameraDistance(scale);
+        mCardBackLayout.setCameraDistance(scale);
+    }
+
+    private void loadAnimations() {
+        mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.out_animation);
+        mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.in_animation);
+    }
+
+
+    public void flipCard() {
+        if (!mIsBackVisible) {
+            mSetRightOut.setTarget(mCardFrontLayout);
+            mSetLeftIn.setTarget(mCardBackLayout);
+            mSetRightOut.start();
+            mSetLeftIn.start();
+            mIsBackVisible = true;
+        } else {
+            mSetRightOut.setTarget(mCardBackLayout);
+            mSetLeftIn.setTarget(mCardFrontLayout);
+            mSetRightOut.start();
+            mSetLeftIn.start();
+            mIsBackVisible = false;
+        }
+    }
+
+    @Override
+    public void setDaysSelected(HashMap<String,DaySelectedHoliday> daysSelected) {
+
+        this.daysSelectedMap = daysSelected;
+    }
+
+    private void setConfigData(){
+        daySelectedHolidayList.clear();
+        for(String key : daysSelectedMap.keySet()){
+            daySelectedHolidayList.add(daysSelectedMap.get(key));
+        }
+
+        daysConfigRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private void updateDaysSelection(){
+
+        this.daysSelectedMap.clear();
+        List<DaySelectedHoliday> daysUpdate = daysConfigRecyclerAdapter.getDaySelectedHolidays();
+        for(DaySelectedHoliday day :daysUpdate){
+            daysSelectedMap.put(day.getId(),day);
+        }
+    }
+
+    @Override
+    public HashMap<String,DaySelectedHoliday> getDaysSelected() {
+        return this.daysSelectedMap;
+    }
+
+    public void setShowHalfDaysOption(boolean showHalfDaysOption) {
+        this.showHalfDaysOption = showHalfDaysOption;
+    }
+
+    public void setNum_total_vacaciones(int num_total_vacaciones) {
+        this.num_total_vacaciones = num_total_vacaciones;
+    }
+
+    public void setNum_diasagendados(int num_diasagendados) {
+        this.num_diasagendados = num_diasagendados;
     }
 }

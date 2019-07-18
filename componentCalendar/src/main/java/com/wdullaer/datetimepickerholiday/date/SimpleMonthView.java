@@ -28,11 +28,11 @@ import java.util.List;
 
 public class SimpleMonthView extends MonthView {
 
-    HashMap<Integer,Boolean> daysSelectedlist;
+    HashMap<String,DaySelectedHoliday> daysSelectedlist;
 
     public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
         super(context, attr, controller);
-        daysSelectedlist = new HashMap<Integer, Boolean>();
+        daysSelectedlist = mController.getDaysSelected();
 
     }
 
@@ -40,18 +40,22 @@ public class SimpleMonthView extends MonthView {
     public void drawMonthDay(Canvas canvas, int year, int month, int day,
                              int x, int y, int startX, int stopX, int startY, int stopY) {
 
-        if(mController.isTappedSelected()){
-            if(daysSelectedlist.containsKey(mSelectedDay)){
-                daysSelectedlist.remove(mSelectedDay);
+        String date = String.format("%s%s%s",String.valueOf(year),month < 10 ? "0"+month : month,day < 10 && day > 0 ? "0"+day : day );
+        String dateSelected = String.format("%s%s%s",String.valueOf(year),month < 10 ? "0"+month : month,mSelectedDay < 10 && mSelectedDay > 0 ? "0"+mSelectedDay : mSelectedDay );
+
+        if(dateSelected.equals(date) && mController.isTappedSelected() ){
+            if( daysSelectedlist.containsKey(dateSelected)){
+                daysSelectedlist.remove(dateSelected);
             }else {
-                daysSelectedlist.put(mSelectedDay,false);
+                daysSelectedlist.put(dateSelected,new DaySelectedHoliday(dateSelected,mSelectedDay,month,year,false));
             }
+            mController.setIsTappedSelected(false);
         }
 
-        if (daysSelectedlist.containsKey(day)) {
+        if (daysSelectedlist.containsKey(date)) {
            // Toast.makeText(getContext(),"Seleccionados: " +daysSelectedlist.size(),Toast.LENGTH_SHORT).show();
 
-            if(daysSelectedlist.get(day)){
+            if(daysSelectedlist.get(date).isHalfDay()){
                 canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
                         mSelectedHalfCirclePaint);
             }else {
@@ -73,13 +77,13 @@ public class SimpleMonthView extends MonthView {
         if (mController.isOutOfRange(year, month, day)) {
             //mMonthNumPaint.setColor(mDisabledDayTextColor);
             mMonthNumPaint.setColor(mSelectedDayTextColor);
-        } else if (daysSelectedlist.containsKey(day)) {
+        } else if (daysSelectedlist.containsKey(date)) {
 
-            if(daysSelectedlist.get(day)){
-                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            if(daysSelectedlist.get(date).isHalfDay()){
+                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
                 mMonthNumPaint.setColor(mTodayNumberColor);
             }else {
-                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
                 mMonthNumPaint.setColor(mSelectedDayTextColor);
             }
         }
@@ -90,5 +94,7 @@ public class SimpleMonthView extends MonthView {
         }
 
         canvas.drawText(String.format(mController.getLocale(), "%d", day), x, y, mMonthNumPaint);
+
+        mController.setDaysSelected(this.daysSelectedlist);
     }
 }

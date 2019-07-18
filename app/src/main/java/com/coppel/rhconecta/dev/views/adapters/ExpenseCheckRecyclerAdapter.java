@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
+import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
@@ -69,7 +70,7 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.gastoComprobar)
-        HeaderTitlesList gastoComprobar;
+        HeaderTitlesExpensesList gastoComprobar;
 
 
 

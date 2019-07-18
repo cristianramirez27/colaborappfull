@@ -62,6 +62,10 @@ public class HeaderTitlesExpensesList extends LinearLayout {
         title4.setPadding(30,0,0,0);
     }
 
+    public void setPaddingTitle4(int left){
+        title4.setPadding(left,0,0,0);
+    }
+
 
     public void setWeightTitle(int numTitle, float weigth){
 

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctlContainer"
-    android:padding="10dp"
-    android:layout_marginTop="10dp"
+    android:padding="6dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,8 +18,7 @@
             android:id="@+id/day"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textColor="#ffffff"
             android:background="@drawable/backgroud_circle_blue"
             android:text="12"
             android:gravity="center"
@@ -45,10 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:textColor="@color/colorGrisDeshabilitado"
+                android:textColor="#c3c0c4"
                 android:layout_centerVertical="true"
-                android:text="@string/half_day"
+                android:text="Medio día"
                 android:textSize="12sp" />
 
         </RelativeLayout>
