@@ -11,6 +11,22 @@ public class HolidayPeriod implements Serializable {
     private String fec_fin;
     private int idu_folio;
 
+    public HolidayPeriod(int idu_estatus, String nom_estatus, String color, String num_dias, String fec_ini, String fec_fin, int idu_folio) {
+        this.idu_estatus = idu_estatus;
+        this.nom_estatus = nom_estatus;
+        this.color = color;
+        this.num_dias = num_dias;
+        this.fec_ini = fec_ini;
+        this.fec_fin = fec_fin;
+        this.idu_folio = idu_folio;
+    }
+
+    public HolidayPeriod(int idu_estatus, String num_dias, String fec_ini, String fec_fin) {
+        this.idu_estatus = idu_estatus;
+        this.num_dias = num_dias;
+        this.fec_ini = fec_ini;
+        this.fec_fin = fec_fin;
+    }
 
     public int getIdu_estatus() {
         return idu_estatus;

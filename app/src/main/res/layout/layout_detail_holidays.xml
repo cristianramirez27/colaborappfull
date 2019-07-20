@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutHeader"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:background="@color/colorBackgroundCoppelBlanco"
-    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+    android:layout_height="wrap_content">
+
+    <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
+        android:id="@+id/titleDetail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_below="@+id/titleDetail"
+        android:orientation="vertical"
+        android:id="@+id/layoutDetail"
+        android:visibility="gone"
+        android:layout_marginTop="-10dp"
+        android:background="@color/colorBackgroundCoppelBlanco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/colorBackgroundCoppelBlanco"
+        tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
         <LinearLayout
             android:id="@+id/layoutData"
@@ -46,4 +68,19 @@
                 android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
 
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+
+
+        <View
+            android:id="@+id/bordeAmarillo"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bg_gradient_grey" />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+

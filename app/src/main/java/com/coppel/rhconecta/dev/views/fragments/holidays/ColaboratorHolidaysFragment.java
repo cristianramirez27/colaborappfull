@@ -35,6 +35,7 @@ import com.coppel.rhconecta.dev.views.activities.GastosViajeDetalleActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -75,31 +76,16 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;
 
-    @BindView(R.id.titleDetail)
-    TextViewExpandableRightArrowHeader titleDetail;
+    @BindView(R.id.headerHoliday)
+    HeaderHolidaysColaborator headerHoliday;
 
-    @BindView(R.id.layoutDetail)
-    LinearLayout layoutDetail;
 
 
     private HolidaysPeriodsResponse holidaysPeriodsResponse;
 
-    @BindView(R.id.diasDecision)
-    TextViewDetail diasDecision;
-    @BindView(R.id.diasPendientesAnterior)
-    TextViewDetail diasPendientesAnterior;
-    @BindView(R.id.diasAdicionalesPendientes)
-    TextViewDetail diasAdicionalesPendientes;
-    @BindView(R.id.diasAdicionalesRegistrados)
-    TextViewDetail diasAdicionalesRegistrados;
-    @BindView(R.id.fechaPrimaVacacional)
-    TextViewDetail fechaPrimaVacacional;
 
     @BindView(R.id.btnSchedule)
     Button btnSchedule;
-
-
-    private ColaboratorRequestsListExpensesResponse.Months monthSelected;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -133,66 +119,12 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
         btnSchedule.setOnClickListener(this);
-        titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
-            @Override
-            public void onClick() {
-                if (titleDetail.isExpanded()) {
-                    layoutDetail.setVisibility(View.VISIBLE);
-                } else {
-                    layoutDetail.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        initValues();
         holidayPeriodList = new ArrayList<>();
         holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
 
         return view;
-    }
-
-    private void initValues(){
-        titleDetail.setTitleTextSize(17);
-        titleDetail.setValueTextSize(20);
-        titleDetail.setTexts(getString(R.string.title_holidays_days),String.format("%s %s","10",getString(R.string.title_days)));
-
-        diasDecision.setSingleLine(true);
-        diasDecision.setGuideline73(0.70f);
-        diasDecision.setTexts(getString(R.string.title_day_availables),"8.5 dias");
-        diasDecision.setTextsSize(12,12);
-        diasDecision.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        diasDecision.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
-        diasPendientesAnterior.setGuideline73(0.70f);
-        diasPendientesAnterior.setSingleLine(true);
-        diasPendientesAnterior.setTexts(getString(R.string.title_days_pending_lastyear),"1 día");
-        diasPendientesAnterior.setTextsSize(12,12);
-        diasPendientesAnterior.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        diasPendientesAnterior.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
-        diasAdicionalesPendientes.setGuideline73(0.70f);
-        diasAdicionalesPendientes.setSingleLine(true);
-        diasAdicionalesPendientes.setTexts(getString(R.string.title_days_aditionals),"0 días");
-        diasAdicionalesPendientes.setTextsSize(12,12);
-        diasAdicionalesPendientes.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        diasAdicionalesPendientes.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
-        diasAdicionalesRegistrados.setGuideline73(0.70f);
-        diasAdicionalesRegistrados.setSingleLine(true);
-        diasAdicionalesRegistrados.setTexts(getString(R.string.title_days_aditionals_register),"0 días");
-        diasAdicionalesRegistrados.setTextsSize(12,12);
-        diasAdicionalesRegistrados.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        diasAdicionalesRegistrados.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
-        fechaPrimaVacacional.setGuideline73(0.70f);
-        fechaPrimaVacacional.setSingleLine(true);
-        fechaPrimaVacacional.setTexts(getString(R.string.title_bonus_date),"Viernes, 30-07-2019");
-        fechaPrimaVacacional.setTextsSize(12,12);
-        fechaPrimaVacacional.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        fechaPrimaVacacional.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
     }
 
 
@@ -253,8 +185,11 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         switch (response.getType()) {
 
             case ServicesRequestType.HOLIDAYS:
-                if(response.getResponse() instanceof ColaboratorRequestsListExpensesResponse) {
+                if(response.getResponse() instanceof HolidaysPeriodsResponse) {
                     holidaysPeriodsResponse = (HolidaysPeriodsResponse) response.getResponse();
+
+
+                    headerHoliday.setDetailData(holidaysPeriodsResponse);
                     if(holidaysPeriodsResponse.getData().getResponse().getPeriodos().size() > 0){
 
                         holidayPeriodList.clear();

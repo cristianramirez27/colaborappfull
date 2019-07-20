@@ -338,4 +338,7 @@
 
     <string name="half_day">Medio día</string>
 
+    <string name="btn_request_all">Soliciar\ntodas</string>
+    <string name="btn_schedule_more">Agendar más\nvacaciones</string>
+
 </resources>

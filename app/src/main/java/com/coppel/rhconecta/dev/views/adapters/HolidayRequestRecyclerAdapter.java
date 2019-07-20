@@ -48,11 +48,10 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.itemView.setHasTransientState(true);
 
-
         viewHolder.fechaInicio.setText(dataItems.get(i).getFec_ini());
         viewHolder.fechaFin.setText(dataItems.get(i).getFec_fin());
-        viewHolder.diasVacaciones.setText(String.valueOf(dataItems.get(i).getNum_dias()));
-
+        viewHolder.diasVacaciones.setText(String.format("%s %s",String.valueOf(dataItems.get(i).getNum_dias()),"días"));
+        viewHolder.layoutEstatusContainer.setVisibility( dataItems.get(i).getNom_estatus()!= null && !dataItems.get(i).getNom_estatus().isEmpty() ?  View.VISIBLE : View.GONE);
 
        /* viewHolder.status.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));
         GradientDrawable gd = new GradientDrawable();

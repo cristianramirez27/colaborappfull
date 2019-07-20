@@ -30,38 +30,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
-                    android:id="@+id/titleDetail"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <LinearLayout
-                    android:layout_below="@+id/titleDetail"
-                    android:orientation="vertical"
-                    android:id="@+id/layoutDetail"
-                    android:visibility="gone"
-                    android:layout_marginTop="-10dp"
-                    android:background="@color/colorBackgroundCoppelBlanco"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include
-                        android:paddingRight="10dp"
-                        android:paddingLeft="10dp"
-                        layout="@layout/layout_detail_holidays" />
-                    <View
-                        android:id="@+id/bordeAmarillo"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:background="@drawable/bg_gradient_grey" />
-
-
-
-                </LinearLayout>
-
-
+               <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator
+                   android:id="@+id/headerHoliday"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
 
 
             </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
@@ -13,7 +14,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         this.data = data;
     }
 
-    public class Data {
+    public class Data  implements Serializable{
 
         private Response response;
 
@@ -26,7 +27,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         }
     }
 
-    public class Response {
+    public class Response implements Serializable {
         private int num_totalvacaciones;
         private int num_diasvacaciones;
         private int num_diasporautorizar;

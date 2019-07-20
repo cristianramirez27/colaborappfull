@@ -25,16 +25,23 @@ import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesR
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
 import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +54,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColaboratorHolidaysScheduleFragment extends Fragment implements  View.OnClickListener, IServicesContract.View
+public class ColaboratorHolidaysScheduleFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
+        HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener
       {
 
     public static final String TAG = ColaboratorHolidaysScheduleFragment.class.getSimpleName();
@@ -55,31 +63,17 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;
 
-    @BindView(R.id.titleDetail)
-    TextViewExpandableRightArrowHeader titleDetail;
-
-    @BindView(R.id.layoutDetail)
-    LinearLayout layoutDetail;
-
-
-    @BindView(R.id.diasDecision)
-    TextViewDetail diasDecision;
-    @BindView(R.id.diasPendientesAnterior)
-    TextViewDetail diasPendientesAnterior;
-    @BindView(R.id.diasAdicionalesPendientes)
-    TextViewDetail diasAdicionalesPendientes;
-    @BindView(R.id.diasAdicionalesRegistrados)
-    TextViewDetail diasAdicionalesRegistrados;
-    @BindView(R.id.fechaPrimaVacacional)
-    TextViewDetail fechaPrimaVacacional;
-
+          @BindView(R.id.headerHoliday)
+          HeaderHolidaysColaborator headerHoliday;
 
     private ConfigurationHolidaysData configurationHolidaysData;
 
-    private ColaboratorRequestsListExpensesResponse.Months monthSelected;
-
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
+
+
+          private List<HolidayPeriod> holidayPeriodList;
+          private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
 
     //private List<ColaboratorRequestsListExpensesResponse.ControlColaborator> controlColaborators;
 
@@ -122,42 +116,40 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         }
 
 
+
+        headerHoliday.setDetailData(configurationHolidaysData.getHolidaysPeriodsResponse());
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
-
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        holidayPeriodList = new ArrayList<>();
 
 
+        for (String key : configurationHolidaysData.getDaysConfiguration().keySet()){
+            DaySelectedHoliday day = configurationHolidaysData.getDaysConfiguration().get(key);
+            String dateStart = String.format("%s-%s-%s",
+                    String.valueOf(day.getYear()),
+                    String.valueOf(day.getMonth() > 10 ? day.getMonth() : "0"+ day.getMonth()),
+                   String.valueOf(day.getDay() > 10 ? day.getDay() : "0"+ day.getDay()));
 
-        titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
-            @Override
-            public void onClick() {
-                if (titleDetail.isExpanded()) {
-                    layoutDetail.setVisibility(View.VISIBLE);
-                } else {
-                    layoutDetail.setVisibility(View.GONE);
-                }
-            }
-        });
+            String dateEnd = String.format("%s-%s-%s",
+                    String.valueOf(day.getYear()),
+                    String.valueOf(day.getMonth() > 10 ? day.getMonth() : "0"+ day.getMonth()),
+                    String.valueOf(day.getDay() > 10 ? day.getDay() : "0"+ day.getDay()));
+
+            holidayPeriodList.add(new HolidayPeriod(0,String.valueOf("1"),dateStart,dateEnd));
+        }
 
 
-        initValues();
-       // rcvSolicitudes.setAdapter(expensesTravelColaboratorRequestRecyclerAdapter);
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList);
+        holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
+        rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
+
 
         return view;
     }
 
-    private void initValues(){
-        titleDetail.setTexts(getString(R.string.title_holidays_days),String.format("%s %s","10",getString(R.string.title_days)));
-        diasDecision.setTexts(getString(R.string.title_day_availables),"8.5 dias");
-        diasPendientesAnterior.setTexts(getString(R.string.title_days_pending_lastyear),"1 día");
-        diasAdicionalesPendientes.setTexts(getString(R.string.title_days_aditionals),"0 días");
-        diasAdicionalesRegistrados.setTexts(getString(R.string.title_days_aditionals_register),"0 días");
-        fechaPrimaVacacional.setTexts(getString(R.string.title_bonus_date),"Viernes, 30-07-2019");
-
-    }
 
 
     @Override
@@ -238,5 +230,8 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     }
 
 
+          @Override
+          public void onRequestSelectedClick(HolidayPeriod holidayPeriod) {
 
-}
+          }
+      }

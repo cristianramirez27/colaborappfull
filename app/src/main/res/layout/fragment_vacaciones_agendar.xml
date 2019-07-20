@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
@@ -26,35 +24,23 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
-
             <RelativeLayout
                 android:id="@+id/layoutHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
-                    android:id="@+id/titleDetail"
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator
+                    android:id="@+id/headerHoliday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:layout_below="@+id/titleDetail"
-                    android:orientation="vertical"
-                    android:id="@+id/layoutDetail"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include
-                        layout="@layout/layout_detail_holidays" />
-
-
-                </LinearLayout>
 
             </RelativeLayout>
 
 
             <RelativeLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_below="@+id/layoutHeader"
                 android:id="@+id/layoutSolicitudes"
                 android:layout_width="match_parent"
@@ -108,7 +94,7 @@
 
             <LinearLayout
                 android:layout_alignParentBottom="true"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:id="@+id/layoutBtn"
                 android:visibility="visible"
                 android:layout_width="match_parent"
@@ -122,7 +108,21 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_blue_rounded"
                     android:fontFamily="@font/lineto_circular_pro_book"
-                    android:text="Agendar vacaciones"
+                    android:text="@string/btn_schedule_more"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorBackgroundCoppelBlanco"
+                    android:textSize="16sp" />
+
+
+                <Button
+                    android:id="@+id/btnSendRequest"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_green_rounded"
+                    android:fontFamily="@font/lineto_circular_pro_book"
+                    android:text="@string/btn_request_all"
                     android:textAllCaps="false"
                     android:layout_marginRight="10dp"
                     android:textColor="@color/colorBackgroundCoppelBlanco"

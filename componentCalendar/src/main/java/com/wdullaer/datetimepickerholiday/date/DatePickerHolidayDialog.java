@@ -37,6 +37,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,11 +60,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 /**
  * Dialog allowing users to select a date.
@@ -434,8 +438,6 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         daySelectedHolidayList = new ArrayList<>();
          daysConfigRecyclerAdapter = new DaysConfigRecyclerAdapter(getActivity(), daySelectedHolidayList);
         recyclerViewConfig.setAdapter(daysConfigRecyclerAdapter);
-
-
 
         titleCustomCalendar.setText(titleCustom);
 
@@ -1340,11 +1342,13 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     private void setConfigData(){
         daySelectedHolidayList.clear();
-        for(String key : daysSelectedMap.keySet()){
-            daySelectedHolidayList.add(daysSelectedMap.get(key));
+        HashMap<Long,DaySelectedHoliday> datesSorted = getOrderDates(daysSelectedMap);
+        for(Long key : datesSorted.keySet()){
+            daySelectedHolidayList.add(daysSelectedMap.get(String.valueOf(key)));
         }
 
         daysConfigRecyclerAdapter.notifyDataSetChanged();
+
     }
 
     private void updateDaysSelection(){
@@ -1371,5 +1375,22 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     public void setNum_diasagendados(int num_diasagendados) {
         this.num_diasagendados = num_diasagendados;
+    }
+
+    private HashMap<Long,DaySelectedHoliday> getOrderDates(HashMap<String,DaySelectedHoliday> datesSource ){
+        HashMap<Long,DaySelectedHoliday> datesSorter = new HashMap<>();
+        List<Long> listDates = new ArrayList<>();
+        for(String key : datesSource.keySet()){
+            listDates.add(Long.parseLong(key));
+        }
+        Collections.sort(listDates, Collections.reverseOrder());
+        Collections.reverse(listDates);
+        for(Long date : listDates){
+            datesSorter.put(date,datesSource.get(String.valueOf(date)));
+        }
+
+        Map<Long, DaySelectedHoliday> map = new TreeMap<>(datesSorter);
+
+        return datesSorter;
     }
 }
