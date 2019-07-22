@@ -14,7 +14,6 @@
         android:layout_height="match_parent">
         <include layout="@layout/mdtp_date_picker_dialog_v2_back" />
 
-
     </FrameLayout>
 
     <FrameLayout

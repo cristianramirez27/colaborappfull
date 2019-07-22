@@ -57,4 +57,15 @@
         <item name="android:textColor">@color/mdtp_button_color</item>
         <item name="android:textAllCaps">true</item>
     </style>
+
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/main_color_blue</item>
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/mdtp_white
+        </item>
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">@color/background_gray</item>
+    </style>
 </resources>

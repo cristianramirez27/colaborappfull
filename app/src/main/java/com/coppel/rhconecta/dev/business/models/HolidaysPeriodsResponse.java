@@ -28,15 +28,15 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
     }
 
     public class Response implements Serializable {
-        private int num_totalvacaciones;
-        private int num_diasvacaciones;
-        private int num_diasporautorizar;
-        private int num_diasautorizados;
-        private int num_diasagendados;
-        private int num_decision;
-        private int num_decisionanterior;
-        private int num_adicionales;
-        private int num_decisionagregadas;
+        private double num_totalvacaciones;
+        private double num_diasvacaciones;
+        private double num_diasporautorizar;
+        private double num_diasautorizados;
+        private double num_diasagendados;
+        private double num_decision;
+        private double num_decisionanterior;
+        private double num_adicionales;
+        private double num_adicionalesagregadas;
         private int clv_mediodia;
         private String fec_primavacacional;
         private List<HolidayPeriod> periodos;
@@ -45,7 +45,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         private String des_marca;
 
 
-        public int getNum_totalvacaciones() {
+        public double getNum_totalvacaciones() {
             return num_totalvacaciones;
         }
 
@@ -53,7 +53,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_totalvacaciones = num_totalvacaciones;
         }
 
-        public int getNum_diasvacaciones() {
+        public double getNum_diasvacaciones() {
             return num_diasvacaciones;
         }
 
@@ -61,7 +61,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_diasvacaciones = num_diasvacaciones;
         }
 
-        public int getNum_diasporautorizar() {
+        public double getNum_diasporautorizar() {
             return num_diasporautorizar;
         }
 
@@ -69,7 +69,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_diasporautorizar = num_diasporautorizar;
         }
 
-        public int getNum_diasautorizados() {
+        public double getNum_diasautorizados() {
             return num_diasautorizados;
         }
 
@@ -77,7 +77,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_diasautorizados = num_diasautorizados;
         }
 
-        public int getNum_diasagendados() {
+        public double getNum_diasagendados() {
             return num_diasagendados;
         }
 
@@ -85,7 +85,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_diasagendados = num_diasagendados;
         }
 
-        public int getNum_decision() {
+        public double getNum_decision() {
             return num_decision;
         }
 
@@ -93,7 +93,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_decision = num_decision;
         }
 
-        public int getNum_decisionanterior() {
+        public double getNum_decisionanterior() {
             return num_decisionanterior;
         }
 
@@ -101,7 +101,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_decisionanterior = num_decisionanterior;
         }
 
-        public int getNum_adicionales() {
+        public double getNum_adicionales() {
             return num_adicionales;
         }
 
@@ -109,12 +109,12 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.num_adicionales = num_adicionales;
         }
 
-        public int getNum_decisionagregadas() {
-            return num_decisionagregadas;
+        public double getNum_adicionalesagregadas() {
+            return num_adicionalesagregadas;
         }
 
-        public void setNum_decisionagregadas(int num_decisionagregadas) {
-            this.num_decisionagregadas = num_decisionagregadas;
+        public void setNum_adicionalesagregadas(int num_adicionalesagregadas) {
+            this.num_adicionalesagregadas = num_adicionalesagregadas;
         }
 
         public int getClv_mediodia() {

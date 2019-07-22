@@ -19,7 +19,7 @@
     <com.wdullaer.materialdatepicker.date.AccessibleDateAnimator
         android:id="@+id/mdtp_animator_holiday"
         android:layout_width="@dimen/mdtp_date_picker_component_width_v2"
-        android:layout_height="@dimen/mdtp_date_picker_view_animator_height_v2"
+        android:layout_height="290dp"
         android:gravity="center"
         android:clipChildren="false"
         android:clipToPadding="false"/>

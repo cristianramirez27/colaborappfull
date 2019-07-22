@@ -41,6 +41,7 @@ import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -83,6 +84,10 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
@@ -501,7 +506,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     if (((HolidayRolCheckResponse) response.getResponse()).getData().getResponse().getGerente() == 1) {
                         replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
                     }else {
-                        replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
+
+                        NavigationUtil.openActivityWithStringParam(this, VacacionesActivity.class,
+                                BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+
+                        //replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
                     }
                 }
 

@@ -46,9 +46,6 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)getIntent().getSerializableExtra(KEY_COMPANY);
         coppelServicesPresenter = new CoppelServicesPresenter(this, DialogAlertActivity.this);
         showCompanyDialog(company);
-
-
-
     }
 
     public void initViews() {

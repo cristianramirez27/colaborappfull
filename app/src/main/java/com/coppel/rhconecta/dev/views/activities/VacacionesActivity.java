@@ -9,12 +9,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
+import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysScheduleFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
@@ -28,6 +33,7 @@ import butterknife.ButterKnife;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
@@ -36,7 +42,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_C
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
-public class VacacionesActivity extends AppCompatActivity implements OnEventListener {
+public class VacacionesActivity extends AppCompatActivity implements OnEventListener, IScheduleOptions {
 
     @BindView(R.id.tbActionBar)
     Toolbar tbActionBar;
@@ -44,6 +50,10 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
     private Object data;
+
+
+    @BindView(R.id.eliminateOption)
+    TextView eliminateOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +83,10 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
         switch (tag) {
             case BUNDLE_OPTION_COLABORATOR_SCHEDULE:
                 replaceFragment(ColaboratorHolidaysScheduleFragment.getInstance((ConfigurationHolidaysData)data), ColaboratorHolidaysScheduleFragment.TAG);
+                break;
+
+            case BUNDLE_OPTION_HOLIDAYREQUESTS:
+                replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysScheduleFragment.TAG);
                 break;
         }
     }
@@ -105,5 +119,21 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             onEvent(OPTION_AUTHORIZE_REQUEST,null);
         }
 
+    }
+
+    @Override
+    public void showEliminatedOption(boolean show,String name) {
+        this.eliminateOption.setVisibility(show ? View.VISIBLE : View.GONE);
+        this.eliminateOption.setText(name);
+    }
+
+    @Override
+    public void setActionEliminatedOption(Command action) {
+            this.eliminateOption.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    action.execute();
+                }
+            });
     }
 }

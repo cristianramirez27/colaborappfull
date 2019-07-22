@@ -18,7 +18,9 @@ package com.wdullaer.datetimepickerholiday.date;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -31,6 +33,7 @@ public interface DatePickerController {
     boolean isTappedSelected ();
     void setDaysSelected(HashMap<String,DaySelectedHoliday> daysSelected);
     HashMap<String,DaySelectedHoliday> getDaysSelected();
+    void setInitDaysSelectedHolidays(Map<String, List<DaySelectedHoliday>> periodsDefault);
 
     void onYearSelected(int year);
 

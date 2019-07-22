@@ -63,5 +63,7 @@
     <color name="colorBackgroundVerdeClaro">#daffdf</color>
     <color name="colorBackgroundRosaClaro">#fdf3dc</color>
 
+    <color name="red_text">#cc1515</color>
+
 
 </resources>

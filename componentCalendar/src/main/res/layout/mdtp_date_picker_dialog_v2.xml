@@ -24,12 +24,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
         android:orientation="vertical" >
-
         <include layout="@layout/mdtp_date_picker_header_view_v2" />
-
         <include layout="@layout/mdtp_date_picker_selected_date_v2" />
-
         <include layout="@layout/mdtp_date_picker_view_animator_v2" />
     </LinearLayout>
 

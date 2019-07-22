@@ -8,5 +8,6 @@ import java.io.Serializable;
 
 public enum HolidaysType implements Serializable {
     CONSULTA_ROL,
-    CONSULTA_VACACIONES
+    CONSULTA_VACACIONES,
+    SEND_HOLIDAY_REQUEST
 }

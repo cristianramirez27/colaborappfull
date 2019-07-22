@@ -75,8 +75,8 @@ public class SimpleMonthView extends MonthView {
 
         // gray out the day number if it's outside the range.
         if (mController.isOutOfRange(year, month, day)) {
-            //mMonthNumPaint.setColor(mDisabledDayTextColor);
-            mMonthNumPaint.setColor(mSelectedDayTextColor);
+            mMonthNumPaint.setColor(mDisabledDayTextColor);
+            //mMonthNumPaint.setColor(mSelectedDayTextColor);
         } else if (daysSelectedlist.containsKey(date)) {
 
             if(daysSelectedlist.get(date).isHalfDay()){

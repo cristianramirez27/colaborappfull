@@ -19,6 +19,7 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_IS_GTE = "IS_GTE";
     public static final String SHARED_PREFERENCES_IS_SUPLENTE = "IS_SUPLENTE";
     public static final String SHARED_PREFERENCES_NUM_GTE = "NUM_GTE";
+    public static final String SHARED_PREFERENCES_NUM_SUPLENTE = "NUM_SUPLENTE";
 
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
@@ -123,6 +124,7 @@ public class AppConstants {
     /*Holidays*/
     public static final String BUNDLE_OPTION_HOLIDAYS = "BUNDLE_OPTION_HOLIDAYS";
     public static final String BUNDLE_OPTION_COLABORATOR_SCHEDULE = "BUNDLE_OPTION_COLABORATOR_SCHEDULE";
+    public static final String BUNDLE_OPTION_HOLIDAYREQUESTS = "BUNDLE_OPTION_HOLIDAYREQUESTS";
     public static final String BUNDLE_OPTION_DATA_HOLIDAYS = "BUNDLE_OPTION_DATA_HOLIDAYS";
 
 }

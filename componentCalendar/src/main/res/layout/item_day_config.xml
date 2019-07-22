@@ -36,7 +36,8 @@
                 android:layout_toLeftOf="@+id/labelHalfDay"
                 android:layout_centerVertical="true"
                 android:layout_width="60dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:theme="@style/SCBSwitch" />
 
             <TextView
                 android:id="@+id/labelHalfDay"

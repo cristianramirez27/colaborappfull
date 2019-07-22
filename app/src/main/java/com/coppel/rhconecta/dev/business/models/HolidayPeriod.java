@@ -11,6 +11,9 @@ public class HolidayPeriod implements Serializable {
     private String fec_fin;
     private int idu_folio;
 
+    private boolean isSelected;
+private String idPeriod;
+
     public HolidayPeriod(int idu_estatus, String nom_estatus, String color, String num_dias, String fec_ini, String fec_fin, int idu_folio) {
         this.idu_estatus = idu_estatus;
         this.nom_estatus = nom_estatus;
@@ -23,6 +26,13 @@ public class HolidayPeriod implements Serializable {
 
     public HolidayPeriod(int idu_estatus, String num_dias, String fec_ini, String fec_fin) {
         this.idu_estatus = idu_estatus;
+        this.num_dias = num_dias;
+        this.fec_ini = fec_ini;
+        this.fec_fin = fec_fin;
+    }
+
+    public HolidayPeriod(String idPeriod, String num_dias, String fec_ini, String fec_fin) {
+        this.idPeriod = idPeriod;
         this.num_dias = num_dias;
         this.fec_ini = fec_ini;
         this.fec_fin = fec_fin;
@@ -82,5 +92,21 @@ public class HolidayPeriod implements Serializable {
 
     public void setIdu_folio(int idu_folio) {
         this.idu_folio = idu_folio;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public String getIdPeriod() {
+        return idPeriod;
+    }
+
+    public void setIdPeriod(String idPeriod) {
+        this.idPeriod = idPeriod;
     }
 }

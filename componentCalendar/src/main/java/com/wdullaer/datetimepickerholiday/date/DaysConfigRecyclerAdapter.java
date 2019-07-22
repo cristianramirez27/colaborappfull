@@ -39,6 +39,20 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
         final DaySelectedHoliday currentItem = daySelectedHolidays.get(position);
 
         viewHolder.day.setText(String.valueOf(currentItem.getDay()));
+        if(currentItem.isHalfDay()){
+            viewHolder.halfDay.setChecked(true);
+            viewHolder.day.setBackgroundResource(R.drawable.backgroud_circle_stroke_blue);
+            viewHolder.day.setTextColor(context.getResources().getColor(R.color.main_color_blue));
+            viewHolder.labelHalfDay.setTextColor(context.getResources().getColor(R.color.main_color_blue));
+        }else {
+            viewHolder.halfDay.setChecked(false);
+            viewHolder.day.setBackgroundResource(R.drawable.backgroud_circle_blue);
+            viewHolder.day.setTextColor(context.getResources().getColor(R.color.mdtp_white));
+            viewHolder.labelHalfDay.setTextColor(context.getResources().getColor(R.color.main_text_disable));
+
+        }
+
+
         viewHolder.halfDay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

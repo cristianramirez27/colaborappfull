@@ -341,4 +341,14 @@
     <string name="btn_request_all">Soliciar\ntodas</string>
     <string name="btn_schedule_more">Agendar más\nvacaciones</string>
 
+    <string name="title_total_request_days">Total días solicitados</string>
+    <string name="title_days_to_schedule">Días por agendar</string>
+
+
+    <string name="title_eliminate">Eliminar</string>
+
+    <string name="msg_holiday_request_deleted">Solicitud eliminada\ncorrectamente</string>
+
+    <string name="btn_canceled_period">Cancelar vacaciones</string>
+
 </resources>

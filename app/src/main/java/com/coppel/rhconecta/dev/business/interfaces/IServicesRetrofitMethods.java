@@ -38,6 +38,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequ
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRefuseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesSendPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -228,6 +229,10 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> sendHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSendPeriodsHolidaysRequest servicesRequest);
 
 
 }

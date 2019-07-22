@@ -20,16 +20,17 @@
     android:orientation="vertical"
     android:background="@android:color/transparent"
     android:gravity="center"
-    android:layout_gravity="center_vertical"
-    android:paddingBottom="16dp">
+    android:layout_gravity="center_vertical">
 
     <TextView
         android:id="@+id/configDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#0c7bdc"
-        android:padding="8dp"
-        android:layout_marginBottom="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="14dp"
+        android:paddingLeft="14dp"
         android:background="@drawable/backgroud_rounder_config_days"
         android:text="Configurar días"/>
 
@@ -37,33 +38,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="12dp"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/mdtp_cancel"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/background_blue_rounded"
             android:capitalize="none"
             android:textColor="#ffffff"
             android:layout_marginRight="10dp"
+            android:layout_marginLeft="20dp"
             android:textAllCaps="false"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Cancelar" />
 
         <Button
             android:id="@+id/mdtp_ok"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/background_blue_rounded"
             android:textAllCaps="false"
             android:capitalize="none"
             android:layout_marginLeft="10dp"
-            android:paddingLeft="18dp"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="10dp"
             android:textColor="#ffffff"
-            android:paddingRight="18dp"
+            android:paddingRight="10dp"
             android:gravity="center"
             android:text="Aceptar" />
 

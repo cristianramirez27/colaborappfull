@@ -35,6 +35,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         private int EsBaja;
         private int EsGte;
         private int EsSuplente;
+        private int Suplente;
         private int Estado;
         private String FechaIngreso;
         private int Gte;
@@ -366,6 +367,14 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
 
         public void setEsSuplente(int esSuplente) {
             EsSuplente = esSuplente;
+        }
+
+        public int getSuplente() {
+            return Suplente;
+        }
+
+        public void setSuplente(int suplente) {
+            Suplente = suplente;
         }
     }
 }

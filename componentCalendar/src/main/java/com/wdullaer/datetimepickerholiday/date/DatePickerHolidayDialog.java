@@ -57,6 +57,8 @@ import com.wdullaer.datetimepickerholiday.Utils;
 import com.wdullaer.materialdatepicker.date.AccessibleDateAnimator;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -91,7 +93,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     private boolean isTappedSelected;
 
-    private  View view;
+    private View view;
 
     private static final String KEY_SELECTED_YEAR = "year";
     private static final String KEY_SELECTED_MONTH = "month";
@@ -195,15 +197,15 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
 
     private List<DaySelectedHoliday> daySelectedHolidayList;
-    private HashMap<String,DaySelectedHoliday> daysSelectedMap = new HashMap<>();
-    private  DaysConfigRecyclerAdapter daysConfigRecyclerAdapter;
-    private  boolean showHalfDaysOption = true;
-    private int num_total_vacaciones;
-    private int num_diasagendados;
+    private HashMap<String, DaySelectedHoliday> daysSelectedMap = new HashMap<>();
+    Map<Long, DaySelectedHoliday> datesSorted;
+    private DaysConfigRecyclerAdapter daysConfigRecyclerAdapter;
+    private boolean showHalfDaysOption = true;
+    private double num_total_vacaciones;
+    private double num_diasagendados;
+    private String des_mensaje;
 
     /**
-     *
-     *
      * The callback used to indicate the user is done filling in the date.
      */
     public interface OnDateSetListener {
@@ -217,7 +219,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
          */
         void onDateSet(DatePickerHolidayDialog view, int year, int monthOfYear, int dayOfMonth);
 
-        void onDatesSelectedHolidays(HashMap<String,DaySelectedHoliday> daysConfiguration);
+        void onDatesSelectedHolidays(Map<String, List<DaySelectedHoliday>> periods, double totalDays);
+        void onInvalidMaxSelectedDays(String msg);
     }
 
     /**
@@ -236,6 +239,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Create a new DatePickerHolidayDialog instance with a specific initial selection.
+     *
      * @param callBack    How the parent is notified that the date is set.
      * @param year        The initial year of the dialog.
      * @param monthOfYear The initial month of the dialog.
@@ -250,6 +254,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Create a new DatePickerHolidayDialog instance initialised to the current system date.
+     *
      * @param callback How the parent is notified that the date is set.
      * @return a new DatePickerHolidayDialog instance
      */
@@ -261,6 +266,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Create a new DatePickerHolidayDialog instance with a specific initial selection.
+     *
      * @param callback         How the parent is notified that the date is set.
      * @param initialSelection A Calendar object containing the original selection of the picker.
      *                         (Time is ignored by trimming the Calendar to midnight in the current
@@ -296,8 +302,9 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Activity activity = getActivity();
-        activity.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         mCurrentView = UNINITIALIZED;
         if (savedInstanceState != null) {
             mCalendar.set(Calendar.YEAR, savedInstanceState.getInt(KEY_SELECTED_YEAR));
@@ -350,7 +357,6 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         outState.putParcelable(KEY_DATERANGELIMITER, mDateRangeLimiter);
         outState.putSerializable(KEY_LOCALE, mLocale);
     }
-
 
 
     @Override
@@ -430,13 +436,13 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
 
         /**Custom holiday*/
-        mCardFrontLayout  = view.findViewById(R.id.card_front);
-        mCardBackLayout  = view.findViewById(R.id.card_back);
-        recyclerViewConfig  = view.findViewById(R.id.rcvFields);
+        mCardFrontLayout = view.findViewById(R.id.card_front);
+        mCardBackLayout = view.findViewById(R.id.card_back);
+        recyclerViewConfig = view.findViewById(R.id.rcvFields);
         recyclerViewConfig.setHasFixedSize(true);
         recyclerViewConfig.setLayoutManager(new LinearLayoutManager(getActivity()));
         daySelectedHolidayList = new ArrayList<>();
-         daysConfigRecyclerAdapter = new DaysConfigRecyclerAdapter(getActivity(), daySelectedHolidayList);
+        daysConfigRecyclerAdapter = new DaysConfigRecyclerAdapter(getActivity(), daySelectedHolidayList);
         recyclerViewConfig.setAdapter(daysConfigRecyclerAdapter);
 
         titleCustomCalendar.setText(titleCustom);
@@ -456,7 +462,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         mYearPickerDescription = res.getString(R.string.mdtp_year_picker_description);
         mSelectYear = res.getString(R.string.mdtp_select_year);
 
-        int bgColorResource = mThemeDark ? R.color.mdtp_date_picker_view_animator_dark_theme : R.color.mdtp_date_picker_view_animator;
+        int bgColorResource = mThemeDark ? R.color.transparent : R.color.transparent;
         int bgColor = ContextCompat.getColor(activity, bgColorResource);
         view.setBackgroundColor(bgColor);
 
@@ -479,6 +485,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             @Override
             public void onClick(View v) {
                 tryVibrate();
+                setConfigData();
                 notifyOnDatesHolidaysListener();
                 dismiss();
             }
@@ -530,17 +537,15 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         });
 
 
-
-
-
         // If an accent color has not been set manually, get it from the context
         if (mAccentColor == -1) {
             mAccentColor = Utils.getAccentColorFromThemeIfAvailable(getActivity());
         }
-        if (mDatePickerHeaderView != null) mDatePickerHeaderView.setBackgroundColor(Utils.darkenColor(mAccentColor));
+        if (mDatePickerHeaderView != null)
+            mDatePickerHeaderView.setBackgroundColor(Utils.darkenColor(mAccentColor));
 
 
-        view.findViewById(R.id.mdtp_day_picker_selected_date_layout).setBackgroundColor(Color.parseColor("#0a9dd5"));
+        //view.findViewById(R.id.mdtp_day_picker_selected_date_layout).setBackgroundColor(Color.parseColor("#0a9dd5"));
 
         // Buttons can have a different color
         /*if (mOkColor != -1) okButton.setTextColor(mOkColor);
@@ -582,7 +587,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
         return dialog;
@@ -692,14 +697,14 @@ public class DatePickerHolidayDialog extends DialogFragment implements
                             mLocale));
                 }
             }
-            if(mSelectedMonthTextView == null)
+            if (mSelectedMonthTextView == null)
                 mSelectedMonthTextView = view.findViewById(R.id.mdtp_date_picker_month_v1);
 
-            if(mSelectedMonthTextView != null)
+            if (mSelectedMonthTextView != null)
                 mSelectedMonthTextView.setText(MONTH_FORMAT.format(mCalendar.getTime()));
 
-            if(mSelectedDayTextView != null)
-            mSelectedDayTextView.setText(DAY_FORMAT.format(mCalendar.getTime()));
+            if (mSelectedDayTextView != null)
+                mSelectedDayTextView.setText(DAY_FORMAT.format(mCalendar.getTime()));
         }
 
         if (mVersion == Version.VERSION_2) {
@@ -993,6 +998,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Provide a DateRangeLimiter for full control over which dates are enabled and disabled in the picker
+     *
      * @param dateRangeLimiter An implementation of the DateRangeLimiter interface
      */
     @SuppressWarnings("unused")
@@ -1071,6 +1077,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Set which way the user needs to swipe to switch months in the MonthView
+     *
      * @param orientation The orientation to use
      */
     public void setScrollOrientation(ScrollOrientation orientation) {
@@ -1079,6 +1086,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Get which way the user needs to swipe to switch months in the MonthView
+     *
      * @return SwipeOrientation
      */
     public ScrollOrientation getScrollOrientation() {
@@ -1087,9 +1095,10 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Set which timezone the picker should use
-     *
+     * <p>
      * This has been deprecated in favor of setting the TimeZone using the constructor that
      * takes a Calendar object
+     *
      * @param timeZone The timezone to use
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
@@ -1104,6 +1113,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Set a custom locale to be used when generating various strings in the picker
+     *
      * @param locale Locale
      */
     public void setLocale(Locale locale) {
@@ -1116,6 +1126,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Return the current locale (default or other)
+     *
      * @return Locale
      */
     @Override
@@ -1140,6 +1151,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     /**
      * Get a reference to the callback
+     *
      * @return OnDateSetListener the callback
      */
     @SuppressWarnings("unused")
@@ -1248,7 +1260,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         if (mVibrate) mHapticFeedbackController.tryVibrate();
     }
 
-    @Override public TimeZone getTimeZone() {
+    @Override
+    public TimeZone getTimeZone() {
         return mTimezone == null ? TimeZone.getDefault() : mTimezone;
     }
 
@@ -1261,11 +1274,29 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     public void notifyOnDatesHolidaysListener() {
         if (mCallBack != null && this.daysSelectedMap != null) {
-            mCallBack.onDatesSelectedHolidays(this.daysSelectedMap);
+
+
+            Map<String, List<DaySelectedHoliday>> periods = getPeriods(datesSorted);
+            double totalDays = 0;
+            for(String key : periods.keySet()){
+                List<DaySelectedHoliday> daysInPeriod = periods.get(key);
+                for(DaySelectedHoliday day : daysInPeriod){
+                    totalDays+= day.isHalfDay() ? 0.5 : 1;
+                }
+            }
+            //Validar que los días seleccionados sean menor o igual a la variable num_totalvacaciones menos
+            //num_diasagendados que se obtiene al entrar a la opción, en caso de que sea mayor mandar el
+            //des_mensaje
+            double limitDays = (this.num_total_vacaciones-this.num_diasagendados);
+            if(totalDays <= limitDays){
+                mCallBack.onDatesSelectedHolidays(periods, totalDays);
+            }else {
+                mCallBack.onInvalidMaxSelectedDays(this.des_mensaje);
+            }
         }
     }
 
-    public void setCustomTitle(String title){
+    public void setCustomTitle(String title) {
 
         titleCustom = title;
     }
@@ -1282,7 +1313,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     }
 
 
-    private void changeView(){
+    private void changeView() {
         loadAnimations();
         changeCameraDistance();
         flipCard();
@@ -1292,10 +1323,10 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             @Override
             public void run() {
 
-                if(!mIsBackVisible){
+                if (!mIsBackVisible) {
                     mCardFrontLayout.setVisibility(View.VISIBLE);
                     mCardBackLayout.setVisibility(View.GONE);
-                }else {
+                } else {
                     mCardFrontLayout.setVisibility(View.GONE);
                     mCardBackLayout.setVisibility(View.VISIBLE);
                 }
@@ -1335,33 +1366,47 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     }
 
     @Override
-    public void setDaysSelected(HashMap<String,DaySelectedHoliday> daysSelected) {
+    public void setDaysSelected(HashMap<String, DaySelectedHoliday> daysSelected) {
 
         this.daysSelectedMap = daysSelected;
     }
 
-    private void setConfigData(){
+    private void setConfigData() {
         daySelectedHolidayList.clear();
-        HashMap<Long,DaySelectedHoliday> datesSorted = getOrderDates(daysSelectedMap);
-        for(Long key : datesSorted.keySet()){
+        datesSorted = getOrderDates(daysSelectedMap);
+        for (Long key : datesSorted.keySet()) {
             daySelectedHolidayList.add(daysSelectedMap.get(String.valueOf(key)));
         }
-
         daysConfigRecyclerAdapter.notifyDataSetChanged();
-
     }
 
-    private void updateDaysSelection(){
+
+
+    private void updateDaysSelection() {
 
         this.daysSelectedMap.clear();
         List<DaySelectedHoliday> daysUpdate = daysConfigRecyclerAdapter.getDaySelectedHolidays();
-        for(DaySelectedHoliday day :daysUpdate){
-            daysSelectedMap.put(day.getId(),day);
+        for (DaySelectedHoliday day : daysUpdate) {
+            daysSelectedMap.put(day.getId(), day);
         }
     }
 
     @Override
-    public HashMap<String,DaySelectedHoliday> getDaysSelected() {
+    public void setInitDaysSelectedHolidays(Map<String, List<DaySelectedHoliday>> periodsDefault) {
+
+        //HashMap<String, DaySelectedHoliday> daysSelectedHolidays
+        //Inicializamos los valores del calendario
+        for(String key: periodsDefault.keySet()){
+            List<DaySelectedHoliday> daysInPeriod = periodsDefault.get(key);
+            for(DaySelectedHoliday selectedHoliday : daysInPeriod){
+                this.daysSelectedMap.put(selectedHoliday.getId(),selectedHoliday);
+            }
+        }
+
+    }
+
+    @Override
+    public HashMap<String, DaySelectedHoliday> getDaysSelected() {
         return this.daysSelectedMap;
     }
 
@@ -1369,28 +1414,163 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         this.showHalfDaysOption = showHalfDaysOption;
     }
 
-    public void setNum_total_vacaciones(int num_total_vacaciones) {
+    public void setNum_total_vacaciones(double num_total_vacaciones) {
         this.num_total_vacaciones = num_total_vacaciones;
     }
 
-    public void setNum_diasagendados(int num_diasagendados) {
+    public void setNum_diasagendados(double num_diasagendados) {
         this.num_diasagendados = num_diasagendados;
     }
 
-    private HashMap<Long,DaySelectedHoliday> getOrderDates(HashMap<String,DaySelectedHoliday> datesSource ){
-        HashMap<Long,DaySelectedHoliday> datesSorter = new HashMap<>();
+
+    public String getDes_mensaje() {
+        return des_mensaje;
+    }
+
+    public void setDes_mensaje(String des_mensaje) {
+        this.des_mensaje = des_mensaje;
+    }
+
+    private Map<Long, DaySelectedHoliday> getOrderDates(HashMap<String, DaySelectedHoliday> datesSource) {
+        HashMap<Long, DaySelectedHoliday> datesSorter = new HashMap<>();
         List<Long> listDates = new ArrayList<>();
-        for(String key : datesSource.keySet()){
+        for (String key : datesSource.keySet()) {
             listDates.add(Long.parseLong(key));
         }
         Collections.sort(listDates, Collections.reverseOrder());
         Collections.reverse(listDates);
-        for(Long date : listDates){
-            datesSorter.put(date,datesSource.get(String.valueOf(date)));
+        for (Long date : listDates) {
+            datesSorter.put(date, datesSource.get(String.valueOf(date)));
         }
 
         Map<Long, DaySelectedHoliday> map = new TreeMap<>(datesSorter);
 
-        return datesSorter;
+        return map;
+    }
+
+    private  Map<String, List<DaySelectedHoliday>> getPeriods(Map<Long, DaySelectedHoliday> selectionSorted) {
+        //Map para guardar los periodos encontrados
+        Map<String, List<DaySelectedHoliday>> mapPeriods = new TreeMap<>();
+        //Lista para guardar las fechas ya procesadas
+        List<String> datesProcessed = new ArrayList<>();
+
+        List<Long> halfDays = new ArrayList<>();
+        //Buscamos los medios días que son un periodo aparte
+        for (Long key : selectionSorted.keySet()) {
+            //Si es medio dia lo asignamos como periodo
+            if (selectionSorted.get(key).isHalfDay()) {
+                List<DaySelectedHoliday> daysInPeriod = new ArrayList<>();
+                daysInPeriod.add(selectionSorted.get(key));
+                mapPeriods.put(String.valueOf(key), daysInPeriod);
+                //Guardamos en lista de procesadas
+                datesProcessed.add(String.valueOf(key));
+                halfDays.add(key);
+            }
+        }
+
+        for (Long key : halfDays) {
+            //Eliminamos del hashmap original
+            selectionSorted.remove(key);
+        }
+
+
+        if(selectionSorted.size() > 0){
+            checkConsecutiveDays(selectionSorted,mapPeriods);
+        }
+
+
+        return mapPeriods;
+
+    }
+
+
+    private void checkConsecutiveDays(Map<Long, DaySelectedHoliday> selectionSortedFilter,
+                                      Map<String, List<DaySelectedHoliday>>  periods){
+        //Lista para guardar las fechas a checar
+        List<Long> daysToCheck = new ArrayList<>();
+        //Todas las fechas en tipo Calendar
+        HashMap<Long, Calendar>  calendarDatesMapAll = getCalendarDates(selectionSortedFilter);
+        HashMap<Long, Calendar>  calendarDatesCurrent =new HashMap<>();
+        List<String> calendarCurrent = new ArrayList<>();
+
+        do{
+
+            daysToCheck.clear();
+            calendarDatesCurrent.clear();
+            calendarCurrent.clear();
+            for (Long key : selectionSortedFilter.keySet()) {
+                //if(selectionSortedFilter.containsKey(key)) {//Si esta en el map origianl, se agrega
+                    calendarDatesCurrent.put(key,calendarDatesMapAll.get(key));
+                    calendarCurrent.add(getDateAsString(calendarDatesMapAll.get(key)));
+                    daysToCheck.add(key);
+                //}
+            }
+
+
+            if(daysToCheck.size() > 1){
+                //Obtenemos el primer elemento
+                Calendar starDay = calendarDatesMapAll.get(daysToCheck.get(0));
+                //Agregamos la primer fecha a u nuevo periodo
+                List<DaySelectedHoliday> daysInPeriod = new ArrayList<>();
+                daysInPeriod.add(selectionSortedFilter.get(daysToCheck.get(0)));
+                //Eliminamos del map ordenado
+                selectionSortedFilter.remove(daysToCheck.get(0));
+                String keyPeriod = String.valueOf(daysToCheck.get(0));
+                periods.put(keyPeriod,daysInPeriod);
+                Calendar nextDay = Calendar.getInstance();
+
+                for (int index = 1; index < daysToCheck.size() ; index++){
+                    //Calculamos la fecha de mañana
+                    nextDay.set(starDay.get(Calendar.YEAR),starDay.get(Calendar.MONTH),starDay.get(Calendar.DAY_OF_MONTH));
+                    nextDay.add(Calendar.DATE,index);
+                    String nextKey = getDateAsString(nextDay);
+                    if(!calendarCurrent.contains(nextKey)){
+                        break;
+                    }else {
+                        long keyDateNextDay = Long.parseLong(getDateAsString(nextDay));
+                        //Agregamos la fecha en el periodo actual
+                        periods.get(keyPeriod).add(selectionSortedFilter.get(keyDateNextDay));
+                        //Eliminamos del map ordenado
+                        selectionSortedFilter.remove(keyDateNextDay);
+                    }
+                }
+
+            }else {
+
+                //Guardamos el ultimo dia como un periodo por separado
+                List<DaySelectedHoliday> daysInPeriod = new ArrayList<>();
+                daysInPeriod.add(selectionSortedFilter.get(daysToCheck.get(0)));
+                //Eliminamos del map ordenado
+                selectionSortedFilter.remove(daysToCheck.get(0));
+                String keyPeriod = String.valueOf(daysToCheck.get(0));
+                periods.put(keyPeriod,daysInPeriod);
+            }
+
+        }while (selectionSortedFilter.size() > 0);
+
+
+    }
+
+
+    private String getDateAsString( Calendar calendar){
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        return String.format("%s%s%s",year,month < 10 ? "0"+month : month,day < 10 ? "0"+day : day);
+// Output "2012-09-26"
+    }
+
+    private HashMap<Long, Calendar> getCalendarDates(Map<Long, DaySelectedHoliday> selectionSortedFilter){
+
+        HashMap<Long, Calendar>   ListCalendarAll = new HashMap<>();
+        for (Long key : selectionSortedFilter.keySet()) {
+            DaySelectedHoliday daySelected = selectionSortedFilter.get(key);
+            Calendar dayCalendar = Calendar.getInstance();
+            dayCalendar.set(daySelected.getYear(),daySelected.getMonth(),daySelected.getDay());
+            ListCalendarAll.put(key,dayCalendar);
+        }
+
+        return ListCalendarAll;
     }
 }

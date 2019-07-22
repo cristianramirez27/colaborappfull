@@ -26,7 +26,25 @@
                 app:title="@string/title_home"
                 app:titleTextAppearance="@style/Toolbar.TitleText" />
 
+            <TextView
+                android:layout_marginTop="20dp"
+                android:id="@+id/eliminateOption"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:layout_centerVertical="true"
+                android:text="@string/title_eliminate"
+                android:textColor="@color/red_text"
+                android:layout_alignParentRight="true"
+                android:padding="6dp"
+                android:layout_marginRight="16dp"
+                android:textSize="16sp" />
+
+
         </RelativeLayout>
+
+
 
 
     </android.support.design.widget.AppBarLayout>
