@@ -171,7 +171,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
-                android:text="@string/additional_saving"
+                android:text="@string/additional_saving_double_line"
                 android:textColor="@color/colorSavingHeaderText"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline75"

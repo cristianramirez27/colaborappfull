@@ -66,6 +66,22 @@ public class TextUtilities {
 
     public static String insertDecimalPoint(String number) {
         try {
+
+            if(number.length() == 1){
+                number="0"+number;
+            }
+
+            StringBuilder stringBuilder = new StringBuilder(number);
+            stringBuilder.insert(number.length() - 2, '.');
+            return stringBuilder.toString();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return number;
+        }
+    }
+
+    public static String insertDecimalPointV2(String number) {
+        try {
             StringBuilder stringBuilder = new StringBuilder(number);
             stringBuilder.insert(number.length() - 2, '.');
             return stringBuilder.toString();

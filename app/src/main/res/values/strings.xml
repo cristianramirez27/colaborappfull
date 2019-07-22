@@ -50,6 +50,7 @@
     <string name="enterprise_fund">Fondo de la\nempresa</string>
     <string name="current_account">Cuenta\ncorriente</string>
     <string name="additional_saving">Ahorro adicional</string>
+    <string name="additional_saving_double_line">Ahorro\nadicional</string>
 
     <string name="additional_saving_title">Ahorro\nadicional</string>
     <string name="employee_fund">Fondo del\ntrabajador</string>
