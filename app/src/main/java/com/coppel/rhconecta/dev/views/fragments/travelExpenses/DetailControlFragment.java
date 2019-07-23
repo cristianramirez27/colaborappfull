@@ -8,6 +8,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,6 +131,10 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
         totalDetalle.setTextsSize(14,16);
         if(data.getSaldoTotal() != null)
             totalDetalle.setTexts("Saldo Total",String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
+        else {
+            totalDetalle.setTexts("Saldo Total", "-");
+            totalDetalle.setPaddingValue();
+        }
 
         ExpenseAuthorizedResume expenseAuthorizedResume = new ExpenseAuthorizedResume();
         List<ExpenseAuthorizedDetail> expenseAuthorizedDetails = new ArrayList<>();
@@ -162,6 +167,8 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
                     expenseAuthorizedDetailHashMap.get(checked.getIdu_tipoGasto()).setImp_totalComprobado(Double.parseDouble(total));
                 }
             }
+        }else {
+            GastosComprobar.setCheckedIsNull(true);
         }
 
 
@@ -179,6 +186,8 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
                         expenseAuthorizedDetailHashMap.get(missing.getIdu_tipoGasto()).setImp_totalFaltante(Double.parseDouble(total));
                     }
                 }
+            }else {
+                GastosComprobar.setMissingIsNull(true);
             }
 
 

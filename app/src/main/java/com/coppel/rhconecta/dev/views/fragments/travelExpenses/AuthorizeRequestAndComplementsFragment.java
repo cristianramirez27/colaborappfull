@@ -280,7 +280,8 @@ TextView txtNoRequest;
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
                 case ServicesRequestType.EXPENSESTRAVEL:
-                    showWarningDialog(coppelServicesError.getMessage());
+                    //showWarningDialog(coppelServicesError.getMessage());
+                    showWarningDialog(getString(R.string.error_generic_service));
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
                     EXPIRED_SESSION = true;

@@ -23,9 +23,14 @@ import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseCheckRecyclerAdapter.ViewHolder> {
 
     private List<ExpenseAuthorizedDetail> dataItems;
+    private boolean checkedIsNull;
+    private boolean missingIsNull;
 
-    public ExpenseCheckRecyclerAdapter(List<ExpenseAuthorizedDetail> itineraryList) {
+
+    public ExpenseCheckRecyclerAdapter(List<ExpenseAuthorizedDetail> itineraryList,boolean checkedIsNull, boolean missingIsNull) {
         this.dataItems = itineraryList;
+        this.checkedIsNull = checkedIsNull;
+        this.missingIsNull = missingIsNull;
     }
 
     @NonNull
@@ -40,10 +45,21 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
         viewHolder.gastoComprobar.setTitle1(TextUtilities.capitalizeText(getContext(),dataItems.get(i).getDes_tipoGasto()));
         viewHolder.gastoComprobar.setTitle2(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(dataItems.get(i).getImp_totalAutorizado()))) );
-        viewHolder.gastoComprobar.setTitle3(TextUtilities.getNumberInCurrencyFormat(
+
+
+        viewHolder.gastoComprobar.setTitle3(checkedIsNull ? "-" : TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(dataItems.get(i).getImp_totalComprobado()))));
-        viewHolder.gastoComprobar.setTitle4(TextUtilities.getNumberInCurrencyFormat(
+
+        if(checkedIsNull){
+            viewHolder.gastoComprobar.setGravityTitle3(Gravity.CENTER);
+        }
+
+        viewHolder.gastoComprobar.setTitle4(missingIsNull ? "-" : TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(dataItems.get(i).getImp_totalFaltante()))));
+
+        if(missingIsNull){
+            viewHolder.gastoComprobar.setGravityTitle4(Gravity.CENTER);
+        }
 
     }
 
