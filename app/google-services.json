@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "905205267590",
-    "firebase_url": "https://rhconectaapp.firebaseio.com",
-    "project_id": "rhconectaapp",
-    "storage_bucket": "rhconectaapp.appspot.com"
+    "project_number": "672757600312",
+    "firebase_url": "https://visionarios-app.firebaseio.com",
+    "project_id": "visionarios-app",
+    "storage_bucket": "visionarios-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:905205267590:android:fc46f08efecdda3b",
+        "mobilesdk_app_id": "1:672757600312:android:d0b5971e436ae329",
         "android_client_info": {
-          "package_name": "com.coppel.rhconecta.dev"
+          "package_name": "com.coppel.mx.visionarios"
         }
       },
       "oauth_client": [
         {
-          "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
+          "client_id": "672757600312-amobk0snceifjpgdt5eqnf3iopd232sg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAP45l1WZ3rPnTmWjJc_6_mxvxf2DxnZO4"
+          "current_key": "AIzaSyD9z98BwekQzYNQAS7dGiYruqwsSxhZj4g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
+              "client_id": "672757600312-amobk0snceifjpgdt5eqnf3iopd232sg.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
+              "client_id": "672757600312-tb4eth14ufqvdog9lfcoaa1tcvplf1ig.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.coppel.rhconecta",
-                "app_store_id": "1437812036"
+                "bundle_id": "com.coppel.-"
               }
             }
           ]
@@ -45,43 +44,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:905205267590:android:74e55df7c5b98100",
+        "mobilesdk_app_id": "1:672757600312:android:fc46f08efecdda3b",
         "android_client_info": {
-          "package_name": "com.example.antoniosamaniego.rhnotificaciones"
+          "package_name": "com.coppel.rhconecta.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "905205267590-1rq50vd26f2qvskqu8ohslkacrpog4pl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.antoniosamaniego.rhnotificaciones",
-            "certificate_hash": "bcb54e2b01ccc47857fe363ec5314ce66f142e40"
-          }
-        },
-        {
-          "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
+          "client_id": "672757600312-amobk0snceifjpgdt5eqnf3iopd232sg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAP45l1WZ3rPnTmWjJc_6_mxvxf2DxnZO4"
+          "current_key": "AIzaSyD9z98BwekQzYNQAS7dGiYruqwsSxhZj4g"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "905205267590-3pnd2eev6kstgi0nmr94kvf6fjou4riu.apps.googleusercontent.com",
+              "client_id": "672757600312-amobk0snceifjpgdt5eqnf3iopd232sg.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
+              "client_id": "672757600312-tb4eth14ufqvdog9lfcoaa1tcvplf1ig.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.coppel.rhconecta",
-                "app_store_id": "1437812036"
+                "bundle_id": "com.coppel.-"
               }
             }
           ]
