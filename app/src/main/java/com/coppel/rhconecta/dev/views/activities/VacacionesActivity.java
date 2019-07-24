@@ -16,11 +16,13 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
+import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysScheduleFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.DetailPeriodFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
@@ -34,6 +36,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_CO
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
@@ -87,6 +90,10 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
             case BUNDLE_OPTION_HOLIDAYREQUESTS:
                 replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysScheduleFragment.TAG);
+                break;
+
+            case BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL:
+                replaceFragment(DetailPeriodFragment.getInstance((HolidayPeriod) data), DetailPeriodFragment.TAG);
                 break;
         }
     }

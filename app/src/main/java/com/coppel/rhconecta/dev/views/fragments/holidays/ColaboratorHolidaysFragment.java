@@ -60,6 +60,8 @@ import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACA
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -263,6 +265,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
           @Override
           public void onRequestSelectedClick(HolidayPeriod holidayPeriod) {
+
+
+                vacacionesActivity.onEvent(BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL,holidayPeriod);
+
+            /*  NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                      BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL);
+            */
 
           }
 

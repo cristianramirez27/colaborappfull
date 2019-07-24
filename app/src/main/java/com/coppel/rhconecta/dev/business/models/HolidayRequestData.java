@@ -17,6 +17,8 @@ public class HolidayRequestData implements Serializable{
     private int num_suplente;
     private List<HolidayPeriodData> periodos;
 
+    private int idu_folio;
+
 
 
     public HolidayRequestData(HolidaysType holidaysType, int opcion, String num_empleado) {
@@ -71,5 +73,13 @@ public class HolidayRequestData implements Serializable{
 
     public void setPeriodos(List<HolidayPeriodData> periodos) {
         this.periodos = periodos;
+    }
+
+    public int getIdu_folio() {
+        return idu_folio;
+    }
+
+    public void setIdu_folio(int idu_folio) {
+        this.idu_folio = idu_folio;
     }
 }

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CollapsibleCalendarView</string>
+
+    <string name="monday">L</string>
+    <string name="tuesday">M</string>
+    <string name="wednesday">M</string>
+    <string name="thursday">J</string>
+    <string name="friday">V</string>
+    <string name="saturday">S</string>
+    <string name="sunday">D</string>
+</resources>

@@ -3,6 +3,8 @@ package com.coppel.rhconecta.dev.views.fragments.holidays;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -16,12 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
+import com.coppel.rhconecta.dev.business.models.HolidayGetDetailPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
@@ -37,24 +41,27 @@ import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIOD_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
-//import com.wdullaer.materialdatetimepicker.date.DatePickerHolidayDialog;
-//import com.wdullaer.materialdatepicker.date.DatePickerHolidayDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +73,9 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private AppCompatActivity parent;
     private DialogFragmentWarning dialogFragmentWarning;
 
+
+    @BindView(R.id.layoutObservaciones)
+    LinearLayout layoutObservaciones;
     @BindView(R.id.estatus)
     TextView estatus;
     @BindView(R.id.fechaInicio)
@@ -85,14 +95,16 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     @BindView(R.id.btnCancel)
     Button btnCancel;
 
+    @BindView(R.id.collapsibleCalendarView)
+    CollapsibleCalendar collapsibleCalendar;
+
     private IScheduleOptions IScheduleOptions;
     private VacacionesActivity vacacionesActivity;
 
-    @BindView(R.id.btnSchedule)
-    Button btnSchedule;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
+    private HolidayPeriod holidayPeriod;
 
     private long mLastClickTime = 0;
 
@@ -103,6 +115,20 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         super.onAttach(context);
         IScheduleOptions= (IScheduleOptions)getActivity();
         vacacionesActivity = (VacacionesActivity)getActivity();
+    }
+
+    public static DetailPeriodFragment getInstance(HolidayPeriod holidayPeriod){
+        DetailPeriodFragment fragment = new DetailPeriodFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_OPTION_DATA_HOLIDAYS,holidayPeriod);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        holidayPeriod = (HolidayPeriod)getArguments().getSerializable(BUNDLE_OPTION_DATA_HOLIDAYS);
     }
 
     @Override
@@ -121,19 +147,60 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
 
+        //To hide or show expand icon
+        collapsibleCalendar.setExpandIconVisible(true);
+        Calendar today=new GregorianCalendar();
+        today.add(Calendar.DATE,1);
+        collapsibleCalendar.expand(100);
+
+        collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
+        collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
+        collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
+        collapsibleCalendar.setExpandIconVisible(false);
+
+        expObservaciones.setText("Observaciones");
+        expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
+            @Override
+            public void onClick() {
+                observacionesStateChange(expObservaciones,layoutObservaciones);
+            }
+        });
+
         return view;
     }
 
+
+    private void observacionesStateChange(ExpandableSimpleTitle expandable, LinearLayout layoutToExpand) {
+        if (expandable.isExpanded()) {
+            layoutToExpand.setVisibility(VISIBLE);
+        } else {
+            layoutToExpand.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setDataHeader(HolidayGetDetailPeriodResponse response){
+        HolidayGetDetailPeriodResponse.Response detail = response.getData().getResponse().get(0);
+         fechaInicio.setText(detail.getFec_ini());
+         fechaFin.setText(detail.getFec_fin());
+         diasVacaciones.setText(detail.getNum_dias());
+        estatus.setText(detail.getDes_estatus());
+
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor(detail.getColor()));
+        gd.setCornerRadius(20);
+        estatus.setBackgroundDrawable(gd);
+
+        nombreGte.setText(detail.getNom_gerente());
+        fechaRechazo.setText(detail.getFec_estatus());
+        motivoRechazo.setText(detail.getDes_comentario());
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(CONSULTA_VACACIONES, 2,numEmployer);
-       // coppelServicesPresenter.getHolidays(holidayRequestData,token);
-
+        getDetailPeriod();
     }
 
     @Override
@@ -174,8 +241,9 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         switch (response.getType()) {
 
             case ServicesRequestType.HOLIDAYS:
-                if(response.getResponse() instanceof HolidaysPeriodsResponse) {
-
+                if(response.getResponse() instanceof HolidayGetDetailPeriodResponse) {
+                    HolidayGetDetailPeriodResponse responseDetail = (HolidayGetDetailPeriodResponse)response.getResponse();
+                    setDataHeader(responseDetail);
 
                 }
 
@@ -207,19 +275,26 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
           @Override
     public void showError(ServicesError coppelServicesError) {
-              if(coppelServicesError.getMessage() != null ){
-                  switch (coppelServicesError.getType()) {
-                      case ServicesRequestType.HOLIDAYS:
-                          showWarningDialog(coppelServicesError.getMessage());
+        if(coppelServicesError.getMessage() != null ){
+            switch (coppelServicesError.getType()) {
+                case ServicesRequestType.HOLIDAYS:
+                    showWarningDialog(coppelServicesError.getMessage());
+                    break;
+                case ServicesRequestType.INVALID_TOKEN:
+                    EXPIRED_SESSION = true;
+                    showWarningDialog(getString(R.string.expired_session));
+                    break;
+            }
+        }
+    }
 
-                          break;
-                      case ServicesRequestType.INVALID_TOKEN:
-                          EXPIRED_SESSION = true;
-                          showWarningDialog(getString(R.string.expired_session));
-                          break;
-                  }
-              }
-          }
+    private void getDetailPeriod(){
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIOD_DETAIL, 4,numEmployer);
+        holidayRequestData.setIdu_folio(holidayPeriod.getIdu_folio());
+        coppelServicesPresenter.getHolidays(holidayRequestData,token);
+    }
 
     @Override
     public void showProgress() {

@@ -18,6 +18,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailRequestExpen
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetDetailPeriodHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
@@ -233,6 +234,11 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> sendHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSendPeriodsHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getDetailHolidayPeriod(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetDetailPeriodHolidaysRequest servicesRequest);
+
 
 
 }

@@ -88,7 +88,7 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
+                OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
             }
         });
 
