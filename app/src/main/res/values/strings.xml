@@ -312,9 +312,10 @@
 
 
     <!--Vacaciones-->
-    <string name="request_holidays">Solicitud de vaciones</string>
+    <string name="request_holidays">Solicitud de vacaciones</string>
     <string name="title_holidays">Vacaciones</string>
     <string name="title_my_holidays">Mis Vacaciones</string>
+    <string name="title_admin_holidays">Administrar vacaciones</string>
     <string name="title_dates_selected">Fechas seleccionadas</string>
     <string name="title_periods_holidays">Períodos de vacaciones</string>
 
@@ -350,5 +351,12 @@
     <string name="msg_holiday_request_deleted">Solicitud eliminada\ncorrectamente</string>
 
     <string name="btn_canceled_period">Cancelar vacaciones</string>
+
+    <string name="btn_request_holidays">Solicitudes de Vacaciones</string>
+    <string name="btn_aditional_days">Días Adicionales</string>
+    <string name="btn_calendar_holidays">Calendario de Vacaciones</string>
+    <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
+    <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>
+    <string name="btn_text_calendar_holidays">Lista de Vacaciones agendadas a los colaboradores</string>
 
 </resources>

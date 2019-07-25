@@ -351,7 +351,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
             case OPTION_HOLIDAYS:
 
-                getRolType(HOLIDAYS);
+                if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
+                    replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                }else {
+                    getRolType(HOLIDAYS);
+                }
+
                 break;
 
             case OPTION_POLL:

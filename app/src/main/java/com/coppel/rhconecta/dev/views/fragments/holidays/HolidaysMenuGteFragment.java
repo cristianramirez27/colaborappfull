@@ -16,68 +16,53 @@ import android.widget.Button;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
-import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickListener, IServicesContract.View{
+public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickListener, IServicesContract.View{
 
-    public static final String TAG = HolidaysRolMenuFragment.class.getSimpleName();
-    private HomeActivity parent;
-    @BindView(R.id.btnColaborator)
-    Button btnColaborator;
-    @BindView(R.id.btnManager)
-    Button btnManager;
+    public static final String TAG = HolidaysMenuGteFragment.class.getSimpleName();
+    private VacacionesActivity parent;
+    @BindView(R.id.btnRequest)
+    Button btnRequest;
+    @BindView(R.id.btnAditionals)
+    Button btnAditionals;
+    @BindView(R.id.btnCalendar)
+    Button btnCalendar;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
 
     private long mLastClickTime = 0;
-    private com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification ISurveyNotification;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ISurveyNotification = (com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification)context;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.rol_select_travel_expenses_fragment, container, false);
+        View view = inflater.inflate(R.layout.menu_holidays_gte_fragment, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        parent = (HomeActivity) getActivity();
-        parent.setToolbarTitle(getString(R.string.title_holidays));
+        parent = (VacacionesActivity) getActivity();
+        parent.setToolbarTitle(getString(R.string.title_admin_holidays));
 
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
-        btnColaborator.setOnClickListener(this);
-        btnManager.setOnClickListener(this);
-        ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
-
-        btnColaborator.setVisibility(View.VISIBLE);
-        btnManager.setVisibility(View.VISIBLE);
-
+        btnRequest.setOnClickListener(this);
+        btnAditionals.setOnClickListener(this);
+        btnCalendar.setOnClickListener(this);
         return view;
     }
 
@@ -86,6 +71,9 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -106,21 +94,21 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
-            case R.id.btnColaborator:
+            case R.id.btnRequest:
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+                parent.replaceFragment(new HolidayRequestListFragment(), HolidayRequestListFragment.TAG);
 
                 break;
 
-            case R.id.btnManager:
+            case R.id.btnAditionals:
 
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAY_MENU_GTE);
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
-                //parent.replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysFragment.TAG);
+                break;
 
+            case R.id.btnCalendar:
+
+                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
                 break;
         }
