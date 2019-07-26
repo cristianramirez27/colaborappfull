@@ -40,6 +40,8 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     private String TAG_FRAGMENT;
     private Object data;
 
+    private Fragment currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,8 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
 
             case OPTION_AUTHORIZE_REQUEST:
 
-                replaceFragment( AuthorizeRequestAndComplementsFragment.getInstance(), AuthorizeRequestAndComplementsFragment.TAG);
+                currentFragment = AuthorizeRequestAndComplementsFragment.getInstance();
+                replaceFragment( currentFragment, AuthorizeRequestAndComplementsFragment.TAG);
 
                 break;
 
@@ -116,8 +119,11 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 888 && resultCode == RESULT_OK){
-            onEvent(OPTION_AUTHORIZE_REQUEST,null);
+        if((requestCode == 888 || requestCode == 131) && resultCode == RESULT_OK){
+            //onEvent(OPTION_AUTHORIZE_REQUEST,null);
+            if(currentFragment!= null && currentFragment instanceof AuthorizeRequestAndComplementsFragment){
+                ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
+            }
         }
 
     }

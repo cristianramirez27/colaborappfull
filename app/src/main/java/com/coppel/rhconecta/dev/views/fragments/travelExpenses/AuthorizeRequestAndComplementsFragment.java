@@ -56,6 +56,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
@@ -224,6 +225,10 @@ TextView txtNoRequest;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 131 && resultCode == RESULT_OK){
+            getRequestExpenses();
+        }
     }
 
     @Override
@@ -280,8 +285,8 @@ TextView txtNoRequest;
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
                 case ServicesRequestType.EXPENSESTRAVEL:
-                    //showWarningDialog(coppelServicesError.getMessage());
-                    showWarningDialog(getString(R.string.error_generic_service));
+                    showWarningDialog(coppelServicesError.getMessage());
+                    //showWarningDialog(getString(R.string.error_generic_service));
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
                     EXPIRED_SESSION = true;
@@ -310,7 +315,7 @@ TextView txtNoRequest;
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().finish();
+            getActivity().onBackPressed();
         }
     }
 
@@ -343,7 +348,7 @@ TextView txtNoRequest;
     }
 
 
-    private void getRequestExpenses(){
+    public void getRequestExpenses(){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_SOLICITUDES_AUTORIZAR, 7,numEmployer);
@@ -379,9 +384,9 @@ TextView txtNoRequest;
         DetailExpenseTravelType detailExpenseTravelType = requestComplementsColaborator.getTipo() == 1 ? DetailExpenseTravelType.COMPLEMENTO_A_AUTORIZAR :  DetailExpenseTravelType.SOLICITUD_A_AUTORIZAR;
         DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(detailExpenseTravelType,requestComplementsColaborator.getClv_solicitud());
         detailExpenseTravelData.setData(requestComplementsColaborator);
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,
+        NavigationUtil.openActivityParamsSerializableRequestCode(getActivity(), GastosViajeActivity.class,
                 BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS);
+                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS,131);
 
     }
 

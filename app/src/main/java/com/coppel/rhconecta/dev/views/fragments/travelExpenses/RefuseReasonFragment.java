@@ -11,12 +11,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +34,7 @@ import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesR
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -115,6 +120,19 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         //reason.setFilters(new InputFilter[]{InputFilter.AllCaps});
         reason.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 
+        //reason.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        reason.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        reason.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId==EditorInfo.IME_ACTION_NEXT){
+
+                }
+                return false;
+            }
+        });
+
         reason.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,6 +140,17 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                if(s.toString().contains("\n")){
+                    String text = s.toString().replace("\n","");
+                    reason.setText(text);
+                    reason.setSelection(text.length());
+
+                    DeviceManager.hideKeyBoard(getActivity());
+                    return;
+                }
+
 
                 desc.setVisibility( s.toString().length()  > 0 ?View.INVISIBLE : View.VISIBLE);
 
@@ -141,6 +170,18 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         });
 
 
+        reason.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(reason.getWindowToken(), 0);
+
+                return handled;
+            }
+        });
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         return view;
@@ -151,6 +192,8 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -201,7 +201,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.detailExpenseTravelData = (DetailExpenseTravelData)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
-        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+
         AuthorizedRequestColaboratorSingleton.getInstance().resetValues();
 
     }
@@ -266,6 +266,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
         observationGte.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
+        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
 
         setTitle();
 
@@ -602,7 +604,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
             //Se muestra tambien el total solicitado
             //En monto solicitado es el valor de imp_total obtenido de "VerDetallesSolicitud", donde idu_tipoGasto sea igual a -1.
-            if(detail.getData().getResponse().getVerDetallesSolicitud() != null ) {
+            if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()) {
                 for (DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()) {
                     if (detallesSolicitud.getIdu_tipoGasto() == -1) {
                         totalAutorizado.setTexts("Total autorizado", String.format("$%s", detallesSolicitud.getImp_total()));
@@ -610,6 +612,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                         break;
                     }
                 }
+            }else {
+
+                verDetalles.setVisibility(View.GONE);
             }
                 //Total Complemento Solicitado: Es el valor de importe obtenido de la consulta anterior (solicitudescomplementos),
             String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
@@ -1015,6 +1020,10 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
 
 
+
+
+
+
         coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 
@@ -1044,6 +1053,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     @Override
     public void onAccept() {
         dialogFragmentGetDocument.close();
+        getActivity().setResult(RESULT_OK);
         getActivity().finish();
     }
 }

@@ -5,8 +5,11 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Devolution;
 import com.coppel.rhconecta.dev.views.adapters.DevolutionsRecyclerAdapter;
@@ -20,11 +23,13 @@ import butterknife.ButterKnife;
 public class Devoluciones extends RelativeLayout {
 
     @BindView(R.id.titleDevolutions)
-    TextViewDetail titleDevolutions;
+    HeaderTitlesExpensesList titleDevolutions;
     @BindView(R.id.rcvDevoluciones)
     RecyclerView rcvDevoluciones;
+    @BindView(R.id.totalesDevolutionsTitle)
+    TextView totalesDevolutionsTitle;
     @BindView(R.id.totalesDevolutions)
-    TextViewDetail totalesDevolutions;
+    TextView totalesDevolutions;
 
 
     public Devoluciones(Context context) {
@@ -41,25 +46,31 @@ public class Devoluciones extends RelativeLayout {
         inflate(getContext(), R.layout.layout_devoluciones, this);
         ButterKnife.bind(this);
 
-        titleDevolutions.setStartFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_book));
-        titleDevolutions.setEndFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_book));
-        titleDevolutions.setStartTextColor(getContext().getResources().getColor(R.color.colorTextGray));
-        titleDevolutions.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGray));
-        titleDevolutions.setStartTextSize(11);
-        titleDevolutions.setEndTextSize(11);
-        titleDevolutions.setTexts("Fecha","Importes");
+        titleDevolutions.setFontTitle1(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_book));
+        titleDevolutions.setFontTitle4(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_book));
+        titleDevolutions.setColorTitle1(R.color.colorTextGray);
+        titleDevolutions.setColorTitle4(R.color.colorTextGray);
+        titleDevolutions.setSizeTitle1(11);
+        titleDevolutions.setSizeTitle4(11);
+        titleDevolutions.setTitle1("Fecha");
+        titleDevolutions.setTitle2("");
+        titleDevolutions.setTitle3("");
+        titleDevolutions.setTitle4("Importes");
 
-        totalesDevolutions.setStartTextSize(14);
-        totalesDevolutions.setEndTextSize(14);
-        titleDevolutions.setStartFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
-        titleDevolutions.setEndFont(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
-        titleDevolutions.hideDivider();
+        titleDevolutions.setGravityTitle4(Gravity.CENTER);
 
-        totalesDevolutions.hideDivider();
+        totalesDevolutionsTitle.setTextSize(14);
+        totalesDevolutions.setTextSize(14);
+        //titleDevolutions.hideDivider();
+
+        // totalesDevolutions.hideDivider();
     }
 
     public void setTotalesDevolutions(String totalesDevolutions) {
-        this.totalesDevolutions.setTexts("Total devoluciones",String.format("$%s",String.valueOf(totalesDevolutions)));
+        this.totalesDevolutions.setGravity(Gravity.CENTER);
+        this.totalesDevolutionsTitle.setGravity(Gravity.LEFT);
+        this.totalesDevolutionsTitle.setText("Total devoluciones");
+        this.totalesDevolutions.setText(String.format("$%s",String.valueOf(totalesDevolutions)));
 
     }
 

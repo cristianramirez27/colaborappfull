@@ -8,6 +8,8 @@ public class DetailRequest implements Serializable {
     private String des_tipoGasto;
     private String imp_total;
 
+    private int clv_editar;
+
     private transient double newAmount;
 
     public DetailRequest(int idu_tipoGasto, String des_tipoGasto, String imp_total) {
@@ -46,5 +48,14 @@ public class DetailRequest implements Serializable {
 
     public void setNewAmount(double newAmount) {
         this.newAmount = newAmount;
+    }
+
+
+    public int getClv_editar() {
+        return clv_editar;
+    }
+
+    public void setClv_editar(int clv_editar) {
+        this.clv_editar = clv_editar;
     }
 }

@@ -2881,12 +2881,13 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
+        message = context.getString(R.string.error_generic_service);
 
-        if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {
-            message = context.getString(R.string.error_generic_service);
-        } else {
+        /*if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {*/
+       //     message = context.getString(R.string.error_generic_service);
+       /* } else {
             message = userMessage;
-        }
+        }*/
         return message;
     }
 

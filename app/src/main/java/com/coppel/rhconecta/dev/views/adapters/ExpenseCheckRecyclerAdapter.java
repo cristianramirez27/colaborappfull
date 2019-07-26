@@ -99,10 +99,10 @@ public class ExpenseCheckRecyclerAdapter extends RecyclerView.Adapter<ExpenseChe
             gastoComprobar.setColorTitle4(R.color.colorBackgroundCoppelNegro);
             gastoComprobar.setVisibilityDivider(View.VISIBLE);
 
-            gastoComprobar.setGravityTitle2(Gravity.LEFT);
-            gastoComprobar.setGravityTitle3(Gravity.LEFT);
             gastoComprobar.setGravityTitle4(Gravity.LEFT);
-            gastoComprobar.setPaddingTitle4(18);
+            gastoComprobar.setGravityTitle2(Gravity.CENTER);
+            gastoComprobar.setGravityTitle3(Gravity.CENTER);
+            gastoComprobar.setGravityTitle4(Gravity.CENTER);
 
             gastoComprobar.setSizeTitle1(10);
             gastoComprobar.setSizeTitle2(10);

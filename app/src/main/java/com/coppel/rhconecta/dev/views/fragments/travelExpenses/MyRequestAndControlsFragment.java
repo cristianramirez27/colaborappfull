@@ -42,6 +42,7 @@ import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.visionarios.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -296,8 +297,8 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
                 case ServicesRequestType.EXPENSESTRAVEL:
-                    //showWarningDialog(coppelServicesError.getMessage());
-                    showWarningDialog(getString(R.string.error_generic_service));
+                    showWarningDialog(coppelServicesError.getMessage());
+                    //showWarningDialog(getString(R.string.error_generic_service));
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
                     EXPIRED_SESSION = true;
@@ -326,7 +327,12 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().finish();
+
+            if(getActivity() instanceof HomeActivity){
+                getActivity().onBackPressed();
+            }else {
+                getActivity().finish();
+            }
         }
     }
 

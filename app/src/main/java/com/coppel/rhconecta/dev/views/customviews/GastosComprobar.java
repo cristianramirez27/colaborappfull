@@ -60,6 +60,11 @@ public class GastosComprobar extends RelativeLayout {
         headerExpenses.setWeightTitle(3,1f);
         headerExpenses.setWeightTitle(4,1f);
 
+        headerExpenses.setGravityTitle1(Gravity.LEFT);
+        headerExpenses.setGravityTitle2(Gravity.CENTER);
+        headerExpenses.setGravityTitle3(Gravity.CENTER);
+        headerExpenses.setGravityTitle4(Gravity.CENTER);
+
         initOrder();
 
         headerExpenses.setPaddingTitle4();
@@ -109,6 +114,11 @@ public class GastosComprobar extends RelativeLayout {
         totales.setColorTitle2(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle3(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle4(R.color.colorBackgroundCoppelNegro);
+
+        totales.setGravityTitle1(Gravity.LEFT);
+        totales.setGravityTitle2(Gravity.CENTER);
+        totales.setGravityTitle3(Gravity.CENTER);
+        totales.setGravityTitle4(Gravity.CENTER);
     }
 
     public void setDataRecyclerView(List<ExpenseAuthorizedDetail> expenseAuthorizedDetails){

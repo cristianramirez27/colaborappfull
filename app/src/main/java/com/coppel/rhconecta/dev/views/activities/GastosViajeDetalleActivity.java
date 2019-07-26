@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,12 +8,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ImportsList;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailControlFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailRequestComplementFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.EditImportsFragment;
@@ -37,6 +41,8 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
     private Object data;
+
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,8 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
                 break;
 
             case OPTION_REFUSE_REQUEST:
-                replaceFragment( RefuseReasonFragment.getInstance((DetailExpenseTravelData)data ), RefuseReasonFragment.TAG);
+                currentFragment = RefuseReasonFragment.getInstance((DetailExpenseTravelData)data );
+                replaceFragment(currentFragment, RefuseReasonFragment.TAG);
                 break;
 
             case OPTION_EDIT_AMOUNTS:

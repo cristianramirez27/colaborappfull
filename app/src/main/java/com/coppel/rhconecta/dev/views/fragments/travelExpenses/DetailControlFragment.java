@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
@@ -47,8 +48,10 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
     GastosComprobar GastosComprobar;
     @BindView(R.id.Devoluciones)
     Devoluciones Devoluciones;
+    @BindView(R.id.totalTitle)
+    TextView totalDetalleTitle;
     @BindView(R.id.totalDetalle)
-    TextViewDetail totalDetalle;
+    TextView totalDetalle;
 
     private DetailControlColaboratorResponse detailControlColaboratorResponse;
 
@@ -86,8 +89,9 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
         parent.setToolbarTitle(getString(R.string.title_detail_colaborator_control));
         setData(detailControlColaboratorResponse.getData().getResponse());
 
-        totalDetalle.setTextsSize(16,16);
-        totalDetalle.hideDivider();
+        totalDetalleTitle.setTextSize(16);
+        totalDetalle.setTextSize(16);
+        //totalDetalle.hideDivider();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
@@ -127,13 +131,14 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
 
 
     private void setData( DetailControlColaboratorResponse.Response data){
-
-        totalDetalle.setTextsSize(14,16);
+        totalDetalleTitle.setTextSize(14);
+        totalDetalle.setTextSize(16);
+        totalDetalleTitle.setText("Saldo Total");
+        totalDetalle.setGravity(Gravity.CENTER);
         if(data.getSaldoTotal() != null)
-            totalDetalle.setTexts("Saldo Total",String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
+            totalDetalle.setText(String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
         else {
-            totalDetalle.setTexts("Saldo Total", "-");
-            totalDetalle.setPaddingValue();
+            totalDetalle.setText("-");
         }
 
         ExpenseAuthorizedResume expenseAuthorizedResume = new ExpenseAuthorizedResume();

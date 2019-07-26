@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoppelServicesAuthorizedV2Request extends CoppelServicesBaseExpensesTravelRequest {
@@ -11,16 +12,16 @@ public class CoppelServicesAuthorizedV2Request extends CoppelServicesBaseExpense
     private int clv_estatus;
     private String des_observaciones;
     private String des_motivoRechazo;
-    private  double imp_avion;
-    private  double imp_transporte;
-    private  double imp_hospedaje;
-    private  double imp_alimentacion;
-    private  double imp_taxi;
-    private  double imp_lavanderia;
-    private  double imp_otros;
-    private  double imp_total;
+    private  int imp_avion;
+    private  int imp_transporte;
+    private  int imp_hospedaje;
+    private  int imp_alimentacion;
+    private  int imp_taxi;
+    private  int imp_lavanderia;
+    private  int imp_otros;
+    private  int imp_total;
     private  int clv_tipo;
-    private List<DetailRequestAuthorize> CapturaGerente;
+    private List<DetailRequestFormatAuthorize> CapturaGerente;
 
 
     public CoppelServicesAuthorizedV2Request() {
@@ -39,20 +40,67 @@ public class CoppelServicesAuthorizedV2Request extends CoppelServicesBaseExpense
         this.des_observaciones = coppelServicesAuthorizedRequest.getDes_observaciones();
         this.des_motivoRechazo = coppelServicesAuthorizedRequest.getDes_motivoRechazo();
         this.clv_tipo = coppelServicesAuthorizedRequest.getClv_tipo();
-        this.CapturaGerente = data;
+        this.CapturaGerente =  processAmounts(data);
     }
 
-    public CoppelServicesAuthorizedV2Request(Object num_empleado, int opcion, int num_gerente, int clv_solicitud, int num_control, int clv_estatus, String des_observaciones, String des_motivoRechazo, int clv_tipo, List<DetailRequestAuthorize> capturaGerente) {
-        super(num_empleado, opcion);
-        this.num_gerente = num_gerente;
-        this.clv_solicitud = clv_solicitud;
-        this.num_control = num_control;
-        this.clv_estatus = clv_estatus;
-        this.des_observaciones = des_observaciones;
-        this.des_motivoRechazo = des_motivoRechazo;
-        this.clv_tipo = clv_tipo;
-        CapturaGerente = capturaGerente;
+
+    private List<DetailRequestFormatAuthorize> processAmounts(List<DetailRequestAuthorize> data){
+        List<DetailRequestFormatAuthorize> dataFormat = new ArrayList<>();
+        for(DetailRequestAuthorize authorize : data){
+
+            String impAsString = String.format("%.2f",authorize.getImp_total());
+
+            impAsString = impAsString.replace(".","");
+            int value = Integer.parseInt(impAsString);
+            setImports(authorize.getIdu_tipoGasto(),value);
+            dataFormat.add(new DetailRequestFormatAuthorize(authorize.getIdu_tipoGasto(),value));
+        }
+
+        return dataFormat;
+
     }
+
+    private void setImports(int idu_tipoGasto,int amount){
+
+        //private  double imp_avion;
+        //double amount = Double.parseDouble(value);
+
+        switch (idu_tipoGasto){
+
+            case -1:
+                this.imp_total = amount;
+                break;
+
+            case 1:
+                this.imp_avion = amount;
+                break;
+
+            case 2:
+                this.imp_transporte = amount;
+                break;
+
+            case 3:
+                this.imp_hospedaje = amount;
+                break;
+
+            case 4:
+                this.imp_alimentacion = amount;
+                break;
+
+            case 5:
+                this.imp_otros = amount;
+                break;
+
+            case 6:
+                this.imp_taxi = amount;
+                break;
+
+            case 7:
+                this.imp_lavanderia = amount;
+                break;
+        }
+    }
+
 
     public int getNum_gerente() {
         return num_gerente;
@@ -102,67 +150,67 @@ public class CoppelServicesAuthorizedV2Request extends CoppelServicesBaseExpense
         this.des_motivoRechazo = des_motivoRechazo;
     }
 
-    public double getImp_avion() {
+    public int getImp_avion() {
         return imp_avion;
     }
 
-    public void setImp_avion(double imp_avion) {
+    public void setImp_avion(int imp_avion) {
         this.imp_avion = imp_avion;
     }
 
-    public double getImp_transporte() {
+    public int getImp_transporte() {
         return imp_transporte;
     }
 
-    public void setImp_transporte(double imp_transporte) {
+    public void setImp_transporte(int imp_transporte) {
         this.imp_transporte = imp_transporte;
     }
 
-    public double getImp_hospedaje() {
+    public int getImp_hospedaje() {
         return imp_hospedaje;
     }
 
-    public void setImp_hospedaje(double imp_hospedaje) {
+    public void setImp_hospedaje(int imp_hospedaje) {
         this.imp_hospedaje = imp_hospedaje;
     }
 
-    public double getImp_alimentacion() {
+    public int getImp_alimentacion() {
         return imp_alimentacion;
     }
 
-    public void setImp_alimentacion(double imp_alimentacion) {
+    public void setImp_alimentacion(int imp_alimentacion) {
         this.imp_alimentacion = imp_alimentacion;
     }
 
-    public double getImp_taxi() {
+    public int getImp_taxi() {
         return imp_taxi;
     }
 
-    public void setImp_taxi(double imp_taxi) {
+    public void setImp_taxi(int imp_taxi) {
         this.imp_taxi = imp_taxi;
     }
 
-    public double getImp_lavanderia() {
+    public int getImp_lavanderia() {
         return imp_lavanderia;
     }
 
-    public void setImp_lavanderia(double imp_lavanderia) {
+    public void setImp_lavanderia(int imp_lavanderia) {
         this.imp_lavanderia = imp_lavanderia;
     }
 
-    public double getImp_otros() {
+    public int getImp_otros() {
         return imp_otros;
     }
 
-    public void setImp_otros(double imp_otros) {
+    public void setImp_otros(int imp_otros) {
         this.imp_otros = imp_otros;
     }
 
-    public double getImp_total() {
+    public int getImp_total() {
         return imp_total;
     }
 
-    public void setImp_total(double imp_total) {
+    public void setImp_total(int imp_total) {
         this.imp_total = imp_total;
     }
 
@@ -174,11 +222,11 @@ public class CoppelServicesAuthorizedV2Request extends CoppelServicesBaseExpense
         this.clv_tipo = clv_tipo;
     }
 
-    public List<DetailRequestAuthorize> getCapturaGerente() {
+    public List<DetailRequestFormatAuthorize> getCapturaGerente() {
         return CapturaGerente;
     }
 
-    public void setCapturaGerente(List<DetailRequestAuthorize> capturaGerente) {
+    public void setCapturaGerente(List<DetailRequestFormatAuthorize> capturaGerente) {
         CapturaGerente = capturaGerente;
     }
 }
