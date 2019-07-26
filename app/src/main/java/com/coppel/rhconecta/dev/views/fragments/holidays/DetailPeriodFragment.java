@@ -27,6 +27,8 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.HolidayGetDetailPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
+import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
+import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
@@ -38,9 +40,13 @@ import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.shrikanthravi.collapsiblecalendarview.data.CalendarAdapter;
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
@@ -55,11 +61,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIOD_DETAIL;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 
@@ -102,6 +112,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private VacacionesActivity vacacionesActivity;
 
 
+    private DialogFragmentDeletePeriods dialogFragmentDeletePeriods;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
     private HolidayPeriod holidayPeriod;
@@ -144,15 +155,16 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
             ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
         }
 
+        btnCancel.setOnClickListener(this);
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+
 
         //To hide or show expand icon
         collapsibleCalendar.setExpandIconVisible(true);
         Calendar today=new GregorianCalendar();
         today.add(Calendar.DATE,1);
         collapsibleCalendar.expand(100);
-
         collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
         collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
         collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
@@ -188,12 +200,26 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(detail.getColor()));
-        gd.setCornerRadius(20);
+        gd.setCornerRadius(40);
         estatus.setBackgroundDrawable(gd);
 
         nombreGte.setText(detail.getNom_gerente());
         fechaRechazo.setText(detail.getFec_estatus());
         motivoRechazo.setText(detail.getDes_comentario());
+
+        String[] startDatePart = detail.getFec_ini().split(",");
+        String[] datePart = startDatePart[1].trim().split("-");
+        int year = Integer.parseInt(datePart[2]);
+        int month = Integer.parseInt(datePart[1])-1;
+        int day = Integer.parseInt(datePart[0]);
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year,month,day);
+
+        CalendarAdapter adapter = new CalendarAdapter(getActivity(), cal);
+        collapsibleCalendar.setAdapter(adapter);
+
+        collapsibleCalendar.select(new Day(year,month,day));
     }
 
     @Override
@@ -222,11 +248,18 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
-            case R.id.btnSchedule:
+            case R.id.btnCancel:
+
+                cancelRequest();
 
 
                 break;
         }
+    }
+
+
+    private void cancelRequest(){
+
     }
 
     @Override
@@ -306,5 +339,45 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     public void hideProgress() {
         if(dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
+
+
+    private void showAlertDialogDeletePeriods(List<HolidayPeriod> periodsSelected) {
+        dialogFragmentDeletePeriods = new DialogFragmentDeletePeriods();
+        dialogFragmentDeletePeriods.setOnOptionClick(new DialogFragmentDeletePeriods.OnOptionClick() {
+            @Override
+            public void onAccept() {
+                cancelHolidayRequest();
+                IScheduleOptions.showEliminatedOption(false,"");
+                dialogFragmentDeletePeriods.close();
+            }
+
+            @Override
+            public void onCancel() {
+
+                dialogFragmentDeletePeriods.close();
+
+            }
+        });
+        dialogFragmentDeletePeriods.setVisibleCancelButton(VISIBLE);
+        dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
+    }
+
+    private void cancelHolidayRequest(){
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
+        String numSuplente = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_SUPLENTE);
+
+        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_HOLIDAYS, 5,numEmployer);
+        holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
+        holidayRequestData.setNum_suplente(Integer.parseInt(numSuplente));
+        List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();
+        periodsToCancel.add(new HolidayPeriodFolio(holidayPeriod.getIdu_folio()));
+        holidayRequestData.setPeriodsToCancel(periodsToCancel);
+
+        coppelServicesPresenter.getHolidays(holidayRequestData,token);
+
+    }
+
 
 }

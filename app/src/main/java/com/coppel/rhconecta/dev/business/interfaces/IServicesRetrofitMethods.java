@@ -9,6 +9,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyReq
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesCancelPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
@@ -239,6 +240,9 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> getDetailHolidayPeriod(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetDetailPeriodHolidaysRequest servicesRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> cancelHolidayPeriod(@Url String url,@Header("Authorization") String token, @Body CoppelServicesCancelPeriodsHolidaysRequest servicesRequest);
 
 
 }

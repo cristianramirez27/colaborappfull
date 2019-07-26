@@ -16,6 +16,7 @@ public class HolidayRequestData implements Serializable{
     private int num_gerente;
     private int num_suplente;
     private List<HolidayPeriodData> periodos;
+    private  List<HolidayPeriodFolio> periodsToCancel;
 
     private int idu_folio;
 
@@ -81,5 +82,13 @@ public class HolidayRequestData implements Serializable{
 
     public void setIdu_folio(int idu_folio) {
         this.idu_folio = idu_folio;
+    }
+
+    public List<HolidayPeriodFolio> getPeriodsToCancel() {
+        return periodsToCancel;
+    }
+
+    public void setPeriodsToCancel(List<HolidayPeriodFolio> periodsToCancel) {
+        this.periodsToCancel = periodsToCancel;
     }
 }

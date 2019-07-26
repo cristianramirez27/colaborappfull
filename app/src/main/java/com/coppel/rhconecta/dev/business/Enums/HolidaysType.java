@@ -10,5 +10,6 @@ public enum HolidaysType implements Serializable {
     CONSULTA_ROL,
     CONSULTA_VACACIONES,
     SEND_HOLIDAY_REQUEST,
-    GET_PERIOD_DETAIL
+    GET_PERIOD_DETAIL,
+    CANCEL_HOLIDAYS
 }

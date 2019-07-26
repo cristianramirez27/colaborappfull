@@ -2784,6 +2784,12 @@ public class ServicesInteractor {
                 getDetailHolidayPeriods(holidayRequestData,token);
                 break;
 
+            case CANCEL_HOLIDAYS:
+                cancelHolidayPeriods(holidayRequestData,token);
+                break;
+
+
+
 
         }
     }
@@ -2890,6 +2896,31 @@ public class ServicesInteractor {
         });
     }
 
+    private void cancelHolidayPeriods(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.cancelHolidayPeriod(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesCancelPeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
 
     public void getHolidayResponse(HolidaysBaseResponse response, int code) {
         ServicesError servicesError = new ServicesError();
@@ -2974,6 +3005,12 @@ public class ServicesInteractor {
             case GET_PERIOD_DETAIL:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesGetDetailPeriodHolidaysRequest(holidaysRequestData.getNum_empleado(),
                         holidaysRequestData.getOpcion(),holidaysRequestData.getIdu_folio());
+                break;
+
+
+            case CANCEL_HOLIDAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesCancelPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(),holidaysRequestData.getNum_suplente(),holidaysRequestData.getPeriodsToCancel());
                 break;
         }
 
