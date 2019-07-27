@@ -52,8 +52,10 @@
             android:gravity="top"
             android:padding="8dp"
             android:textSize="13sp"
-            android:inputType="textMultiLine"
-            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789,.:; "
+            android:inputType="text"
+            android:lines="20"
+            android:imeOptions="actionNext"
+            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789,.:;\n "
             android:background="@drawable/background_gray_rounded"
             android:layout_height="120dp" />
 

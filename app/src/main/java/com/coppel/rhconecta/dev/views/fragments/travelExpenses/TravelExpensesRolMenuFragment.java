@@ -112,7 +112,7 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
 
             case R.id.btnManager:
 
-                NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+                NavigationUtil.openActivityWithStringParam(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
                 break;
         }

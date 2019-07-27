@@ -50,6 +50,7 @@
     <string name="enterprise_fund">Fondo de la\nempresa</string>
     <string name="current_account">Cuenta\ncorriente</string>
     <string name="additional_saving">Ahorro adicional</string>
+    <string name="additional_saving_double_line">Ahorro\nadicional</string>
 
     <string name="additional_saving_title">Ahorro\nadicional</string>
     <string name="employee_fund">Fondo del\ntrabajador</string>
@@ -138,7 +139,7 @@
     <string name="network_error">Error, por favor verifíca tu conexión a internet.</string>
     <string name="error_serialization">Error, la respuestá no tiene un formato adecuado.</string>
     <string name="error_unknown">Ocurrió un error desconocido.</string>
-    <string name="error_generic_service"> Servicio no disponible en este momento, intente más tarde.</string>
+    <string name="error_generic_service">Servicio no disponible en este momento, intente más tarde.</string>
 
     <!-- Login -->
     <string name="error_login">No se pudo obtener la información de login.</string>

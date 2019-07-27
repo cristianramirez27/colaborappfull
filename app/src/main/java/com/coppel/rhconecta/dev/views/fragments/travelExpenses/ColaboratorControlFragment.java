@@ -46,6 +46,7 @@ import com.coppel.rhconecta.dev.business.models.ImportsList;
 import com.coppel.rhconecta.dev.business.models.Itinerary;
 import com.coppel.rhconecta.dev.business.models.ReasonTravel;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -201,7 +202,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.detailExpenseTravelData = (DetailExpenseTravelData)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
-        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+
         AuthorizedRequestColaboratorSingleton.getInstance().resetValues();
 
     }
@@ -266,6 +267,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
         observationGte.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+
+        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
 
         setTitle();
 
@@ -602,7 +605,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
             //Se muestra tambien el total solicitado
             //En monto solicitado es el valor de imp_total obtenido de "VerDetallesSolicitud", donde idu_tipoGasto sea igual a -1.
-            if(detail.getData().getResponse().getVerDetallesSolicitud() != null ) {
+            if(detail.getData().getResponse().getVerDetallesSolicitud() != null && !detail.getData().getResponse().getVerDetallesSolicitud().isEmpty()) {
                 for (DetailRequest detallesSolicitud : detail.getData().getResponse().getVerDetallesSolicitud()) {
                     if (detallesSolicitud.getIdu_tipoGasto() == -1) {
                         totalAutorizado.setTexts("Total autorizado", String.format("$%s", detallesSolicitud.getImp_total()));
@@ -610,6 +613,9 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                         break;
                     }
                 }
+            }else {
+
+                verDetalles.setVisibility(View.GONE);
             }
                 //Total Complemento Solicitado: Es el valor de importe obtenido de la consulta anterior (solicitudescomplementos),
             String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
@@ -752,6 +758,16 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if(s.toString().contains("\n")){
+                        String text = s.toString().replace("\n","");
+                        observationGte.setText(text);
+                        observationGte.setSelection(text.length());
+
+                        DeviceManager.hideKeyBoard(getActivity());
+                        return;
+                    }
+
 
                     if(s.toString().length() > 4){
                         btnActionRight.setEnabled(true);
@@ -936,7 +952,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
                 case ServicesRequestType.EXPENSESTRAVEL:
-                    showWarningDialog(coppelServicesError.getMessage());
+                    //showWarningDialog(coppelServicesError.getMessage());
+                    showWarningDialog(getString(R.string.error_generic_service));
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
                     EXPIRED_SESSION = true;
@@ -1014,6 +1031,10 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
 
 
+
+
+
+
         coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
     }
 
@@ -1043,6 +1064,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     @Override
     public void onAccept() {
         dialogFragmentGetDocument.close();
+        getActivity().setResult(RESULT_OK);
         getActivity().finish();
     }
 }

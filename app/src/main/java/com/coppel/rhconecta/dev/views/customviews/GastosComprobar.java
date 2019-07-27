@@ -5,6 +5,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.coppel.rhconecta.dev.R;
@@ -28,6 +29,9 @@ public class GastosComprobar extends RelativeLayout {
     RecyclerView rcvGastosComprobar;
     @BindView(R.id.totales)
     HeaderTitlesExpensesList totales;
+
+    private boolean checkedIsNull;
+    private boolean missingIsNull;
 
     private ExpenseAuthorizedDetail[] orderedExpenses = new ExpenseAuthorizedDetail[7];
     private HashMap<String,Integer> orderList = new HashMap<>();
@@ -56,6 +60,11 @@ public class GastosComprobar extends RelativeLayout {
         headerExpenses.setWeightTitle(3,1f);
         headerExpenses.setWeightTitle(4,1f);
 
+        headerExpenses.setGravityTitle1(Gravity.LEFT);
+        headerExpenses.setGravityTitle2(Gravity.CENTER);
+        headerExpenses.setGravityTitle3(Gravity.CENTER);
+        headerExpenses.setGravityTitle4(Gravity.CENTER);
+
         initOrder();
 
         headerExpenses.setPaddingTitle4();
@@ -66,11 +75,24 @@ public class GastosComprobar extends RelativeLayout {
         totales.setTitle1("Total");
         totales.setTitle2(TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(expenseAuthorizedResume.getTotalAutorizado()))));
-        totales.setTitle3(TextUtilities.getNumberInCurrencyFormat(
+
+        //Comprobados
+        totales.setTitle3(checkedIsNull ? "-" : TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(expenseAuthorizedResume.getTotalComprobado()))));
 
-        totales.setTitle4(TextUtilities.getNumberInCurrencyFormat(
+        if(checkedIsNull){
+            totales.setGravityTitle3(Gravity.CENTER);
+            headerExpenses.setGravityTitle3(Gravity.CENTER);
+        }
+
+        //Faltantes
+        totales.setTitle4(missingIsNull ? "-" : TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble( String.valueOf(expenseAuthorizedResume.getImp_totalFaltante()))));
+
+        if(missingIsNull){
+            totales.setGravityTitle4(Gravity.CENTER);
+            headerExpenses.setGravityTitle4(Gravity.CENTER);
+        }
 
         totales.setFontTitle1(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
         totales.setFontTitle2(ResourcesCompat.getFont(getContext(), R.font.lineto_circular_pro_bold));
@@ -92,6 +114,11 @@ public class GastosComprobar extends RelativeLayout {
         totales.setColorTitle2(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle3(R.color.colorBackgroundCoppelNegro);
         totales.setColorTitle4(R.color.colorBackgroundCoppelNegro);
+
+        totales.setGravityTitle1(Gravity.LEFT);
+        totales.setGravityTitle2(Gravity.CENTER);
+        totales.setGravityTitle3(Gravity.CENTER);
+        totales.setGravityTitle4(Gravity.CENTER);
     }
 
     public void setDataRecyclerView(List<ExpenseAuthorizedDetail> expenseAuthorizedDetails){
@@ -118,13 +145,12 @@ public class GastosComprobar extends RelativeLayout {
 
 
 
-        ExpenseCheckRecyclerAdapter expenseCheckRecyclerAdapter = new ExpenseCheckRecyclerAdapter(expenseAuthorizedSorted);
+        ExpenseCheckRecyclerAdapter expenseCheckRecyclerAdapter = new ExpenseCheckRecyclerAdapter(expenseAuthorizedSorted,checkedIsNull,missingIsNull);
         rcvGastosComprobar.setAdapter(expenseCheckRecyclerAdapter);
 
     }
 
     private void initOrder(){
-
         orderList.put("AVION",0);
         orderList.put("TRANSPORTE",1);
         orderList.put("HOSPEDAJE",2);
@@ -132,8 +158,13 @@ public class GastosComprobar extends RelativeLayout {
         orderList.put("TAXIS",4);
         orderList.put("LAVANDERIA",5);
         orderList.put("OTROS",6 );
-
     }
 
+    public void setCheckedIsNull(boolean checkedIsNull) {
+        this.checkedIsNull = checkedIsNull;
+    }
 
+    public void setMissingIsNull(boolean missingIsNull) {
+        this.missingIsNull = missingIsNull;
+    }
 }

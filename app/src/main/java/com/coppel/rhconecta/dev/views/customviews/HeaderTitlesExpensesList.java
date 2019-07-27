@@ -59,7 +59,7 @@ public class HeaderTitlesExpensesList extends LinearLayout {
     }
 
     public void setPaddingTitle4(){
-        title4.setPadding(30,0,0,0);
+        title4.setPadding(0/*30*/,0,0,0);
     }
 
     public void setPaddingTitle4(int left){

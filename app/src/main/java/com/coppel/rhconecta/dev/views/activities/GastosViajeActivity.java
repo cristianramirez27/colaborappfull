@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
@@ -19,6 +21,8 @@ import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorContro
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +43,8 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
     private Object data;
+
+    private Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +79,15 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
                 replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
                 break;
             case OPTION_DETAIL_REQUETS_CONTROLS:
-
-                replaceFragment( ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data), ColaboratorControlFragment.TAG);
+                replaceFragment(ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data) , ColaboratorControlFragment.TAG);
 
                 break;
 
 
             case OPTION_AUTHORIZE_REQUEST:
 
-                replaceFragment( AuthorizeRequestAndComplementsFragment.getInstance(), AuthorizeRequestAndComplementsFragment.TAG);
+                currentFragment = AuthorizeRequestAndComplementsFragment.getInstance();
+                replaceFragment( currentFragment, AuthorizeRequestAndComplementsFragment.TAG);
 
                 break;
 
@@ -100,7 +106,6 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
 
 
 
-
     @Override
     public void onBackPressed() {
         int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
@@ -116,8 +121,23 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 888 && resultCode == RESULT_OK){
-            onEvent(OPTION_AUTHORIZE_REQUEST,null);
+        if(resultCode == RESULT_OK){
+            //onEvent(OPTION_AUTHORIZE_REQUEST,null);
+            if(requestCode == 131 && (currentFragment!= null && currentFragment instanceof AuthorizeRequestAndComplementsFragment)){
+                ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
+            }else if((requestCode == 888 || resultCode == RESULT_OK)){
+
+                if(currentFragment != null && currentFragment instanceof  AuthorizeRequestAndComplementsFragment ){
+                    ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
+                }else {
+                    setResult(RESULT_OK);
+                    finish();
+
+                }
+
+
+
+            }
         }
 
     }

@@ -65,6 +65,11 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
                 Double.parseDouble(amountGte)));
         //viewHolder.edtNewAmount.getEdtQuantity().setHint("$0.00");
 
+        viewHolder.edtNewAmount.getEdtQuantity().setTextColor(
+                getContext().getResources().getColor(dataItems.get(i).getClv_editar() == 1 ? R.color.colorBackgroundCoppelNegro : R.color.colorTextGray));
+
+        viewHolder.edtNewAmount.getEdtQuantity().setEnabled(dataItems.get(i).getClv_editar() == 1 ? true : false);
+
         setFocusChangeListener(dataItems.get(i), viewHolder.edtNewAmount);
 
         //.edtNewAmount.getEdtQuantity().setText(String.valueOf(dataItems.get(i).getImp_total()));

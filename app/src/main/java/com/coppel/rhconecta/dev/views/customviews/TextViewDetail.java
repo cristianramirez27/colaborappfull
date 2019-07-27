@@ -49,6 +49,15 @@ public class TextViewDetail extends ConstraintLayout {
     }
 
 
+    public void setGravityValue(int gravity){
+        txvValue.setGravity(gravity);
+    }
+
+    public void setPaddingValue(){
+        txvValue.setPadding(0,0,140,0);
+    }
+
+
     public void setTextsSize(float startText, float endText) {
         txvTitle.setTextSize(startText);
         txvValue.setTextSize(endText);

@@ -264,21 +264,16 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         int margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiro.getQuantity()) : 0;
-
         //Revisamos si hay que reenviar el valor anterior
-        if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
+        /*if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
             margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroProceso.getQuantity()) : 0;
-        }
+        }*/
 
         int ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorro.getQuantity()) : 0;
-
-
         //Revisamos si hay que reenviar el valor anterior
-        if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
+        /*if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
             ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorroProceso.getQuantity()) : 0;
-        }
-
-
+        }*/
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
                 GUARDAR_RETIRO,3,numEmployer,margenCredito,ahorroAdicional);
 
