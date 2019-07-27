@@ -46,6 +46,7 @@ import com.coppel.rhconecta.dev.business.models.ImportsList;
 import com.coppel.rhconecta.dev.business.models.Itinerary;
 import com.coppel.rhconecta.dev.business.models.ReasonTravel;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -757,6 +758,16 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    if(s.toString().contains("\n")){
+                        String text = s.toString().replace("\n","");
+                        observationGte.setText(text);
+                        observationGte.setSelection(text.length());
+
+                        DeviceManager.hideKeyBoard(getActivity());
+                        return;
+                    }
+
 
                     if(s.toString().length() > 4){
                         btnActionRight.setEnabled(true);
