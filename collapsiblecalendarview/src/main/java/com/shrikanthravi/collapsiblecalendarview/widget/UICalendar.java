@@ -331,7 +331,7 @@ public abstract class UICalendar extends LinearLayout {
         mBtnNextWeek.setImageDrawable(buttonRightDrawable);
     }
 
-    public Day getSelectedItem() {
+    public Day      getSelectedItem() {
         return mSelectedItem;
     }
 

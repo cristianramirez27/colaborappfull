@@ -207,19 +207,52 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         fechaRechazo.setText(detail.getFec_estatus());
         motivoRechazo.setText(detail.getDes_comentario());
 
-        String[] startDatePart = detail.getFec_ini().split(",");
-        String[] datePart = startDatePart[1].trim().split("-");
-        int year = Integer.parseInt(datePart[2]);
-        int month = Integer.parseInt(datePart[1])-1;
-        int day = Integer.parseInt(datePart[0]);
+        setSelectedDays(response);
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(year,month,day);
+    }
 
-        CalendarAdapter adapter = new CalendarAdapter(getActivity(), cal);
+    private void setSelectedDays(HolidayGetDetailPeriodResponse response){
+
+        String dateStart = response.getData().getResponse().get(0).getFec_ini();
+        String dateEnd = response.getData().getResponse().get(0).getFec_fin();
+
+        String[] dateProcess = null;
+        String[] dateParts = null;
+        int year;
+        int month;
+        int day;
+        //Obtenemos la fecha inicial
+        dateProcess = dateStart.split(",");
+        dateParts = dateProcess[1].trim().split("-");
+        year = Integer.parseInt(dateParts[2]);
+        month = Integer.parseInt(dateParts[1])-1;
+        day = Integer.parseInt(dateParts[0]);
+        Calendar calendar_Ini = Calendar.getInstance();
+        calendar_Ini.set(year,month,day);
+        //Obtenemos la fecha final
+        dateProcess = dateEnd.split(",");
+        dateParts = dateProcess[1].trim().split("-");
+        year = Integer.parseInt(dateParts[2]);
+        month = Integer.parseInt(dateParts[1])-1;
+        day = Integer.parseInt(dateParts[0]);
+        Calendar calendar_Fin = Calendar.getInstance();
+        calendar_Fin.set(year,month,day);
+
+        Calendar  calendar = Calendar.getInstance();
+        calendar.set(calendar_Ini.get(Calendar.YEAR),calendar_Ini.get(Calendar.MONTH),calendar_Ini.get(Calendar.DAY_OF_MONTH));
+
+        CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
         collapsibleCalendar.setAdapter(adapter);
 
-        collapsibleCalendar.select(new Day(year,month,day));
+
+        do{
+
+            collapsibleCalendar.select(new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)));
+            calendar.add(Calendar.DATE,1);
+
+        }while (!calendar.after(calendar_Fin));
+
+
     }
 
     @Override
