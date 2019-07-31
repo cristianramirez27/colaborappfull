@@ -27,24 +27,35 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="3dp"
+        android:ellipsize="end"
         android:fontFamily="@font/lineto_circular_pro_bold"
         android:gravity="end"
         android:maxLines="1"
-        android:layout_marginBottom="3dp"
-        android:ellipsize="end"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline72"
+        app:layout_constraintStart_toEndOf="@+id/guideline72"
         app:layout_constraintStart_toStartOf="@+id/guideline73"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgvArrow"
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/txvTitle"
-        app:layout_constraintStart_toEndOf="@+id/guideline72"
-        app:srcCompat="@drawable/ic_down_arrow_blue" />
+        app:layout_constraintStart_toEndOf="@+id/guideline72">
+
+        <ImageView
+            android:id="@+id/imgvArrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom"
+            app:srcCompat="@drawable/ic_down_arrow_blue" />
+    </LinearLayout>
+
 
 
     <View

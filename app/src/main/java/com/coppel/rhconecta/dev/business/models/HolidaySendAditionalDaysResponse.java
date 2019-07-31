@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.business.models;
 
 import java.util.List;
 
-public class CentersResponse extends ExpensesTravelBaseResponse {
+public class HolidaySendAditionalDaysResponse extends HolidaysBaseResponse {
     private Data data;
 
     public Data getData() {
@@ -14,7 +14,6 @@ public class CentersResponse extends ExpensesTravelBaseResponse {
     }
 
     public class Data {
-
         private Response response;
 
         public Response getResponse() {
@@ -27,16 +26,23 @@ public class CentersResponse extends ExpensesTravelBaseResponse {
     }
 
     public class Response {
-        private List<Center> Centros;
+        private int clv_estado;
+        private String des_mensaje;
 
-        public List<Center> getCentros() {
-            return Centros;
+        public int getClv_estado() {
+            return clv_estado;
         }
 
-        public void setCentros(List<Center> centros) {
-            Centros = centros;
+        public void setClv_estado(int clv_estado) {
+            this.clv_estado = clv_estado;
         }
 
+        public String getDes_mensaje() {
+            return des_mensaje;
+        }
+
+        public void setDes_mensaje(String des_mensaje) {
+            this.des_mensaje = des_mensaje;
+        }
     }
-
 }

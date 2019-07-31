@@ -102,6 +102,8 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
 
             case R.id.btnAditionals:
 
+                parent.replaceFragment(new HolidayAditionalDayListFragment(), HolidayRequestListFragment.TAG);
+
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
                 break;

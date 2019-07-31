@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.business.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HolidayPeriod implements Serializable {
     private int idu_estatus;
@@ -9,6 +10,9 @@ public class HolidayPeriod implements Serializable {
     private String num_dias;
     private String fec_ini;
     private String fec_fin;
+    private int idu_marca;
+    private String color_marca;
+    private List<MarkHoliday> ver_marca;
     private int idu_folio;
 
     private boolean isSelected;
@@ -108,5 +112,29 @@ private String idPeriod;
 
     public void setIdPeriod(String idPeriod) {
         this.idPeriod = idPeriod;
+    }
+
+    public int getIdu_marca() {
+        return idu_marca;
+    }
+
+    public void setIdu_marca(int idu_marca) {
+        this.idu_marca = idu_marca;
+    }
+
+    public String getColor_marca() {
+        return color_marca;
+    }
+
+    public void setColor_marca(String color_marca) {
+        this.color_marca = color_marca;
+    }
+
+    public List<MarkHoliday> getVer_marca() {
+        return ver_marca;
+    }
+
+    public void setVer_marca(List<MarkHoliday> ver_marca) {
+        this.ver_marca = ver_marca;
     }
 }

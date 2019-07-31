@@ -34,6 +34,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_COLABORATORS;
 
 public class ServicesInteractor {
 
@@ -2788,7 +2789,29 @@ public class ServicesInteractor {
                 cancelHolidayPeriods(holidayRequestData,token);
                 break;
 
+            case GET_CENTERS:
+                getCenterHoliday(holidayRequestData,token);
+                break;
 
+            case GET_COLABORATORS:
+                getColaboratorsHoliday(holidayRequestData,token);
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+                getColaboratorsPeriodsHoliday(holidayRequestData,token);
+            break;
+
+            case VALIDATION_ADITIONAL_DAYS:
+                getValidationAditionaDays(holidayRequestData,token);
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                getReasonsAditionaDays(holidayRequestData,token);
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                sendAditionalDays(holidayRequestData,token);
+                break;
 
 
         }
@@ -2921,6 +2944,154 @@ public class ServicesInteractor {
         });
     }
 
+    private void getCenterHoliday(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getCentersHoliday(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesGetCentersHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getColaboratorsHoliday(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getColaboratosHoliday(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesGetColaboratorsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getColaboratorsPeriodsHoliday(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getColaboratosPeriodsHoliday(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesGetColaboratorsPeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getValidationAditionaDays(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.validateAditionalDays(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesValidateAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getReasonsAditionaDays(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getReasonsAditionalDays(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesReasonAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void sendAditionalDays(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.sendAditionalDays(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesSendAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
 
     public void getHolidayResponse(HolidaysBaseResponse response, int code) {
         ServicesError servicesError = new ServicesError();
@@ -2977,6 +3148,35 @@ public class ServicesInteractor {
             case GET_PERIOD_DETAIL:
                 clazz = HolidayGetDetailPeriodResponse.class;
                 break;
+
+            case CANCEL_HOLIDAYS:
+                clazz = HolidaysCancelResponse.class;
+                break;
+
+            case GET_CENTERS:
+                clazz = CentersHolidayResponse.class;
+                break;
+
+            case GET_COLABORATORS:
+                clazz = HolidaysColaboratorsResponse.class;
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+
+            case VALIDATION_ADITIONAL_DAYS:
+                clazz = HolidaysValidationAditionalDaysResponse.class;
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                clazz = HolidaysReasonsAditionalDaysResponse.class;
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                clazz = HolidaySendAditionalDaysResponse.class;
+                break;
+
         }
 
         return clazz;
@@ -3012,6 +3212,37 @@ public class ServicesInteractor {
                 coppelServicesBaseHolidaysRequest = new CoppelServicesCancelPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
                         holidaysRequestData.getNum_gerente(),holidaysRequestData.getNum_suplente(),holidaysRequestData.getPeriodsToCancel());
                 break;
+
+            case GET_CENTERS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetCentersHolidaysRequest(holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()));
+                break;
+
+            case GET_COLABORATORS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetColaboratorsHolidaysRequest(holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()));
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setNum_centro(holidaysRequestData.getNum_centro());
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setNom_empleado(holidaysRequestData.getNom_empleado());
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setClv_estatus(holidaysRequestData.getClv_estatus());
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetColaboratorsPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()));
+                break;
+
+
+            case VALIDATION_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesValidateAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(),requestOption);
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesReasonAditionalDaysHolidaysRequest(requestOption);
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSendAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
+                    String.valueOf(holidaysRequestData.getNum_gerente()),holidaysRequestData.getNum_adicionales(),holidaysRequestData.getIdu_motivo(),holidaysRequestData.getDes_otromotivo());
+                break;
+
         }
 
         String re = JsonManager.madeJsonFromObject(coppelServicesBaseHolidaysRequest).toString();

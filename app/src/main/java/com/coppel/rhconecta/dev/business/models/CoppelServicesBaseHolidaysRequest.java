@@ -8,6 +8,10 @@ public abstract class CoppelServicesBaseHolidaysRequest {
     public CoppelServicesBaseHolidaysRequest() {
     }
 
+    public CoppelServicesBaseHolidaysRequest(int opcion) {
+        this.opcion = opcion;
+    }
+
     public CoppelServicesBaseHolidaysRequest(Object num_empleado, int opcion) {
         this.num_empleado = num_empleado;
         this.opcion = opcion;

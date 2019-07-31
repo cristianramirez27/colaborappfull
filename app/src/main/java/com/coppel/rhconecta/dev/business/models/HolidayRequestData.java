@@ -18,9 +18,21 @@ public class HolidayRequestData implements Serializable{
     private List<HolidayPeriodData> periodos;
     private  List<HolidayPeriodFolio> periodsToCancel;
 
+    private int num_centro;
+    private String nom_empleado;
+    private int clv_estatus;
+
+
     private int idu_folio;
 
+    private int num_adicionales;
+    private int idu_motivo;
+    private String des_otromotivo;
 
+    public HolidayRequestData(HolidaysType holidaysType, int opcion) {
+        this.holidaysType = holidaysType;
+        this.opcion = opcion;
+    }
 
     public HolidayRequestData(HolidaysType holidaysType, int opcion, String num_empleado) {
         this.holidaysType = holidaysType;
@@ -90,5 +102,53 @@ public class HolidayRequestData implements Serializable{
 
     public void setPeriodsToCancel(List<HolidayPeriodFolio> periodsToCancel) {
         this.periodsToCancel = periodsToCancel;
+    }
+
+    public int getNum_centro() {
+        return num_centro;
+    }
+
+    public void setNum_centro(int num_centro) {
+        this.num_centro = num_centro;
+    }
+
+    public String getNom_empleado() {
+        return nom_empleado;
+    }
+
+    public void setNom_empleado(String nom_empleado) {
+        this.nom_empleado = nom_empleado;
+    }
+
+    public int getClv_estatus() {
+        return clv_estatus;
+    }
+
+    public void setClv_estatus(int clv_estatus) {
+        this.clv_estatus = clv_estatus;
+    }
+
+    public int getNum_adicionales() {
+        return num_adicionales;
+    }
+
+    public void setNum_adicionales(int num_adicionales) {
+        this.num_adicionales = num_adicionales;
+    }
+
+    public int getIdu_motivo() {
+        return idu_motivo;
+    }
+
+    public void setIdu_motivo(int idu_motivo) {
+        this.idu_motivo = idu_motivo;
+    }
+
+    public String getDes_otromotivo() {
+        return des_otromotivo;
+    }
+
+    public void setDes_otromotivo(String des_otromotivo) {
+        this.des_otromotivo = des_otromotivo;
     }
 }

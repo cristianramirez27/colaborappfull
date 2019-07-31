@@ -20,6 +20,8 @@
     <color name="colorRed">#b00020</color>
     <color name="colorOrange">#fd7700</color>
     <color name="colorBackgroundFavorites">#f2f1f1</color>
+    <color name="colorMelon">#ff8256</color>
+
 
     <color name="colorBordeGrisToolbar">#4C002028</color>
     <color name="colorBordeTransparentToolbar">#00FFFFFF</color>

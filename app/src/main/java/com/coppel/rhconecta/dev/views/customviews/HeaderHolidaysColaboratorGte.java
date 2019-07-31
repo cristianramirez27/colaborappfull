@@ -1,26 +1,35 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.Devolution;
+import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
-import com.coppel.rhconecta.dev.views.adapters.DevolutionsRecyclerAdapter;
-
-import java.util.List;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HeaderHolidaysColaborator extends RelativeLayout {
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
+public class HeaderHolidaysColaboratorGte extends RelativeLayout {
+
+    @BindView(R.id.imgColaborador)
+    CircleImageView imgColaborador;
+    @BindView(R.id.nameColaborator)
+    TextView nameColaborator;
+    @BindView(R.id.vacacionesAgendadas)
+    TextViewDetail vacacionesAgendadas;
+    @BindView(R.id.vacacionesAutorizadas)
+    TextViewDetail vacacionesAutorizadas;
     @BindView(R.id.titleDetail)
     TextViewExpandableRightArrowHeader titleDetail;
     @BindView(R.id.diasDecision)
@@ -33,25 +42,26 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
     TextViewDetail diasAdicionalesRegistrados;
     @BindView(R.id.fechaPrimaVacacional)
     TextViewDetail fechaPrimaVacacional;
-
-
     @BindView(R.id.layoutDetail)
     LinearLayout layoutDetail;
 
 
-    public HeaderHolidaysColaborator(Context context) {
+    public HeaderHolidaysColaboratorGte(Context context) {
         super(context);
         initViews();
     }
 
-    public HeaderHolidaysColaborator(Context context, AttributeSet attrs) {
+    public HeaderHolidaysColaboratorGte(Context context, AttributeSet attrs) {
         super(context, attrs);
         initViews();
     }
 
     private void initViews() {
-        inflate(getContext(), R.layout.layout_detail_holidays, this);
+        inflate(getContext(), R.layout.layout_colaborator_header_holidays, this);
         ButterKnife.bind(this);
+
+        vacacionesAgendadas.hideDivider();
+        vacacionesAutorizadas.hideDivider();
 
         titleDetail.setOnExpandableListener(new TextViewExpandableRightArrowHeader.OnExpandableListener() {
             @Override
@@ -67,10 +77,55 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
     }
 
 
-    public void setDetailData(HolidaysPeriodsResponse detailData){
+    public void setDetailData(ColaboratorHoliday colaborator,HolidaysPeriodsResponse detailData){
         HolidaysPeriodsResponse.Response response = detailData.getData().getResponse();
-        titleDetail.setTitleTextSize(17);
-        titleDetail.setValueTextSize(20);
+
+        if(detailData.getData().getResponse().getNum_diasporautorizar() > 0){
+            String numDaysToAuthorized= String.valueOf(response.getNum_diasporautorizar());
+            if(response.getNum_diasporautorizar() % 1 == 0){
+                numDaysToAuthorized = numDaysToAuthorized.substring(0,numDaysToAuthorized.indexOf("."));
+                numDaysToAuthorized = String.valueOf(Integer.parseInt(numDaysToAuthorized));
+            }
+
+            vacacionesAutorizadas.setTexts(getContext().getString(R.string.holidays_to_authorized),
+                    String.format("%s %s",numDaysToAuthorized, detailData.getData().getResponse().getNum_diasporautorizar() > 0 ? "días" : "día"));
+
+            vacacionesAutorizadas.setTextsSize(12,12);
+            vacacionesAutorizadas.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+            vacacionesAutorizadas.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+            vacacionesAutorizadas.setVisibility(VISIBLE);
+        }
+
+
+        if(detailData.getData().getResponse().getNum_diasautorizados() > 0){
+
+            String numDaysAuthorized= String.valueOf(response.getNum_diasautorizados());
+            if(response.getNum_diasvacaciones() % 1 == 0){
+                numDaysAuthorized = numDaysAuthorized.substring(0,numDaysAuthorized.indexOf("."));
+                numDaysAuthorized = String.valueOf(Integer.parseInt(numDaysAuthorized));
+            }
+
+            vacacionesAgendadas.setTexts(getContext().getString(R.string.holidays_scheduled),
+                    String.format("%s %s",numDaysAuthorized, detailData.getData().getResponse().getNum_diasautorizados() > 0 ? "días" : "día"));
+            vacacionesAgendadas.setTextsSize(12,12);
+            vacacionesAgendadas.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
+            vacacionesAgendadas.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+            vacacionesAgendadas.setVisibility(VISIBLE);
+        }
+
+
+        nameColaborator.setText(TextUtilities.capitalizeText(getContext(),colaborator.getNom_empleado()));
+
+        if(colaborator.getFotoperfil() != null && !colaborator.getFotoperfil().isEmpty()){
+            Glide.with(getApplicationContext()).load(colaborator.getFotoperfil())
+                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                    .placeholder(R.drawable.ic_account_white)
+                    .into(imgColaborador);
+        }
+
+        titleDetail.hideDivider(true);
+        titleDetail.setTitleTextSize(14);
+        titleDetail.setValueTextSize(14);
         String numHolidays = String.valueOf(response.getNum_diasvacaciones());
         if(response.getNum_diasvacaciones() % 1 == 0){
             numHolidays = numHolidays.substring(0,numHolidays.indexOf("."));
@@ -90,14 +145,12 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         diasDecision.setTextsSize(12,12);
         diasDecision.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
         diasDecision.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
-
         //La etiqueta “Días Pendientes Año anterior” solo se mostrara si el campo num_decisionanterior es
         //mayor a 0.
         if(response.getNum_decisionanterior() > 0){
             diasPendientesAnterior.setVisibility(VISIBLE);
             diasPendientesAnterior.setGuideline73(0.70f);
             diasPendientesAnterior.setSingleLine(true);
-
             String daysPending = String.valueOf(response.getNum_decisionanterior());
             if(response.getNum_decisionanterior() % 1 == 0){
                 daysPending = daysPending.substring(0,daysPending.indexOf("."));
@@ -141,9 +194,9 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         diasAdicionalesRegistrados.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
 
         fechaPrimaVacacional.setSingleLine(true);
-
+        fechaPrimaVacacional.hideDivider();
         fechaPrimaVacacional.setGuideline73(0.50f);
-        fechaPrimaVacacional.setTexts(getContext().getString(R.string.title_bonus_date),String.valueOf(response.getFec_primavacacional()));
+        fechaPrimaVacacional.setTexts(getContext().getString(R.string.title_bonus_date),response.getFec_primavacacional());
         fechaPrimaVacacional.setTextsSize(12,12);
         fechaPrimaVacacional.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
         fechaPrimaVacacional.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));

@@ -27,6 +27,7 @@ import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class CollapsibleCalendar extends UICalendar {
 
@@ -41,6 +42,9 @@ public class CollapsibleCalendar extends UICalendar {
     private boolean mIsWaitingForUpdate = false;
 
     private int mCurrentWeekIndex;
+    /**Bandera para dias multiples**/
+    private boolean isMultipleDays;
+    private boolean isEnable;
 
     public CollapsibleCalendar(Context context) {
         super(context);
@@ -57,15 +61,9 @@ public class CollapsibleCalendar extends UICalendar {
     @Override
     protected void init(Context context) {
         super.init(context);
-
-
-
             Calendar cal = Calendar.getInstance();
             CalendarAdapter adapter = new CalendarAdapter(context, cal);
             setAdapter(adapter);
-
-
-
 
         // bind events
 
@@ -170,7 +168,7 @@ public class CollapsibleCalendar extends UICalendar {
                 }
 
                 // set the selected item
-                if (isSelectedDay(day)) {
+                if (isSelectedDay(day) || (isMultipleDays && isInSelectedDayList(day))) {
                     txtDay.setBackgroundDrawable(getSelectedItemBackgroundDrawable());
                     txtDay.setTextColor(getSelectedItemTextColor());
                     txtDay.setPadding(5,5,5,5);
@@ -266,6 +264,9 @@ public class CollapsibleCalendar extends UICalendar {
     }
 
     public void onItemClicked(View view, Day day) {
+
+        if(!isEnable) return;
+
         select(day);
 
         Calendar cal = mAdapter.getCalendar();
@@ -395,6 +396,21 @@ public class CollapsibleCalendar extends UICalendar {
                 && day.getYear() == getSelectedItem().getYear()
                 && day.getMonth() == getSelectedItem().getMonth()
                 && day.getDay() == getSelectedItem().getDay();
+    }
+
+    public boolean isInSelectedDayList(Day day) {
+
+        if(getSelectedItems() != null){
+            for(Day d : getSelectedItems()){
+                if(day.getYear() == d.getYear()
+                        && day.getMonth() == d.getMonth()
+                        && day.getDay() == d.getDay()){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public boolean isToady(Day day) {
@@ -569,6 +585,16 @@ public class CollapsibleCalendar extends UICalendar {
         }
     }
 
+    public void select(List<Day> days) {
+        setSelectedItems(days);
+
+        redraw();
+
+        if (mListener != null) {
+            mListener.onDaySelect();
+        }
+    }
+
     public void setStateWithUpdateUI(int state) {
         setState(state);
 
@@ -610,6 +636,12 @@ public class CollapsibleCalendar extends UICalendar {
     }
 
 
+    public void setMultipleDays(boolean multipleDays) {
+        isMultipleDays = multipleDays;
+    }
 
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
 }
 

@@ -319,7 +319,7 @@
     <string name="title_admin_holidays">Administrar vacaciones</string>
     <string name="title_dates_selected">Fechas seleccionadas</string>
     <string name="title_periods_holidays">Períodos de vacaciones</string>
-
+    <string name="title_period_holidays">Período de vacaciones</string>
 
     <string name="title_holidays_days">Días de vacaciones</string>
     <string name="title_days">días</string>
@@ -342,6 +342,7 @@
 
     <string name="btn_request_all">Soliciar\ntodas</string>
     <string name="btn_schedule_more">Agendar más\nvacaciones</string>
+    <string name="btn_schedule_holidays">Agendar vacaciones</string>
 
     <string name="title_total_request_days">Total días solicitados</string>
     <string name="title_days_to_schedule">Días por agendar</string>
@@ -359,5 +360,21 @@
     <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
     <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>
     <string name="btn_text_calendar_holidays">Lista de Vacaciones agendadas a los colaboradores</string>
+    <string name="title_calendar_proposed">Ver calendario de días propuestos</string>
+    <string name="title_splice">Empalme entre este colaborador y otro(s)</string>
+
+    <string name="btn_aditional_days_holidays">Capturar días adicionales</string>
+    <string name="hint_reason_aditional_days">Escribe el motivo aquí</string>
+    <string name="btn_title_authorize">Autorizar</string>
+    <string name="title_reason_aditional_days">Selecciona el motivo</string>
+
+    <string name="title_control_aditional_days">¿Cuántos días adicionales\nocupa el colaborador?</string>
+    <string name="title_add_aditional_days">Agrega o quita días adicionales</string>
+    <string name="title_add_aditional_days_pending">Días adicionales Pendientes</string>
+    <string name="btn_title_next">Siguiente</string>
+
+    <string name="holidays_to_authorized">Vacaciones por autorizar</string>
+    <string name="holidays_scheduled">Vacaciones agendadas</string>
+    <string name="title_add_aditional_days_toolbar">Días adicionales</string>
 
 </resources>

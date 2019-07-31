@@ -16,8 +16,11 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPago
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailControlExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorsHolidaysRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorsPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetDetailPeriodHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
@@ -38,9 +41,12 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesReasonAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRefuseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesSendAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesSendPeriodsHolidaysRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesValidateAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -244,5 +250,28 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> cancelHolidayPeriod(@Url String url,@Header("Authorization") String token, @Body CoppelServicesCancelPeriodsHolidaysRequest servicesRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getCentersHoliday(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetCentersHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getColaboratosHoliday(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetColaboratorsHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getColaboratosPeriodsHoliday(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetColaboratorsPeriodsHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> validateAditionalDays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesValidateAditionalDaysHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getReasonsAditionalDays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesReasonAditionalDaysHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> sendAditionalDays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSendAditionalDaysHolidaysRequest servicesRequest);
 
 }

@@ -30,9 +30,11 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
+import com.coppel.rhconecta.dev.business.models.HolidaysCancelResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -67,6 +69,8 @@ import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIOD_DE
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
@@ -84,6 +88,9 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private DialogFragmentWarning dialogFragmentWarning;
 
 
+
+    @BindView(R.id.bordeAmarillo)
+    View bordeAmarillo;
     @BindView(R.id.layoutObservaciones)
     LinearLayout layoutObservaciones;
     @BindView(R.id.estatus)
@@ -102,6 +109,13 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     TextView fechaRechazo;
     @BindView(R.id.motivoRechazo)
     TextView motivoRechazo;
+
+    @BindView(R.id.txtDate)
+    TextView txtDate;
+    @BindView(R.id.txtReason)
+    TextView txtReason;
+
+
     @BindView(R.id.btnCancel)
     Button btnCancel;
 
@@ -116,6 +130,8 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
     private HolidayPeriod holidayPeriod;
+
+    private boolean isCanceled;
 
     private long mLastClickTime = 0;
 
@@ -152,7 +168,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
         if(getActivity() instanceof VacacionesActivity){
             parent = (VacacionesActivity) getActivity();
-            ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
+            ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_period_holidays));
         }
 
         btnCancel.setOnClickListener(this);
@@ -169,7 +185,8 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
         collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
         collapsibleCalendar.setExpandIconVisible(false);
-
+        collapsibleCalendar.setMultipleDays(true);
+        collapsibleCalendar.setEnable(false);
         expObservaciones.setText("Observaciones");
         expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
@@ -203,12 +220,57 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         gd.setCornerRadius(40);
         estatus.setBackgroundDrawable(gd);
 
+        txtDate.setText(getDateTitle(holidayPeriod.getIdu_estatus()));
+        txtReason.setText(getReasonTitle(holidayPeriod.getIdu_estatus()));
+
         nombreGte.setText(detail.getNom_gerente());
         fechaRechazo.setText(detail.getFec_estatus());
         motivoRechazo.setText(detail.getDes_comentario());
 
-        setSelectedDays(response);
 
+        if(response.getData().getResponse().get(0).getIdu_estatus() == 1 ||
+                response.getData().getResponse().get(0).getIdu_autorizo() == 2 ||
+                response.getData().getResponse().get(0).getIdu_autorizo() == 3  ){
+            setSelectedDays(response);
+        }else {
+            hideCalendar();
+        }
+
+    }
+
+    private String getDateTitle(int status){
+        switch (status){
+            case  1:
+                return "Fecha";
+
+            case  2:
+                return "Fecha de Rechazo";
+            case  3:
+                return "Fecha de Cancelación";
+        }
+        return "Fecha";
+    }
+
+    private String getReasonTitle(int status){
+        switch (status){
+            case  1:
+                return "";
+
+            case  2:
+                return "Motivo de Rechazo";
+            case  3:
+                return "Motivo de Cancelación";
+        }
+        return "";
+    }
+
+    private void hideCalendar(){
+        expObservaciones.setVisibility(View.GONE);
+        layoutObservaciones.setVisibility(VISIBLE);
+        layoutObservaciones.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
+        bordeAmarillo.setVisibility(View.GONE);
+        collapsibleCalendar.setVisibility(View.GONE);
+        btnCancel.setVisibility(View.GONE);
     }
 
     private void setSelectedDays(HolidayGetDetailPeriodResponse response){
@@ -244,14 +306,16 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
         collapsibleCalendar.setAdapter(adapter);
 
+        List<Day> listDaySelected = new ArrayList<>();
 
         do{
-
-            collapsibleCalendar.select(new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)));
+            listDaySelected.add(new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)));
             calendar.add(Calendar.DATE,1);
 
         }while (!calendar.after(calendar_Fin));
 
+
+        collapsibleCalendar.select(listDaySelected);
 
     }
 
@@ -292,7 +356,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
 
     private void cancelRequest(){
-
+        showAlertDialogDeletePeriods();
     }
 
     @Override
@@ -311,8 +375,11 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
                     HolidayGetDetailPeriodResponse responseDetail = (HolidayGetDetailPeriodResponse)response.getResponse();
                     setDataHeader(responseDetail);
 
+                }else if(response.getResponse() instanceof HolidaysCancelResponse) {
+                    HolidaysCancelResponse responseDetail = (HolidaysCancelResponse)response.getResponse();
+                    showWarningDialog(responseDetail.getData().getResponse().get(0).getDes_mensaje());
+                    isCanceled = true;
                 }
-
                 break;
         }
     }
@@ -337,6 +404,12 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
               }
 
               dialogFragmentWarning.close();
+
+              if(isCanceled){
+                  NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                          BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+                  getActivity().finish();
+              }
           }
 
           @Override
@@ -374,7 +447,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     }
 
 
-    private void showAlertDialogDeletePeriods(List<HolidayPeriod> periodsSelected) {
+    private void showAlertDialogDeletePeriods() {
         dialogFragmentDeletePeriods = new DialogFragmentDeletePeriods();
         dialogFragmentDeletePeriods.setOnOptionClick(new DialogFragmentDeletePeriods.OnOptionClick() {
             @Override

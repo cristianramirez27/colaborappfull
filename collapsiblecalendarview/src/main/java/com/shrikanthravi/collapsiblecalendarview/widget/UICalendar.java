@@ -19,6 +19,8 @@ import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 import com.shrikanthravi.collapsiblecalendarview.view.LockScrollView;
 
+import java.util.List;
+
 
 public abstract class UICalendar extends LinearLayout {
 
@@ -74,6 +76,9 @@ public abstract class UICalendar extends LinearLayout {
             getResources().getDrawable(R.drawable.right_icon);
 
     private Day mSelectedItem = null;
+
+    /**Lista de días seleccionados**/
+    private List<Day> listSelectedDays = null;
 
     private int mButtonLeftDrawableTintColor=Color.BLACK;
     private int mButtonRightDrawableTintColor=Color.BLACK;
@@ -331,13 +336,26 @@ public abstract class UICalendar extends LinearLayout {
         mBtnNextWeek.setImageDrawable(buttonRightDrawable);
     }
 
-    public Day      getSelectedItem() {
+    public Day getSelectedItem() {
         return mSelectedItem;
     }
+
+    public List<Day> getSelectedItems(){
+
+        return listSelectedDays;
+
+    }
+
 
     public void setSelectedItem(Day selectedItem) {
         this.mSelectedItem = selectedItem;
     }
+
+
+    public void setSelectedItems(List<Day> selectedItems) {
+        this.listSelectedDays = selectedItems;
+    }
+
 
 
     public void setVisibilityExpandIcon(int visibility){

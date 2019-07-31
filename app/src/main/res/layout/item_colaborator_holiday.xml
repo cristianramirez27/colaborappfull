@@ -12,6 +12,7 @@
     android:layout_marginBottom="5dp"
     android:layout_marginRight="1dp"
     android:layout_marginLeft="1dp"
+    android:minHeight="54dp"
     card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
     app:cardCornerRadius="4dp">
 
@@ -19,12 +20,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_centerVertical="true">
 
         <com.coppel.rhconecta.dev.views.customviews.CircleImageView
             android:id="@+id/imgColaborador"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="10dp"
+            android:padding="0dp"
+            app:srcCompat="@drawable/ic_account_white"
+            android:backgroundTint="@color/colorGrisDeshabilitado"
             android:background="@drawable/bg_circle_shadow"
             android:layout_alignParentLeft="true"/>
 
@@ -34,7 +40,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lineto_circular_pro_medium"
             android:textColor="@color/colorBackgroundCoppelNegro"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
             android:text="Nombre"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/imgColaborador"

@@ -21,42 +21,23 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType;
-import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.Center;
 import com.coppel.rhconecta.dev.business.models.CentersHolidayResponse;
-import com.coppel.rhconecta.dev.business.models.CentersResponse;
-import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
-import com.coppel.rhconecta.dev.business.models.Estatus;
-import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
-import com.coppel.rhconecta.dev.business.models.FiltersControlsResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysColaboratorsResponse;
-import com.coppel.rhconecta.dev.business.models.RequestsLiquiGteListExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.ColaboratorHolidayRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorControlsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorMonthsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelMonthsRequestRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
-import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCenter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentEstatus;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -69,24 +50,21 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CENTERS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_COLABORATORS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HolidayRequestListFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
+public class HolidayAditionalDayListFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
         ColaboratorHolidayRecyclerAdapter.OnRequestSelectedClickListener,
         DialogFragmentCenter.OnButonOptionClick, DialogFragmentWarning.OnOptionClick{
 
-    public static final String TAG = HolidayRequestListFragment.class.getSimpleName();
+    public static final String TAG = HolidayAditionalDayListFragment.class.getSimpleName();
     private AppCompatActivity parent;
 
     @BindView(R.id.edtSearch)
@@ -98,35 +76,26 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;
 
-
-
     private DialogFragmentCenter dialogFragmentCenter;
     private Center centerSelected;
-
     private DialogFragmentEstatus dialogFragmentEstatus;
-
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
-
     private List<ColaboratorHoliday> colaboratorHolidays;
-
     private String searchName = "";
-
     private ColaboratorHolidayRecyclerAdapter colaboratorHolidayRecyclerAdapter;
-
     private boolean EXPIRED_SESSION;
     private DialogFragmentWarning dialogFragmentWarning;
-
     private   CentersHolidayResponse centersResponse;
-
     private long mLastClickTime = 0;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
 
-    public static HolidayRequestListFragment getInstance(){
-        HolidayRequestListFragment fragment = new HolidayRequestListFragment();
+    public static HolidayAditionalDayListFragment getInstance(){
+        HolidayAditionalDayListFragment fragment = new HolidayAditionalDayListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -167,21 +136,18 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().length() == 0){
                     searchName = "";
-                    /**TODO corregir esta carga  */
-                   // getColaborators(centerSelected.getNum_centro(),searchName);
+                    getColaborators(centerSelected.getNum_centro(),searchName);
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -227,15 +193,13 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
     }
 
     @Override
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
             case ServicesRequestType.HOLIDAYS:
-                if(response.getResponse() instanceof CentersHolidayResponse) {
+                if(response.getResponse() instanceof CentersHolidayResponse){
                     //Centros
                     centersResponse = (CentersHolidayResponse)response.getResponse();
                     if (centersResponse.getData().getResponse().getCentros() != null &&
@@ -248,16 +212,14 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
                             seleccionCentroLayout.setClickable(false);
                         }
                     }
-
                     /**Si clv_mensaje = 1 entonces mostrar el mensaje de des_mensaje**/
                     if(centersResponse.getData().getResponse().getClv_mensaje() == 1){
                         showWarningDialog(centersResponse.getData().getResponse().getDes_mensaje());
                     }
-
                     //Buscamos los colaboradores sin importar el centro
                     getColaborators(-1,searchName);
                 } if(response.getResponse() instanceof HolidaysColaboratorsResponse) {
-                HolidaysColaboratorsResponse colaboratorsResponse = (HolidaysColaboratorsResponse)response.getResponse();
+                    HolidaysColaboratorsResponse colaboratorsResponse = (HolidaysColaboratorsResponse)response.getResponse();
                     /**Si clv_mensaje = 1 entonces mostrar el mensaje de des_mensaje**/
                     if (colaboratorsResponse.getData().getResponse().getClv_mensaje() == 1) {
                         showWarningDialog(colaboratorsResponse.getData().getResponse().getDes_mensaje());
@@ -389,6 +351,6 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
 
     @Override
     public void onRequestSelectedClick(ColaboratorHoliday colaboratorHoliday) {
-        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS,colaboratorHoliday);
+        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS,colaboratorHoliday);
     }
 }

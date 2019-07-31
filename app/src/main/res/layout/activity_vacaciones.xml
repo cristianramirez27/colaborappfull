@@ -27,7 +27,6 @@
                 app:titleTextAppearance="@style/Toolbar.TitleText" />
 
             <TextView
-                android:layout_marginTop="20dp"
                 android:id="@+id/eliminateOption"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
@@ -39,7 +38,7 @@
                 android:layout_alignParentRight="true"
                 android:padding="6dp"
                 android:layout_marginRight="16dp"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
         </RelativeLayout>

@@ -24,6 +24,9 @@ public class TextViewExpandableRightArrowHeader extends ConstraintLayout impleme
     TextView txvTitle;
     @BindView(R.id.txvValue)
     TextView txvValue;
+    @BindView(R.id.viewDivider)
+    View viewDivider;
+
 
     public TextViewExpandableRightArrowHeader(Context context) {
         super(context);
@@ -46,6 +49,8 @@ public class TextViewExpandableRightArrowHeader extends ConstraintLayout impleme
         txvTitle.setText(startText);
         txvValue.setText(endText);
     }
+
+
 
     public boolean isExpanded() {
         return isExpanded;
@@ -93,5 +98,9 @@ public class TextViewExpandableRightArrowHeader extends ConstraintLayout impleme
     public void setExpandedTrue() {
         imgvArrow.setImageResource(R.drawable.ic_up_arrow_blue);
         isExpanded = true;
+    }
+
+    public void hideDivider(boolean hide){
+        viewDivider.setVisibility(hide ? GONE : VISIBLE);
     }
 }

@@ -26,6 +26,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayRequestRecyclerAdapter.ViewHolder> {
 
     private List<HolidayPeriod> dataItems;
@@ -53,13 +56,32 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.itemView.setHasTransientState(true);
-
         viewHolder.fechaInicio.setText(dataItems.get(i).getFec_ini());
         viewHolder.fechaFin.setText(dataItems.get(i).getFec_fin());
-        viewHolder.diasVacaciones.setText(String.format("%s",String.valueOf(dataItems.get(i).getNum_dias())));
-        viewHolder.layoutEstatusContainer.setVisibility( dataItems.get(i).getNom_estatus()!= null && !dataItems.get(i).getNom_estatus().isEmpty() ?  View.VISIBLE : View.GONE);
+        String daysNumber = "";
+        try {
+            daysNumber = String.valueOf(dataItems.get(i).getNum_dias()).split(" ")[0].trim();
+            if (Double.parseDouble(daysNumber) % 1 == 0) {
+                daysNumber = daysNumber.substring(0, daysNumber.indexOf("."));
+                daysNumber = String.valueOf(Integer.parseInt(daysNumber));
+            }
 
+        }catch (Exception e){
+            daysNumber = String.valueOf(dataItems.get(i).getNum_dias());
+        }
+
+
+        viewHolder.diasVacaciones.setText(String.format("%s %s",daysNumber, daysNumber.equals("1") ? "día" : "días"));
+        viewHolder.layoutEstatusContainer.setVisibility( dataItems.get(i).getNom_estatus()!= null && !dataItems.get(i).getNom_estatus().isEmpty() ?  VISIBLE : View.GONE);
+        viewHolder.checkboxElement.setVisibility(showCheckOption(dataItems.get(i).getIdu_estatus()) ? VISIBLE : INVISIBLE);
         viewHolder.checkboxElement.setChecked(dataItems.get(i).isSelected());
+
+        viewHolder.ic_solicitud.setVisibility(!isSchedule ? VISIBLE : View.GONE);
+        if(!isSchedule){
+            viewHolder.ic_solicitud.setImageResource(getIcon(dataItems.get(i).getIdu_estatus()));
+        }
+
+        viewHolder.markerSplice.setVisibility(dataItems.get(i).getIdu_marca() == 1 ? VISIBLE : View.GONE);
 
         viewHolder.checkboxElement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -72,7 +94,6 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
                     dataItems.get(i).setSelected(false);
                     hideEliminateOptionIfIsNecessary();
                 }
-
             }
         });
 
@@ -93,6 +114,39 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         });
 
 
+    }
+
+    private int getIcon(int status){
+
+        switch (status){
+
+            case 1:
+                return R.drawable.ic_icn_calendar;
+
+            case 3:
+            case 2:
+                return R.drawable.ic_icn_masinfo;
+
+                default:
+                return R.drawable.ic_icn_masinfo;
+
+        }
+
+    }
+
+    private boolean showCheckOption(int status){
+
+        if(isSchedule)
+            return true;
+
+        if(status == 1) {
+         /**Validar que la fecha de inicio sea mayor a la fecha actual*/
+
+            return true;
+
+        }
+
+        return false;
     }
 
 
@@ -159,6 +213,10 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         TextView fechaFin;
         @BindView(R.id.diasVacaciones)
         TextView diasVacaciones;
+        @BindView(R.id.markerSplice)
+        View markerSplice;
+
+
 
 
         public ViewHolder(@NonNull View itemView) {

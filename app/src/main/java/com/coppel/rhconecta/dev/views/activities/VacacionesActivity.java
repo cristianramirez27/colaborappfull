@@ -14,14 +14,17 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
+import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorAditionalDaysHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysScheduleFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorRequestHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.DetailPeriodFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.HolidayRequestListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysMenuGteFragment;
@@ -40,6 +43,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DA
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
@@ -107,6 +112,17 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             case BUNDLE_OPTION_HOLIDAY_REQUESTS:
                 replaceFragment(new HolidayRequestListFragment(), HolidayRequestListFragment.TAG);
                 break;
+
+
+            case BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS:
+                replaceFragment(ColaboratorRequestHolidaysFragment.getInstance((ColaboratorHoliday)data), ColaboratorRequestHolidaysFragment.TAG);
+                break;
+
+            case BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS:
+                replaceFragment(ColaboratorAditionalDaysHolidaysFragment.getInstance((ColaboratorHoliday)data), ColaboratorAditionalDaysHolidaysFragment.TAG);
+                break;
+
+
 
         }
     }

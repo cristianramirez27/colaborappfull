@@ -11,16 +11,22 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.views.customviews.CircleImageView;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<ColaboratorHolidayRecyclerAdapter.ViewHolder> {
 
@@ -45,12 +51,20 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final ColaboratorHoliday currentItem = colaborators.get(i);
 
-        viewHolder.txvName.setText(currentItem.getName());
+        viewHolder.txvName.setText(TextUtilities.capitalizeText(getContext(),currentItem.getNom_empleado()));
+
+        if(currentItem.getFotoperfil() != null && !currentItem.getFotoperfil().isEmpty()){
+            Glide.with(getApplicationContext()).load(currentItem.getFotoperfil())
+                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                    .placeholder(R.drawable.ic_account_white)
+                    .into(viewHolder.imgColaborador);
+        }
 
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                onRequestSelectedClick.onRequestSelectedClick(currentItem);
             }
         });
     }
