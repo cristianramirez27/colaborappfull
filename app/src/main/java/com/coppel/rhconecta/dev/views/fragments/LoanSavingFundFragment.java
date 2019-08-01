@@ -142,26 +142,34 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         switch (response.getType()) {
             case ServicesRequestType.LOAN_SAVINGFUND:
 
-                loanSavingFundResponse = (LoanSavingFundResponse) response.getResponse();
-                txvLoanMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getMargenCredito()))));
-                txvBuyMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getMargenCompra()))));
-                txvEnterpriseFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoEmpresa()))));
-                txvCurrentAccountValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getCuentaCorriente()))));
-                txvAdditionalSavingValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getAhorroAdicional()))));
-                txvEmployeeFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
-                        Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoTrabajador()))));
+                try {
 
-                if(firstTime){
-                    firstTime = false;
-                    LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
-                    loanSavingFundMainChildFragment.setISelectedOption(this);
-                    fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
+                    loanSavingFundResponse = (LoanSavingFundResponse) response.getResponse();
+                    txvLoanMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getMargenCredito()))));
+                    txvBuyMarginValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getMargenCompra()))));
+                    txvEnterpriseFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoEmpresa()))));
 
+                    String n = TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getCuentaCorriente());
+                    txvCurrentAccountValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(n)));
+                    txvAdditionalSavingValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getAhorroAdicional()))));
+                    txvEmployeeFoundValue.setText(TextUtilities.getNumberInCurrencyFormat(
+                            Double.parseDouble(TextUtilities.insertDecimalPoint(loanSavingFundResponse.getData().getResponse().getFondoTrabajador()))));
+
+                    if (firstTime) {
+                        firstTime = false;
+                        LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
+                        loanSavingFundMainChildFragment.setISelectedOption(this);
+                        fragmentTransaction.add(R.id.flChildFragmentContainer, loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
+
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
 
