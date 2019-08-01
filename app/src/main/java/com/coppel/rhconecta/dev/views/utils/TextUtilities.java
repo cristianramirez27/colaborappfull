@@ -66,14 +66,26 @@ public class TextUtilities {
 
     public static String insertDecimalPoint(String number) {
         try {
+            /**Validamos si es negativo*/
+            boolean isNegative = false;
 
+            if(number.contains("-")){
+                isNegative = true;
+                number = number.replace("-","");
+            }
+            /**********************/
             if(number.length() == 1){
                 number="0"+number;
             }
 
             StringBuilder stringBuilder = new StringBuilder(number);
             stringBuilder.insert(number.length() - 2, '.');
-            return stringBuilder.toString();
+
+            String s = stringBuilder.toString();
+            if(isNegative){
+                s = "-"+s;
+            }
+            return s;
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
             return number;
