@@ -203,6 +203,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private boolean showHalfDaysOption = true;
     private double num_total_vacaciones;
     private double num_diasagendados;
+    private double limite_dias;
+
     private String des_mensaje;
 
     /**
@@ -1287,8 +1289,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             //Validar que los días seleccionados sean menor o igual a la variable num_totalvacaciones menos
             //num_diasagendados que se obtiene al entrar a la opción, en caso de que sea mayor mandar el
             //des_mensaje
-            double limitDays = (this.num_total_vacaciones-this.num_diasagendados);
-            if(totalDays <= limitDays){
+            if(totalDays <= limite_dias){
                 mCallBack.onDatesSelectedHolidays(periods, totalDays);
             }else {
                 mCallBack.onInvalidMaxSelectedDays(this.des_mensaje);
@@ -1422,6 +1423,14 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         this.num_diasagendados = num_diasagendados;
     }
 
+
+    public double getLimite_dias() {
+        return limite_dias;
+    }
+
+    public void setLimite_dias(double limite_dias) {
+        this.limite_dias = limite_dias;
+    }
 
     public String getDes_mensaje() {
         return des_mensaje;

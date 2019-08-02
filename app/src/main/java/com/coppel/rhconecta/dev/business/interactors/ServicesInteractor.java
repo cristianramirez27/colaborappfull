@@ -2813,6 +2813,13 @@ public class ServicesInteractor {
                 sendAditionalDays(holidayRequestData,token);
                 break;
 
+            case GET_CALENDAR_DAYS_PROPOSED:
+               getPeriodsOtherColaboratorsDays(holidayRequestData,token);
+                break;
+
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                scheduleHolidaysPeriods(holidayRequestData,token);
+                break;
 
         }
     }
@@ -3093,6 +3100,60 @@ public class ServicesInteractor {
 
 
 
+    private void getPeriodsOtherColaboratorsDays(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getPeriodsOtherColaborators(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesGetPeriodsHolidaysColaboratorsRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void scheduleHolidaysPeriods(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.scheduleHolidaysPeriods(ServicesConstants.GET_ENDPOINT_HOLIDAYS,token,
+                (CoppelServicesSchedulePeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse =   (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(),getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+
+
+
     public void getHolidayResponse(HolidaysBaseResponse response, int code) {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.HOLIDAYS);
@@ -3177,6 +3238,15 @@ public class ServicesInteractor {
                 clazz = HolidaySendAditionalDaysResponse.class;
                 break;
 
+            case GET_CALENDAR_DAYS_PROPOSED:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+
+
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                clazz = HolidaySchedulePeriodsResponse.class;
+                break;
+
         }
 
         return clazz;
@@ -3242,6 +3312,15 @@ public class ServicesInteractor {
                 coppelServicesBaseHolidaysRequest = new CoppelServicesSendAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
                     String.valueOf(holidaysRequestData.getNum_gerente()),holidaysRequestData.getNum_adicionales(),holidaysRequestData.getIdu_motivo(),holidaysRequestData.getDes_otromotivo());
                 break;
+            case GET_CALENDAR_DAYS_PROPOSED:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetPeriodsHolidaysColaboratorsRequest(holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()),
+                        holidaysRequestData.getNum_empconsulta(),holidaysRequestData.getFec_ini(),holidaysRequestData.getFec_fin());
+                break;
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSchedulePeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),holidaysRequestData.getNum_gerente(),
+                        holidaysRequestData.getDes_observaciones(),holidaysRequestData.getPeriodos());
+                break;
+
 
         }
 

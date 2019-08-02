@@ -15,6 +15,10 @@ public class HolidayPeriod implements Serializable {
     private List<MarkHoliday> ver_marca;
     private int idu_folio;
 
+    private String num_empleado;
+    private String nom_empleado;
+    private String fotoperfil;
+
     private boolean isSelected;
 private String idPeriod;
 
@@ -136,5 +140,29 @@ private String idPeriod;
 
     public void setVer_marca(List<MarkHoliday> ver_marca) {
         this.ver_marca = ver_marca;
+    }
+
+    public String getNum_empleado() {
+        return num_empleado;
+    }
+
+    public void setNum_empleado(String num_empleado) {
+        this.num_empleado = num_empleado;
+    }
+
+    public String getNom_empleado() {
+        return nom_empleado;
+    }
+
+    public void setNom_empleado(String nom_empleado) {
+        this.nom_empleado = nom_empleado;
+    }
+
+    public String getFotoperfil() {
+        return fotoperfil;
+    }
+
+    public void setFotoperfil(String fotoperfil) {
+        this.fotoperfil = fotoperfil;
     }
 }

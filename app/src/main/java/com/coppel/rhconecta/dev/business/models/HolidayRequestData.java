@@ -12,7 +12,7 @@ public class HolidayRequestData implements Serializable{
     private HolidaysType holidaysType;
     private int opcion;
     private String num_empleado;
-
+    private String num_empconsulta;
     private int num_gerente;
     private int num_suplente;
     private List<HolidayPeriodData> periodos;
@@ -22,12 +22,15 @@ public class HolidayRequestData implements Serializable{
     private String nom_empleado;
     private int clv_estatus;
 
-
+    private String des_observaciones;
     private int idu_folio;
 
     private int num_adicionales;
     private int idu_motivo;
     private String des_otromotivo;
+
+    private String fec_ini;
+    private String fec_fin;
 
     public HolidayRequestData(HolidaysType holidaysType, int opcion) {
         this.holidaysType = holidaysType;
@@ -150,5 +153,37 @@ public class HolidayRequestData implements Serializable{
 
     public void setDes_otromotivo(String des_otromotivo) {
         this.des_otromotivo = des_otromotivo;
+    }
+
+    public String getNum_empconsulta() {
+        return num_empconsulta;
+    }
+
+    public void setNum_empconsulta(String num_empconsulta) {
+        this.num_empconsulta = num_empconsulta;
+    }
+
+    public String getFec_ini() {
+        return fec_ini;
+    }
+
+    public void setFec_ini(String fec_ini) {
+        this.fec_ini = fec_ini;
+    }
+
+    public String getFec_fin() {
+        return fec_fin;
+    }
+
+    public void setFec_fin(String fec_fin) {
+        this.fec_fin = fec_fin;
+    }
+
+    public String getDes_observaciones() {
+        return des_observaciones;
+    }
+
+    public void setDes_observaciones(String des_observaciones) {
+        this.des_observaciones = des_observaciones;
     }
 }

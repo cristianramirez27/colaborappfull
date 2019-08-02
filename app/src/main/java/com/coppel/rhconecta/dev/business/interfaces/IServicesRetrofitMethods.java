@@ -26,6 +26,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesGetDetailPeriodHol
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetPeriodsHolidaysColaboratorsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRequestToAuthorizeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolHolidaysRequest;
@@ -44,6 +45,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesReasonAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRefuseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesSchedulePeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesSendAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesSendPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesValidateAditionalDaysHolidaysRequest;
@@ -273,5 +275,14 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> sendAditionalDays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSendAditionalDaysHolidaysRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getPeriodsOtherColaborators(@Url String url,@Header("Authorization") String token, @Body CoppelServicesGetPeriodsHolidaysColaboratorsRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> scheduleHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSchedulePeriodsHolidaysRequest servicesRequest);
 
 }

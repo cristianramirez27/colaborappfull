@@ -76,6 +76,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -164,7 +165,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
 
         holidayPeriodList = new ArrayList<>();
-        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList,IScheduleOptions,true);
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList,IScheduleOptions,true,false);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
         setValuesPeriods(configurationHolidaysData.getTotalDays());
@@ -364,6 +365,9 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
         datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
         datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
+        double limitDay = holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones() - holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados();
+        datePickerDialog.setLimite_dias(limitDay);
+
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar today = Calendar.getInstance();
@@ -482,10 +486,8 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         List<HolidayPeriodData> periodsToSend = new ArrayList<>();
 
         for(HolidayPeriod period : periodsSelected){
-            String fechaInicio = period.getFec_ini();
-            fechaInicio = fechaInicio.replace("-","").trim();
-            String fechaFin = period.getFec_fin();
-            fechaFin = fechaFin.replace("-","").trim();
+            String fechaInicio = getDateFormatToHolidays(period.getFec_ini(),true);
+            String fechaFin =  getDateFormatToHolidays(period.getFec_fin(),true);
             periodsToSend.add(new HolidayPeriodData(Double.parseDouble(period.getNum_dias()),fechaInicio,fechaFin));
         }
 

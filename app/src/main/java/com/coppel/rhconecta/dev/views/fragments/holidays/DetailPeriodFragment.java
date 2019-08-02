@@ -228,12 +228,11 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         motivoRechazo.setText(detail.getDes_comentario());
 
 
-        if(response.getData().getResponse().get(0).getIdu_estatus() == 1 ||
-                response.getData().getResponse().get(0).getIdu_autorizo() == 2 ||
-                response.getData().getResponse().get(0).getIdu_autorizo() == 3  ){
-            setSelectedDays(response);
-        }else {
+        if(response.getData().getResponse().get(0).getIdu_estatus() >= 2 &&
+                response.getData().getResponse().get(0).getIdu_estatus() <= 4 ){
             hideCalendar();
+        }else {
+            setSelectedDays(response);
         }
 
     }

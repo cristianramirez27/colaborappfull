@@ -44,6 +44,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         private String des_mensaje;
         private String des_marca;
 
+        private String des_nota;
 
         public double getNum_totalvacaciones() {
             return num_totalvacaciones;
@@ -163,6 +164,50 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
 
         public void setDes_marca(String des_marca) {
             this.des_marca = des_marca;
+        }
+
+        public void setNum_totalvacaciones(double num_totalvacaciones) {
+            this.num_totalvacaciones = num_totalvacaciones;
+        }
+
+        public void setNum_diasvacaciones(double num_diasvacaciones) {
+            this.num_diasvacaciones = num_diasvacaciones;
+        }
+
+        public void setNum_diasporautorizar(double num_diasporautorizar) {
+            this.num_diasporautorizar = num_diasporautorizar;
+        }
+
+        public void setNum_diasautorizados(double num_diasautorizados) {
+            this.num_diasautorizados = num_diasautorizados;
+        }
+
+        public void setNum_diasagendados(double num_diasagendados) {
+            this.num_diasagendados = num_diasagendados;
+        }
+
+        public void setNum_decision(double num_decision) {
+            this.num_decision = num_decision;
+        }
+
+        public void setNum_decisionanterior(double num_decisionanterior) {
+            this.num_decisionanterior = num_decisionanterior;
+        }
+
+        public void setNum_adicionales(double num_adicionales) {
+            this.num_adicionales = num_adicionales;
+        }
+
+        public void setNum_adicionalesagregadas(double num_adicionalesagregadas) {
+            this.num_adicionalesagregadas = num_adicionalesagregadas;
+        }
+
+        public String getDes_nota() {
+            return des_nota;
+        }
+
+        public void setDes_nota(String des_nota) {
+            this.des_nota = des_nota;
         }
     }
 }

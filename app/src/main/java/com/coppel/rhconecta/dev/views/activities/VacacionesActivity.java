@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
+import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
@@ -22,6 +23,7 @@ import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorAditionalDaysHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorCalendarHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysScheduleFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorRequestHolidaysFragment;
@@ -44,6 +46,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HO
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR_PROPOSED;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_REQUESTS;
@@ -121,6 +124,12 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             case BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS:
                 replaceFragment(ColaboratorAditionalDaysHolidaysFragment.getInstance((ColaboratorHoliday)data), ColaboratorAditionalDaysHolidaysFragment.TAG);
                 break;
+
+            case BUNDLE_OPTION_HOLIDAY_CALENDAR_PROPOSED:
+                replaceFragment(ColaboratorCalendarHolidaysFragment.getInstance((CalendarProposedData)data), ColaboratorCalendarHolidaysFragment.TAG);
+                break;
+
+
 
 
 

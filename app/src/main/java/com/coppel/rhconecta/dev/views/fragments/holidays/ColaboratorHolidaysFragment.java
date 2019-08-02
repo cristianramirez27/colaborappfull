@@ -132,7 +132,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
         btnSchedule.setOnClickListener(this);
         holidayPeriodList = new ArrayList<>();
-        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList, IScheduleOptions,false);
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList, IScheduleOptions,false,true);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
 
@@ -297,6 +297,8 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
         datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
         datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
+        double limitDay = holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones() - holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados();
+        datePickerDialog.setLimite_dias(limitDay);
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar today = Calendar.getInstance();

@@ -360,11 +360,13 @@
     <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
     <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>
     <string name="btn_text_calendar_holidays">Lista de Vacaciones agendadas a los colaboradores</string>
+    <string name="title_calendar_days_proposed">Días propuestos</string>
     <string name="title_calendar_proposed">Ver calendario de días propuestos</string>
     <string name="title_splice">Empalme entre este colaborador y otro(s)</string>
 
     <string name="btn_aditional_days_holidays">Capturar días adicionales</string>
     <string name="hint_reason_aditional_days">Escribe el motivo aquí</string>
+    <string name="hint_observation_days">Ingresa tus observacions aquí</string>
     <string name="btn_title_authorize">Autorizar</string>
     <string name="title_reason_aditional_days">Selecciona el motivo</string>
 
@@ -376,5 +378,8 @@
     <string name="holidays_to_authorized">Vacaciones por autorizar</string>
     <string name="holidays_scheduled">Vacaciones agendadas</string>
     <string name="title_add_aditional_days_toolbar">Días adicionales</string>
+
+    <string name="subtitle_observation_authorize">Escribe el motivo por el cual agenda las vacaciones del colaborador</string>
+
 
 </resources>

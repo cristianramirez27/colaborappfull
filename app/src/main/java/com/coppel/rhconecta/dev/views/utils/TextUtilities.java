@@ -164,5 +164,20 @@ public class TextUtilities {
         }
     }
 
+    public static String getDateFormatToHolidays(String date,boolean adjustMonth){
+        String[] dateFormat = date.split("-");
+        int month = adjustMonth ? Integer.parseInt(dateFormat[1]) + 1 : Integer.parseInt(dateFormat[1]);
+        String dateFormatted = String.format("%s%s%s",dateFormat[0],month > 9 ? String.valueOf(month) : "0" +month,dateFormat[2]);
+        return dateFormatted.trim();
+    }
+
+    public static String getDateFormatToHolidaysInverse(String date,boolean adjustMonth){
+        date = date.split(",")[1].trim();
+        String[] dateFormat = date.split("-");
+        int month = adjustMonth ? Integer.parseInt(dateFormat[1]) + 1 : Integer.parseInt(dateFormat[1]);
+        String dateFormatted = String.format("%s%s%s",dateFormat[2],month > 9 ? String.valueOf(month) : "0" +month,dateFormat[0]);
+        return dateFormatted.trim();
+    }
+
 
 }

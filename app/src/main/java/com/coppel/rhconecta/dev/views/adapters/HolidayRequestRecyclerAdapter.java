@@ -19,8 +19,10 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
+import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorRequestHolidaysFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,14 +36,18 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     private List<HolidayPeriod> dataItems;
     private IScheduleOptions IScheduleOptions;
     private boolean isSchedule;
-//
+    private boolean showIcon;
     private OnRequestSelectedClickListener OnRequestSelectedClickListener;
-   // private OnGasVoucherClickListener onGasVoucherClickListener;
 
-    public HolidayRequestRecyclerAdapter(List<HolidayPeriod> holidays,IScheduleOptions IScheduleOptions,boolean isSchedule) {
+    private ColaboratorRequestHolidaysFragment.ICalendarView ICalendarView;
+
+    private boolean isGte;
+
+    public HolidayRequestRecyclerAdapter(List<HolidayPeriod> holidays,IScheduleOptions IScheduleOptions,boolean isSchedule,boolean showIcon) {
        // this.isColaborator = isColaborator;
         this.dataItems = holidays;
         this.isSchedule = isSchedule;
+        this.showIcon = showIcon;
         this.IScheduleOptions = IScheduleOptions;
     }
 
@@ -73,11 +79,11 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
         viewHolder.diasVacaciones.setText(String.format("%s %s",daysNumber, daysNumber.equals("1") ? "día" : "días"));
         viewHolder.layoutEstatusContainer.setVisibility( dataItems.get(i).getNom_estatus()!= null && !dataItems.get(i).getNom_estatus().isEmpty() ?  VISIBLE : View.GONE);
-        viewHolder.checkboxElement.setVisibility(showCheckOption(dataItems.get(i).getIdu_estatus()) ? VISIBLE : INVISIBLE);
+        viewHolder.checkboxElement.setVisibility(showCheckOption(dataItems.get(i)) ? VISIBLE : INVISIBLE);
         viewHolder.checkboxElement.setChecked(dataItems.get(i).isSelected());
 
-        viewHolder.ic_solicitud.setVisibility(!isSchedule ? VISIBLE : View.GONE);
-        if(!isSchedule){
+        viewHolder.ic_solicitud.setVisibility(showIcon ? VISIBLE : INVISIBLE);
+        if(showIcon){
             viewHolder.ic_solicitud.setImageResource(getIcon(dataItems.get(i).getIdu_estatus()));
         }
 
@@ -89,10 +95,19 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
                 if(isChecked){
                     dataItems.get(i).setSelected(true);
-                    IScheduleOptions.showEliminatedOption(true,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                    if(isGte){
+                        IScheduleOptions.showEliminatedOption(true,"Rechazar");
+                    }else {
+                        IScheduleOptions.showEliminatedOption(true,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                    }
+
                 }else {
                     dataItems.get(i).setSelected(false);
                     hideEliminateOptionIfIsNecessary();
+                }
+
+                if(ICalendarView != null){
+                    ICalendarView.enableCalendarOption(isSingleSelection());
                 }
             }
         });
@@ -116,6 +131,17 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
     }
 
+    private boolean isSingleSelection(){
+        int selectedCount = 0 ;
+        for(HolidayPeriod period : dataItems){
+            if(period.isSelected()){
+                selectedCount++;
+            }
+        }
+
+        return selectedCount == 1 ? true : false;
+    }
+
     private int getIcon(int status){
 
         switch (status){
@@ -123,41 +149,62 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
             case 1:
                 return R.drawable.ic_icn_calendar;
 
+            case 4:
             case 3:
             case 2:
                 return R.drawable.ic_icn_masinfo;
 
                 default:
-                return R.drawable.ic_icn_masinfo;
+                    return R.drawable.ic_icn_calendar;
 
         }
 
     }
 
-    private boolean showCheckOption(int status){
+    public void setGte(boolean gte) {
+        isGte = gte;
+    }
+
+    public void setICalendarView(ColaboratorRequestHolidaysFragment.ICalendarView ICalendarView) {
+        this.ICalendarView = ICalendarView;
+    }
+
+    private boolean showCheckOption(HolidayPeriod period){
 
         if(isSchedule)
             return true;
 
-        if(status == 1) {
-         /**Validar que la fecha de inicio sea mayor a la fecha actual*/
-
-            return true;
-
+        if(period.getIdu_estatus()>= 2 && period.getIdu_estatus() <=4) {
+            return false;
         }
 
-        return false;
+        /**Validar que la fecha de inicio sea mayor a la fecha actual*/
+        String[] dateFormat =  period.getFec_ini().split(",")[1].split("-");
+        Calendar datePeriod = Calendar.getInstance();
+        datePeriod.set(Calendar.YEAR,Integer.parseInt(dateFormat[2].trim()));
+        datePeriod.set(Calendar.MONTH,Integer.parseInt(dateFormat[1].trim())-1);
+        datePeriod.set(Calendar.DAY_OF_MONTH,Integer.parseInt(dateFormat[0].trim()));
+        Calendar today = Calendar.getInstance();
+        if(!datePeriod.after(today)){
+            return false;
+        }
+
+
+        return true;
     }
 
 
     private void hideEliminateOptionIfIsNecessary(){
         for( HolidayPeriod period : dataItems){
             if(period.isSelected()){
-                IScheduleOptions.showEliminatedOption(true ,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                if(isGte){
+                    IScheduleOptions.showEliminatedOption(true ,"Rechazar");
+                }else {
+                    IScheduleOptions.showEliminatedOption(true ,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                }
                 return;
             }
         }
-
         IScheduleOptions.showEliminatedOption(false,"");
     }
 
