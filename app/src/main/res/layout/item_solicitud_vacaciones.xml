@@ -17,35 +17,36 @@
 
 
     <RelativeLayout
+        android:id="@+id/layoutRequest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="4dp">
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
 
         <RelativeLayout
             android:id="@+id/cbxLayout"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:visibility="visible"
+            android:layout_width="30dp"
+            android:paddingTop="4dp"
             android:layout_height="wrap_content">
-
-
             <CheckBox
+                android:theme="@style/MyCheckBox"
                 android:id="@+id/checkboxElement"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:buttonTint="@color/red_text"
-                android:backgroundTint="@color/colorSecundaryCoppelVerde"
                 android:checked="true"/>
-
-
-
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_toRightOf="@+id/cbxLayout"
             android:layout_width="match_parent"
-            android:padding="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp"
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:visibility="visible">
@@ -63,8 +64,6 @@
                     android:id="@+id/layoutEstatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
                     android:layout_centerVertical="true">
 
                     <TextView
@@ -75,8 +74,8 @@
                         android:fontFamily="@font/lineto_circular_pro_book"
                         android:gravity="left|center_vertical"
                         android:layout_alignParentLeft="true"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textColor="@color/colorBackgroundCoppelBlanco"
                         android:textSize="13sp"
                         android:visibility="visible" />
@@ -185,6 +184,7 @@
                     android:text="@string/title_holidays_days"
                     android:layout_alignParentLeft="true"
                     android:textSize="13sp"
+                    android:textStyle="bold"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 
 

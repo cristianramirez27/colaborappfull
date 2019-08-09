@@ -45,7 +45,6 @@
                 android:gravity="center"
                 android:layout_marginTop="12dp"
                 android:padding="2dp"
-                android:text="Atención"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
                 android:visibility="visible" />
@@ -58,7 +57,6 @@
                 android:layout_centerHorizontal="true"
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
-                android:text="¿Quieres eliminar estas fechas?"
                 android:textColor="@android:color/white"
                 android:textSize="21sp" />
 
@@ -71,7 +69,6 @@
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
-                android:text="Datos de periodos a eliminar"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:visibility="visible" />

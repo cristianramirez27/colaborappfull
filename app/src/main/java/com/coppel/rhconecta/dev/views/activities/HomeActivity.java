@@ -56,7 +56,6 @@ import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysRolMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
@@ -84,8 +83,6 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;

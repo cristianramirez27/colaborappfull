@@ -6,6 +6,7 @@ import java.util.List;
 public class HolidayPeriod implements Serializable {
     private int idu_estatus;
     private String nom_estatus;
+    private String nom_estaus;
     private String color;
     private String num_dias;
     private String fec_ini;
@@ -21,6 +22,11 @@ public class HolidayPeriod implements Serializable {
 
     private boolean isSelected;
 private String idPeriod;
+
+private boolean showMarker;
+
+    public HolidayPeriod() {
+    }
 
     public HolidayPeriod(int idu_estatus, String nom_estatus, String color, String num_dias, String fec_ini, String fec_fin, int idu_folio) {
         this.idu_estatus = idu_estatus;
@@ -164,5 +170,22 @@ private String idPeriod;
 
     public void setFotoperfil(String fotoperfil) {
         this.fotoperfil = fotoperfil;
+    }
+
+
+    public boolean isShowMarker() {
+        return showMarker;
+    }
+
+    public void setShowMarker(boolean showMarker) {
+        this.showMarker = showMarker;
+    }
+
+    public String getNom_estaus() {
+        return nom_estaus;
+    }
+
+    public void setNom_estaus(String nom_estaus) {
+        this.nom_estaus = nom_estaus;
     }
 }

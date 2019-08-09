@@ -18,7 +18,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="4dp">
 
@@ -26,11 +26,22 @@
             android:id="@+id/cbxLayout"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
             android:paddingTop="16dp">
+
+            <View
+                android:id="@+id/markerSpliceLeft"
+                android:background="@drawable/backgroud_circle_melon"
+                android:layout_alignParentLeft="true"
+                android:visibility="gone"
+                android:layout_width="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="8dp" />
 
             <com.coppel.rhconecta.dev.views.customviews.CircleImageView
                 android:id="@+id/imgColaborador"
+                android:layout_toRightOf="@+id/markerSpliceLeft"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="10dp"
@@ -38,8 +49,7 @@
                 android:layout_alignParentTop="true"
                 app:srcCompat="@drawable/ic_account_white"
                 android:backgroundTint="@color/colorGrisDeshabilitado"
-                android:background="@drawable/bg_circle_shadow"
-                android:layout_alignParentLeft="true"/>
+                android:background="@drawable/bg_circle_shadow"/>
 
 
 
@@ -48,7 +58,10 @@
         <LinearLayout
             android:layout_toRightOf="@+id/cbxLayout"
             android:layout_width="match_parent"
-            android:padding="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="6dp"
+            android:paddingTop="4dp"
             android:orientation="vertical"
             android:layout_height="wrap_content"
             android:visibility="visible">
@@ -57,7 +70,6 @@
                 android:visibility="visible"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
-                android:layout_weight="1"
                 android:id="@+id/layoutEstatusContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -69,12 +81,10 @@
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:textColor="@color/colorBackgroundCoppelNegro"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="8dp"
                     android:text="Nombre"
                     android:textSize="15sp" />
 
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:layout_gravity="center"
@@ -152,6 +162,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -204,7 +215,6 @@
 
 
             </RelativeLayout>
-
 
         </LinearLayout>
 

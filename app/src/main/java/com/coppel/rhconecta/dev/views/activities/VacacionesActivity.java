@@ -17,45 +17,42 @@ import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
+import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
-import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorAditionalDaysHolidaysFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorCalendarHolidaysFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorHolidaysScheduleFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorRequestHolidaysFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.DetailPeriodFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.HolidayRequestListFragment;
-import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysMenuGteFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.ColaboratorAditionalDaysHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralPeriodsHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.ColaboratorCalendarHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.colaborator.ColaboratorHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.colaborator.ColaboratorHolidaysScheduleFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.ColaboratorRequestHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.colaborator.DetailPeriodFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCalendarListFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidaySpliceCalendarListFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.HolidaysMenuGteFragment;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR_PROPOSED;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_REQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLABORATOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
 public class VacacionesActivity extends AppCompatActivity implements OnEventListener, IScheduleOptions {
 
@@ -65,10 +62,15 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
     private Object data;
+    private String titleActivity;
+    private boolean isOpenMenuToolbar;
 
 
     @BindView(R.id.eliminateOption)
     TextView eliminateOption;
+    @BindView(R.id.authorizeOption)
+    TextView authorizeOption;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
     }
 
     public void setToolbarTitle(String title) {
+        titleActivity = title;
         tbActionBar.setTitle(title);
     }
 
@@ -99,7 +102,6 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             case BUNDLE_OPTION_COLABORATOR_SCHEDULE:
                 replaceFragment(ColaboratorHolidaysScheduleFragment.getInstance((ConfigurationHolidaysData)data), ColaboratorHolidaysScheduleFragment.TAG);
                 break;
-
             case BUNDLE_OPTION_HOLIDAYREQUESTS:
                 replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysScheduleFragment.TAG);
                 break;
@@ -130,7 +132,22 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
                 break;
 
 
+            case BUNDLE_OPTION_HOLIDAY_CALENDAR:
+                replaceFragment(HolidayCalendarListFragment.getInstance(), HolidayCalendarListFragment.TAG);
+                break;
 
+            case BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR:
+                replaceFragment(HolidaySpliceCalendarListFragment.getInstance((SpliceSelectedVO)data), HolidaySpliceCalendarListFragment.TAG);
+                break;
+
+
+            case BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR:
+                replaceFragment(ColaboratorCalendarGralHolidaysFragment.getInstance((ColaboratorHoliday) data), ColaboratorCalendarGralHolidaysFragment.TAG);
+                break;
+
+            case BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS:
+                replaceFragment(ColaboratorCalendarGralPeriodsHolidaysFragment.getInstance((HolidayPeriod) data), ColaboratorCalendarGralPeriodsHolidaysFragment.TAG);
+                break;
 
 
         }
@@ -147,12 +164,22 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
     @Override
     public void onBackPressed() {
-        int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
-        if (backStackEntryCount == 1) {
-            finish();
-        } else if (backStackEntryCount > 1) {
-            super.onBackPressed();
+        if(isOpenMenuToolbar){
+            isOpenMenuToolbar = false;
+            showTitle(true);
+            showEliminatedOption(false,"");
+            showAuthorizeOption(false);
+
+        }else {
+            showEliminatedOption(false,"");
+            int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
+            if (backStackEntryCount == 1) {
+                finish();
+            } else if (backStackEntryCount > 1) {
+                super.onBackPressed();
+            }
         }
+
     }
 
 
@@ -173,6 +200,11 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
     }
 
     @Override
+    public void showAuthorizeOption(boolean show) {
+        this.authorizeOption.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
     public void setActionEliminatedOption(Command action) {
             this.eliminateOption.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -180,5 +212,30 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
                     action.execute();
                 }
             });
+    }
+
+
+    @Override
+    public void setActionAuthorizeOption(Command action) {
+        this.authorizeOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action.execute();
+            }
+        });
+    }
+
+    @Override
+    public void showTitle(boolean show) {
+        tbActionBar.setTitle(show ? titleActivity : "");
+        changeIconToolbar(show ? R.drawable.ic_left_arrow_black : R.drawable.ic_close_black );
+        if(!show){
+            isOpenMenuToolbar = true;
+        }
+    }
+
+    @Override
+    public void changeIconToolbar(int icon) {
+        tbActionBar.setNavigationIcon(icon);
     }
 }

@@ -57,7 +57,7 @@
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_dates_selected"
                     android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="18sp" />
+                    android:textSize="22sp" />
 
 
                 <TextView

@@ -71,8 +71,12 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         HolidaysPeriodsResponse.Response response = detailData.getData().getResponse();
         titleDetail.setTitleTextSize(17);
         titleDetail.setValueTextSize(20);
-        String numHolidays = String.valueOf(response.getNum_diasvacaciones());
-        if(response.getNum_diasvacaciones() % 1 == 0){
+
+        //TODO Validar que esta suma sea correcta
+        double holidayDaysTotal = response.getNum_adicionales() + response.getNum_decision() + response.getNum_decisionanterior();
+        String numHolidays = String.valueOf(holidayDaysTotal);
+        //String numHolidays = String.valueOf(response.getNum_diasvacaciones());
+        if(holidayDaysTotal % 1 == 0){
             numHolidays = numHolidays.substring(0,numHolidays.indexOf("."));
             numHolidays = String.valueOf(Integer.parseInt(numHolidays));
         }
@@ -127,7 +131,7 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         diasAdicionalesPendientes.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
         diasAdicionalesPendientes.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
 
-        diasAdicionalesRegistrados.setGuideline73(0.70f);
+        diasAdicionalesRegistrados.setGuideline73(0.85f);
         diasAdicionalesRegistrados.setSingleLine(true);
         String daysRegisteredAditional = String.valueOf(response.getNum_adicionalesagregadas());
         if(response.getNum_adicionalesagregadas() % 1 == 0){

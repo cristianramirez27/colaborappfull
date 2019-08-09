@@ -24,8 +24,8 @@ public class DialogFragmentDeletePeriods extends DialogFragment implements View.
     private OnOptionClick onOptionClick;
     @BindView(R.id.imgvAction)
     ImageView imgvAction;
-    @BindView(R.id.txvTitle)
-    TextView txvTitle;
+    @BindView(R.id.txvHeader)
+    TextView txvHeader;
     @BindView(R.id.txvSubtitle)
     TextView txvSubtitle;
     @BindView(R.id.btnActionAccept)
@@ -35,6 +35,7 @@ public class DialogFragmentDeletePeriods extends DialogFragment implements View.
 
 
     private String title = "";
+    private String msg = "";
     private int iResIcon;
 
     private int visibilityCancel;
@@ -64,7 +65,8 @@ public class DialogFragmentDeletePeriods extends DialogFragment implements View.
         btnActionCancel.setOnClickListener(this);
         btnActionAccept.setOnClickListener(this);
         btnActionCancel.setVisibility(visibilityCancel);
-        txvTitle.setText(title);
+        txvHeader.setText(title);
+        txvSubtitle.setText(msg);
 
         if(iResIcon > 0){
             imgvAction.setImageResource(iResIcon);
@@ -100,6 +102,14 @@ public class DialogFragmentDeletePeriods extends DialogFragment implements View.
 
         void onAccept();
         void onCancel();
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public void setOnOptionClick(OnOptionClick onOptionClick) {

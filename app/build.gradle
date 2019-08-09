@@ -7,7 +7,7 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 19
         targetSdkVersion 28
-        versionName "QA_Vacaciones2.4.7"
+        versionName "QA_Vacaciones2.4.5"
         versionCode 56
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -37,6 +37,7 @@ dependencies {
     compile project(":library")
     compile project(":componentCalendar")
     compile project(":collapsiblecalendarview")
+    compile project(":weekcalendar")
     // Android
     implementation 'com.android.support:multidex:1.0.3'
     implementation fileTree(include: ['*.jar'], dir: 'libs')

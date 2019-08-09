@@ -23,16 +23,27 @@
         android:layout_gravity="center"
         android:layout_centerVertical="true">
 
+
+        <View
+            android:id="@+id/markerSplice"
+            android:layout_centerVertical="true"
+            android:background="@drawable/backgroud_circle_melon"
+            android:layout_alignParentLeft="true"
+            android:visibility="gone"
+            android:layout_marginLeft="8dp"
+            android:layout_width="8dp"
+            android:layout_height="8dp" />
+
         <com.coppel.rhconecta.dev.views.customviews.CircleImageView
             android:id="@+id/imgColaborador"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/markerSplice"
             android:padding="0dp"
             app:srcCompat="@drawable/ic_account_white"
             android:backgroundTint="@color/colorGrisDeshabilitado"
-            android:background="@drawable/bg_circle_shadow"
-            android:layout_alignParentLeft="true"/>
+            android:background="@drawable/bg_circle_shadow"/>
 
         <TextView
             android:id="@+id/nameElement"

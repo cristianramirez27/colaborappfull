@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments.holidays;
+package com.coppel.rhconecta.dev.views.fragments.holidays.colaborator;
 
 
 import android.content.Context;
@@ -11,63 +11,51 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.HolidayGetDetailPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
-import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysCancelResponse;
-import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
-import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
-import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.shrikanthravi.collapsiblecalendarview.data.CalendarAdapter;
 import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
-import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
-import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIOD_DETAIL;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
@@ -88,7 +76,8 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private DialogFragmentWarning dialogFragmentWarning;
 
 
-
+    @BindView(R.id.layoutContainer)
+    RelativeLayout layoutContainer;
     @BindView(R.id.bordeAmarillo)
     View bordeAmarillo;
     @BindView(R.id.layoutObservaciones)
@@ -177,16 +166,8 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
 
         //To hide or show expand icon
-        collapsibleCalendar.setExpandIconVisible(true);
-        Calendar today=new GregorianCalendar();
-        today.add(Calendar.DATE,1);
-        collapsibleCalendar.expand(100);
-        collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
-        collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
-        collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
-        collapsibleCalendar.setExpandIconVisible(false);
-        collapsibleCalendar.setMultipleDays(true);
-        collapsibleCalendar.setEnable(false);
+       initializeCalendar();
+       expObservaciones.setColorText(getResources().getColor(R.color.colorTextGrayDark));
         expObservaciones.setText("Observaciones");
         expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
@@ -198,6 +179,20 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         return view;
     }
 
+    private void initializeCalendar(){
+        collapsibleCalendar.setExpandIconVisible(true);
+        Calendar today=new GregorianCalendar();
+        today.add(Calendar.DATE,1);
+        collapsibleCalendar.expand(100);
+        collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
+        collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
+        collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
+        collapsibleCalendar.setExpandIconVisible(false);
+        collapsibleCalendar.setMultipleDays(true);
+        collapsibleCalendar.setEnable(false);
+        collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
+        collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
+    }
 
     private void observacionesStateChange(ExpandableSimpleTitle expandable, LinearLayout layoutToExpand) {
         if (expandable.isExpanded()) {
@@ -212,7 +207,15 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         HolidayGetDetailPeriodResponse.Response detail = response.getData().getResponse().get(0);
          fechaInicio.setText(detail.getFec_ini());
          fechaFin.setText(detail.getFec_fin());
-         diasVacaciones.setText(detail.getNum_dias());
+
+        String days = detail.getNum_dias().split(" ")[0];
+        double daysNumber = Double.parseDouble(days);
+        if(daysNumber % 1 == 0){
+            days = days.substring(0,days.indexOf("."));
+            days = String.valueOf(Integer.parseInt(days));
+        }
+
+        diasVacaciones.setText(String.format("%s %s" , days , daysNumber > 1 ? "días" : "día"));
         estatus.setText(detail.getDes_estatus());
 
         GradientDrawable gd = new GradientDrawable();
@@ -253,14 +256,14 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private String getReasonTitle(int status){
         switch (status){
             case  1:
-                return "";
-
+                return "Motivo";
             case  2:
                 return "Motivo de Rechazo";
             case  3:
                 return "Motivo de Cancelación";
         }
-        return "";
+
+        return "Motivo";
     }
 
     private void hideCalendar(){
@@ -373,7 +376,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
                 if(response.getResponse() instanceof HolidayGetDetailPeriodResponse) {
                     HolidayGetDetailPeriodResponse responseDetail = (HolidayGetDetailPeriodResponse)response.getResponse();
                     setDataHeader(responseDetail);
-
+                    layoutContainer.setVisibility(VISIBLE);
                 }else if(response.getResponse() instanceof HolidaysCancelResponse) {
                     HolidaysCancelResponse responseDetail = (HolidaysCancelResponse)response.getResponse();
                     showWarningDialog(responseDetail.getData().getResponse().get(0).getDes_mensaje());
@@ -478,7 +481,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         holidayRequestData.setNum_suplente(Integer.parseInt(numSuplente));
         List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();
         periodsToCancel.add(new HolidayPeriodFolio(holidayPeriod.getIdu_folio()));
-        holidayRequestData.setPeriodsToCancel(periodsToCancel);
+        holidayRequestData.setPeriodsChangeStatus(periodsToCancel);
 
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
 

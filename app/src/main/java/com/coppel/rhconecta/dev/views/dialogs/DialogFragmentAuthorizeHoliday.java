@@ -12,9 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,9 +63,15 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
     public static final String KEY_DATA_PENDING = "KEY_DATA_PENDING";
     private OnButonOptionObservationClick OnButonOptionObservationClick;
     private Context context;
-    private String email;
+    private String title;
+    private String description;
+    private String hint;
 
     /*Back Views*/
+    @BindView(R.id.title)
+    TextView txtTitle;
+    @BindView(R.id.subtitle)
+    TextView subtitle;
     @BindView(R.id.observations)
     EditText observations;
     @BindView(R.id.btnActionLeft)
@@ -107,9 +115,25 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
     private void initViews() {
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
+
+        txtTitle.setText(title);
+        subtitle.setText(description);
+        observations.setHint(hint);
         //reason.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         observations.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         observations.setText("");
+        observations.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId==EditorInfo.IME_ACTION_NEXT){
+
+                }
+                return false;
+            }
+        });
+
+
 
         observations.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,28 +143,42 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
                 if(s.toString().contains("\n")){
                     String text = s.toString().replace("\n","");
                     observations.setText(text);
                     observations.setSelection(text.length());
 
-                    DeviceManager.hideKeyBoard(getActivity());
+                    hideKeyboard();
                     return;
                 }
+
 
                 btnActionRight.setEnabled(s.toString().length() > 0 ? true : false);
                 btnActionRight.setBackgroundResource(s.toString().length() > 0 ?
                         R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
-
+                hideKeyboard();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
+    }
+
+    private void hideKeyboard(){
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
     public void close() {

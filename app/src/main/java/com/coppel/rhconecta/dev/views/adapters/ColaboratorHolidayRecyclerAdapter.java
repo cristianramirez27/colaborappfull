@@ -31,12 +31,20 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<ColaboratorHolidayRecyclerAdapter.ViewHolder> {
 
     private Context context;
+    private boolean showMarker;
 
     private OnRequestSelectedClickListener onRequestSelectedClick;
     private List<ColaboratorHoliday> colaborators;
+
     public ColaboratorHolidayRecyclerAdapter(Context context, List<ColaboratorHoliday> colaborators) {
         this.colaborators = colaborators;
         this.context = context;
+    }
+
+    public ColaboratorHolidayRecyclerAdapter(Context context, List<ColaboratorHoliday> colaborators,boolean showMarker) {
+        this.colaborators = colaborators;
+        this.context = context;
+        this.showMarker = showMarker;
     }
 
     @NonNull
@@ -67,6 +75,11 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
                 onRequestSelectedClick.onRequestSelectedClick(currentItem);
             }
         });
+
+        if(showMarker){
+            viewHolder.markerSplice.setVisibility(View.VISIBLE);
+            viewHolder.markerSplice.setBackgroundResource(currentItem.isHasSplice() ? R.drawable.backgroud_circle_melon : R.drawable.backgroud_circle_green);
+        }
     }
 
 
@@ -97,6 +110,9 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
         CircleImageView imgColaborador;
         @BindView(R.id.nameElement)
         TextView txvName;
+        @BindView(R.id.markerSplice)
+        View markerSplice;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

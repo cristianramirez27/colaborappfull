@@ -8,4 +8,12 @@
     <string name="friday">V</string>
     <string name="saturday">S</string>
     <string name="sunday">D</string>
+
+    <string name="monday_complete">Lun</string>
+    <string name="tuesday_complete">Mar</string>
+    <string name="wednesday_complete">Mié</string>
+    <string name="thursday_complete">Jue</string>
+    <string name="friday_complete">Vie</string>
+    <string name="saturday_complete">Sáb</string>
+    <string name="sunday_complete">Dom</string>
 </resources>

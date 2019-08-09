@@ -8,10 +8,19 @@ public class HolidayPeriodData implements Serializable {
     private String fec_ini;
     private String fec_fin;
 
+    private int idu_folio;
+
     public HolidayPeriodData(double num_dias, String fec_ini, String fec_fin) {
         this.num_dias = num_dias;
         this.fec_ini = fec_ini;
         this.fec_fin = fec_fin;
+    }
+
+    public HolidayPeriodData(double num_dias, String fec_ini, String fec_fin, int idu_folio) {
+        this.num_dias = num_dias;
+        this.fec_ini = fec_ini;
+        this.fec_fin = fec_fin;
+        this.idu_folio = idu_folio;
     }
 
     public double getNum_dias() {
@@ -36,5 +45,13 @@ public class HolidayPeriodData implements Serializable {
 
     public void setFec_fin(String fec_fin) {
         this.fec_fin = fec_fin;
+    }
+
+    public int getIdu_folio() {
+        return idu_folio;
+    }
+
+    public void setIdu_folio(int idu_folio) {
+        this.idu_folio = idu_folio;
     }
 }

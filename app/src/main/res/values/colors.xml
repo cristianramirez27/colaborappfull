@@ -66,6 +66,9 @@
     <color name="colorBackgroundRosaClaro">#fdf3dc</color>
 
     <color name="red_text">#cc1515</color>
+    <color name="background_calendar_splice">#ededed</color>
+    <color name="gray_checkbox_disable">#61000000</color>
+
 
 
 </resources>

@@ -191,6 +191,13 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private AnimatorSet mSetLeftIn;
     View mCardFrontLayout;
     View mCardBackLayout;
+    private boolean isEnabledCalendar;
+
+    private TextView daysAvailable;
+    private TextView daysSelected;
+    private TextView daysSelectedConfig;
+
+
 
     RecyclerView recyclerViewConfig;
     private boolean mIsBackVisible = false;
@@ -426,7 +433,9 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         view = inflater.inflate(viewRes, container, false);
         // All options have been set at this point: round the initial selection if necessary
         mCalendar = mDateRangeLimiter.setToNearestDate(mCalendar);
-
+        daysAvailable = view.findViewById(R.id.daysAvailable);
+        daysSelectedConfig = view.findViewById(R.id.daysSelectedConfig);
+        daysSelected = view.findViewById(R.id.daysSelected);
         titleCustomCalendar = view.findViewById(R.id.titleCustomCalendar);
         mDatePickerHeaderView = view.findViewById(R.id.mdtp_date_picker_header);
         mMonthAndDayView = view.findViewById(R.id.mdtp_date_picker_month_and_day);
@@ -445,9 +454,19 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         recyclerViewConfig.setLayoutManager(new LinearLayoutManager(getActivity()));
         daySelectedHolidayList = new ArrayList<>();
         daysConfigRecyclerAdapter = new DaysConfigRecyclerAdapter(getActivity(), daySelectedHolidayList);
+        daysConfigRecyclerAdapter.setTotalDaysTxt(daysSelectedConfig);
         recyclerViewConfig.setAdapter(daysConfigRecyclerAdapter);
 
         titleCustomCalendar.setText(titleCustom);
+
+        String totalVacacionesAsString = String.valueOf(num_total_vacaciones);
+
+        if(num_total_vacaciones % 1 == 0){
+            totalVacacionesAsString = totalVacacionesAsString.substring(0,totalVacacionesAsString.indexOf("."));
+            totalVacacionesAsString = String.valueOf(Integer.parseInt(totalVacacionesAsString));
+        }
+
+        daysAvailable.setText(String.format("%s %s",totalVacacionesAsString, num_total_vacaciones > 1 ? "días" :"día"));
 
         final Activity activity = getActivity();
         mDayPickerView = new DayPickerGroup(activity, this);
@@ -1372,6 +1391,41 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         this.daysSelectedMap = daysSelected;
     }
 
+    @Override
+    public void validateSelection() {
+
+        daysSelected.setText(String.format("%s %s",String.valueOf(getTotalDaysSelected()), "días"));
+        daysSelectedConfig.setText(String.format("%s %s",String.valueOf(getTotalDaysSelected()), "días"));
+      /*  if( this.daysSelectedMap != null){
+
+            if(isEnabledCalendar){
+                mCallBack.onInvalidMaxSelectedDays(this.des_mensaje);
+            }
+
+            if(this.daysSelectedMap.size() == limite_dias){
+                isEnabledCalendar = true;
+            }else {
+                isEnabledCalendar = false;
+            }
+
+
+        }*/
+    }
+
+    private double getTotalDaysSelected(){
+
+        double totalDays = 0.0;
+        for(String key :this.daysSelectedMap.keySet()){
+            totalDays+= !this.daysSelectedMap.get(key).isHalfDay() ? 1 : 0.5 ;
+        }
+        return totalDays;
+    }
+
+    @Override
+    public boolean isLimit() {
+        return isEnabledCalendar;
+    }
+
     private void setConfigData() {
         daySelectedHolidayList.clear();
         datesSorted = getOrderDates(daysSelectedMap);
@@ -1457,7 +1511,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         return map;
     }
 
-    private  Map<String, List<DaySelectedHoliday>> getPeriods(Map<Long, DaySelectedHoliday> selectionSorted) {
+    public  Map<String, List<DaySelectedHoliday>> getPeriods(Map<Long, DaySelectedHoliday> selectionSorted) {
         //Map para guardar los periodos encontrados
         Map<String, List<DaySelectedHoliday>> mapPeriods = new TreeMap<>();
         //Lista para guardar las fechas ya procesadas

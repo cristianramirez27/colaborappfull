@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments.holidays;
+package com.coppel.rhconecta.dev.views.fragments.holidays.gte;
 
 
 import android.content.Context;
@@ -19,9 +19,11 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.HolidayAditionalDayListFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCalendarListFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +111,8 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
                 break;
 
             case R.id.btnCalendar:
+
+                parent.replaceFragment(new HolidayCalendarListFragment(), HolidayCalendarListFragment.TAG);
 
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 

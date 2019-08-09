@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments.holidays;
+package com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest;
 
 
 import android.content.Context;
@@ -15,9 +15,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
@@ -25,43 +25,28 @@ import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
-import com.coppel.rhconecta.dev.business.models.HolidayGetDetailPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
-import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
-import com.coppel.rhconecta.dev.business.models.HolidaySendPeriodsResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.Command;
-import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestColaboratorsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte;
 import com.coppel.rhconecta.dev.views.customviews.RequestHolidaysColaboratorView;
-import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.shrikanthravi.collapsiblecalendarview.data.CalendarAdapter;
 import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
-import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
-import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,17 +54,11 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CALENDAR_DAYS_PROPOSED;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIODS_COLABORATORS;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidays;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidaysInverse;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDayNameFromDate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,6 +72,9 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
     private AppCompatActivity parent;
     @BindView(R.id.rcvSolicitudes)
     RecyclerView rcvSolicitudes;
+    @BindView(R.id.layoutContainer)
+    RelativeLayout layoutContainer;
+
 
     private DialogFragmentWarning dialogFragmentWarning;
 
@@ -110,7 +92,8 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
     @BindView(R.id.collapsibleCalendarView)
     CollapsibleCalendar collapsibleCalendar;
 
-
+    @BindView(R.id.monthName)
+    TextView monthName;
     private boolean EXPIRED_SESSION;
     private IScheduleOptions IScheduleOptions;
 
@@ -121,11 +104,6 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
     private CoppelServicesPresenter coppelServicesPresenter;
     private List<HolidayPeriod> holidayPeriodList;
     private HolidayRequestColaboratorsRecyclerAdapter holidayRequestRecyclerAdapter;
-
-    private Map<String, List<DaySelectedHoliday>> periods;
-
-    private DialogFragmentDeletePeriods dialogFragmentDeletePeriods;
-
     private VacacionesActivity vacacionesActivity;
 
     private HolidayPeriod periodSelected;
@@ -165,14 +143,16 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
 
         iconList.setOnClickListener(this);
         iconCalendar.setOnClickListener(this);
-
+        iconList.setImageResource(R.drawable.ic_calendar_list);
+        iconCalendar.setImageResource(R.drawable.ic_icn_calendar_disable);
         if(getActivity() instanceof VacacionesActivity){
             parent = (VacacionesActivity) getActivity();
-            ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
+            ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_holidays_colaborator_calendar));
         }
         //headerHoliday.setDetailData(configurationHolidaysData.getHolidaysPeriodsResponse());
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+        this.periodSelected.setNom_empleado(colaboratorHoliday.getNom_empleado());
         headerView.setDetailData(this.periodSelected,true);
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -194,7 +174,10 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         collapsibleCalendar.setExpandIconVisible(false);
         collapsibleCalendar.setMultipleDays(true);
         collapsibleCalendar.setEnable(false);
-
+        collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
+        collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
+        collapsibleCalendar.setTitleMonthVisible(false);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         return view;
     }
@@ -252,9 +235,13 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
 
     private void switchView(boolean showCalendar){
         if(showCalendar){
+            iconCalendar.setImageResource(R.drawable.ic_icn_calendar);
+            iconList.setImageResource(R.drawable.ic_calendar_list_disable);
             layoutCalendar.setVisibility(VISIBLE);
             layoutList.setVisibility(GONE);
         }else {
+            iconCalendar.setImageResource(R.drawable.ic_icn_calendar_disable);
+            iconList.setImageResource(R.drawable.ic_calendar_list);
             layoutCalendar.setVisibility(GONE);
             layoutList.setVisibility(View.VISIBLE);
         }
@@ -277,13 +264,37 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
                         holidayPeriodList.add(period);
                     }
                     holidayRequestRecyclerAdapter.notifyDataSetChanged();
-
                     setColaboratorMarkInCalendar(holidayPeriodList);
+                    formatedDatesList();
+
+                    layoutContainer.setVisibility(VISIBLE);
                 }
 
                 break;
         }
     }
+
+    private void formatedDatesList() {
+        for(HolidayPeriod period : holidayRequestRecyclerAdapter.getAllItems()){
+            /***Formateamos las fechas**/
+            String[] dateFormat = null;
+            dateFormat =  period.getFec_ini().split("-");
+            period.setFec_ini(String.format("%s-%s-%s",
+                    dateFormat[2],dateFormat[1],dateFormat[0]));
+            period.setFec_ini(String.format("%s, %s",capitalizeText(getContext(),getDayNameFromDate(period.getFec_ini())),period.getFec_ini()));
+
+
+            dateFormat =  period.getFec_fin().split("-");
+            period.setFec_fin(String.format("%s-%s-%s",
+                    dateFormat[2],dateFormat[1],dateFormat[0]));
+            period.setFec_fin(String.format("%s, %s",capitalizeText(getContext(),getDayNameFromDate(period.getFec_fin())),period.getFec_fin()));
+
+
+
+            holidayRequestRecyclerAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public void showError(ServicesError coppelServicesError) {
@@ -344,20 +355,26 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         }
     }
 
+    /**Setear los dias en el calednario***/
     private void setColaboratorMarkInCalendar(List<HolidayPeriod> periods){
 
-        List<Day> listDaySelected = new ArrayList<>();
+        HashMap<String,Day> daysInCalendar = new HashMap<>();
+        List<Day>  listDaySelected = new ArrayList<>();
         for(HolidayPeriod period : periods){
-            setSelectedDays(period,listDaySelected);
+            setSelectedDays(period,daysInCalendar);
+        }
+        //Llenamos la lista con los dias con y sin empalmes
+        for(String dateAsString : daysInCalendar.keySet()){
+            listDaySelected.add(daysInCalendar.get(dateAsString));
         }
 
         collapsibleCalendar.select(listDaySelected);
     }
 
-    private void setSelectedDays(HolidayPeriod period,List<Day> listDaySelected ){
+    private void setSelectedDays(HolidayPeriod period,HashMap<String,Day> daysInCalendar){
 
-        String dateStart = period.getFec_ini();
-        String dateEnd = period.getFec_fin();
+        String dateStart = period.getFec_ini().split("T")[0];
+        String dateEnd = period.getFec_fin().split("T")[0];
 
         String[] dateParts = null;
         int year;
@@ -386,7 +403,17 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
 
 
         do{
-            listDaySelected.add(new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)));
+            String dateAsString = String.format("%s%s%s",String.valueOf(calendar.get(Calendar.YEAR)),
+                    String.valueOf(calendar.get(Calendar.MONTH)),  String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+            //Si ya esta en el map, lo marcamos como con empalme
+            if(daysInCalendar.containsKey(dateAsString)){
+                daysInCalendar.get(dateAsString).setHasSplice(1);
+            }else {
+                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), 0);
+                daysInCalendar.put(dateAsString,dayToAdd);
+            }
+
+
             calendar.add(Calendar.DATE,1);
 
         }while (!calendar.after(calendar_Fin));
@@ -395,6 +422,4 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
 
 
     }
-
-
 }

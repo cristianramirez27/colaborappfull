@@ -34,6 +34,7 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
 
     private List<HolidayPeriod> dataItems;
     private IScheduleOptions IScheduleOptions;
+    private boolean showMarker;
 
     private OnRequestSelectedClickListener OnRequestSelectedClickListener;
    // private OnGasVoucherClickListener onGasVoucherClickListener;
@@ -42,6 +43,11 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
        // this.isColaborator = isColaborator;
         this.dataItems = holidays;
         this.IScheduleOptions = IScheduleOptions;
+    }
+
+    public HolidayRequestColaboratorsRecyclerAdapter(List<HolidayPeriod> dataItems, boolean showMarker) {
+        this.dataItems = dataItems;
+        this.showMarker = showMarker;
     }
 
     @NonNull
@@ -55,7 +61,18 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.itemView.setHasTransientState(true);
+        dataItems.get(i).setShowMarker(showMarker);
         viewHolder.requestColaborator.setDetailData(dataItems.get(i),false);
+
+        viewHolder.requestColaborator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(OnRequestSelectedClickListener != null ){
+                    OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
+                }
+            }
+        });
     }
 
     @Override

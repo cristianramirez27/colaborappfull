@@ -13,10 +13,19 @@ public class Day implements Parcelable{
     private int mMonth;
     private int mDay;
 
+    private int hasSplice;
+
     public Day(int year, int month, int day){
         this.mYear = year;
         this.mMonth = month;
         this.mDay = day;
+    }
+
+    public Day(int mYear, int mMonth, int mDay, int hasSplice) {
+        this.mYear = mYear;
+        this.mMonth = mMonth;
+        this.mDay = mDay;
+        this.hasSplice = hasSplice;
     }
 
     public int getMonth(){
@@ -32,13 +41,21 @@ public class Day implements Parcelable{
     }
 
 
+    public int getHasSplice() {
+        return hasSplice;
+    }
+
+    public void setHasSplice(int hasSplice) {
+        this.hasSplice = hasSplice;
+    }
 
     public Day(Parcel in){
-        int[] data = new int[3];
+        int[] data = new int[4];
         in.readIntArray(data);
         this.mYear = data[0];
         this.mMonth = data[1];
         this.mYear = data[2];
+        this.hasSplice = data[3];
     }
 
     @Override
@@ -50,7 +67,7 @@ public class Day implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeIntArray(new int[] {this.mYear,
                 this.mMonth,
-                this.mDay});
+                this.mDay,this.hasSplice});
     }
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Day createFromParcel(Parcel in) {

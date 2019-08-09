@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments.holidays;
+package com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays;
 
 
 import android.content.Context;
@@ -10,72 +10,44 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
-import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaySendAditionalDaysResponse;
-import com.coppel.rhconecta.dev.business.models.HolidaySendPeriodsResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysValidationAditionalDaysResponse;
-import com.coppel.rhconecta.dev.business.models.ReasonAditionaDay;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.Command;
-import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
-import com.coppel.rhconecta.dev.business.utils.DeviceManager;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte;
-import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCenter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentControlAditionalDays;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
-import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIODS_COLABORATORS;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.VALIDATION_ADITIONAL_DAYS;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**
@@ -83,7 +55,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
  */
 public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener,
-        DialogFragmentControlAditionalDays.OnButonOptionReasonClick{
+        DialogFragmentControlAditionalDays.OnButonOptionReasonClick,DialogFragmentGetDocument.OnButtonClickListener{
 
     public static final String TAG = ColaboratorAditionalDaysHolidaysFragment.class.getSimpleName();
     private AppCompatActivity parent;
@@ -95,6 +67,7 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
     @BindView(R.id.btnAditionalDays)
     Button btnAditionalDays;
 
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private boolean EXPIRED_SESSION;
     private IScheduleOptions IScheduleOptions;
@@ -243,12 +216,37 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
                     }
                 }else if(response.getResponse() instanceof HolidaySendAditionalDaysResponse) {
                     HolidaySendAditionalDaysResponse aditionalDaysResponse = (HolidaySendAditionalDaysResponse)response.getResponse();
-                    showWarningDialog("",aditionalDaysResponse.getData().getResponse().getDes_mensaje());
+                    showSuccessDialog(MSG_HOLIDAYS_OK,aditionalDaysResponse.getData().getResponse().getDes_mensaje(), "");
                     updateInfoColaborator = true;
                 }
 
                 break;
         }
+    }
+
+    private void showSuccessDialog(int type,String title,String content) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText(title);
+        dialogFragmentGetDocument.setMsgText(content);
+        dialogFragmentGetDocument.setType(type, parent);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+        if(updateInfoColaborator){
+            //Actualizamos la información de Dias adicionales
+            getHolidaysPeriods(this.colaboratorHoliday.getNum_empleado());
+        }
+
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -306,10 +304,6 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            if(updateInfoColaborator){
-                //Actualizamos la información de Dias adicionales
-                getHolidaysPeriods(this.colaboratorHoliday.getNum_empleado());
-            }
         }
     }
 

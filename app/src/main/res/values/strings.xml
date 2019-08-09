@@ -315,18 +315,18 @@
     <!--Vacaciones-->
     <string name="request_holidays">Solicitud de vacaciones</string>
     <string name="title_holidays">Vacaciones</string>
-    <string name="title_my_holidays">Mis Vacaciones</string>
+    <string name="title_my_holidays">Mis vacaciones</string>
+    <string name="title_period_holidays">Período de vacaciones</string>
     <string name="title_admin_holidays">Administrar vacaciones</string>
     <string name="title_dates_selected">Fechas seleccionadas</string>
     <string name="title_periods_holidays">Períodos de vacaciones</string>
-    <string name="title_period_holidays">Período de vacaciones</string>
 
     <string name="title_holidays_days">Días de vacaciones</string>
     <string name="title_days">días</string>
 
     <string name="title_day_availables">Días diponibles por decisión</string>
-    <string name="title_days_pending_lastyear">Días pendientes Año anterior</string>
-    <string name="title_days_aditionals">Días adicionales Pendientes</string>
+    <string name="title_days_pending_lastyear">Días Pendientes Año anterior</string>
+    <string name="title_days_aditionals">Días Adicionales Pendientes</string>
     <string name="title_days_aditionals_register">Total Días Adicionales Registrados del año</string>
     <string name="title_bonus_date">Fecha Prima Vacacional</string>
 
@@ -340,12 +340,14 @@
 
     <string name="half_day">Medio día</string>
 
-    <string name="btn_request_all">Soliciar\ntodas</string>
+    <string name="btn_request_all">Solicitar\ntodas</string>
     <string name="btn_schedule_more">Agendar más\nvacaciones</string>
     <string name="btn_schedule_holidays">Agendar vacaciones</string>
-
-    <string name="title_total_request_days">Total días solicitados</string>
-    <string name="title_days_to_schedule">Días por agendar</string>
+    <string name="btn_edit_holidays">Editar\nperíodo</string>
+    <string name="btn_cancel_holidays">Cancelar vacaciones</string>
+    <string name="btn_cancel_holidays_">Cancelar\nvacaciones</string>
+    <string name="title_total_request_days">Total Días Solicitados</string>
+    <string name="title_days_to_schedule">Días por Agendar</string>
 
 
     <string name="title_eliminate">Eliminar</string>
@@ -354,15 +356,16 @@
 
     <string name="btn_canceled_period">Cancelar vacaciones</string>
 
-    <string name="btn_request_holidays">Solicitudes de Vacaciones</string>
+    <string name="btn_request_holidays">Solicitudes de vacaciones</string>
     <string name="btn_aditional_days">Días Adicionales</string>
-    <string name="btn_calendar_holidays">Calendario de Vacaciones</string>
+    <string name="btn_calendar_holidays">Calendario de vacaciones</string>
     <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
     <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>
-    <string name="btn_text_calendar_holidays">Lista de Vacaciones agendadas a los colaboradores</string>
+    <string name="btn_text_calendar_holidays">Lista de vacaciones agendadas a los colaboradores</string>
     <string name="title_calendar_days_proposed">Días propuestos</string>
     <string name="title_calendar_proposed">Ver calendario de días propuestos</string>
     <string name="title_splice">Empalme entre este colaborador y otro(s)</string>
+    <string name="title_splice_colaborators">Empalme entre colaboradores</string>
 
     <string name="btn_aditional_days_holidays">Capturar días adicionales</string>
     <string name="hint_reason_aditional_days">Escribe el motivo aquí</string>
@@ -380,6 +383,12 @@
     <string name="title_add_aditional_days_toolbar">Días adicionales</string>
 
     <string name="subtitle_observation_authorize">Escribe el motivo por el cual agenda las vacaciones del colaborador</string>
+
+    <string name="title_colaborator_request">Solicitudes del colaborador</string>
+    <string name="title_colaborator_calendar_gral">Calendario de colaboradores</string>
+    <string name="title_holidays_colaborator_calendar_gral">Vacaciones del colaborador</string>
+    <string name="title_holidays_colaborator_calendar">Vacaciones colaborador</string>
+    <string name="title_calendar_periods">Marca los días o medios días en el calendario sin días de descanso</string>
 
 
 </resources>

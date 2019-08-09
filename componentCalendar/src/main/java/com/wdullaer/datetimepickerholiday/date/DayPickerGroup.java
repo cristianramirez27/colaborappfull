@@ -63,15 +63,15 @@ public class DayPickerGroup extends ViewGroup
             int size = Utils.dpToPx(16f, getResources());
             prevButton.setMinimumHeight(size);
             prevButton.setMinimumWidth(size);
-            nextButton.setMinimumHeight(size);
-            nextButton.setMinimumWidth(size);
+            //nextButton.setMinimumHeight(size);
+            //nextButton.setMinimumWidth(size);
         }
 
-        if (controller.isThemeDark()) {
+       /* if (controller.isThemeDark()) {
             int color = ContextCompat.getColor(getContext(), R.color.mdtp_date_picker_text_normal_dark_theme);
             prevButton.setColorFilter(color);
             nextButton.setColorFilter(color);
-        }
+        }*/
 
         prevButton.setOnClickListener(this);
         nextButton.setOnClickListener(this);

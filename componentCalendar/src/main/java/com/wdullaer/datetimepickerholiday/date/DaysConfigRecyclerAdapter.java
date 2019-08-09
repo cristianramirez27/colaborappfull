@@ -19,6 +19,10 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
 
     private Context context;
     private int selectedPosition = -1;
+    private TextView totalDaysTxt;
+
+    private String[] months = new String[]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
+    "Septiembre","Octubre","Noviembre","Diciembre"};
 
     private List<DaySelectedHoliday> daySelectedHolidays;
     public DaysConfigRecyclerAdapter(Context context, List<DaySelectedHoliday> daySelectedHolidays) {
@@ -39,6 +43,7 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
         final DaySelectedHoliday currentItem = daySelectedHolidays.get(position);
 
         viewHolder.day.setText(String.valueOf(currentItem.getDay()));
+        viewHolder.monthLabel.setText(months[currentItem.getMonth()]);
         if(currentItem.isHalfDay()){
             viewHolder.halfDay.setChecked(true);
             viewHolder.day.setBackgroundResource(R.drawable.backgroud_circle_stroke_blue);
@@ -68,11 +73,24 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
                     viewHolder.day.setTextColor(context.getResources().getColor(R.color.mdtp_white));
                     viewHolder.labelHalfDay.setTextColor(context.getResources().getColor(R.color.main_text_disable));
                 }
+
+                recalculateDays();
             }
         });
     }
 
+    public void setTotalDaysTxt(TextView totalDaysTxt) {
+        this.totalDaysTxt = totalDaysTxt;
+    }
 
+    private void recalculateDays(){
+        double total = 0.0;
+        for(DaySelectedHoliday day : daySelectedHolidays){
+            total += day.isHalfDay() ? 0.5 : 1;
+        }
+
+        totalDaysTxt.setText(String.format("%s %s",String.valueOf(total), "días"));
+    }
 
     public List<DaySelectedHoliday> getDaySelectedHolidays(){
         return daySelectedHolidays;
@@ -99,12 +117,15 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
         Switch halfDay;
         TextView labelHalfDay;
 
+        private TextView monthLabel;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             day = (TextView) itemView.findViewById(R.id.day);
             halfDay = (Switch) itemView.findViewById(R.id.halfDay);
             labelHalfDay = (TextView) itemView.findViewById(R.id.labelHalfDay);
+            monthLabel = (TextView) itemView.findViewById(R.id.monthLabel);
         }
     }
 

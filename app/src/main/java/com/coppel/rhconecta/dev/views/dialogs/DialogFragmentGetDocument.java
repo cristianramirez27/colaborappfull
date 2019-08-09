@@ -20,6 +20,8 @@ import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 public class DialogFragmentGetDocument extends DialogFragment implements View.OnClickListener {
 
     public static final String TAG = DialogFragmentGetDocument.class.getSimpleName();
@@ -40,6 +42,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public static final int MSG_ABONO = 12;
     public static final int MSG_EXPENSES_TRAVEL = 13;
 
+    public static final int MSG_HOLIDAYS_OK = 14;
+    public static final int MSG_HOLIDAYS_WARNING = 15;
     private int selectedType;
     private OnButtonClickListener onButtonClickListener;
     private Context context;
@@ -67,6 +71,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     TextView textViewSendTo;
 
     private String contentText;
+    private String msgText;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +82,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(selectedType == LETTER_SENT ? R.layout.dialog_fragment_get_voucher_short :
-                (selectedType == MSG_EXPENSES_TRAVEL ? R.layout.dialog_fragment_expenses :R.layout.dialog_fragment_get_voucher) , container, false);
+                (selectedType == MSG_EXPENSES_TRAVEL ? R.layout.dialog_fragment_expenses :
+                        (selectedType == MSG_HOLIDAYS_OK  || selectedType == MSG_HOLIDAYS_WARNING ? R.layout.dialog_fragment_holidays :R.layout.dialog_fragment_get_voucher)) , container, false);
         ButterKnife.bind(this, view);
         initViews(selectedType);
         if (getDialog().getWindow() != null) {
@@ -90,7 +96,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     private void initViews(int type) {
         switch (type) {
             case SEND_TO:
-                ctlReady.setVisibility(View.GONE);
+                ctlReady.setVisibility(GONE);
                 ctlSentTo.setVisibility(View.VISIBLE);
                 editTextEmail.setWhiteMode();
                 if(email != null && !email.isEmpty()) {
@@ -100,7 +106,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 btnSendAccept.setOnClickListener(this);
                 break;
             case SEND_TO_LETTER:
-                ctlReady.setVisibility(View.GONE);
+                ctlReady.setVisibility(GONE);
                 ctlSentTo.setVisibility(View.VISIBLE);
                 textViewSendTo.setText(getString(R.string.send_to_letter));
                 editTextEmail.setWhiteMode();
@@ -113,7 +119,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case VOUCHER_SENT:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.voucher_sent));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -121,7 +127,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 break;
             case VOUCHER_DOWNLOADED:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.voucher_download));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -129,7 +135,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 break;
             case VOUCHER_SEND_FAIL:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(getString(R.string.voucher_sent_fail));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -137,7 +143,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 break;
             case VOUCHER_DOWNLOAD_FAIL:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(getString(R.string.voucher_download_fail));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -146,7 +152,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case LETTER_SENT:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.employment_letters_sent));
                 txvMsg.setVisibility(View.VISIBLE);
@@ -157,8 +163,8 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case LETTER_DOWNLOADED:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
-                txvMsg.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
+                txvMsg.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.employment_letters_download));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -168,7 +174,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case LETTER_SEND_FAIL:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(getString(R.string.voucher_sent_fail));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -176,7 +182,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 break;
             case LETTER_DOWNLOAD_FAIL:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(getString(R.string.letter_download_fail));
                 btnActionAccept.setText(getString(R.string.accept));
@@ -185,7 +191,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case NO_RESULT_BENEFITS:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(contentText);
                 btnActionAccept.setText(getString(R.string.accept));
@@ -194,7 +200,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case NO_REFUSE_REMOVE:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(contentText);
                 btnActionAccept.setText(getString(R.string.accept));
@@ -203,7 +209,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case MSG_ABONO:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
                 txvAction.setText(contentText);
                 btnActionAccept.setText(getString(R.string.accept));
@@ -212,13 +218,41 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
             case MSG_EXPENSES_TRAVEL:
                 ctlReady.setVisibility(View.VISIBLE);
-                ctlSentTo.setVisibility(View.GONE);
+                ctlSentTo.setVisibility(GONE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(contentText);
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
+
+
+            case MSG_HOLIDAYS_OK:
+                ctlReady.setVisibility(View.VISIBLE);
+                ctlSentTo.setVisibility(GONE);
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
+                txvAction.setText(contentText);
+                txvAction.setVisibility(contentText.isEmpty() ? GONE : View.VISIBLE);
+                txvMsg.setText(msgText);
+                txvMsg.setVisibility(View.VISIBLE);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
+
+
+            case MSG_HOLIDAYS_WARNING:
+                imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_warning));
+                txvAction.setText(contentText);
+                txvAction.setVisibility(contentText.isEmpty() ? GONE : View.VISIBLE);
+                txvMsg.setText(msgText);
+                txvMsg.setVisibility(View.VISIBLE);
+                btnActionAccept.setText(getString(R.string.accept));
+                btnActionAccept.setOnClickListener(this);
+                break;
         }
+    }
+
+    public void setMsgText(String msgText) {
+        this.msgText = msgText;
     }
 
     public void setType(int type, Context context) {

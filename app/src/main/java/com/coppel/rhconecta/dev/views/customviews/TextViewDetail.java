@@ -58,6 +58,7 @@ public class TextViewDetail extends ConstraintLayout {
     }
 
 
+
     public void setTextsSize(float startText, float endText) {
         txvTitle.setTextSize(startText);
         txvValue.setTextSize(endText);

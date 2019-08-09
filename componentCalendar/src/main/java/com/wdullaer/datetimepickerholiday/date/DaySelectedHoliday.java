@@ -10,6 +10,8 @@ public class DaySelectedHoliday implements Serializable {
     private int year;
     private boolean isHalfDay;
 
+
+
     public DaySelectedHoliday(String id, int day, int month, int year, boolean isHalfDay) {
         this.id = id;
         this.day = day;

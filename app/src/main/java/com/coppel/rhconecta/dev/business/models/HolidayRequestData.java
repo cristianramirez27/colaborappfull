@@ -16,7 +16,7 @@ public class HolidayRequestData implements Serializable{
     private int num_gerente;
     private int num_suplente;
     private List<HolidayPeriodData> periodos;
-    private  List<HolidayPeriodFolio> periodsToCancel;
+    private  List<HolidayPeriodFolio> periodsChangeStatus;
 
     private int num_centro;
     private String nom_empleado;
@@ -32,6 +32,11 @@ public class HolidayRequestData implements Serializable{
     private String fec_ini;
     private String fec_fin;
 
+    private int num_mes;
+    private int num_anio;
+
+    private String des_comentario;
+    private int idu_autorizo;
     public HolidayRequestData(HolidaysType holidaysType, int opcion) {
         this.holidaysType = holidaysType;
         this.opcion = opcion;
@@ -99,12 +104,12 @@ public class HolidayRequestData implements Serializable{
         this.idu_folio = idu_folio;
     }
 
-    public List<HolidayPeriodFolio> getPeriodsToCancel() {
-        return periodsToCancel;
+    public List<HolidayPeriodFolio> getPeriodsChangeStatus() {
+        return periodsChangeStatus;
     }
 
-    public void setPeriodsToCancel(List<HolidayPeriodFolio> periodsToCancel) {
-        this.periodsToCancel = periodsToCancel;
+    public void setPeriodsChangeStatus(List<HolidayPeriodFolio> periodsChangeStatus) {
+        this.periodsChangeStatus = periodsChangeStatus;
     }
 
     public int getNum_centro() {
@@ -185,5 +190,39 @@ public class HolidayRequestData implements Serializable{
 
     public void setDes_observaciones(String des_observaciones) {
         this.des_observaciones = des_observaciones;
+    }
+
+
+    public int getNum_mes() {
+        return num_mes;
+    }
+
+    public void setNum_mes(int num_mes) {
+        this.num_mes = num_mes;
+    }
+
+    public int getNum_anio() {
+        return num_anio;
+    }
+
+    public void setNum_anio(int num_anio) {
+        this.num_anio = num_anio;
+    }
+
+    public String getDes_comentario() {
+        return des_comentario;
+    }
+
+    public void setDes_comentario(String des_comentario) {
+        this.des_comentario = des_comentario;
+    }
+
+
+    public int getIdu_autorizo() {
+        return idu_autorizo;
+    }
+
+    public void setIdu_autorizo(int idu_autorizo) {
+        this.idu_autorizo = idu_autorizo;
     }
 }

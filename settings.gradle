@@ -1,1 +1,1 @@
-include ':app', ':library', ':componentCalendar', ':collapsiblecalendarview'
+include ':app', ':library', ':componentCalendar', ':collapsiblecalendarview', ':weekcalendar'

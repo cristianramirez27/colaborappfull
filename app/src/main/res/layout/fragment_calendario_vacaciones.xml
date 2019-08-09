@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/layoutContainer"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardViewSearch"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                app:cardElevation="8dp"
+                app:cardCornerRadius="1dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iconSearch"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_centerVertical="true"
+                        android:padding="4dp"
+                        android:src="@drawable/icon_search"/>
+
+                    <EditText
+                        android:id="@+id/edtSearch"
+                        android:layout_width="244dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="-2dp"
+                        android:layout_toRightOf="@+id/iconSearch"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/hint_search_name_colaborator"
+                        android:imeOptions="actionSearch"
+                        android:inputType="textVisiblePassword"
+                        android:lines="1"
+                        android:textColor="@color/colorTextBlueCoppel"
+                        android:textColorHint="@color/colorTextBlueCoppel"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/seleccionCentroLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_bottom_line"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/tituloCentro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgVideoPreview"
+                    android:gravity="center"
+                    android:text="@string/select_center"
+                    android:textColor="@color/colorTextCoppelNegro"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/centro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tituloCentro"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_below="@+id/layoutHeader"
+                android:id="@+id/layoutSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/layoutControls"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/layoutProposedDays"
+                            android:orientation="horizontal"
+                            android:paddingLeft="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <View
+                                android:id="@+id/proposedDaysMarker"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/backgroud_circle_green"
+                                android:layout_width="8dp"
+                                android:layout_height="8dp" />
+
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/proposedDaysMarker"
+                                android:id="@+id/proposedDays"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lineto_circular_pro_medium"
+                                android:text="@string/title_holidays"
+                                android:textColor="@color/colorSecundaryCoppelVerde"
+                                android:textSize="13sp" />
+
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_below="@+id/layoutProposedDays"
+                            android:id="@+id/layoutSplice"
+                            android:orientation="horizontal"
+                            android:paddingLeft="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <View
+                                android:id="@+id/markerSplice"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/backgroud_circle_melon"
+                                android:layout_width="8dp"
+                                android:layout_height="8dp" />
+
+                            <TextView
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/markerSplice"
+                                android:id="@+id/textSplice"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lineto_circular_pro_medium"
+                                android:text="@string/title_splice_colaborators"
+                                android:textColor="@color/colorMelon"
+                                android:textSize="13sp" />
+
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_weight="4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/iconList"
+                            android:layout_toLeftOf="@id/iconCalendar"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp"
+                            app:srcCompat="@drawable/ic_calendar_list"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+
+                        <ImageView
+                            android:id="@+id/iconCalendar"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp"
+                            android:layout_alignParentRight="true"
+                            app:srcCompat="@drawable/ic_icn_calendar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_below="@+id/layoutControls"
+                    android:id="@+id/layoutOptions"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/lastmonth"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:padding="8dp"
+                        app:srcCompat="@drawable/arrow_left_calendar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/monthName"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="Octubre 2019"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="18sp" />
+
+
+                    <ImageView
+                        android:id="@+id/nextMonth"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="0dp"
+                        android:padding="8dp"
+                        app:srcCompat="@drawable/arrow_right_calendar" />
+
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_below="@+id/layoutOptions"
+                    android:id="@+id/layoutData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:visibility="visible"
+                        android:id="@+id/layoutList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rcvSolicitudes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp" />
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/layoutCalendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+
+                        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+                            android:id="@+id/collapsibleCalendarView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:primaryColor="@color/transparent"
+                            app:textColor="@color/colorPrimaryCoppelAzul"
+                            app:selectedItem_textColor="@android:color/white"
+                            app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
+                            app:todayItem_background="@drawable/circle_white_stroke_background"
+                            app:selectedItem_background="@drawable/circle_green_solid_background"
+                            app:buttonLeft_drawableTintColor="@android:color/white"
+                            app:buttonRight_drawableTintColor="@android:color/white"
+                            app:expandIconColor="@android:color/white"
+                            app:eventColor="@android:color/white">
+                        </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</RelativeLayout>

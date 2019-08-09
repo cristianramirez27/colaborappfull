@@ -35,6 +35,9 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
     TextView diasVacaciones;
     @BindView(R.id.layoutTotalDays)
     RelativeLayout layoutTotalDays;
+    @BindView(R.id.markerSpliceLeft)
+    View markerSpliceLeft;
+
 
 
 
@@ -68,6 +71,7 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
         layoutTotalDays.setVisibility(showTotalDays ? VISIBLE: GONE);
         diasVacaciones.setText(period.getNum_dias());
 
+        markerSpliceLeft.setVisibility(period.isShowMarker() ? VISIBLE : GONE);
 
     }
 

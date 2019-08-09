@@ -62,7 +62,7 @@
 
     <dimen name="mdtp_month_list_item_header_height">56dp</dimen>
     <dimen name="mdtp_month_list_item_header_height_v2">64dp</dimen>
-    <dimen name="mdtp_month_day_label_text_size">12sp</dimen>
+    <dimen name="mdtp_month_day_label_text_size">14sp</dimen>
     <dimen name="mdtp_day_number_select_circle_radius">16dp</dimen>
     <dimen name="mdtp_day_number_select_circle_radius_v2">16dp</dimen>
     <dimen name="mdtp_day_highlight_circle_radius">2dp</dimen>

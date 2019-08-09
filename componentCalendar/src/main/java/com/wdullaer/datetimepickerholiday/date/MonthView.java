@@ -19,6 +19,7 @@ package com.wdullaer.datetimepickerholiday.date;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
@@ -33,6 +34,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
@@ -228,8 +230,9 @@ public abstract class MonthView extends View {
             case MotionEvent.ACTION_UP:
                 final int day = getDayFromLocation(event.getX(), event.getY());
                 if (day >= 0) {
-                    onDayClick(day);
-                    mController.setIsTappedSelected(true);
+
+                        onDayClick(day);
+                        mController.setIsTappedSelected(true);
                 }
                 break;
         }
@@ -247,7 +250,7 @@ public abstract class MonthView extends View {
         mMonthTitlePaint.setAntiAlias(true);
         mMonthTitlePaint.setTextSize(MONTH_LABEL_TEXT_SIZE);
         mMonthTitlePaint.setTypeface(Typeface.create(mMonthTitleTypeface, Typeface.BOLD));
-        mMonthTitlePaint.setColor(mDayTextColor);
+        mMonthTitlePaint.setColor(Color.parseColor("#000000"));
         mMonthTitlePaint.setTextAlign(Align.CENTER);
         mMonthTitlePaint.setStyle(Style.FILL);
 
@@ -272,7 +275,7 @@ public abstract class MonthView extends View {
         mMonthDayLabelPaint = new Paint();
         mMonthDayLabelPaint.setAntiAlias(true);
         mMonthDayLabelPaint.setTextSize(MONTH_DAY_LABEL_TEXT_SIZE);
-        mMonthDayLabelPaint.setColor(mMonthDayTextColor);
+        mMonthDayLabelPaint.setColor(Color.parseColor("#9b9b9b"));
         mMonthTitlePaint.setTypeface(Typeface.create(mDayOfWeekTypeface, Typeface.BOLD));
         mMonthDayLabelPaint.setStyle(Style.FILL);
         mMonthDayLabelPaint.setTextAlign(Align.CENTER);
@@ -426,7 +429,11 @@ public abstract class MonthView extends View {
         formatter.setTimeZone(mController.getTimeZone());
         formatter.applyLocalizedPattern(pattern);
         mStringBuilder.setLength(0);
-        return formatter.format(mCalendar.getTime());
+
+        String [] monthNameParts = formatter.format(mCalendar.getTime()).split(" ");
+        monthNameParts[0] = monthNameParts[0].substring(0, 1).toUpperCase() + monthNameParts[0].substring(1).toLowerCase();
+
+        return String.format("%s %s",monthNameParts[0],monthNameParts[2]);
     }
 
     protected void drawMonthTitle(Canvas canvas) {
@@ -447,7 +454,7 @@ public abstract class MonthView extends View {
             int calendarDay = (i + mWeekStart) % mNumDays;
             mDayLabelCalendar.set(Calendar.DAY_OF_WEEK, calendarDay);
             String weekString = getWeekDayLabel(mDayLabelCalendar);
-            canvas.drawText(weekString, x, y, mMonthDayLabelPaint);
+            canvas.drawText(weekString.toUpperCase(), x, y, mMonthDayLabelPaint);
         }
     }
 
@@ -481,6 +488,8 @@ public abstract class MonthView extends View {
                 y += mRowHeight;
             }
         }
+
+       this.mController.validateSelection();
     }
 
     /**

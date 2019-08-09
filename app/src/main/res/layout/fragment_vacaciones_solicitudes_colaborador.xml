@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/layoutContainer"
+    android:visibility="invisible"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
@@ -104,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lineto_circular_pro_medium"
-                        android:text="@string/title_calendar_proposed"
+                        android:text="@string/title_splice"
                         android:textColor="@color/colorMelon"
                         android:textSize="13sp" />
 

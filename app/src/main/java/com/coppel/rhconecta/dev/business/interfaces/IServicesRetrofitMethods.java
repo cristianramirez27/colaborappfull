@@ -9,7 +9,9 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyReq
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesCalendarHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesCancelPeriodsHolidaysRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesChangeStatusHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
@@ -284,5 +286,19 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> scheduleHolidaysPeriods(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSchedulePeriodsHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getCalendarHolidays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesCalendarHolidaysRequest servicesRequest);
+
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> changeStatus(@Url String url,@Header("Authorization") String token, @Body CoppelServicesChangeStatusHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> editHolidays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSchedulePeriodsHolidaysRequest servicesRequest);
+
 
 }

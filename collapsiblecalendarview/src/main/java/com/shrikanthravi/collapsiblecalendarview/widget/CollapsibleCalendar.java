@@ -7,7 +7,14 @@ package com.shrikanthravi.collapsiblecalendarview.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +33,7 @@ import com.shrikanthravi.collapsiblecalendarview.data.Event;
 import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -45,6 +53,13 @@ public class CollapsibleCalendar extends UICalendar {
     /**Bandera para dias multiples**/
     private boolean isMultipleDays;
     private boolean isEnable;
+    private boolean nameDayGray;
+
+    private boolean isSpliceActionEnable;
+
+    private CommandSplice actionSplice;
+    private boolean showCompleteDaysName;
+
 
     public CollapsibleCalendar(Context context) {
         super(context);
@@ -169,7 +184,8 @@ public class CollapsibleCalendar extends UICalendar {
 
                 // set the selected item
                 if (isSelectedDay(day) || (isMultipleDays && isInSelectedDayList(day))) {
-                    txtDay.setBackgroundDrawable(getSelectedItemBackgroundDrawable());
+                    setBackgroundDay(day);
+                    txtDay.setBackgroundDrawable(getSelectedItemBackgroundDrawable(day.getHasSplice() == 1 ? true : false));
                     txtDay.setTextColor(getSelectedItemTextColor());
                     txtDay.setPadding(5,5,5,5);
                 }
@@ -177,15 +193,48 @@ public class CollapsibleCalendar extends UICalendar {
         }
     }
 
+    private void formatMonthNameStyle(String titleMonth){
+
+        try {
+
+            String[] titleParts = titleMonth.split(" ");
+            titleParts[0] = titleParts[0].substring(0, 1).toUpperCase() + titleParts[0].substring(1).toLowerCase() + " ";
+
+
+           /*  final SpannableStringBuilder sb = new SpannableStringBuilder(mTxtTitle.getText().toString());
+
+           final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD); // Span to make text bold
+            final StyleSpan iss = new StyleSpan(Typeface.NORMAL); //Span to make text italic
+            sb.setSpan(bss, 0,  titleParts[0].length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
+            sb.setSpan(iss,  titleParts[0].length(), mTxtTitle.getText().toString().length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make last 2 characters Italic
+
+            mTxtTitle.setText(sb);*/
+
+            Spannable word = new SpannableString( titleParts[0]);
+            word.setSpan(new ForegroundColorSpan(Color.BLACK), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mTxtTitle.setText(word);
+            Spannable wordTwo = new SpannableString( titleParts[1]);
+            wordTwo.setSpan(new ForegroundColorSpan(Color.parseColor("#5f6062")), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mTxtTitle.append(wordTwo);
+
+           // mTxtTitle.setText(sbuilder);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     protected void reload() {
         if (mAdapter != null) {
             mAdapter.refresh();
 
             // reset UI
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy");
             dateFormat.setTimeZone(mAdapter.getCalendar().getTimeZone());
-            mTxtTitle.setText(dateFormat.format(mAdapter.getCalendar().getTime()));
+            formatMonthNameStyle(dateFormat.format(mAdapter.getCalendar().getTime()));
+            //mTxtTitle.setText();
             mTableHead.removeAllViews();
             mTableBody.removeAllViews();
 
@@ -201,6 +250,16 @@ public class CollapsibleCalendar extends UICalendar {
                     R.string.friday,
                     R.string.saturday
             };
+
+            int[] dayOfWeekComplete = {
+                    R.string.sunday_complete,
+                    R.string.monday_complete,
+                    R.string.tuesday_complete,
+                    R.string.wednesday_complete,
+                    R.string.thursday_complete,
+                    R.string.friday_complete,
+                    R.string.saturday_complete
+            };
             rowCurrent = new TableRow(mContext);
             rowCurrent.setLayoutParams(new TableLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -208,7 +267,13 @@ public class CollapsibleCalendar extends UICalendar {
             for (int i = 0; i < 7; i++) {
                 View view = mInflater.inflate(R.layout.layout_day_of_week, null);
                 TextView txtDayOfWeek = (TextView) view.findViewById(R.id.txt_day_of_week);
-                txtDayOfWeek.setText(dayOfWeekIds[(i + getFirstDayOfWeek()) % 7]);
+                if(nameDayGray){
+                    txtDayOfWeek.setTypeface(txtDayOfWeek.getTypeface(), Typeface.NORMAL);
+                    txtDayOfWeek.setTextColor(Color.parseColor("#9b9b9b"));
+                }else {
+                    txtDayOfWeek.setTypeface(txtDayOfWeek.getTypeface(), Typeface.BOLD);
+                }
+                txtDayOfWeek.setText(!showCompleteDaysName ? dayOfWeekIds[(i + getFirstDayOfWeek()) % 7] : dayOfWeekComplete[(i + getFirstDayOfWeek()) % 7] );
                 view.setLayoutParams(new TableRow.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -247,6 +312,10 @@ public class CollapsibleCalendar extends UICalendar {
         }
     }
 
+    public void setNameDayGray(boolean nameDayGray) {
+        this.nameDayGray = nameDayGray;
+    }
+
     private int getSuitableRowIndex() {
         if (getSelectedItemPosition() != -1) {
             View view = mAdapter.getView(getSelectedItemPosition());
@@ -266,6 +335,16 @@ public class CollapsibleCalendar extends UICalendar {
     public void onItemClicked(View view, Day day) {
 
         if(!isEnable) return;
+
+
+        //Ejecutamos la accion para los empalmes
+        if(isSpliceActionEnable){
+            if(day.getHasSplice() != 0){//Se cambia a != 0 para considerar ambos casos
+                actionSplice.action(day);
+            }
+
+            return;
+        }
 
         select(day);
 
@@ -411,6 +490,20 @@ public class CollapsibleCalendar extends UICalendar {
         }
 
         return false;
+    }
+
+    public void setBackgroundDay(Day day) {
+
+        if(getSelectedItems() != null){
+            for(Day d : getSelectedItems()){
+                if(day.getYear() == d.getYear()
+                        && day.getMonth() == d.getMonth()
+                        && day.getDay() == d.getDay()){
+                    day.setHasSplice(d.getHasSplice());
+                }
+            }
+        }
+
     }
 
     public boolean isToady(Day day) {
@@ -642,6 +735,18 @@ public class CollapsibleCalendar extends UICalendar {
 
     public void setEnable(boolean enable) {
         isEnable = enable;
+    }
+
+    public void setActionSplice(CommandSplice actionSplice) {
+        this.actionSplice = actionSplice;
+    }
+
+    public void setSpliceActionEnable(boolean spliceActionEnable) {
+        isSpliceActionEnable = spliceActionEnable;
+    }
+
+    public void setShowCompleteDaysName(boolean showCompleteDaysName) {
+        this.showCompleteDaysName = showCompleteDaysName;
     }
 }
 

@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments.holidays;
+package com.coppel.rhconecta.dev.views.fragments.holidays.colaborator;
 
 
 import android.content.Context;
@@ -16,18 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
-import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
@@ -40,21 +33,22 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
 import com.coppel.rhconecta.dev.views.customviews.TextViewDetail;
-import com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAbono;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,23 +59,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidays;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidaysSchedule;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDayNameFromDate;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColaboratorHolidaysScheduleFragment extends Fragment implements  View.OnClickListener, IServicesContract.View, DialogFragmentWarning.OnOptionClick,HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener {
+public class ColaboratorHolidaysScheduleFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
+        DialogFragmentWarning.OnOptionClick,HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener ,DialogFragmentGetDocument.OnButtonClickListener{
 
     public static final String TAG = ColaboratorHolidaysScheduleFragment.class.getSimpleName();
     private AppCompatActivity parent;
@@ -114,6 +111,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     private Map<String, List<DaySelectedHoliday>> periods;
 
     private DialogFragmentDeletePeriods dialogFragmentDeletePeriods;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
 
     private VacacionesActivity vacacionesActivity;
 
@@ -194,9 +192,11 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         for (String key : periods.keySet()){
             List<DaySelectedHoliday> daysInPeriod = periods.get(key);
             String dateStart = String.format("%s-%s-%s",
-                    String.valueOf(daysInPeriod.get(0).getYear()),
-                    String.valueOf(daysInPeriod.get(0).getMonth() > 10 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
-                    String.valueOf(daysInPeriod.get(0).getDay() > 10 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
+                    String.valueOf(daysInPeriod.get(0).getDay() > 9 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()),
+                    String.valueOf(daysInPeriod.get(0).getMonth() + 1 > 9 ? daysInPeriod.get(0).getMonth() +1 : "0"+ (daysInPeriod.get(0).getMonth()+1)),
+                    String.valueOf(daysInPeriod.get(0).getYear()));
+
+            dateStart =  String.format("%s, %s",capitalizeText(getContext(),getDayNameFromDate(dateStart)),dateStart);
 
             int indexEndDate = 0;
             if(daysInPeriod.size() > 1){
@@ -204,9 +204,12 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
             }
 
             String dateEnd = String.format("%s-%s-%s",
-                    String.valueOf(daysInPeriod.get(indexEndDate).getYear()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 10 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 10 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
+                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 9 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()),
+                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() + 1 > 9 ? daysInPeriod.get(indexEndDate).getMonth() + 1 : "0"+ (daysInPeriod.get(indexEndDate).getMonth() +1 )),
+                    String.valueOf(daysInPeriod.get(indexEndDate).getYear()));
+
+            dateEnd =  String.format("%s, %s",capitalizeText(getContext(),getDayNameFromDate(dateEnd)),dateEnd);
+
 
             String numDays = daysInPeriod.size() > 1 ? String.valueOf(daysInPeriod.size()) :
                     (daysInPeriod.size() == 1 && daysInPeriod.get(0).isHalfDay() ? "0.5" : String.valueOf(daysInPeriod.size()));
@@ -217,14 +220,29 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         holidayRequestRecyclerAdapter.notifyDataSetChanged();
 
         totalSolicitados.setTextsSize(14,18);
-        totalSolicitados.setTexts(getString(R.string.title_total_request_days), String.format("%s días", totalDays));
+
+
+        String totalDaysAsString = String.valueOf(totalDays);
+        if(totalDays % 1 == 0){
+            totalDaysAsString = totalDaysAsString.substring(0,totalDaysAsString.indexOf("."));
+            totalDaysAsString = String.valueOf(Integer.parseInt(totalDaysAsString));
+        }
+
+        totalSolicitados.setTexts(getString(R.string.title_total_request_days), String.format("%s días", totalDaysAsString));
         totalSolicitados.setStartTextColor(getResources().getColor(R.color.colorBackgroundCoppelNegro));
         totalSolicitados.setEndTextColor(getResources().getColor(R.color.colorBackgroundCoppelNegro));
 
         daysToSchedule =  holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones() - totalDays;
         diasPorAgendar.setTextsSize(14,14);
         diasPorAgendar.hideDivider();
-        diasPorAgendar.setTexts(getString(R.string.title_days_to_schedule), String.format("%s días", daysToSchedule));
+
+        String daysToScheduleAsString = String.valueOf(daysToSchedule);
+        if(daysToSchedule % 1 == 0){
+            daysToScheduleAsString = daysToScheduleAsString.substring(0,daysToScheduleAsString.indexOf("."));
+            daysToScheduleAsString = String.valueOf(Integer.parseInt(daysToScheduleAsString));
+        }
+
+        diasPorAgendar.setTexts(getString(R.string.title_days_to_schedule), String.format("%s días", daysToScheduleAsString));
         diasPorAgendar.setStartTextColor(getResources().getColor(R.color.disable_text_color));
         diasPorAgendar.setEndTextColor(getResources().getColor(R.color.disable_text_color));
 
@@ -312,7 +330,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
                     HolidaySendPeriodsResponse sendPeriodsResponse = (HolidaySendPeriodsResponse) response.getResponse();
                     if(sendPeriodsResponse.getData().getResponse().get(0).getClv_estado() == 1){
                         sendRequestSuccess = true;
-                        showWarningDialog(sendPeriodsResponse.getData().getResponse().get(0).getDes_mensaje(),
+                        showSuccessDialog(MSG_HOLIDAYS_OK,sendPeriodsResponse.getData().getResponse().get(0).getDes_mensaje(),
                                 sendPeriodsResponse.getData().getResponse().get(0).getDes_otromensaje());
                     }else {
                         showWarningDialog("",sendPeriodsResponse.getData().getResponse().get(0).getDes_mensaje());
@@ -322,6 +340,33 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
                 }
                 break;
         }
+    }
+
+
+    private void showSuccessDialog(int type,String title,String content) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText(title);
+        dialogFragmentGetDocument.setMsgText(content);
+        dialogFragmentGetDocument.setType(type, parent);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+        if(sendRequestSuccess){
+            NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+            getActivity().finish();
+            //vacacionesActivity.onEvent(,null);
+        }
+
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -372,41 +417,44 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar today = Calendar.getInstance();
         datePickerDialog.setMinDate( today);
+        //Setear el maximo de 18 meses para seleccionar periodos
+        today.add(Calendar.MONTH,18);
+        datePickerDialog.setMaxDate(today);
 
         datePickerDialog.setInitDaysSelectedHolidays(periods);
         datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
 
     }
 
-          DatePickerHolidayDialog.OnDateSetListener dateSetListenerStart = new DatePickerHolidayDialog.OnDateSetListener() {
+         DatePickerHolidayDialog.OnDateSetListener dateSetListenerStart = new DatePickerHolidayDialog.OnDateSetListener() {
 
-              @Override
-              public void onDateSet(DatePickerHolidayDialog view, int year, int month, int dayOfMonth) {
-              }
+        @Override
+        public void onDateSet(DatePickerHolidayDialog view, int year, int month, int dayOfMonth) {
+        }
 
-              @Override
-              public void onDatesSelectedHolidays(Map<String, List<DaySelectedHoliday>> periodsUpdate, double totalDays) {
-                  periods.clear();
-                  for (String key : periodsUpdate.keySet()){
-                      periods.put(key,periodsUpdate.get(key));
-                  }
+        @Override
+        public void onDatesSelectedHolidays(Map<String, List<DaySelectedHoliday>> periodsUpdate, double totalDays) {
+            periods.clear();
+            for (String key : periodsUpdate.keySet()){
+                periods.put(key,periodsUpdate.get(key));
+            }
 
-                  //Recalculamos los totales
-                  setValuesPeriods(totalDays);
-              }
+            //Recalculamos los totales
+            setValuesPeriods(totalDays);
+        }
 
-              @Override
-              public void onInvalidMaxSelectedDays(String msg) {
+        @Override
+        public void onInvalidMaxSelectedDays(String msg) {
 
-                  showWarningDialog("",msg);
-              }
-          };
-
-
+            showWarningDialog("",msg);
+        }
+    };
 
 
 
-          private void showWarningDialog(String title,String message) {
+
+
+    private void showWarningDialog(String title,String message) {
               if(title.isEmpty())
                   title = getString(R.string.attention);
 
@@ -427,12 +475,6 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            if(sendRequestSuccess){
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-                getActivity().finish();
-                //vacacionesActivity.onEvent(,null);
-            }
         }
     }
 
@@ -456,10 +498,13 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
 
                 setValuesPeriods(totalDays);
                 IScheduleOptions.showEliminatedOption(false,"");
-
                 dialogFragmentDeletePeriods.close();
 
-                showWarningDialog("",getString(R.string.msg_holiday_request_deleted));
+                IScheduleOptions.showTitle(true);
+                IScheduleOptions.showEliminatedOption(false,"");
+
+                showSuccessDialog(MSG_HOLIDAYS_OK,getString(R.string.msg_holiday_request_deleted),"");
+
 
             }
 
@@ -470,6 +515,9 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
 
             }
         });
+
+        dialogFragmentDeletePeriods.setTitle("Atención");
+        dialogFragmentDeletePeriods.setMsg("¿Quieres eliminar estas fechas?");
         dialogFragmentDeletePeriods.setVisibleCancelButton(VISIBLE);
         dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }
@@ -486,8 +534,8 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         List<HolidayPeriodData> periodsToSend = new ArrayList<>();
 
         for(HolidayPeriod period : periodsSelected){
-            String fechaInicio = getDateFormatToHolidays(period.getFec_ini(),true);
-            String fechaFin =  getDateFormatToHolidays(period.getFec_fin(),true);
+            String fechaInicio = getDateFormatToHolidaysSchedule(period.getFec_ini().split(",")[1].trim(),false);
+            String fechaFin =  getDateFormatToHolidaysSchedule(period.getFec_fin().split(",")[1].trim(),false);
             periodsToSend.add(new HolidayPeriodData(Double.parseDouble(period.getNum_dias()),fechaInicio,fechaFin));
         }
 

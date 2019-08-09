@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layoutContainer"
+    android:visibility="invisible"
     android:fillViewport="true"
     android:orientation="vertical"
     android:background="@color/colorBackgroundFragments"
@@ -30,8 +32,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-               <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/vacacionesAgendadas"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="30dp"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="-10dp"
+                    android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
+
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator
                    android:id="@+id/headerHoliday"
+                    android:layout_below="@+id/vacacionesAgendadas"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"/>
 
@@ -42,6 +55,7 @@
             <RelativeLayout
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_below="@+id/layoutHeader"
                 android:id="@+id/layoutSolicitudes"
                 android:layout_width="match_parent"
@@ -59,7 +73,7 @@
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_periods_holidays"
                     android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="18sp" />
+                    android:textSize="22sp" />
 
 
                 <TextView
@@ -125,4 +139,4 @@
     </android.support.v4.widget.NestedScrollView>
 
 
-</LinearLayout>
+</RelativeLayout>

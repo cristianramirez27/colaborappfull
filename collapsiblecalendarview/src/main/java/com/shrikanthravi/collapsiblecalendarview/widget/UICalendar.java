@@ -70,6 +70,9 @@ public abstract class UICalendar extends LinearLayout {
     private Drawable mSelectedItemBackgroundDrawable =
             getResources().getDrawable(R.drawable.circle_black_solid_background);
 
+    private Drawable mSelectedItemBackgroundDrawableSingle;
+    private Drawable mSelectedItemBackgroundDrawableSplice;
+
     private Drawable mButtonLeftDrawable =
             getResources().getDrawable(R.drawable.left_icon);
     private Drawable mButtonRightDrawable =
@@ -307,8 +310,8 @@ public abstract class UICalendar extends LinearLayout {
         redraw();
     }
 
-    public Drawable getSelectedItemBackgroundDrawable() {
-        return mSelectedItemBackgroundDrawable;
+    public Drawable getSelectedItemBackgroundDrawable(boolean hasSplice) {
+        return  hasSplice ? mSelectedItemBackgroundDrawableSplice : mSelectedItemBackgroundDrawableSingle;
     }
 
     public void setSelectedItemBackgroundDrawable(Drawable selectedItemBackground) {
@@ -370,5 +373,19 @@ public abstract class UICalendar extends LinearLayout {
     }
 
 
+    public void setmSelectedItemBackgroundDrawableSingle(Drawable mSelectedItemBackgroundDrawableSingle) {
+        this.mSelectedItemBackgroundDrawableSingle = mSelectedItemBackgroundDrawableSingle;
+    }
 
+    public void setmSelectedItemBackgroundDrawableSplice(Drawable mSelectedItemBackgroundDrawableSplice) {
+        this.mSelectedItemBackgroundDrawableSplice = mSelectedItemBackgroundDrawableSplice;
+    }
+
+    public void setTitleMonthVisible(boolean isVisible){
+        mTxtTitle.setVisibility(isVisible? VISIBLE : GONE);
+    }
+
+    public String getMonthCurrentTitle(){
+        return mTxtTitle.getText().toString();
+    }
 }

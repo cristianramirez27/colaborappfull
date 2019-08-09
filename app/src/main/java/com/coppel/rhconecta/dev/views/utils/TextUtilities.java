@@ -2,12 +2,20 @@ package com.coppel.rhconecta.dev.views.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -171,6 +179,14 @@ public class TextUtilities {
         return dateFormatted.trim();
     }
 
+    public static String getDateFormatToHolidaysSchedule(String date,boolean adjustMonth){
+        String[] dateFormat = date.split("-");
+        int month = adjustMonth ? Integer.parseInt(dateFormat[1]) + 1 : Integer.parseInt(dateFormat[1]);
+        String dateFormatted = String.format("%s%s%s",dateFormat[2],month > 9 ? String.valueOf(month) : "0" +month,dateFormat[0]);
+        return dateFormatted.trim();
+    }
+
+
     public static String getDateFormatToHolidaysInverse(String date,boolean adjustMonth){
         date = date.split(",")[1].trim();
         String[] dateFormat = date.split("-");
@@ -180,4 +196,37 @@ public class TextUtilities {
     }
 
 
+    public static String getDayNameFromDate(String date ){//Sample "29-08-2016"
+        /*Obtenemos nombre del día*/
+        LocalDate localDate = DateTimeFormat.forPattern("dd-MM-yyyy").parseLocalDate(date);
+       return DateTimeFormat.forPattern("EEEE").print(localDate);
+    }
+
+    public static String getDayNameFromDate(DateTime date ){//Sample "29-08-2016"
+        /*Obtenemos nombre del día*/
+        return DateTimeFormat.forPattern("EEEE").print(date);
+    }
+
+    public static void formatMonthNameFormat(String titleMonth, TextView mTxtTitle){
+
+        try {
+
+            String[] titleParts = titleMonth.split(" ");
+            titleParts[0] = titleParts[0].substring(0, 1).toUpperCase() + titleParts[0].substring(1).toLowerCase() + " ";
+
+            Spannable word = new SpannableString( titleParts[0]);
+            word.setSpan(new ForegroundColorSpan(Color.BLACK), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mTxtTitle.setText(word);
+            Spannable wordTwo = new SpannableString( titleParts[1]);
+            wordTwo.setSpan(new ForegroundColorSpan(Color.parseColor("#5f6062")), 0, wordTwo.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mTxtTitle.append(wordTwo);
+            // mTxtTitle.setText(sbuilder);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static String[] getMonths() {
+        return months;
+    }
 }

@@ -68,22 +68,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                    android:id="@+id/vacacionesAgendadas"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:paddingBottom="-10dp"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
-
 
                 <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
                     android:id="@+id/vacacionesAutorizadas"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="-20dp"
-                    android:layout_below="@+id/vacacionesAgendadas"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/vacacionesAgendadas"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_below="@+id/vacacionesAutorizadas"
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
@@ -91,9 +89,8 @@
 
                 <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
                     android:id="@+id/titleDetail"
-                    android:layout_below="@+id/vacacionesAutorizadas"
+                    android:layout_below="@+id/vacacionesAgendadas"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="-8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -103,7 +100,7 @@
                     android:orientation="vertical"
                     android:id="@+id/layoutDetail"
                     android:visibility="gone"
-                    android:layout_marginTop="-20dp"
+                    android:layout_marginTop="-10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="10dp"

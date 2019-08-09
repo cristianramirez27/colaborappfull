@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="550dp"
     android:background="@color/transparent"
-    android:minHeight="460dp"
+    android:minHeight="550dp"
     android:elevation="8dp">
 
     <FrameLayout
         android:id="@+id/card_back"
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/mdtp_date_picker_dialog_v2_back" />
@@ -20,6 +21,7 @@
         android:id="@+id/card_front"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
         android:gravity="center">
 
         <include layout="@layout/mdtp_date_picker_dialog_v2" />

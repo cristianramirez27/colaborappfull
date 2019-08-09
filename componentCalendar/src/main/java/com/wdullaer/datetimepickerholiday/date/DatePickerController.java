@@ -28,7 +28,8 @@ import java.util.TimeZone;
  */
 public interface DatePickerController {
 
-
+    void validateSelection();
+    boolean isLimit();
     void setIsTappedSelected(boolean isTappedSelected);
     boolean isTappedSelected ();
     void setDaysSelected(HashMap<String,DaySelectedHoliday> daysSelected);

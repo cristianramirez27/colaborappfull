@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
@@ -15,11 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
-import com.coppel.rhconecta.dev.views.fragments.holidays.ColaboratorRequestHolidaysFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.ColaboratorRequestHolidaysFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,8 +29,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 
 public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayRequestRecyclerAdapter.ViewHolder> {
 
@@ -37,9 +40,14 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     private IScheduleOptions IScheduleOptions;
     private boolean isSchedule;
     private boolean showIcon;
+    private boolean hideCheckBox;
+    private boolean fullHorizontalView;
+    private boolean showAuthorize;
+    private boolean changeStyleCheckbox;
     private OnRequestSelectedClickListener OnRequestSelectedClickListener;
 
     private ColaboratorRequestHolidaysFragment.ICalendarView ICalendarView;
+
 
     private boolean isGte;
 
@@ -78,8 +86,13 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
 
         viewHolder.diasVacaciones.setText(String.format("%s %s",daysNumber, daysNumber.equals("1") ? "día" : "días"));
-        viewHolder.layoutEstatusContainer.setVisibility( dataItems.get(i).getNom_estatus()!= null && !dataItems.get(i).getNom_estatus().isEmpty() ?  VISIBLE : View.GONE);
-        viewHolder.checkboxElement.setVisibility(showCheckOption(dataItems.get(i)) ? VISIBLE : INVISIBLE);
+        viewHolder.layoutEstatusContainer.setVisibility(hasEstatus(dataItems.get(i).getNom_estatus(),dataItems.get(i).getNom_estaus()) ?  VISIBLE : GONE);
+
+        int visibilityCheckElement = !hideCheckBox && showCheckOption(dataItems.get(i)) ? VISIBLE :
+                fullHorizontalView ? GONE : INVISIBLE;
+        viewHolder.checkboxElement.setVisibility(visibilityCheckElement);
+        viewHolder.cbxLayout.setVisibility(visibilityCheckElement);
+
         viewHolder.checkboxElement.setChecked(dataItems.get(i).isSelected());
 
         viewHolder.ic_solicitud.setVisibility(showIcon ? VISIBLE : INVISIBLE);
@@ -87,48 +100,80 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
             viewHolder.ic_solicitud.setImageResource(getIcon(dataItems.get(i).getIdu_estatus()));
         }
 
-        viewHolder.markerSplice.setVisibility(dataItems.get(i).getIdu_marca() == 1 ? VISIBLE : View.GONE);
+        viewHolder.markerSplice.setVisibility(dataItems.get(i).getIdu_marca() == 1 ? VISIBLE : GONE);
 
         viewHolder.checkboxElement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if(isChecked){
+
                     dataItems.get(i).setSelected(true);
                     if(isGte){
+                        IScheduleOptions.showAuthorizeOption(true);
                         IScheduleOptions.showEliminatedOption(true,"Rechazar");
                     }else {
-                        IScheduleOptions.showEliminatedOption(true,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                        IScheduleOptions.showEliminatedOption(true,isSchedule ? "Eliminar" :"Cancelar vacaciones");
                     }
 
+                    IScheduleOptions.showTitle(false);
                 }else {
                     dataItems.get(i).setSelected(false);
                     hideEliminateOptionIfIsNecessary();
                 }
-
                 if(ICalendarView != null){
                     ICalendarView.enableCalendarOption(isSingleSelection());
                 }
             }
         });
 
-        if(!isSchedule){
-            viewHolder.estatus.setText(dataItems.get(i).getNom_estatus());
-            //viewHolder.estatus.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));
-            GradientDrawable gd = new GradientDrawable();
-            gd.setColor(Color.parseColor(dataItems.get(i).getColor()));
-            gd.setCornerRadius(20);
-            viewHolder.estatus.setBackgroundDrawable(gd);
-        }
-
         viewHolder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
+                if(visibilityCheckElement == VISIBLE)
+                    viewHolder.checkboxElement.setChecked(!viewHolder.checkboxElement.isChecked());
             }
         });
 
 
+        if(!isSchedule){
+
+            if(dataItems.get(i).getColor_marca() != null && !dataItems.get(i).getColor_marca().isEmpty())
+                viewHolder.estatus.setTextColor( Color.parseColor(dataItems.get(i).getColor_marca()));
+
+            viewHolder.estatus.setText(dataItems.get(i).getNom_estatus() != null ? dataItems.get(i).getNom_estatus() :
+                    (dataItems.get(i).getNom_estaus() != null ? dataItems.get(i).getNom_estaus() : ""));
+            //viewHolder.estatus.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));
+            GradientDrawable gd = new GradientDrawable();
+            gd.setColor(Color.parseColor(dataItems.get(i).getColor()));
+            gd.setCornerRadius(80);
+            viewHolder.estatus.setBackgroundDrawable(gd);
+        }
+
+        viewHolder.ic_solicitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
+            }
+        });
+
+    }
+
+    public void setShowAuthorize(boolean showAuthorize) {
+        this.showAuthorize = showAuthorize;
+    }
+
+    public void setHideCheckBox(boolean hideCheckBox) {
+        this.hideCheckBox = hideCheckBox;
+    }
+
+    private boolean hasEstatus(String status,String staus){
+
+        if(status != null || staus != null)
+            return true;
+
+        return false;
     }
 
     private boolean isSingleSelection(){
@@ -153,7 +198,6 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
             case 3:
             case 2:
                 return R.drawable.ic_icn_masinfo;
-
                 default:
                     return R.drawable.ic_icn_calendar;
 
@@ -199,13 +243,17 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
             if(period.isSelected()){
                 if(isGte){
                     IScheduleOptions.showEliminatedOption(true ,"Rechazar");
+                    IScheduleOptions.showAuthorizeOption(true);
                 }else {
-                    IScheduleOptions.showEliminatedOption(true ,isSchedule ? "Eliminar" :"Cancelar Vacaciones");
+                    IScheduleOptions.showEliminatedOption(true ,isSchedule ? "Eliminar" :"Cancelar vacaciones");
                 }
                 return;
             }
         }
+
+        IScheduleOptions.showAuthorizeOption(false);
         IScheduleOptions.showEliminatedOption(false,"");
+        IScheduleOptions.showTitle(true);
     }
 
     @Override
@@ -240,6 +288,11 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
     }
 
+
+    public void setChangeStyleCheckbox(boolean changeStyleCheckbox) {
+        this.changeStyleCheckbox = changeStyleCheckbox;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.cardview)
@@ -263,7 +316,8 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         @BindView(R.id.markerSplice)
         View markerSplice;
 
-
+        @BindView(R.id.cbxLayout)
+        RelativeLayout cbxLayout;
 
 
         public ViewHolder(@NonNull View itemView) {
