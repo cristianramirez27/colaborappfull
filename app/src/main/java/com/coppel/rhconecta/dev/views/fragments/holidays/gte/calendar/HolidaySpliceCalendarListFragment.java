@@ -23,6 +23,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
+import com.coppel.rhconecta.dev.business.models.MarkHoliday;
 import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
@@ -269,6 +270,22 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
         for(HolidayPeriod period : spliceSelectedVO.getPeriodos()){
             if(validateDateInPeriod(dateSelected,period.getFec_ini(),period.getFec_fin())){
                 this.colaboratorsPeriodsHolidays.add(period);
+
+                if(spliceSelectedVO.isAddSpliceMarks()){
+                    //Agregamos los empalmes
+                    if(period.getIdu_marca() == 1){
+                        for(MarkHoliday markHoliday : period.getVer_marca()){
+                            HolidayPeriod hperiodMark = new HolidayPeriod();
+                            hperiodMark.setFotoperfil(markHoliday.getFotoperfil());
+                            hperiodMark.setNom_empleado(markHoliday.getNom_empmarca());
+
+                            hperiodMark.setIdu_marca(1);
+                            this.colaboratorsPeriodsHolidays.add(hperiodMark);
+                        }
+                    }
+                }
+
+
             }
         }
 

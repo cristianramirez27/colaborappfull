@@ -101,7 +101,7 @@ public class HeaderHolidaysColaboratorGte extends RelativeLayout {
 */
             MarginLayoutParams marginParams = (MarginLayoutParams) vacacionesAgendadas.getLayoutParams();
             marginParams.setMargins(marginParams.leftMargin,
-                    -80,
+                    -40,
                     marginParams.rightMargin,
                     marginParams.bottomMargin);
 

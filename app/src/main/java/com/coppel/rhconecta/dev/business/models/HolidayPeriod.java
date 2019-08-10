@@ -9,8 +9,8 @@ public class HolidayPeriod implements Serializable {
     private String nom_estaus;
     private String color;
     private String num_dias;
-    private String fec_ini;
-    private String fec_fin;
+    private String fec_ini="";
+    private String fec_fin="";
     private int idu_marca;
     private String color_marca;
     private List<MarkHoliday> ver_marca;

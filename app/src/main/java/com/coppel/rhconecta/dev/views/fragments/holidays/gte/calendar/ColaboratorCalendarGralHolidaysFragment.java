@@ -226,6 +226,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
             @Override
             public void action(Day daySelected) {
                 SpliceSelectedVO data = new SpliceSelectedVO( holidaysPeriodsResponse.getData().getResponse().getPeriodos(),daySelected);
+                data.setAddSpliceMarks(true);
                 ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
 
             }
@@ -530,6 +531,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
               ColaboratorHoliday colaboratorHoliday = new ColaboratorHoliday(holidayPeriod.getNom_empleado(),
                       holidayPeriod.getFotoperfil(),
                       holidayPeriod.getNum_empleado());
+
+
               ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,holidayPeriod);
           }
 
@@ -602,12 +605,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         collapsibleCalendar.setAdapter(adapter);
         do{
             String dateAsString = String.format("%s%s%s",String.valueOf(calendar.get(Calendar.YEAR)),
-                    String.valueOf(calendar.get(Calendar.MONTH)),  String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+                    String.valueOf(calendar.get(Calendar.MONTH) > 0 ? calendar.get(Calendar.MONTH) : "0"+calendar.get(Calendar.MONTH)),  String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
             //Si ya esta en el map, lo marcamos como con empalme
             if(daysInCalendar.containsKey(dateAsString)){
-                daysInCalendar.get(dateAsString).setHasSplice(1);
+                daysInCalendar.get(dateAsString).setHasSplice(period.getIdu_marca() == 1 ? period.getIdu_marca() : -1 );
             }else {
-                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), 0);
+                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),
+                        period.getIdu_marca() == 1 ? period.getIdu_marca() : -1 );
                 daysInCalendar.put(dateAsString,dayToAdd);
             }
             calendar.add(Calendar.DATE,1);

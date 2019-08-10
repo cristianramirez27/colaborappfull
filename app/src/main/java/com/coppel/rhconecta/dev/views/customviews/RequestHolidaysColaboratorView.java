@@ -27,6 +27,11 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
     @BindView(R.id.nameColaborator)
     TextView nameColaborator;
 
+    @BindView(R.id.layoutInicial)
+    RelativeLayout layoutInicial;
+    @BindView(R.id.layoutFinal)
+    RelativeLayout layoutFinal;
+
     @BindView(R.id.fechaInicio)
     TextView fechaInicio;
     @BindView(R.id.fechaFin)
@@ -68,9 +73,14 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
 
         fechaInicio.setText(period.getFec_ini());
         fechaFin.setText(period.getFec_fin());
+
+        layoutInicial.setVisibility(period.getFec_ini().isEmpty() ? GONE : VISIBLE);
+        layoutFinal.setVisibility(period.getFec_fin().isEmpty() ? GONE : VISIBLE);
+
         layoutTotalDays.setVisibility(showTotalDays ? VISIBLE: GONE);
         diasVacaciones.setText(period.getNum_dias());
 
+        markerSpliceLeft.setBackgroundResource(period.getIdu_marca() == 1 ?  R.drawable.backgroud_circle_melon :  R.drawable.backgroud_circle_green);
         markerSpliceLeft.setVisibility(period.isShowMarker() ? VISIBLE : GONE);
 
     }

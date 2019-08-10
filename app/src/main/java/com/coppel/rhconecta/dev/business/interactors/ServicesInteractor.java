@@ -3453,6 +3453,8 @@ public class ServicesInteractor {
             case GET_CALENDAR_HOLIDAY:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesCalendarHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
                         holidaysRequestData.getNum_gerente(),holidaysRequestData.getNum_mes(),holidaysRequestData.getNum_anio(),holidaysRequestData.getNum_centro());
+
+                ((CoppelServicesCalendarHolidaysRequest) coppelServicesBaseHolidaysRequest).setNom_empleado(holidaysRequestData.getNom_empleado());
                 break;
 
             case CANCEL_GTE_HOLIDAY:

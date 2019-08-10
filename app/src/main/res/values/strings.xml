@@ -346,6 +346,7 @@
     <string name="btn_edit_holidays">Editar\nperíodo</string>
     <string name="btn_cancel_holidays">Cancelar vacaciones</string>
     <string name="btn_cancel_holidays_">Cancelar\nvacaciones</string>
+    <string name="btn_refuse_holidays_">Rechazar\nvacaciones</string>
     <string name="title_total_request_days">Total Días Solicitados</string>
     <string name="title_days_to_schedule">Días por Agendar</string>
 

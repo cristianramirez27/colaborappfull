@@ -9,6 +9,7 @@ public class SpliceSelectedVO implements Serializable {
 
     private List<HolidayPeriod> periodos;
     private Day daySelected;
+    private boolean addSpliceMarks;
 
     public SpliceSelectedVO(List<HolidayPeriod> periodos, Day daySelected) {
         this.periodos = periodos;
@@ -29,5 +30,13 @@ public class SpliceSelectedVO implements Serializable {
 
     public void setDaySelected(Day daySelected) {
         this.daySelected = daySelected;
+    }
+
+    public boolean isAddSpliceMarks() {
+        return addSpliceMarks;
+    }
+
+    public void setAddSpliceMarks(boolean addSpliceMarks) {
+        this.addSpliceMarks = addSpliceMarks;
     }
 }

@@ -45,6 +45,7 @@ import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.ColaboratorHolidayRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCenter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentEstatus;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -67,6 +68,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CALENDAR_HOLIDAY;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CENTERS;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_WARNING;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -78,7 +80,7 @@ import static com.coppel.rhconecta.dev.views.utils.TextUtilities.formatMonthName
  */
 public class HolidayCalendarListFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,
         ColaboratorHolidayRecyclerAdapter.OnRequestSelectedClickListener,
-        DialogFragmentCenter.OnButonOptionClick, DialogFragmentWarning.OnOptionClick{
+        DialogFragmentCenter.OnButonOptionClick, DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener{
 
     public static final String TAG = HolidayCalendarListFragment.class.getSimpleName();
     private AppCompatActivity parent;
@@ -112,6 +114,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
     ImageView nextMonth;
 
 
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private HolidaysCalendarPeriodsResponse calendarPeriodsResponse;
 
     private DialogFragmentCenter dialogFragmentCenter;
@@ -196,7 +199,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     if(doSearch && s.toString().length() == 0){
                         searchName = edtSearch.getText() != null && !edtSearch.getText().toString().isEmpty() ?
                                 edtSearch.getText().toString() : "";
-                        //getColaborators(centerSelected.getNum_centro(),searchName);
+                        getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
                     }
                 }else {
                     doSearch = true;
@@ -362,6 +365,10 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     HashMap<String,ColaboratorHoliday> colaboratorHolidayHashMap = new HashMap<>();
 
                 colaboratorsPeriodsHolidays.clear();
+
+                if(calendarPeriodsResponse.getData().getResponse().getDes_mensaje() != null && !calendarPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty()) {
+                    showSuccessDialog(MSG_HOLIDAYS_WARNING, calendarPeriodsResponse.getData().getResponse().getDes_mensaje(), "");
+                }else{
                     for (HolidayPeriod period : calendarPeriodsResponse.getData().getResponse().getPeriodos()) {
                         colaboratorsPeriodsHolidays.add(period);
                         if(!colaboratorHolidayHashMap.containsKey(period.getNum_empleado())){
@@ -371,17 +378,41 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                         }
                     }
 
-                setCalendarData();
-                colaboratorHolidays.clear();
-                for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
-                    colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
-                }
+                    setCalendarData();
+                    colaboratorHolidays.clear();
+                    for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
+                        colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
+                    }
                     colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                 }
+                }
+
 
                 break;
         }
     }
+
+    private void showSuccessDialog(int type,String title,String content) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText(title);
+        dialogFragmentGetDocument.setMsgText(content);
+        dialogFragmentGetDocument.setType(type, parent);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+
+        dialogFragmentGetDocument.close();
+    }
+
+
 
     @Override
     public void showError(ServicesError coppelServicesError) {
@@ -492,7 +523,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
             searchName = search;
-           // getColaborators(centerSelected.getNum_centro(),searchName);
+            getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
         }
     }
 
@@ -534,6 +565,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
         holidayRequestData.setNum_anio(year);
         holidayRequestData.setNum_mes(month+1);//Se agrega 1 por el formato del calendario resta 1
         holidayRequestData.setNum_centro(centerSelected.getNum_centro());
+        holidayRequestData.setNom_empleado(searchName);
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 

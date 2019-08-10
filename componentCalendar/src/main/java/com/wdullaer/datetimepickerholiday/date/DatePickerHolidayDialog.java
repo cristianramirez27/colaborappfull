@@ -610,7 +610,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
+        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
         return dialog;
     }
 

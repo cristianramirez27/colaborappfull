@@ -9,6 +9,8 @@ public class CoppelServicesCalendarHolidaysRequest extends CoppelServicesBaseHol
     private int num_anio;
     private int num_centro;
 
+    private String nom_empleado;
+
 
     public CoppelServicesCalendarHolidaysRequest(Object num_empleado, int opcion, int num_gerente, int num_mes, int num_anio,int num_centro) {
         super(num_empleado, opcion);
@@ -55,5 +57,14 @@ public class CoppelServicesCalendarHolidaysRequest extends CoppelServicesBaseHol
 
     public void setNum_centro(int num_centro) {
         this.num_centro = num_centro;
+    }
+
+
+    public String getNom_empleado() {
+        return nom_empleado;
+    }
+
+    public void setNom_empleado(String nom_empleado) {
+        this.nom_empleado = nom_empleado;
     }
 }

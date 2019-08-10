@@ -33,6 +33,7 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
+import com.coppel.rhconecta.dev.business.models.MarkHoliday;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
@@ -56,6 +57,7 @@ import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -218,17 +220,48 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         setDataPeriod();
 
 
+        validateButton();
+
 
         expObservaciones.setText("Observaciones");
         expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
             public void onClick() {
-                observacionesStateChange(expObservaciones,layoutObservaciones);
+                //observacionesStateChange(expObservaciones,layoutObservaciones);
             }
         });
 
 
         return view;
+    }
+
+    private void validateButton(){
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTime dtStart = formatter.parseDateTime(this.holidayPeriod.getFec_ini());
+        DateTime dtEnd = formatter.parseDateTime(this.holidayPeriod.getFec_fin());
+
+        DateTime now = new DateTime();
+
+        if(now.isAfter(dtEnd)){ // Ya termino
+            btnEdit.setEnabled(false);
+            btnEdit.setBackgroundResource(R.drawable.backgroud_rounder_grey);
+            btnCancel.setEnabled(false);
+            btnCancel.setBackgroundResource(R.drawable.backgroud_rounder_grey);
+        }else if(dtStart.isBefore(now) && !now.isAfter(dtEnd)){// Ya empezo y no ha terminado
+            btnEdit.setEnabled(false);
+            btnEdit.setBackgroundResource(R.drawable.backgroud_rounder_grey);
+            btnCancel.setEnabled(true);
+            btnCancel.setText(getString(R.string.btn_cancel_holidays_));
+            btnCancel.setBackgroundResource(R.drawable.background_blue_rounded);
+        }else if(dtStart.isAfter(now)){ // No ha comenzado
+            btnEdit.setEnabled(true);
+            btnEdit.setBackgroundResource(R.drawable.background_blue_rounded);
+            btnCancel.setEnabled(true);
+            btnCancel.setText(getString(R.string.btn_refuse_holidays_));
+            btnCancel.setBackgroundResource(R.drawable.background_blue_rounded);
+        }
+
     }
 
     private void initializeCalendar(){
@@ -260,11 +293,40 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             holidayPeriodList.add(period);
         }*/
         holidayRequestRecyclerAdapter.notifyDataSetChanged();
-        holidayPeriodList.add(this.holidayPeriod);
+        if(holidayPeriod.getIdu_marca() == 1){
+            //Agregamos los empalmes
+                for(MarkHoliday markHoliday : holidayPeriod.getVer_marca()){
+                    HolidayPeriod hperiodMark = new HolidayPeriod();
+                    hperiodMark.setFotoperfil(markHoliday.getFotoperfil());
+                    hperiodMark.setNom_empleado(markHoliday.getNom_empmarca());
+
+                    hperiodMark.setIdu_marca(1);
+                    this.holidayPeriodList.add(hperiodMark);
+                }
+
+        }
 
         this.holidayPeriod.setFec_ini(this.holidayPeriod.getFec_ini().split(",")[1].trim());
         this.holidayPeriod.setFec_fin(this.holidayPeriod.getFec_fin().split(",")[1].trim());
-        setColaboratorMarkInCalendar(holidayPeriodList);
+
+
+
+        if( this.holidayPeriod.getColor_marca() != null && ! this.holidayPeriod.getColor_marca().isEmpty())
+            estatus.setTextColor( Color.parseColor( this.holidayPeriod.getColor_marca()));
+
+        estatus.setText( this.holidayPeriod.getNom_estatus() != null ?  this.holidayPeriod.getNom_estatus() :
+                ( this.holidayPeriod.getNom_estaus() != null ?  this.holidayPeriod.getNom_estaus() : ""));
+        //estatus.setTextColor(Color.parseColor( this.holidayPeriod.getDes_colorletra()));
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor( this.holidayPeriod.getColor()));
+        gd.setCornerRadius(80);
+        estatus.setBackgroundDrawable(gd);
+
+
+        //Mostramos en calendario
+        List<HolidayPeriod> holidayPeriodOwn = new ArrayList<>();
+        holidayPeriodOwn.add(this.holidayPeriod);
+        setColaboratorMarkInCalendar(holidayPeriodOwn);
     }
 
     private void setDataHeader(){
@@ -635,7 +697,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         HashMap<String,Day> daysInCalendar = new HashMap<>();
         List<Day>  listDaySelected = new ArrayList<>();
         for(HolidayPeriod period : periods){
-            setSelectedDays(period,daysInCalendar);
+            if(!period.getFec_ini().isEmpty() && !period.getFec_fin().isEmpty())
+                setSelectedDays(period,daysInCalendar);
         }
         //Llenamos la lista con los dias con y sin empalmes
         for(String dateAsString : daysInCalendar.keySet()){
@@ -681,9 +744,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                     String.valueOf(calendar.get(Calendar.MONTH)),  String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
             //Si ya esta en el map, lo marcamos como con empalme
             if(daysInCalendar.containsKey(dateAsString)){
-                daysInCalendar.get(dateAsString).setHasSplice(1);
+                daysInCalendar.get(dateAsString).setHasSplice(holidayPeriod.getIdu_marca() == 1 ?  this.holidayPeriod.getIdu_marca() : -1);
             }else {
-                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), 0);
+                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), holidayPeriod.getIdu_marca() == 1 ?  this.holidayPeriod.getIdu_marca() : -1);
                 daysInCalendar.put(dateAsString,dayToAdd);
             }
 
@@ -756,7 +819,18 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         holidayRequestData.setDes_observaciones(observations);
         List<HolidayPeriodData> periodsToEdit = new ArrayList<>();
 
+        /*Formatear fecha*/
+
+
         for(HolidayPeriod period : holidayPeriodSchedule){
+
+            String[] dateParts = period.getFec_ini().split("-");
+            int month = Integer.parseInt(dateParts[1]) +1 ;
+            period.setFec_ini(String.format("%s%s%s",dateParts[0],month > 9 ? month : "0"+month ,dateParts[2]));
+            dateParts = period.getFec_fin().split("-");
+            month = Integer.parseInt(dateParts[1]) +1 ;
+            period.setFec_fin(String.format("%s%s%s",dateParts[0],month > 9 ? month : "0"+month ,dateParts[2]));
+
             periodsToEdit.add(new HolidayPeriodData(Double.parseDouble(period.getNum_dias()),period.getFec_ini(),period.getFec_fin(),period.getIdu_folio()));
         }
 
