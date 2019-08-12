@@ -1,0 +1,52 @@
+package com.coppel.rhconecta.dev.resources.db.models;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
+@RealmClass
+public class HomeMenuItem extends RealmObject {
+
+    @PrimaryKey
+    private String TAG;
+    private String name;
+    private int notifications = 0;
+
+    public HomeMenuItem() {
+    }
+
+    public HomeMenuItem(String name, String TAG) {
+        this.name = name;
+        this.TAG = TAG;
+    }
+
+    public HomeMenuItem(String name, String TAG, int notifications) {
+        this.TAG = TAG;
+        this.name = name;
+        this.notifications = notifications;
+    }
+
+    public int getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(int notifications) {
+        this.notifications = notifications;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTAG() {
+        return TAG;
+    }
+
+    public void setTAG(String TAG) {
+        this.TAG = TAG;
+    }
+}
