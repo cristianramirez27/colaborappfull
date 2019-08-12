@@ -13,7 +13,7 @@ public class NumberTextWatcher implements TextWatcher {
     private DecimalFormat dfnd;
     private boolean hasFractionalPart;
     public static String prefix = "$";
-    private static final int MAX_LENGTH = 20;
+    private static final int MAX_LENGTH = 13;
     private EditText et;
 
     public NumberTextWatcher(EditText et) {
@@ -30,6 +30,10 @@ public class NumberTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
         String str = s.toString();
 
+
+     /*   if(str.length() == 10){
+            et.setText(str + ".");
+       }*/
       /*  if(str.length() > 3 && str.indexOf(".") > 0){
             String current = s.toString();
             current = current.substring(current.indexOf("."),current.length());

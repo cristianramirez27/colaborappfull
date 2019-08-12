@@ -79,6 +79,12 @@ public class EditTextMoneyDecimal extends ConstraintLayout {
         edtQuantity.setTypeface(type);
     }
 
+
+    public void setMaxLengh(int lengh){
+
+        edtQuantity.setFilters(new InputFilter[] { new InputFilter.LengthFilter(lengh) });
+    }
+
     public void setPaddinRigthTitle(){
 
         txvTitle.setPadding(30,8,0,8);

@@ -114,7 +114,7 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
             edtNewAmount.setSizeQuantity(13);
             edtNewAmount.setPaddingRelative(4,8,4,8);
 
-
+            edtNewAmount.setMaxLengh(13);
             /*edtNewAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {

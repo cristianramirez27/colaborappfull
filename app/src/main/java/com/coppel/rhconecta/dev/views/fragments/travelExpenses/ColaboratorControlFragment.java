@@ -1006,7 +1006,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
+        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator  = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
 
         //Se agrega numero de empleado el de la solicitud
