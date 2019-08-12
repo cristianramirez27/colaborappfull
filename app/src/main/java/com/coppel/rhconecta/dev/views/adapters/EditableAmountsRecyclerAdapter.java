@@ -135,13 +135,32 @@ public class EditableAmountsRecyclerAdapter extends RecyclerView.Adapter<Editabl
        // editTextMoney.setTextWatcherMoney();
 
         editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
+
+            String current;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                current = editTextMoney.getEdtQuantity().getText().toString();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().length() > 10
+                        &&!s.toString().contains(".")){
+                    String format = s.toString();
+                    //String current = editTextMoney.getEdtQuantity().getText().toString();
+                    if(current.contains(".") && current.replace(".","").equals(format)){
+                        editTextMoney.getEdtQuantity().setText("");
+                        String newText = current;
+                        editTextMoney.getEdtQuantity().setText(newText);
+                    }else {
+
+                        format = format.substring(0,10) + "." + format.substring(10,format.length());
+                        editTextMoney.getEdtQuantity().setText(format);
+                        editTextMoney.getEdtQuantity().setSelection(format.length());
+                    }
+
+                }
 
                 if(editTextMoney.getQuantity().length() >0){
                     String value =  editTextMoney.getEdtQuantity().getText().toString();
