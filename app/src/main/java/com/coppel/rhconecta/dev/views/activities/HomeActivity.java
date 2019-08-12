@@ -45,6 +45,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
@@ -83,6 +84,7 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
@@ -141,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
 
     private boolean EXPIRED_SESSION;
-
+    private String goTosection="";
     private CoppelServicesPresenter coppelServicesPresenter;
 
     @Override
@@ -163,10 +165,23 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             realm = Realm.getDefaultInstance();
             loginResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_LOGIN_RESPONSE), LoginResponse.class).getData().getResponse();
             profileResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNLDE_PROFILE_RESPONSE), ProfileResponse.class).getData().getResponse()[0];
+
+
+            if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
+                goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+                navigationMenu(goTosection);
+            }else{
+
+
+            }
+
+
             initNavigationComponents();
             initMenu();
             getData();
             ctlLogout.setOnClickListener(this);
+
+
         } else {
             finish();
         }
@@ -326,6 +341,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
             case OPTION_SAVING_FUND:
                 replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
+                RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),9);
                 break;
             case OPTION_VISIONARIES:
                 Intent intentVisionaries = new Intent(this, VideosActivity.class);
@@ -344,6 +360,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 }else{
                     replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
                 }
+
+                RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
                 break;
 
             case OPTION_HOLIDAYS:
@@ -354,6 +372,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     getRolType(HOLIDAYS);
                 }
 
+                RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                 break;
 
             case OPTION_POLL:

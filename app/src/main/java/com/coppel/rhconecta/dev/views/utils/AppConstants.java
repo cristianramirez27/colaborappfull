@@ -21,6 +21,9 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_NUM_GTE = "NUM_GTE";
     public static final String SHARED_PREFERENCES_NUM_SUPLENTE = "NUM_SUPLENTE";
 
+    public static final String SHARED_PREFERENCES_LOGIN_RESPONSE = "LOGIN_RESPONSE";
+    public static final String SHARED_PREFERENCES_PROFILE_RESPONSE = "PROFILE_RESPONSE";
+
     public static final String APP_FOLDER = "ConectaCoppel";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
     public static final String CONTENT_TYPE_PDF = "application/pdf";
@@ -63,7 +66,7 @@ public class AppConstants {
     public static final String DATE_FORMAT_YYYY_MM_DD_MIDDLE = "yyyy-MM-dd";
     public static final String DATE_FORMAT_DD_MM_YYYY_MIDDLE = "dd-MM-yyyy";
     public static final String DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-
+    public static final String BUNDLE_GOTO_SECTION = "GOTO_SECTION";
     public static final String BUNDLE_LOGIN_RESPONSE = "LOGIN_RESPONSE";
     public static final String BUNLDE_PROFILE_RESPONSE = "PROFILE_RESPONSE";
     public static final String BUNDLE_PAYROLL_DATES = "PAYROLL_DATES";

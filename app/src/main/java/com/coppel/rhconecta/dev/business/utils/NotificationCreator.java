@@ -13,6 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 
+import java.util.Map;
+
 
 /**
  * Created by faust on 1/26/18.
@@ -34,6 +36,25 @@ public class NotificationCreator {
 
         return resultPendingIntent;
     }
+
+    public static PendingIntent getPendindIntentSection(Context context, Class clazz, Map<String,String> params){
+        Intent resultIntent = new Intent(context, clazz);
+
+        for(String key : params.keySet()){
+            resultIntent.putExtra(key,params.get(key));
+        }
+
+
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        REQUEST_CODE_PUSH,
+                        resultIntent,
+                        PendingIntent.FLAG_ONE_SHOT);//FLAG_UPDATE_CURRENT
+
+        return resultPendingIntent;
+    }
+
 
 
 

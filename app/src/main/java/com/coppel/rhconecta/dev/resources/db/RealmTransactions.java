@@ -27,13 +27,22 @@ public class RealmTransactions {
      */
     public static <T extends RealmObject> void insertInto(final T passedObject){
         try {
-            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
-            realm.executeTransactionAsync(new Realm.Transaction() {
+
+            Realm backgroundRealm = Realm.getDefaultInstance();
+            backgroundRealm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     T itemToWrite = realm.copyToRealmOrUpdate(passedObject);
                 }
             });
+
+         /*   Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    T itemToWrite = realm.copyToRealmOrUpdate(passedObject);
+                }
+            });*/
 
         }catch (Exception e){
             e.printStackTrace();
@@ -155,11 +164,16 @@ public class RealmTransactions {
 
     public static <T extends RealmObject> List<T>  searchByClass(Class<T> clazz){
 
-        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
-        realm.beginTransaction();
-        List<T>  resultsDb  = realm.where(clazz).findAll();
-        realm.commitTransaction();
-        return resultsDb;
+        try {
+            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
+            realm.beginTransaction();
+            List<T> resultsDb = realm.where(clazz).findAll();
+            realm.commitTransaction();
+            return resultsDb;
+
+        }catch (Exception e){
+            return  null;
+        }
 
     }
 

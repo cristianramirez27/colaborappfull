@@ -16,16 +16,21 @@ import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
 import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
+import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -42,12 +47,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         int idNotification = rand.nextInt(999);
 
                         processNotification(idNotification,remoteMessage);
-
+                        //Obtenemos los datos para iniciar el Dashboard
+                       /* String loginResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE);
+                        String profileResponse =AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
+*/
+                        Map<String,String> params = new HashMap<>();
+                       // params.put("LOGIN_RESPONSE",loginResponse);
+                       // params.put("PROFILE_RESPONSE",profileResponse);
+                        params.put(BUNDLE_GOTO_SECTION,OPTION_HOLIDAYS);
                         Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
                                 remoteMessage.getNotification().getTitle(),
                                 remoteMessage.getNotification().getBody(),
-                                NotificationCreator.getPendindIntent(CoppelApp.getContext(),
-                                        MainActivity.class )).build();
+                                NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
+                                        SplashScreenActivity.class,params )).build();
                         NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
 
                    }

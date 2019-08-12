@@ -23,7 +23,9 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MenuUtilities {
@@ -46,13 +48,16 @@ public class MenuUtilities {
         String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
     //    List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByParamKey(NotificationsUser.class,"USER_NUMBER",numgColaborator);
 
-        List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByClass(NotificationsUser.class);
+        List<NotificationsUser> notificationSaved = RealmHelper.getNotifications(numgColaborator);
 
         Map<Integer,Integer> mapNotification = new HashMap<>();
+        mapNotification.put(9,0);//fondo
+        mapNotification.put(10,0);//Vacaciones
+        mapNotification.put(11,0);//Gastos
 
         if(notificationSaved!= null){
             for(NotificationsUser notification : notificationSaved){
-                mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
+                    mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
             }
         }
 
@@ -96,13 +101,27 @@ public class MenuUtilities {
                         menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
                     }
 
+
+                    /***Notificaciones de Fondo de ahorro**/
+                    if(menus.get(i).getTAG().equals(OPTION_SAVING_FUND)){ // agrega notificaciones a vacaciones
+                        if(mapNotification.containsKey(9)){
+                            menus.get(i).setNotifications(mapNotification.get(9));
+                        }
+                    }
+
+
                     /***Notificaciones de Vacaciones**/
                     if(menus.get(i).getTAG().equals(OPTION_HOLIDAYS)){ // agrega notificaciones a vacaciones
                         if(mapNotification.containsKey(10)){
                             menus.get(i).setNotifications(mapNotification.get(10));
                         }
                     }
-
+                    /***Notificaciones de Gastos de viaje**/
+                    if(menus.get(i).getTAG().equals(OPTION_EXPENSES)){ // agrega notificaciones a vacaciones
+                        if(mapNotification.containsKey(11)){
+                            menus.get(i).setNotifications(mapNotification.get(11));
+                        }
+                    }
 
                     if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
                         if(notifications.length>0){
