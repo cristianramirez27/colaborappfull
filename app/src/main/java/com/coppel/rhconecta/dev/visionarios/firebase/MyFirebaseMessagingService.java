@@ -14,13 +14,18 @@ import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -29,6 +34,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
             if (remoteMessage.getNotification() != null) {
                 try {
+
+                    processNotification(remoteMessage);
 
                     if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
 
@@ -48,6 +55,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     ex.printStackTrace();
                 }
             }
+        }
+
+
+        private void processNotification(RemoteMessage remoteMessage){
+
+        Map<String,String> content = remoteMessage.getData();
+
+        String uuid = UUID.randomUUID().toString();
+
+        String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
+
+        NotificationsUser notificationsUser = new NotificationsUser(uuid,numgColaborator,0);
+
+
         }
 
     @SuppressLint("WrongConstant")

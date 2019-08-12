@@ -1,9 +1,10 @@
-package com.prasyde.impulsorintelectual.Resources.Db.Configuration;
+package com.coppel.rhconecta.dev.resources.db;
 
 import android.content.Context;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
 /**
  * Created by Fausto on 25/08/2016.
  *

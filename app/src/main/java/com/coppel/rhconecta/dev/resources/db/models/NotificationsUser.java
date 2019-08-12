@@ -5,48 +5,43 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class HomeMenuItem extends RealmObject {
+public class NotificationsUser extends RealmObject {
 
     @PrimaryKey
-    private String TAG;
-    private String name;
-    private int notifications = 0;
+    private String IIUID;
+    private String USER_NUMBER;
+    private int ID_SISTEMA;
 
-    public HomeMenuItem() {
+    public NotificationsUser() {
     }
 
-    public HomeMenuItem(String name, String TAG) {
-        this.name = name;
-        this.TAG = TAG;
+    public NotificationsUser(String IIUID, String USER_NUMBER, int ID_SISTEMA) {
+        this.IIUID = IIUID;
+        this.USER_NUMBER = USER_NUMBER;
+        this.ID_SISTEMA = ID_SISTEMA;
     }
 
-    public HomeMenuItem(String name, String TAG, int notifications) {
-        this.TAG = TAG;
-        this.name = name;
-        this.notifications = notifications;
+    public String getIIUID() {
+        return IIUID;
     }
 
-    public int getNotifications() {
-        return notifications;
+    public void setIIUID(String IIUID) {
+        this.IIUID = IIUID;
     }
 
-    public void setNotifications(int notifications) {
-        this.notifications = notifications;
+    public String getUSER_NUMBER() {
+        return USER_NUMBER;
     }
 
-    public String getName() {
-        return name;
+    public void setUSER_NUMBER(String USER_NUMBER) {
+        this.USER_NUMBER = USER_NUMBER;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getID_SISTEMA() {
+        return ID_SISTEMA;
     }
 
-    public String getTAG() {
-        return TAG;
-    }
-
-    public void setTAG(String TAG) {
-        this.TAG = TAG;
+    public void setID_SISTEMA(int ID_SISTEMA) {
+        this.ID_SISTEMA = ID_SISTEMA;
     }
 }

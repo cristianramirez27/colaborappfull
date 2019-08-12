@@ -1,6 +1,7 @@
-package com.prasyde.impulsorintelectual.Resources.Db.Configuration;
+package com.coppel.rhconecta.dev.resources.db;
 
-import com.prasyde.impulsorintelectual.ImpulsorIntelectualApp;
+
+import com.coppel.rhconecta.dev.CoppelApp;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class RealmTransactions {
      * @param  passedObject objeto extendido de RealmObject
      */
     public static <T extends RealmObject> void insertInto(final T passedObject){
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -43,24 +44,24 @@ public class RealmTransactions {
      * @param  primarykeyName nombre del campo que es primary key del objeto
      * @param  primaryKeyValue Valor del campo primary key del objeto
      */
-    public static <T extends RealmObject> void deleteObject(Class<T> clazz,String primarykeyName ,int primaryKeyValue){
+    public static <T extends RealmObject> void deleteObject(Class<T> clazz, String primarykeyName , int primaryKeyValue){
         RealmObject resultsDb = searchByPrimaryKey(clazz,primarykeyName,primaryKeyValue);
 
         if(resultsDb!= null){
-            Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
             realm.beginTransaction();
             resultsDb.deleteFromRealm();
             realm.commitTransaction();
         }
     }
 
-    public static <T extends RealmObject> void deleteObject(Class<T> clazz,String key ,String param){
+    public static <T extends RealmObject> void deleteObject(Class<T> clazz, String key , String param){
 
 
         RealmObject resultsDb = searchByParamKey(clazz,key,param);
 
         if(resultsDb!= null){
-            Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
             realm.beginTransaction();
             resultsDb.deleteFromRealm();
             realm.commitTransaction();
@@ -70,7 +71,7 @@ public class RealmTransactions {
     }
 
     public static <T extends RealmObject>   void deleteAllObjectByClass(Class<T> clazz){
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
         realm.delete(clazz);
         realm.commitTransaction();
@@ -78,7 +79,7 @@ public class RealmTransactions {
 
 
     public static  void deleteAllObject(){
-            Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
             realm.beginTransaction();
             realm.deleteAll();
             realm.commitTransaction();
@@ -92,9 +93,9 @@ public class RealmTransactions {
      * @param  primaryKeyValue Valor del campo primary key del objeto
      */
 
-    public static <T extends RealmObject>  RealmObject  searchByPrimaryKey(Class<T> clazz,String primarykeyName ,int primaryKeyValue){
+    public static <T extends RealmObject> RealmObject searchByPrimaryKey(Class<T> clazz, String primarykeyName , int primaryKeyValue){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
         T resultsDb = realm.where(clazz).equalTo(primarykeyName, primaryKeyValue).findFirst();
         realm.commitTransaction();
@@ -103,9 +104,9 @@ public class RealmTransactions {
     }
 
 
-    public static <T extends RealmObject>  RealmObject  searchByParamKey(Class<T> clazz,String paramName ,String value){
+    public static <T extends RealmObject> RealmObject searchByParamKey(Class<T> clazz, String paramName , String value){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
         T resultsDb = realm.where(clazz).equalTo(paramName, value).findFirst();
         realm.commitTransaction();
@@ -114,11 +115,11 @@ public class RealmTransactions {
     }
 
 
-    public static <T extends RealmObject> List<T>  searchByParam(Class<T> clazz,String param ,String value){
+    public static <T extends RealmObject> List<T> searchByParam(Class<T> clazz, String param , String value){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
-        List<T>  resultsDb = null;
+        List<T> resultsDb = null;
         if(!value.isEmpty())
             resultsDb = realm.where(clazz).equalTo(param, value).findAll();
         else
@@ -131,11 +132,11 @@ public class RealmTransactions {
     }
 
 
-    public static <T extends RealmObject> List<T>  searchByParam(Class<T> clazz,String param ,int value){
+    public static <T extends RealmObject> List<T> searchByParam(Class<T> clazz, String param , int value){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
-        List<T>  resultsDb = null;
+        List<T> resultsDb = null;
         if(value != 0)
             resultsDb = realm.where(clazz).equalTo(param, value).findAll();
         else
@@ -147,11 +148,11 @@ public class RealmTransactions {
 
     }
 
-    public static <T extends RealmObject> List<T>  searchByClass(Class<T> clazz){
+    public static <T extends RealmObject> List<T> searchByClass(Class<T> clazz){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
-        List<T>  resultsDb  = realm.where(clazz).findAll();
+        List<T> resultsDb  = realm.where(clazz).findAll();
         realm.commitTransaction();
         return resultsDb;
 
@@ -159,9 +160,9 @@ public class RealmTransactions {
 
 
 
-    public static <T extends RealmObject>  RealmObject  searchByBooleanParam(Class<T> clazz,String column ,boolean param){
+    public static <T extends RealmObject> RealmObject searchByBooleanParam(Class<T> clazz, String column , boolean param){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
         T resultsDb = realm.where(clazz).equalTo(column, param).findFirst();
         realm.commitTransaction();
@@ -172,7 +173,7 @@ public class RealmTransactions {
 
     public static <T extends RealmObject> List<T> searchAllByBooleanParam(Class<T> clazz, String column , boolean param){
 
-        Realm realm = RealmSingleton.getRealmIntance(ImpulsorIntelectualApp.getContext());
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
         realm.beginTransaction();
         List<T> resultsDb = realm.where(clazz).equalTo(column, param).findAll();
         realm.commitTransaction();
