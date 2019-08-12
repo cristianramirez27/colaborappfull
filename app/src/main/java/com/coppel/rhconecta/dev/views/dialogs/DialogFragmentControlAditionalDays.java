@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -148,6 +150,30 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
         currentDays.setText(String.valueOf(this.pendingAditionalDays));
 
 
+        reason.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().contains("\n")){
+                    String text = s.toString().replace("\n","");
+                    reason.setText(text);
+                    reason.setSelection(text.length());
+                    hide_keyboard_from(getActivity(),reason);
+                    //IDialogControlKeboard.showKeyboard(false,txtTitle);
+                    return;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+
         coppelServicesPresenter = new CoppelServicesPresenter(this, getActivity());
 
         //reason.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -160,6 +186,12 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
             btnMinus.setEnabled(false);
             btnMinus.setTextColor(getResources().getColor(R.color.disable_text_color));
         }
+    }
+
+    public static void hide_keyboard_from(Context context, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
 
     public void close() {

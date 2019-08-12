@@ -315,7 +315,14 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
         datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
-        datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
+
+        double holidayDaysTotal = holidaysPeriodsResponse.getData().getResponse().getNum_adicionales()
+                + holidaysPeriodsResponse.getData().getResponse().getNum_decision()
+                + holidaysPeriodsResponse.getData().getResponse().getNum_decisionanterior();
+
+        datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
+
+        //datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
 
         double limitDay = holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones();
         datePickerDialog.setLimite_dias(limitDay);
@@ -415,7 +422,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private void openObservationsAuthorize(List<HolidayPeriod> holidayPeriodSchedule) {
         DialogFragmentAuthorizeHoliday authorizeHoliday = DialogFragmentAuthorizeHoliday.newInstance();
         authorizeHoliday.setOnButtonClickListener(this);
-        authorizeHoliday.setTitle("Observaciones(Opcional)");
+        authorizeHoliday.setTitle("Observaciones (Opcional)");
         authorizeHoliday.setDescription("Escribe el motivo por el cual agenda las vacaciones al colaborador");
         authorizeHoliday.setHint("Ingresa tus observaciones aquí");
         authorizeHoliday.setHolidayPeriodSchedule(holidayPeriodSchedule);

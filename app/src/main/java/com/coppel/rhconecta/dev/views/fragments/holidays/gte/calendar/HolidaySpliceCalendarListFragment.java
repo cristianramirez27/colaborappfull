@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -11,6 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -138,7 +143,14 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
             ( (VacacionesActivity) parent).setToolbarTitle(month);
         }
 
-        textDate.setText(String.format("%s %s %s",capitalizeText(getContext(),getDayNameFromDate(date)),String.valueOf(date.getDayOfMonth()),month.substring(0,3)));
+
+        String dateName = String.format("%s %s",String.valueOf(date.getDayOfMonth()),month.substring(0,3));
+        SpannableString ss1=  new SpannableString(dateName );
+        ss1.setSpan(new StyleSpan(Typeface.BOLD), 0, ss1.length(), 0);
+
+        textDate.append(capitalizeText(getContext(),getDayNameFromDate(date)));
+
+        textDate.append(" "+ss1);
     }
 
 

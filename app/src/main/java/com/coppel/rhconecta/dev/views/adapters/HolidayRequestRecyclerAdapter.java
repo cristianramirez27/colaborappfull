@@ -44,6 +44,8 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     private boolean fullHorizontalView;
     private boolean showAuthorize;
     private boolean changeStyleCheckbox;
+
+    private int layoutItem = R.layout.item_solicitud_vacaciones;
     private OnRequestSelectedClickListener OnRequestSelectedClickListener;
 
     private ColaboratorRequestHolidaysFragment.ICalendarView ICalendarView;
@@ -63,7 +65,7 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_solicitud_vacaciones, viewGroup, false);
+                .inflate(layoutItem, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -288,6 +290,10 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
     }
 
+
+    public void setLayoutItem(int layoutItem) {
+        this.layoutItem = layoutItem;
+    }
 
     public void setChangeStyleCheckbox(boolean changeStyleCheckbox) {
         this.changeStyleCheckbox = changeStyleCheckbox;

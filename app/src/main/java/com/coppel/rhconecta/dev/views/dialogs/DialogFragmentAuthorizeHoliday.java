@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,19 +12,23 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.RelativeSizeSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IControlViews;
+import com.coppel.rhconecta.dev.business.interfaces.IDialogControlKeboard;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
@@ -66,6 +71,7 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
     private String title;
     private String description;
     private String hint;
+    private IDialogControlKeboard IDialogControlKeboard;
 
     /*Back Views*/
     @BindView(R.id.title)
@@ -116,7 +122,16 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
 
-        txtTitle.setText(title);
+
+
+        if(title.contains("(Opcional)")){
+            SpannableString ss1=  new SpannableString(title);
+            ss1.setSpan(new RelativeSizeSpan(0.60f), title.indexOf("("),title.length(), 0); // set size
+            txtTitle.setText(ss1);
+        }else {
+            txtTitle.setText(title);
+        }
+
         subtitle.setText(description);
         observations.setHint(hint);
         //reason.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -147,8 +162,8 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
                     String text = s.toString().replace("\n","");
                     observations.setText(text);
                     observations.setSelection(text.length());
-
-                    hideKeyboard();
+                    hide_keyboard_from(getActivity(),observations);
+                    //IDialogControlKeboard.showKeyboard(false,txtTitle);
                     return;
                 }
 
@@ -156,7 +171,7 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
                 btnActionRight.setEnabled(s.toString().length() > 0 ? true : false);
                 btnActionRight.setBackgroundResource(s.toString().length() > 0 ?
                         R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
-                hideKeyboard();
+                //hideKeyboard();
             }
 
             @Override
@@ -165,8 +180,10 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
         });
     }
 
-    private void hideKeyboard(){
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    public static void hide_keyboard_from(Context context, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
 
     public void setTitle(String title) {
@@ -222,6 +239,11 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
                 }
                 break;
         }
+    }
+
+
+    public void setIDialogControlKeboard(com.coppel.rhconecta.dev.business.interfaces.IDialogControlKeboard IDialogControlKeboard) {
+        this.IDialogControlKeboard = IDialogControlKeboard;
     }
 
     @Override

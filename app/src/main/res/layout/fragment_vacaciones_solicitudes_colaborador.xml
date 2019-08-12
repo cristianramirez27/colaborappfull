@@ -9,6 +9,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
+    android:focusableInTouchMode="true"
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 

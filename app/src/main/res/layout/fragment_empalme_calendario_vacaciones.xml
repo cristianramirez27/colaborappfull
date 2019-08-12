@@ -84,7 +84,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lineto_circular_pro_medium"
-                            android:text="Lunes 4 Oct"
                             android:textColor="@color/colorTextCoppelNegro"
                             android:textSize="13sp" />
 

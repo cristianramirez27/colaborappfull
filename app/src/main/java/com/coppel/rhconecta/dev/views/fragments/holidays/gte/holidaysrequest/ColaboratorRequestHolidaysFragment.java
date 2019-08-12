@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.IDialogControlKeboard;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
@@ -37,6 +38,7 @@ import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -83,7 +85,7 @@ import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatTo
 public class ColaboratorRequestHolidaysFragment extends Fragment implements  View.OnClickListener,
         HolidayRequestRecyclerAdapter.OnRequestSelectedClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,DialogFragmentAuthorizeHoliday.OnButonOptionObservationClick,
-        DialogFragmentGetDocument.OnButtonClickListener{
+        DialogFragmentGetDocument.OnButtonClickListener, IDialogControlKeboard {
 
     public static final String TAG = ColaboratorRequestHolidaysFragment.class.getSimpleName();
     private AppCompatActivity parent;
@@ -183,6 +185,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         holidayPeriodList = new ArrayList<>();
         holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList,IScheduleOptions,false,false);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
+        holidayRequestRecyclerAdapter.setLayoutItem(R.layout.item_solicitud_vacaciones_gte);
         holidayRequestRecyclerAdapter.setChangeStyleCheckbox(true);
 
         holidayRequestRecyclerAdapter.setGte(true);
@@ -455,6 +458,20 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
 
         double limitDay = holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones();
+
+        //TODO Validar que esta suma sea correcta
+        double holidayDaysTotal = holidaysPeriodsResponse.getData().getResponse().getNum_adicionales()
+                + holidaysPeriodsResponse.getData().getResponse().getNum_decision()
+                + holidaysPeriodsResponse.getData().getResponse().getNum_decisionanterior();
+        String numHolidays = String.valueOf(holidayDaysTotal);
+        if(holidayDaysTotal % 1 == 0){
+            numHolidays = numHolidays.substring(0,numHolidays.indexOf("."));
+            numHolidays = String.valueOf(Integer.parseInt(numHolidays));
+        }
+
+
+        datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
+
         datePickerDialog.setLimite_dias(limitDay);
 
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
@@ -565,7 +582,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     private void openObservationsSchedule(List<HolidayPeriod> holidayPeriodSchedule) {
         DialogFragmentAuthorizeHoliday authorizeHoliday = DialogFragmentAuthorizeHoliday.newInstance();
         authorizeHoliday.setOnButtonClickListener(this);
-        authorizeHoliday.setTitle("Observaciones(Opcional)");
+        authorizeHoliday.setTitle("Observaciones (Opcional)");
         authorizeHoliday.setDescription("Escribe el motivo por el cual agenda las vacaciones al colaborador");
         authorizeHoliday.setHint("Ingresa tus observaciones aquí");
         authorizeHoliday.setHolidayPeriodSchedule(holidayPeriodSchedule);
@@ -575,6 +592,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     private void openObservationsCancel(List<HolidayPeriod> holidayPeriodSchedule) {
         DialogFragmentAuthorizeHoliday authorizeHoliday = DialogFragmentAuthorizeHoliday.newInstance();
         authorizeHoliday.setOnButtonClickListener(this);
+        authorizeHoliday.setIDialogControlKeboard(this);
         authorizeHoliday.setTitle("Justificar Rechazo");
         authorizeHoliday.setDescription("Escribe el motivo de rechazo");
         authorizeHoliday.setHint("Ingresa tus razones aquí");
@@ -669,4 +687,13 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 
+    @Override
+    public void showKeyboard(boolean show, View view) {
+
+        if(!show) {
+            //getActivity().onBackPressed();
+            view.requestFocus();
+            DeviceManager.hideKeyBoard(getActivity());
+        }
+    }
 }
