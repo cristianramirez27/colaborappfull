@@ -5,21 +5,26 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
+import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmList;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MenuUtilities {
 
@@ -37,6 +42,20 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
+
+        String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
+    //    List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByParamKey(NotificationsUser.class,"USER_NUMBER",numgColaborator);
+
+        List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByClass(NotificationsUser.class);
+
+        Map<Integer,Integer> mapNotification = new HashMap<>();
+
+        if(notificationSaved!= null){
+            for(NotificationsUser notification : notificationSaved){
+                mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
+            }
+        }
+
 
         for(HomeMenuItem item : listMenuDefault){
             mapNames.put(item.getTAG(),item);
@@ -75,6 +94,13 @@ public class MenuUtilities {
                     /*Actualizamos el nombre de las opciones del menu guardadas*/
                     if(menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0){
                         menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
+                    }
+
+                    /***Notificaciones de Vacaciones**/
+                    if(menus.get(i).getTAG().equals(OPTION_HOLIDAYS)){ // agrega notificaciones a vacaciones
+                        if(mapNotification.containsKey(10)){
+                            menus.get(i).setNotifications(mapNotification.get(10));
+                        }
                     }
 
 

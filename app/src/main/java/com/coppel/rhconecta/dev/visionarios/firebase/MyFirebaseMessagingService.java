@@ -14,13 +14,19 @@ import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
+import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -34,6 +40,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                         Random rand = new Random();
                         int idNotification = rand.nextInt(999);
+
+                        processNotification(idNotification,remoteMessage);
+
                         Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
                                 remoteMessage.getNotification().getTitle(),
                                 remoteMessage.getNotification().getBody(),
@@ -49,6 +58,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
         }
+
+
+        private void processNotification(int idNotification,RemoteMessage remoteMessage){
+
+        Map<String,String> content = remoteMessage.getData();
+
+        String uuid = UUID.randomUUID().toString();
+        String idSistema = content.get("id_sistema");
+        String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
+
+        NotificationsUser notificationsUser = new NotificationsUser(uuid,numgColaborator,Integer.parseInt(idSistema),idNotification);
+        RealmTransactions.insertInto(notificationsUser);
+
+    }
 
     @SuppressLint("WrongConstant")
     private void sendNotification(String title,String messageBody) {

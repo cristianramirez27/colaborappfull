@@ -19,6 +19,7 @@ public class RealmHelper {
     public static RealmConfiguration configurateRealm(Context context) {
         return new RealmConfiguration.Builder()
                 .name(context.getString(R.string.db_name) + ".realm")
+                .deleteRealmIfMigrationNeeded()
                 .build();
     }
 

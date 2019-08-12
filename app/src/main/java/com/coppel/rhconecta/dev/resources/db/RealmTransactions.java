@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.resources.db;
 
+
 import com.coppel.rhconecta.dev.CoppelApp;
 
 import java.util.List;
@@ -25,13 +26,18 @@ public class RealmTransactions {
      * @param  passedObject objeto extendido de RealmObject
      */
     public static <T extends RealmObject> void insertInto(final T passedObject){
-        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                T itemToWrite = realm.copyToRealmOrUpdate(passedObject);
-            }
-        });
+        try {
+            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    T itemToWrite = realm.copyToRealmOrUpdate(passedObject);
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -78,10 +84,10 @@ public class RealmTransactions {
 
 
     public static  void deleteAllObject(){
-            Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
-            realm.beginTransaction();
-            realm.deleteAll();
-            realm.commitTransaction();
+        Realm realm = RealmSingleton.getRealmIntance(CoppelApp.getContext());
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
     }
 
     /**
