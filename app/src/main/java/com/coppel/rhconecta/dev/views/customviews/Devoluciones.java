@@ -6,7 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.CoppelApp;
@@ -30,6 +33,10 @@ public class Devoluciones extends RelativeLayout {
     TextView totalesDevolutionsTitle;
     @BindView(R.id.totalesDevolutions)
     TextView totalesDevolutions;
+    @BindView(R.id.space)
+    View space;
+
+
 
 
     public Devoluciones(Context context) {
@@ -67,8 +74,14 @@ public class Devoluciones extends RelativeLayout {
     }
 
     public void setTotalesDevolutions(String totalesDevolutions) {
-        this.totalesDevolutions.setGravity(Gravity.CENTER);
-        this.totalesDevolutionsTitle.setGravity(Gravity.LEFT);
+        if(totalesDevolutions != null && totalesDevolutions.length() <= 8){
+            this.totalesDevolutions.setGravity(Gravity.CENTER);
+            space.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 5, 1f));
+        }else {
+            space.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,5, 2f));
+        }
+      //  this.totalesDevolutions.setGravity(Gravity.CENTER);
+       // this.totalesDevolutionsTitle.setGravity(Gravity.LEFT);
         this.totalesDevolutionsTitle.setText("Total devoluciones");
         this.totalesDevolutions.setText(String.format("$%s",String.valueOf(totalesDevolutions)));
 

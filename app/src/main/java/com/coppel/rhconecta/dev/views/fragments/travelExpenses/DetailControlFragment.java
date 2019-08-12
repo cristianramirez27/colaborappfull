@@ -226,8 +226,5 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
             Devoluciones.setVisibility(View.VISIBLE);
         }
 
-
-
-
     }
 }

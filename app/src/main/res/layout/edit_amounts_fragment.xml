@@ -127,6 +127,7 @@
                             android:fontFamily="@font/lineto_circular_pro_book"
                             android:textColor="@color/colorTextGray"
                             android:textSize="13sp"
+                            android:lines="1"
                             android:gravity="center"/>
 
                         <TextView
@@ -136,7 +137,8 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lineto_circular_pro_bold"
                             android:textColor="@color/colorBackgroundCoppelNegro"
-                            android:textSize="16sp"
+                            android:textSize="15sp"
+                            android:lines="1"
                             android:gravity="center"/>
 
 
