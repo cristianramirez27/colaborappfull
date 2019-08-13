@@ -67,6 +67,7 @@
                     android:orientation="horizontal">
 
                     <View
+                        android:id="@+id/spaceTotal"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:layout_weight="2"/>
@@ -79,6 +80,7 @@
                         android:fontFamily="@font/lineto_circular_pro_medium"
                         android:textColor="@android:color/black"
                         android:gravity="center"
+                        android:lines="1"
                         android:textSize="14sp"/>
 
 
