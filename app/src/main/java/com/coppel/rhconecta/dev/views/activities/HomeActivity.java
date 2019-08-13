@@ -166,20 +166,15 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             loginResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_LOGIN_RESPONSE), LoginResponse.class).getData().getResponse();
             profileResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNLDE_PROFILE_RESPONSE), ProfileResponse.class).getData().getResponse()[0];
 
-
-            if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
-                goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
-                navigationMenu(goTosection);
-            }else{
-
-
-            }
-
-
             initNavigationComponents();
             initMenu();
             getData();
             ctlLogout.setOnClickListener(this);
+
+            if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
+                goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+                navigationMenu(goTosection);
+            }
 
 
         } else {
