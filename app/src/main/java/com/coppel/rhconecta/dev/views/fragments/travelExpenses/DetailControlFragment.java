@@ -52,6 +52,11 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
     TextView totalDetalleTitle;
     @BindView(R.id.totalDetalle)
     TextView totalDetalle;
+    @BindView(R.id.spaceTotal)
+    View spaceTotal;
+
+
+
 
     private DetailControlColaboratorResponse detailControlColaboratorResponse;
 
@@ -132,12 +137,18 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
 
     private void setData( DetailControlColaboratorResponse.Response data){
         totalDetalleTitle.setTextSize(14);
-        totalDetalle.setTextSize(16);
+        totalDetalle.setTextSize(15);
         totalDetalleTitle.setText("Saldo Total");
         totalDetalle.setGravity(Gravity.CENTER);
-        if(data.getSaldoTotal() != null)
-            totalDetalle.setText(String.format("$%s",String.valueOf(data.getSaldoTotal().get(0).getSaldo_total())));
-        else {
+        String totalShow = String.valueOf(data.getSaldoTotal().get(0).getSaldo_total());
+        if(data.getSaldoTotal() != null) {
+
+            if (totalShow.length() >= 9) {
+                spaceTotal.setVisibility(View.GONE);
+                totalDetalle.setGravity(Gravity.RIGHT);
+            }
+            totalDetalle.setText(String.format("$%s", totalShow));
+        }else {
             totalDetalle.setText("-");
         }
 

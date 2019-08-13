@@ -245,15 +245,15 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
             Toast.makeText(getActivity(),"Favor de ingresar el motivo de rechazo.",Toast.LENGTH_SHORT).show();
             return;
         }
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
-
-
+        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);//Se establece el usuario en sesion que es gte
+        ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator  = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
+        String numEmployer = String.valueOf(requestComplementsColaborator.getNumeviajero());//Numero del viajero de la solicitud
         ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.RECHAZAR_SOLICITUD, 9,numEmployer);
         expensesTravelRequestData.setClv_solicitud(detailExpenseTravelData.getClave());
         expensesTravelRequestData.setNum_gerente(Integer.parseInt(numGte));
-        ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator requestComplementsColaborator  = (ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator) this.detailExpenseTravelData.getData();
+
         expensesTravelRequestData.setNum_control(Integer.parseInt(requestComplementsColaborator.getCLV_CONTROL()));
         expensesTravelRequestData.setClv_estatus(5);
         expensesTravelRequestData.setDes_observaciones(this.detailExpenseTravelData.getObservations());
