@@ -11,6 +11,7 @@ public class NotificationsUser extends RealmObject {
     private String IIUID;
     private String USER_NUMBER;
     private int ID_SISTEMA;
+    private int ID_NOTIFICACION;
 
     public NotificationsUser() {
     }
@@ -19,6 +20,22 @@ public class NotificationsUser extends RealmObject {
         this.IIUID = IIUID;
         this.USER_NUMBER = USER_NUMBER;
         this.ID_SISTEMA = ID_SISTEMA;
+    }
+
+
+    public NotificationsUser(String IIUID, String USER_NUMBER, int ID_SISTEMA, int ID_NOTIFICACION) {
+        this.IIUID = IIUID;
+        this.USER_NUMBER = USER_NUMBER;
+        this.ID_SISTEMA = ID_SISTEMA;
+        this.ID_NOTIFICACION = ID_NOTIFICACION;
+    }
+
+    public int getID_NOTIFICACION() {
+        return ID_NOTIFICACION;
+    }
+
+    public void setID_NOTIFICACION(int ID_NOTIFICACION) {
+        this.ID_NOTIFICACION = ID_NOTIFICACION;
     }
 
     public String getIIUID() {

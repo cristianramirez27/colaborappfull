@@ -30,8 +30,11 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
+import io.realm.Realm;
+
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
 
 public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View,
         DialogFragmentWarning.OnOptionClick {
@@ -44,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     private  boolean finishApp = false;
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private String goTosection="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,13 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
         });
 
         init();
+
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null && bundle.getString(AppConstants.BUNDLE_GOTO_SECTION) != null) {
+            goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+        }
 
     }
 
@@ -123,6 +134,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
                 intent.putExtra("PROFILE_RESPONSE", gson.toJson(profileResponse));
+                if(!goTosection.isEmpty())intent.putExtra(BUNDLE_GOTO_SECTION,goTosection);
                 startActivity(intent);
                 finish();
                 break;
@@ -192,7 +204,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                         if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
                         } else {
-                           Log.d("RemoteConfig","Fetch Failed");
+                            Log.d("RemoteConfig","Fetch Failed");
                         }
                         setEndpoints();
                     }

@@ -115,4 +115,8 @@ public class AppConstants {
 
 
     public static final String BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL= "BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL";
+
+
+    public static final String BUNDLE_GOTO_SECTION = "GOTO_SECTION";
+
 }

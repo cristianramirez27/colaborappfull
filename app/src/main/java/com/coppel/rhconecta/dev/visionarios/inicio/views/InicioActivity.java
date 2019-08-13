@@ -197,16 +197,13 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
         surveyInboxView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (ultimaEncuesta != null) {
-
                     Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
                     intentEncuesta.putExtra("encuesta", ultimaEncuesta);
                     startActivity(intentEncuesta);
                 } else {
                     Toast.makeText(getBaseContext(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
     }
@@ -228,7 +225,6 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
 
     @Override
     public void showBangesComunicados(int nuevos) {
-
         if (nuevos > 0) {
             badgeComunicados.setVisibility(View.VISIBLE);
             countBadgeComunicados.setVisibility(View.VISIBLE);

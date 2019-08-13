@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
 import java.io.ByteArrayOutputStream;
@@ -80,6 +81,33 @@ public class RealmHelper {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static List<NotificationsUser> getNotifications(String user) {
+        try {
+            Realm realm = Realm.getDefaultInstance();
+            return realm.where(NotificationsUser.class).equalTo("USER_NUMBER", user).findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void deleteNotifications(String user,int IdSistema) {
+        try {
+            Realm realm = Realm.getDefaultInstance();
+
+            List<NotificationsUser> notificationsUsers =  realm.where(NotificationsUser.class).equalTo("USER_NUMBER", user).findAll();
+            realm.beginTransaction();
+            for(NotificationsUser notificationsUser : notificationsUsers){
+                if(notificationsUser.getID_SISTEMA() == IdSistema)
+                    notificationsUser.deleteFromRealm();
+            }
+
+            realm.commitTransaction();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

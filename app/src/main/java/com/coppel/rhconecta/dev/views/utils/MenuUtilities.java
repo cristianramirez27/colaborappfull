@@ -5,19 +5,26 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
 
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MenuUtilities {
 
@@ -28,17 +35,33 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
-                new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
+                new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
-                new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
+                new HomeMenuItem(context.getString(R.string.travel_expenses), OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
 
+        String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        //    List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByParamKey(NotificationsUser.class,"USER_NUMBER",numgColaborator);
+
+        List<NotificationsUser> notificationSaved = RealmHelper.getNotifications(numgColaborator);
+
+        Map<Integer,Integer> mapNotification = new HashMap<>();
+        mapNotification.put(9,0);//fondo
+        mapNotification.put(10,0);//Vacaciones
+        mapNotification.put(11,0);//Gastos
+
+        if(notificationSaved!= null){
+            for(NotificationsUser notification : notificationSaved){
+                mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
+            }
+        }
+
+
         for(HomeMenuItem item : listMenuDefault){
             mapNames.put(item.getTAG(),item);
         }
-
 
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         List<HomeMenuItem> homeMenuItems = new ArrayList<>();
@@ -73,6 +96,22 @@ public class MenuUtilities {
                     if(menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0){
                         menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
                     }
+
+
+                    /***Notificaciones de Fondo de ahorro**/
+                    if(menus.get(i).getTAG().equals(OPTION_SAVING_FUND)){ // agrega notificaciones a vacaciones
+                        if(mapNotification.containsKey(9)){
+                            menus.get(i).setNotifications(mapNotification.get(9));
+                        }
+                    }
+
+                    /***Notificaciones de Gastos de viaje**/
+                    if(menus.get(i).getTAG().equals(OPTION_EXPENSES)){ // agrega notificaciones a vacaciones
+                        if(mapNotification.containsKey(11)){
+                            menus.get(i).setNotifications(mapNotification.get(11));
+                        }
+                    }
+
 
 
                     if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
@@ -118,7 +157,7 @@ public class MenuUtilities {
             case AppConstants.OPTION_BENEFITS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_benefits);
                 break;
-            case AppConstants.OPTION_SAVING_FUND:
+            case OPTION_SAVING_FUND:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_saving_fund);
                 break;
             case AppConstants.OPTION_VISIONARIES:
@@ -161,7 +200,7 @@ public class MenuUtilities {
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_guarderia);
                 break;
 
-            case AppConstants.OPTION_EXPENSES:
+            case OPTION_EXPENSES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_gastos_viaje);
                 break;
         }
@@ -177,7 +216,7 @@ public class MenuUtilities {
             menuItems.add(new HomeMenuItem(context.getString(R.string.bonus), AppConstants.OPTION_BONUS));
         }
         if (voucherResponse.getFecha_Corte_Cuenta() != null && voucherResponse.getFecha_Corte_Cuenta().size() > 0 && !voucherResponse.getFecha_Corte_Cuenta().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), AppConstants.OPTION_SAVING_FUND));
+            menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), OPTION_SAVING_FUND));
         }
         if (voucherResponse.getFecha_Gasolina() != null && voucherResponse.getFecha_Gasolina().size() > 0 && !voucherResponse.getFecha_Gasolina().get(0).getSfechanomina().equals("0")) {
             menuItems.add(new HomeMenuItem(context.getString(R.string.gas), AppConstants.OPTION_GAS));

@@ -67,6 +67,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 
@@ -156,15 +159,15 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onClick(View v) {
 
-                if (ultimaEncuesta != null) {
-
-                    Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
-                    intentEncuesta.putExtra("encuesta", ultimaEncuesta);
-                    startActivity(intentEncuesta);
-                } else {
-                    Toast.makeText(getActivity(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
+                if(ISurveyNotification.validateSurveyAccess()){
+                    if (ultimaEncuesta != null) {
+                        Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
+                        intentEncuesta.putExtra("encuesta", ultimaEncuesta);
+                        startActivity(intentEncuesta);
+                    } else {
+                        Toast.makeText(getActivity(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
             }
         });
 

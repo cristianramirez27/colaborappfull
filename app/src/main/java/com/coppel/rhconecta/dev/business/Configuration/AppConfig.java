@@ -47,7 +47,19 @@ public class AppConfig {
 
     public final static int CLAVE_LETTER_MAX = 4;
 
-
+    /*Bloqueo de módulos*/
+    public final static String BLOCK_SAVINGS = "BLOCK_SAVINGS";
+    public final static String BLOCK_PAYSHEET = "BLOCK_PAYSHEET";
+    public final static String BLOCK_CARTASCONFIG = "BLOCK_CARTASCONFIG";
+    public final static String BLOCK_BENEFICIOS = "BLOCK_BENEFICIOS";
+    public final static String BLOCK_TRAVEL_EXPENSES = "BLOCK_TRAVEL_EXPENSES";
+    public final static String BLOCK_HOLIDAYS = "BLOCK_HOLIDAYS";
+    public final static String BLOCK_PROFILE = "BLOCK_PROFILE";
+    public final static String BLOCK_VISIONARIOS = "BLOCK_VISIONARIOS";
+    public final static String BLOCK_COMUNICADOS = "BLOCK_COMUNICADOS";
+    public final static String BLOCK_ENCUESTAS = "BLOCK_ENCUESTAS";
+    public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
+    public final static String YES = "YES";
     /**Se almacenan los endpoints*/
     public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig){
 
@@ -92,6 +104,31 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL,visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY,aplicacion_key);
 
+
+        /*Bloquear modulos*/
+        String block_saving= mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
+        String block_paysheet = mFirebaseRemoteConfig.getString(BLOCK_PAYSHEET);
+        String block_letters = mFirebaseRemoteConfig.getString(BLOCK_CARTASCONFIG);
+        String block_benefits = mFirebaseRemoteConfig.getString(BLOCK_BENEFICIOS);
+        String block_travel = mFirebaseRemoteConfig.getString(BLOCK_TRAVEL_EXPENSES);
+        String block_holiday = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS);
+        String block_profile = mFirebaseRemoteConfig.getString(BLOCK_PROFILE);
+        String block_visionarios = mFirebaseRemoteConfig.getString(BLOCK_VISIONARIOS);
+        String block_communication = mFirebaseRemoteConfig.getString(BLOCK_COMUNICADOS);
+        String block_surveys = mFirebaseRemoteConfig.getString(BLOCK_ENCUESTAS);
+        String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
+
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG,block_letters);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS,block_benefits);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES,block_travel);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS,block_holiday);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PROFILE,block_profile);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS,block_visionarios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS,block_communication);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS,block_surveys);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
 
     }
 
