@@ -1,9 +1,18 @@
 package com.coppel.rhconecta.dev.views.fragments.benefits;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -30,6 +39,7 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.interfaces.OnGeocoderFinishedListener;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
@@ -38,6 +48,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.MyLocation;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -56,14 +67,18 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.internal.IOException;
 
+import static android.app.Activity.RESULT_OK;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CATEGORIES;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CITY;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_SEARCH;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_STATES;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_ABONO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
@@ -75,6 +90,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         DialogFragmentSelectState.OnButonOptionClick , DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
         DialogFragmentGetDocument.OnButtonClickListener{
     public static final int REQUEST_MAP_PERMISSION_CODE = 741;
+    public static final int REQUEST_ACTIVATE_GPS = 742;
     public static final String TAG = BenefitsFragment.class.getSimpleName();
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -89,6 +105,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     private DialogFragmentGetDocument dialogFragmentGetDocument;
 
     private HomeActivity parent;
+
 
     private long mLastClickTime = 0;
 
@@ -113,6 +130,8 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     private static String stateSelected = "";
     private static String citySelected = "";
     private static String citySelectedName = "";
+
+    private boolean closeBenefits;
 
     private List<BenefitsCategoriesResponse.Category> categories;
     private List<BenefitsStatesResponse.States> statesAvailables;
@@ -192,6 +211,18 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(validateGeolocalization()){
+          getGeolocalization();
+        }else {
+            askPermission();
+        }
+
+    }
+
+
+
+    private void loadDataBenefitsBasic(){
+
         if (benefitsCategoriesResponse == null) {
             if(citySelectedName != null && !citySelectedName.isEmpty()){
                 txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),citySelectedName));
@@ -254,11 +285,23 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 categories.clear();
                 /*Obtenemos categorias*/
                 if(response.getResponse() instanceof BenefitsCategoriesResponse){
-                    for(BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse)response.getResponse()).getData().getResponse().getCategorias()){
-                        categories.add(category);
+
+                    BenefitsCategoriesResponse benefitsCategoriesResponse = (BenefitsCategoriesResponse)response.getResponse();
+
+                    if(benefitsCategoriesResponse.getData().getResponse().getClave() == 1){
+                        closeBenefits = true;
+                        showGetVoucherDialog(benefitsCategoriesResponse.getData().getResponse().getMensaje());
+                    }else{
+
+                        categories.clear();
+                        for(BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse)response.getResponse()).getData().getResponse().getCategorias()){
+                            categories.add(category);
+                        }
+
+                        benefitsRecyclerAdapter.notifyDataSetChanged();
+
                     }
 
-                    benefitsRecyclerAdapter.notifyDataSetChanged();
                 }else  if(response.getResponse() instanceof BenefitsStatesResponse){
                     if(statesAvailables == null)
                         statesAvailables = new ArrayList<>();
@@ -301,6 +344,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 break;
         }
     }
+
 
     @Override
     public void showError(ServicesError coppelServicesError) {
@@ -516,6 +560,10 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
         dialogFragmentGetDocument.close();
 
+        if(closeBenefits){
+            closeBenefits = false;
+            getActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -525,6 +573,13 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
     /**Geolocalización*/
+
+    private boolean validateGeolocalization(){
+        return ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+
     private void askPermission() {
         Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
@@ -535,19 +590,128 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_ACTIVATE_GPS){
+            if(MyLocation.isGPSEnabled(getActivity())){
+                getGeolocalization();
+            }else {
+               loadDataBenefitsBasic();
+            }
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult()");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_MAP_PERMISSION_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(),"Acepetado",Toast.LENGTH_SHORT).show();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getGeolocalization();
                 } else {
-                    Toast.makeText(getActivity(),"Negado",Toast.LENGTH_SHORT).show();
+                    loadDataBenefitsBasic();
                 }
                 break;
             }
         }
     }
+
+
+    private void getGeolocalization(){
+        if(MyLocation.isGPSEnabled(getActivity())){
+            loadDataBenefitsLocation();
+        }else {
+            showDialogGPS();
+        }
+    }
+
+    private void loadDataBenefitsLocation(){
+
+        Location location = MyLocation.find_Location(getActivity());
+            if (location != null) {
+                String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+                benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES,8);
+                benefitsRequestData.setLatitud(String.valueOf(location.getLatitude()));
+                benefitsRequestData.setLongitud(String.valueOf(location.getLongitude()));
+                coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+
+
+                getCityName(location, new OnGeocoderFinishedListener() {
+                    @Override
+                    public void onFinished(List<Address> results) {
+                        // do something with the result
+
+                        if(!results.isEmpty()){
+                            txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),
+                                    results.get(0).getLocality()));
+                        }
+
+                    }
+                });
+
+            }else{
+                //Sino se obtiene la ubicación hacemos la petición normal
+                loadDataBenefitsBasic();
+            }
+    }
+
+
+    private void showDialogGPS(){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        alertDialogBuilder
+                .setMessage("Activa la Localización para que se puede determinar tu ubicación")
+                .setCancelable(false)
+                .setPositiveButton("Configuración",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                //startActivity(callGPSSettingIntent);
+                                startActivityForResult(callGPSSettingIntent,REQUEST_ACTIVATE_GPS);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        loadDataBenefitsBasic();
+                        dialog.cancel();
+
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+
+    }
+
+
+    public void getCityName(final Location location, final OnGeocoderFinishedListener listener) {
+        new AsyncTask<Void, Integer, List<Address>>() {
+            @Override
+            protected List<Address> doInBackground(Void... arg0) {
+                Geocoder coder = new Geocoder(getContext(), Locale.ENGLISH);
+                List<Address> results = null;
+                try {
+                    results = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                } catch (IOException e) {
+                    // nothing
+                    e.printStackTrace();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return results;
+            }
+
+            @Override
+            protected void onPostExecute(List<Address> results) {
+                if (results != null && listener != null) {
+                    listener.onFinished(results);
+                }
+            }
+        }.execute();
+    }
+
 }

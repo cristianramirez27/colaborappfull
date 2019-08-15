@@ -14,6 +14,9 @@ public class BenefitsRequestData implements Serializable{
     private int idempresa;
     private String des_busqueda;
 
+    private String latitud;
+    private String longitud;
+
     public BenefitsRequestData(BenefitsType benefits_type, int solicitud) {
         this.benefits_type = benefits_type;
         this.solicitud = solicitud;
@@ -104,5 +107,21 @@ public class BenefitsRequestData implements Serializable{
 
     public void setBenefits_type(BenefitsType benefits_type) {
         this.benefits_type = benefits_type;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 }

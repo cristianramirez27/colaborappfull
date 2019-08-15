@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
@@ -608,4 +609,13 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         return true;
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.flFragmentContainer);
+        if(f instanceof BenefitsFragment){
+            ((BenefitsFragment)f).onRequestPermissionsResult(requestCode,permissions,grantResults);
+        }
+    }
 }

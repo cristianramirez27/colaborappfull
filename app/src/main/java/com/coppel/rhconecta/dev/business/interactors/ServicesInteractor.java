@@ -35,6 +35,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseExpensesTravel
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesLocationRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
@@ -1633,16 +1634,17 @@ public class ServicesInteractor {
             case  5:
                 getBenefitsCompanyRequest(benefitsRequestData, token);
                 break;
-
             case  6:
                 getBenefitsSearchRequest(benefitsRequestData, token);
                 break;
-
             case  7:
                 getBenefitsAdvertisingRequest(benefitsRequestData, token);
                 break;
-        }
 
+            case  8:
+                getBenefitsCategoriesLocationRequest(benefitsRequestData, token);
+                break;
+        }
     }
 
     private void getBenefitsAdvertisingRequest(BenefitsRequestData benefitsRequestData, String token) {
@@ -1729,6 +1731,34 @@ public class ServicesInteractor {
      */
     private void getBenefitsCategoriesRequest(BenefitsRequestData benefitsRequestData, String token) {
         iServicesRetrofitMethods.getBenefitsCategories(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCategoriesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+
+    private void getBenefitsCategoriesLocationRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsCategoriesLocation(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCategoriesLocationRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -1906,9 +1936,16 @@ public class ServicesInteractor {
                 coppelServicesBenefitsRequest = new CoppelServicesBenefitsCityRequest(solicitud,benefitsRequestData.getNum_estado());
                 break;
             case BENEFITS_CATEGORIES:
-                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
-                        benefitsRequestData.getNum_estado(),
-                        benefitsRequestData.getNum_ciudad());
+                if(benefitsRequestData.getSolicitud() == 8){
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesLocationRequest(solicitud,
+                            benefitsRequestData.getLatitud(),
+                            benefitsRequestData.getLongitud());
+                }else {
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
+                            benefitsRequestData.getNum_estado(),
+                            benefitsRequestData.getNum_ciudad());
+                }
+
                 break;
             case BENEFITS_DISCOUNTS:
                 coppelServicesBenefitsRequest = new CoppelServicesBenefitsDiscountsRequest(solicitud,
