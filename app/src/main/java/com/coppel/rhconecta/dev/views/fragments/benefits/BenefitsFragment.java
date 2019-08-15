@@ -293,6 +293,11 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                         showGetVoucherDialog(benefitsCategoriesResponse.getData().getResponse().getMensaje());
                     }else{
 
+                        if(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad() != null){
+                            stateSelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_estado());
+                            citySelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_ciudad());
+                        }
+
                         categories.clear();
                         for(BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse)response.getResponse()).getData().getResponse().getCategorias()){
                             categories.add(category);
@@ -452,6 +457,9 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         Intent intent = new Intent(getActivity(), BenefitsActivity.class);
         intent.putExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category);
         intent.putExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData);
+
+        benefitsRequestData.setNum_estado(stateSelected);
+        benefitsRequestData.setNum_ciudad(citySelected);
         getActivity().startActivityForResult(intent, 231);
 
 
