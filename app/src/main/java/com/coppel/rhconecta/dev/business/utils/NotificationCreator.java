@@ -37,26 +37,6 @@ public class NotificationCreator {
         return resultPendingIntent;
     }
 
-    public static PendingIntent getPendindIntentSection(Context context, Class clazz, Map<String,String> params){
-        Intent resultIntent = new Intent(context, clazz);
-
-        for(String key : params.keySet()){
-            resultIntent.putExtra(key,params.get(key));
-        }
-
-
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        context,
-                        REQUEST_CODE_PUSH,
-                        resultIntent,
-                        PendingIntent.FLAG_ONE_SHOT);//FLAG_UPDATE_CURRENT
-
-        return resultPendingIntent;
-    }
-
-
-
 
     public static NotificationCompat.Builder buildLocalNotification(Context context, String title, String content, PendingIntent pendingIntent) {
 
@@ -77,6 +57,28 @@ public class NotificationCreator {
 
         return builder;
     }
+
+
+    public static PendingIntent getPendindIntentSection(Context context, Class clazz, Map<String,String> params){
+        Intent resultIntent = new Intent(context, clazz);
+
+        for(String key : params.keySet()){
+            resultIntent.putExtra(key,params.get(key));
+        }
+
+
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        REQUEST_CODE_PUSH,
+                        resultIntent,
+                        PendingIntent.FLAG_ONE_SHOT);//FLAG_UPDATE_CURRENT
+
+        return resultPendingIntent;
+    }
+
+
+
 
 
     private static int getSmallIconId() {

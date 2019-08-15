@@ -466,6 +466,9 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
             }
         });
+
+        dialogFragmentDeletePeriods.setTitle("Atención");
+        dialogFragmentDeletePeriods.setMsg("¿Quieres cancelar las vacaciones?");
         dialogFragmentDeletePeriods.setVisibleCancelButton(VISIBLE);
         dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }

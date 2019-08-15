@@ -22,10 +22,8 @@ public class TextViewDetail extends ConstraintLayout {
     TextView txvValue;
     @BindView(R.id.viewDivider)
     View viewDivider;
-
     @BindView(R.id.guideline73)
     Guideline guideline73;
-
 
 
     public TextViewDetail(Context context) {

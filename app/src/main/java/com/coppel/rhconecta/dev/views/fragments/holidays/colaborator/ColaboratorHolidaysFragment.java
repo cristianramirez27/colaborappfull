@@ -353,6 +353,8 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         Calendar today = Calendar.getInstance();
         datePickerDialog.setMinDate( today);
 
+
+
         //Setear el maximo de 18 meses para seleccionar periodos
         today.add(Calendar.MONTH,18);
         datePickerDialog.setMaxDate(today);

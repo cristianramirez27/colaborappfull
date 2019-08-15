@@ -532,6 +532,9 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
 
         TextView configDaysBtn = view.findViewById(R.id.configDays);
+
+        configDaysBtn.setEnabled(showHalfDaysOption);
+        if(showHalfDaysOption)configDaysBtn.setAlpha(1f);
         configDaysBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

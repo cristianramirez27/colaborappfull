@@ -35,35 +35,39 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-            if (remoteMessage.getNotification() != null) {
-                try {
-                    if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
-                        Random rand = new Random();
-                        int idNotification = rand.nextInt(999);
-                        processNotification(idNotification,remoteMessage);
-                        //Obtenemos los datos para iniciar el Dashboard
+
+        if (remoteMessage.getNotification() != null) {
+            try {
+                if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
+                    Random rand = new Random();
+                    int idNotification = rand.nextInt(999);
+                    processNotification(idNotification,remoteMessage);
+                    //Obtenemos los datos para iniciar el Dashboard
                        /* String loginResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE);
                         String profileResponse =AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
                         */
-                        Map<String,String> params = getParamsIntent(remoteMessage);
-                        Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
-                                remoteMessage.getNotification().getTitle(),
-                                remoteMessage.getNotification().getBody(),
-                                NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
-                                        SplashScreenActivity.class,params )).build();
-                        NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
-                   }
-                   // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                    Map<String,String> params = getParamsIntent(remoteMessage);
+                    Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
+                            remoteMessage.getNotification().getTitle(),
+                            remoteMessage.getNotification().getBody(),
+                            NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
+                                    SplashScreenActivity.class,params )).build();
+
+                    NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
+
                 }
+                // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
+    }
 
 
 
@@ -84,7 +88,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             return params;
         }
-
 
     private void processNotification(int idNotification,RemoteMessage remoteMessage){
         Map<String,String> content = remoteMessage.getData();

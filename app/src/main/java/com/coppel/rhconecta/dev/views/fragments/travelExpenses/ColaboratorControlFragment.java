@@ -874,6 +874,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         if(detail.getData().getResponse().getDevoluciones() != null && !detail.getData().getResponse().getDevoluciones().isEmpty()) {
             for (Devolution devolution : detail.getData().getResponse().getDevoluciones()) {
                 if (devolution.getDu_tipoGasto() == -1) {
+                    totalDevolucion.setGuideline73(0.48f);
                     totalDevolucion.setTexts("Total devolución", String.format("$%s",devolution.getImp_total()));
                     totalDevolucion.setVisibility(VISIBLE);
                     break;

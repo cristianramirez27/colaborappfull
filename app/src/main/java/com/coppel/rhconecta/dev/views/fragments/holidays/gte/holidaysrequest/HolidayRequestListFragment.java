@@ -384,7 +384,7 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_COLABORATORS, 7);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
-        holidayRequestData.setClv_estatus(-1);//0
+        holidayRequestData.setClv_estatus(0);//0
         holidayRequestData.setNum_centro(centerSelectedId);
         holidayRequestData.setNom_empleado(search);
 

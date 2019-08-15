@@ -208,7 +208,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                         if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
                         } else {
-                           Log.d("RemoteConfig","Fetch Failed");
+                            Log.d("RemoteConfig","Fetch Failed");
                         }
                         setEndpoints();
                     }

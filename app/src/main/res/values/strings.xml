@@ -324,7 +324,7 @@
     <string name="title_holidays_days">Días de vacaciones</string>
     <string name="title_days">días</string>
 
-    <string name="title_day_availables">Días diponibles por decisión</string>
+    <string name="title_day_availables">Días disponibles por decisión</string>
     <string name="title_days_pending_lastyear">Días Pendientes Año anterior</string>
     <string name="title_days_aditionals">Días Adicionales Pendientes</string>
     <string name="title_days_aditionals_register">Total Días Adicionales Registrados del año</string>

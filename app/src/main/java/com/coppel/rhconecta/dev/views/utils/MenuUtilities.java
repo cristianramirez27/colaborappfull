@@ -37,7 +37,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
-                new HomeMenuItem(context.getString(R.string.loan_saving_fund), AppConstants.OPTION_SAVING_FUND),
+                new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
@@ -46,7 +46,6 @@ public class MenuUtilities {
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
 
         String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
-    //    List<NotificationsUser> notificationSaved = ( List<NotificationsUser>) RealmTransactions.searchByParamKey(NotificationsUser.class,"USER_NUMBER",numgColaborator);
 
         List<NotificationsUser> notificationSaved = RealmHelper.getNotifications(numgColaborator);
 
@@ -57,7 +56,7 @@ public class MenuUtilities {
 
         if(notificationSaved!= null){
             for(NotificationsUser notification : notificationSaved){
-                    mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
+                mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
             }
         }
 
@@ -65,7 +64,6 @@ public class MenuUtilities {
         for(HomeMenuItem item : listMenuDefault){
             mapNames.put(item.getTAG(),item);
         }
-
 
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         List<HomeMenuItem> homeMenuItems = new ArrayList<>();
@@ -116,6 +114,7 @@ public class MenuUtilities {
                             menus.get(i).setNotifications(mapNotification.get(10));
                         }
                     }
+
                     /***Notificaciones de Gastos de viaje**/
                     if(menus.get(i).getTAG().equals(OPTION_EXPENSES)){ // agrega notificaciones a vacaciones
                         if(mapNotification.containsKey(11)){
@@ -166,7 +165,7 @@ public class MenuUtilities {
             case AppConstants.OPTION_BENEFITS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_benefits);
                 break;
-            case AppConstants.OPTION_SAVING_FUND:
+            case OPTION_SAVING_FUND:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_saving_fund);
                 break;
             case AppConstants.OPTION_VISIONARIES:
@@ -209,7 +208,7 @@ public class MenuUtilities {
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_guarderia);
                 break;
 
-            case AppConstants.OPTION_EXPENSES:
+            case OPTION_EXPENSES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_gastos_viaje);
                 break;
 
@@ -229,7 +228,7 @@ public class MenuUtilities {
             menuItems.add(new HomeMenuItem(context.getString(R.string.bonus), AppConstants.OPTION_BONUS));
         }
         if (voucherResponse.getFecha_Corte_Cuenta() != null && voucherResponse.getFecha_Corte_Cuenta().size() > 0 && !voucherResponse.getFecha_Corte_Cuenta().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), AppConstants.OPTION_SAVING_FUND));
+            menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), OPTION_SAVING_FUND));
         }
         if (voucherResponse.getFecha_Gasolina() != null && voucherResponse.getFecha_Gasolina().size() > 0 && !voucherResponse.getFecha_Gasolina().get(0).getSfechanomina().equals("0")) {
             menuItems.add(new HomeMenuItem(context.getString(R.string.gas), AppConstants.OPTION_GAS));
