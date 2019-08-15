@@ -1,16 +1,20 @@
 package com.coppel.rhconecta.dev.views.fragments.benefits;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
@@ -69,7 +74,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         DialogFragmentWarning.OnOptionClick, BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
         DialogFragmentSelectState.OnButonOptionClick , DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
         DialogFragmentGetDocument.OnButtonClickListener{
-
+    public static final int REQUEST_MAP_PERMISSION_CODE = 741;
     public static final String TAG = BenefitsFragment.class.getSimpleName();
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -221,11 +226,6 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -522,5 +522,32 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onDestroy() {
         super.onDestroy();
         citySelectedName = "";
+    }
+
+    /**Geolocalización*/
+    private void askPermission() {
+        Log.d(TAG, "askPermission()");
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                REQUEST_MAP_PERMISSION_CODE
+        );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult()");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_MAP_PERMISSION_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(),"Acepetado",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(),"Negado",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+        }
     }
 }

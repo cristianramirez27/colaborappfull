@@ -78,7 +78,7 @@ public class Devoluciones extends RelativeLayout {
             this.totalesDevolutions.setGravity(Gravity.CENTER);
             space.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 5, 1f));
         }else {
-            space.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,5, 2f));
+            space.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,5, 3f));
         }
       //  this.totalesDevolutions.setGravity(Gravity.CENTER);
        // this.totalesDevolutionsTitle.setGravity(Gravity.LEFT);
