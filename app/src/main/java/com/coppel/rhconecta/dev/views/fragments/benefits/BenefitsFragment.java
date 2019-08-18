@@ -63,6 +63,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentSelectState;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -296,6 +297,11 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                         if(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad() != null){
                             stateSelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_estado());
                             citySelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_ciudad());
+                            txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),
+                                    TextUtilities.capitalizeText(getActivity(),benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNombre_ciudad())));
+
+
+
                         }
 
                         categories.clear();
@@ -645,7 +651,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 coppelServicesPresenter.getBenefits(benefitsRequestData,token);
 
 
-                getCityName(location, new OnGeocoderFinishedListener() {
+               /* getCityName(location, new OnGeocoderFinishedListener() {
                     @Override
                     public void onFinished(List<Address> results) {
                         // do something with the result
@@ -656,7 +662,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                         }
 
                     }
-                });
+                });*/
 
             }else{
                 //Sino se obtiene la ubicación hacemos la petición normal

@@ -71,6 +71,15 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
     public class DatosCiudad implements Serializable{
         private int num_ciudad;
         private int num_estado;
+        private String nombre_ciudad;
+
+        public String getNombre_ciudad() {
+            return nombre_ciudad;
+        }
+
+        public void setNombre_ciudad(String nombre_ciudad) {
+            this.nombre_ciudad = nombre_ciudad;
+        }
 
         public int getNum_ciudad() {
             return num_ciudad;
