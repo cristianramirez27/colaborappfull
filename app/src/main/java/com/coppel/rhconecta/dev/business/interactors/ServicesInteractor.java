@@ -176,7 +176,6 @@ public class ServicesInteractor {
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 try {
                     LoginResponse loginResponse = (LoginResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoginResponse.class);
-
                     if (loginResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getLoginResponse(loginResponse, response.code(), type);
                     } else {
@@ -3612,6 +3611,90 @@ public class ServicesInteractor {
 
 
     /* *******************************************************************************************************************************************************
+     ***********************************************          Collage          ************************************************************************
+     *********************************************************************************************************************************************************/
+    public void getCollage(String num_empleado,int option,String token) {
+        this.token = token;
+
+        getCollageUrl(num_empleado, option,token);
+
+    }
+
+
+
+    private void getCollageUrl(String num_empleado,int option, String token) {
+        iServicesRetrofitMethods.getCollageURL(ServicesConstants.GET_ENDPOINT_COLLAGES,token,
+                (CoppelServicesCollageUrlRequest) builCollageRequest( num_empleado, option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    CollageResponse collageResponse = (CollageResponse) servicesUtilities.parseToObjectClass(response.body().toString(),CollageResponse.class);
+                    if (collageResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getCollageResponse(collageResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.COLLAGE, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.COLLAGE, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    public void getCollageResponse(CollageResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getCollageSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getCollageSuccess(CollageResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+
+        if (response != null && response != null) {
+
+            if (response.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<CollageResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(response);
+                servicesResponse.setType(ServicesRequestType.COLLAGE);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                //TODO Definir mensaje de error
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+
+
+    public CoppelServicesBaseCollageRequest builCollageRequest(String num_empleado,int option) {
+        CoppelServicesBaseCollageRequest coppelServicesBaseCollageRequest = null;
+        coppelServicesBaseCollageRequest = new CoppelServicesCollageUrlRequest(num_empleado,option);
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseCollageRequest).toString();
+        return coppelServicesBaseCollageRequest;
+    }
+
+
+
+
+    /* *******************************************************************************************************************************************************
      ***********************************************          General Methods          ************************************************************************
      *********************************************************************************************************************************************************/
 
@@ -3645,13 +3728,20 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
-        message = context.getString(R.string.error_generic_service);
 
         /*if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {*/
-       //     message = context.getString(R.string.error_generic_service);
+        //     message = context.getString(R.string.error_generic_service);
        /* } else {
             message = userMessage;
         }*/
+
+        if(errorCode == -10 || errorCode == -33 || errorCode == -99 ){
+            message = userMessage;
+        }else{
+            message = context.getString(R.string.error_generic_service);
+
+        }
+
         return message;
     }
 

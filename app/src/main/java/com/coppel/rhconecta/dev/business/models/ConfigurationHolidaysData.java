@@ -14,6 +14,8 @@ public class ConfigurationHolidaysData implements Serializable {
     private Map<String, List<DaySelectedHoliday>> daysConfiguration;
     private double totalDays;
 
+    private boolean isColaborator;
+
     public ConfigurationHolidaysData() {
     }
 
@@ -44,5 +46,13 @@ public class ConfigurationHolidaysData implements Serializable {
 
     public void setTotalDays(double totalDays) {
         this.totalDays = totalDays;
+    }
+
+    public boolean isColaborator() {
+        return isColaborator;
+    }
+
+    public void setColaborator(boolean colaborator) {
+        isColaborator = colaborator;
     }
 }

@@ -311,8 +311,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
 
 
-        if( this.holidayPeriod.getColor_marca() != null && ! this.holidayPeriod.getColor_marca().isEmpty())
-            estatus.setTextColor( Color.parseColor( this.holidayPeriod.getColor_marca()));
+        if( this.holidayPeriod.getColorletra() != null && ! this.holidayPeriod.getColorletra().isEmpty())
+            estatus.setTextColor( Color.parseColor( this.holidayPeriod.getColorletra()));
 
         estatus.setText( this.holidayPeriod.getNom_estatus() != null ?  this.holidayPeriod.getNom_estatus() :
                 ( this.holidayPeriod.getNom_estaus() != null ?  this.holidayPeriod.getNom_estaus() : ""));
@@ -461,7 +461,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setShowHalfDaysOption(true);//TODO Validar
         datePickerDialog.setDes_mensaje("");
         Calendar today = Calendar.getInstance();
-        datePickerDialog.setMinDate( today);
+        /**Se permiten días anteriores por ser Gte**/
+        //datePickerDialog.setMinDate( today);
         //Setear el maximo de 18 meses para seleccionar periodos
         today.add(Calendar.MONTH,18);
         datePickerDialog.setMaxDate(today);

@@ -297,6 +297,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         setTimeZone(mCalendar.getTimeZone());
 
         mVersion = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? Version.VERSION_1 : Version.VERSION_2;
+       // mVersion = Version.VERSION_2;
     }
 
     public void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {
@@ -505,10 +506,13 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         okButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                tryVibrate();
-                setConfigData();
-                notifyOnDatesHolidaysListener();
-                dismiss();
+                if(daysSelectedMap != null && daysSelectedMap.size() > 0){
+                    tryVibrate();
+                    setConfigData();
+                    notifyOnDatesHolidaysListener();
+                    dismiss();
+                }
+
             }
         });
         okButton.setTypeface(TypefaceHelper.get(activity, buttonTypeface));
@@ -538,8 +542,11 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         configDaysBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setConfigData();
-                changeView();
+                if(daysSelectedMap != null && daysSelectedMap.size() > 0){
+                    setConfigData();
+                    changeView();
+                }
+
             }
         });
 

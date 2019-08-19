@@ -16,6 +16,7 @@ public class HolidayPeriod implements Serializable {
     private List<MarkHoliday> ver_marca;
     private int idu_folio;
 
+    private String colorletra;
     private String num_empleado;
     private String nom_empleado;
     private String fotoperfil;
@@ -187,5 +188,14 @@ private boolean showMarker;
 
     public void setNom_estaus(String nom_estaus) {
         this.nom_estaus = nom_estaus;
+    }
+
+
+    public String getColorletra() {
+        return colorletra;
+    }
+
+    public void setColorletra(String colorletra) {
+        this.colorletra = colorletra;
     }
 }

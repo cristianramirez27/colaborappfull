@@ -217,6 +217,9 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
         diasVacaciones.setText(String.format("%s %s" , days , daysNumber > 1 ? "días" : "día"));
         estatus.setText(detail.getDes_estatus());
+        if( this.holidayPeriod.getColorletra() != null && ! this.holidayPeriod.getColorletra().isEmpty())
+            estatus.setTextColor( Color.parseColor( this.holidayPeriod.getColorletra()));
+
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(Color.parseColor(detail.getColor()));

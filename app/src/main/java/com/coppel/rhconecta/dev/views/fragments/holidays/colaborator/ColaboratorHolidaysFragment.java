@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ConfigurationHolidaysData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
@@ -35,6 +36,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.HolidayRequestRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator;
@@ -58,12 +60,14 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
@@ -110,11 +114,17 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     private long mLastClickTime = 0;
     private boolean EXPIRED_SESSION;
 
+    private ISurveyNotification ISurveyNotification;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         IScheduleOptions= (IScheduleOptions)getActivity();
-        vacacionesActivity = (VacacionesActivity)getActivity();
+        if(getActivity() instanceof VacacionesActivity){
+            vacacionesActivity = (VacacionesActivity)getActivity();
+        }else if(getActivity() instanceof HomeActivity){
+            ISurveyNotification = (HomeActivity)getActivity();
+        }
     }
 
     @Override
@@ -128,6 +138,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         if(getActivity() instanceof VacacionesActivity){
             parent = (VacacionesActivity) getActivity();
             ( (VacacionesActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
+        }else if(getActivity() instanceof HomeActivity){
+            parent = (HomeActivity) getActivity();
+            ( (HomeActivity) parent).setToolbarTitle(getString(R.string.title_my_holidays));
         }
 
         //btnRequest.setOnClickListener(this);
@@ -193,6 +206,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                     return;
                 }
 
+                holidayRequestRecyclerAdapter.unCheckedAll();
                 openCalendar();
 
                 IScheduleOptions.showEliminatedOption(false,"");
@@ -203,7 +217,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 989 && resultCode == RESULT_OK){
 
+        }
 
     }
 
@@ -333,7 +349,14 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @Override
     public void onRequestSelectedClick(HolidayPeriod holidayPeriod) {
         IScheduleOptions.showEliminatedOption(false,"");
-        vacacionesActivity.onEvent(BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL,holidayPeriod);
+        if(vacacionesActivity != null){
+            vacacionesActivity.onEvent(BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL,holidayPeriod);
+        }else {
+            NavigationUtil.openActivityParamsSerializable(getActivity(), VacacionesActivity.class,
+                    BUNDLE_OPTION_DATA_HOLIDAYS,holidayPeriod,
+                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL);
+        }
+
         /*  NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
                      BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL);
         */
@@ -377,7 +400,16 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
             configurationHolidaysData.setDaysConfiguration(periods);
             configurationHolidaysData.setTotalDays(totalDays);
 
-            vacacionesActivity.onEvent(BUNDLE_OPTION_COLABORATOR_SCHEDULE,configurationHolidaysData);
+            if(vacacionesActivity != null){
+                vacacionesActivity.onEvent(BUNDLE_OPTION_COLABORATOR_SCHEDULE,configurationHolidaysData);
+
+            }else{
+
+                configurationHolidaysData.setColaborator(true);
+                NavigationUtil.openActivityParamsSerializableRequestCode(getActivity(), VacacionesActivity.class,
+                        BUNDLE_OPTION_DATA_HOLIDAYS,configurationHolidaysData,
+                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_COLABORATOR_SCHEDULE,989);
+            }
 
                  /* NavigationUtil.openActivityParamsSerializable(getActivity(), VacacionesActivity.class,
                           BUNDLE_OPTION_DATA_HOLIDAYS, configurationHolidaysData,

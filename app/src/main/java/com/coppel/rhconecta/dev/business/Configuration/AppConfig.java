@@ -41,7 +41,7 @@ public class AppConfig {
     public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
 
     public final static String ENDPOINT_HOLIDAYS = "ENDPOINT_HOLIDAYS";
-
+    public final static String ENDPOINT_COLLAGE = "ENDPOINT_COLLAGE";
 
     //VISIONARIOS
     public final static String VISIONARIOS_URL = "VISIONARIOS_URL";
@@ -63,6 +63,8 @@ public class AppConfig {
     public final static String BLOCK_ENCUESTAS = "BLOCK_ENCUESTAS";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
     public final static String YES = "YES";
+
+    public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
     /**Se almacenan los endpoints*/
     public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig){
 
@@ -83,6 +85,10 @@ public class AppConfig {
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
+        String collage = mFirebaseRemoteConfig.getString(ENDPOINT_COLLAGE);
+
+
+
 
 
         //VISIONARIOS
@@ -104,6 +110,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS,holidays);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE,collage);
 
 
 
@@ -125,6 +132,7 @@ public class AppConfig {
         String block_communication = mFirebaseRemoteConfig.getString(BLOCK_COMUNICADOS);
         String block_surveys = mFirebaseRemoteConfig.getString(BLOCK_ENCUESTAS);
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
+        String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
@@ -137,6 +145,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS,block_communication);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS,block_surveys);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE,block_collage);
 
     }
 

@@ -1,8 +1,10 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -32,8 +34,10 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
+import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
+import com.coppel.rhconecta.dev.business.models.CollageResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
@@ -42,6 +46,7 @@ import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -59,6 +64,7 @@ import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
 import com.coppel.rhconecta.dev.views.fragments.benefits.BenefitsFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysRolMenuFragment;
+import com.coppel.rhconecta.dev.views.fragments.holidays.colaborator.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -83,6 +89,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
@@ -99,6 +107,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
@@ -113,7 +122,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class HomeActivity extends AppCompatActivity implements  IServicesContract.View,View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
-        DialogFragmentWarning.OnOptionClick,ISurveyNotification {
+        DialogFragmentWarning.OnOptionClick,ISurveyNotification, IScheduleOptions {
 
     private static final String TAG = "HomeActivity";
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -153,6 +162,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
+    @BindView(R.id.eliminateOption)
+    TextView eliminateOption;
+    private String titleActivity;
+    private boolean isOpenMenuToolbar;
 
     private boolean EXPIRED_SESSION;
     private String goTosection="";
@@ -242,6 +255,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void onBackPressed() {
+        if(isOpenMenuToolbar) {
+            isOpenMenuToolbar = false;
+            showTitle(true);
+            showEliminatedOption(false, "");
+        }
         int backStackEntryCount = fragmentManager.getBackStackEntryCount();
         if (backStackEntryCount == 1) {
             finish();
@@ -407,11 +425,21 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
                     replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
+                    getRolType(HOLIDAYS);
                 }else {
                     getRolType(HOLIDAYS);
                 }
 
                 RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
+                break;
+            case OPTION_COLLAGE:
+                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)){
+                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                }else{
+                    getCollageURL();
+                }
+
                 break;
 
             case OPTION_POLL:
@@ -534,6 +562,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         super.onActivityResult(requestCode, resultCode, data);
 
 
+        Fragment myFragment = getSupportFragmentManager().findFragmentById(R.id.flFragmentContainer);
+        if (myFragment != null && myFragment instanceof ColaboratorHolidaysFragment) {
+            // add your code here
+            ((ColaboratorHolidaysFragment)myFragment).onActivityResult(requestCode,resultCode,data
+            );
+        }
     }
 
 
@@ -563,19 +597,46 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 if(response.getResponse() instanceof HolidayRolCheckResponse) {
 
-                    if (((HolidayRolCheckResponse) response.getResponse()).getData().getResponse().getGerente() == 1) {
+                    if (((HolidayRolCheckResponse) response.getResponse()).getData().getResponse().getGerente() == 1 ||
+                            ((HolidayRolCheckResponse) response.getResponse()).getData().getResponse().getSuplente() == 1)  {
                         replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
                     }else {
 
-                        NavigationUtil.openActivityWithStringParam(this, VacacionesActivity.class,
-                                BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+                   /*     NavigationUtil.openActivityWithStringParam(this, VacacionesActivity.class,
+                                BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);*/
 
-                        //replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
+                        replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
                     }
                 }
 
                 break;
 
+
+            case COLLAGE:
+
+                if(response.getResponse() instanceof CollageResponse) {
+                    CollageResponse collageResponse = (CollageResponse) response.getResponse();
+                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                    String url = String.format("%s%s", collageResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
+                    openCollage(url);
+                }
+
+                break;
+
+        }
+    }
+
+
+    private void openCollage(String urlString){
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setPackage("com.android.chrome");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            // Chrome browser presumably not installed so allow user to choose instead
+            intent.setPackage(null);
+            startActivity(intent);
         }
     }
 
@@ -666,5 +727,54 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         if(f instanceof BenefitsFragment){
             ((BenefitsFragment)f).onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
+    }
+
+    private void getCollageURL(){
+        /*Se implementa llamada a endpoint de cerrar sesión*/
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getCollege( profileResponse.getColaborador(),19,token);
+    }
+
+
+    @Override
+    public void showTitle(boolean show) {
+        tbActionBar.setTitle(show ? titleActivity : "");
+        changeIconToolbar(show ? R.drawable.ic_left_arrow_black : R.drawable.ic_close_black );
+        if(!show){
+            isOpenMenuToolbar = true;
+        }
+    }
+
+    @Override
+    public void changeIconToolbar(int icon) {
+        tbActionBar.setNavigationIcon(icon);
+    }
+
+    @Override
+    public void showEliminatedOption(boolean show, String name) {
+        this.eliminateOption.setVisibility(show ? View.VISIBLE : View.GONE);
+        this.eliminateOption.setText(name);
+
+        this.surveyInboxView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void showAuthorizeOption(boolean show) {
+
+    }
+
+    @Override
+    public void setActionEliminatedOption(Command action) {
+        this.eliminateOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action.execute();
+            }
+        });
+    }
+
+    @Override
+    public void setActionAuthorizeOption(Command action) {
+
     }
 }

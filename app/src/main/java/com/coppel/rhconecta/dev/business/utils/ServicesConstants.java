@@ -6,6 +6,7 @@ import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASGENERAR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_EXPENSES_TRAVEL;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN;
@@ -51,6 +52,7 @@ public class ServicesConstants {
 
     public static  String GET_EXPENSES_TRAVEL = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_EXPENSES_TRAVEL);
     public static  String GET_ENDPOINT_HOLIDAYS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_HOLIDAYS);
+    public static  String GET_ENDPOINT_COLLAGES = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_COLLAGE);
 
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
 

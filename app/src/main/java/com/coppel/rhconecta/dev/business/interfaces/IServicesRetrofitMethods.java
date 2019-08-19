@@ -13,6 +13,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequ
 import com.coppel.rhconecta.dev.business.models.CoppelServicesCalendarHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesCancelPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesChangeStatusHolidaysRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesCollageUrlRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
@@ -305,6 +306,10 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> editHolidays(@Url String url,@Header("Authorization") String token, @Body CoppelServicesSchedulePeriodsHolidaysRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getCollageURL(@Url String url,@Header("Authorization") String token, @Body CoppelServicesCollageUrlRequest servicesRequest);
 
 
 }

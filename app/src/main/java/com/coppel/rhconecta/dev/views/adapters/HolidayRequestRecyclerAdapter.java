@@ -139,8 +139,8 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
         if(!isSchedule){
 
-            if(dataItems.get(i).getColor_marca() != null && !dataItems.get(i).getColor_marca().isEmpty())
-                viewHolder.estatus.setTextColor( Color.parseColor(dataItems.get(i).getColor_marca()));
+            if(dataItems.get(i).getColorletra() != null && !dataItems.get(i).getColorletra().isEmpty())
+                viewHolder.estatus.setTextColor( Color.parseColor(dataItems.get(i).getColorletra()));
 
             viewHolder.estatus.setText(dataItems.get(i).getNom_estatus() != null ? dataItems.get(i).getNom_estatus() :
                     (dataItems.get(i).getNom_estaus() != null ? dataItems.get(i).getNom_estaus() : ""));
@@ -154,9 +154,8 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         viewHolder.ic_solicitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 OnRequestSelectedClickListener.onRequestSelectedClick(dataItems.get(i));
+                unCheckedAll();
             }
         });
 
@@ -187,6 +186,16 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
         }
 
         return selectedCount == 1 ? true : false;
+    }
+
+
+    public void unCheckedAll(){
+        for(HolidayPeriod period : dataItems){
+            period.setSelected(false);
+        }
+
+        IScheduleOptions.showTitle(true);
+        notifyDataSetChanged();
     }
 
     private int getIcon(int status){

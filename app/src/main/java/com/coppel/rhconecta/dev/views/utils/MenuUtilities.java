@@ -23,6 +23,7 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
@@ -41,6 +42,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
+                new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
@@ -215,6 +217,11 @@ public class MenuUtilities {
             case AppConstants.OPTION_HOLIDAYS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_vacaciones);
                 break;
+
+            case AppConstants.OPTION_COLLAGE:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_class);
+                break;
+
         }
         return icon;
     }

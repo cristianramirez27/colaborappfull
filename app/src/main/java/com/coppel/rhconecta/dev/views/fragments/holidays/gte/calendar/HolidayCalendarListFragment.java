@@ -378,13 +378,13 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                         }
                     }
 
-                    setCalendarData();
-                    colaboratorHolidays.clear();
-                    for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
-                        colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
+                        setCalendarData();
+                        colaboratorHolidays.clear();
+                        for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
+                            colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
+                        }
+                        colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                     }
-                    colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
-                }
                 }
 
 

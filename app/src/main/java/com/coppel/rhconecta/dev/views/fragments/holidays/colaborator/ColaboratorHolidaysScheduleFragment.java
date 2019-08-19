@@ -360,9 +360,16 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     @Override
     public void onAccept() {
         if(sendRequestSuccess){
-            NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-            getActivity().finish();
+
+            if(configurationHolidaysData.isColaborator()){
+                getActivity().finish();
+            }else {
+                //Se valida si se ingreso como colaborador
+                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+                getActivity().finish();
+            }
+
             //vacacionesActivity.onEvent(,null);
         }
 

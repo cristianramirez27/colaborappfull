@@ -160,6 +160,12 @@ public class CoppelServicesPresenter implements IServiceListener {
         view.showProgress();
         servicesInteractor.getHolidays(holidayRequestData,token);
     }
+
+    public void getCollege(String num_empleado,int option, String token){
+        view.showProgress();
+        servicesInteractor.getCollage(num_empleado, option,token);
+    }
+
     @Override
     public void onResponse(ServicesResponse response) {
         view.hideProgress();

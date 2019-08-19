@@ -331,6 +331,11 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
                     return;
                 }
 
+
+                IScheduleOptions.showEliminatedOption(false,"");
+                IScheduleOptions.showAuthorizeOption(false);
+                IScheduleOptions.showTitle(true);
+                holidayRequestRecyclerAdapter.unCheckedAll();
                 openCalendar();
 
                 break;
@@ -477,7 +482,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar today = Calendar.getInstance();
-        datePickerDialog.setMinDate( today);
+        /**Se permiten días anteriores por ser Gte**/
+        //datePickerDialog.setMinDate( today);
         //Setear el maximo de 18 meses para seleccionar periodos
         today.add(Calendar.MONTH,18);
         datePickerDialog.setMaxDate(today);
@@ -559,6 +565,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
             @Override
             public void onCancel() {
 
+                holidayRequestRecyclerAdapter.unCheckedAll();
                 dialogFragmentDeletePeriods.close();
 
             }
@@ -602,7 +609,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
 
     @Override
     public void onLeftOptionObservationClick() {
-
+        holidayRequestRecyclerAdapter.unCheckedAll();
     }
 
     @Override
