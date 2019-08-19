@@ -13,6 +13,96 @@ import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
 import com.coppel.rhconecta.dev.business.models.*;
+import com.coppel.rhconecta.dev.business.models.AuthorizedResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsBaseResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsEmptyResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
+import com.coppel.rhconecta.dev.business.models.CentersResponse;
+import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
+import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.ConsultaAbonoResponse;
+import com.coppel.rhconecta.dev.business.models.ConsultaAhorroAdicionalResponse;
+import com.coppel.rhconecta.dev.business.models.ConsultaMetodosPagoResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseExpensesTravelRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBaseFondoAhorroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsBaseRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesLocationRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCityRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCompanyRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsDiscountsRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsSearchRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsStatesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAbonoRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaAhorroAdicionalRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaMetodoPagoRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesConsultaRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailControlExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesDetailRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetCentersRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetColaboratorRequestExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetControlsGteRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetFiltersControlRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetMonthsExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRequestToAuthorizeRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGetRolExpensesRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAbonoRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarAhorroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesGuardarRetiroRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersPreviewRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersSignatureRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesRefuseRequest;
+import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse;
+import com.coppel.rhconecta.dev.business.models.DetailRequestColaboratorResponse;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelBaseResponse;
+import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.FiltersControlsResponse;
+import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarAbonoResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarAhorroResponse;
+import com.coppel.rhconecta.dev.business.models.GuardarRetiroResponse;
+import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
+import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
+import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
+import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.business.models.LoginResponse;
+import com.coppel.rhconecta.dev.business.models.LogoutResponse;
+import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
+import com.coppel.rhconecta.dev.business.models.RequestsLiquiGteListExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.RetiroResponse;
+import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherBonusResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherDownloadResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherGasResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherPTUResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherRosterResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherSavingFundResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherSendMailResponse;
+import com.coppel.rhconecta.dev.business.models.WithDrawSavingBaseResponse;
+import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.JsonManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -1548,16 +1638,17 @@ public class ServicesInteractor {
             case  5:
                 getBenefitsCompanyRequest(benefitsRequestData, token);
                 break;
-
             case  6:
                 getBenefitsSearchRequest(benefitsRequestData, token);
                 break;
-
             case  7:
                 getBenefitsAdvertisingRequest(benefitsRequestData, token);
                 break;
-        }
 
+            case  8:
+                getBenefitsCategoriesLocationRequest(benefitsRequestData, token);
+                break;
+        }
     }
 
     private void getBenefitsAdvertisingRequest(BenefitsRequestData benefitsRequestData, String token) {
@@ -1644,6 +1735,34 @@ public class ServicesInteractor {
      */
     private void getBenefitsCategoriesRequest(BenefitsRequestData benefitsRequestData, String token) {
         iServicesRetrofitMethods.getBenefitsCategories(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCategoriesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+
+    private void getBenefitsCategoriesLocationRequest(BenefitsRequestData benefitsRequestData, String token) {
+        iServicesRetrofitMethods.getBenefitsCategoriesLocation(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCategoriesLocationRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -1821,9 +1940,16 @@ public class ServicesInteractor {
                 coppelServicesBenefitsRequest = new CoppelServicesBenefitsCityRequest(solicitud,benefitsRequestData.getNum_estado());
                 break;
             case BENEFITS_CATEGORIES:
-                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
-                        benefitsRequestData.getNum_estado(),
-                        benefitsRequestData.getNum_ciudad());
+                if(benefitsRequestData.getSolicitud() == 8){
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesLocationRequest(solicitud,
+                            benefitsRequestData.getLatitud(),
+                            benefitsRequestData.getLongitud());
+                }else {
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
+                            benefitsRequestData.getNum_estado(),
+                            benefitsRequestData.getNum_ciudad());
+                }
+
                 break;
             case BENEFITS_DISCOUNTS:
                 coppelServicesBenefitsRequest = new CoppelServicesBenefitsDiscountsRequest(solicitud,

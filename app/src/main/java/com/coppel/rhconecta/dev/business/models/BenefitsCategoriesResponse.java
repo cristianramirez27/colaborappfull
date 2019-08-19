@@ -30,6 +30,25 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
     public class Response {
 
         private List<Category> Categorias;
+        private DatosCiudad datosCiudad;
+        private int Clave;
+        private String Mensaje;
+
+        public int getClave() {
+            return Clave;
+        }
+
+        public void setClave(int clave) {
+            Clave = clave;
+        }
+
+        public String getMensaje() {
+            return Mensaje;
+        }
+
+        public void setMensaje(String mensaje) {
+            Mensaje = mensaje;
+        }
 
         public List<Category> getCategorias() {
             return Categorias;
@@ -37,6 +56,45 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
 
         public void setCategorias(List<Category> categorias) {
             Categorias = categorias;
+        }
+
+
+        public DatosCiudad getDatosCiudad() {
+            return datosCiudad;
+        }
+
+        public void setDatosCiudad(DatosCiudad datosCiudad) {
+            this.datosCiudad = datosCiudad;
+        }
+    }
+
+    public class DatosCiudad implements Serializable{
+        private int num_ciudad;
+        private int num_estado;
+        private String nombre_ciudad;
+
+        public String getNombre_ciudad() {
+            return nombre_ciudad;
+        }
+
+        public void setNombre_ciudad(String nombre_ciudad) {
+            this.nombre_ciudad = nombre_ciudad;
+        }
+
+        public int getNum_ciudad() {
+            return num_ciudad;
+        }
+
+        public void setNum_ciudad(int num_ciudad) {
+            this.num_ciudad = num_ciudad;
+        }
+
+        public int getNum_estado() {
+            return num_estado;
+        }
+
+        public void setNum_estado(int num_estado) {
+            this.num_estado = num_estado;
         }
     }
 
