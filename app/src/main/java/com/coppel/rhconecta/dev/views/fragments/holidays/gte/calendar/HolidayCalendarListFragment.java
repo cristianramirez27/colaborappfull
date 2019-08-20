@@ -347,10 +347,11 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 } if(response.getResponse() instanceof HolidaysColaboratorsResponse) {
                     HolidaysColaboratorsResponse colaboratorsResponse = (HolidaysColaboratorsResponse)response.getResponse();
                     /**Si clv_mensaje = 1 entonces mostrar el mensaje de des_mensaje**/
+                        colaboratorHolidays.clear();
                     if (colaboratorsResponse.getData().getResponse().getClv_mensaje() == 1) {
                         showWarningDialog(colaboratorsResponse.getData().getResponse().getDes_mensaje());
                     } else if(colaboratorsResponse.getData().getResponse().getClv_mensaje() == 0) {
-                        colaboratorHolidays.clear();
+
                         for (ColaboratorHoliday colaborator : colaboratorsResponse.getData().getResponse().getEmpleados()) {
                             colaboratorHolidays.add(colaborator);
                         }

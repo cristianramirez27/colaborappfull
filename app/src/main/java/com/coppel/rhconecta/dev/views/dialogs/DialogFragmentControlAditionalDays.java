@@ -216,7 +216,7 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
                     break;
                 case R.id.btnActionRight:
 
-                    if(reason.getText() != null && !reason.getText().toString().isEmpty()){
+                    if(!reason.isEnabled() || (reason.isEnabled() &&  reason.getText() != null && !reason.getText().toString().isEmpty())){
                         OnButonOptionReasonClick.onRightOptionReasonClick(getAditionalDays(),this);
                     }
 

@@ -40,7 +40,10 @@ public class CenterRecyclerAdapter extends RecyclerView.Adapter<CenterRecyclerAd
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final Center currentItem = centers.get(position);
-        viewHolder.txvName.setText(currentItem.getNom_centro());
+
+        viewHolder.txvName.setText(currentItem.getNum_centro() > 0 ?
+                String.format("%s %s",currentItem.getNum_centro(),currentItem.getNom_centro()):
+                String.format("%s",currentItem.getNom_centro()));
         viewHolder.checkboxElement.setChecked(currentItem.isSelected() ? true : false);
 
         if (position == selectedPosition) {

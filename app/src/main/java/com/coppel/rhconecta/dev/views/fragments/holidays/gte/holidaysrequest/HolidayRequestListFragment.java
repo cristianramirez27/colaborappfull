@@ -82,6 +82,7 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
     RecyclerView rcvSolicitudes;
 
 
+    private boolean doSearch;
 
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentCenter dialogFragmentCenter;
@@ -156,10 +157,16 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if(s.toString().length() == 0){
                     searchName = "";
-                    /**TODO corregir esta carga  */
-                   // getColaborators(centerSelected.getNum_centro(),searchName);
+                    if(doSearch && s.toString().length() == 0){
+                        searchName = edtSearch.getText() != null && !edtSearch.getText().toString().isEmpty() ?
+                                edtSearch.getText().toString() : "";
+                        getColaborators(centerSelected.getNum_centro(),searchName);
+                    }
+                }else {
+                    doSearch = true;
                 }
             }
 
@@ -243,15 +250,18 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
                 } if(response.getResponse() instanceof HolidaysColaboratorsResponse) {
                 HolidaysColaboratorsResponse colaboratorsResponse = (HolidaysColaboratorsResponse)response.getResponse();
                     /**Si clv_mensaje = 1 entonces mostrar el mensaje de des_mensaje**/
+                colaboratorHolidays.clear();
                     if (colaboratorsResponse.getData().getResponse().getClv_mensaje() == 1) {
                         showSuccessDialog(MSG_HOLIDAYS_WARNING,colaboratorsResponse.getData().getResponse().getDes_mensaje(),"");
                     } else if(colaboratorsResponse.getData().getResponse().getClv_mensaje() == 0) {
-                        colaboratorHolidays.clear();
+
                         for (ColaboratorHoliday colaborator : colaboratorsResponse.getData().getResponse().getEmpleados()) {
                             colaboratorHolidays.add(colaborator);
                         }
-                         colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
+
                     }
+
+                colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                 }
 
                 break;
@@ -384,7 +394,7 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_COLABORATORS, 7);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
-        holidayRequestData.setClv_estatus(0);//0
+        holidayRequestData.setClv_estatus(!search.isEmpty() ? -1 : 0);//0
         holidayRequestData.setNum_centro(centerSelectedId);
         holidayRequestData.setNom_empleado(search);
 
