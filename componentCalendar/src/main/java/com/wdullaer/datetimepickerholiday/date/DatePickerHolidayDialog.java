@@ -296,8 +296,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         //noinspection deprecation
         setTimeZone(mCalendar.getTimeZone());
 
-        mVersion = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? Version.VERSION_1 : Version.VERSION_2;
-       // mVersion = Version.VERSION_2;
+       // mVersion = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ? Version.VERSION_1 : Version.VERSION_2;
+        mVersion = Version.VERSION_2;
     }
 
     public void initialize(OnDateSetListener callBack, int year, int monthOfYear, int dayOfMonth) {

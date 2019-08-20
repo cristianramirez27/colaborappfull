@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.fragments.holidays.colaborator;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -362,6 +363,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         if(sendRequestSuccess){
 
             if(configurationHolidaysData.isColaborator()){
+                getActivity().setResult(Activity.RESULT_OK);
                 getActivity().finish();
             }else {
                 //Se valida si se ingreso como colaborador

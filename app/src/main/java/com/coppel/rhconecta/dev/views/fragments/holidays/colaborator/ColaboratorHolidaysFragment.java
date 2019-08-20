@@ -218,7 +218,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 989 && resultCode == RESULT_OK){
-
+            getHolidaysPeriods();
         }
 
     }
