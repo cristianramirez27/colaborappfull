@@ -220,6 +220,9 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
                         OnButonOptionReasonClick.onRightOptionReasonClick(getAditionalDays(),this);
                     }
 
+
+
+
                     break;
 
                 case R.id.btnMinus:

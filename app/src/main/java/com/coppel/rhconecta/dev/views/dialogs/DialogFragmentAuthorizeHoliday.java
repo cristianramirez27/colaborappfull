@@ -128,6 +128,7 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
             SpannableString ss1=  new SpannableString(title);
             ss1.setSpan(new RelativeSizeSpan(0.60f), title.indexOf("("),title.length(), 0); // set size
             txtTitle.setText(ss1);
+            btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
         }else {
             txtTitle.setText(title);
         }
@@ -168,9 +169,13 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
                 }
 
 
-                btnActionRight.setEnabled(s.toString().length() > 0 ? true : false);
-                btnActionRight.setBackgroundResource(s.toString().length() > 0 ?
-                        R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
+                if(!title.contains("(Opcional)")){
+
+                    btnActionRight.setEnabled(s.toString().length() > 0 ? true : false);
+                    btnActionRight.setBackgroundResource(s.toString().length() > 0 ?
+                            R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
+                }
+
                 //hideKeyboard();
             }
 
