@@ -459,10 +459,14 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
         datePickerDialog.setCustomTitle(getString(R.string.title_calendar_periods));
 
+        double holidayDaysTotal =  this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_adicionales() +
+                this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_decision()
+                +  this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_decisionanterior();
 
-        datePickerDialog.setNum_diasagendados( this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_decision());
-        datePickerDialog.setNum_total_vacaciones(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones());
-        double limitDay = 10;
+
+        datePickerDialog.setNum_diasagendados( this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados());
+        datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
+        double limitDay = this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones() - this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados();
         datePickerDialog.setLimite_dias(limitDay);
         datePickerDialog.setShowHalfDaysOption(true);//TODO Validar
         datePickerDialog.setDes_mensaje("");
