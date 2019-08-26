@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
@@ -541,7 +542,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                       holidayPeriod.getNum_empleado());
 
 
-              ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,holidayPeriod);
+              CalendarProposedData calendarProposedData = new CalendarProposedData(holidaysPeriodsResponse,holidayPeriod);
+
+              ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,calendarProposedData);
           }
 
 

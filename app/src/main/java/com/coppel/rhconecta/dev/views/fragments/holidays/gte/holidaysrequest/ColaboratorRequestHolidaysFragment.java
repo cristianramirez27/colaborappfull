@@ -307,6 +307,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+                holidayRequestRecyclerAdapter.unCheckedAll();
                 parent.onBackPressed();
                 return true;
         }

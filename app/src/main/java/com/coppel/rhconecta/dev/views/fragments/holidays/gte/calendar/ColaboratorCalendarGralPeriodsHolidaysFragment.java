@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayChangeStatusResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
@@ -159,6 +160,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     private HolidayRequestColaboratorsRecyclerAdapter holidayRequestRecyclerAdapter;
     private VacacionesActivity vacacionesActivity;
 
+    private CalendarProposedData calendarProposedData;
+
     private long mLastClickTime = 0;
     @Override
     public void onAttach(Context context) {
@@ -167,7 +170,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         vacacionesActivity = (VacacionesActivity)getActivity();
     }
 
-    public static ColaboratorCalendarGralPeriodsHolidaysFragment getInstance(HolidayPeriod data){
+    public static ColaboratorCalendarGralPeriodsHolidaysFragment getInstance(CalendarProposedData data){
         ColaboratorCalendarGralPeriodsHolidaysFragment fragment = new ColaboratorCalendarGralPeriodsHolidaysFragment();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_OPTION_DATA_COLABORATOR,data);
@@ -179,7 +182,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.holidayPeriod = (HolidayPeriod) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR);
+        this.calendarProposedData = (CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR);
+        this.holidayPeriod = calendarProposedData.getPeriod();
 
     }
 
@@ -282,8 +286,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
 
-
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
+        formatMonthNameFormat(monthNameCalendar,monthName);
     }
 
     private void setDataPeriod(){
@@ -454,8 +458,10 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
         datePickerDialog.setCustomTitle(getString(R.string.title_calendar_periods));
-        datePickerDialog.setNum_diasagendados(0);
-        datePickerDialog.setNum_total_vacaciones(0);
+
+
+        datePickerDialog.setNum_diasagendados( this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_decision());
+        datePickerDialog.setNum_total_vacaciones(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones());
         double limitDay = 10;
         datePickerDialog.setLimite_dias(limitDay);
         datePickerDialog.setShowHalfDaysOption(true);//TODO Validar
@@ -707,6 +713,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         }
 
         collapsibleCalendar.select(listDaySelected);
+
+        String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
+        formatMonthNameFormat(monthNameCalendar,monthName);
     }
 
     private void setSelectedDays(HolidayPeriod period,HashMap<String,Day> daysInCalendar){

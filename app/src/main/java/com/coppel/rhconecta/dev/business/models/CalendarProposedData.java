@@ -7,10 +7,18 @@ public class CalendarProposedData implements Serializable {
     private HolidayPeriod period;
     private ColaboratorHoliday colaborator;
 
+    private HolidaysPeriodsResponse holidaysPeriodsResponse;
+
     public CalendarProposedData(ColaboratorHoliday colaborator,HolidayPeriod period) {
         this.period = period;
         this.colaborator = colaborator;
     }
+
+    public CalendarProposedData(HolidaysPeriodsResponse holidaysPeriodsResponse,HolidayPeriod period) {
+        this.period = period;
+        this.holidaysPeriodsResponse = holidaysPeriodsResponse;
+    }
+
 
     public HolidayPeriod getPeriod() {
         return period;
@@ -26,5 +34,13 @@ public class CalendarProposedData implements Serializable {
 
     public void setColaborator(ColaboratorHoliday colaborator) {
         this.colaborator = colaborator;
+    }
+
+    public HolidaysPeriodsResponse getHolidaysPeriodsResponse() {
+        return holidaysPeriodsResponse;
+    }
+
+    public void setHolidaysPeriodsResponse(HolidaysPeriodsResponse holidaysPeriodsResponse) {
+        this.holidaysPeriodsResponse = holidaysPeriodsResponse;
     }
 }

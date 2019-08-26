@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.wdullaer.datetimepickerholiday.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +22,7 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
     private int selectedPosition = -1;
     private TextView totalDaysTxt;
 
+    private List<DaySelectedHoliday> daySelectedHolidayListInitial;
     private String[] months = new String[]{"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
     "Septiembre","Octubre","Noviembre","Diciembre"};
 
@@ -129,4 +131,18 @@ public class DaysConfigRecyclerAdapter extends RecyclerView.Adapter<DaysConfigRe
         }
     }
 
+
+    public void setDaySelectedHolidayListInitial(List<DaySelectedHoliday> daySelectedHolidayListInitial) {
+        this.daySelectedHolidayListInitial = daySelectedHolidayListInitial;
+    }
+
+    public void setDaySelectedHolidaysOriginal() {
+
+        this.daySelectedHolidays.clear();
+        for(DaySelectedHoliday day : this.daySelectedHolidayListInitial){
+            this.daySelectedHolidays.add(day);
+        }
+
+        notifyDataSetChanged();
+    }
 }

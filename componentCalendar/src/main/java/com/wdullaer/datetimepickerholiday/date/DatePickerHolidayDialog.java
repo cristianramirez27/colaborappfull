@@ -544,6 +544,13 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             public void onClick(View v) {
                 if(daysSelectedMap != null && daysSelectedMap.size() > 0){
                     setConfigData();
+
+                    List<DaySelectedHoliday> daySelectedHolidaysSource = new ArrayList<>();
+                    for(DaySelectedHoliday daySelectedHoliday :daySelectedHolidayList){
+                        daySelectedHolidaysSource.add(new DaySelectedHoliday(daySelectedHoliday));
+                    }
+
+                    daysConfigRecyclerAdapter.setDaySelectedHolidayListInitial(daySelectedHolidaysSource);
                     changeView();
                 }
 
@@ -555,6 +562,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             @Override
             public void onClick(View v) {
                 updateDaysSelection();
+
+
                 changeView();
             }
         });
@@ -563,6 +572,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         cancelButtonBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                daysConfigRecyclerAdapter.setDaySelectedHolidaysOriginal();
                 changeView();
             }
         });
