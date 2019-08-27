@@ -232,7 +232,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         nombreGte.setText(detail.getNom_gerente());
         fechaRechazo.setText(detail.getFec_estatus());
         motivoRechazo.setText(detail.getDes_comentario());
-
+        btnCancel.setVisibility(showCheckOption(holidayPeriod) ? VISIBLE : View.GONE);
 
         if(response.getData().getResponse().get(0).getIdu_estatus() >= 2 &&
                 response.getData().getResponse().get(0).getIdu_estatus() <= 4 ){
@@ -275,6 +275,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         layoutObservaciones.setBackgroundColor(getContext().getResources().getColor(R.color.transparent));
         bordeAmarillo.setVisibility(View.GONE);
         collapsibleCalendar.setVisibility(View.GONE);
+
         btnCancel.setVisibility(View.GONE);
     }
 
@@ -491,6 +492,23 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
 
+    }
+
+    private boolean showCheckOption(HolidayPeriod period){
+
+        /**Validar que la fecha de inicio sea mayor a la fecha actual*/
+        String[] dateFormat =  period.getFec_ini().split(",")[1].split("-");
+        Calendar datePeriod = Calendar.getInstance();
+        datePeriod.set(Calendar.YEAR,Integer.parseInt(dateFormat[2].trim()));
+        datePeriod.set(Calendar.MONTH,Integer.parseInt(dateFormat[1].trim())-1);
+        datePeriod.set(Calendar.DAY_OF_MONTH,Integer.parseInt(dateFormat[0].trim()));
+        Calendar today = Calendar.getInstance();
+        if(!datePeriod.after(today)){
+            return false;
+        }
+
+
+        return true;
     }
 
 

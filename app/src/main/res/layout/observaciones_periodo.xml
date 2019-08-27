@@ -26,6 +26,7 @@
 
 
             <LinearLayout
+                android:id="@+id/layoutGte"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -35,6 +36,7 @@
 
 
                 <TextView
+                    android:id="@+id/gteTitle"
                     android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,6 +56,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/dateLayout"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"

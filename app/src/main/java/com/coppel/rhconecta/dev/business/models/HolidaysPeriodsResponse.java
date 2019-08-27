@@ -46,6 +46,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
 
         private String des_nota;
 
+
         public double getNum_totalvacaciones() {
             return num_totalvacaciones;
         }
@@ -209,5 +210,9 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         public void setDes_nota(String des_nota) {
             this.des_nota = des_nota;
         }
+
     }
+
+
+
 }

@@ -21,6 +21,9 @@ public class HolidayPeriod implements Serializable {
     private String nom_empleado;
     private String fotoperfil;
 
+
+    private String des_comentario;
+
     private boolean isSelected;
 private String idPeriod;
 
@@ -197,5 +200,13 @@ private boolean showMarker;
 
     public void setColorletra(String colorletra) {
         this.colorletra = colorletra;
+    }
+
+    public String getDes_comentario() {
+        return des_comentario;
+    }
+
+    public void setDes_comentario(String des_comentario) {
+        this.des_comentario = des_comentario;
     }
 }

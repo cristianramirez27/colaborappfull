@@ -121,6 +121,18 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     ExpandableSimpleTitle expObservaciones;
     @BindView(R.id.nombreGte)
     TextView nombreGte;
+    @BindView(R.id.txtReason)
+    TextView txtReason;
+    @BindView(R.id.gteTitle)
+    TextView gteTitle;
+    @BindView(R.id.txtDate)
+    TextView txtDate;
+
+    @BindView(R.id.layoutGte)
+    LinearLayout layoutGte;
+    @BindView(R.id.dateLayout)
+    LinearLayout dateLayout;
+
     @BindView(R.id.fechaRechazo)
     TextView fechaRechazo;
     @BindView(R.id.motivoRechazo)
@@ -229,10 +241,12 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
 
         expObservaciones.setText("Observaciones");
+
+
         expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
             public void onClick() {
-                //observacionesStateChange(expObservaciones,layoutObservaciones);
+               // observacionesStateChange(expObservaciones,layoutObservaciones);
             }
         });
 
@@ -354,9 +368,10 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         gd.setColor(Color.parseColor(this.holidayPeriod.getColor()));
         gd.setCornerRadius(40);
         estatus.setBackgroundDrawable(gd);
-        /*nombreGte.setText(this.holidayPeriod.getNom_gerente());
-        fechaRechazo.setText(this.holidayPeriod.getFec_estatus());
-        motivoRechazo.setText(this.holidayPeriod.getDes_comentario());*/
+        layoutGte.setVisibility(GONE);
+        dateLayout.setVisibility(GONE);
+        txtReason.setText("Observaciones");
+        motivoRechazo.setText(this.holidayPeriod.getDes_comentario());
     }
 
 
