@@ -139,6 +139,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private List<HolidayPeriod> holidayPeriodList;
     private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
     private VacacionesActivity vacacionesActivity;
+    private List<Day> dayListSelected;
 
 
     private boolean sendRequestSuccess;
@@ -151,7 +152,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         vacacionesActivity = (VacacionesActivity)getActivity();
     }
 
-    public static ColaboratorCalendarGralHolidaysFragment getInstance(ColaboratorHoliday data){
+    public static ColaboratorCalendarGralHolidaysFragment getInstance(CalendarProposedData data){
         ColaboratorCalendarGralHolidaysFragment fragment = new ColaboratorCalendarGralHolidaysFragment();
         Bundle args = new Bundle();
         args.putSerializable(BUNDLE_OPTION_DATA_COLABORATOR,data);
@@ -163,8 +164,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.colaboratorHoliday = (ColaboratorHoliday) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR);
-
+        this.colaboratorHoliday = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getColaborator();
+        this.dayListSelected = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getListDaySelected();
     }
 
     @Override
@@ -544,6 +545,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
               CalendarProposedData calendarProposedData = new CalendarProposedData(holidaysPeriodsResponse,holidayPeriod);
 
+              calendarProposedData.setListDaySelected( this.dayListSelected);
+
               ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,calendarProposedData);
           }
 
@@ -572,6 +575,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
         }
     }
+
+
 
     /**Setear los dias en el calednario***/
     private void setColaboratorMarkInCalendar(List<HolidayPeriod> periods){

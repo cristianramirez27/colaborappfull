@@ -142,7 +142,7 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
 
             case BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR:
-                replaceFragment(ColaboratorCalendarGralHolidaysFragment.getInstance((ColaboratorHoliday) data), ColaboratorCalendarGralHolidaysFragment.TAG);
+                replaceFragment(ColaboratorCalendarGralHolidaysFragment.getInstance((CalendarProposedData) data), ColaboratorCalendarGralHolidaysFragment.TAG);
                 break;
 
             case BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS:

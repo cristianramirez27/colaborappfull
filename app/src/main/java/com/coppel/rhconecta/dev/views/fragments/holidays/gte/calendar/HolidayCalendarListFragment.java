@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.Center;
 import com.coppel.rhconecta.dev.business.models.CentersHolidayResponse;
@@ -132,6 +133,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
     private long mLastClickTime = 0;
     private boolean doSearch;
     private Calendar currentDate;
+
+    private List<Day>  listDaySelectedCurrent;
 
     @Override
     public void onAttach(Context context) {
@@ -573,7 +576,9 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
     @Override
     public void onRequestSelectedClick(ColaboratorHoliday colaboratorHoliday) {
         doSearch = false;
-        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,colaboratorHoliday);
+
+        CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,listDaySelectedCurrent);
+        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
     }
 
 
@@ -590,6 +595,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
            listDaySelected.add(daysInCalendar.get(dateAsString));
         }
 
+        listDaySelectedCurrent = listDaySelected;
         collapsibleCalendar.select(listDaySelected);
     }
 

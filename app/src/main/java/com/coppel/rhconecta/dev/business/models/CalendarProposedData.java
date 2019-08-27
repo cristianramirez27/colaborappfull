@@ -1,15 +1,24 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class CalendarProposedData implements Serializable {
 
     private HolidayPeriod period;
     private ColaboratorHoliday colaborator;
+    private List<Day> listDaySelected;
 
     private HolidaysPeriodsResponse holidaysPeriodsResponse;
 
-    public CalendarProposedData(ColaboratorHoliday colaborator,HolidayPeriod period) {
+    public CalendarProposedData(ColaboratorHoliday colaborator, List<Day> listDaySelected) {
+        this.colaborator = colaborator;
+        this.listDaySelected = listDaySelected;
+    }
+
+    public CalendarProposedData(ColaboratorHoliday colaborator, HolidayPeriod period) {
         this.period = period;
         this.colaborator = colaborator;
     }
@@ -42,5 +51,14 @@ public class CalendarProposedData implements Serializable {
 
     public void setHolidaysPeriodsResponse(HolidaysPeriodsResponse holidaysPeriodsResponse) {
         this.holidaysPeriodsResponse = holidaysPeriodsResponse;
+    }
+
+
+    public List<Day> getListDaySelected() {
+        return listDaySelected;
+    }
+
+    public void setListDaySelected(List<Day> listDaySelected) {
+        this.listDaySelected = listDaySelected;
     }
 }

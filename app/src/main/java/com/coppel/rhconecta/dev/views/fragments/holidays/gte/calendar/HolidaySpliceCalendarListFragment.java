@@ -148,7 +148,9 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
         SpannableString ss1=  new SpannableString(dateName );
         ss1.setSpan(new StyleSpan(Typeface.BOLD), 0, ss1.length(), 0);
 
-        textDate.append(capitalizeText(getContext(),getDayNameFromDate(date)));
+
+
+        textDate.setText(capitalizeText(getContext(),getDayNameFromDate(date)));
 
         textDate.append(" "+ss1);
     }

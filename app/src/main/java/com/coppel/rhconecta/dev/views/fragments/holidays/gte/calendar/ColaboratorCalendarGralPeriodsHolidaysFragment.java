@@ -161,6 +161,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     private VacacionesActivity vacacionesActivity;
 
     private CalendarProposedData calendarProposedData;
+    private List<Day> daySelectedOtherSplices;
 
     private long mLastClickTime = 0;
     @Override
@@ -184,7 +185,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         super.onCreate(savedInstanceState);
         this.calendarProposedData = (CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR);
         this.holidayPeriod = calendarProposedData.getPeriod();
-
+        this.daySelectedOtherSplices = calendarProposedData.getListDaySelected();
     }
 
     @Override
@@ -714,6 +715,25 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         //Llenamos la lista con los dias con y sin empalmes
         for(String dateAsString : daysInCalendar.keySet()){
             listDaySelected.add(daysInCalendar.get(dateAsString));
+        }
+
+
+        HashMap<String,Day> daysCurrentOthersColaborators = new HashMap<>();
+        HashMap<String,Day> daysCurrent = new HashMap<>();
+
+
+        for(Day daySplice : daySelectedOtherSplices){
+            daysCurrentOthersColaborators.put(String.format("%d%d%d",daySplice.getYear(),daySplice.getMonth(),daySplice.getDay()),daySplice);
+        }
+
+        for(Day dayCurrent : listDaySelected){
+            daysCurrent.put(String.format("%d%d%d",dayCurrent.getYear(),dayCurrent.getMonth(),dayCurrent.getDay()),dayCurrent);
+        }
+
+        for(String key : daysCurrent.keySet()){
+            if(daysCurrentOthersColaborators.containsKey(key)){
+                daysCurrent.get(key).setHasSplice(daysCurrentOthersColaborators.get(key).getHasSplice());
+            }
         }
 
         collapsibleCalendar.select(listDaySelected);
