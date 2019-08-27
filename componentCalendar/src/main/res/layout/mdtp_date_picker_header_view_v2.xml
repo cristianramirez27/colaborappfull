@@ -18,7 +18,7 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/mdtp_date_picker_header"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/mdtp_date_picker_title_height"
+    android:layout_height="10dp"
     android:background="#0065b2"
     android:gravity="center"
     android:includeFontPadding="false"
