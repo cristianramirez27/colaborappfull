@@ -272,7 +272,7 @@ public class HolidayAditionalDayListFragment extends Fragment implements  View.O
     public void showError(ServicesError coppelServicesError) {
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
-                case ServicesRequestType.EXPENSESTRAVEL:
+                case ServicesRequestType.HOLIDAYS:
                     showWarningDialog(coppelServicesError.getMessage());
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
@@ -303,7 +303,7 @@ public class HolidayAditionalDayListFragment extends Fragment implements  View.O
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-           // getActivity().onBackPressed();
+            getActivity().onBackPressed();
         }
     }
 

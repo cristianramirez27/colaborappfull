@@ -304,6 +304,7 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
+            getActivity().onBackPressed();
         }
     }
 

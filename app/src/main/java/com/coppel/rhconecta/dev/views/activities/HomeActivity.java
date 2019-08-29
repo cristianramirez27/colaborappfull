@@ -47,6 +47,7 @@ import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -312,6 +313,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         HomeMenuItem option = (HomeMenuItem) adapterView.getItemAtPosition(i);
+
         navigationMenu(option.getTAG());
     }
 
@@ -349,7 +351,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     }
 
     public void navigationMenu(String tag) {
-        switch (tag) {
+
+        if(DeviceManager.isOnline(this)){
+
+            switch (tag) {
             case OPTION_HOME:
                 fragmentManager.popBackStack(HomeMainFragment.TAG, 0);
                 dlHomeContainer.closeDrawers();
@@ -446,6 +451,13 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 break;
         }
+
+
+        }else {
+            showError(new ServicesError(getString(R.string.network_error)));
+        }
+
+
     }
 
     public void setToolbarTitle(String title) {
@@ -568,6 +580,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             ((ColaboratorHolidaysFragment)myFragment).onActivityResult(requestCode,resultCode,data
             );
         }
+
+
     }
 
 
@@ -661,7 +675,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                             dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
                             hideProgress();
                         }
-                    }, 500);
+                    }, 300);
                     break;
             }
 

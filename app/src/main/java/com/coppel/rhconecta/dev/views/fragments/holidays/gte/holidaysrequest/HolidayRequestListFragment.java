@@ -293,7 +293,7 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
     public void showError(ServicesError coppelServicesError) {
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
-                case ServicesRequestType.EXPENSESTRAVEL:
+                case ServicesRequestType.HOLIDAYS:
                     showWarningDialog(coppelServicesError.getMessage());
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
@@ -324,7 +324,7 @@ public class HolidayRequestListFragment extends Fragment implements  View.OnClic
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-           // getActivity().onBackPressed();
+            getActivity().onBackPressed();
         }
     }
 

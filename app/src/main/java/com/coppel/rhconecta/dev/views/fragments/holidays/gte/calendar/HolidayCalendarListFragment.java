@@ -389,6 +389,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                         }
                         colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                     }
+
+                formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
                 }
 
 
@@ -422,7 +424,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
     public void showError(ServicesError coppelServicesError) {
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
-                case ServicesRequestType.EXPENSESTRAVEL:
+                case ServicesRequestType.HOLIDAYS:
                     showWarningDialog(coppelServicesError.getMessage());
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
@@ -482,7 +484,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-           // getActivity().onBackPressed();
+           getActivity().onBackPressed();
         }
     }
 

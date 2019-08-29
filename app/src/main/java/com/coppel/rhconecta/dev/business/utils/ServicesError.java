@@ -9,6 +9,10 @@ public class ServicesError {
     public ServicesError() {
     }
 
+    public ServicesError(String message) {
+        this.message = message;
+    }
+
     public String getMessage() {
         return message;
     }

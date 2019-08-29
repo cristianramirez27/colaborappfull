@@ -330,12 +330,15 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         datePickerDialog.setLimite_dias(limitDay);
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
-        Calendar today = Calendar.getInstance();
+        Calendar dateMin = Calendar.getInstance();
+        Calendar dateMax = Calendar.getInstance();
         /**Se permiten días anteriores por ser Gte**/
-       // datePickerDialog.setMinDate(today);
+        dateMin.set(Calendar.MONTH,0);
+        dateMin.set(Calendar.DAY_OF_MONTH,1);
+        datePickerDialog.setMinDate(dateMin);
         //Setear el maximo de 18 meses para seleccionar periodos
-        today.add(Calendar.MONTH,18);
-        datePickerDialog.setMaxDate(today);
+        dateMax.add(Calendar.MONTH,18);
+        datePickerDialog.setMaxDate(dateMax);
         datePickerDialog.setInitDaysSelectedHolidays(periods);
         datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
     }
@@ -572,7 +575,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-
+            getActivity().onBackPressed();
         }
     }
 

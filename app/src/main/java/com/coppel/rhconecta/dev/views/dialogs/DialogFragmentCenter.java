@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.Center;
+import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.views.adapters.CenterRecyclerAdapter;
 
 import java.util.List;
@@ -79,7 +80,20 @@ public class DialogFragmentCenter extends DialogFragment implements View.OnClick
     private void initViews() {
         rcvFields.setHasFixedSize(true);
         rcvFields.setLayoutManager(new LinearLayoutManager(getContext()));
+        btnActionRight.setEnabled( false);
+
+        btnActionRight.setBackgroundResource(R.drawable.background_gray_rounded);
         centerRecyclerAdapter = new CenterRecyclerAdapter(getContext(), centers);
+        centerRecyclerAdapter.setActionSelect(new Command() {
+            @Override
+            public void execute(Object... params) {
+
+                btnActionRight.setEnabled(centerRecyclerAdapter.hasCenterSelected() ? true : false);
+
+                btnActionRight.setBackgroundResource(centerRecyclerAdapter.hasCenterSelected() ?
+                    R.drawable.background_blue_rounded:  R.drawable.background_gray_rounded);
+            }
+        });
         rcvFields.setAdapter(centerRecyclerAdapter);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);

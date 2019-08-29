@@ -318,6 +318,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         }
 
         dialogFragmentWarning.close();
+        getActivity().onBackPressed();
 
     }
 
@@ -328,12 +329,12 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                 case ServicesRequestType.HOLIDAYS:
                     showWarningDialog(coppelServicesError.getMessage());
 
-                          break;
+                 break;
                 case ServicesRequestType.INVALID_TOKEN:
                           EXPIRED_SESSION = true;
                           showWarningDialog(getString(R.string.expired_session));
                           break;
-                  }
+              }
         }
     }
 
@@ -369,8 +370,15 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
         datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
+
+        //TODO Validar que esta suma sea correcta
+        double holidayDaysTotal = holidaysPeriodsResponse.getData().getResponse().getNum_adicionales() +
+                holidaysPeriodsResponse.getData().getResponse().getNum_decision() +
+                holidaysPeriodsResponse.getData().getResponse().getNum_decisionanterior();
+
+
         datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
-        datePickerDialog.setNum_total_vacaciones(holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones());
+        datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
         double limitDay = holidaysPeriodsResponse.getData().getResponse().getNum_totalvacaciones() - holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados();
         datePickerDialog.setLimite_dias(limitDay);
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);

@@ -57,6 +57,7 @@ import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CALENDAR_
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.formatMonthNameFormat;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidaysInverse;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDayNameFromDate;
 
@@ -177,8 +178,9 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
         collapsibleCalendar.setTitleMonthVisible(false);
-        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
+        //monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
+        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
         return view;
     }
 
@@ -268,6 +270,8 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
                     formatedDatesList();
 
                     layoutContainer.setVisibility(VISIBLE);
+
+                    formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
                 }
 
                 break;
@@ -351,6 +355,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
+            getActivity().onBackPressed();
 
         }
     }

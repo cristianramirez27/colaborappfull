@@ -221,7 +221,7 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
     public void showError(ServicesError coppelServicesError) {
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
-                case ServicesRequestType.EXPENSESTRAVEL:
+                case ServicesRequestType.HOLIDAYS:
                     showWarningDialog(coppelServicesError.getMessage());
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
@@ -251,7 +251,7 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-           // getActivity().onBackPressed();
+            getActivity().onBackPressed();
         }
     }
 

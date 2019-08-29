@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Center;
+import com.coppel.rhconecta.dev.business.utils.Command;
 
 import java.util.List;
 
@@ -23,10 +24,17 @@ public class CenterRecyclerAdapter extends RecyclerView.Adapter<CenterRecyclerAd
     private Context context;
     private int selectedPosition = -1;
 
+    private Command actionSelect;
+
     private List<Center> centers;
     public CenterRecyclerAdapter(Context context, List<Center> centers) {
         this.centers = centers;
         this.context = context;
+    }
+
+
+    public void setActionSelect(Command actionSelect) {
+        this.actionSelect = actionSelect;
     }
 
     @NonNull
@@ -46,13 +54,17 @@ public class CenterRecyclerAdapter extends RecyclerView.Adapter<CenterRecyclerAd
                 String.format("%s",currentItem.getNom_centro()));
         viewHolder.checkboxElement.setChecked(currentItem.isSelected() ? true : false);
 
-        if (position == selectedPosition) {
+        if(position == selectedPosition) {
             viewHolder.checkboxElement.setChecked(true);
             currentItem.setSelected(true);
+
+            if(actionSelect != null)actionSelect.execute();
 
         } else {
             currentItem.setSelected(false);
             viewHolder.checkboxElement.setChecked(false);
+
+             if(actionSelect != null)actionSelect.execute();
         }
 
         viewHolder.checkboxElement.setOnClickListener(new View.OnClickListener() {

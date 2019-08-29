@@ -3001,17 +3001,17 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
-                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
-                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
     }
