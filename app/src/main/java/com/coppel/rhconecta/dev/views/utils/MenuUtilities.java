@@ -203,6 +203,39 @@ public class MenuUtilities {
             case OPTION_EXPENSES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_gastos_viaje);
                 break;
+
+            /**Iconos para menu con iconos*/
+            case AppConstants.OPTION_MENU_COLABORATOR:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_colaborator);
+                break;
+            case AppConstants.OPTION_MENU_GTE:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_manager);
+                break;
+            case AppConstants.OPTION_HOLIDAY_REQUESTS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_vacations_request);
+                break;
+            case AppConstants.OPTION_CALENDAR_GRAL:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_vacations_calendar);
+                break;
+            case AppConstants.OPTION_ADITIONAL_DAYS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_aditional_days);
+                break;
+            case AppConstants.OPTION_AUTHORIZE_REQUESTS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_authorize);
+                break;
+            case AppConstants.OPTION_CONTROLS_LIQ:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_active_controls);
+                break;
+            case AppConstants.OPTION_REMOVE:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_withdraw);
+                break;
+            case AppConstants.OPTION_ADITIONAL_SAVED:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_aditional_savings);
+                break;
+            case AppConstants.OPTION_PAY:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_pay);
+                break;
+
         }
         return icon;
     }
@@ -238,6 +271,41 @@ public class MenuUtilities {
         menuItems.add(new HomeMenuItem(context.getString(R.string.imss), AppConstants.OPTION_IMSS));
         menuItems.add(new HomeMenuItem(context.getString(R.string.infonavit), AppConstants.OPTION_INFONAVIT));
         menuItems.add(new HomeMenuItem(context.getString(R.string.kindergarten), AppConstants.OPTION_KINDERGARTEN));
+
+        return menuItems;
+    }
+
+    public static List<HomeMenuItem> getRolUserMenu(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new HomeMenuItem(context.getString(R.string.manager), AppConstants.OPTION_MENU_GTE));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator), AppConstants.OPTION_MENU_COLABORATOR));
+
+        return menuItems;
+    }
+
+    public static List<HomeMenuItem> getExpensesManagerMenu(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new HomeMenuItem(context.getString(R.string.authorize_request_icon), AppConstants.OPTION_AUTHORIZE_REQUESTS));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.active_controls), AppConstants.OPTION_CONTROLS_LIQ));
+
+        return menuItems;
+    }
+
+    public static List<HomeMenuItem> getHolidaysManagerMenu(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_request_holidays), AppConstants.OPTION_HOLIDAY_REQUESTS));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_calendar_holidays), AppConstants.OPTION_CALENDAR_GRAL));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_aditional_days), AppConstants.OPTION_ADITIONAL_DAYS));
+
+        return menuItems;
+    }
+
+
+    public static List<HomeMenuItem> getSavingFoundMenu(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        menuItems.add(new HomeMenuItem(context.getString(R.string.remove), AppConstants.OPTION_REMOVE));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.add), AppConstants.OPTION_PAY));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.additional_saving_double_line), AppConstants.OPTION_ADITIONAL_SAVED));
 
         return menuItems;
     }

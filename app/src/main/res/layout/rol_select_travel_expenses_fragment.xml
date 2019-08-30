@@ -29,6 +29,13 @@
         android:paddingLeft="50dp"
         android:orientation="vertical">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
         <Button
             android:id="@+id/btnColaborator"
             android:layout_width="match_parent"

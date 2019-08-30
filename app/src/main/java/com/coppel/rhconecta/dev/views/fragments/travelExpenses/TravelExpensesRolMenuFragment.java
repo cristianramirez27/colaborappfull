@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,20 +24,34 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MENU_GTE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_IMSS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_INFONAVIT;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_VISA_PASSPORT;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnClickListener, IServicesContract.View{
+public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,IconsMenuRecyclerAdapter.OnItemClick{
 
     public static final String TAG = TravelExpensesRolMenuFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -43,6 +59,10 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
     Button btnColaborator;
     @BindView(R.id.btnManager)
     Button btnManager;
+    @BindView(R.id.rcvOptions)
+    RecyclerView rcvOptions;
+    private List<HomeMenuItem> menuItems;
+    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -70,10 +90,47 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
         btnManager.setOnClickListener(this);
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
 
-        btnColaborator.setVisibility(View.VISIBLE);
-        btnManager.setVisibility(View.VISIBLE);
+        //btnColaborator.setVisibility(View.VISIBLE);
+        //btnManager.setVisibility(View.VISIBLE);
+
+
+        /**Se inicia menu con iconos**/
+        rcvOptions.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcvOptions.setLayoutManager(gridLayoutManager);
+        menuItems = new ArrayList<>();
+        menuItems.addAll(MenuUtilities.getRolUserMenu(parent));
+        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
+        iconsMenuRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 
         return view;
+    }
+
+
+    @Override
+    public void onItemClick(String tag) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        switch (tag) {
+
+            case AppConstants.OPTION_MENU_COLABORATOR:
+                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
+                parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+
+                break;
+            case OPTION_MENU_GTE:
+
+                NavigationUtil.openActivityWithStringParam(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+
+
+                break;
+        }
+
     }
 
     @Override

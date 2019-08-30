@@ -7,7 +7,6 @@
     android:fillViewport="true"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,12 +14,12 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:orientation="vertical">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcvOptions"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
 
     </LinearLayout>
 
@@ -33,14 +32,13 @@
         android:visibility="gone"
         android:orientation="vertical">
 
-
         <Button
-            android:id="@+id/btnAuthorize"
+            android:id="@+id/btnRequest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
             android:fontFamily="@font/lineto_circular_pro_book"
-            android:text="@string/authorize_request"
+            android:text="@string/btn_request_holidays"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
@@ -53,29 +51,55 @@
             android:maxLines="3"
             android:paddingLeft="20dp"
             android:paddingTop="4dp"
+            android:gravity="center"
             android:paddingRight="20dp"
-            android:text="@string/authorize_request_subtitle"
+            android:text="@string/btn_text_request_holidays"
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
 
         <Button
-            android:id="@+id/btnControls"
+            android:id="@+id/btnAditionals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
             android:fontFamily="@font/lineto_circular_pro_book"
-            android:text="@string/active_controls"
+            android:text="@string/btn_aditional_days"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lineto_circular_pro_medium"
-            android:text="@string/active_controls_subtitle"
+            android:text="@string/btn_text_aditional_days"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:maxLines="3"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+
+        <Button
+            android:id="@+id/btnCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:text="@string/btn_calendar_holidays"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/btn_text_calendar_holidays"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
             android:gravity="center"
