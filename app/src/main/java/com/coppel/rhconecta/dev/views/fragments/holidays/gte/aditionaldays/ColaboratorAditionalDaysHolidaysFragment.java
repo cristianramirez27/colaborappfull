@@ -45,9 +45,11 @@ import butterknife.ButterKnife;
 
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIODS_COLABORATORS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.VALIDATION_ADITIONAL_DAYS;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**
@@ -304,7 +306,7 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().onBackPressed();
+           //getActivity().onBackPressed();
         }
     }
 
@@ -324,7 +326,10 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
 
     private void getHolidaysPeriods(String numEmployer ){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(CONSULTA_VACACIONES, 2,numEmployer);
+        //Este colaborador es el gte
+        String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIODS_COLABORATORS, 8,numEmployer);
+        holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 

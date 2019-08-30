@@ -13,6 +13,15 @@ public class CalendarProposedData implements Serializable {
 
     private HolidaysPeriodsResponse holidaysPeriodsResponse;
 
+
+    public CalendarProposedData(HolidayPeriod period) {
+        this.period = period;
+    }
+
+    public CalendarProposedData(ColaboratorHoliday colaborator) {
+        this.colaborator = colaborator;
+    }
+
     public CalendarProposedData(ColaboratorHoliday colaborator, List<Day> listDaySelected) {
         this.colaborator = colaborator;
         this.listDaySelected = listDaySelected;

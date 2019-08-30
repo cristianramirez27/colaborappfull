@@ -323,6 +323,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                     this.holidayPeriodList.add(hperiodMark);
                 }
 
+        }else {
+            iconCalendar.callOnClick();
+            iconList.setEnabled(false);
         }
 
         this.holidayPeriod.setFec_ini(this.holidayPeriod.getFec_ini().split(",")[1].trim());
@@ -447,7 +450,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         });
         dialogFragmentDeletePeriods.setVisibleCancelButton(VISIBLE);
         dialogFragmentDeletePeriods.setTitle("Atención");
-        dialogFragmentDeletePeriods.setMsg("¿Quieres cancelar las vacaciones?");
+        dialogFragmentDeletePeriods.setMsg("¿Quieres cancelar las vacaciones iniciadas por el colaborador?");
         dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }
 
@@ -718,7 +721,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().onBackPressed();
+            //getActivity().onBackPressed();
         }
     }
 

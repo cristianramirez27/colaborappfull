@@ -3,11 +3,13 @@ package com.shrikanthravi.collapsiblecalendarview.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by shrikanthravi on 06/03/18.
  */
 
-public class Day implements Parcelable{
+public class Day implements Parcelable, Serializable {
 
     private int mYear;
     private int mMonth;

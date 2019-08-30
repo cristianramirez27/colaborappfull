@@ -11,9 +11,20 @@ public class SpliceSelectedVO implements Serializable {
     private Day daySelected;
     private boolean addSpliceMarks;
 
+    private List<Day>  listDaySelectedCurrent;
+
     public SpliceSelectedVO(List<HolidayPeriod> periodos, Day daySelected) {
         this.periodos = periodos;
         this.daySelected = daySelected;
+    }
+
+
+    public List<Day> getListDaySelectedCurrent() {
+        return listDaySelectedCurrent;
+    }
+
+    public void setListDaySelectedCurrent(List<Day> listDaySelectedCurrent) {
+        this.listDaySelectedCurrent = listDaySelectedCurrent;
     }
 
     public List<HolidayPeriod> getPeriodos() {

@@ -247,6 +247,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             @Override
             public void action(Day daySelected) {
                 SpliceSelectedVO data = new SpliceSelectedVO( calendarPeriodsResponse.getData().getResponse().getPeriodos(),daySelected);
+                data.setListDaySelectedCurrent(listDaySelectedCurrent);
                 ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
             }
         });

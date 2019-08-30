@@ -318,7 +318,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         }
 
         dialogFragmentWarning.close();
-        getActivity().onBackPressed();
+        //getActivity().onBackPressed();
 
     }
 

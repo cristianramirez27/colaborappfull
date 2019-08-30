@@ -546,7 +546,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().onBackPressed();
+            //getActivity().onBackPressed();
         }
     }
 

@@ -489,7 +489,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().onBackPressed();
+            //getActivity().onBackPressed();
         }
     }
 

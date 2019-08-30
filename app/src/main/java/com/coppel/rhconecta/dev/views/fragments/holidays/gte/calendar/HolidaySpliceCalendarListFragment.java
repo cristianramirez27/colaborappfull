@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.MarkHoliday;
@@ -271,7 +272,9 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
         ColaboratorHoliday colaboratorHoliday = new ColaboratorHoliday(holidayPeriod.getNom_empleado(),
                 holidayPeriod.getFotoperfil(),
                 holidayPeriod.getNum_empleado());
-        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,colaboratorHoliday);
+
+        CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,spliceSelectedVO.getListDaySelectedCurrent());
+        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
     }
 
     private void showPeriodsWithDaySelected(DateTime dateTime){
