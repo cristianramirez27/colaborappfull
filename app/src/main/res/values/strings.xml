@@ -266,6 +266,8 @@
     <string name="colaborator">Colaborador</string>
     <string name="select_rol_expenses">Selecciona el rol con el que deseas acceder</string>
     <string name="authorize_request">Autorizar solicitudes</string>
+
+    <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
     <string name="active_controls">Controles Activos y Liquidaciones</string>
 
     <string name="authorize_request_subtitle">Autorizar solicitudes de gastos de viaje y complementos de los colaboradores</string>

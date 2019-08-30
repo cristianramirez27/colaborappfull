@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +24,19 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
+import com.coppel.rhconecta.dev.views.adapters.EmploymentLettersMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,11 +46,12 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HO
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MENU_GTE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickListener, IServicesContract.View{
+public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickListener, IServicesContract.View,IconsMenuRecyclerAdapter.OnItemClick{
 
     public static final String TAG = HolidaysRolMenuFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -48,6 +59,10 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
     Button btnColaborator;
     @BindView(R.id.btnManager)
     Button btnManager;
+    @BindView(R.id.rcvOptions)
+    RecyclerView rcvOptions;
+    private List<HomeMenuItem> menuItems;
+    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -75,10 +90,42 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         btnManager.setOnClickListener(this);
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
 
-        btnColaborator.setVisibility(View.VISIBLE);
-        btnManager.setVisibility(View.VISIBLE);
+        //btnColaborator.setVisibility(View.VISIBLE);
+        //btnManager.setVisibility(View.VISIBLE);
+        /**Se inicia menu con iconos**/
+        rcvOptions.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcvOptions.setLayoutManager(gridLayoutManager);
+        menuItems = new ArrayList<>();
+        menuItems.addAll(MenuUtilities.getRolUserMenu(parent));
+        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
+        iconsMenuRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onItemClick(String tag) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        switch (tag) {
+
+            case AppConstants.OPTION_MENU_COLABORATOR:
+                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
+                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+
+                break;
+            case OPTION_MENU_GTE:
+                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAY_MENU_GTE);
+                break;
+        }
     }
 
     @Override

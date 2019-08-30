@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,19 +17,34 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
+import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
+import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_MENU_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONTROLS_LIQ;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MENU_GTE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TravelExpensesManagerFragment extends Fragment implements  View.OnClickListener{
+public class TravelExpensesManagerFragment extends Fragment implements  View.OnClickListener,IconsMenuRecyclerAdapter.OnItemClick{
 
     public static final String TAG = TravelExpensesManagerFragment.class.getSimpleName();
     private GastosViajeActivity parent;
@@ -35,7 +52,10 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
     Button btnAuthorize;
     @BindView(R.id.btnControls)
     Button btnControls;
-
+    @BindView(R.id.rcvOptions)
+    RecyclerView rcvOptions;
+    private List<HomeMenuItem> menuItems;
+    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
     private OnEventListener OnEventListener;
 
     private long mLastClickTime = 0;
@@ -57,7 +77,38 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
         parent.setToolbarTitle(getString(R.string.travel_expenses_manager));
         btnAuthorize.setOnClickListener(this);
         btnControls.setOnClickListener(this);
+
+        /**Se inicia menu con iconos**/
+        rcvOptions.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcvOptions.setLayoutManager(gridLayoutManager);
+        menuItems = new ArrayList<>();
+        menuItems.addAll(MenuUtilities.getExpensesManagerMenu(parent));
+        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
+        iconsMenuRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
+
         return view;
+    }
+
+
+    @Override
+    public void onItemClick(String tag) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        switch (tag) {
+
+            case OPTION_AUTHORIZE_REQUESTS:
+                OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST,null);
+                break;
+            case OPTION_CONTROLS_LIQ:
+                OnEventListener.onEvent(OPTION_CONSULT_CONTROLS,null);
+                break;
+        }
     }
 
     @Override

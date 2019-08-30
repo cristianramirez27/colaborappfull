@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,19 +21,33 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.HolidayAditionalDayListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCalendarListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ADITIONAL_DAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALENDAR_GRAL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONTROLS_LIQ;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAY_REQUESTS;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickListener, IServicesContract.View{
+public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickListener, IServicesContract.View, IconsMenuRecyclerAdapter.OnItemClick {
 
     public static final String TAG = HolidaysMenuGteFragment.class.getSimpleName();
     private VacacionesActivity parent;
@@ -41,7 +57,10 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
     Button btnAditionals;
     @BindView(R.id.btnCalendar)
     Button btnCalendar;
-
+    @BindView(R.id.rcvOptions)
+    RecyclerView rcvOptions;
+    private List<HomeMenuItem> menuItems;
+    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
 
@@ -65,7 +84,46 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
         btnRequest.setOnClickListener(this);
         btnAditionals.setOnClickListener(this);
         btnCalendar.setOnClickListener(this);
+
+        /**Se inicia menu con iconos**/
+        rcvOptions.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        rcvOptions.setLayoutManager(gridLayoutManager);
+        menuItems = new ArrayList<>();
+        menuItems.addAll(MenuUtilities.getHolidaysManagerMenu(parent));
+        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
+        iconsMenuRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
+
         return view;
+    }
+
+
+    @Override
+    public void onItemClick(String tag) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        switch (tag) {
+
+            case OPTION_HOLIDAY_REQUESTS:
+                parent.replaceFragment(new HolidayRequestListFragment(), HolidayRequestListFragment.TAG);
+
+                break;
+            case OPTION_CALENDAR_GRAL:
+                parent.replaceFragment(new HolidayCalendarListFragment(), HolidayCalendarListFragment.TAG);
+
+                break;
+
+            case OPTION_ADITIONAL_DAYS:
+
+                parent.replaceFragment(new HolidayAditionalDayListFragment(), HolidayRequestListFragment.TAG);
+
+                break;
+        }
     }
 
     @Override

@@ -55,6 +55,22 @@ public class AppConstants {
     public static final String OPTION_INFONAVIT= "INFONAVIT";
     public static final String OPTION_KINDERGARTEN = "KINDERGARTEN";
 
+
+
+    /*Menus Iconos*/
+    public static final String OPTION_MENU_COLABORATOR = "COLABORATOR";
+    public static final String OPTION_MENU_GTE = "GTE";
+    public static final String OPTION_HOLIDAY_REQUESTS = "HOLIDAY_REQUESTS";
+    public static final String OPTION_CALENDAR_GRAL = "CALENDAR_GRAL";
+    public static final String OPTION_ADITIONAL_DAYS = "ADITIONAL_DAYS";
+
+    public static final String OPTION_AUTHORIZE_REQUESTS = "AUTHORIZE_REQUESTS";
+    public static final String OPTION_CONTROLS_LIQ = "CONTROLS_LIQ";
+    public static final String OPTION_REMOVE = "REMOVE";
+    public static final String OPTION_ADITIONAL_SAVED = "ADITIONAL_SAVED";
+    public static final String OPTION_PAY = "PAY";
+
+
     public static final int TYPE_WORK_RECORD = 1;
     public static final int TYPE_VISA_PASSPORT = 2;
     public static final int TYPE_BANK_CREDIT = 3;
