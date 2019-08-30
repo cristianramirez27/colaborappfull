@@ -384,7 +384,8 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
         datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar today = Calendar.getInstance();
-        datePickerDialog.setMinDate( today);
+        today.add(Calendar.DAY_OF_MONTH,1);
+        datePickerDialog.setMinDate(today);
 
 
 

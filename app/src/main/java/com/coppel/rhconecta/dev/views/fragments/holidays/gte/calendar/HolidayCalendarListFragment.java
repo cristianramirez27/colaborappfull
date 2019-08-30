@@ -370,7 +370,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     HashMap<String,ColaboratorHoliday> colaboratorHolidayHashMap = new HashMap<>();
 
                 colaboratorsPeriodsHolidays.clear();
-
+                colaboratorHolidays.clear();
                 if(calendarPeriodsResponse.getData().getResponse().getDes_mensaje() != null && !calendarPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty()) {
                     showSuccessDialog(MSG_HOLIDAYS_WARNING, calendarPeriodsResponse.getData().getResponse().getDes_mensaje(), "");
                 }else{
@@ -384,13 +384,12 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     }
 
                         setCalendarData();
-                        colaboratorHolidays.clear();
+                        //colaboratorHolidays.clear();
                         for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
                             colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
                         }
-                        colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                     }
-
+                colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
                 formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
                 }
 
