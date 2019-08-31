@@ -394,4 +394,5 @@
     <string name="title_calendar_periods">Marca los días o medios días en el calendario sin días de descanso</string>
 
     <string name="title_collage">Universidad\nCoppel</string>
+    <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
 </resources>

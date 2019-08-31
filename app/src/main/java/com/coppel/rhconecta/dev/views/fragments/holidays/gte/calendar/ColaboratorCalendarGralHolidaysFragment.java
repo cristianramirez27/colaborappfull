@@ -314,8 +314,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
-        datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
+        datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null
+                && !holidaysPeriodsResponse.getData().getResponse().getDes_marca().isEmpty() ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
+
+        datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje()!= null &&
+                !holidaysPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty() ?
+                holidaysPeriodsResponse.getData().getResponse().getDes_mensaje() : getString(R.string.msg_no_days_available));
         datePickerDialog.setNum_diasagendados(holidaysPeriodsResponse.getData().getResponse().getNum_diasagendados());
 
         double holidayDaysTotal = holidaysPeriodsResponse.getData().getResponse().getNum_adicionales()

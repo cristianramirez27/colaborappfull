@@ -138,6 +138,12 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     @BindView(R.id.motivoRechazo)
     TextView motivoRechazo;
 
+    @BindView(R.id.divider1)
+    View divider1;
+    @BindView(R.id.divider2)
+    View divider2;
+
+
     @BindView(R.id.iconList)
     ImageView iconList;
     @BindView(R.id.iconCalendar)
@@ -246,7 +252,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         expObservaciones.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
             public void onClick() {
-               // observacionesStateChange(expObservaciones,layoutObservaciones);
+                observacionesStateChange(expObservaciones,layoutObservaciones);
             }
         });
 
@@ -373,6 +379,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         estatus.setBackgroundDrawable(gd);
         layoutGte.setVisibility(GONE);
         dateLayout.setVisibility(GONE);
+        divider1.setVisibility(GONE);
+        divider2.setVisibility(GONE);
         txtReason.setText("Observaciones");
         motivoRechazo.setText(this.holidayPeriod.getDes_comentario());
     }
@@ -487,8 +495,12 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
         double limitDay = this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones() - this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados();
         datePickerDialog.setLimite_dias(limitDay);
-        datePickerDialog.setShowHalfDaysOption(true);//TODO Validar
-        datePickerDialog.setDes_mensaje("");
+        datePickerDialog.setShowHalfDaysOption(true);
+
+        datePickerDialog.setDes_mensaje(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje()!= null &&
+                !this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje().isEmpty() ?
+                this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje() : getString(R.string.msg_no_days_available));
+
         Calendar dateMin = Calendar.getInstance();
         Calendar dateMax = Calendar.getInstance();
         /**Se permiten días anteriores por ser Gte**/

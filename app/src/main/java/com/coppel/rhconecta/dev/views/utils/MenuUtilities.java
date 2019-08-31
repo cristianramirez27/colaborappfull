@@ -232,7 +232,7 @@ public class MenuUtilities {
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_vacations_request);
                 break;
             case AppConstants.OPTION_CALENDAR_GRAL:
-                icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_vacations_calendar);
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_calendar_gral);
                 break;
             case AppConstants.OPTION_ADITIONAL_DAYS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_aditional_days);
