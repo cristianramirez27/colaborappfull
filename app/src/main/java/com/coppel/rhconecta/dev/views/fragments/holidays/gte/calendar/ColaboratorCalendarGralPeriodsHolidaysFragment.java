@@ -459,8 +459,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         dialogFragmentDeletePeriods.setVisibleCancelButton(VISIBLE);
         dialogFragmentDeletePeriods.setTitle("Atención");
         String msg = btnCancel.getText().toString().contains("Rechazar") ?
-                "¿Quieres rechazar las vacaciones iniciadas por el colaborador?" :
-                "¿Quieres cancelar las vacaciones iniciadas por el colaborador?";
+                "¿Quieres rechazar las vacaciones autorizadas del colaborador?" :
+                "¿Quieres cancelar las vacaciones autorizadas del colaborador?";
         dialogFragmentDeletePeriods.setMsg(msg);
         dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }
