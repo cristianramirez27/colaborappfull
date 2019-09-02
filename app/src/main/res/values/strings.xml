@@ -327,13 +327,13 @@
     <string name="title_days">días</string>
 
     <string name="title_day_availables">Días disponibles por decisión</string>
-    <string name="title_days_pending_lastyear">Días Pendientes Año anterior</string>
-    <string name="title_days_aditionals">Días Adicionales Pendientes</string>
-    <string name="title_days_aditionals_register">Total Días Adicionales Registrados del año</string>
-    <string name="title_bonus_date">Fecha Prima Vacacional</string>
+    <string name="title_days_pending_lastyear">Días pendientes año anterior</string>
+    <string name="title_days_aditionals">Días adicionales pendientes</string>
+    <string name="title_days_aditionals_register">Total días adicionales registrados del año</string>
+    <string name="title_bonus_date">Fecha prima vacacional</string>
 
     <string name="title_date_start">Fecha inicio</string>
-    <string name="title_date_end">Fecha Fin</string>
+    <string name="title_date_end">Fecha fin</string>
 
     <string name="empty_months">No hay controles disponibles</string>
 
@@ -378,7 +378,7 @@
 
     <string name="title_control_aditional_days">¿Cuántos días adicionales\nocupa el colaborador?</string>
     <string name="title_add_aditional_days">Agrega o quita días adicionales</string>
-    <string name="title_add_aditional_days_pending">Días adicionales Pendientes</string>
+    <string name="title_add_aditional_days_pending">Días adicionales pendientes</string>
     <string name="btn_title_next">Siguiente</string>
 
     <string name="holidays_to_authorized">Vacaciones por autorizar</string>

@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="480dp"
+    android:layout_height="470dp"
     android:background="@color/mdtp_date_picker_view_animator"
     android:gravity="center"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <LinearLayout
             android:id="@+id/headerCongif"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mdtp_date_picker_header_height"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#0065b2"
             android:gravity="top"
             android:padding="16dp"
             android:orientation="vertical">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,7 +75,6 @@
             android:id="@+id/rcvFields"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
             android:scrollbarFadeDuration="1"
             android:fadeScrollbars="true"
             android:scrollbars="vertical"
@@ -89,24 +87,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@android:color/transparent"
+            android:background="@color/transparent"
             android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:paddingBottom="16dp">
-
+            android:layout_gravity="center_vertical">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="10dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/mdtp_cancel_back"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_width="wrap_content"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/background_blue_rounded"
                     android:textColor="#ffffff"
                     android:layout_marginRight="10dp"
@@ -118,7 +117,8 @@
                 <Button
                     android:id="@+id/mdtp_ok_back"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="2dp"
                     android:background="@drawable/background_blue_rounded"
                     android:textAllCaps="false"
                     android:layout_marginLeft="10dp"
@@ -129,6 +129,11 @@
                     android:text="Aceptar" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@color/transparent"/>
 
         </LinearLayout>
 

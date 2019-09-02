@@ -37,6 +37,7 @@ import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentAhorroAdicional;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -56,6 +57,7 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_PERIOD_DETAIL;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
@@ -68,7 +70,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailPeriodFragment extends Fragment implements  View.OnClickListener, DialogFragmentWarning.OnOptionClick,
+public class DetailPeriodFragment extends Fragment implements  View.OnClickListener, DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener,
         IServicesContract.View{
 
     public static final String TAG = DetailPeriodFragment.class.getSimpleName();
@@ -115,6 +117,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private VacacionesActivity vacacionesActivity;
 
 
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentDeletePeriods dialogFragmentDeletePeriods;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -383,7 +386,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
                     layoutContainer.setVisibility(VISIBLE);
                 }else if(response.getResponse() instanceof HolidaysCancelResponse) {
                     HolidaysCancelResponse responseDetail = (HolidaysCancelResponse)response.getResponse();
-                    showWarningDialog(responseDetail.getData().getResponse().get(0).getDes_mensaje());
+                    showSuccessDialog(MSG_HOLIDAYS_OK,responseDetail.getData().getResponse().get(0).getDes_mensaje(), "");
                     isCanceled = true;
                 }
                 break;
@@ -391,7 +394,32 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     }
 
 
-          private void showWarningDialog(String message) {
+    private void showSuccessDialog(int type,String title,String content) {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText(title);
+        dialogFragmentGetDocument.setMsgText(content);
+        dialogFragmentGetDocument.setType(type, parent);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+    }
+
+    @Override
+    public void onSend(String email) {
+
+    }
+
+    @Override
+    public void onAccept() {
+        if(isCanceled){
+            NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
+                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+            getActivity().finish();
+        }
+
+        dialogFragmentGetDocument.close();
+    }
+
+    private void showWarningDialog(String message) {
               dialogFragmentWarning = new DialogFragmentWarning();
               dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
               dialogFragmentWarning.setOnOptionClick(this);
@@ -411,11 +439,6 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
               dialogFragmentWarning.close();
 
-              if(isCanceled){
-                  NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                          BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-                  getActivity().finish();
-              }
           }
 
           @Override
