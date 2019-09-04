@@ -109,7 +109,7 @@ public class HolidayAditionalDayListFragment extends Fragment implements  View.O
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_solicitudes_vacaciones, container, false);
+        View view = inflater.inflate(R.layout.fragment_aditionaldays_list, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         seleccionCentroLayout.setOnClickListener(this);

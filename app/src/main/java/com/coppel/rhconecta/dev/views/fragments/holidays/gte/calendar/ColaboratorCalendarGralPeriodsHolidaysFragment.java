@@ -266,7 +266,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         DateTime dtStart = formatter.parseDateTime(this.holidayPeriod.getFec_ini());
         DateTime dtEnd = formatter.parseDateTime(this.holidayPeriod.getFec_fin());
 
-        DateTime now = new DateTime();
+        DateTime now = new DateTime().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 
         if(now.isAfter(dtEnd)){ // Ya termino
             btnEdit.setEnabled(false);
@@ -284,6 +284,12 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             btnEdit.setBackgroundResource(R.drawable.background_blue_rounded);
             btnCancel.setEnabled(true);
             btnCancel.setText(getString(R.string.btn_refuse_holidays_));
+            btnCancel.setBackgroundResource(R.drawable.background_blue_rounded);
+        }else if(dtStart.compareTo(now) == 0){ // Empieza hoy
+            btnEdit.setEnabled(false);
+            btnEdit.setBackgroundResource(R.drawable.backgroud_rounder_grey);
+            btnCancel.setEnabled(true);
+            btnCancel.setText(getString(R.string.btn_cancel_holidays_));
             btnCancel.setBackgroundResource(R.drawable.background_blue_rounded);
         }
 
@@ -670,9 +676,13 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                     this.holidayPeriod.getFotoperfil(),
                     this.holidayPeriod.getNum_empleado());
 
+            CalendarProposedData data = new CalendarProposedData(calendarProposedData.getHolidaysPeriodsResponse(),holidayPeriod);
+            data.setColaborator(colaboratorHoliday);
+            data.setListDaySelected(calendarProposedData.getListDaySelected());
+
             // ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,colaboratorHoliday);
             NavigationUtil.openActivityParamsSerializable(getActivity(), VacacionesActivity.class,
-                    BUNDLE_OPTION_DATA_HOLIDAYS,colaboratorHoliday,
+                    BUNDLE_OPTION_DATA_HOLIDAYS,data,
                     BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR);
             getActivity().finish();
             //vacacionesActivity.onEvent(,null);
@@ -768,6 +778,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         }
 
         for(String key : daysCurrent.keySet()){
+            daysCurrent.get(key).setHasSplice(0);
             if(daysCurrentOthersColaborators.containsKey(key)){
                 daysCurrent.get(key).setHasSplice(daysCurrentOthersColaborators.get(key).getHasSplice());
             }
@@ -832,7 +843,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         DialogFragmentAuthorizeHoliday authorizeHoliday = DialogFragmentAuthorizeHoliday.newInstance();
         authorizeHoliday.setOnButtonClickListener(this);
         authorizeHoliday.setHolidayPeriodSchedule(holidayPeriodSchedule);
-        authorizeHoliday.setTitle("Justificar Rechazo");
+        authorizeHoliday.setTitle("Justificar rechazo");
         authorizeHoliday.setDescription("Escribe el motivo de rechazo");
         authorizeHoliday.setHint("Ingresa tus razones aquí");
         authorizeHoliday.show(parent.getSupportFragmentManager(), DialogFragmentAuthorizeHoliday.TAG);

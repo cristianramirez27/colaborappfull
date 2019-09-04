@@ -483,10 +483,9 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
 
         datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
 
-        datePickerDialog.setLimite_dias(limitDay);
+        datePickerDialog.setLimite_dias(holidayDaysTotal/*limitDay*/);
 
         datePickerDialog.setShowHalfDaysOption(holidaysPeriodsResponse.getData().getResponse().getClv_mediodia() == 1 ? true : false);
-        datePickerDialog.setDes_mensaje(holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
         Calendar dateMin = Calendar.getInstance();
         Calendar dateMax = Calendar.getInstance();
         /**Se permiten días anteriores por ser Gte**/
@@ -609,7 +608,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         DialogFragmentAuthorizeHoliday authorizeHoliday = DialogFragmentAuthorizeHoliday.newInstance();
         authorizeHoliday.setOnButtonClickListener(this);
         authorizeHoliday.setIDialogControlKeboard(this);
-        authorizeHoliday.setTitle("Justificar Rechazo");
+        authorizeHoliday.setTitle("Justificar rechazo");
         authorizeHoliday.setDescription("Escribe el motivo de rechazo");
         authorizeHoliday.setHint("Ingresa tus razones aquí");
         authorizeHoliday.setHolidayPeriodSchedule(holidayPeriodSchedule);

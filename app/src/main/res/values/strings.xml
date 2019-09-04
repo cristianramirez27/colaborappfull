@@ -395,4 +395,6 @@
 
     <string name="title_collage">Universidad\nCoppel</string>
     <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
+
+    <string name="center_colaborators">Colaboradores del centro</string>
 </resources>

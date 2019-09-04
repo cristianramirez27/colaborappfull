@@ -196,6 +196,11 @@ public class HolidayRequestRecyclerAdapter extends RecyclerView.Adapter<HolidayR
 
         IScheduleOptions.showTitle(true);
         notifyDataSetChanged();
+
+
+        if(ICalendarView != null){
+            ICalendarView.enableCalendarOption(false);
+        }
     }
 
     private int getIcon(int status){
