@@ -107,13 +107,17 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
@@ -406,7 +410,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
                 }
                 break;
-
             case OPTION_EXPENSES:
 
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)){
@@ -423,6 +426,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
                 }
+
+                break;
+
+            case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+                NavigationUtil.openActivityWithStringParam(this, GastosViajeActivity.class,
+                        BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_AUTHORIZE_REQUEST);
 
                 break;
 
@@ -792,3 +801,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     }
 }
+
+
+
+

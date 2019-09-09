@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getFormatedERH;
 
 public class ExpensesTravelColaboratorControlsRecyclerAdapter extends RecyclerView.Adapter<ExpensesTravelColaboratorControlsRecyclerAdapter.ViewHolder> {
 
@@ -59,7 +60,7 @@ public class ExpensesTravelColaboratorControlsRecyclerAdapter extends RecyclerVi
         viewHolder.status.setText(CoppelApp.getContext().getString(statusData[0]));
         viewHolder.status.setTextColor(CoppelApp.getContext().getResources().getColor(statusData[1]));
         viewHolder.status.setBackgroundResource(statusData[2]);*/
-        viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase()));
+        viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase())));
         if(dataItems.get(i).getEstatus().length() >= 20)
             viewHolder.status.setTextSize(7);
         viewHolder.status.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));

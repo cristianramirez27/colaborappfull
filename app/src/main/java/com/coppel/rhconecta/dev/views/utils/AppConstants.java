@@ -40,7 +40,7 @@ public class AppConstants {
     public static final String OPTION_HOLIDAYS = "HOLIDAYS";
     public static final String OPTION_COLLAGE = "COLLAGE";
 
-
+    public static final String OPTION_NOTIFICATION_EXPENSES_AUTHORIZE = "_NOTIFICATION_EXPENSES_AUTHORIZE";
 
     public static final String OPTION_BONUS = "BONUS";
     public static final String OPTION_GAS = "GAS";
@@ -158,6 +158,10 @@ public class AppConstants {
 
     public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR= "BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR";
     public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS= "BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS";
+
+    public static final String ID_SISTEMA = "id_sistema";
+    public static final String ID_PANTALLA = "id_pantalla";
+
 
 
 }

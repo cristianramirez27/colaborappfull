@@ -68,6 +68,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO_A_AUTORIZAR;
@@ -108,6 +109,13 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     @BindView(R.id.totalDevolucion)
     TextViewDetail totalDevolucion;
 
+    @BindView(R.id.txtMotivoRechazo)
+    TextView txtMotivoRechazo;
+
+
+    @BindView(R.id.expMotivoRechazo)
+    ExpandableSimpleTitle expMotivoRechazo;
+
     @BindView(R.id.expMotivoViaje)
     ExpandableSimpleTitle expMotivoViaje;
     @BindView(R.id.expItinerario)
@@ -118,6 +126,8 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     LinearLayout layoutMotivoViaje;
     @BindView(R.id.layoutItinerario)
     LinearLayout layoutItinerario;
+    @BindView(R.id.layoutRechazo)
+    LinearLayout layoutRechazo;
 
     @BindView(R.id.layoutViajerosExtras)
     LinearLayout layoutViajerosExtras;
@@ -275,8 +285,14 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         cardColaboratorControl.setVisibleColaboratorInfo(
                 detailExpenseTravelData.getDetailExpenseTravelType() == SOLICITUD_A_AUTORIZAR ||
                 detailExpenseTravelData.getDetailExpenseTravelType() == COMPLEMENTO_A_AUTORIZAR ||
-                detailExpenseTravelData.getDetailExpenseTravelType() == CONTROLES_GTE ? VISIBLE : View.GONE  );
+                detailExpenseTravelData.getDetailExpenseTravelType() == CONTROLES_GTE ? VISIBLE : GONE  );
 
+        expMotivoRechazo.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
+            @Override
+            public void onClick() {
+                refuseReasonStateChange(expMotivoRechazo,layoutRechazo);
+            }
+        });
 
         expMotivoViaje.setOnExpadableListener(new ExpandableSimpleTitle.OnExpadableListener() {
             @Override
@@ -304,11 +320,19 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         return view;
     }
 
+    private void refuseReasonStateChange(ExpandableSimpleTitle expandable,LinearLayout layoutToExpand) {
+        if (expandable.isExpanded()) {
+            layoutToExpand.setVisibility(VISIBLE);
+        } else {
+            layoutToExpand.setVisibility(GONE);
+        }
+    }
+
     private void travelReasonStateChange(ExpandableSimpleTitle expandable,LinearLayout layoutToExpand) {
         if (expandable.isExpanded()) {
             layoutToExpand.setVisibility(VISIBLE);
         } else {
-            layoutToExpand.setVisibility(View.GONE);
+            layoutToExpand.setVisibility(GONE);
         }
     }
 
@@ -554,6 +578,16 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     }
 
     private void setDataRequest(DetailRequestColaboratorResponse detail){
+        if(detail.getData().getResponse().getMotivoRechazo() != null &&
+                detail.getData().getResponse().getMotivoRechazo().size() > 0
+                && detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo() != null
+                && !detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo().isEmpty()){
+            expMotivoRechazo.setText("Motivo de rechazo");
+            expMotivoRechazo.setVisibility(VISIBLE);
+            txtMotivoRechazo.setText(detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo());
+        }else{
+            expMotivoRechazo.setVisibility(GONE);
+        }
 
         expMotivoViaje.setText("Motivo de viaje");
         expMotivoViaje.setVisibility(VISIBLE);
@@ -615,7 +649,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 }
             }else {
 
-                verDetalles.setVisibility(View.GONE);
+                verDetalles.setVisibility(GONE);
             }
                 //Total Complemento Solicitado: Es el valor de importe obtenido de la consulta anterior (solicitudescomplementos),
             String importeSolicitado = ((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getImporte();
@@ -680,7 +714,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 !detail.getData().getResponse().getViajerosAdicionales().isEmpty()){
             viajeroAdicionales.setDataRecyclerView(detail.getData().getResponse().getViajerosAdicionales());
         }else {
-            expViajerosAdicionales.setVisibility(View.GONE);
+            expViajerosAdicionales.setVisibility(GONE);
         }
 
         hospedaje.setText(detail.getData().getResponse().getTipoHospedaje().get(0).getDes_tipoHospedaje());
@@ -688,7 +722,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
 
         //Se oculta etiqueta de observaciones
         if(detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador() != null && !detail.getData().getResponse().getObservaciones().get(0).getDes_observacionesColaborador().isEmpty()){
-            txtTitleObservacionesColaborador.setVisibility(View.GONE);
+            txtTitleObservacionesColaborador.setVisibility(GONE);
         }else {
             txtTitleObservacionesColaborador.setVisibility(VISIBLE);
         }
@@ -744,7 +778,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             }
 
             //Validamos el estatus Pendiente
-            layoutObservacionesGte.setVisibility(((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? VISIBLE : View.GONE);
+            layoutObservacionesGte.setVisibility(((ColaboratorRequestsListExpensesResponse.RequestComplementsColaborator)detailExpenseTravelData.getData()).getClv_estatus() == 1 ? VISIBLE : GONE);
 
             //TODO REMOVE Test
             //layoutObservacionesGte.setVisibility(VISIBLE);
@@ -790,6 +824,16 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
     }
 
     private void setDataControl(DetailControlColaboratorResponse detail){
+        if(detail.getData().getResponse().getMotivoRechazo() != null &&
+                detail.getData().getResponse().getMotivoRechazo().size() > 0
+                && detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo() != null
+                && !detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo().isEmpty()){
+            expMotivoRechazo.setText("Motivo de rechazo");
+            txtMotivoRechazo.setText(detail.getData().getResponse().getMotivoRechazo().get(0).getDes_motivoRechazo());
+            expMotivoRechazo.setVisibility(VISIBLE);
+        }else{
+            expMotivoRechazo.setVisibility(GONE);
+        }
 
         cardColaboratorControl.setBackgroundCard(R.color.colorBackgroundVerdeClaro);
         String nomViajero = "";
@@ -905,11 +949,11 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
                 !detail.getData().getResponse().getViajerosAdicionales().isEmpty()){
             viajeroAdicionales.setDataRecyclerView(detail.getData().getResponse().getViajerosAdicionales());
         }else {
-            expViajerosAdicionales.setVisibility(View.GONE);
+            expViajerosAdicionales.setVisibility(GONE);
         }
 
-        layoutHospedaje.setVisibility(View.GONE);
-        layoutObservaciones.setVisibility(View.GONE);
+        layoutHospedaje.setVisibility(GONE);
+        layoutObservaciones.setVisibility(GONE);
 
         /* No semuestrael tipo de hospedaje ni lasobservaciones
         hospedaje.setText(detail.getData().getResponse().getTipoHospedaje().get(0).getDes_tipoHospedaje());

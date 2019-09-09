@@ -38,10 +38,21 @@ public class DetailRequestColaboratorResponse extends ExpensesTravelBaseResponse
         private List<Observation> Observaciones;
         private List<FotoPerfil> FotoPerfil;
 
+        private List<MotivoRechazo> MotivoRechazo;
+
         private int Estado;
         private String Mensaje;
 
         private boolean isGteRol;
+
+
+        public List<com.coppel.rhconecta.dev.business.models.MotivoRechazo> getMotivoRechazo() {
+            return MotivoRechazo;
+        }
+
+        public void setMotivoRechazo(List<com.coppel.rhconecta.dev.business.models.MotivoRechazo> motivoRechazo) {
+            MotivoRechazo = motivoRechazo;
+        }
 
         public int getEstado() {
             return Estado;
