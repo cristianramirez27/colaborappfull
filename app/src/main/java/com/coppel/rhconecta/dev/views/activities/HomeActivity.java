@@ -430,9 +430,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 break;
 
             case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
-                NavigationUtil.openActivityWithStringParam(this, GastosViajeActivity.class,
-                        BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_AUTHORIZE_REQUEST);
-
+                replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
+                        BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
                 break;
 
             case OPTION_HOLIDAYS:
@@ -454,7 +454,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     getCollageURL();
                 }
 
-                break;
 
             case OPTION_POLL:
 

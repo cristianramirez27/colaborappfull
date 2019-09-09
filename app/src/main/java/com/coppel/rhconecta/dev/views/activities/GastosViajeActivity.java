@@ -43,6 +43,7 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
     private Object data;
+    private boolean goToAuthorize;
 
     private Fragment currentFragment;
 
@@ -60,6 +61,9 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
 
         TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_TRAVEL_EXPENSES);
         data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
+        if( getIntent().hasExtra( "AUTHORIZE")){
+            goToAuthorize =   getIntent().getBooleanExtra("AUTHORIZE",false);
+        }
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT,data);
@@ -73,10 +77,16 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     public void onEvent(String tag,Object data) {
         switch (tag) {
             case OPTION_MANAGER:
-                replaceFragment(new TravelExpensesManagerFragment(), PayrollVoucherMenuFragment.TAG);
+                currentFragment = new TravelExpensesManagerFragment();
+                replaceFragment(currentFragment, TravelExpensesManagerFragment.TAG);
+
+                if(goToAuthorize){
+                    onEvent(OPTION_AUTHORIZE_REQUEST,null);
+                }
                 break;
             case OPTION_COLABORATOR:
-                replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                currentFragment = new MyRequestAndControlsFragment();
+                replaceFragment(currentFragment, MyRequestAndControlsFragment.TAG);
                 break;
             case OPTION_DETAIL_REQUETS_CONTROLS:
                 replaceFragment(ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data) , ColaboratorControlFragment.TAG);
@@ -92,7 +102,8 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
                 break;
 
             case OPTION_CONSULT_CONTROLS:
-                replaceFragment( ControlsLiquidationsFragment.getInstance(), AuthorizeRequestAndComplementsFragment.TAG);
+                currentFragment = ControlsLiquidationsFragment.getInstance();
+                replaceFragment(currentFragment, AuthorizeRequestAndComplementsFragment.TAG);
 
                 break;
         }
@@ -109,11 +120,14 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     @Override
     public void onBackPressed() {
         int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
-        if (backStackEntryCount == 1) {
-            finish();
-        } else if (backStackEntryCount > 1) {
-            super.onBackPressed();
-        }
+
+            if (backStackEntryCount == 1) {
+                finish();
+            } else if (backStackEntryCount > 1) {
+                super.onBackPressed();
+            }
+
+
     }
 
 
