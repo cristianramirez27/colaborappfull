@@ -76,6 +76,15 @@ public class NavigationUtil {
 
     }
 
+    public static<T> void openActivityToAuthorize(Activity context, Class<T> classTarget, String key, String param){
+
+        Intent intent = new Intent(context, classTarget);
+        intent.putExtra(key,param);
+        intent.putExtra("AUTHORIZE",true);
+        context.startActivity(intent);
+
+    }
+
     public static<T> void openActivityWithStringParamTransition(Activity context, Class<T> classTarget, String key, String param){
 
         Intent intent = new Intent(context, classTarget);
