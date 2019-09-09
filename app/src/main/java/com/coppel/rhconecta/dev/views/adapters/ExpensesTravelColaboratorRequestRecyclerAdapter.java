@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getFormatedERH;
 
 public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerView.Adapter<ExpensesTravelColaboratorRequestRecyclerAdapter.ViewHolder> {
 
@@ -73,11 +74,11 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
        // viewHolder.status.setBackgroundColor(Color.parseColor(dataItems.get(i).getDes_color()));
 
         if(!isColaborator){
-            viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getNom_estatus().toLowerCase()));
+            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getNom_estatus().toLowerCase())));
             if(dataItems.get(i).getNom_estatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }else {
-            viewHolder.status.setText(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase()));
+            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase())));
             if(dataItems.get(i).getEstatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }

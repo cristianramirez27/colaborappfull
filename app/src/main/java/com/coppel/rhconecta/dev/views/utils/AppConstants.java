@@ -33,6 +33,10 @@ public class AppConstants {
     public static final String OPTION_LETTERS = "LETTERS";
     public static final String OPTION_EXPENSES = "EXPENSE";
     public static final String OPTION_POLL = "POLL";
+    public static final String OPTION_HOLIDAYS = "HOLIDAYS";
+    public static final String OPTION_COLLAGE = "COLLAGE";
+
+    public static final String OPTION_NOTIFICATION_EXPENSES_AUTHORIZE = "_NOTIFICATION_EXPENSES_AUTHORIZE";
 
     public static final String OPTION_BONUS = "BONUS";
     public static final String OPTION_GAS = "GAS";
@@ -118,5 +122,27 @@ public class AppConstants {
 
 
     public static final String BUNDLE_GOTO_SECTION = "GOTO_SECTION";
+    /*Holidays*/
+    public static final String BUNDLE_OPTION_HOLIDAYS = "BUNDLE_OPTION_HOLIDAYS";
+    public static final String BUNDLE_OPTION_COLABORATOR_SCHEDULE = "BUNDLE_OPTION_COLABORATOR_SCHEDULE";
+    public static final String BUNDLE_OPTION_HOLIDAYREQUESTS = "BUNDLE_OPTION_HOLIDAYREQUESTS";
+    public static final String BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL = "BUNDLE_OPTION_HOLIDAYREQUESTS_DETAIL";
+    public static final String BUNDLE_OPTION_HOLIDAY_MENU_GTE = "BUNDLE_OPTION_HOLIDAY_MENU_GTE";
+    public static final String BUNDLE_OPTION_HOLIDAY_REQUESTS = "BUNDLE_OPTION_HOLIDAY_REQUESTS";
+    public static final String BUNDLE_OPTION_DATA_HOLIDAYS = "BUNDLE_OPTION_DATA_HOLIDAYS";
+    public static final String BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS = "BUNDLE_OPTION_HOLIDAY_COLABORATOR_REQUESTS";
+    public static final String BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS = "BUNDLE_OPTION_HOLIDAY_ADITIONAL_COLABORATOR_REQUESTS";
+    public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR_PROPOSED = "BUNDLE_OPTION_HOLIDAY_CALENDAR_PROPOSED";
+    public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR= "BUNDLE_OPTION_HOLIDAY_CALENDAR";
+
+    public static final String BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR= "BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR";
+
+    public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR= "BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR";
+    public static final String BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS= "BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS";
+
+    public static final String ID_SISTEMA = "id_sistema";
+    public static final String ID_PANTALLA = "id_pantalla";
+
+
 
 }

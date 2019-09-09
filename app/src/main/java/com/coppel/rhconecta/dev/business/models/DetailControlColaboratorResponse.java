@@ -39,6 +39,7 @@ public class DetailControlColaboratorResponse extends ExpensesTravelBaseResponse
         private List<Acomodation> TipoHospedaje;
         private List<Observation> Observaciones;
 
+        private List<MotivoRechazo> MotivoRechazo;
 
         private List<FotoPerfil> FotoPerfil;
 
@@ -53,6 +54,15 @@ public class DetailControlColaboratorResponse extends ExpensesTravelBaseResponse
 
         public void setFotoPerfil(List<com.coppel.rhconecta.dev.business.models.FotoPerfil> fotoPerfil) {
             FotoPerfil = fotoPerfil;
+        }
+
+
+        public List<com.coppel.rhconecta.dev.business.models.MotivoRechazo> getMotivoRechazo() {
+            return MotivoRechazo;
+        }
+
+        public void setMotivoRechazo(List<com.coppel.rhconecta.dev.business.models.MotivoRechazo> motivoRechazo) {
+            MotivoRechazo = motivoRechazo;
         }
 
         public int getEstado() {

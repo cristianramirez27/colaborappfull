@@ -7,7 +7,7 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 19
         targetSdkVersion 28
-        versionName "QA2.4.5"
+        versionName "QA2.4.6"
         versionCode 56
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

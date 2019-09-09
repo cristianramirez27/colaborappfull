@@ -97,6 +97,50 @@
         </LinearLayout>
 
             <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                android:id="@+id/expMotivoRechazo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="20dp"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layoutRechazo"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_marginTop="-3dp"
+                android:background="@color/colorBackgroundCoppelBlanco"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp">
+
+                    <TextView
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:id="@+id/txtMotivoRechazo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:layout_margin="4dp"
+                        android:padding="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="13sp"
+                        android:textColor="@color/colorBackgroundCoppelNegro" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_gradient_grey" />
+
+            </LinearLayout>
+
+            <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
                 android:id="@+id/expMotivoViaje"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,8 +1,10 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -39,6 +41,9 @@ import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.Command;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
+import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -78,6 +83,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
@@ -88,11 +97,17 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
@@ -142,6 +157,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
+
+    private String titleActivity;
+    private boolean isOpenMenuToolbar;
 
     private boolean EXPIRED_SESSION;
     private String goTosection="";
@@ -231,6 +249,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void onBackPressed() {
+        if(isOpenMenuToolbar) {
+            isOpenMenuToolbar = false;
+        }
         int backStackEntryCount = fragmentManager.getBackStackEntryCount();
         if (backStackEntryCount == 1) {
             finish();
@@ -283,6 +304,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         HomeMenuItem option = (HomeMenuItem) adapterView.getItemAtPosition(i);
+
         navigationMenu(option.getTAG());
     }
 
@@ -320,84 +342,97 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     }
 
     public void navigationMenu(String tag) {
-        switch (tag) {
-            case OPTION_HOME:
-                fragmentManager.popBackStack(HomeMainFragment.TAG, 0);
-                dlHomeContainer.closeDrawers();
-                break;
-            case OPTION_NOTICE:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    Intent intentNotice = new Intent(this, ComunicadosActivity.class);
-                    startActivity(intentNotice);
-                }
-                break;
-            case OPTION_PAYROLL_VOUCHER:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
-                }
-                break;
-            case OPTION_BENEFITS:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
-                }
-                break;
-            case OPTION_SAVING_FUND:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_SAVINGS).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
-                    RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),9);
-                }
-                break;
-            case OPTION_VISIONARIES:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    Intent intentVisionaries = new Intent(this, VideosActivity.class);
-                    startActivity(intentVisionaries);
-                }
 
-                break;
+        if(DeviceManager.isOnline(this)){
 
-            case OPTION_LETTERS:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-
-                    replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
-                }
-                break;
-
-            case OPTION_EXPENSES:
-                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)){
-                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-
-                    if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
-                        replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
-                    }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
-                        getRolType();
+            switch (tag) {
+                case OPTION_HOME:
+                    fragmentManager.popBackStack(HomeMainFragment.TAG, 0);
+                    dlHomeContainer.closeDrawers();
+                    break;
+                case OPTION_NOTICE:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                     }else{
-                        replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                        Intent intentNotice = new Intent(this, ComunicadosActivity.class);
+                        startActivity(intentNotice);
+                    }
+                    break;
+                case OPTION_PAYROLL_VOUCHER:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+                        replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
+                    }
+                    break;
+                case OPTION_BENEFITS:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+                        replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
+                    }
+                    break;
+                case OPTION_SAVING_FUND:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_SAVINGS).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+                        replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
+                        RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),9);
+                    }
+                    break;
+                case OPTION_VISIONARIES:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+                        Intent intentVisionaries = new Intent(this, VideosActivity.class);
+                        startActivity(intentVisionaries);
                     }
 
-                    RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
-                }
+                    break;
+                case OPTION_LETTERS:
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+
+                        replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
+                    }
+                    break;
+                case OPTION_EXPENSES:
+
+                    if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)){
+                        showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                    }else{
+
+                        if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
+                            replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                        }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
+                            getRolType(EXPENSESTRAVEL);
+                        }else{
+                            replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                        }
+
+                        RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
+                    }
+
+                    break;
+
+                case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+                    NavigationUtil.openActivityWithStringParam(this, GastosViajeActivity.class,
+                            BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_AUTHORIZE_REQUEST);
+
+                    break;
+
+                case OPTION_POLL:
+
+                    break;
+            }
 
 
-                break;
-
-            case OPTION_POLL:
-
-
-                break;
+        }else {
+            showError(new ServicesError(getString(R.string.network_error)));
         }
+
+
     }
 
     public void setToolbarTitle(String title) {
@@ -512,8 +547,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
+        Fragment myFragment = getSupportFragmentManager().findFragmentById(R.id.flFragmentContainer);
     }
 
 
@@ -526,7 +560,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 AppUtilities.closeApp(this);
                 break;
 
-            case ServicesRequestType.EXPENSESTRAVEL:
+            case EXPENSESTRAVEL:
 
                 if(response.getResponse() instanceof RolExpensesResponse) {
 
@@ -539,6 +573,20 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 break;
 
+        }
+    }
+
+
+    private void openCollage(String urlString){
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setPackage("com.android.chrome");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            // Chrome browser presumably not installed so allow user to choose instead
+            intent.setPackage(null);
+            startActivity(intent);
         }
     }
 
@@ -563,7 +611,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                             dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
                             hideProgress();
                         }
-                    }, 500);
+                    }, 300);
                     break;
             }
 
@@ -590,12 +638,17 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             dialogFragmentLoader.close();
     }
 
-    private void getRolType(){
+    private void getRolType(int type){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
-        ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
 
-        coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
+        switch (type) {
+            case EXPENSESTRAVEL:
+                ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
+                coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
+                break;
+        }
+
     }
 
 
@@ -618,4 +671,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             ((BenefitsFragment)f).onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
     }
+
 }
+
+
+
+

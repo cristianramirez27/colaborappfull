@@ -48,6 +48,14 @@ public class TextUtilities {
         }
     }
 
+    public static String getFormatedERH(String text){
+        if(text.contains("Erh") ){
+            text = text.replace("Erh","ERH");
+        }
+
+        return text;
+    }
+
     public static String capitalizeWord(Context context, String word) {
         try {
             String[] uppercaseWords = context.getResources().getStringArray(R.array.uppercase_words);

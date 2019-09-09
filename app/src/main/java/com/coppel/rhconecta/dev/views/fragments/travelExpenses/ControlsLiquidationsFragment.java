@@ -69,6 +69,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TR
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
+import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getFormatedERH;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -339,7 +341,7 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
                     if(filtersControlsResponse.getData().getResponse().getEstatus() != null && !filtersControlsResponse.getData().getResponse().getEstatus().isEmpty()){
                         //Se toma el primero por default
                         estatusSelected = filtersControlsResponse.getData().getResponse().getEstatus().get(0);
-                        estatus.setText(filtersControlsResponse.getData().getResponse().getEstatus().get(0).getNom_estatus_liq());
+                        estatus.setText(getFormatedERH(capitalizeText(getContext(), filtersControlsResponse.getData().getResponse().getEstatus().get(0).getNom_estatus_liq())));
                     }
 
                     //Solicitamos los controles con los filtros seleccionados
