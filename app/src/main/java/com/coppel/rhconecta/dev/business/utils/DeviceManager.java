@@ -83,7 +83,6 @@ public class DeviceManager {
         return Math.round(dpWidth);
     }
 
-
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

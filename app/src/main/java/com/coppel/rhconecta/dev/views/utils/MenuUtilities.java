@@ -253,8 +253,6 @@ public class MenuUtilities {
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_pay);
                 break;
 
-
-
         }
         return icon;
     }

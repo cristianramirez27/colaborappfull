@@ -3728,13 +3728,6 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
-
-        /*if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {*/
-        //     message = context.getString(R.string.error_generic_service);
-       /* } else {
-            message = userMessage;
-        }*/
-
         if(errorCode == -10 || errorCode == -33 || errorCode == -99 ){
             message = userMessage;
         }else{

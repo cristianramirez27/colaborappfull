@@ -116,7 +116,7 @@
             android:visibility="visible"
             android:layout_marginRight="8dp"
             android:layout_centerVertical="true"
-            android:text="Total de Noches"
+            android:text="Total de noches"
             android:gravity="bottom"
             android:textSize="13sp"
             android:layout_marginLeft="80dp"

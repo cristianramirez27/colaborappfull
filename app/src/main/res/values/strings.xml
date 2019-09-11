@@ -268,7 +268,9 @@
     <string name="authorize_request">Autorizar solicitudes</string>
 
     <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
-    <string name="active_controls">Controles Activos y Liquidaciones</string>
+
+    <string name="active_controls">Controles activos y liquidaciones</string>
+
 
     <string name="authorize_request_subtitle">Autorizar solicitudes de gastos de viaje y complementos de los colaboradores</string>
     <string name="active_controls_subtitle">Consultar controles activos y liquidaciones de los colaboradores</string>
@@ -349,8 +351,8 @@
     <string name="btn_cancel_holidays">Cancelar vacaciones</string>
     <string name="btn_cancel_holidays_">Cancelar\nvacaciones</string>
     <string name="btn_refuse_holidays_">Rechazar\nvacaciones</string>
-    <string name="title_total_request_days">Total Días Solicitados</string>
-    <string name="title_days_to_schedule">Días por Agendar</string>
+    <string name="title_total_request_days">Total días solicitados</string>
+    <string name="title_days_to_schedule">Días por agendar</string>
 
 
     <string name="title_eliminate">Eliminar</string>
@@ -360,7 +362,7 @@
     <string name="btn_canceled_period">Cancelar vacaciones</string>
 
     <string name="btn_request_holidays">Solicitudes de vacaciones</string>
-    <string name="btn_aditional_days">Días Adicionales</string>
+    <string name="btn_aditional_days">Días adicionales</string>
     <string name="btn_calendar_holidays">Calendario de vacaciones</string>
     <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
     <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>

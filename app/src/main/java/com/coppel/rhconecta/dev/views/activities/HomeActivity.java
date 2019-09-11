@@ -94,6 +94,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CO
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
@@ -416,17 +417,16 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else{
 
-                    if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
-                        replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
-                    }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
-                        getRolType(EXPENSESTRAVEL);
-                    }else{
-                        replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                        if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
+                            replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                        }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
+                            getRolType(EXPENSESTRAVEL);
+                        }else{
+                            replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
+                        }
+
+                        RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
                     }
-
-                    RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),11);
-                }
-
                 break;
 
             case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
@@ -458,13 +458,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             case OPTION_POLL:
 
                 break;
-        }
-
-
+            }
         }else {
             showError(new ServicesError(getString(R.string.network_error)));
         }
-
 
     }
 
@@ -580,15 +577,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         Fragment myFragment = getSupportFragmentManager().findFragmentById(R.id.flFragmentContainer);
         if (myFragment != null && myFragment instanceof ColaboratorHolidaysFragment) {
             // add your code here
             ((ColaboratorHolidaysFragment)myFragment).onActivityResult(requestCode,resultCode,data
             );
         }
-
 
     }
 
@@ -647,7 +641,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
         }
     }
-
 
     private void openCollage(String urlString){
         Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
@@ -719,13 +712,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.CONSULTA_PERMISO_ROL, 2,numEmployer);
                 coppelServicesPresenter.getExpensesTravel(expensesTravelRequestData,token);
                 break;
-
             case HOLIDAYS:
 
                 HolidayRequestData holidayRequestData = new HolidayRequestData(HolidaysType.CONSULTA_ROL,1,numEmployer);
                 coppelServicesPresenter.getHolidays(holidayRequestData,token);
                 break;
-
         }
 
     }

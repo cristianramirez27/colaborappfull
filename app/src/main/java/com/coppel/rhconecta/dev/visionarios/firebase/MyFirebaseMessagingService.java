@@ -72,26 +72,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-
-
-        private Map<String,String> getParamsIntent(RemoteMessage remoteMessage){
-            Map<String,String> content = remoteMessage.getData();
-            Map<String,String> params = new HashMap<>();
-            if(content.containsKey(ID_SISTEMA)){
-                int idSistema = Integer.parseInt(content.get(ID_SISTEMA));
-                int idPantalla = Integer.parseInt(content.get(ID_PANTALLA));
-                if(idSistema == 9){
-                    params.put(BUNDLE_GOTO_SECTION,OPTION_SAVING_FUND);
-                }else if(idSistema == 10){
-                    // Se agrega para enviar a pantalla de pendiente por autorizar
-                    params.put(BUNDLE_GOTO_SECTION, idPantalla == 2 ? OPTION_NOTIFICATION_EXPENSES_AUTHORIZE : OPTION_HOLIDAYS);
-                }else if(idSistema == 11) {
-                    params.put(BUNDLE_GOTO_SECTION,OPTION_EXPENSES);
-                }
+    private Map<String,String> getParamsIntent(RemoteMessage remoteMessage){
+        Map<String,String> content = remoteMessage.getData();
+        Map<String,String> params = new HashMap<>();
+        if(content.containsKey(ID_SISTEMA)){
+            int idSistema = Integer.parseInt(content.get(ID_SISTEMA));
+            int idPantalla = Integer.parseInt(content.get(ID_PANTALLA));
+            if(idSistema == 9){
+                params.put(BUNDLE_GOTO_SECTION,OPTION_SAVING_FUND);
+            }else if(idSistema == 10){
+                // Se agrega para enviar a pantalla de pendiente por autorizar
+                params.put(BUNDLE_GOTO_SECTION, OPTION_HOLIDAYS);
+            }else if(idSistema == 11) {
+                params.put(BUNDLE_GOTO_SECTION, idPantalla == 2 ? OPTION_NOTIFICATION_EXPENSES_AUTHORIZE : OPTION_EXPENSES);
             }
-
-            return params;
         }
+        return params;
+    }
+
 
     private void processNotification(int idNotification,RemoteMessage remoteMessage){
         Map<String,String> content = remoteMessage.getData();
