@@ -67,7 +67,7 @@
                 android:layout_gravity="right"
                 android:padding="6dp"
                 android:gravity="center"
-                android:text="Ver Detalles"
+                android:text="Ver detalles"
                 android:fontFamily="@font/lineto_circular_pro_medium"
                 android:textColor="@color/colorPrimaryCoppelAzul"
                 android:textSize="12sp" />
@@ -87,7 +87,7 @@
                 android:padding="6dp"
                 android:visibility="gone"
                 android:gravity="center"
-                android:text="Ver Detalles"
+                android:text="Ver detalles"
                 android:fontFamily="@font/lineto_circular_pro_medium"
                 android:textColor="@color/colorPrimaryCoppelAzul"
                 android:textSize="12sp" />
@@ -260,7 +260,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lineto_circular_pro_medium"
-                    android:text="Tipo de Hospedaje"
+                    android:text="Tipo de hospedaje"
                     android:paddingLeft="8dp"
                     android:textColor="@color/colorBackgroundCoppelNegro"
                     android:textSize="15sp"/>

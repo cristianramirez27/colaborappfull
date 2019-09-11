@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lineto_circular_pro_book"
             android:visibility="visible"
-            android:text="Observaciones Colaborador"
+            android:text="Observaciones colaborador"
             android:layout_centerHorizontal="true"
             android:textSize="11sp"
             android:textColor="@color/colorTextGray" />

@@ -268,7 +268,7 @@
     <string name="authorize_request">Autorizar solicitudes</string>
 
     <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
-    <string name="active_controls">Controles Activos y Liquidaciones</string>
+    <string name="active_controls">Controles activos y liquidaciones</string>
 
     <string name="authorize_request_subtitle">Autorizar solicitudes de gastos de viaje y complementos de los colaboradores</string>
     <string name="active_controls_subtitle">Consultar controles activos y liquidaciones de los colaboradores</string>

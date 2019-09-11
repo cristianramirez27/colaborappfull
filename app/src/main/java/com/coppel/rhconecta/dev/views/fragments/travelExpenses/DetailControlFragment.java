@@ -138,7 +138,7 @@ public class DetailControlFragment extends Fragment implements  View.OnClickList
     private void setData( DetailControlColaboratorResponse.Response data){
         totalDetalleTitle.setTextSize(14);
         totalDetalle.setTextSize(15);
-        totalDetalleTitle.setText("Saldo Total");
+        totalDetalleTitle.setText("Saldo total");
         totalDetalle.setGravity(Gravity.CENTER);
         String totalShow = String.valueOf(data.getSaldoTotal().get(0).getSaldo_total());
         if(data.getSaldoTotal() != null) {
