@@ -86,7 +86,10 @@ public class NotificationHelper {
             String CHANNEL_ID = "channel_general";// The id of the channel.
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, "General", importance);
+            mChannel.setShowBadge(true);
             notificationManager.createNotificationChannel(mChannel);
+
+
         }
 
         return notificationManager;

@@ -154,6 +154,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     private DialogFragmentLoader dialogFragmentLoader;
 
+
+    private Fragment currentHomeFragment;
+
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
@@ -418,9 +421,15 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     break;
 
                 case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+
+
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                     NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
                             BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+
+                    if(currentHomeFragment != null){
+                        ((HomeMainFragment)currentHomeFragment).hideProgress();
+                    }
 
                     break;
 
@@ -535,7 +544,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(HomeMainFragment.TAG);
-        fragmentTransaction.add(R.id.flFragmentContainer, new HomeMainFragment(), HomeMainFragment.TAG).commit();
+        currentHomeFragment =  new HomeMainFragment();
+        fragmentTransaction.add(R.id.flFragmentContainer, currentHomeFragment, HomeMainFragment.TAG).commit();
     }
 
 

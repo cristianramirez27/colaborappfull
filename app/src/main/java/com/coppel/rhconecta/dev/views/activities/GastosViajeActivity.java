@@ -120,27 +120,22 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
     @Override
     public void onBackPressed() {
         int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
-
             if (backStackEntryCount == 1) {
                 finish();
             } else if (backStackEntryCount > 1) {
                 super.onBackPressed();
             }
-
-
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode == RESULT_OK){
             //onEvent(OPTION_AUTHORIZE_REQUEST,null);
             if(requestCode == 131 && (currentFragment!= null && currentFragment instanceof AuthorizeRequestAndComplementsFragment)){
                 ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
             }else if((requestCode == 888 || resultCode == RESULT_OK)){
-
                 if(currentFragment != null && currentFragment instanceof  AuthorizeRequestAndComplementsFragment ){
                     ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
                 }else {
@@ -148,11 +143,7 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
                     finish();
 
                 }
-
-
-
             }
         }
-
     }
 }
