@@ -171,6 +171,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
     private HolidayPeriod holidayPeriod;
 
+    private boolean startedPeriod = false;
+
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -274,6 +276,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             btnCancel.setEnabled(false);
             btnCancel.setBackgroundResource(R.drawable.backgroud_rounder_grey);
         }else if(dtStart.isBefore(now) && !now.isAfter(dtEnd)){// Ya empezo y no ha terminado
+            startedPeriod = true;
             btnEdit.setEnabled(false);
             btnEdit.setBackgroundResource(R.drawable.backgroud_rounder_grey);
             btnCancel.setEnabled(true);
@@ -286,6 +289,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             btnCancel.setText(getString(R.string.btn_refuse_holidays_));
             btnCancel.setBackgroundResource(R.drawable.background_blue_rounded);
         }else if(dtStart.compareTo(now) == 0){ // Empieza hoy
+            startedPeriod = true;
             btnEdit.setEnabled(false);
             btnEdit.setBackgroundResource(R.drawable.backgroud_rounder_grey);
             btnCancel.setEnabled(true);
@@ -466,7 +470,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         dialogFragmentDeletePeriods.setTitle("Atención");
         String msg = btnCancel.getText().toString().contains("Rechazar") ?
                 "¿Quieres rechazar las vacaciones autorizadas del colaborador?" :
-                "¿Quieres cancelar las vacaciones autorizadas del colaborador?";
+                (startedPeriod ?
+                        "¿Quieres cancelar las vacaciones iniciadas por el colaborador?" :
+                        "¿Quieres cancelar las vacaciones autorizadas del colaborador?");
         dialogFragmentDeletePeriods.setMsg(msg);
         dialogFragmentDeletePeriods.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }
@@ -503,7 +509,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setNum_diasagendados( this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados());
         datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
         double limitDay = this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones() - this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados();
-        datePickerDialog.setLimite_dias(limitDay);
+        datePickerDialog.setLimite_dias(holidayDaysTotal/*limitDay*/);
         datePickerDialog.setShowHalfDaysOption(true);
 
         datePickerDialog.setDes_mensaje(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje()!= null &&

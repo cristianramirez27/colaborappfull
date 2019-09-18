@@ -165,6 +165,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     private DialogFragmentLoader dialogFragmentLoader;
 
+
+    private Fragment currentHomeFragment;
+
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
 
@@ -429,12 +432,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     }
                 break;
 
-            case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
-                replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
-                NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
-                        BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
-                break;
-
             case OPTION_HOLIDAYS:
 
                 if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
@@ -447,6 +444,20 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                 break;
+
+                case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+                    replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
+                    NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
+                            BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+
+                    if(currentHomeFragment != null){
+                        ((HomeMainFragment)currentHomeFragment).hideProgress();
+                    }
+
+                    RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
+
+                    break;
+
             case OPTION_COLLAGE:
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
@@ -563,7 +574,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(HomeMainFragment.TAG);
-        fragmentTransaction.add(R.id.flFragmentContainer, new HomeMainFragment(), HomeMainFragment.TAG).commit();
+        currentHomeFragment =  new HomeMainFragment();
+        fragmentTransaction.add(R.id.flFragmentContainer, currentHomeFragment, HomeMainFragment.TAG).commit();
     }
 
 

@@ -407,10 +407,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     @Override
     public void hideProgress() {
 
-        if(isAdded()){
+       // if(isAdded()){
             if(dialogFragmentLoader != null)
                 dialogFragmentLoader.close();
-        }
+      //  }
 
     }
 

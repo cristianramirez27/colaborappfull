@@ -46,6 +46,7 @@ public class NotificationCreator {
                 (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                         .setContentIntent(pendingIntent)
                         .setContentTitle(title)
+                        .setStyle(new NotificationCompat.BigTextStyle() .bigText(content))
                         .setContentText(content)
                         //.setSubText(content)
                         .setSmallIcon(getSmallIconId())
