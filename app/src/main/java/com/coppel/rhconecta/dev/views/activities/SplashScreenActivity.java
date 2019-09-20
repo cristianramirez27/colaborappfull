@@ -35,6 +35,7 @@ import io.realm.Realm;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 
 public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View,
         DialogFragmentWarning.OnOptionClick {
@@ -76,7 +77,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
 
 
         Bundle bundle = getIntent().getExtras();
-
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_GOTO_SECTION) != null) {
             goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
         }

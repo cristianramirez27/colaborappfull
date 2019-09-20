@@ -44,7 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if (remoteMessage.getNotification() != null) {
+        if (true) {
             try {
                 if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
                     Random rand = new Random();
@@ -56,8 +56,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         */
                     Map<String,String> params = getParamsIntent(remoteMessage);
                     Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
-                            remoteMessage.getNotification().getTitle(),
-                            remoteMessage.getNotification().getBody(),
+                            "Tituo",
+                            "texto",
                             NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
                                     SplashScreenActivity.class,params )).build();
                     NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);

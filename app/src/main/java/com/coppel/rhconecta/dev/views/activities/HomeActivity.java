@@ -427,9 +427,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
                             BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
-                    if(currentHomeFragment != null){
+                  /*  if(currentHomeFragment != null){
                         ((HomeMainFragment)currentHomeFragment).hideProgress();
-                    }
+                    }*/
 
                     break;
 
@@ -646,8 +646,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void hideProgress() {
 
-        if(dialogFragmentLoader != null)
+        if(dialogFragmentLoader != null && dialogFragmentLoader.isAdded()) {
+            dialogFragmentLoader.dismissAllowingStateLoss();
             dialogFragmentLoader.close();
+        }
     }
 
     private void getRolType(int type){

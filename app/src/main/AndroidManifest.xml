@@ -35,6 +35,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+
         </activity>
         <activity
             android:name=".views.activities.LoginActivity"
@@ -124,9 +131,11 @@
             </intent-filter>
         </service>
 
+
          <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icn_notificaciones_blanco" />
+        
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondBlueCoppel" />
