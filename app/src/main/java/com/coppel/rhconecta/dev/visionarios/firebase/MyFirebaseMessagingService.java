@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -24,6 +25,8 @@ import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,6 +35,8 @@ import java.util.UUID;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ID_PANTALLA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ID_SISTEMA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.NOTIFICATION_TITLE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.NOTIFICATION_BODY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
@@ -44,7 +49,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if (true) {
+
+
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Map<String, String> paramsData = remoteMessage.getData();
+        JSONObject object = new JSONObject(paramsData);
+        Log.d("JSON_OBJECT", object.toString());
+
+
+        if (paramsData != null) {
             try {
                 if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
                     Random rand = new Random();
@@ -56,8 +69,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         */
                     Map<String,String> params = getParamsIntent(remoteMessage);
                     Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
-                            "Tituo",
-                            "texto",
+                            paramsData.get(NOTIFICATION_TITLE),
+                            paramsData.get(NOTIFICATION_BODY),
                             NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
                                     SplashScreenActivity.class,params )).build();
                     NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);

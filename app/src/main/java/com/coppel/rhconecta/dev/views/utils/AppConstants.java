@@ -158,7 +158,7 @@ public class AppConstants {
 
     public static final String ID_SISTEMA = "id_sistema";
     public static final String ID_PANTALLA = "id_pantalla";
-
-
+        public static final String NOTIFICATION_TITLE = "title";
+    public static final String NOTIFICATION_BODY = "body";
 
 }

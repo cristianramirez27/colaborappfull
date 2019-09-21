@@ -336,6 +336,8 @@ public class ServicesInteractor {
             coppelServicesProfileRequest.setId_firebase(tokenFirebase);
         }
 
+        String requestAsString = JsonManager.madeJsonFromObject(coppelServicesProfileRequest).toString();
+
         return coppelServicesProfileRequest;
     }
 

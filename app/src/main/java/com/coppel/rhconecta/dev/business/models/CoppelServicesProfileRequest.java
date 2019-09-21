@@ -1,11 +1,14 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ANDROID_OS;
+
 public class CoppelServicesProfileRequest {
 
     private String num_empleado;
     private String correo;
     private String id_firebase;
     private int opcion;
+    private int so_dispositivo = ANDROID_OS;
 
     public String getNum_empleado() {
         return num_empleado;
@@ -40,4 +43,11 @@ public class CoppelServicesProfileRequest {
     }
 
 
+    public int getSo_dispositivo() {
+        return so_dispositivo;
+    }
+
+    public void setSo_dispositivo(int so_dispositivo) {
+        this.so_dispositivo = so_dispositivo;
+    }
 }

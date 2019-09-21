@@ -21,17 +21,17 @@
         android:maxLines="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/image"
         />
     <TextView
         android:textSize="13dp"
         android:textColor="@color/colorTextGray"
         android:id="@+id/text"
-        android:text="@string/lorem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/image"
-        android:maxLines="10"
+        android:layout_marginRight="16dp"
         android:layout_below="@id/title"
         />
 </RelativeLayout>

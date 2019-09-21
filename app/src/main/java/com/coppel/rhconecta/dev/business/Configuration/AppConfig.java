@@ -23,6 +23,7 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
  */
 public class AppConfig {
 
+    public final static int ANDROID_OS = 1;
 
     public final static String ENDPOINT_WITHDRAWSAVINGS = "ENDPOINT_WITHDRAWSAVINGS";
     public final static String ENDPOINT_BENEFICIOS = "ENDPOINT_BENEFICIOS";
