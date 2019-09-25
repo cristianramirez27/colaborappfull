@@ -45,7 +45,7 @@ public class NotificationCreator {
         Uri uriSound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         RemoteViews contentView = new RemoteViews(CoppelApp.getContext().getPackageName(), R.layout.custom_push_notification);
-        contentView.setImageViewResource(R.id.image,  R.drawable.icn_notificaciones_azul);
+        contentView.setImageViewResource(R.id.image,  R.mipmap.ic_launcher);
         contentView.setTextViewText(R.id.title, title);
         contentView.setTextViewText(R.id.text, content);
 
