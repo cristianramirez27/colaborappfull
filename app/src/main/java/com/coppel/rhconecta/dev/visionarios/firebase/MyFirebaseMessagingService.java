@@ -50,36 +50,44 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
+        if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
+            Random rand = new Random();
+            int idNotification = rand.nextInt(999);
 
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Map<String, String> paramsData = remoteMessage.getData();
-        JSONObject object = new JSONObject(paramsData);
-        Log.d("JSON_OBJECT", object.toString());
+            if(remoteMessage.getNotification() != null){
 
+                Map<String, String> params = new HashMap<>();// getParamsIntent(remoteMessage);
+                createNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),params,idNotification);
 
-        if (paramsData != null) {
-            try {
-                if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)){
-                    Random rand = new Random();
-                    int idNotification = rand.nextInt(999);
-                    processNotification(idNotification,remoteMessage);
-                    //Obtenemos los datos para iniciar el Dashboard
+            }else {
+                Log.d(TAG, "From: " + remoteMessage.getFrom());
+                Map<String, String> paramsData = remoteMessage.getData();
+                JSONObject object = new JSONObject(paramsData);
+                Log.d("JSON_OBJECT", object.toString());
+                if (paramsData != null) {
+                    try {
+                        processNotification(idNotification, remoteMessage);
+                        //Obtenemos los datos para iniciar el Dashboard
                        /* String loginResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE);
                         String profileResponse =AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
                         */
-                    Map<String,String> params = getParamsIntent(remoteMessage);
-                    Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
-                            paramsData.get(NOTIFICATION_TITLE),
-                            paramsData.get(NOTIFICATION_BODY),
-                            NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),
-                                    SplashScreenActivity.class,params )).build();
-                    NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
+                        Map<String, String> params = getParamsIntent(remoteMessage);
+                        createNotification(paramsData.get(NOTIFICATION_TITLE), paramsData.get(NOTIFICATION_BODY),params,idNotification);
+                        // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
-                // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
+
+
         }
+    }
+
+    private void createNotification(String title,String body, Map<String, String> params, int idNotification){
+            Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
+                    title,body ,NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),SplashScreenActivity.class,params )).build();
+            NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
     }
 
         private Map<String,String> getParamsIntent(RemoteMessage remoteMessage){
