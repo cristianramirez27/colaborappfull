@@ -58,7 +58,7 @@ public class NotificationCreator {
                         .setContentTitle(title)
 
                         //.setStyle(new NotificationCompat.BigTextStyle() .bigText(content))
-                        //.setContentText(content)
+                        .setContentText(content)
                         .setCustomBigContentView(contentView)
                         //.setSubText(content)
                         .setSmallIcon(getSmallIconId())

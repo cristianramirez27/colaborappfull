@@ -454,7 +454,6 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
     public void onMonthClick(ColaboratorRequestsListExpensesResponse.Months month) {
         monthSelected = month;
         ColaboratorRequestsListExpensesResponse.Months  monthCurrent= expensesTravelColaboratorMonthsRecyclerAdapter.getMonthSelected(monthSelected.getClv_mes());
-
         if(monthCurrent.isExpand()){
             monthCurrent.setExpand(false);
             expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();

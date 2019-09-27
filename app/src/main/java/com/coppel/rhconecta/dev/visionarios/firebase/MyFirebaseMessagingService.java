@@ -85,6 +85,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void createNotification(String title,String body, Map<String, String> params, int idNotification){
+
+        if(title.isEmpty()){
+           title = getString(R.string.app_name);
+        }
             Notification notification = NotificationCreator.buildLocalNotification(CoppelApp.getContext(),
                     title,body ,NotificationCreator.getPendindIntentSection(CoppelApp.getContext(),SplashScreenActivity.class,params )).build();
             NotificationHelper.getNotificationManager(CoppelApp.getContext()).notify(idNotification, notification);
