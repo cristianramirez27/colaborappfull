@@ -75,6 +75,8 @@ public class NotificationCreator {
     public static PendingIntent getPendindIntentSection(Context context, Class clazz, Map<String,String> params){
         Intent resultIntent = new Intent(context, clazz);
 
+        //resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         for(String key : params.keySet()){
             resultIntent.putExtra(key,params.get(key));
         }
@@ -85,7 +87,7 @@ public class NotificationCreator {
                         context,
                         REQUEST_CODE_PUSH,
                         resultIntent,
-                        PendingIntent.FLAG_ONE_SHOT);//FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT);//FLAG_UPDATE_CURRENT
 
         return resultPendingIntent;
     }

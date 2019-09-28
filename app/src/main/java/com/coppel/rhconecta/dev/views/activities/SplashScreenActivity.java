@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
@@ -73,13 +74,19 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
             }
         });
 
-        init();
+
 
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_GOTO_SECTION) != null) {
             goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+            startApp();
+        }else{
+
+            init();
         }
+
+
 
     }
 
@@ -134,6 +141,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
                 intent.putExtra("PROFILE_RESPONSE", gson.toJson(profileResponse));
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 if(!goTosection.isEmpty())intent.putExtra(BUNDLE_GOTO_SECTION,goTosection);
                 startActivity(intent);
                 finish();
@@ -201,6 +209,9 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 .addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+
+                        Toast.makeText(SplashScreenActivity.this, "Competle", Toast.LENGTH_SHORT).show();
+
                         if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
                         } else {
@@ -209,6 +220,9 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                         setEndpoints();
                     }
                 });
+
+        Toast.makeText(SplashScreenActivity.this, "Request for RemoteConfig", Toast.LENGTH_SHORT).show();
+
         // [END fetch_config_with_callback]
     }
 
