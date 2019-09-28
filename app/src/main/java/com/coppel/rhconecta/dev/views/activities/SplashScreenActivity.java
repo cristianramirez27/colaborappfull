@@ -210,7 +210,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        Toast.makeText(SplashScreenActivity.this, "Competle", Toast.LENGTH_SHORT).show();
 
                         if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
@@ -221,7 +220,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                     }
                 });
 
-        Toast.makeText(SplashScreenActivity.this, "Request for RemoteConfig", Toast.LENGTH_SHORT).show();
 
         // [END fetch_config_with_callback]
     }
