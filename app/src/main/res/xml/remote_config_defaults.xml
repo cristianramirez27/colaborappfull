@@ -3,43 +3,43 @@
 <defaultsMap>
     <entry>
         <key>ENDPOINT_BENEFICIOS</key>
-        <value>beneficiosConsulta</value>
+        <value>rhconecta/api/v2/beneficiosConsulta</value>
     </entry>
     <entry>
         <key>ENDPOINT_VALIDARFIRMA</key>
-        <value>cartasValidarFirma</value>
+        <value>rhconecta/api/v2/cartasValidarFirma</value>
     </entry>
     <entry>
         <key>ENDPOINT_PREVIEW</key>
-        <value>cartasVistaPrevia</value>
+        <value>rhconecta/api/v2/cartasVistaPrevia</value>
     </entry>
     <entry>
         <key>ENDPOINT_CARTASGENERAR</key>
-        <value>cartasGenerar</value>
+        <value>rhconecta/api/v2/cartasGenerar</value>
     </entry>
     <entry>
         <key>ENDPOINT_CARTASCONFIG</key>
-        <value>cartasConfig</value>
+        <value>rhconecta/api/v2/cartasConfig</value>
     </entry>
     <entry>
         <key>ENDPOINT_PAYSHEET</key>
-        <value>comprobantesNomina</value>
+        <value>rhconecta/api/v2/comprobantesNomina</value>
     </entry>
     <entry>
         <key>ENDPOINT_SAVINGS</key>
-        <value>fondoAhorroConsulta</value>
+        <value>rhconecta/api/v2/fondoAhorroConsulta</value>
     </entry>
     <entry>
         <key>ENDPOINT_PROFILE</key>
-        <value>perfilColaboradorConsulta</value>
+        <value>rhconecta/api/v2/perfilColaboradorConsulta</value>
     </entry>
     <entry>
         <key>ENDPOINT_PASSWORD_RECOVER</key>
-        <value>recuperacontra</value>
+        <value>rhconecta/api/v2/recuperacontra</value>
     </entry>
     <entry>
         <key>ENDPOINT_LOGIN</key>
-        <value>inicioSesion</value>
+        <value>rhconecta/api/v2/inicioSesion</value>
     </entry>
     <entry>
         <key>URL_MAIN_LOGIN</key>
@@ -47,7 +47,7 @@
     </entry>
     <entry>
         <key>URL_MAIN</key>
-        <value>http://qa-apipos.coppel.com:9000/rhconecta/api/v2/</value>
+        <value>https://apisp.coppel.cloud/</value>
     </entry>
 </defaultsMap>
     <!-- END xml_defaults -->

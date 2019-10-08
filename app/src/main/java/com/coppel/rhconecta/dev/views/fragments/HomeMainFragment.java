@@ -139,9 +139,11 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//COMMENT
+        //dialogFragmentLoader = new DialogFragmentLoader();
+       // dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
 
-        dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
+        ((HomeActivity)getActivity()).showProgress();
 
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
         ButterKnife.bind(this, view);
@@ -179,7 +181,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
                 hideProgress();
             }
-        }, 5000);
+        }, 1600);
 
         return view;
     }
@@ -188,9 +190,12 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     public void onPause() {
         super.onPause();
         RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
-        if (dialogFragmentLoader != null) {
+
+        ((HomeActivity)getActivity()).hideProgress();
+        //HIDE
+        /*if (dialogFragmentLoader != null) {
             dialogFragmentLoader.dismissAllowingStateLoss();
-        }
+        }*/
     }
 
     private void initBanner() {
@@ -331,7 +336,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         Log.d(TAG,"Notifications videos visionarios:"+nuevos);
         notifications[1]=nuevos;
         uptadeNotificationsAdapter();
-        dialogFragmentLoader.close();
+
+        ((HomeActivity)getActivity()).hideProgress();
+       //HIDE
+        // dialogFragmentLoader.close();
     }
 
     private void uptadeNotificationsAdapter(){
@@ -407,9 +415,10 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     @Override
     public void hideProgress() {
 
+        ((HomeActivity)getActivity()).hideProgress();
        // if(isAdded()){
-            if(dialogFragmentLoader != null)
-                dialogFragmentLoader.close();
+           // if(dialogFragmentLoader != null)
+           //     dialogFragmentLoader.close();
       //  }
 
     }

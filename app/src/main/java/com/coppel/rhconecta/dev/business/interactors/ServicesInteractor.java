@@ -339,6 +339,8 @@ public class ServicesInteractor {
             coppelServicesProfileRequest.setId_firebase(tokenFirebase);
         }
 
+        String requestAsString = JsonManager.madeJsonFromObject(coppelServicesProfileRequest).toString();
+
         return coppelServicesProfileRequest;
     }
 
@@ -3728,7 +3730,7 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
-        if(errorCode == -10 || errorCode == -33 || errorCode == -99 ){
+        if(errorCode == -10 ||errorCode == -11 || errorCode == -33 || errorCode == -99 ){
             message = userMessage;
         }else{
             message = context.getString(R.string.error_generic_service);

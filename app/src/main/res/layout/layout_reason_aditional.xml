@@ -73,7 +73,7 @@
                     android:inputType="text"
                     android:lines="20"
                     android:imeOptions="actionNext"
-                    android:digits="abcdefghijklmnñopqrstuvwxyzáéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ012345789,.:;\n "
+                    android:digits="abcdefghijklmnñopqrstuvwxyzáéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
                     android:background="@drawable/background_gray_rounded"
                     android:layout_height="96dp" />
 

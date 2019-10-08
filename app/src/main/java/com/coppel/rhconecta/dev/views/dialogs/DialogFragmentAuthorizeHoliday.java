@@ -121,7 +121,7 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
     private void initViews() {
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
-
+        btnActionRight.setEnabled(false);
 
 
         if(title.contains("(Opcional)")){
@@ -129,6 +129,7 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
             ss1.setSpan(new RelativeSizeSpan(0.60f), title.indexOf("("),title.length(), 0); // set size
             txtTitle.setText(ss1);
             btnActionRight.setBackgroundResource(R.drawable.background_blue_rounded);
+            btnActionRight.setEnabled(true);
         }else {
             txtTitle.setText(title);
         }

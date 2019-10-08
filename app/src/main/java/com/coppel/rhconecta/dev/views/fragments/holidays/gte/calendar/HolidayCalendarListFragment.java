@@ -515,6 +515,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             dialogFragmentCenter.close();
             centro.setText(centerSelected.getNom_centro());
            // getColaborators(centerSelected.getNum_centro(),searchName);
+            getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
         }
     }
 

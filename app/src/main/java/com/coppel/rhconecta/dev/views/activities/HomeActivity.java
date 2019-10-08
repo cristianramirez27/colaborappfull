@@ -91,6 +91,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
@@ -434,28 +435,32 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
             case OPTION_HOLIDAYS:
 
-                if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
-                    replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
-                }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
-                    getRolType(HOLIDAYS);
-                }else {
-                    getRolType(HOLIDAYS);
+                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)){
+                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                }else{
+
+                    if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)){
+                        replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+                    }else if(AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)){
+                        getRolType(HOLIDAYS);
+                    }else {
+                        getRolType(HOLIDAYS);
+                    }
+                    RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                 }
 
-                RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                 break;
 
-                case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+            case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                     NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
                             BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
 
-                    if(currentHomeFragment != null){
+                  /*  if(currentHomeFragment != null){
                         ((HomeMainFragment)currentHomeFragment).hideProgress();
-                    }
+                    }*/
 
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
-
                     break;
 
             case OPTION_COLLAGE:
@@ -711,8 +716,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void hideProgress() {
 
-        if(dialogFragmentLoader != null)
+        if(dialogFragmentLoader != null && dialogFragmentLoader.isAdded()) {
+            dialogFragmentLoader.dismissAllowingStateLoss();
             dialogFragmentLoader.close();
+        }
     }
 
     private void getRolType(int type){

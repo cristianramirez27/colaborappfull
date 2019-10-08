@@ -215,6 +215,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialogFragmentWarning.setOnOptionClick(LoginActivity.this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
                 dialogFragmentLoader.close();
+
+                hideProgress();
             }
         }, 1500);
     }

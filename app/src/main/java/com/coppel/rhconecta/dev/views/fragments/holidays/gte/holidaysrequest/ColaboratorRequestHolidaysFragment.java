@@ -172,6 +172,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         btnSchedule.setOnClickListener(this);
         layoutShowCalendar.setOnClickListener(this);
 
+        showCalendar.setAlpha(0.3f);
+
         SpannableString content = new SpannableString(getString(R.string.title_calendar_proposed));
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         showCalendar.setText(content);
@@ -660,6 +662,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
 
         @Override
         public void enableCalendarOption(boolean enable) {
+
+            showCalendar.setAlpha(enable ? 1f : 0.3f);
             layoutShowCalendar.setEnabled(enable);
         }
     };

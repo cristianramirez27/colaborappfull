@@ -327,7 +327,7 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
                     //Centros
                     if(filtersControlsResponse.getData().getResponse().getCentros() != null && !filtersControlsResponse.getData().getResponse().getCentros().isEmpty()){
                         //Se toma el primero por default si solo regresa 1 centro
-                        if(filtersControlsResponse.getData().getResponse().getCentros().size() == 1){
+                        if(filtersControlsResponse.getData().getResponse().getCentros().size() >= 1){
                             centerSelected = filtersControlsResponse.getData().getResponse().getCentros().get(0);
                             centro.setText(filtersControlsResponse.getData().getResponse().getCentros().get(0).getNom_centro());
                         }else {
@@ -454,7 +454,6 @@ DialogFragmentEstatus.OnButonOptionClick,     DialogFragmentCenter.OnButonOption
     public void onMonthClick(ColaboratorRequestsListExpensesResponse.Months month) {
         monthSelected = month;
         ColaboratorRequestsListExpensesResponse.Months  monthCurrent= expensesTravelColaboratorMonthsRecyclerAdapter.getMonthSelected(monthSelected.getClv_mes());
-
         if(monthCurrent.isExpand()){
             monthCurrent.setExpand(false);
             expensesTravelColaboratorMonthsRecyclerAdapter.notifyDataSetChanged();

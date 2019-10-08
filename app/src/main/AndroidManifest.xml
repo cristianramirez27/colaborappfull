@@ -29,6 +29,7 @@
         <activity
             android:name=".views.activities.SplashScreenActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,9 +42,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.HomeActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".visionarios.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".visionarios.inicio.views.InicioActivity"
@@ -133,9 +136,11 @@
             </intent-filter>
         </service>
 
+
          <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icn_notificaciones_blanco" />
+        
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondBlueCoppel" />
