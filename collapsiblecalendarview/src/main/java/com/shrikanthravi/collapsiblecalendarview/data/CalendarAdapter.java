@@ -117,7 +117,7 @@ public class CalendarAdapter {
 
             txtDay.setText(String.valueOf(day.getDay()));
             if (day.getMonth() != mCal.get(Calendar.MONTH)) {
-                txtDay.setAlpha(0.3f);
+                txtDay.setAlpha(0.0f);
             }
 
            /* for (int j = 0; j < mEventList.size(); j++) {

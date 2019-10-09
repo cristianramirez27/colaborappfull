@@ -172,8 +172,8 @@ public class DialogFragmentAuthorizeHoliday extends DialogFragment implements Vi
 
                 if(!title.contains("(Opcional)")){
 
-                    btnActionRight.setEnabled(s.toString().length() > 0 ? true : false);
-                    btnActionRight.setBackgroundResource(s.toString().length() > 0 ?
+                    btnActionRight.setEnabled(s.toString().trim().length() > 4 ? true : false);
+                    btnActionRight.setBackgroundResource(s.toString().trim().length() > 4 ?
                             R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
                 }
 

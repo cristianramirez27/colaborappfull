@@ -154,6 +154,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         //btnRequest.setOnClickListener(this);
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         this.periodSelected.setNom_empleado(colaboratorHoliday.getNom_empleado());
+        this.periodSelected.setFotoperfil(colaboratorHoliday.getFotoperfil());
         headerView.setDetailData(this.periodSelected,true);
         rcvSolicitudes.setHasFixedSize(true);
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -274,6 +274,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         totalSolicitados.setEndTextColor(getResources().getColor(R.color.colorBackgroundCoppelNegro));
 
         daysToSchedule =  holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones() - totalDays;
+        //Se evitan valores negativos
+        if(daysToSchedule < 0)daysToSchedule = 0;
 
         String daysToScheduleAsString = String.valueOf(daysToSchedule);
         if(daysToSchedule % 1 == 0){
