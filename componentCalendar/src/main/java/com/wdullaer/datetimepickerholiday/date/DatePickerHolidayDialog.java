@@ -510,7 +510,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
                     tryVibrate();
                     setConfigData();
                     notifyOnDatesHolidaysListener();
-                    dismiss();
+
                 }
 
             }
@@ -1316,8 +1316,6 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     public void notifyOnDatesHolidaysListener() {
         if (mCallBack != null && this.daysSelectedMap != null) {
-
-
             Map<String, List<DaySelectedHoliday>> periods = getPeriods(datesSorted);
             double totalDays = 0;
             for(String key : periods.keySet()){
@@ -1331,6 +1329,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             //des_mensaje
             if(totalDays <= limite_dias){
                 mCallBack.onDatesSelectedHolidays(periods, totalDays);
+                dismiss();
             }else {
                 mCallBack.onInvalidMaxSelectedDays(this.des_mensaje);
             }
