@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
 import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
@@ -25,6 +26,7 @@ import com.coppel.rhconecta.dev.visionarios.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -49,6 +51,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        EventBus.getDefault().post(new NotificationEvent(""));
 
         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
             Random rand = new Random();

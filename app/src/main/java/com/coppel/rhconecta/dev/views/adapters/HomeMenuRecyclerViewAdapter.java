@@ -44,6 +44,12 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
         shake = AnimationUtils.loadAnimation(context, R.anim.anim_shake);
     }
 
+
+    public void setCustomMenuUpdate(List<HomeMenuItem> customMenu){
+
+        this.customMenu = customMenu;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {

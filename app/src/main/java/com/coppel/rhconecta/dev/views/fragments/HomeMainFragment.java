@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
+import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
@@ -60,6 +61,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -494,5 +499,28 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         dialogFragmentWarning.setOnOptionClick(this);
         dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(NotificationEvent event) {/* Do something */
+        //homeMenuRecyclerViewAdapter.setNotification(event.getModule(),notifications[1]);
+
+        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications));
+
+        homeMenuRecyclerViewAdapter.notifyDataSetChanged();
+        //Toast.makeText(getActivity(),"Notification",Toast.LENGTH_SHORT).show();
+    };
 
 }
