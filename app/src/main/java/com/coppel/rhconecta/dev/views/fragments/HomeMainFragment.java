@@ -181,7 +181,7 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
                 hideProgress();
             }
-        }, 1600);
+        }, 1200);
 
         return view;
     }

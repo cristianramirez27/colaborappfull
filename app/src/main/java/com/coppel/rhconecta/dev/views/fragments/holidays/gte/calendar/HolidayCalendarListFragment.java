@@ -248,6 +248,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             public void action(Day daySelected) {
                 SpliceSelectedVO data = new SpliceSelectedVO( calendarPeriodsResponse.getData().getResponse().getPeriodos(),daySelected);
                 data.setListDaySelectedCurrent(listDaySelectedCurrent);
+                data.setShowDetail(true);
                 ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
             }
         });
@@ -373,6 +374,9 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 colaboratorHolidays.clear();
                 if(calendarPeriodsResponse.getData().getResponse().getDes_mensaje() != null && !calendarPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty()) {
                     showSuccessDialog(MSG_HOLIDAYS_WARNING, calendarPeriodsResponse.getData().getResponse().getDes_mensaje(), "");
+
+                    setColaboratorMarkInCalendar(new ArrayList<>());
+
                 }else{
                     for (HolidayPeriod period : calendarPeriodsResponse.getData().getResponse().getPeriodos()) {
                         colaboratorsPeriodsHolidays.add(period);

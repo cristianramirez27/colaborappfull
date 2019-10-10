@@ -269,13 +269,17 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
 
     @Override
     public void onRequestSelectedClick(HolidayPeriod holidayPeriod) {
-        ColaboratorHoliday colaboratorHoliday = new ColaboratorHoliday(holidayPeriod.getNom_empleado(),
-                holidayPeriod.getFotoperfil(),
-                holidayPeriod.getNum_empleado());
 
-        CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,spliceSelectedVO.getListDaySelectedCurrent());
-        ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
-    }
+        if( this.spliceSelectedVO.isShowDetail()){
+            ColaboratorHoliday colaboratorHoliday = new ColaboratorHoliday(holidayPeriod.getNom_empleado(),
+                    holidayPeriod.getFotoperfil(),
+                    holidayPeriod.getNum_empleado());
+
+            CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,spliceSelectedVO.getListDaySelectedCurrent());
+            ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
+
+        }
+       }
 
     private void showPeriodsWithDaySelected(DateTime dateTime){
         this.colaboratorsPeriodsHolidays.clear();

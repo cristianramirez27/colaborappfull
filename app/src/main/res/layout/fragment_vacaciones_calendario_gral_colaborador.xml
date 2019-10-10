@@ -12,7 +12,7 @@
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:id="@+id/scrollContainer"
         android:layout_above="@+id/layoutButton"
         android:layout_width="match_parent"
@@ -228,22 +228,30 @@
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
-
-                        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-                            android:id="@+id/collapsibleCalendarView"
+                        <android.support.v4.widget.NestedScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:primaryColor="@color/transparent"
-                            app:textColor="@color/colorPrimaryCoppelAzul"
-                            app:selectedItem_textColor="@android:color/white"
-                            app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
-                            app:todayItem_background="@drawable/circle_white_stroke_background"
-                            app:selectedItem_background="@drawable/circle_green_solid_background"
-                            app:buttonLeft_drawableTintColor="@android:color/white"
-                            app:buttonRight_drawableTintColor="@android:color/white"
-                            app:expandIconColor="@android:color/white"
-                            app:eventColor="@android:color/white">
-                        </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+                            android:layout_height="match_parent">
+
+                            <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+                                android:id="@+id/collapsibleCalendarView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:primaryColor="@color/transparent"
+                                app:textColor="@color/colorPrimaryCoppelAzul"
+                                app:selectedItem_textColor="@android:color/white"
+                                app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
+                                app:todayItem_background="@drawable/circle_white_stroke_background"
+                                app:selectedItem_background="@drawable/circle_green_solid_background"
+                                app:buttonLeft_drawableTintColor="@android:color/white"
+                                app:buttonRight_drawableTintColor="@android:color/white"
+                                app:expandIconColor="@android:color/white"
+                                app:eventColor="@android:color/white">
+                            </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+
+
+                        </android.support.v4.widget.NestedScrollView>
+
+
 
                     </LinearLayout>
 
@@ -252,7 +260,7 @@
             </RelativeLayout>
 
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
 
 
     <LinearLayout

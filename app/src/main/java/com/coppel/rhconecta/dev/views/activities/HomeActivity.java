@@ -163,7 +163,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     SurveyInboxView surveyInboxView;
 
     private boolean requestLogout = false;
-
+    private boolean hideLoader = false;
     private DialogFragmentLoader dialogFragmentLoader;
 
 
@@ -209,6 +209,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
                 goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
                 navigationMenu(goTosection);
+                hideLoader = true;
             }
 
 
@@ -261,6 +262,16 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         //MenuInflater inflater = getMenuInflater();
         //inflater.inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void hideOptionToolbar(){
+        if(isOpenMenuToolbar) {
+            isOpenMenuToolbar = false;
+            showTitle(true);
+            showEliminatedOption(false, "");
+        }else {
+            onBackPressed();
+        }
     }
 
     @Override
@@ -446,6 +457,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     }else {
                         getRolType(HOLIDAYS);
                     }
+
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                 }
 
@@ -637,8 +649,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                    /*     NavigationUtil.openActivityWithStringParam(this, VacacionesActivity.class,
                                 BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);*/
-
-                        replaceFragment(new ColaboratorHolidaysFragment(), HolidaysRolMenuFragment.TAG);
+                        hideProgress();
+                        replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysFragment.TAG);
+                        //hideProgress();
                     }
                 }
 
@@ -709,8 +722,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void showProgress() {
-        dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
+        if(hideLoader){
+            dialogFragmentLoader = new DialogFragmentLoader();
+            dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
+        }
+
     }
 
     @Override

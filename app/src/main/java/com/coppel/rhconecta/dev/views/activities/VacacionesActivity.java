@@ -64,7 +64,7 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
     private Object data;
     private String titleActivity;
     private boolean isOpenMenuToolbar;
-
+    private Fragment currentFragment;
 
     @BindView(R.id.eliminateOption)
     TextView eliminateOption;
@@ -98,9 +98,12 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
     @Override
     public void onEvent(String tag,Object data) {
+
+        currentFragment = null;
         switch (tag) {
             case BUNDLE_OPTION_COLABORATOR_SCHEDULE:
-                replaceFragment(ColaboratorHolidaysScheduleFragment.getInstance((ConfigurationHolidaysData)data), ColaboratorHolidaysScheduleFragment.TAG);
+                currentFragment = ColaboratorHolidaysScheduleFragment.getInstance((ConfigurationHolidaysData)data);
+                replaceFragment(currentFragment, ColaboratorHolidaysScheduleFragment.TAG);
                 break;
             case BUNDLE_OPTION_HOLIDAYREQUESTS:
                 replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysScheduleFragment.TAG);
@@ -164,6 +167,11 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
     @Override
     public void onBackPressed() {
+
+        if(currentFragment != null && currentFragment instanceof ColaboratorHolidaysScheduleFragment){
+            ((ColaboratorHolidaysScheduleFragment)currentFragment).cleanSelection();
+        }
+
         if(isOpenMenuToolbar){
             isOpenMenuToolbar = false;
             showTitle(true);

@@ -4,6 +4,7 @@ package com.coppel.rhconecta.dev.views.fragments.holidays.colaborator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -183,9 +184,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 holidayRequestRecyclerAdapter.unCheckedAll();
-                parent.onBackPressed();
+                if(getActivity() instanceof VacacionesActivity){
+                    parent.onBackPressed();
+                }else if(getActivity() instanceof HomeActivity){
+                    ( (HomeActivity) parent).hideOptionToolbar();
+                }
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -273,6 +278,8 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
                 break;
         }
+
+        hideProgress();
     }
 
           private void showSuccessDialog(int type,String title,String content) {
@@ -341,12 +348,24 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @Override
     public void showProgress() {
         dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+       dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override
     public void hideProgress() {
-        if(dialogFragmentLoader != null) dialogFragmentLoader.close();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(dialogFragmentLoader != null) dialogFragmentLoader.close();
+
+                if(getActivity() instanceof HomeActivity){
+                    ((HomeActivity)getActivity()).hideProgress();
+                }
+            }
+        },200);
+
+
     }
 
     @Override

@@ -499,6 +499,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         //Setear el maximo de 18 meses para seleccionar periodos
         dateMax.add(Calendar.MONTH,18);
         datePickerDialog.setMaxDate(dateMax);
+        periods.clear();
         datePickerDialog.setInitDaysSelectedHolidays(periods);
         datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
 

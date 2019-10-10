@@ -120,8 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lineto_circular_pro_book"
-                    android:text="@string/lorem"
-                    android:maxLength="150"
+                    android:text=""
                     android:textSize="13sp"   android:layout_marginBottom="6dp"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
             </LinearLayout>

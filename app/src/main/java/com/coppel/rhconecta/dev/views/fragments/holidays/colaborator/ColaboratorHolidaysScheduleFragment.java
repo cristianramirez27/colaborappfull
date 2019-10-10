@@ -271,10 +271,16 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
+                cleanSelection();
                 parent.onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void cleanSelection(){
+        if(holidayRequestRecyclerAdapter != null) holidayRequestRecyclerAdapter.unCheckedAll();
     }
 
     @Override

@@ -227,10 +227,12 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         collapsibleCalendar.setActionSplice(new CommandSplice() {
             @Override
             public void action(Day daySelected) {
+
+                /*
                 SpliceSelectedVO data = new SpliceSelectedVO( holidaysPeriodsResponse.getData().getResponse().getPeriodos(),daySelected);
                 data.setAddSpliceMarks(true);
                 ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
-
+*/
             }
         });
 
