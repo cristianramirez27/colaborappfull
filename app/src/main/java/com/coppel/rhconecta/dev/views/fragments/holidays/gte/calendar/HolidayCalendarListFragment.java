@@ -369,7 +369,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 }else if(response.getResponse() instanceof HolidaysCalendarPeriodsResponse) {
                     calendarPeriodsResponse = (HolidaysCalendarPeriodsResponse)response.getResponse();
                     HashMap<String,ColaboratorHoliday> colaboratorHolidayHashMap = new HashMap<>();
-
+                    List<String> numberColaborators = new ArrayList<>();
                 colaboratorsPeriodsHolidays.clear();
                 colaboratorHolidays.clear();
                 if(calendarPeriodsResponse.getData().getResponse().getDes_mensaje() != null && !calendarPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty()) {
@@ -380,6 +380,11 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 }else{
                     for (HolidayPeriod period : calendarPeriodsResponse.getData().getResponse().getPeriodos()) {
                         colaboratorsPeriodsHolidays.add(period);
+
+                        if(!numberColaborators.contains(period.getNum_empleado())){
+                            numberColaborators.add(period.getNum_empleado());
+                        }
+
                         if(!colaboratorHolidayHashMap.containsKey(period.getNum_empleado())){
                             colaboratorHolidayHashMap.put(period.getNum_empleado(),new ColaboratorHoliday(period.getNom_empleado(),period.getFotoperfil(),
                                     period.getNum_empleado(),centerSelected.getNum_centro(),
@@ -389,7 +394,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
                         setCalendarData();
                         //colaboratorHolidays.clear();
-                        for (String colaboratorNumber : colaboratorHolidayHashMap.keySet()) {
+                        for (String colaboratorNumber : numberColaborators) {
                             colaboratorHolidays.add(colaboratorHolidayHashMap.get(colaboratorNumber));
                         }
                     }

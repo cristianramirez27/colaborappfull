@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="6.0 días"
                     android:textSize="17.5sp"
+                    android:gravity="right"
                     android:layout_marginBottom="4dp"
                     android:textColor="#ffffff"/>
 
