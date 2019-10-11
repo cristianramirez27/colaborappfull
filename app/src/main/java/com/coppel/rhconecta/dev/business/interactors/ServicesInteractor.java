@@ -3571,6 +3571,13 @@ public class ServicesInteractor {
             case GET_CALENDAR_DAYS_PROPOSED:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesGetPeriodsHolidaysColaboratorsRequest(holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()),
                         holidaysRequestData.getNum_empconsulta(),holidaysRequestData.getFec_ini(),holidaysRequestData.getFec_fin());
+
+                if(holidaysRequestData.getOpcion() == 18){
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest)coppelServicesBaseHolidaysRequest).setTipo_consulta(holidaysRequestData.getTipo_consulta());
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest)coppelServicesBaseHolidaysRequest).setNum_mes(holidaysRequestData.getNum_mes());
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest)coppelServicesBaseHolidaysRequest).setNum_anio(holidaysRequestData.getNum_anio());
+                }
+
                 break;
             case SCHEDULE_GTE_HOLIDAY_REQUEST:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesSchedulePeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),holidaysRequestData.getNum_gerente(),

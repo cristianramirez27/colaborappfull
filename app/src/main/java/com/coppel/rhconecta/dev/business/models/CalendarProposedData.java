@@ -13,6 +13,8 @@ public class CalendarProposedData implements Serializable {
 
     private HolidaysPeriodsResponse holidaysPeriodsResponse;
 
+    private int num_mes;
+    private int num_anio;
 
     public CalendarProposedData(HolidayPeriod period) {
         this.period = period;
@@ -69,5 +71,21 @@ public class CalendarProposedData implements Serializable {
 
     public void setListDaySelected(List<Day> listDaySelected) {
         this.listDaySelected = listDaySelected;
+    }
+
+    public int getNum_mes() {
+        return num_mes;
+    }
+
+    public void setNum_mes(int num_mes) {
+        this.num_mes = num_mes;
+    }
+
+    public int getNum_anio() {
+        return num_anio;
+    }
+
+    public void setNum_anio(int num_anio) {
+        this.num_anio = num_anio;
     }
 }

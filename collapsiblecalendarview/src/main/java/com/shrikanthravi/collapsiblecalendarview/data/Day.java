@@ -17,6 +17,15 @@ public class Day implements Parcelable, Serializable {
 
     private int hasSplice;
 
+
+
+    public boolean equals(Day day) {
+        super.equals(day);
+        if(day.mYear == this.mYear && day.mMonth == mMonth && day.mDay == mDay)
+            return true;
+        return false;
+    }
+
     public Day(int year, int month, int day){
         this.mYear = year;
         this.mMonth = month;

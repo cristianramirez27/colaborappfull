@@ -590,6 +590,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
         doSearch = false;
 
         CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,listDaySelectedCurrent);
+        calendarProposedData.setNum_mes(currentDate.get(Calendar.MONTH)+1);
+        calendarProposedData.setNum_anio(currentDate.get(Calendar.YEAR));
         ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
     }
 

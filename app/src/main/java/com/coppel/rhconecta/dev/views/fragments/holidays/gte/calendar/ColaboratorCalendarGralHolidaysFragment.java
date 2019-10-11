@@ -32,6 +32,7 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaySchedulePeriodsResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
+import com.coppel.rhconecta.dev.business.models.MarkHoliday;
 import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
@@ -126,6 +127,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     RelativeLayout layoutOptions;
 
 
+    private boolean showCalendar= false;
+
 
     private boolean EXPIRED_SESSION;
     private IScheduleOptions IScheduleOptions;
@@ -141,6 +144,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private VacacionesActivity vacacionesActivity;
     private List<Day> dayListSelected;
 
+    private int num_mes;
+    private int num_anio;
 
     private boolean sendRequestSuccess;
     private Map<String, List<DaySelectedHoliday>> periods;
@@ -166,6 +171,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         this.colaboratorHoliday = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getColaborator();
         this.dayListSelected = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getListDaySelected();
+
+        this.num_mes = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getNum_mes();
+        this.num_anio = ((CalendarProposedData) getArguments().getSerializable(BUNDLE_OPTION_DATA_COLABORATOR)).getNum_anio();
+
+
     }
 
     @Override
@@ -243,19 +253,21 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado());
+        getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),0, this.num_mes, this.num_anio);
     }
 
-    private void getPeriodsColaborators(String numEmployer){
+    private void getPeriodsColaborators(String numEmployer, int tipo_consulta,int num_mes,int num_anio){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //Este colaborador es el gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_CALENDAR_DAYS_PROPOSED, 18);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setNum_empconsulta(numEmployer);
-
+        holidayRequestData.setNum_mes(num_mes);
+        holidayRequestData.setNum_anio(num_anio);
+        /*Tipo de consulta*/
+        holidayRequestData.setTipo_consulta(tipo_consulta);
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
-
     }
 
     @Override
@@ -282,7 +294,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 break;
 
             case R.id.iconCalendarTool:
-                switchView(true);
+                showCalendar = true;
+                getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
+             //   switchView(true);
                 break;
             case R.id.btnSchedule:
                 /**Si el campo clv_mensaje es 1 mostrar des_mensaje en un mensaje informativo.**/
@@ -478,11 +492,21 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         holidayPeriodList.add(period);
                     }
+
+                    if(holidayPeriodList.size() > 0){
+                        setFirstDate(holidayPeriodList.get(0).getFec_ini());
+                    }
+
                     holidayRequestRecyclerAdapter.notifyDataSetChanged();
                     headerView.setDetailData(this.colaboratorHoliday,holidaysPeriodsResponse);
                     setColaboratorMarkInCalendar(holidayPeriodList);
 
                     layoutContainer.setVisibility(VISIBLE);
+
+                    if(showCalendar){
+                        showCalendar = false;
+                        switchView(true);
+                    }
                 } else if(response.getResponse() instanceof HolidaySchedulePeriodsResponse){
                     HolidaySchedulePeriodsResponse schedulePeriodsResponse = (HolidaySchedulePeriodsResponse) response.getResponse();
                     //  if(schedulePeriodsResponse.getData().getResponse().getClv_estado() == 1){
@@ -493,6 +517,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
                 break;
         }
+    }
+
+    private void setFirstDate(String date){
+        String[] datePart = date.split(",")[1].split("-");
+        this.num_mes = Integer.parseInt(datePart[1]);
+        this.num_anio = Integer.parseInt(datePart[2]);
+
     }
 
     private void showSuccessDialog(int type,String title,String content) {
@@ -512,7 +543,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     @Override
     public void onAccept() {
         if(sendRequestSuccess){
-            getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado());
+            getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),0,this.num_mes,this.num_anio);
         }
 
         dialogFragmentGetDocument.close();
@@ -553,9 +584,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                       holidayPeriod.getFotoperfil(),
                       holidayPeriod.getNum_empleado());
 
-
               CalendarProposedData calendarProposedData = new CalendarProposedData(holidaysPeriodsResponse,holidayPeriod);
-
+                calendarProposedData.setColaborator(colaboratorHoliday);
               calendarProposedData.setListDaySelected( this.dayListSelected);
 
               ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,calendarProposedData);
@@ -599,10 +629,52 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         }
         //Llenamos la lista con los dias con y sin empalmes
         for(String dateAsString : daysInCalendar.keySet()){
+            daysInCalendar.get(dateAsString).setHasSplice( -1);
             listDaySelected.add(daysInCalendar.get(dateAsString));
         }
 
+        try {
+            //
+            for (HolidayPeriod period : periods) {
+                //Aqui obtenemos el mes y el año
+                Day dayStart = getDayStartPeriod(period.getFec_ini(),true);
+                for (MarkHoliday markHoliday : period.getVer_marca()) {
+                    for (String dayAsString : markHoliday.getRango_dias()) {
+                        Day daySplice = new Day(dayStart.getYear(), dayStart.getMonth(), Integer.parseInt(dayAsString));
+                        daySplice.setHasSplice(1);
+                        if (!existDayInCalendar(listDaySelected, daySplice)) {
+                            listDaySelected.add(daySplice);
+                        }else {
+                            changeDayInCalendar(listDaySelected, daySplice);
+                        }
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         collapsibleCalendar.select(listDaySelected);
+    }
+
+
+    private boolean existDayInCalendar(List<Day>  listDaySelected,Day dayToCheck){
+        for(Day day : listDaySelected){
+            if(day.equals(dayToCheck))
+                return true;
+        }
+        return false;
+    }
+    private void changeDayInCalendar(List<Day>  listDaySelected,Day dayToCheck){
+        for(Day day : listDaySelected){
+            if(day.equals(dayToCheck)){
+                day.setHasSplice(1);
+            }
+        }
+    }
+
+    private Day getDayStartPeriod(String date, boolean adjustMonth){
+        String[] datePart = date.split(",")[1].split("-");
+        return new Day(Integer.parseInt(datePart[2]),!adjustMonth ? Integer.parseInt(datePart[1]) : Integer.parseInt(datePart[1]) - 1,Integer.parseInt(datePart[0].trim()));
     }
 
     private void setSelectedDays(HolidayPeriod period,HashMap<String,Day> daysInCalendar){

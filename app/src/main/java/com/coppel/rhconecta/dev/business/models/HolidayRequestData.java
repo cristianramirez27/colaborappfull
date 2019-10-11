@@ -35,6 +35,8 @@ public class HolidayRequestData implements Serializable{
     private int num_mes;
     private int num_anio;
 
+    private int tipo_consulta;
+
     private String des_comentario;
     private int idu_autorizo;
     public HolidayRequestData(HolidaysType holidaysType, int opcion) {
@@ -224,5 +226,14 @@ public class HolidayRequestData implements Serializable{
 
     public void setIdu_autorizo(int idu_autorizo) {
         this.idu_autorizo = idu_autorizo;
+    }
+
+
+    public int getTipo_consulta() {
+        return tipo_consulta;
+    }
+
+    public void setTipo_consulta(int tipo_consulta) {
+        this.tipo_consulta = tipo_consulta;
     }
 }
