@@ -4,6 +4,7 @@ package com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -222,7 +223,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private void initializeCalendar(){
         Calendar today=new GregorianCalendar();
         today.add(Calendar.DATE,1);
+        today.set(Calendar.MONTH,this.num_mes);
         collapsibleCalendar.setExpandIconVisible(true);
+        collapsibleCalendar.setMonth(this.num_mes);
         collapsibleCalendar.expand(100);
         collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
         collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
@@ -497,7 +500,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                         setFirstDate(holidayPeriodList.get(0).getFec_ini());
                     }
 
-                    holidayRequestRecyclerAdapter.notifyDataSetChanged();
+                    if(!showCalendar){
+
+                        holidayRequestRecyclerAdapter.notifyDataSetChanged();
+                    }
+
                     headerView.setDetailData(this.colaboratorHoliday,holidaysPeriodsResponse);
                     setColaboratorMarkInCalendar(holidayPeriodList);
 
@@ -653,6 +660,14 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         }catch (Exception e) {
             e.printStackTrace();
         }
+
+        Calendar  calendar = Calendar.getInstance();
+        calendar.set(this.num_anio,this.num_mes-1,1);
+
+        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
+        collapsibleCalendar.setAdapter(adapter);
+
         collapsibleCalendar.select(listDaySelected);
     }
 

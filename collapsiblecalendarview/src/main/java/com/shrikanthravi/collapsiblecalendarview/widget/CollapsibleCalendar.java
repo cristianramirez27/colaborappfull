@@ -452,6 +452,11 @@ public class CollapsibleCalendar extends UICalendar {
         return mAdapter.getCalendar().get(Calendar.MONTH);
     }
 
+    public void setMonth(int month) {
+         mAdapter.getCalendar().set(Calendar.MONTH,month);
+    }
+
+
     public Day getSelectedDay() {
         if (getSelectedItem()==null){
             Calendar cal = Calendar.getInstance();
