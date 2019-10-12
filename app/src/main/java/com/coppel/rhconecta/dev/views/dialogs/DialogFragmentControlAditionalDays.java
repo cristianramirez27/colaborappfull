@@ -379,6 +379,7 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
     public void enabledOtherReason(boolean enable) {
         reason.setText("");
         reason.setEnabled(enable);
+        reason.setHint(enable ? getString(R.string.hint_reason_aditional_days) : "");
     }
 
     public EditText getReason() {

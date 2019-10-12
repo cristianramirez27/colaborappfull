@@ -1415,8 +1415,15 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     public void validateSelection() {
 
         String days = String.valueOf(getTotalDaysSelected());
-        daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
-        daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
+
+        if(days.contains(".5")){
+            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
+            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
+        }else {
+            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(), "días"));
+            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(), "días"));
+        }
+
       /*  if( this.daysSelectedMap != null){
 
             if(isEnabledCalendar){
