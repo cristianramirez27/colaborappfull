@@ -369,6 +369,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
 
     @Override
     public void showResponse(ServicesResponse response) {
+        ICalendarView.enableCalendarOption(false);
+
         switch (response.getType()) {
 
             case ServicesRequestType.HOLIDAYS:

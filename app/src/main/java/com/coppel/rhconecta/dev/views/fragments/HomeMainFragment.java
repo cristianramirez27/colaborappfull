@@ -521,6 +521,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
         //Toast.makeText(getActivity(),"Notification",Toast.LENGTH_SHORT).show();
-    };
+    }
 
 }
