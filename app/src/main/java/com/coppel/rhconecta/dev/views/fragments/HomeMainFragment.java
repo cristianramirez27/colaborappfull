@@ -114,6 +114,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     @BindView(R.id.viewBackFavorites)
     View viewBackFavorites;
 
+    private boolean reloadDashboard;
+
     //private DialogFragmentLoader dialogFragmentLoader;
     private ISurveyNotification ISurveyNotification;
 
@@ -138,7 +140,13 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
         presenter.getUltimaEncuesta();
         presenter.guardarLogin();
+
+        if(reloadDashboard){
+            reloadDashboard = false;
+            updateDashboard();
+        }
     }
+
 
 
     @Override
@@ -197,6 +205,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
 
         ((HomeActivity)getActivity()).hideProgress();
+
+        reloadDashboard = true;
         //HIDE
         /*if (dialogFragmentLoader != null) {
             dialogFragmentLoader.dismissAllowingStateLoss();
@@ -514,13 +524,13 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(NotificationEvent event) {/* Do something */
-        //homeMenuRecyclerViewAdapter.setNotification(event.getModule(),notifications[1]);
+    public void onMessageEvent(NotificationEvent event) {
+        updateDashboard();
+    }
 
+    private void updateDashboard(){
         homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications));
-
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
-        //Toast.makeText(getActivity(),"Notification",Toast.LENGTH_SHORT).show();
     }
 
 }
