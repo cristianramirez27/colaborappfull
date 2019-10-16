@@ -136,7 +136,9 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
 
             case BUNDLE_OPTION_HOLIDAY_CALENDAR:
-                replaceFragment(HolidayCalendarListFragment.getInstance(), HolidayCalendarListFragment.TAG);
+
+                currentFragment = HolidayCalendarListFragment.getInstance();
+                replaceFragment(currentFragment, HolidayCalendarListFragment.TAG);
                 break;
 
             case BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR:
@@ -145,7 +147,9 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
 
 
             case BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR:
-                replaceFragment(ColaboratorCalendarGralHolidaysFragment.getInstance((CalendarProposedData) data), ColaboratorCalendarGralHolidaysFragment.TAG);
+
+                currentFragment = ColaboratorCalendarGralHolidaysFragment.getInstance((CalendarProposedData) data);
+                replaceFragment(currentFragment, ColaboratorCalendarGralHolidaysFragment.TAG);
                 break;
 
             case BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS:
@@ -182,7 +186,12 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             showEliminatedOption(false,"");
             int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
             if (backStackEntryCount == 1) {
-                finish();
+                if(currentFragment instanceof ColaboratorCalendarGralHolidaysFragment){
+                    childFragmentManager.popBackStack();
+                   onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR,null);
+                }else{
+                    finish();
+                }
             } else if (backStackEntryCount > 1) {
                 super.onBackPressed();
             }

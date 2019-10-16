@@ -363,6 +363,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         //Setear el maximo de 18 meses para seleccionar periodos
         dateMax.add(Calendar.MONTH,18);
         datePickerDialog.setMaxDate(dateMax);
+        periods.clear();
         datePickerDialog.setInitDaysSelectedHolidays(periods);
         datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
     }
@@ -527,10 +528,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     }
 
     private void setFirstDate(String date){
+        /*
         String[] datePart = date.split(",")[1].split("-");
         this.num_mes = Integer.parseInt(datePart[1]);
         this.num_anio = Integer.parseInt(datePart[2]);
-
+        */
     }
 
     private void showSuccessDialog(int type,String title,String content) {

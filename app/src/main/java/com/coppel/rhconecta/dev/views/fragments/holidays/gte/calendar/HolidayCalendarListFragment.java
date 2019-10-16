@@ -399,6 +399,13 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                         }
                     }
                 colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
+
+
+                Calendar  calendar = Calendar.getInstance();
+                calendar.set(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),1);
+                CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
+                collapsibleCalendar.setAdapter(adapter);
+
                 formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
                 }
 
