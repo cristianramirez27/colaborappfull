@@ -525,12 +525,21 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(NotificationEvent event) {
-        updateDashboard();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateDashboard();
+            }
+        },400);
+
     }
 
     private void updateDashboard(){
         homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications));
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
+        //initMenu();
+        //homeMenuRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 }

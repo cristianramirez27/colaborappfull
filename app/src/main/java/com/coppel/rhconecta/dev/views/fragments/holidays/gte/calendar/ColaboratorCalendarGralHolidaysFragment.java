@@ -129,6 +129,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
 
     private boolean showCalendar= false;
+    private boolean finishModule = false;
 
 
     private boolean EXPIRED_SESSION;
@@ -140,6 +141,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
+    private List<HolidayPeriod> holidayPeriodListView;
+
     private List<HolidayPeriod> holidayPeriodList;
     private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
     private VacacionesActivity vacacionesActivity;
@@ -147,6 +150,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
     private int num_mes;
     private int num_anio;
+
+    private boolean firstTime = true;
 
     private boolean sendRequestSuccess;
     private Map<String, List<DaySelectedHoliday>> periods;
@@ -208,7 +213,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
 
         holidayPeriodList = new ArrayList<>();
-        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList,IScheduleOptions,false,true);
+        holidayPeriodListView = new ArrayList<>();
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodListView,IScheduleOptions,false,true);
         holidayRequestRecyclerAdapter.setHideCheckBox(true);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
@@ -305,7 +311,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 /**Si el campo clv_mensaje es 1 mostrar des_mensaje en un mensaje informativo.**/
                 if(holidaysPeriodsResponse != null && holidaysPeriodsResponse.getData().getResponse().getClv_mensaje() == 1 &&
                         !holidaysPeriodsResponse.getData().getResponse().getDes_mensaje().isEmpty()){
-                    showWarningDialog("",holidaysPeriodsResponse.getData().getResponse().getDes_mensaje());
+                    showWarningDialog("",holidaysPeriodsResponse.getData().getResponse().getDes_mensaje(),false);
                     return;
                 }
 
@@ -386,7 +392,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
         @Override
         public void onInvalidMaxSelectedDays(String msg) {
-            showWarningDialog("",msg);
+            showWarningDialog("",msg,false);
         }
     };
 
@@ -491,11 +497,15 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 if(response.getResponse() instanceof HolidaysPeriodsResponse) {
                     holidaysPeriodsResponse = (HolidaysPeriodsResponse)response.getResponse();
                     periods = new HashMap<>();
-
                     holidayPeriodList.clear();
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         holidayPeriodList.add(period);
+                        if(firstTime){
+                            holidayPeriodListView.add(period);
+                        }
                     }
+
+                    firstTime = false;
 
                     if(holidayPeriodList.size() > 0){
                         setFirstDate(holidayPeriodList.get(0).getFec_ini());
@@ -564,11 +574,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         if(coppelServicesError.getMessage() != null ){
             switch (coppelServicesError.getType()) {
                 case ServicesRequestType.HOLIDAYS:
-                    showWarningDialog("",coppelServicesError.getMessage());
+                    showWarningDialog("",coppelServicesError.getMessage(),true);
                     break;
                 case ServicesRequestType.INVALID_TOKEN:
                     EXPIRED_SESSION = true;
-                    showWarningDialog("",getString(R.string.expired_session));
+                    showWarningDialog("",getString(R.string.expired_session),true);
                     break;
             }
 
@@ -601,7 +611,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
           }
 
 
-          private void showWarningDialog(String title,String message) {
+          private void showWarningDialog(String title,String message,boolean finish) {
+
+            this.finishModule = finish;
               if(title.isEmpty())
                   title = getString(R.string.attention);
 
@@ -622,7 +634,10 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-            getActivity().onBackPressed();
+            if (this.finishModule) {
+                this.finishModule = false;
+                getActivity().onBackPressed();
+            }
         }
     }
 
