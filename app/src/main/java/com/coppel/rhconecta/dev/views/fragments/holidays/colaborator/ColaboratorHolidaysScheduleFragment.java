@@ -367,7 +367,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     @Override
     public void onAccept() {
         if(sendRequestSuccess){
-
+            sendRequestSuccess = false;
             if(configurationHolidaysData.isColaborator()){
                 getActivity().setResult(Activity.RESULT_OK);
                 getActivity().finish();

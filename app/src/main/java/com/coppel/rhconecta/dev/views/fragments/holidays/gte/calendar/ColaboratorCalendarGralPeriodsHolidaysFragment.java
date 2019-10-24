@@ -310,8 +310,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         today.add(Calendar.DATE,1);
         collapsibleCalendar.expand(100);
         collapsibleCalendar.setVisibilityExpandIcon(View.INVISIBLE);
-        collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
-        collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
+        collapsibleCalendar.setVisibilityBtnNext(View.VISIBLE);
+        collapsibleCalendar.setVisibilityBtnPrev(View.VISIBLE);
         collapsibleCalendar.setExpandIconVisible(false);
         collapsibleCalendar.setMultipleDays(true);
         collapsibleCalendar.setEnable(false);
@@ -319,8 +319,33 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
 
+        collapsibleCalendar.getmBtnPrevMonth().setImageResource(R.drawable.arrow_left_calendar);
+        collapsibleCalendar.getmBtnNextMonth().setImageResource(R.drawable.arrow_right_calendar);
+        collapsibleCalendar.getmBtnNextMonth().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeMonth(true);
+            }
+        });
+
+        collapsibleCalendar.getmBtnPrevMonth().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeMonth(false);
+            }
+        });
         String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
         formatMonthNameFormat(monthNameCalendar,monthName);
+    }
+
+    private void changeMonth(boolean isNext){
+        if(isNext){
+            collapsibleCalendar.nextMonth();
+        }else {
+            collapsibleCalendar.prevMonth();
+        }
+
+        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
     }
 
     private void setDataPeriod(){
@@ -600,8 +625,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                 List<DaySelectedHoliday> daysInPeriod = periodsUpdate.get(key);
                 String dateStart = String.format("%s-%s-%s",
                         String.valueOf(daysInPeriod.get(0).getYear()),
-                        String.valueOf(daysInPeriod.get(0).getMonth() > 10 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
-                        String.valueOf(daysInPeriod.get(0).getDay() > 10 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
+                        String.valueOf(daysInPeriod.get(0).getMonth() > 9 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
+                        String.valueOf(daysInPeriod.get(0).getDay() > 9 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
 
                 int indexEndDate = 0;
                 if(daysInPeriod.size() > 1){
@@ -610,8 +635,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
                 String dateEnd = String.format("%s-%s-%s",
                         String.valueOf(daysInPeriod.get(indexEndDate).getYear()),
-                        String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 10 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
-                        String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 10 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
+                        String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 9 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
+                        String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 9 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
 
                 String numDays = daysInPeriod.size() > 1 ? String.valueOf(daysInPeriod.size()) :
                         (daysInPeriod.size() == 1 && daysInPeriod.get(0).isHalfDay() ? "0.5" : String.valueOf(daysInPeriod.size()));
@@ -837,11 +862,13 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
 
         for(Day daySplice : daySelectedOtherSplices){
-            daysCurrentOthersColaborators.put(String.format("%d%d%d",daySplice.getYear(),daySplice.getMonth(),daySplice.getDay()),daySplice);
+            daysCurrentOthersColaborators.put(String.format("%d%d%d",daySplice.getYear(),daySplice.getMonth()> 9 ?
+                    daySplice.getMonth() : "0" +daySplice.getMonth(),daySplice.getDay() > 9 ? daySplice.getDay() : "0"+daySplice.getDay()),daySplice);
         }
 
         for(Day dayCurrent : listDaySelected){
-            daysCurrent.put(String.format("%d%d%d",dayCurrent.getYear(),dayCurrent.getMonth(),dayCurrent.getDay()),dayCurrent);
+            daysCurrent.put(String.format("%d%d%d",dayCurrent.getYear(),dayCurrent.getMonth()> 9 ?
+                    dayCurrent.getMonth() : "0" +dayCurrent.getMonth(),dayCurrent.getDay() > 9 ? dayCurrent.getDay() : "0"+dayCurrent.getDay()),dayCurrent);
         }
 
         for(String key : daysCurrent.keySet()){

@@ -42,6 +42,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
 
 import org.joda.time.DateTime;
 
@@ -305,12 +306,27 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
                         }
                     }
                 }
-
-
             }
         }
 
+        for(HolidayPeriod period : colaboratorsPeriodsHolidays){
+            Day d = new Day(dateSelected.get(Calendar.YEAR),dateSelected.get(Calendar.MONTH),dateSelected.get(Calendar.DAY_OF_MONTH));
+            period.setIdu_marca( hasSplice(d) ? 1 : -1);
+        }
+
         holidayRequestRecyclerAdapter.notifyDataSetChanged();
+    }
+
+
+    private boolean hasSplice(Day currentDay){
+        for(Day day : spliceSelectedVO.getListDaySelectedCurrent()){
+            if(day.equals(currentDay)){
+                if(day.getHasSplice() == 1)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     private  boolean validateDateInPeriod( Calendar dateSelected ,String start,String end){

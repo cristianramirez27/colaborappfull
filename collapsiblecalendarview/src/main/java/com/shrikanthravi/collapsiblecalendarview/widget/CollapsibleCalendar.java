@@ -753,5 +753,7 @@ public class CollapsibleCalendar extends UICalendar {
     public void setShowCompleteDaysName(boolean showCompleteDaysName) {
         this.showCompleteDaysName = showCompleteDaysName;
     }
+
+
 }
 

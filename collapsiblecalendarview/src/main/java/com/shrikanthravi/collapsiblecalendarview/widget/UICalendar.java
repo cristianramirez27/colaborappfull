@@ -207,6 +207,14 @@ public abstract class UICalendar extends LinearLayout {
         redraw();
     }
 
+    public ImageView getmBtnPrevMonth() {
+        return mBtnPrevMonth;
+    }
+
+    public ImageView getmBtnNextMonth() {
+        return mBtnNextMonth;
+    }
+
     public void setExpandIconColor(int color){
         this.mExpandIconColor = color;
         expandIconView.setColor(color);

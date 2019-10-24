@@ -231,8 +231,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
             List<DaySelectedHoliday> daysInPeriod = periodsUpdate.get(key);
             String dateStart = String.format("%s-%s-%s",
                     String.valueOf(daysInPeriod.get(0).getYear()),
-                    String.valueOf(daysInPeriod.get(0).getMonth() > 10 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
-                    String.valueOf(daysInPeriod.get(0).getDay() > 10 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
+                    String.valueOf(daysInPeriod.get(0).getMonth() > 9 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
+                    String.valueOf(daysInPeriod.get(0).getDay() > 9 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
 
             int indexEndDate = 0;
             if(daysInPeriod.size() > 1){
@@ -241,8 +241,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
 
             String dateEnd = String.format("%s-%s-%s",
                     String.valueOf(daysInPeriod.get(indexEndDate).getYear()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 10 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 10 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
+                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 9 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
+                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 9 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
 
             String numDays = daysInPeriod.size() > 1 ? String.valueOf(daysInPeriod.size()) :
                     (daysInPeriod.size() == 1 && daysInPeriod.get(0).isHalfDay() ? "0.5" : String.valueOf(daysInPeriod.size()));
@@ -273,7 +273,8 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         totalSolicitados.setStartTextColor(getResources().getColor(R.color.colorBackgroundCoppelNegro));
         totalSolicitados.setEndTextColor(getResources().getColor(R.color.colorBackgroundCoppelNegro));
 
-        daysToSchedule =  holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones() - totalDays;
+       // daysToSchedule =  holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones() - totalDays;
+        daysToSchedule =  holidaysPeriodsResponse.getData().getResponse().getNum_diasvacaciones();
         //Se evitan valores negativos
         if(daysToSchedule < 0)daysToSchedule = 0;
 

@@ -141,7 +141,6 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
-    private List<HolidayPeriod> holidayPeriodListView;
 
     private List<HolidayPeriod> holidayPeriodList;
     private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
@@ -151,7 +150,6 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private int num_mes;
     private int num_anio;
 
-    private boolean firstTime = true;
 
     private boolean sendRequestSuccess;
     private Map<String, List<DaySelectedHoliday>> periods;
@@ -213,8 +211,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
 
         holidayPeriodList = new ArrayList<>();
-        holidayPeriodListView = new ArrayList<>();
-        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodListView,IScheduleOptions,false,true);
+        holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList,IScheduleOptions,false,true);
         holidayRequestRecyclerAdapter.setHideCheckBox(true);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
@@ -299,7 +296,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         switch (view.getId()) {
 
             case R.id.iconList:
-                switchView(false);
+                showCalendar = false;
+                getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),0,this.num_mes,this.num_anio);
                 break;
 
             case R.id.iconCalendarTool:
@@ -333,6 +331,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
             collapsibleCalendar.prevMonth();
         }
 
+
+        this.num_mes = collapsibleCalendar.getMonth() + 1;
+        this.num_anio = collapsibleCalendar.getYear();
+
+        getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
     }
 
@@ -403,8 +406,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
             List<DaySelectedHoliday> daysInPeriod = periodsUpdate.get(key);
             String dateStart = String.format("%s-%s-%s",
                     String.valueOf(daysInPeriod.get(0).getYear()),
-                    String.valueOf(daysInPeriod.get(0).getMonth() > 10 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
-                    String.valueOf(daysInPeriod.get(0).getDay() > 10 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
+                    String.valueOf(daysInPeriod.get(0).getMonth() > 9 ? daysInPeriod.get(0).getMonth() : "0"+ daysInPeriod.get(0).getMonth()),
+                    String.valueOf(daysInPeriod.get(0).getDay() > 9 ? daysInPeriod.get(0).getDay() : "0"+ daysInPeriod.get(0).getDay()));
 
             int indexEndDate = 0;
             if(daysInPeriod.size() > 1){
@@ -413,8 +416,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
             String dateEnd = String.format("%s-%s-%s",
                     String.valueOf(daysInPeriod.get(indexEndDate).getYear()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 10 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
-                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 10 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
+                    String.valueOf(daysInPeriod.get(indexEndDate).getMonth() > 9 ? daysInPeriod.get(indexEndDate).getMonth() : "0"+ daysInPeriod.get(indexEndDate).getMonth()),
+                    String.valueOf(daysInPeriod.get(indexEndDate).getDay() > 9 ? daysInPeriod.get(indexEndDate).getDay() : "0"+ daysInPeriod.get(indexEndDate).getDay()));
 
             String numDays = daysInPeriod.size() > 1 ? String.valueOf(daysInPeriod.size()) :
                     (daysInPeriod.size() == 1 && daysInPeriod.get(0).isHalfDay() ? "0.5" : String.valueOf(daysInPeriod.size()));
@@ -500,31 +503,23 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                     holidayPeriodList.clear();
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         holidayPeriodList.add(period);
-                        if(firstTime){
-                            holidayPeriodListView.add(period);
-                        }
                     }
-
-                    firstTime = false;
 
                     if(holidayPeriodList.size() > 0){
                         setFirstDate(holidayPeriodList.get(0).getFec_ini());
                     }
 
-                    if(!showCalendar){
-
+                   /* if(!showCalendar){
                         holidayRequestRecyclerAdapter.notifyDataSetChanged();
-                    }
+                    }*/
 
                     headerView.setDetailData(this.colaboratorHoliday,holidaysPeriodsResponse);
                     setColaboratorMarkInCalendar(holidayPeriodList);
 
                     layoutContainer.setVisibility(VISIBLE);
 
-                    if(showCalendar){
-                        showCalendar = false;
-                        switchView(true);
-                    }
+                    switchView(showCalendar);
+
                 } else if(response.getResponse() instanceof HolidaySchedulePeriodsResponse){
                     HolidaySchedulePeriodsResponse schedulePeriodsResponse = (HolidaySchedulePeriodsResponse) response.getResponse();
                     //  if(schedulePeriodsResponse.getData().getResponse().getClv_estado() == 1){
