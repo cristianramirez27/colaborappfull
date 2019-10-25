@@ -114,6 +114,11 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.spliceSelectedVO = (SpliceSelectedVO)getArguments().getSerializable("DATA");
+
+        currentDate = Calendar.getInstance();
+        currentDate.set(Calendar.YEAR,spliceSelectedVO.getDaySelected().getYear());
+        currentDate.set(Calendar.MONTH,spliceSelectedVO.getDaySelected().getMonth());
+        currentDate.set(Calendar.DAY_OF_MONTH,spliceSelectedVO.getDaySelected().getDay());
     }
 
     @Override
@@ -277,6 +282,10 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
                     holidayPeriod.getNum_empleado());
 
             CalendarProposedData calendarProposedData = new CalendarProposedData(colaboratorHoliday,spliceSelectedVO.getListDaySelectedCurrent());
+
+            calendarProposedData.setNum_mes(currentDate.get(Calendar.MONTH)+1);
+            calendarProposedData.setNum_anio(currentDate.get(Calendar.YEAR));
+
             ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,calendarProposedData);
 
         }

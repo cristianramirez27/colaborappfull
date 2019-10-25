@@ -349,7 +349,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
                     layoutContainer.setVisibility(VISIBLE);
 
-                } if(response.getResponse() instanceof HolidaysColaboratorsResponse) {
+                }
+                else if(response.getResponse() instanceof HolidaysColaboratorsResponse) {
                     HolidaysColaboratorsResponse colaboratorsResponse = (HolidaysColaboratorsResponse)response.getResponse();
                     /**Si clv_mensaje = 1 entonces mostrar el mensaje de des_mensaje**/
                         colaboratorHolidays.clear();
@@ -366,7 +367,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     getCalendarInfo();
 
 
-                }else if(response.getResponse() instanceof HolidaysCalendarPeriodsResponse) {
+                }
+                else if(response.getResponse() instanceof HolidaysCalendarPeriodsResponse) {
                     calendarPeriodsResponse = (HolidaysCalendarPeriodsResponse)response.getResponse();
                     HashMap<String,ColaboratorHoliday> colaboratorHolidayHashMap = new HashMap<>();
                     List<String> numberColaborators = new ArrayList<>();
@@ -392,6 +394,14 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                         }
                     }
 
+                    //Buscamos empalmes
+                    for(String key : colaboratorHolidayHashMap.keySet()){
+                        colaboratorHolidayHashMap.get(key).setHasSplice(hasSplice(colaboratorHolidayHashMap.get(key)));
+                    }
+
+
+
+
                         setCalendarData();
                         //colaboratorHolidays.clear();
                         for (String colaboratorNumber : numberColaborators) {
@@ -412,6 +422,17 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
                 break;
         }
+    }
+
+
+    private boolean hasSplice( ColaboratorHoliday colaboratorHoliday){
+        for (HolidayPeriod period : calendarPeriodsResponse.getData().getResponse().getPeriodos()) {
+            if(colaboratorHoliday.getNum_empleado().equals(period.getNum_empleado()) &&
+                    period.getVer_marca() != null && period.getVer_marca().size() > 0 )
+                return true;
+        }
+
+        return false;
     }
 
     private void showSuccessDialog(int type,String title,String content) {
@@ -478,7 +499,6 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
         getCalendarInfo();
-
     }
 
 

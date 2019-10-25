@@ -55,11 +55,8 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
         TextView versionTxt = (TextView)findViewById(R.id.versionTxt);
-
         versionTxt.setText(String.format("V. %s",getVersionApp()));
-
         getWindow().setBackgroundDrawable(null);
         gson = new Gson();
 
@@ -70,24 +67,16 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 Log.e("newToken",newToken);
                 if(newToken != null && !newToken.isEmpty())
                     AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN,newToken);
-
             }
         });
-
-
-
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_GOTO_SECTION) != null) {
             goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
             startApp();
         }else{
-
             init();
         }
-
-
-
     }
 
     private void startApp(){

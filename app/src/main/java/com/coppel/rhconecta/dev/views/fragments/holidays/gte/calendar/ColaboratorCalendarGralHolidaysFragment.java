@@ -602,6 +602,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 calendarProposedData.setColaborator(colaboratorHoliday);
               calendarProposedData.setListDaySelected( this.dayListSelected);
 
+              calendarProposedData.setNum_mes(this.num_mes);
+              calendarProposedData.setNum_anio(this.num_anio);
+
               ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_PERIODS,calendarProposedData);
           }
 

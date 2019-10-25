@@ -140,6 +140,8 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
         btnCancelControl.setOnClickListener(this);
         btnActionLeft.setOnClickListener(this);
         btnActionRight.setOnClickListener(this);
+        btnActionRight.setEnabled(false);
+
 
         btnMinus.setOnClickListener(this);
         btnPlus.setOnClickListener(this);
@@ -166,6 +168,13 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
                     //IDialogControlKeboard.showKeyboard(false,txtTitle);
                     return;
                 }
+
+
+                btnActionRight.setEnabled(s.toString().trim().length() > 4 ? true : false);
+                btnActionRight.setBackgroundResource(s.toString().trim().length() > 4 ?
+                        R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
+
+
             }
 
             @Override
@@ -219,9 +228,6 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
                     if(!reason.isEnabled() || (reason.isEnabled() &&  reason.getText() != null && !reason.getText().toString().isEmpty())){
                         OnButonOptionReasonClick.onRightOptionReasonClick(getAditionalDays(),this);
                     }
-
-
-
 
                     break;
 
@@ -371,7 +377,7 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
 
     @Override
     public void enabledAuthorized(boolean enable) {
-        btnActionRight.setEnabled(enable);
+        if(!enable) btnActionRight.setEnabled(enable);
         btnActionRight.setBackgroundResource(enable ? R.drawable.background_blue_rounded :R.drawable.backgroud_rounder_grey );
     }
 

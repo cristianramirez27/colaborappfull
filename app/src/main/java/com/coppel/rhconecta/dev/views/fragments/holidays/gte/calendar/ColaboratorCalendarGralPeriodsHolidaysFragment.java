@@ -523,13 +523,18 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
     private void editHoliday(List<HolidayPeriod> holidayPeriodSchedule){
         List<HolidayPeriod> data = new ArrayList<>();
-        HolidayPeriod periodUpdated = new HolidayPeriod();
+        /*HolidayPeriod periodUpdated = new HolidayPeriod();
         periodUpdated.setIdu_folio(this.holidayPeriod.getIdu_folio());
         periodUpdated.setFec_ini(holidayPeriodSchedule.get(0).getFec_ini());
         periodUpdated.setFec_fin(holidayPeriodSchedule.get(0).getFec_fin());
         periodUpdated.setNum_dias(holidayPeriodSchedule.get(0).getNum_dias());
-        data.add(periodUpdated);
-        openObservationsEdit(data);
+        data.add(periodUpdated);*/
+        /**Se establece el IdFolio al primer periodo y los demas en 0**/
+        if(holidayPeriodSchedule.size() > 0){
+            holidayPeriodSchedule.get(0).setIdu_folio(this.holidayPeriod.getIdu_folio());
+        }
+
+        openObservationsEdit(holidayPeriodSchedule);
     }
 
     //TODO Validar
@@ -733,6 +738,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             data.setColaborator(colaboratorHoliday);
             data.setListDaySelected(calendarProposedData.getListDaySelected());
 
+            data.setNum_anio(calendarProposedData.getNum_anio());
+            data.setNum_mes(calendarProposedData.getNum_mes());
             // ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_CALENDAR_COLABORATOR,colaboratorHoliday);
             NavigationUtil.openActivityParamsSerializable(getActivity(), VacacionesActivity.class,
                     BUNDLE_OPTION_DATA_HOLIDAYS,data,
@@ -845,51 +852,59 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
 
     private void setColaboratorMarkInCalendar(HolidayPeriod period){
 
-        HashMap<String,Day> daysInCalendar = new HashMap<>();
-        List<Day>  listDaySelected = new ArrayList<>();
-      //  for(HolidayPeriod period : periods){
-            if(!period.getFec_ini().isEmpty() && !period.getFec_fin().isEmpty())
-                setSelectedDays(period,daysInCalendar);
-      //  }
-        //Llenamos la lista con los dias con y sin empalmes
-        for(String dateAsString : daysInCalendar.keySet()){
-            listDaySelected.add(daysInCalendar.get(dateAsString));
-        }
+        try {
 
-
-        HashMap<String,Day> daysCurrentOthersColaborators = new HashMap<>();
-        HashMap<String,Day> daysCurrent = new HashMap<>();
-
-
-        for(Day daySplice : daySelectedOtherSplices){
-            daysCurrentOthersColaborators.put(String.format("%d%d%d",daySplice.getYear(),daySplice.getMonth()> 9 ?
-                    daySplice.getMonth() : "0" +daySplice.getMonth(),daySplice.getDay() > 9 ? daySplice.getDay() : "0"+daySplice.getDay()),daySplice);
-        }
-
-        for(Day dayCurrent : listDaySelected){
-            daysCurrent.put(String.format("%d%d%d",dayCurrent.getYear(),dayCurrent.getMonth()> 9 ?
-                    dayCurrent.getMonth() : "0" +dayCurrent.getMonth(),dayCurrent.getDay() > 9 ? dayCurrent.getDay() : "0"+dayCurrent.getDay()),dayCurrent);
-        }
-
-        for(String key : daysCurrent.keySet()){
-            daysCurrent.get(key).setHasSplice(0);
-            if(daysCurrentOthersColaborators.containsKey(key)){
-                daysCurrent.get(key).setHasSplice(daysCurrentOthersColaborators.get(key).getHasSplice());
+            HashMap<String, Day> daysInCalendar = new HashMap<>();
+            List<Day> listDaySelected = new ArrayList<>();
+            //  for(HolidayPeriod period : periods){
+            if (!period.getFec_ini().isEmpty() && !period.getFec_fin().isEmpty())
+                setSelectedDays(period, daysInCalendar);
+            //  }
+            //Llenamos la lista con los dias con y sin empalmes
+            for (String dateAsString : daysInCalendar.keySet()) {
+                listDaySelected.add(daysInCalendar.get(dateAsString));
             }
-        }
 
 
-        for(Day day : listDaySelected){
-            day.setHasSplice(-1);
-            if(hasSplice(period.getVer_marca(),day)){
-                day.setHasSplice(1);
+            HashMap<String, Day> daysCurrentOthersColaborators = new HashMap<>();
+            HashMap<String, Day> daysCurrent = new HashMap<>();
+
+
+            for (Day daySplice : daySelectedOtherSplices) {
+                daysCurrentOthersColaborators.put(String.format("%s%s%s", String.valueOf(daySplice.getYear()), daySplice.getMonth() > 9 ?
+                        String.valueOf( daySplice.getMonth()) : "0" + daySplice.getMonth(),
+                        daySplice.getDay() > 9 ? String.valueOf(daySplice.getDay()) : "0" + daySplice.getDay()), daySplice);
             }
+
+            for (Day dayCurrent : listDaySelected) {
+                daysCurrent.put(String.format("%s%s%s", String.valueOf(dayCurrent.getYear()), dayCurrent.getMonth() > 9 ?
+                        String.valueOf(dayCurrent.getMonth()) : "0" + dayCurrent.getMonth(),
+                        dayCurrent.getDay() > 9 ? String.valueOf(dayCurrent.getDay()) : "0" + dayCurrent.getDay()), dayCurrent);
+            }
+
+            for (String key : daysCurrent.keySet()) {
+                daysCurrent.get(key).setHasSplice(0);
+                if (daysCurrentOthersColaborators.containsKey(key)) {
+                    daysCurrent.get(key).setHasSplice(daysCurrentOthersColaborators.get(key).getHasSplice());
+                }
+            }
+
+
+            for (Day day : listDaySelected) {
+                day.setHasSplice(-1);
+                if (hasSplice(period.getVer_marca(), day)) {
+                    day.setHasSplice(1);
+                }
+            }
+
+            collapsibleCalendar.select(listDaySelected);
+
+            String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
+            formatMonthNameFormat(monthNameCalendar, monthName);
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
-        collapsibleCalendar.select(listDaySelected);
-
-        String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
-        formatMonthNameFormat(monthNameCalendar,monthName);
     }
 
 
