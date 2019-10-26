@@ -213,12 +213,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadDataBenefitsBasic();
-        /*if(validateGeolocalization()){
+        //loadDataBenefitsBasic();
+        if(validateGeolocalization()){
           getGeolocalization();
         }else {
             askPermission();
-        }*/
+        }
 
     }
 
