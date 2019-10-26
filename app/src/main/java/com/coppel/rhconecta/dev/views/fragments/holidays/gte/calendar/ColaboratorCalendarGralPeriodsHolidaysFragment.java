@@ -185,6 +185,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     private CalendarProposedData calendarProposedData;
     private List<Day> daySelectedOtherSplices;
 
+    private boolean finishApp = false;
+
     private long mLastClickTime = 0;
     @Override
     public void onAttach(Context context) {
@@ -691,10 +693,13 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             case ServicesRequestType.HOLIDAYS:
                 if(response.getResponse() instanceof HolidayChangeStatusResponse){
                     HolidayChangeStatusResponse changeStatusResponse = (HolidayChangeStatusResponse)response.getResponse();
-                    if(changeStatusResponse.getData().getResponse().getClv_estado() == 1){
-                        showSuccessDialog(MSG_HOLIDAYS_OK,changeStatusResponse.getData().getResponse().getDes_mensaje(), "");
-                    }
+
                     changeStatusPeriod = true;
+                    if(changeStatusResponse.getData().getResponse().getClv_estado() == 1 || !changeStatusResponse.getData().getResponse().getDes_mensaje().isEmpty()){
+                        showSuccessDialog(MSG_HOLIDAYS_OK,changeStatusResponse.getData().getResponse().getDes_mensaje(), "");
+
+                        changeStatusPeriod = false;
+                    }
                 }
 
                 else if(response.getResponse() instanceof HolidaysPeriodsResponse) {
