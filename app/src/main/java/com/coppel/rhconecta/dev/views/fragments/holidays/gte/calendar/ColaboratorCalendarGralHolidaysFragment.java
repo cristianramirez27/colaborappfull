@@ -518,6 +518,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
                     layoutContainer.setVisibility(VISIBLE);
 
+                    holidayRequestRecyclerAdapter.notifyDataSetChanged();
+
                     switchView(showCalendar);
 
                 } else if(response.getResponse() instanceof HolidaySchedulePeriodsResponse){
