@@ -64,8 +64,8 @@ public class ReasonAditionalDayRecyclerAdapter extends RecyclerView.Adapter<Reas
                     //currentItem.setSelected(false);
                     //viewHolder.checkboxElement.setChecked(false);
                     selectedPosition = position;
-                    IControlViews.enabledAuthorized(true);
                     IControlViews.enabledOtherReason(currentItem.getIdu_motivo() == 4 ? true : false);
+                    IControlViews.enabledAuthorized(currentItem.getIdu_motivo() != 4 ? true : false);
 
                 } else {
                     IControlViews.enabledAuthorized(false);

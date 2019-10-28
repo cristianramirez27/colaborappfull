@@ -170,9 +170,12 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
                 }
 
 
-                btnActionRight.setEnabled(s.toString().trim().length() > 4 ? true : false);
-                btnActionRight.setBackgroundResource(s.toString().trim().length() > 4 ?
-                        R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
+                if(reason.isEnabled()){
+                    btnActionRight.setEnabled(s.toString().trim().length() > 4 ? true : false);
+                    btnActionRight.setBackgroundResource(s.toString().trim().length() > 4 ?
+                            R.drawable.background_blue_rounded :  R.drawable.backgroud_rounder_grey);
+
+                }
 
 
             }
@@ -377,7 +380,8 @@ public class DialogFragmentControlAditionalDays extends DialogFragment implement
 
     @Override
     public void enabledAuthorized(boolean enable) {
-        if(!enable) btnActionRight.setEnabled(enable);
+        //if(!enable)
+        btnActionRight.setEnabled(enable);
         btnActionRight.setBackgroundResource(enable ? R.drawable.background_blue_rounded :R.drawable.backgroud_rounder_grey );
     }
 
