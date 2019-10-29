@@ -62,6 +62,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,8 +152,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private int num_mes;
     private int num_anio;
 
+    private  boolean requestToList;
+
 
     private boolean sendRequestSuccess;
+    private Day maxDayToCalendar;
     private Map<String, List<DaySelectedHoliday>> periods;
     private long mLastClickTime = 0;
     @Override
@@ -240,6 +245,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         collapsibleCalendar.setTitleMonthVisible(false);
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
+
+
         collapsibleCalendar.setActionSplice(new CommandSplice() {
             @Override
             public void action(Day daySelected) {
@@ -259,6 +266,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        requestToList = true;
         getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),0, this.num_mes, this.num_anio);
     }
 
@@ -297,6 +305,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
             case R.id.iconList:
                 showCalendar = false;
+                requestToList = true;
                 getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),0,this.num_mes,this.num_anio);
                 break;
 
@@ -328,9 +337,20 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         }
     }
 
+
+    private void setVisibilityNextMonth(){
+
+        if(maxDayToCalendar.getYear() == this.num_anio &&
+                maxDayToCalendar.getMonth() == this.num_mes){
+            nextMonth.setVisibility(View.INVISIBLE);
+        }else {
+            nextMonth.setVisibility(VISIBLE);
+        }
+    }
+
     private void changeMonth(boolean isNext){
         if(isNext){
-            collapsibleCalendar.nextMonth();
+             collapsibleCalendar.nextMonth();
         }else {
             collapsibleCalendar.prevMonth();
         }
@@ -341,6 +361,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
         getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+
+        setVisibilityNextMonth();
     }
 
     private void openCalendar(){
@@ -526,6 +548,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
                     switchView(showCalendar);
 
+
+                    if(requestToList){
+                        requestToList = false;
+                        setMaxMonthCalendar(holidayPeriodList);
+
+                    }
+
                 } else if(response.getResponse() instanceof HolidaySchedulePeriodsResponse){
                     HolidaySchedulePeriodsResponse schedulePeriodsResponse = (HolidaySchedulePeriodsResponse) response.getResponse();
                     //  if(schedulePeriodsResponse.getData().getResponse().getClv_estado() == 1){
@@ -537,6 +566,28 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 break;
         }
     }
+
+
+    private void setMaxMonthCalendar(List<HolidayPeriod> periods){
+
+        TreeSet<String> datesSorter = new TreeSet<>();
+        for(HolidayPeriod p : periods){
+            String[] parts = p.getFec_fin().split(",")[1].trim().split("-");
+            datesSorter.add(String.format("%s%s%s",parts[2],parts[1],parts[0]));
+        }
+
+        if(!datesSorter.isEmpty()){
+            String d = datesSorter.last();
+            int year = Integer.parseInt(d.substring(0,4));
+            int month = Integer.parseInt(d.substring(4,6));
+            maxDayToCalendar = new Day(year,month,30);
+
+        }
+
+
+     //   maxDayToCalendar = new Day()
+    }
+
 
     private void setFirstDate(String date){
         /*
@@ -685,11 +736,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         Calendar  calendar = Calendar.getInstance();
         calendar.set(this.num_anio,this.num_mes-1,1);
 
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
         CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
         collapsibleCalendar.setAdapter(adapter);
 
         collapsibleCalendar.select(listDaySelected);
+
+
+        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
     }
 
 
