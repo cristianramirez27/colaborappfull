@@ -163,6 +163,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     @BindView(R.id.monthName)
     TextView monthName;
 
+    private double numDaysQuantity;
+
     private int action;
     private Map<String, List<DaySelectedHoliday>> periods;
 
@@ -411,7 +413,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         fechaInicio.setText(this.holidayPeriod.getFec_ini());
         fechaFin.setText(this.holidayPeriod.getFec_fin());
 
-        double numDaysQuantity = Double.parseDouble(this.holidayPeriod.getNum_dias().split(" ")[0]);
+         numDaysQuantity = Double.parseDouble(this.holidayPeriod.getNum_dias().split(" ")[0]);
         String numDayASString= String.valueOf(numDaysQuantity);
         if(numDaysQuantity % 1 == 0){
             numDayASString = numDayASString.substring(0,numDayASString.indexOf("."));
@@ -559,6 +561,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setDes_mensaje(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje()!= null &&
                 !this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje().isEmpty() ?
                 this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje() : getString(R.string.msg_no_days_available));
+        
+        /*Se establece el numero de dias agendados*/
+        datePickerDialog.setCurrentDaysScheduled(numDaysQuantity);
 
         Calendar dateMin = Calendar.getInstance();
         Calendar dateMax = Calendar.getInstance();

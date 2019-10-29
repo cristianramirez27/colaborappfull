@@ -212,6 +212,9 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private double num_diasagendados;
     private double limite_dias;
 
+
+    private double currentDaysScheduled;
+
     private String des_mensaje;
 
     /**
@@ -1327,7 +1330,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
             //Validar que los días seleccionados sean menor o igual a la variable num_totalvacaciones menos
             //num_diasagendados que se obtiene al entrar a la opción, en caso de que sea mayor mandar el
             //des_mensaje
-            if(totalDays <= limite_dias){
+            if(totalDays <= (limite_dias + currentDaysScheduled)){
                 mCallBack.onDatesSelectedHolidays(periods, totalDays);
                 dismiss();
             }else {
@@ -1663,5 +1666,10 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         }
 
         return ListCalendarAll;
+    }
+
+
+    public void setCurrentDaysScheduled(double currentDaysScheduled) {
+        this.currentDaysScheduled = currentDaysScheduled;
     }
 }
