@@ -302,6 +302,10 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
             case R.id.iconCalendarTool:
                 showCalendar = true;
+                //this.num_mes = holidayPeriodList.get(0).getFec_ini()
+               // Integer[] dateData = getDayPeriodStart(holidayPeriodList.get(0));
+                //this.num_anio = dateData[0];
+                //this.num_mes = dateData[1];
                 getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
              //   switchView(true);
                 break;
@@ -707,6 +711,16 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     private Day getDayStartPeriod(String date, boolean adjustMonth){
         String[] datePart = date.split(",")[1].split("-");
         return new Day(Integer.parseInt(datePart[2]),!adjustMonth ? Integer.parseInt(datePart[1]) : Integer.parseInt(datePart[1]) - 1,Integer.parseInt(datePart[0].trim()));
+    }
+
+    private Integer[] getDayPeriodStart(HolidayPeriod period){
+        String dateStart = period.getFec_ini();
+
+        String [] dateParts = dateStart.split(",")[1].trim().split("-");
+        int year = Integer.parseInt(dateParts[2]);
+        int month = Integer.parseInt(dateParts[1]);
+        return new Integer[]{year,month};
+
     }
 
     private void setSelectedDays(HolidayPeriod period,HashMap<String,Day> daysInCalendar){

@@ -396,7 +396,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         //setColaboratorMarkInCalendar(holidayPeriodOwn);
 
         Day dayStart = getDayStartPeriod(this.calendarProposedData.getPeriod().getFec_ini(),false);
-        getPeriodsColaborators(this.calendarProposedData.getColaborator().getNum_empleado(),1,dayStart.getMonth(), dayStart.getYear());
+        getPeriodsColaborators(this.calendarProposedData.getColaborator().getNum_empleado(),0,dayStart.getMonth(), dayStart.getYear());
     }
 
 
@@ -695,11 +695,19 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                     HolidayChangeStatusResponse changeStatusResponse = (HolidayChangeStatusResponse)response.getResponse();
 
                     changeStatusPeriod = true;
+                    if(!changeStatusResponse.getData().getResponse().getDes_mensaje().isEmpty()){
+                        showSuccessDialog(MSG_HOLIDAYS_OK,changeStatusResponse.getData().getResponse().getDes_mensaje(), "");
+
+                        changeStatusPeriod = changeStatusResponse.getData().getResponse().getClv_estado() == 1 ? true : false;
+                    }
+
+
+                    /*changeStatusPeriod = true;
                     if(changeStatusResponse.getData().getResponse().getClv_estado() == 1 || !changeStatusResponse.getData().getResponse().getDes_mensaje().isEmpty()){
                         showSuccessDialog(MSG_HOLIDAYS_OK,changeStatusResponse.getData().getResponse().getDes_mensaje(), "");
 
                         changeStatusPeriod = false;
-                    }
+                    }*/
                 }
 
                 else if(response.getResponse() instanceof HolidaysPeriodsResponse) {

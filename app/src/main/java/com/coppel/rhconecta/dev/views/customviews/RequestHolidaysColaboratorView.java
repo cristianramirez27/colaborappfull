@@ -78,7 +78,21 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
         layoutFinal.setVisibility(period.getFec_fin().isEmpty() ? GONE : VISIBLE);
 
         layoutTotalDays.setVisibility(showTotalDays ? VISIBLE: GONE);
-        diasVacaciones.setText(period.getNum_dias());
+
+
+        if(period.getNum_dias() != null &&!period.getNum_dias().isEmpty()){
+            /*Validamos punto decimal*/
+            String daysTotal = period.getNum_dias();
+            if(!daysTotal.contains(".5")){
+                daysTotal = daysTotal.substring(0,daysTotal.indexOf("."));
+
+                diasVacaciones.setText(String.format("%s días",daysTotal));
+            }else {
+                diasVacaciones.setText(daysTotal);
+            }
+
+        }
+
 
         markerSpliceLeft.setBackgroundResource(period.getIdu_marca() == 1 ?  R.drawable.backgroud_circle_melon :  R.drawable.backgroud_circle_green);
         markerSpliceLeft.setVisibility(period.isShowMarker() ? VISIBLE : GONE);
