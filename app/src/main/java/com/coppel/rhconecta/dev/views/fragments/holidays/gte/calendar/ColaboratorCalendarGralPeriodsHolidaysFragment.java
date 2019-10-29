@@ -398,7 +398,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         //setColaboratorMarkInCalendar(holidayPeriodOwn);
 
         Day dayStart = getDayStartPeriod(this.calendarProposedData.getPeriod().getFec_ini(),false);
-        getPeriodsColaborators(this.calendarProposedData.getColaborator().getNum_empleado(),0,dayStart.getMonth(), dayStart.getYear());
+        getPeriodsColaborators(this.calendarProposedData.getColaborator().getNum_empleado(),1,dayStart.getMonth(), dayStart.getYear());
     }
 
 
@@ -561,7 +561,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setDes_mensaje(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje()!= null &&
                 !this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje().isEmpty() ?
                 this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje() : getString(R.string.msg_no_days_available));
-        
+
         /*Se establece el numero de dias agendados*/
         datePickerDialog.setCurrentDaysScheduled(numDaysQuantity);
 
