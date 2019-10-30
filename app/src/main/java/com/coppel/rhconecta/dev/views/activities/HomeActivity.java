@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -168,6 +169,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
 
     private Fragment currentHomeFragment;
+
+
+    private long mLastClickTime = 0;
 
     @BindView(R.id.titleToolbar)
     TextView titleToolbar;
@@ -332,8 +336,13 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        HomeMenuItem option = (HomeMenuItem) adapterView.getItemAtPosition(i);
 
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+
+        mLastClickTime = SystemClock.elapsedRealtime();
+        HomeMenuItem option = (HomeMenuItem) adapterView.getItemAtPosition(i);
         navigationMenu(option.getTAG());
     }
 

@@ -44,7 +44,7 @@
     <string name="permissions_needed">Es necesario que acepte los permisos para continuar</string>
     <string name="error_save_image">Ocurrió un error al guardar la imagen</string>
     <string name="select_image">Seleccione una imagen</string>
-    <string name="loan_saving_fund">Fondo de Ahorro</string>
+    <string name="loan_saving_fund">Fondo de ahorro</string>
     <string name="loan_margin">Margen de\ncrédito</string>
     <string name="buy_margin">Margen de\ncompra</string>
     <string name="enterprise_fund">Fondo de la\nempresa</string>
@@ -58,7 +58,7 @@
     <string name="add">Abonar</string>
     <string name="admin_family_access">Administrar acceso de familiares que pueden comprar con descuento</string>
     <string name="menu_title_message">Mensajes</string>
-    <string name="payroll_voucher">Comprobante de Pago</string>
+    <string name="payroll_voucher">Comprobante de pago</string>
     <string name="employment_letters">Cartas laborales</string>
     <string name="connection_error">Error de conexión</string>
     <string name="press_to_refresh">El contenido no pudo ser cargado, oprime para intentar de nuevo.</string>

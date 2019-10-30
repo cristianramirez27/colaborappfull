@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -114,6 +115,8 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
     @BindView(R.id.viewBackFavorites)
     View viewBackFavorites;
 
+
+    private long mLastClickTime = 0;
     private boolean reloadDashboard;
 
     //private DialogFragmentLoader dialogFragmentLoader;
@@ -301,7 +304,16 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onItemClick(String tag) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+            return;
+        }
+
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         parent.navigationMenu(tag);
+
+
     }
 
     @Override
