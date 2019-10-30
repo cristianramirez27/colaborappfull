@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -69,6 +70,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -162,6 +164,11 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     Button btnEdit;
     @BindView(R.id.monthName)
     TextView monthName;
+
+
+    private Day maxDayToCalendar;
+
+    private Day minDayToCalendar;
 
     private double numDaysQuantity;
 
@@ -350,7 +357,73 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         }
 
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+
+        setVisibilityNextMonth();
+        setVisibilityLasttMonth();
     }
+
+
+    private void setVisibilityNextMonth(){
+
+        int m = collapsibleCalendar.getMonth()+1;
+
+        if(maxDayToCalendar.getYear() == collapsibleCalendar.getYear() &&
+                maxDayToCalendar.getMonth() == m){
+            collapsibleCalendar.getmBtnNextMonth().setVisibility(View.INVISIBLE);
+        }else {
+            collapsibleCalendar.getmBtnNextMonth().setVisibility(VISIBLE);
+        }
+    }
+
+    private void setVisibilityLasttMonth(){
+        int m = collapsibleCalendar.getMonth()+1;
+
+        if(minDayToCalendar.getYear() == collapsibleCalendar.getYear()&&
+                minDayToCalendar.getMonth() == m ){
+            collapsibleCalendar.getmBtnPrevMonth().setVisibility(View.INVISIBLE);
+        }else {
+            collapsibleCalendar.getmBtnPrevMonth().setVisibility(VISIBLE);
+        }
+    }
+
+    private void setMaxMonthCalendar(HolidayPeriod period){
+
+        TreeSet<String> datesStartSorter = new TreeSet<>();
+        TreeSet<String> datesEndSorter = new TreeSet<>();
+
+            String[] partsStart = period.getFec_ini().split(",")[1].trim().split("-");
+            datesStartSorter.add(String.format("%s%s%s",partsStart[2],partsStart[1],partsStart[0]));
+
+            String[] partsEnd = period.getFec_fin().split(",")[1].trim().split("-");
+            datesEndSorter.add(String.format("%s%s%s",partsEnd[2],partsEnd[1],partsEnd[0]));
+
+
+        if(!datesStartSorter.isEmpty()){
+            String dMin = datesStartSorter.first();
+            int yearMin = Integer.parseInt(dMin.substring(0,4));
+            int monthMin = Integer.parseInt(dMin.substring(4,6));
+            minDayToCalendar = new Day(yearMin,monthMin,30);
+        }
+
+        if(!datesEndSorter.isEmpty()){
+            String d = datesEndSorter.last();
+            int year = Integer.parseInt(d.substring(0,4));
+            int month = Integer.parseInt(d.substring(4,6));
+            maxDayToCalendar = new Day(year,month,30);
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setVisibilityLasttMonth();
+                setVisibilityNextMonth();
+            }
+        },300);
+
+
+    }
+
+
 
     private void setDataPeriod(){
         setDataHeader();
@@ -719,7 +792,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                     HolidaysPeriodsResponse holidaysPeriodsResponse = (HolidaysPeriodsResponse)response.getResponse();
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         if(period.getIdu_folio() == (this.calendarProposedData.getPeriod().getIdu_folio())){
-
+                            setMaxMonthCalendar(period);
                             setColaboratorMarkInCalendar(period);
                         }
                     }

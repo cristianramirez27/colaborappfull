@@ -157,6 +157,8 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
     private boolean sendRequestSuccess;
     private Day maxDayToCalendar;
+
+    private Day minDayToCalendar;
     private Map<String, List<DaySelectedHoliday>> periods;
     private long mLastClickTime = 0;
     @Override
@@ -348,6 +350,16 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         }
     }
 
+    private void setVisibilityLasttMonth(){
+
+        if(minDayToCalendar.getYear() == this.num_anio &&
+                minDayToCalendar.getMonth() == this.num_mes){
+            lastmonth.setVisibility(View.INVISIBLE);
+        }else {
+            lastmonth.setVisibility(VISIBLE);
+        }
+    }
+
     private void changeMonth(boolean isNext){
         if(isNext){
              collapsibleCalendar.nextMonth();
@@ -362,6 +374,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
 
+        setVisibilityLasttMonth();
         setVisibilityNextMonth();
     }
 
@@ -570,22 +583,34 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
     private void setMaxMonthCalendar(List<HolidayPeriod> periods){
 
-        TreeSet<String> datesSorter = new TreeSet<>();
+        TreeSet<String> datesStartSorter = new TreeSet<>();
+        TreeSet<String> datesEndSorter = new TreeSet<>();
         for(HolidayPeriod p : periods){
-            String[] parts = p.getFec_fin().split(",")[1].trim().split("-");
-            datesSorter.add(String.format("%s%s%s",parts[2],parts[1],parts[0]));
+            String[] partsStart = p.getFec_ini().split(",")[1].trim().split("-");
+            datesStartSorter.add(String.format("%s%s%s",partsStart[2],partsStart[1],partsStart[0]));
+
+            String[] partsEnd = p.getFec_fin().split(",")[1].trim().split("-");
+            datesEndSorter.add(String.format("%s%s%s",partsEnd[2],partsEnd[1],partsEnd[0]));
         }
 
-        if(!datesSorter.isEmpty()){
-            String d = datesSorter.last();
+        if(!datesStartSorter.isEmpty()){
+            String dMin = datesStartSorter.first();
+            int yearMin = Integer.parseInt(dMin.substring(0,4));
+            int monthMin = Integer.parseInt(dMin.substring(4,6));
+            minDayToCalendar = new Day(yearMin,monthMin,30);
+        }
+
+        if(!datesEndSorter.isEmpty()){
+            String d = datesEndSorter.last();
             int year = Integer.parseInt(d.substring(0,4));
             int month = Integer.parseInt(d.substring(4,6));
             maxDayToCalendar = new Day(year,month,30);
-
         }
 
 
-     //   maxDayToCalendar = new Day()
+
+        setVisibilityLasttMonth();
+
     }
 
 
