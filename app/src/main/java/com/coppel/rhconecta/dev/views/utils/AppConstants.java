@@ -11,6 +11,8 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
     public static final String SHARED_PREFERENCES_TOKEN = "TOKEN";
+
+    public static final String SHARED_PREFERENCES_TOKEN_USER = "TOKEN_USER";
     public static final String SHARED_PREFERENCES_NUM_COLABORADOR = "NUM_COLABORADOR";
     public static final String SHARED_PREFERENCES_STATE_COLABORADOR = "STATE_COLABORADOR ";
     public static final String SHARED_PREFERENCES_CITY_COLABORADOR = "CITY_COLABORADOR";

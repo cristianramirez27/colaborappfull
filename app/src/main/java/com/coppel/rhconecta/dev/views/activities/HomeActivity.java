@@ -671,7 +671,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 if(response.getResponse() instanceof CollageResponse) {
                     CollageResponse collageResponse = (CollageResponse) response.getResponse();
-                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
                     String url = String.format("%s%s", collageResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
                     openCollage(url);
                 }

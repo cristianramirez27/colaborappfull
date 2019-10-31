@@ -38,6 +38,8 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         private int errorCode;
         private String userMessage;
 
+        private String token_user;
+
         public String getApp() {
             return app;
         }
@@ -124,6 +126,15 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
 
         public void setUserMessage(String userMessage) {
             this.userMessage = userMessage;
+        }
+
+
+        public String getToken_user() {
+            return token_user;
+        }
+
+        public void setToken_user(String token_user) {
+            this.token_user = token_user;
         }
     }
 }
