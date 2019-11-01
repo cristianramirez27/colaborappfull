@@ -114,6 +114,9 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
     @BindView(R.id.nextMonth)
     ImageView nextMonth;
 
+    private int monthCurrent;
+    private int yearCurrent;
+
 
     private DialogFragmentGetDocument dialogFragmentGetDocument;
     private HolidaysCalendarPeriodsResponse calendarPeriodsResponse;
@@ -202,7 +205,10 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                     if(doSearch && s.toString().length() == 0){
                         searchName = edtSearch.getText() != null && !edtSearch.getText().toString().isEmpty() ?
                                 edtSearch.getText().toString() : "";
-                        getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
+
+
+                        getCalendarPeriods(monthCurrent,yearCurrent);
+                       // getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
                     }
                 }else {
                     doSearch = true;
@@ -252,6 +258,10 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
             }
         });
+
+
+        monthCurrent = collapsibleCalendar.getMonth();
+        yearCurrent = collapsibleCalendar.getYear();
 
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
     }
@@ -411,10 +421,13 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                 colaboratorHolidayRecyclerAdapter.notifyDataSetChanged();
 
 
-                Calendar  calendar = Calendar.getInstance();
+               /*Calendar  calendar = Calendar.getInstance();
                 calendar.set(currentDate.get(Calendar.YEAR),currentDate.get(Calendar.MONTH),1);
                 CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
-                collapsibleCalendar.setAdapter(adapter);
+                collapsibleCalendar.setAdapter(adapter);*/
+
+               int m = currentDate.get(Calendar.MONTH);
+
 
                 formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
                 }
@@ -486,16 +499,25 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             currentDate = Calendar.getInstance();
         }
 
-        getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
+        getCalendarPeriods(monthCurrent,yearCurrent);
+        //getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
     }
 
     private void changeMonth(boolean isNext){
-        currentDate.set(Calendar.MONTH, isNext ? currentDate.get(Calendar.MONTH) + 1 :  currentDate.get(Calendar.MONTH) - 1);
+        monthCurrent =  isNext ? monthCurrent +1 : monthCurrent -1 ;
+
+        if(monthCurrent > 11)monthCurrent = 0;
+        else  if(monthCurrent < 0)monthCurrent = 11;
+        //currentDate.set(Calendar.MONTH, isNext ? currentDate.get(Calendar.MONTH) + 1 :  currentDate.get(Calendar.MONTH) - 1);
+        currentDate.set(Calendar.MONTH, monthCurrent);
+
         if(isNext){
             collapsibleCalendar.nextMonth();
         }else {
             collapsibleCalendar.prevMonth();
         }
+
+        yearCurrent = collapsibleCalendar.getYear();
 
         formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
         getCalendarInfo();
@@ -551,7 +573,9 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             dialogFragmentCenter.close();
             centro.setText(centerSelected.getNom_centro());
            // getColaborators(centerSelected.getNum_centro(),searchName);
-            getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
+            getCalendarPeriods(monthCurrent,yearCurrent);
+
+           // getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
         }
     }
 
@@ -566,7 +590,9 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
             searchName = search;
-            getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
+
+            getCalendarPeriods(monthCurrent,yearCurrent);
+           // getCalendarPeriods(currentDate.get(Calendar.MONTH),currentDate.get(Calendar.YEAR));
         }
     }
 
@@ -601,6 +627,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
 
     private void getCalendarPeriods(int month,int year){
+
+       // month = month == 0 ? 11 : month;
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_CALENDAR_HOLIDAY, 19);
