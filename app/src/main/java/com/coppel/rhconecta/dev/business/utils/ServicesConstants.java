@@ -72,6 +72,8 @@ public class ServicesConstants {
     public static final String SUCCESS = "SUCCESS";
 
     public static final int PETITION_PAYROLL_VOUCHER_LIST = 1;
+    public static final int PETITION_PAYROLL_VOUCHER_SELECTED = 3;
+
     public static final int CONSTANCE_TYPE_PAYROLL = 1;
     public static final int CONSTANCE_TYPE_SAVING_FUND = 2;
     public static final int CONSTANCE_TYPE_GAS = 3;

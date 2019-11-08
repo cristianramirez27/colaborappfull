@@ -165,4 +165,14 @@ public class AppConstants {
         public static final String NOTIFICATION_TITLE = "title";
     public static final String NOTIFICATION_BODY = "body";
 
+
+    public static final int ICON_NOMINA = 1;
+    public static final int ICON_FONDOAHORRO = 2;
+    public static final int ICON_GASOLINA = 3;
+    public static final int ICON_PTU = 4;
+    public static final int ICON_PENSION = 5;
+    public static final int ICON_AGUINALDO = 6;
+
+    public static final String BUNDLE_PAYROLL_OPTION = "PAYROLL_OPTION";
+
 }

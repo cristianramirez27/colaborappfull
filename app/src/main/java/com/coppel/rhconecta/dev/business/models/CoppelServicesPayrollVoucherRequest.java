@@ -1,8 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
 public class CoppelServicesPayrollVoucherRequest {
-    private String num_empleado;
-    private int solicitud;
+    protected String num_empleado;
+    protected int solicitud;
 
     public String getNum_empleado() {
         return num_empleado;

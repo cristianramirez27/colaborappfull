@@ -438,6 +438,12 @@ public class ServicesInteractor {
         getPayrollVoucher(employeeNumber, typePetition, token);
     }
 
+
+    public void getPayrollVoucherSelected(String employeeNumber, int typePetition,  int typeSelected,String token) {
+        this.token = token;
+        getPayrollVoucher(employeeNumber, typePetition,typeSelected, token);
+    }
+
     /**
      * Make a request to get voucher
      *
@@ -447,13 +453,14 @@ public class ServicesInteractor {
      */
     private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
 
+        String url = "v2/comprobantesdenominav2";
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(url/*ServicesConstants.GET_VOUCHER*/,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 try {
-                    VoucherResponse voucherResponse = (VoucherResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponse.class);
+                    VoucherResponseGeneric voucherResponse = (VoucherResponseV2) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponseV2.class);
                     if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getPayrollVoucherResponse(voucherResponse, response.code(), type);
                     } else {
@@ -472,6 +479,37 @@ public class ServicesInteractor {
         });
     }
 
+
+    private void getPayrollVoucher(String employeeNumber, int typePetition, int typeSelected,  final String token) {
+
+        String url = "v2/comprobantesdenominav2";
+        final int type = ServicesRequestType.PAYROLL_VOUCHER;
+        iServicesRetrofitMethods.getPayrollVoucher(url/*ServicesConstants.GET_VOUCHER*/,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    VoucherResponseGeneric voucherResponse = (VoucherResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponse.class);
+                    ((VoucherResponse)voucherResponse).setTypeSelected(typeSelected);
+                    if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getPayrollVoucherResponse(voucherResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+
     /**
      * Checks that the response code is equal to 200
      *
@@ -479,7 +517,7 @@ public class ServicesInteractor {
      * @param code     Code response
      * @param type     Services Request Type
      */
-    public void getPayrollVoucherResponse(VoucherResponse response, int code, int type) {
+    public void getPayrollVoucherResponse(VoucherResponseGeneric response, int code, int type) {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.PAYROLL_VOUCHER);
 
@@ -496,8 +534,8 @@ public class ServicesInteractor {
      * @param response Server response
      * @param type     Services Request Type
      */
-    public void getPayrollVoucherSuccess(VoucherResponse response, int type) {
-        ServicesResponse<VoucherResponse> servicesResponse = new ServicesResponse<>();
+    public void getPayrollVoucherSuccess(VoucherResponseGeneric response, int type) {
+        ServicesResponse<VoucherResponseGeneric> servicesResponse = new ServicesResponse<>();
         servicesResponse.setResponse(response);
         servicesResponse.setType(type);
         iServiceListener.onResponse(servicesResponse);
@@ -515,6 +553,16 @@ public class ServicesInteractor {
 
         coppelServicesPayrollVoucherRequest.setNum_empleado(employeeNumber);
         coppelServicesPayrollVoucherRequest.setSolicitud(typePetition);
+
+        return coppelServicesPayrollVoucherRequest;
+    }
+
+    public CoppelServicesPayrollVoucherSelectedRequest buildPayrollVoucherRequest(String employeeNumber, int typePetition,int typeSelected) {
+        CoppelServicesPayrollVoucherSelectedRequest coppelServicesPayrollVoucherRequest = new CoppelServicesPayrollVoucherSelectedRequest();
+
+        coppelServicesPayrollVoucherRequest.setNum_empleado(employeeNumber);
+        coppelServicesPayrollVoucherRequest.setSolicitud(typePetition);
+        coppelServicesPayrollVoucherRequest.setTipo_Constancia(typeSelected);
 
         return coppelServicesPayrollVoucherRequest;
     }

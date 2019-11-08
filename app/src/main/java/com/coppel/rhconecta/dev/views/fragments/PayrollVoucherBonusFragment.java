@@ -46,13 +46,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PayrollVoucherBonusFragment extends Fragment implements IServicesContract.View, PayrollVoucherBonusRecyclerAdapter.OnBonusVoucherClickListener,
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_PAYROLL_OPTION;
+
+public class PayrollVoucherBonusFragment extends PayrollVoucherDetailFragment implements IServicesContract.View, PayrollVoucherBonusRecyclerAdapter.OnBonusVoucherClickListener,
         PayrollVoucherBonusRecyclerAdapter.OnActionClickListener, DialogFragmentGetDocument.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = PayrollVoucherBonusFragment.class.getSimpleName();
-    private HomeActivity parent;
+
     private DialogFragmentLoader dialogFragmentLoader;
-    private CoppelServicesPresenter coppelServicesPresenter;
     private List<VoucherResponse.FechasAguinaldo> bonusDates;
     private PayrollVoucherBonusRecyclerAdapter payrollVoucherBonusRecyclerAdapter;
     private VoucherResponse.FechasAguinaldo bonusDateToGet;
@@ -70,6 +71,7 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
     RecyclerView rcvPayroll;
     private ISurveyNotification ISurveyNotification;
 
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,6 +80,7 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_payroll_voucher, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
@@ -87,12 +90,16 @@ public class PayrollVoucherBonusFragment extends Fragment implements IServicesCo
         rcvPayroll.setHasFixedSize(true);
         rcvPayroll.setLayoutManager(new LinearLayoutManager(getContext()));
         Bundle bundle = getArguments();
+
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_PAYROLL_DATES_BONUS) != null) {
             bonusDates = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_PAYROLL_DATES_BONUS), new TypeToken<List<VoucherResponse.FechasAguinaldo>>() {
             }.getType());
         } else {
             bonusDates = new ArrayList<>();
         }
+
+
+
         ISurveyNotification.getSurveyIcon().setVisibility(View.INVISIBLE);
         payrollVoucherBonusRecyclerAdapter = new PayrollVoucherBonusRecyclerAdapter(getContext(), bonusDates);
         payrollVoucherBonusRecyclerAdapter.setOnBonusVoucherClickListener(this);

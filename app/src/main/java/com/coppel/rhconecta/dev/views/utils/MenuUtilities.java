@@ -8,6 +8,7 @@ import android.util.Log;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherResponseV2;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
@@ -23,6 +24,12 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
@@ -257,26 +264,36 @@ public class MenuUtilities {
         return icon;
     }
 
-    public static List<HomeMenuItem> getPayrollMenu(Context context, VoucherResponse.Response voucherResponse) {
+    public static List<HomeMenuItem> getPayrollMenu(Context context, VoucherResponseV2.Response voucherResponse) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        if (voucherResponse.getFechas_nominas() != null && voucherResponse.getFechas_nominas().size() > 0 && !voucherResponse.getFechas_nominas().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.payroll), AppConstants.OPTION_PAYROLL_VOUCHER));
+        for(VoucherResponseV2.OpcionNomina opcionNomina : voucherResponse.getOpciones_nomina()){
+            if(!opcionNomina.getSfechanomina().equals("0")){
+                switch (opcionNomina.itipocomprobante){
+
+                    case ICON_NOMINA:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.payroll), AppConstants.OPTION_PAYROLL_VOUCHER));
+                        break;
+                    case ICON_FONDOAHORRO:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), OPTION_SAVING_FUND));
+                        break;
+                    case ICON_GASOLINA:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.gas), AppConstants.OPTION_GAS));
+                        break;
+
+                    case ICON_PTU:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.ptu), AppConstants.OPTION_PTU));
+                        break;
+                    case ICON_PENSION:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.alimony), AppConstants.OPTION_ALIMONY));
+                        break;
+
+                    case ICON_AGUINALDO:
+                        menuItems.add(new HomeMenuItem(context.getString(R.string.bonus), AppConstants.OPTION_BONUS));
+                        break;
+                }
+            }
         }
-        if (voucherResponse.getFechas_Aguinaldo() != null && voucherResponse.getFechas_Aguinaldo().size() > 0 && !voucherResponse.getFechas_Aguinaldo().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.bonus), AppConstants.OPTION_BONUS));
-        }
-        if (voucherResponse.getFecha_Corte_Cuenta() != null && voucherResponse.getFecha_Corte_Cuenta().size() > 0 && !voucherResponse.getFecha_Corte_Cuenta().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.saving_fund), OPTION_SAVING_FUND));
-        }
-        if (voucherResponse.getFecha_Gasolina() != null && voucherResponse.getFecha_Gasolina().size() > 0 && !voucherResponse.getFecha_Gasolina().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.gas), AppConstants.OPTION_GAS));
-        }
-        if (voucherResponse.getFechas_Utilidades() != null && voucherResponse.getFechas_Utilidades().size() > 0 && !voucherResponse.getFechas_Utilidades().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.ptu), AppConstants.OPTION_PTU));
-        }
-        if (voucherResponse.getFechasPensiones() != null && voucherResponse.getFechasPensiones().size() > 0 && !voucherResponse.getFechasPensiones().get(0).getSfechanomina().equals("0")) {
-            menuItems.add(new HomeMenuItem(context.getString(R.string.alimony), AppConstants.OPTION_ALIMONY));
-        }
+
         return menuItems;
     }
 

@@ -57,6 +57,11 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getPayrollVoucherValidation(employeeNumber, typePetition, token);
     }
 
+    public void requestPayrollVoucherSelected(String employeeNumber, int typePetition, int typeVoucher,String token) {
+        view.showProgress();
+        servicesInteractor.getPayrollVoucherSelected(employeeNumber, typePetition,typeVoucher, token);
+    }
+
     public void requestPayrollVoucherDetail(String employeeNumber, String email, int typeConstancy, int request, int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
         view.showProgress();
         servicesInteractor.getPayrollVoucherDetailValidation(employeeNumber, email, typeConstancy, request, shippingOption, date, data, token);

@@ -18,6 +18,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.VoucherResponse;
+import com.coppel.rhconecta.dev.business.models.VoucherResponseV2;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
@@ -39,6 +40,20 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_ALIMONY;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_BONUS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_GAS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_PAYROLL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_PAYROLL_PTU;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_GAS;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -49,7 +64,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
     private HomeActivity parent;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
-    private VoucherResponse voucherResponse;
+    private VoucherResponseV2 voucherResponse;
     private PayrollVoucherMenuRecyclerAdapter payrollVoucherMenuRecyclerAdapter;
     private List<HomeMenuItem> menuItems;
     private Gson gson;
@@ -107,46 +122,66 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
 
     @Override
     public void onItemClick(String tag) {
-        Bundle bundle = new Bundle();
+
+
+        int typeSelected = 0;
         switch (tag) {
             case AppConstants.OPTION_PAYROLL_VOUCHER:
-                PayrollVoucherFragment payrollVoucherFragment = new PayrollVoucherFragment();
-                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechas_nominas()));
+                /*PayrollVoucherFragment payrollVoucherFragment = new PayrollVoucherFragment();
+                //bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechas_nominas()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_NOMINA);
                 payrollVoucherFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherFragment, PayrollVoucherFragment.TAG);
+                parent.replaceFragment(payrollVoucherFragment, PayrollVoucherFragment.TAG);*/
+                typeSelected = CONSTANCE_TYPE_PAYROLL;
                 break;
             case AppConstants.OPTION_BONUS:
-                PayrollVoucherBonusFragment payrollVoucherBonusFragment = new PayrollVoucherBonusFragment();
-                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_BONUS, gson.toJson(voucherResponse.getData().getResponse().getFechas_Aguinaldo()));
+               /* PayrollVoucherBonusFragment payrollVoucherBonusFragment = new PayrollVoucherBonusFragment();
+                //bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_BONUS, gson.toJson(voucherResponse.getData().getResponse().getFechas_Aguinaldo()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_AGUINALDO);
                 payrollVoucherBonusFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherBonusFragment, PayrollVoucherBonusFragment.TAG);
+                parent.replaceFragment(payrollVoucherBonusFragment, PayrollVoucherBonusFragment.TAG);*/
+
+                typeSelected =  CONSTANCE_TYPE_BONUS ;
                 break;
             case AppConstants.OPTION_SAVING_FUND:
-                PayrollVoucherSavingFundFragment payrollVoucherSavingFundFragment = new PayrollVoucherSavingFundFragment();
-                bundle.putString(AppConstants.BUNDLE_SAVING_FUND_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Corte_Cuenta()));
+                /*PayrollVoucherSavingFundFragment payrollVoucherSavingFundFragment = new PayrollVoucherSavingFundFragment();
+                //bundle.putString(AppConstants.BUNDLE_SAVING_FUND_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Corte_Cuenta()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_FONDOAHORRO);
                 payrollVoucherSavingFundFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherSavingFundFragment, PayrollVoucherSavingFundFragment.TAG);
+                parent.replaceFragment(payrollVoucherSavingFundFragment, PayrollVoucherSavingFundFragment.TAG);*/
+                typeSelected =  CONSTANCE_TYPE_SAVING_FUND;
                 break;
             case AppConstants.OPTION_GAS:
-                PayrollVoucherGasFragment payrollVoucherGasFragment = new PayrollVoucherGasFragment();
-                bundle.putString(AppConstants.BUNDLE_GAS_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Gasolina()));
+                /*PayrollVoucherGasFragment payrollVoucherGasFragment = new PayrollVoucherGasFragment();
+                //bundle.putString(AppConstants.BUNDLE_GAS_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Gasolina()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_GASOLINA);
                 payrollVoucherGasFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherGasFragment, PayrollVoucherGasFragment.TAG);
+                parent.replaceFragment(payrollVoucherGasFragment, PayrollVoucherGasFragment.TAG);*/
+
+                typeSelected =  CONSTANCE_TYPE_GAS;
                 break;
             case AppConstants.OPTION_PTU:
-                PayrollVoucherPTUFragment payrollVoucherPTUFragment = new PayrollVoucherPTUFragment();
-                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_PTU, gson.toJson(voucherResponse.getData().getResponse().getFechas_Utilidades()));
+               /* PayrollVoucherPTUFragment payrollVoucherPTUFragment = new PayrollVoucherPTUFragment();
+                //bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_PTU, gson.toJson(voucherResponse.getData().getResponse().getFechas_Utilidades()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_PTU);
                 payrollVoucherPTUFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherPTUFragment, PayrollVoucherPTUFragment.TAG);
+                parent.replaceFragment(payrollVoucherPTUFragment, PayrollVoucherPTUFragment.TAG);*/
+                typeSelected =  CONSTANCE_TYPE_PAYROLL_PTU;
                 break;
             case AppConstants.OPTION_ALIMONY:
-                PayrollVoucherAlimonyFragment payrollVoucherAlimonyFragment = new PayrollVoucherAlimonyFragment();
-                bundle.putString(AppConstants.BUNDLE_PAYROLL_BENEFICIARIES_ALIMONY, gson.toJson(voucherResponse.getData().getResponse().getDatosPencion()));
-                bundle.putString(AppConstants.BUNDLE_BENEFICIARY_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechasPensiones()));
+              /*  PayrollVoucherAlimonyFragment payrollVoucherAlimonyFragment = new PayrollVoucherAlimonyFragment();
+                //bundle.putString(AppConstants.BUNDLE_PAYROLL_BENEFICIARIES_ALIMONY, gson.toJson(voucherResponse.getData().getResponse().getDatosPencion()));
+                //bundle.putString(AppConstants.BUNDLE_BENEFICIARY_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechasPensiones()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_PENSION);
                 payrollVoucherAlimonyFragment.setArguments(bundle);
-                parent.replaceFragment(payrollVoucherAlimonyFragment, PayrollVoucherAlimonyFragment.TAG);
+                parent.replaceFragment(payrollVoucherAlimonyFragment, PayrollVoucherAlimonyFragment.TAG);*/
+
+                typeSelected =  CONSTANCE_TYPE_ALIMONY;
                 break;
         }
+
+
+        getVoucherSelected(typeSelected);
     }
 
     @Override
@@ -155,12 +190,71 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
         ctlConnectionError.setVisibility(View.GONE);
         switch (response.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER:
-                voucherResponse = (VoucherResponse) response.getResponse();
-                menuItems.addAll(MenuUtilities.getPayrollMenu(parent, voucherResponse.getData().getResponse()));
-                payrollVoucherMenuRecyclerAdapter.notifyItemRangeInserted(payrollVoucherMenuRecyclerAdapter.getItemCount(), menuItems.size());
+
+                if(response.getResponse() instanceof VoucherResponseV2){
+
+                    voucherResponse = (VoucherResponseV2) response.getResponse();
+                    menuItems.addAll(MenuUtilities.getPayrollMenu(parent, voucherResponse.getData().getResponse()));
+                    payrollVoucherMenuRecyclerAdapter.notifyItemRangeInserted(payrollVoucherMenuRecyclerAdapter.getItemCount(), menuItems.size());
+
+                }else if(response.getResponse() instanceof VoucherResponse){
+                    showDetail((VoucherResponse)response.getResponse());
+                }
+
+                 break;
+        }
+    }
+
+
+    public void showDetail(VoucherResponse voucherResponse) {
+        Bundle bundle = new Bundle();
+        switch (voucherResponse.getTypeSelected()) {
+            case CONSTANCE_TYPE_PAYROLL:
+                PayrollVoucherFragment payrollVoucherFragment = new PayrollVoucherFragment();
+                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechas_nominas()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_NOMINA);
+                payrollVoucherFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherFragment, PayrollVoucherFragment.TAG);
+                break;
+            case CONSTANCE_TYPE_BONUS:
+                PayrollVoucherBonusFragment payrollVoucherBonusFragment = new PayrollVoucherBonusFragment();
+                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_BONUS, gson.toJson(voucherResponse.getData().getResponse().getFechas_Aguinaldo()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_AGUINALDO);
+                payrollVoucherBonusFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherBonusFragment, PayrollVoucherBonusFragment.TAG);
+                break;
+            case CONSTANCE_TYPE_SAVING_FUND:
+                PayrollVoucherSavingFundFragment payrollVoucherSavingFundFragment = new PayrollVoucherSavingFundFragment();
+                bundle.putString(AppConstants.BUNDLE_SAVING_FUND_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Corte_Cuenta()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_FONDOAHORRO);
+                payrollVoucherSavingFundFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherSavingFundFragment, PayrollVoucherSavingFundFragment.TAG);
+                break;
+            case CONSTANCE_TYPE_GAS:
+                PayrollVoucherGasFragment payrollVoucherGasFragment = new PayrollVoucherGasFragment();
+                bundle.putString(AppConstants.BUNDLE_GAS_DATES, gson.toJson(voucherResponse.getData().getResponse().getFecha_Gasolina()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_GASOLINA);
+                payrollVoucherGasFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherGasFragment, PayrollVoucherGasFragment.TAG);
+                break;
+            case CONSTANCE_TYPE_PAYROLL_PTU:
+               PayrollVoucherPTUFragment payrollVoucherPTUFragment = new PayrollVoucherPTUFragment();
+                bundle.putString(AppConstants.BUNDLE_PAYROLL_DATES_PTU, gson.toJson(voucherResponse.getData().getResponse().getFechas_Utilidades()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_PTU);
+                payrollVoucherPTUFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherPTUFragment, PayrollVoucherPTUFragment.TAG);
+                break;
+            case CONSTANCE_TYPE_ALIMONY:
+                PayrollVoucherAlimonyFragment payrollVoucherAlimonyFragment = new PayrollVoucherAlimonyFragment();
+                bundle.putString(AppConstants.BUNDLE_PAYROLL_BENEFICIARIES_ALIMONY, gson.toJson(voucherResponse.getData().getResponse().getDatosPencion()));
+                bundle.putString(AppConstants.BUNDLE_BENEFICIARY_DATES, gson.toJson(voucherResponse.getData().getResponse().getFechasPensiones()));
+                bundle.putInt(AppConstants.BUNDLE_PAYROLL_OPTION,ICON_PENSION);
+                payrollVoucherAlimonyFragment.setArguments(bundle);
+                parent.replaceFragment(payrollVoucherAlimonyFragment, PayrollVoucherAlimonyFragment.TAG);
                 break;
         }
     }
+
 
     @Override
     public void showError(ServicesError coppelServicesError) {
@@ -205,5 +299,13 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
     @Override
     public void onRightOptionClick() {
         AppUtilities.closeApp(parent);
+    }
+
+
+
+    private void getVoucherSelected(int typeVoucher){
+        coppelServicesPresenter.requestPayrollVoucherSelected(parent.getProfileResponse().getColaborador(),
+                ServicesConstants.PETITION_PAYROLL_VOUCHER_SELECTED,typeVoucher, parent.getLoginResponse().getToken());
+
     }
 }

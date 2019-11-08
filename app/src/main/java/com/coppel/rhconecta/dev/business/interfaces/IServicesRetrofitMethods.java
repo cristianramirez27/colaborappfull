@@ -45,6 +45,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequ
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherSelectedRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesReasonAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
@@ -82,6 +83,10 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getPayrollVoucher(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesPayrollVoucherRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getPayrollVoucher(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesPayrollVoucherSelectedRequest servicesRequest);
 
     //************************** getVoucherDetail **************************
     @Headers({"Content-Type: application/json"})
