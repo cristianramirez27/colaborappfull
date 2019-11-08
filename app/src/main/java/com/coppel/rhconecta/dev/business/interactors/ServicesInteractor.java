@@ -453,9 +453,8 @@ public class ServicesInteractor {
      */
     private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
 
-        String url = "v2/comprobantesdenominav2";
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(url/*ServicesConstants.GET_VOUCHER*/,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -482,9 +481,8 @@ public class ServicesInteractor {
 
     private void getPayrollVoucher(String employeeNumber, int typePetition, int typeSelected,  final String token) {
 
-        String url = "v2/comprobantesdenominav2";
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(url/*ServicesConstants.GET_VOUCHER*/,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
