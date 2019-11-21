@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/transparent">
-        <include layout="@layout/mdtp_time_title_view" />
+        <include layout="@layout/mdtp_time_title_view_library" />
         <FrameLayout
             android:id="@+id/mdtp_time_display_background"
             android:layout_width="@dimen/mdtp_left_side_width"
@@ -42,11 +42,11 @@
             android:layout_weight="1"
             android:background="@color/mdtp_accent_color" >
             <include
-                layout="@layout/mdtp_time_header_label"
+                layout="@layout/mdtp_time_header_label_library"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center" />
         </FrameLayout>
-        <include layout="@layout/mdtp_done_button" />
+        <include layout="@layout/mdtp_done_button_library" />
     </LinearLayout>
 </LinearLayout>

@@ -21,15 +21,15 @@
     android:background="@android:color/transparent">
 
     <include layout="@layout/mdtp_date_picker_header_view_v2" />
-    <include layout="@layout/mdtp_date_picker_selected_date_v2" />
+    <include layout="@layout/mdtp_date_picker_selected_date_v2_library" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@android:color/transparent">
-        <include layout="@layout/mdtp_date_picker_view_animator_v2" />
-        <include layout="@layout/mdtp_done_button"
+        <include layout="@layout/mdtp_date_picker_view_animator_v1" />
+        <include layout="@layout/mdtp_done_button_library"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-32dp"/>

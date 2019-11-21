@@ -47,7 +47,7 @@ public class DayPickerGroup extends ViewGroup
         addView(dayPickerView);
 
         final LayoutInflater inflater = LayoutInflater.from(getContext());
-        final ViewGroup content = (ViewGroup) inflater.inflate(R.layout.mdtp_daypicker_group, this, false);
+        final ViewGroup content = (ViewGroup) inflater.inflate(R.layout.mdtp_daypicker_group_library, this, false);
 
         // Transfer all children from the content to this
         while (content.getChildCount() > 0) {

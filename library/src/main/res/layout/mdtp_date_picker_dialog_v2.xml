@@ -28,11 +28,11 @@
 
         <include layout="@layout/mdtp_date_picker_header_view_v2" />
 
-        <include layout="@layout/mdtp_date_picker_selected_date_v2" />
+        <include layout="@layout/mdtp_date_picker_selected_date_v2_library" />
 
-        <include layout="@layout/mdtp_date_picker_view_animator_v2" />
+        <include layout="@layout/mdtp_date_picker_view_animator_v1" />
     </LinearLayout>
 
-    <include layout="@layout/mdtp_done_button" />
+    <include layout="@layout/mdtp_done_button_library" />
 
 </LinearLayout>

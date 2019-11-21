@@ -431,7 +431,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
         mDefaultLimiter.setController(this);
 
-//        int viewRes = mVersion == Version.VERSION_1 ? R.layout.mdtp_date_picker_dialog : R.layout.mdtp_date_picker_dialog_v2;
+//        int viewRes = mVersion == Version.VERSION_1 ? R.layout.mdtp_date_picker_dialog_library : R.layout.mdtp_date_picker_dialog_gral_v2;
         int viewRes = R.layout.dialog_holiday_calendar;
 
         view = inflater.inflate(viewRes, container, false);

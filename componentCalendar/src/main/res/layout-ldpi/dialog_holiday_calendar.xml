@@ -23,7 +23,7 @@
         android:background="#ffffff"
         android:gravity="center">
 
-        <include layout="@layout/mdtp_date_picker_dialog_v2" />
+        <include layout="@layout/mdtp_date_picker_dialog_gral_v2" />
 
     </FrameLayout>
 
