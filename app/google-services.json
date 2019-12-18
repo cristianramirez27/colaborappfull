@@ -3,7 +3,8 @@
     "project_number": "905205267590",
     "firebase_url": "https://rhconectaapp.firebaseio.com",
     "project_id": "rhconectaapp",
-    "storage_bucket": "rhconectaapp.appspot.com"
+    "storage_bucket": "rhconectaapp.appspot.com",
+
   },
   "client": [
     {
