@@ -107,6 +107,19 @@
 
             <TextView
                 android:id="@+id/txvCollaboratorNumberValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:maxLines="1"
+                android:textColor="@color/colorYellowCoppel"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumber"
+                app:layout_constraintTop_toBottomOf="@+id/txvName"
+                />
+
+            <EditText
+                android:id="@+id/editCollaboratorNumberValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -114,9 +127,30 @@
                 android:maxLines="1"
                 android:textColor="@color/colorYellowCoppel"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline30"
                 app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumber"
-                app:layout_constraintTop_toBottomOf="@+id/txvName" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineEdit"
+                android:visibility="gone"
+                android:maxLength="8"
+                android:inputType="number"/>
+
+            <ImageView
+                android:id="@+id/btnEditNumberCollaborator"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintStart_toEndOf="@+id/guidelineEdit"
+                app:layout_constraintTop_toBottomOf="@+id/txvName"
+                app:srcCompat="@drawable/ic_checked_true_green"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/numberImgEdit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintTop_toTopOf="@+id/txvCollaboratorNumberValue"
+                app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumberValue"
+                app:srcCompat="@drawable/ic_edit_mode" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline24"
@@ -159,6 +193,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guidelineEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.80" />
 
         </android.support.constraint.ConstraintLayout>
 

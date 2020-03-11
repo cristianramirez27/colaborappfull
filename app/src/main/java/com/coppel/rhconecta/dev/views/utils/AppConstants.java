@@ -40,6 +40,7 @@ public class AppConstants {
     public static final String OPTION_EXPENSES = "EXPENSE";
     public static final String OPTION_POLL = "POLL";
     public static final String OPTION_HOLIDAYS = "HOLIDAYS";
+    public static final String OPTION_QR_CODE = "QR_CODE";
     public static final String OPTION_COLLAGE = "COLLAGE";
 
     public static final String OPTION_NOTIFICATION_EXPENSES_AUTHORIZE = "_NOTIFICATION_EXPENSES_AUTHORIZE";

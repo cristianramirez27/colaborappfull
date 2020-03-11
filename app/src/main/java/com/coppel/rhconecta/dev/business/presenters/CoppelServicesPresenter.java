@@ -11,6 +11,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDeta
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -169,6 +170,11 @@ public class CoppelServicesPresenter implements IServiceListener {
     public void getCollege(String num_empleado,int option, String token){
         view.showProgress();
         servicesInteractor.getCollage(num_empleado, option,token);
+    }
+
+    public void validateCode(ValidateCodeRequest validateCodeRequest){
+        view.showProgress();
+        servicesInteractor.validateCode(validateCodeRequest);
     }
 
     @Override

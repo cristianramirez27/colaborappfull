@@ -33,6 +33,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
@@ -50,7 +51,9 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
                 new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
-                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
+                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]),
+                new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE)
+        );
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
 
@@ -259,7 +262,9 @@ public class MenuUtilities {
             case AppConstants.OPTION_PAY:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_icn_pay);
                 break;
-
+            case AppConstants.OPTION_QR_CODE:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_scanqr_web);
+                break;
         }
         return icon;
     }

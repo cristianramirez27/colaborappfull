@@ -399,4 +399,8 @@
     <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
 
     <string name="center_colaborators">Colaboradores del centro</string>
+    <string name="qrCode">Lectura de QR</string>
+    <string name="str_error_conexion">Ocurrió un error con la conexión</string>
+    <string name="str_cancel_scan">Cancelaste el escaneo</string>
+    <string name="str_scan_title">Escanear QR</string>
 </resources>
