@@ -230,6 +230,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         }
     }
 
+    /*
     public boolean editColaborador(String newNumber){
         boolean res = false;
         if (newNumber.equals("") || newNumber.equals(null) || newNumber.equals("0")){
@@ -247,6 +248,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
         return res;
     }
+    */
 
     @Override
     protected void onResume() {
