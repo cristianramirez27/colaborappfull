@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,6 +31,9 @@ import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
+import com.coppel.rhconecta.dev.di.DaggerDiComponent;
+import com.coppel.rhconecta.dev.presentation.common.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.home.HomeViewModel;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
@@ -69,6 +74,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,9 +90,14 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeMainFragment extends Fragment implements View.OnClickListener,
-        HomeMenuRecyclerViewAdapter.OnItemClick, HomeBannerPagerAdapter.OnBannerClick, Inicio.View,
-        DialogFragmentWarning.OnOptionClick {
+public class HomeMainFragment
+        extends Fragment
+        implements View.OnClickListener,
+        HomeMenuRecyclerViewAdapter.OnItemClick,
+        HomeBannerPagerAdapter.OnBannerClick,
+        Inicio.View,
+        DialogFragmentWarning.OnOptionClick
+{
 
     public static final String TAG = HomeMainFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -124,40 +137,23 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
 
     private DialogFragmentWarning dialogFragmentWarning;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ISurveyNotification = (ISurveyNotification)context;
+    /* START Clean architecture attributes */
+    @Inject HomeViewModel homeViewModel;
+    /* END Clean architecture attributes */
 
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        itemsCarousel.clear();//Eliminamos los elementos del carrusel.
-
-        if(!isOnline()){
-            showConecctionError();
-            return;
-        }
-
-        presenter.getUltimaEncuesta();
-        presenter.guardarLogin();
-
-        if(reloadDashboard){
-            reloadDashboard = false;
-            updateDashboard();
-        }
-    }
-
-
-
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 //COMMENT
         //dialogFragmentLoader = new DialogFragmentLoader();
-       // dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
+        // dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
 
         ((HomeActivity)getActivity()).showProgress();
 
@@ -200,6 +196,86 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         }, 1200);
 
         return view;
+    }
+
+    /**
+     *
+     * @param view
+     * @param savedInstanceState
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        DaggerDiComponent.create().inject(this);
+        homeViewModel.init(getContext());
+        observeViewModel();
+        homeViewModel.loadBanners();
+    }
+
+    /* START Clean architecture functions */
+
+    /**
+     *
+     *
+     */
+    private void observeViewModel() {
+        homeViewModel.getLoadBannersStatus().observe(this, getLoadBannersObserver());
+    }
+
+    /**
+     *
+     * @return
+     */
+    private Observer<ProcessStatus> getLoadBannersObserver() {
+        View view = getView();
+        assert view != null;
+        View loader = view.findViewById(R.id.pbLoader);
+        return processStatus -> {
+            loader.setVisibility(View.GONE);
+            if(processStatus != null) {
+                switch (processStatus) {
+                    case LOADING:
+                        loader.setVisibility(View.VISIBLE);
+                        break;
+                    case FAILURE:
+                        String message = homeViewModel.toString();
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        break;
+                    case COMPLETED:
+                        Toast.makeText(getContext(), "COMPLETED", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+    }
+
+    /* END Clean architecture functions */
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ISurveyNotification = (ISurveyNotification)context;
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        itemsCarousel.clear();//Eliminamos los elementos del carrusel.
+
+        if(!isOnline()){
+            showConecctionError();
+            return;
+        }
+
+        presenter.getUltimaEncuesta();
+        presenter.guardarLogin();
+
+        if(reloadDashboard){
+            reloadDashboard = false;
+            updateDashboard();
+        }
     }
 
     @Override
@@ -284,7 +360,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         });
 
     }
-
 
     @Override
     public void onClick(View view) {
@@ -373,7 +448,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         homeMenuRecyclerViewAdapter.setNotification(AppConstants.OPTION_NOTICE,notifications[0]);
         homeMenuRecyclerViewAdapter.setNotification(AppConstants.OPTION_VISIONARIES,notifications[1]);
     }
-
 
     @Override
     public void ShowTextoDiccionario(String text, int textView) {
@@ -499,7 +573,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-
     @Override
     public void onLeftOptionClick() {
 
@@ -521,7 +594,6 @@ public class HomeMainFragment extends Fragment implements View.OnClickListener,
         dialogFragmentWarning.setOnOptionClick(this);
         dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
-
 
     @Override
     public void onStart() {

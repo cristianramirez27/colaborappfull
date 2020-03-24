@@ -43,6 +43,7 @@ ext {
     firebaseConfigVersion = "16.0.0"
     firebaseDatabaseVersion = "16.0.2"
     firebaseMessagingVersion = "17.3.2"
+    daggerVersion = "2.25.2"
 }
 
 task clean(type: Delete) {
