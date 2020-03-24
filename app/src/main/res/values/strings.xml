@@ -403,4 +403,7 @@
     <string name="str_error_conexion">Ocurrió un error con la conexión</string>
     <string name="str_cancel_scan">Cancelaste el escaneo</string>
     <string name="str_scan_title">Escanear QR</string>
+    <string name="str_error_permisos">No se le otorgaron los permisos requeridos a la applicacion.</string>
+    <string name="str_error_phone_number">Numero de telefono invalido.</string>
+    <string name="str_error_unknown_device">No se pudo identificar el dispositivo.</string>
 </resources>

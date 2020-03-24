@@ -1,30 +1,20 @@
 package com.coppel.rhconecta.dev.business.models;
 
 public class ValidateCodeRequest {
-    private String cadena;
-    private int cliente;
     private int opcion;
+    private String qrcode;
+    private int usuario;
+    private String emailemp;
+    private String deviceid;
 
-    public ValidateCodeRequest(String cadena, int cliente, int opcion){
-        this.cadena = cadena;
-        this.cliente = cliente;
+    public ValidateCodeRequest(){}
+
+    public ValidateCodeRequest(int opcion, String qrcode, int usuario, String emailemp, String deviceid){
         this.opcion = opcion;
-    }
-
-    public String getCadena() {
-        return cadena;
-    }
-
-    public void setCadena(String cadena) {
-        this.cadena = cadena;
-    }
-
-    public int getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(int cliente) {
-        this.cliente = cliente;
+        this.qrcode = qrcode;
+        this.usuario = usuario;
+        this.emailemp = emailemp;
+        this.deviceid = deviceid;
     }
 
     public int getOpcion() {
@@ -33,5 +23,37 @@ public class ValidateCodeRequest {
 
     public void setOpcion(int opcion) {
         this.opcion = opcion;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
+    public int getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(int usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getDeviceid() {
+        return deviceid;
+    }
+
+    public void setDeviceid(String deviceid) {
+        this.deviceid = deviceid;
+    }
+
+    public String getEmailemp() {
+        return emailemp;
+    }
+
+    public void setEmailemp(String emailemp) {
+        this.emailemp = emailemp;
     }
 }

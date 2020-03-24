@@ -139,6 +139,8 @@ public class AppConfig {
         String block_surveys = mFirebaseRemoteConfig.getString(BLOCK_ENCUESTAS);
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
+        String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
+
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
@@ -152,6 +154,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS,block_surveys);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE,block_collage);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR,block_qr);
 
     }
 

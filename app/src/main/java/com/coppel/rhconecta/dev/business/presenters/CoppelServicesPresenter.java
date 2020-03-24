@@ -12,6 +12,7 @@ import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
+import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -187,5 +188,10 @@ public class CoppelServicesPresenter implements IServiceListener {
     public void onError(ServicesError coppelServicesError) {
         view.hideProgress();
         view.showError(coppelServicesError);
+    }
+
+    public void validateDeviceId(ValidateDeviceIdRequest validateDeviceIdRequest) {
+        view.showProgress();
+        servicesInteractor.validateDeviceId(validateDeviceIdRequest);
     }
 }

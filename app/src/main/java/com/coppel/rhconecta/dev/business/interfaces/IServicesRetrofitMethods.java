@@ -60,6 +60,7 @@ import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
+import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -326,4 +327,7 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> authCode(@Url String url, @Body AuthCodeRequest authCodeRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> validateDeviceId(@Url String url, @Body ValidateDeviceIdRequest validateDeviceIdRequest);
 }

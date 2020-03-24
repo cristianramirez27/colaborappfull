@@ -511,7 +511,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     break;
             case OPTION_QR_CODE:
                 Intent intentQr = new Intent(this, QrCodeActivity.class);
-                intentQr.putExtra("numEmpleado", profileResponse.getColaborador());
+                intentQr.putExtra("numEmp", profileResponse.getColaborador());
+                intentQr.putExtra("emailEmp", profileResponse.getCorreo());
                 startActivity(intentQr);
                 break;
 
