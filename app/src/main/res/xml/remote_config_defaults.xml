@@ -34,6 +34,10 @@
         <value>rhconecta/api/v2/perfilColaboradorConsulta</value>
     </entry>
     <entry>
+        <key>ENDPOINT_HOME</key>
+        <value>rhconecta/api/v3/home</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_PASSWORD_RECOVER</key>
         <value>rhconecta/api/v2/recuperacontra</value>
     </entry>

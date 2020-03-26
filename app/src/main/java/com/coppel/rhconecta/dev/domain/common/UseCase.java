@@ -17,17 +17,7 @@ public abstract class UseCase<Type, Params> {
      * @param params
      * @return
      */
-    public abstract Either<Failure, Type> run(Params params);
-
-    /**
-     *
-     * @param params
-     * @param function
-     */
-    public void invoke(Params params, OnResultFunction<Type> function) {
-        Either<Failure, Type> result = run(params);
-        function.onResult(result);
-    }
+    public abstract void run(Params params, OnResultFunction<Either<Failure, Type>> callback);
 
     /**
      *
@@ -60,7 +50,7 @@ public abstract class UseCase<Type, Params> {
          *
          * @param result
          */
-        void onResult(Either<Failure, Type> result);
+        void onResult(Type result);
 
     }
 

@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.presentation.common;
+package com.coppel.rhconecta.dev.presentation.common.view_model;
 
 /**
  *

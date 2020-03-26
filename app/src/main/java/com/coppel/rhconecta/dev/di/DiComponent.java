@@ -1,10 +1,10 @@
 package com.coppel.rhconecta.dev.di;
 
-import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
+import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 
 import dagger.Component;
 
-@Component
+@Component(modules = { HomeModule.class })
 public interface DiComponent {
 
     /**

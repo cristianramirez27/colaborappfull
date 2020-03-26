@@ -1,14 +1,11 @@
 package com.coppel.rhconecta.dev.domain.home.use_case;
 
-import android.util.Log;
-
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.HomeRepository;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,7 +14,7 @@ import javax.inject.Inject;
  *
  *
  */
-public class GetBannersUseCase extends UseCase<List<Banner>, GetBannersUseCase.Params> {
+public class GetBannersUseCase extends UseCase<List<Banner>, UseCase.None> {
 
     /* */
     @Inject HomeRepository homeRepository;
@@ -31,26 +28,12 @@ public class GetBannersUseCase extends UseCase<List<Banner>, GetBannersUseCase.P
 
     /**
      *
-     *
-     */
-    public static class Params {
-
-        /* */
-        String employeeNum;
-
-        public Params(String employeeNum) {
-            this.employeeNum = employeeNum;
-        }
-    }
-
-    /**
-     *
-     * @param params
-     * @return
+     * @param none
+     * @param callback
      */
     @Override
-    public Either<Failure, List<Banner>> run(GetBannersUseCase.Params params) {
-        return homeRepository.getBanners(params.employeeNum);
+    public void run(None none, OnResultFunction<Either <Failure, List<Banner>>> callback) {
+        homeRepository.getBanners(callback);
     }
 
 }

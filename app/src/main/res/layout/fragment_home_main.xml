@@ -5,57 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundCoppelBlanco"
-    tools:context=".views.fragments.HomeMainFragment">
-
+    tools:context=".presentation.home.HomeMainFragment">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vpBanner"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="240dp"
         android:focusableInTouchMode="true"
-
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <com.github.vivchar.viewpagerindicator.ViewPagerIndicator
         android:id="@+id/tabIndicator"
-        android:layout_width = "match_parent"
-        android:layout_height = "wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity = "center_horizontal|bottom"
-        android:layout_marginBottom = "20dp"
-        app:delimiterSize = "8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
-        app:itemScale = "1.5"
-        app:itemSize = "10dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        app:delimiterSize="8dp"
+        app:itemScale="1.5"
+        app:itemSize="10dp"
         app:itemSelectedTint="@color/transparentIndicatorSelected"
-        app:itemTint = "@color/transparentIndicator"
-
-        />
+        app:itemTint="@color/transparentIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/vpBanner" />
 
     <ImageView
         android:id="@+id/imgvArrowLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
         app:layout_constraintStart_toStartOf="@+id/guideline44"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"
-        app:layout_constraintVertical_bias="0.35000002"
         app:srcCompat="@drawable/ic_left_arrow_white" />
 
     <ImageView
         android:id="@+id/imgvArrowRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
         app:layout_constraintEnd_toStartOf="@+id/guideline47"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"
-        app:layout_constraintVertical_bias="0.35000002"
         app:srcCompat="@drawable/ic_right_arrow_white" />
 
     <android.support.v4.widget.NestedScrollView
@@ -69,7 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17">
+        app:layout_constraintTop_toBottomOf="@+id/vpBanner">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -112,12 +106,12 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.constraint.Guideline
+    <!--<android.support.constraint.Guideline
         android:id="@+id/guideline17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.42" />
+        app:layout_constraintGuide_percent=".42"/>-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline44"

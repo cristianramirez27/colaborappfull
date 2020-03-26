@@ -2,19 +2,14 @@ package com.coppel.rhconecta.dev.presentation.home;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.coppel.rhconecta.dev.business.interactors.ServicesInteractor;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
 import com.coppel.rhconecta.dev.domain.common.Either;
+import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetBannersUseCase;
-import com.coppel.rhconecta.dev.presentation.common.ProcessStatus;
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
-import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import java.util.List;
 
@@ -30,9 +25,8 @@ public class HomeViewModel {
     @Inject GetBannersUseCase getBannersUseCase;
     // Observables
     private MutableLiveData<ProcessStatus> loadBannersStatus = new MutableLiveData<>();
+    private List<Banner> banners;
     private Failure failure;
-    // Attributes
-    private Context context;
 
     /**
      *
@@ -42,24 +36,11 @@ public class HomeViewModel {
 
     /**
      *
-     * @param context
-     */
-    public void init(Context context){
-        this.context = context;
-    }
-
-    /**
-     *
      *
      */
     public void loadBanners() {
         loadBannersStatus.postValue(ProcessStatus.LOADING);
-        String employeeNum = AppUtilities.getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        );
-        GetBannersUseCase.Params params = new GetBannersUseCase.Params(employeeNum);
-        getBannersUseCase.invoke(params, result -> {
+        getBannersUseCase.run(UseCase.None.getInstance(), result -> {
             result.fold(onLoadBannersFailure, onLoadBannersRight);
         });
     }
@@ -72,8 +53,8 @@ public class HomeViewModel {
     };
 
     /* */
-    private Either.Fn<List<Banner>> onLoadBannersRight = aBoolean -> {
-        Log.i(getClass().getName(), aBoolean.toString());
+    private Either.Fn<List<Banner>> onLoadBannersRight = banners -> {
+        this.banners = banners;
         loadBannersStatus.postValue(ProcessStatus.COMPLETED);
     };
 
@@ -83,6 +64,14 @@ public class HomeViewModel {
      */
     public LiveData<ProcessStatus> getLoadBannersStatus() {
         return loadBannersStatus;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Banner> getBanners() {
+        return banners;
     }
 
     /**

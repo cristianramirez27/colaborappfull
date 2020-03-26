@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
@@ -60,7 +59,7 @@ import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EmploymentLettersMenuFragment;
-import com.coppel.rhconecta.dev.views.fragments.HomeMainFragment;
+import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
@@ -96,10 +95,6 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HO
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
@@ -111,7 +106,6 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
@@ -127,7 +121,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 public class HomeActivity extends AppCompatActivity implements  IServicesContract.View,View.OnClickListener, ListView.OnItemClickListener, ProfileFragment.OnPictureChangedListener,
         DialogFragmentWarning.OnOptionClick,ISurveyNotification, IScheduleOptions {

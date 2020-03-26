@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.views.modelview.BannerItem;
-import com.coppel.rhconecta.dev.views.utils.GlideApp;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class HomeBannerPagerAdapter extends PagerAdapter {
 
             View view = layoutInflater.inflate(R.layout.item_banner_home, container, false);
             ButterKnife.bind(this, view);
-            GlideApp.with(context)
+            Glide.with(context)
                     .load(banners.get(position).getImagePath())
                     .error(R.drawable.ic_image_grey_300_48dp)
                     .transition(DrawableTransitionOptions.withCrossFade())

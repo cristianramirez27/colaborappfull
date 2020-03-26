@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.views.fragments;
+package com.coppel.rhconecta.dev.presentation.home;
 
 import android.arch.lifecycle.Observer;
 import android.content.Context;
@@ -30,14 +30,13 @@ import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.di.DaggerDiComponent;
-import com.coppel.rhconecta.dev.presentation.common.ProcessStatus;
-import com.coppel.rhconecta.dev.presentation.home.HomeViewModel;
+import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
+import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.activities.LoginActivity;
-import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeBannerPagerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -74,16 +73,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 
@@ -207,7 +202,6 @@ public class HomeMainFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DaggerDiComponent.create().inject(this);
-        homeViewModel.init(getContext());
         observeViewModel();
         homeViewModel.loadBanners();
     }
@@ -238,16 +232,37 @@ public class HomeMainFragment
                         loader.setVisibility(View.VISIBLE);
                         break;
                     case FAILURE:
-                        String message = homeViewModel.toString();
+                        // TODO: Validate failure instance
+                        String message = homeViewModel.getFailure().toString();
                         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                         break;
                     case COMPLETED:
-                        Toast.makeText(getContext(), "COMPLETED", Toast.LENGTH_SHORT).show();
+                        setBanners(homeViewModel.getBanners());
                         break;
                 }
             }
         };
     }
+
+    /**
+     *
+     * @param banners
+     */
+    private void setBanners(List<Banner> banners){
+        assert getView() != null;
+        ViewPager viewPager = getView().findViewById(R.id.vpBanner);
+        ArrayList<Fragment> fragments = new ArrayList<>(banners.size());
+        for(Banner banner: banners)
+            fragments.add(BannerFragment.createInstance(banner, onBannerClickListener));
+        BannerViewPagerAdapter adapter  = new BannerViewPagerAdapter(getChildFragmentManager(), fragments);
+        viewPager.setAdapter(adapter);
+        tabIndicator.setupWithViewPager(viewPager);
+    }
+
+    /* */
+    private BannerFragment.OnBannerClickListener onBannerClickListener = banner -> {
+        Toast.makeText(parent, banner.toString(), Toast.LENGTH_SHORT).show();
+    };
 
     /* END Clean architecture functions */
 

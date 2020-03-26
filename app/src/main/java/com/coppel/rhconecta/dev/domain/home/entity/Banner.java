@@ -1,13 +1,17 @@
 package com.coppel.rhconecta.dev.domain.home.entity;
 
+import android.support.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 public class Banner {
 
     private String id;
     private String src;
     private String image;
-    private Byte type;
+    private int type;
 
-    public Banner(String id, String src, String image, Byte type) {
+    public Banner(String id, String src, String image, int type) {
         this.id = id;
         this.src = src;
         this.image = image;
@@ -26,8 +30,13 @@ public class Banner {
         return image;
     }
 
-    public Byte getType() {
+    public int getType() {
         return type;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }
