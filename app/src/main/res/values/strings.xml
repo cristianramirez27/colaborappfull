@@ -126,13 +126,9 @@
     <string name="enterprise_fund_faer">Fondo Empresa Faer</string>
 
     <!-- Uppercase Words -->
-    <string-array name="uppercase_words">
-        <item>IMSS</item>
-        <item>ISR</item>
-    </string-array>
+    <string name="error_bad_request">Error, la solicitud no cumple con la información requerida para está petición.</string>
 
     <!-- Error -->
-    <string name="error_bad_request">Error, la solicitud no cumple con la información requerida para está petición.</string>
     <string name="error_unauthorized">Error, la solicitud no cuenta con los privilegios necesarios.</string>
     <string name="error_not_found">Error, el recurso solicitado no ha sido encontrado.</string>
     <string name="server_error">Error contactando el servidor, intente de nuevo más tarde.</string>
@@ -140,46 +136,45 @@
     <string name="error_serialization">Error, la respuestá no tiene un formato adecuado.</string>
     <string name="error_unknown">Ocurrió un error desconocido.</string>
     <string name="error_generic_service">Servicio no disponible en este momento, intente más tarde.</string>
+    <string name="error_login">No se pudo obtener la información de login.</string>
 
     <!-- Login -->
-    <string name="error_login">No se pudo obtener la información de login.</string>
     <string name="error_account_null">Error, debes iniciar sesión primero.</string>
     <string name="error_password">Por favor ingresa tu contraseña.</string>
     <string name="error_email">Por favor ingresa tu correo.</string>
     <string name="invalid_email">El correo debe incluir un signo @, asegurate de que sea un formato de correo válido.</string>
     <string name="invalid_password">La contraseña debe tener mínimo 8 caracteres y debe incluir una mínuscula, una mayúscula y un número.</string>
-
-    <!-- Recover Password -->
     <string name="error_recover_password">No se pudo obtener la información para recuperar contraseña.</string>
 
-    <!-- Profile -->
+    <!-- Recover Password -->
     <string name="error_profile">No se pudo obtener la información de perfil.</string>
+
+    <!-- Profile -->
     <string name="logout">Cerrar sesión</string>
+    <string name="error_voucher">No se pudo obtener la información del comprobante de nómina.</string>
 
     <!-- Voucher -->
-    <string name="error_voucher">No se pudo obtener la información del comprobante de nómina.</string>
     <string name="error_voucher_send_mail">No se pudo enviar comprobante de nómina.</string>
     <string name="error_voucher_download">No se pudo descargar comprobante de nómina.</string>
-
-    <!-- Letters validation signature -->
     <string name="error_letters">No se pudo obtener la información de cartas laborales.</string>
 
+    <!-- Letters validation signature -->
     <string name="note_beneficiary">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Employment letters-->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="work_record">Constancia\nlaboral</string>
+
+    <!-- Employment letters-->
     <string name="visa_passport">Visa o\nPasaporte</string>
     <string name="bank_credit">Crédito\nbancario</string>
     <string name="infonavit">Infonavit</string>
     <string name="kindergarten">Guardería</string>
-
     <string name="choose_letter">Selecciona tu carta</string>
+
     <string name="customize_letter">Personaliza tu carta</string>
     <string name="choose_letter_indication"> Selecciona el tipo de carta que deseas imprimir</string>
-
     <string name="max_letters_print">Ya se excedió el número de impresiones.\nPonte en contacto con tu Encargada Local de Personal</string>
 
     <string name="title_stamp_letter">Sellar</string>
@@ -187,17 +182,18 @@
     <string name="question_stamp_letter">¿Necesitas tu carta sellada?</string>
 
     <string name="yes">Sí</string>
+
     <string name="no">No</string>
     <string name="sendToMail">Enviar a correo</string>
-
     <string name="forgot_field">¿Olvidaste algo?</string>
+
     <string name="edit_letter">Haz click aquí para editar</string>
     <string name="choose_child_name">Selecciona el nombre de tu(s) hijo(s)</string>
     <string name="choose_schedule">Selecciona tu horario laboral</string>
-
     <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
 
     <string name="start_day">Día inicial</string>
+
     <string name="end_day">Día final</string>
     <string name="start_hour">Entrada</string>
     <string name="end_hour">Salida</string>
@@ -207,42 +203,42 @@
     <string name="date_start_holiday">Fecha de salida</string>
     <string name="date_end_holiday">Fecha de regreso</string>
     <string name="title_choose_holiday">Selecciona el rango de fechas de vacaciones</string>
-
     <string name="cancel">Cancelar</string>
 
     <string name="remember_print">Recuerda imprimir tu carta\na color</string>
+
     <string name="employment_letters_title">Solicitud de carta</string>
     <string name="employment_letters_sent">Enviado correctamente</string>
     <string name="employment_letters_download">Carta descargada</string>
     <string name="letter_download_fail">Descarga de carta no se realizó</string>
-
-
     <string name="send_to_letter">La carta se enviará a </string>
 
 
     <string name="join_us">Sé parte de nuestro equipo</string>
 
+
     <string name="hint_search">Introduce una búsqueda</string>
 
     <string name="are_you_in_culiacan">¿No estás en Culiacán?</string>
+
     <string name="are_you_in_">¿No estás en</string>
     <string name="change_city"><u>Cambia de ciudad</u></string>
     <string name="discount_sample">30%\nde descuento</string>
-
-
     <string name="file_work_record">Laboral</string>
+
+
     <string name="file_visa_passport">Visa_Pasaporte</string>
     <string name="file_bank_credit">Credito_Bancario</string>
     <string name="file_infonavit">Infonavit</string>
     <string name="file_imss">AltaUltimo_Movto_IMSS</string>
     <string name="file_kindergarten">Guarderia</string>
-
     <string name="error_empty_search">El campo no puede estar vacío</string>
+
     <string name="max_hours_job">La Jornada Laboral no debe ser mayor a 48 horas</string>
+    <string name="removeFrom">Retirar de:</string>
 
     <!--Fondo de ahorro-->
 
-    <string name="removeFrom">Retirar de:</string>
     <string name="addTo">Abonar a:</string>
     <string name="totalRemove">Total Importe:</string>
     <string name="btnDoRemove">Realizar retiro</string>
@@ -251,34 +247,34 @@
     <string name="btnAddAditionalSave">Agregar</string>
     <string name="btnDoDeposit">Realizar abono</string>
     <string name="payment_way">Método de pago</string>
-
     <string name="acount_title">Cuenta\ncorriente</string>
+
     <string name="aditional_title">Ahorro\nadicional</string>
     <string name="worker_title">Fondo del\ntrabajador</string>
-
     <string name="want_remove">Quiero disponer</string>
+
     <string name="want_deposit">Quiero abonar</string>
     <string name="max_saving">Tu máxima cuota de ahorro es de</string>
     <string name="new_saving">Tu nueva cuota es de</string>
     <string name="paymentway_select">Selecciona un método de pago</string>
     <string name="confirm">Confirmar</string>
-
     <string name="colaborator">Colaborador</string>
+
     <string name="select_rol_expenses">Selecciona el rol con el que deseas acceder</string>
     <string name="authorize_request">Autorizar solicitudes</string>
-
     <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
 
     <string name="active_controls">Controles activos y liquidaciones</string>
 
-
     <string name="authorize_request_subtitle">Autorizar solicitudes de gastos de viaje y complementos de los colaboradores</string>
+
+
     <string name="active_controls_subtitle">Consultar controles activos y liquidaciones de los colaboradores</string>
-
     <string name="title_request_complements">Solicitudes y complementos:</string>
-    <string name="title_tracking_request">Controles en seguimiento:</string>
 
+    <string name="title_tracking_request">Controles en seguimiento:</string>
     <string name="travel_expenses">Gastos de viaje</string>
+
     <string name="travel_expenses_manager">Opciones de gerente</string>
     <string name="title_requests_controls">Mis solicitudes y controles</string>
     <string name="title_authorize_requests_controls">Autorizar solicitudes</string>
@@ -288,10 +284,10 @@
     <string name="title_request_expenses">Solicitud de gastos</string>
     <string name="title_complemento_expenses">Solicitud de complemento</string>
     <string name="title_my_control">Mi control</string>
-
     <string name="title_desc_reason">*Descripción del motivo de viaje</string>
 
     <string name="status_save">Guardada</string>
+
     <string name="status_pending">Pendiente\nGastos</string>
     <string name="status_canceled">Cancelada</string>
     <string name="status_refused">Rechazada</string>
@@ -302,49 +298,49 @@
     <string name="title_detail_colaborator_control">Detalles del control</string>
     <string name="title_detail_colaborator_request">Detalles de solicitud</string>
     <string name="title_detail_colaborator_complement">Detalles del complemento</string>
-
     <string name="hint_search_name_colaborator">Busca por nombre de colaborador</string>
+
     <string name="select_center">Seleccionar centro</string>
     <string name="select_status">Seleccionar estatus</string>
-
     <string name="title_refuse_request">Rechazar solicitud</string>
+
     <string name="title_refuse_complement">Rechazar complemento</string>
     <string name="desc_refuse">Escribe la razón por la que rechaza este gasto de viaje</string>
     <string name="title_reason_refuse">Motivo de Rechazo</string>
-
     <string name="empty_request_complements">No hay solicitudes disponibles</string>
+
     <string name="empty_controls">No hay controles disponibles</string>
+    <string name="request_holidays">Solicitud de vacaciones</string>
 
 
     <!--Vacaciones-->
-    <string name="request_holidays">Solicitud de vacaciones</string>
     <string name="title_holidays">Vacaciones</string>
     <string name="title_my_holidays">Mis vacaciones</string>
     <string name="title_period_holidays">Período de vacaciones</string>
     <string name="title_admin_holidays">Administrar vacaciones</string>
     <string name="title_dates_selected">Fechas seleccionadas</string>
     <string name="title_periods_holidays">Períodos de vacaciones</string>
-
     <string name="title_holidays_days">Días de vacaciones</string>
-    <string name="title_days">días</string>
 
+    <string name="title_days">días</string>
     <string name="title_day_availables">Días disponibles por decisión</string>
+
     <string name="title_days_pending_lastyear">Días pendientes año anterior</string>
     <string name="title_days_aditionals">Días adicionales pendientes</string>
     <string name="title_days_aditionals_register">Total días adicionales registrados del año</string>
     <string name="title_bonus_date">Fecha prima vacacional</string>
-
     <string name="title_date_start">Fecha inicio</string>
-    <string name="title_date_end">Fecha fin</string>
 
+    <string name="title_date_end">Fecha fin</string>
     <string name="empty_months">No hay controles disponibles</string>
 
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a lobortis erat. Donec tristique metus id quam eleifend, ut iaculis lectus malesuada. Sed id mi et urna malesuada laoreet ac sit amet justo. Nulla id pulvinar mauris, a malesuada ligula. In metus leo, lacinia vitae ullamcorper ac, egestas id leo. Integer elementum dapibus rhoncus. Sed sit amet leo ultrices, suscipit neque rutrum, luctus dui. Pellentesque luctus sit amet erat in sodales. Donec tristique feugiat velit, sit amet ullamcorper ipsum viverra eget. Aliquam in purus vulputate, auctor quam eu, condimentum magna. Phasellus blandit mi urna, a dignissim nunc vehicula viverra. Fusce feugiat nisl nulla, nec scelerisque odio aliquam sit amet. Maecenas dignissim elit id felis lobortis aliquet. Vestibulum maximus ligula lacus, eleifend tempor ex rutrum at</string>
 
-
     <string name="half_day">Medio día</string>
 
+
     <string name="btn_request_all">Solicitar\ntodas</string>
+
     <string name="btn_schedule_more">Agendar más\nvacaciones</string>
     <string name="btn_schedule_holidays">Agendar vacaciones</string>
     <string name="btn_edit_holidays">Editar\nperíodo</string>
@@ -353,15 +349,15 @@
     <string name="btn_refuse_holidays_">Rechazar\nvacaciones</string>
     <string name="title_total_request_days">Total días solicitados</string>
     <string name="title_days_to_schedule">Días por agendar</string>
-
-
     <string name="title_eliminate">Eliminar</string>
+
 
     <string name="msg_holiday_request_deleted">Solicitud eliminada\ncorrectamente</string>
 
     <string name="btn_canceled_period">Cancelar vacaciones</string>
 
     <string name="btn_request_holidays">Solicitudes de vacaciones</string>
+
     <string name="btn_aditional_days">Días adicionales</string>
     <string name="btn_calendar_holidays">Calendario de vacaciones</string>
     <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
@@ -371,32 +367,36 @@
     <string name="title_calendar_proposed">Ver calendario de días propuestos</string>
     <string name="title_splice">Empalme entre este colaborador y otro(s)</string>
     <string name="title_splice_colaborators">Empalme entre colaboradores</string>
-
     <string name="btn_aditional_days_holidays">Capturar días adicionales</string>
+
     <string name="hint_reason_aditional_days">Escribe el motivo aquí</string>
     <string name="hint_observation_days">Ingresa tus observacions aquí</string>
     <string name="btn_title_authorize">Autorizar</string>
     <string name="title_reason_aditional_days">Selecciona el motivo</string>
-
     <string name="title_control_aditional_days">¿Cuántos días adicionales\nocupa el colaborador?</string>
+
     <string name="title_add_aditional_days">Agrega o quita días adicionales</string>
     <string name="title_add_aditional_days_pending">Días adicionales pendientes</string>
     <string name="btn_title_next">Siguiente</string>
-
     <string name="holidays_to_authorized">Vacaciones por autorizar</string>
+
     <string name="holidays_scheduled">Vacaciones agendadas</string>
     <string name="title_add_aditional_days_toolbar">Días adicionales</string>
-
     <string name="subtitle_observation_authorize">Escribe el motivo por el cual agenda las vacaciones del colaborador</string>
 
     <string name="title_colaborator_request">Solicitudes del colaborador</string>
+
     <string name="title_colaborator_calendar_gral">Calendario de colaboradores</string>
     <string name="title_holidays_colaborator_calendar_gral">Vacaciones del colaborador</string>
     <string name="title_holidays_colaborator_calendar">Vacaciones colaborador</string>
     <string name="title_calendar_periods">Marca los días o medios días en el calendario sin días de descanso</string>
-
     <string name="title_collage">Universidad\nCoppel</string>
-    <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
 
+    <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
     <string name="center_colaborators">Colaboradores del centro</string>
+
+    <string-array name="uppercase_words">
+        <item>IMSS</item>
+        <item>ISR</item>
+    </string-array>
 </resources>

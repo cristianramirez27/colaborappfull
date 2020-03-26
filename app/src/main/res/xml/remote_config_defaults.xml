@@ -38,6 +38,10 @@
         <value>rhconecta/api/v3/home</value>
     </entry>
     <entry>
+        <key>ENDPOINT_COMUNICADOS</key>
+        <value>rhconecta/api/v3/comunicados</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_PASSWORD_RECOVER</key>
         <value>rhconecta/api/v2/recuperacontra</value>
     </entry>

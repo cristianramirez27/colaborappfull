@@ -52,6 +52,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
@@ -385,7 +386,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else{
-                    Intent intentNotice = new Intent(this, ComunicadosActivity.class);
+                    // Change activity management
+                    // Intent intentNotice = new Intent(this, ComunicadosActivity.class);
+                    Intent intentNotice = new Intent(this, ReleasesActivity.class);
                     startActivity(intentNotice);
                 }
                 break;

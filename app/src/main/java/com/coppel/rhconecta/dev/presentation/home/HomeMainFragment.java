@@ -133,7 +133,8 @@ public class HomeMainFragment
     private DialogFragmentWarning dialogFragmentWarning;
 
     /* START Clean architecture attributes */
-    @Inject HomeViewModel homeViewModel;
+    @Inject
+    public HomeViewModel homeViewModel;
     /* END Clean architecture attributes */
 
     /**

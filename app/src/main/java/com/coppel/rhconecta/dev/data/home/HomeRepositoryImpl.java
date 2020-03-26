@@ -58,7 +58,7 @@ public class HomeRepositoryImpl implements HomeRepository {
     public void getBanners(
             UseCase.OnResultFunction<Either<Failure, List<Banner>>> callback
     ) {
-        Long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
         ));
@@ -77,6 +77,7 @@ public class HomeRepositoryImpl implements HomeRepository {
             @Override
             public void onResponse(Call<GetMainInformationResponse> call, Response<GetMainInformationResponse> response) {
                 GetMainInformationResponse body = response.body();
+                // TODO: if(body == null)
                 List<GetMainInformationResponse.BannerServer> carrusel = body.data.response.Carrusel;
                 ArrayList<Banner> banners = new ArrayList<>();
                 for (GetMainInformationResponse.BannerServer bannerServer: carrusel)

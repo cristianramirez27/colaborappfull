@@ -25,6 +25,7 @@ public class HomeViewModel {
     @Inject GetBannersUseCase getBannersUseCase;
     // Observables
     private MutableLiveData<ProcessStatus> loadBannersStatus = new MutableLiveData<>();
+    // Values
     private List<Banner> banners;
     private Failure failure;
 
