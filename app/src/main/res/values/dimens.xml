@@ -1,5 +1,16 @@
 <resources>
 
+
+    <!-- MARGIN -->
+    <dimen name="half_lateral_margin">8dp</dimen>
+    <dimen name="lateral_margin">16dp</dimen>
+    <dimen name="double_lateral_margin">32dp</dimen>
+    <dimen name="half_vertical_margin">14dp</dimen>
+    <dimen name="vertical_margin">28dp</dimen>
+    <dimen name="double_vertical_margin">56dp</dimen>
+
+
+
     <dimen name="margin_doble">25dp</dimen>
     <dimen name="margin_regular">30dp</dimen>
     <dimen name="margin_big">24dp</dimen>

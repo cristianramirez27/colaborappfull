@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.presentation.releases;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
 import com.coppel.rhconecta.dev.presentation.releases.adapter.ReleasePreviewAdapter;
 
 import java.util.List;
@@ -101,11 +103,16 @@ public class ReleasesActivity extends AppCompatActivity {
      * @param releasesPreviews
      */
     private void setReleasesPreviews(List<ReleasePreview> releasesPreviews){
-        ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, releasePreview -> {
-            Toast.makeText(this, releasePreview.toString(), Toast.LENGTH_SHORT).show();
-        });
+        ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, onReleasePreviewClickListener);
         rvReleases.setAdapter(adapter);
     }
+
+    /* */
+    private ReleasePreviewAdapter.OnReleasePreviewClickListener onReleasePreviewClickListener = releasePreview -> {
+        Intent intent = new Intent(this, ReleaseDetailActivity.class);
+        intent.putExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId());
+        startActivity(intent);
+    };
 
     /**
      *

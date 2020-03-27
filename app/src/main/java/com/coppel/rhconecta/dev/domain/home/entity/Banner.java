@@ -34,6 +34,24 @@ public class Banner {
         return type;
     }
 
+    /**
+     *
+     *
+     * @return
+     */
+    public boolean isRelease() {
+        return type == 1;
+    }
+
+    /**
+     *
+     *
+     * @return
+     */
+    public boolean isVisionary(){
+        return type == 2;
+    }
+
     @NonNull
     @Override
     public String toString() {

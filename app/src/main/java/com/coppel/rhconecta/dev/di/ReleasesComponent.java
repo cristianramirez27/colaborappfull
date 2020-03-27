@@ -8,7 +8,7 @@ import dagger.Component;
  *
  *
  */
-@Component(modules = { ReleaseModule.class })
+@Component(modules = { ReleasesModule.class })
 public interface ReleasesComponent {
 
     /**

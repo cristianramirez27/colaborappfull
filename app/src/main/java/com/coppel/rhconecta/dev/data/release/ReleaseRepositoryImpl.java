@@ -1,10 +1,13 @@
 package com.coppel.rhconecta.dev.data.release;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
+import com.coppel.rhconecta.dev.data.release.model.get_release_by_id.GetReleaseByIdRequest;
+import com.coppel.rhconecta.dev.data.release.model.get_release_by_id.GetReleaseByIdResponse;
 import com.coppel.rhconecta.dev.data.release.model.get_releases_previews.GetReleasesPreviewsRequest;
 import com.coppel.rhconecta.dev.data.release.model.get_releases_previews.GetReleasesPreviewsResponse;
 import com.coppel.rhconecta.dev.domain.common.Either;
@@ -12,6 +15,7 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.release.ReleaseRepository;
+import com.coppel.rhconecta.dev.domain.release.entity.Release;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 
@@ -87,6 +91,47 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
             public void onFailure(Call<GetReleasesPreviewsResponse> call, Throwable t) {
                 Failure failure = new ServerFailure();
                 Either<Failure, List<ReleasePreview>> result = new Either<Failure, List<ReleasePreview>>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+    }
+
+    /**
+     *
+     * @param releaseId
+     * @param callback
+     */
+    @Override
+    public void getReleaseById(int releaseId, UseCase.OnResultFunction<Either<Failure, Release>> callback) {
+        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        ));
+        int clvOption = 2;
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        GetReleaseByIdRequest request = new GetReleaseByIdRequest(employeeNum, clvOption, releaseId);
+        apiService.getReleaseById(
+                authHeader,
+                ServicesConstants.GET_COMUNICADOS,
+                request
+        ).enqueue(new Callback<GetReleaseByIdResponse>() {
+
+            @Override
+            public void onResponse(Call<GetReleaseByIdResponse> call, Response<GetReleaseByIdResponse> response) {
+                GetReleaseByIdResponse body = response.body();
+                Release release = body.data.response.toRelease();
+                Either<Failure, Release> result = new Either<Failure, Release>().new Right(release);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetReleaseByIdResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, Release> result = new Either<Failure, Release>().new Left(failure);
                 callback.onResult(result);
             }
 

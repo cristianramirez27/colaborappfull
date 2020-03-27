@@ -9,14 +9,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServicesRetrofitManager {
 
+    private static ServicesRetrofitManager instance = null;
+    private HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
+
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .readTimeout(120, TimeUnit.SECONDS)
             .connectTimeout(120, TimeUnit.SECONDS)
-            .addInterceptor(new HttpLoggingInterceptor())
+            .addInterceptor(bodyInterceptor)
             .build();
-
-    private static ServicesRetrofitManager instance = null;
-    private HttpLoggingInterceptor bodyInterceptor = new HttpLoggingInterceptor();
 
     public synchronized static ServicesRetrofitManager getInstance() {
         if (instance == null) {

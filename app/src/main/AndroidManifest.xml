@@ -47,6 +47,9 @@
             android:name=".presentation.releases.ReleasesActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.release_detail.ReleaseDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".visionarios.comunicados.views.ComunicadosDetalleActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -97,10 +100,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icn_notificaciones_blanco" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondBlueCoppel" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.coppel.rhconecta.dev.fileprovider"
