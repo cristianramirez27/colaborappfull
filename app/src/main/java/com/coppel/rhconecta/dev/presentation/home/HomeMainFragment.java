@@ -30,7 +30,7 @@ import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.di.DaggerDiComponent;
+import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;

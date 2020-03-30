@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.di.DaggerReleaseComponent;
+import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 

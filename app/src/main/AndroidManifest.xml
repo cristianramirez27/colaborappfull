@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
+        <activity android:name=".presentation.visionaries.VisionariesActivity"></activity>
         <activity
             android:name=".views.activities.SplashScreenActivity"
             android:launchMode="singleTask"

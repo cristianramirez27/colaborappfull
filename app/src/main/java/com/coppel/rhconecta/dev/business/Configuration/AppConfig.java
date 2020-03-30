@@ -36,6 +36,7 @@ public class AppConfig {
     public final static String ENDPOINT_PROFILE = "ENDPOINT_PROFILE";
     public final static String ENDPOINT_HOME = "ENDPOINT_HOME";
     public final static String ENDPOINT_COMUNICADOS = "ENDPOINT_COMUNICADOS";
+    public final static String ENDPOINT_VISIONARIOS = "ENDPOINT_VISIONARIOS";
     public final static String ENDPOINT_PASSWORD_RECOVER = "ENDPOINT_PASSWORD_RECOVER";
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
@@ -83,6 +84,7 @@ public class AppConfig {
         String profile = mFirebaseRemoteConfig.getString(ENDPOINT_PROFILE);
         String home = mFirebaseRemoteConfig.getString(ENDPOINT_HOME);
         String comunicados = mFirebaseRemoteConfig.getString(ENDPOINT_COMUNICADOS);
+        String visionarios = mFirebaseRemoteConfig.getString(ENDPOINT_VISIONARIOS);
         String passrecover = mFirebaseRemoteConfig.getString(ENDPOINT_PASSWORD_RECOVER);
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
@@ -111,6 +113,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE,profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOME, home);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COMUNICADOS, comunicados);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VISIONARIOS, visionarios);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER,passrecover);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);

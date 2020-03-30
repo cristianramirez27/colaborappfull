@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.di;
+package com.coppel.rhconecta.dev.di.release;
 
 import com.coppel.rhconecta.dev.data.release.ReleaseRepositoryImpl;
 import com.coppel.rhconecta.dev.domain.release.ReleaseRepository;

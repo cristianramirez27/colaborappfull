@@ -12,7 +12,7 @@ public interface ReleaseRepository {
 
     /**
      *
-     * @return
+     * @param callback
      */
     void getReleasesPreviews(
             UseCase.OnResultFunction<Either<Failure, List<ReleasePreview>>> callback
@@ -20,7 +20,8 @@ public interface ReleaseRepository {
 
     /**
      *
-     * @return
+     * @param releaseId
+     * @param callback
      */
     void getReleaseById(
             int releaseId,

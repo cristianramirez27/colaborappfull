@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.di;
+package com.coppel.rhconecta.dev.di.home;
 
 import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 

@@ -16,8 +16,12 @@ import javax.inject.Inject;
  */
 public class GetReleasesPreviewsUseCase extends UseCase<List<ReleasePreview>, UseCase.None> {
 
+    /**
+     *
+     */
     @Inject
-    ReleaseRepository releaseRepository;
+    public ReleaseRepository releaseRepository;
+
 
     /**
      *

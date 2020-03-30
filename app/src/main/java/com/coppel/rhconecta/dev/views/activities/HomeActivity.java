@@ -53,6 +53,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
@@ -388,8 +389,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 }else{
                     // Change activity management
                     // Intent intentNotice = new Intent(this, ComunicadosActivity.class);
-                    Intent intentNotice = new Intent(this, ReleasesActivity.class);
-                    startActivity(intentNotice);
+                    Intent intentReleases = new Intent(this, ReleasesActivity.class);
+                    startActivity(intentReleases);
                 }
                 break;
             case OPTION_PAYROLL_VOUCHER:
@@ -418,7 +419,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else{
-                    Intent intentVisionaries = new Intent(this, VideosActivity.class);
+                    // Change activity management
+                    // Intent intentVisionaries = new Intent(this, VideosActivity.class);
+                    Intent intentVisionaries = new Intent(this, VisionariesActivity.class);
                     startActivity(intentVisionaries);
                 }
 
