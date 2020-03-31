@@ -5,13 +5,16 @@ import android.content.Context;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
-import com.coppel.rhconecta.dev.data.visionary.model.GetVisionariesPreviewsRequest;
-import com.coppel.rhconecta.dev.data.visionary.model.GetVisionariesPreviewsResponse;
+import com.coppel.rhconecta.dev.data.visionary.model.get_visionaries_previews.GetVisionariesPreviewsRequest;
+import com.coppel.rhconecta.dev.data.visionary.model.get_visionaries_previews.GetVisionariesPreviewsResponse;
+import com.coppel.rhconecta.dev.data.visionary.model.get_visionary_by_id.GetVisionaryByIdRequest;
+import com.coppel.rhconecta.dev.data.visionary.model.get_visionary_by_id.GetVisionaryByIdResponse;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
+import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 
@@ -87,6 +90,50 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             public void onFailure(Call<GetVisionariesPreviewsResponse> call, Throwable t) {
                 Failure failure = new ServerFailure();
                 Either<Failure, List<VisionaryPreview>> result = new Either<Failure, List<VisionaryPreview>>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+    }
+
+    /**
+     *
+     *
+     * @param visionaryId
+     * @param callback
+     */
+    @Override
+    public void getVisionaryById(String visionaryId, UseCase.OnResultFunction<Either<Failure, Visionary>> callback) {
+        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        ));
+        int clvOption = 2;
+        long visionaryIdInt = Long.parseLong(visionaryId);
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        GetVisionaryByIdRequest request = new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
+        apiService.getVisionaryById(
+                authHeader,
+                ServicesConstants.GET_VISIONARIOS,
+                request
+        ).enqueue(new Callback<GetVisionaryByIdResponse>() {
+
+            @Override
+            public void onResponse(Call<GetVisionaryByIdResponse> call, Response<GetVisionaryByIdResponse> response) {
+                GetVisionaryByIdResponse body = response.body();
+                GetVisionaryByIdResponse.VisionaryServer visionaryServer = body.data.response;
+                Visionary visionary = visionaryServer.toVisionary();
+                Either<Failure, Visionary> result = new Either<Failure, Visionary>().new Right(visionary);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetVisionaryByIdResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, Visionary> result = new Either<Failure, Visionary>().new Left(failure);
                 callback.onResult(result);
             }
 

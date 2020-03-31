@@ -1,4 +1,4 @@
-package com.coppel.rhconecta.dev.data.visionary.model;
+package com.coppel.rhconecta.dev.data.visionary.model.get_visionaries_previews;
 
 public class GetVisionariesPreviewsRequest {
 

@@ -16,6 +16,7 @@ import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
+import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 
 import java.util.List;
 
@@ -104,10 +105,10 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /* */
     private VisionaryPreviewAdapter.OnVisionaryPreviewClickListener onVisionaryPreviewClickListener = visionaryPreview -> {
-        Toast.makeText(this, visionaryPreview.toString(), Toast.LENGTH_SHORT).show();
-        /*Intent intent = new Intent(this, ReleaseDetailActivity.class);
-        intent.putExtra(ReleaseDetailActivity.RELEASE_ID, visionaryPreview.getId());
-        startActivity(intent);*/
+        Intent intent = new Intent(this, VisionaryDetailActivity.class);
+        intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId());
+        intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage());
+        startActivity(intent);
     };
 
     /**

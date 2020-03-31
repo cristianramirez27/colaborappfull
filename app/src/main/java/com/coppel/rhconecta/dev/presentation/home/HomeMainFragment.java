@@ -36,6 +36,7 @@ import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
+import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeBannerPagerAdapter;
@@ -263,13 +264,16 @@ public class HomeMainFragment
 
     /* */
     private BannerFragment.OnBannerClickListener onBannerClickListener = banner -> {
+        Intent intent;
         if(banner.isRelease()){
-            Intent intent = new Intent(getContext(), ReleaseDetailActivity.class);
+            intent = new Intent(getContext(), ReleaseDetailActivity.class);
             intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
-            startActivity(intent);
         } else {
-            Toast.makeText(parent, banner.toString(), Toast.LENGTH_SHORT).show();
+            intent = new Intent(getContext(), VisionaryDetailActivity.class);
+            intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
+            intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
         }
+        startActivity(intent);
     };
 
     /* END Clean architecture functions */

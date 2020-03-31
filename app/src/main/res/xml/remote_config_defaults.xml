@@ -42,6 +42,10 @@
         <value>rhconecta/api/v3/comunicados</value>
     </entry>
     <entry>
+        <key>ENDPOINT_VISIONARIOS</key>
+        <value>rhconecta/api/v3/visionarios</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_PASSWORD_RECOVER</key>
         <value>rhconecta/api/v2/recuperacontra</value>
     </entry>
