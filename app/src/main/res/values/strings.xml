@@ -395,6 +395,7 @@
     <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
     <string name="center_colaborators">Colaboradores del centro</string>
     <string name="number_of_views">%d Vistas</string>
+    <string name="defautl_media_player_error">Ocurrió un error al reproducir el video</string>
 
     <string-array name="uppercase_words">
         <item>IMSS</item>

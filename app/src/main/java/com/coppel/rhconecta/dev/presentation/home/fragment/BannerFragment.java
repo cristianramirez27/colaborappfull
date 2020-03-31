@@ -62,16 +62,16 @@ public class BannerFragment extends Fragment {
         assert getView() != null;
         View flBanner = getView().findViewById(R.id.flBanner);
         ImageView ivBannerPreview = getView().findViewById(R.id.ivBannerPreview);
-        // Set image
-        Glide.with(this)
-                .load(banner.getImage())
-                .error(R.drawable.ic_image_grey_300_48dp)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(ivBannerPreview);
-        // Set on click listener
-        flBanner.setOnClickListener(v -> {
-            onBannerClickListener.onClick(banner);
-        });
+        if(banner != null) {
+            // Set image
+            Glide.with(this)
+                    .load(banner.getImage())
+                    .error(R.drawable.ic_image_grey_300_48dp)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(ivBannerPreview);
+            // Set on click listener
+            flBanner.setOnClickListener(v -> onBannerClickListener.onClick(banner));
+        }
     }
 
     /**

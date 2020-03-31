@@ -264,16 +264,18 @@ public class HomeMainFragment
 
     /* */
     private BannerFragment.OnBannerClickListener onBannerClickListener = banner -> {
-        Intent intent;
-        if(banner.isRelease()){
+        Intent intent = null;
+        if(banner.isRelease()) {
             intent = new Intent(getContext(), ReleaseDetailActivity.class);
             intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
-        } else {
+        }
+        if(banner.isVisionary()){
             intent = new Intent(getContext(), VisionaryDetailActivity.class);
             intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
             intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
         }
-        startActivity(intent);
+        if(intent != null)
+            startActivity(intent);
     };
 
     /* END Clean architecture functions */

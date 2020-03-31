@@ -32,13 +32,22 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="240dp"
                 android:background="@color/colorBackgroundCoppelNegro">
 
-                <VideoView
+                <com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView
                     android:id="@+id/vvVideo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:foregroundGravity="center"
+                    android:background="@android:color/transparent"/>
+
+                <ProgressBar
+                    android:id="@+id/pbVideoLoader"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
 
                 <ImageView
                     android:id="@+id/ivVideoPreview"

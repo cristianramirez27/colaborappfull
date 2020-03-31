@@ -54,7 +54,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.visionary_detail.VisionaryDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".visionarios.comunicados.views.ComunicadosDetalleActivity"
             android:screenOrientation="portrait" />
