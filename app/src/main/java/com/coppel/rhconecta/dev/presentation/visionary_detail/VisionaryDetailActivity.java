@@ -4,8 +4,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,6 +48,10 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private MyVideoView vvVideo;
     private ImageView ivPlayButton;
     private ImageView ivFullScreenButton;
+    // Like and dislike buttons
+    private ImageView ivLike;
+    private ImageView ivDislike;
+
     // Visionary views
     private TextView tvTitle;
     private TextView tvDate;
@@ -91,7 +97,8 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         vvVideo = (MyVideoView) findViewById(R.id.vvVideo);
         ivPlayButton = (ImageView) findViewById(R.id.ivPlayButton);
         ivFullScreenButton = (ImageView) findViewById(R.id.ivFullScreenButton);
-        ivFullScreenButton = (ImageView) findViewById(R.id.ivFullScreenButton);
+        ivLike = (ImageView) findViewById(R.id.ivLike);
+        ivDislike = (ImageView) findViewById(R.id.ivDislike);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvNumberOfViews = (TextView) findViewById(R.id.tvNumberOfViews);
@@ -184,12 +191,49 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void setVisionaryViews(Visionary visionary){
+        setVisionaryStatusViews(visionary.getStatus());
         extractVideoStream(getVimeoId(visionary.getVideo()));
         tvTitle.setText(visionary.getTitle());
         tvDate.setText(visionary.getDate());
         String numberOfViews = getString(R.string.number_of_views, visionary.getNumberOfViews());
         tvNumberOfViews.setText(numberOfViews);
         tvContent.setText(visionary.getContent());
+    }
+
+    /**
+     *
+     *
+     */
+    private void setVisionaryStatusViews(Visionary.Status status){
+        switch (status){
+            case UNKNOWN:
+            case EMPTY:
+                ivLike.setOnClickListener(this::onLikeButtonClickListener);
+                ivDislike.setOnClickListener(this::onDislikeButtonClickListener);
+                break;
+            case LIKED:
+                ivLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_thumb_up_36dp));
+                break;
+            case DISLIKED:
+                ivDislike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_thumb_down_red_36dp));
+                break;
+        }
+    }
+
+    /**
+     *
+     *
+     */
+    private void onLikeButtonClickListener(View v){
+        Toast.makeText(this, "LIKED", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *
+     *
+     */
+    private void onDislikeButtonClickListener(View v){
+        Toast.makeText(this, "DISLIKED", Toast.LENGTH_SHORT).show();
     }
 
     /**
