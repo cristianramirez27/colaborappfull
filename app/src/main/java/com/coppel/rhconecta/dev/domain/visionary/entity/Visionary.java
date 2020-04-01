@@ -48,6 +48,24 @@ public class Visionary {
     /**
      *
      *
+     * @return
+     */
+    public Visionary cloneVisionary(){
+        return new Visionary(
+                id,
+                title,
+                date,
+                content,
+                video,
+                numberOfViews,
+                alreadyBeenSeen,
+                status
+        );
+    }
+
+    /**
+     *
+     *
      */
     public enum Status {
 
@@ -88,5 +106,9 @@ public class Visionary {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

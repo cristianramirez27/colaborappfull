@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +50,6 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     // Like and dislike buttons
     private ImageView ivLike;
     private ImageView ivDislike;
-
     // Visionary views
     private TextView tvTitle;
     private TextView tvDate;
@@ -125,7 +123,8 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void observeViewModel(){
-        viewModel.getLoadVisionaryStatus().observe(this, this::loadVisionaryObserver);
+        viewModel.getLoadVisionaryProcessStatus().observe(this, this::loadVisionaryObserver);
+        viewModel.getUpdateVisionaryStatusProcessStatus().observe(this, this::updateVisionaryStatusObserver);
     }
 
     /**
@@ -190,9 +189,34 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      *
      */
+    private void updateVisionaryStatusObserver(ProcessStatus processStatus) {
+        pbLoader.setVisibility(View.GONE);
+        switch (processStatus){
+            case LOADING:
+                pbLoader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                // TODO: Validate failure instance
+                String message = viewModel.getFailure().toString();
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                setVisionaryStatusViews(viewModel.getVisionary().getStatus());
+                break;
+        }
+    }
+
+    /**
+     *
+     *
+     */
     private void setVisionaryViews(Visionary visionary){
         setVisionaryStatusViews(visionary.getStatus());
-        extractVideoStream(getVimeoId(visionary.getVideo()));
+        // Vimeo video
+        String[] split = visionary.getVideo().split("/");
+        String vimeoId = split[split.length-1];
+        extractVideoStream(vimeoId);
+        // Fill views
         tvTitle.setText(visionary.getTitle());
         tvDate.setText(visionary.getDate());
         String numberOfViews = getString(R.string.number_of_views, visionary.getNumberOfViews());
@@ -213,9 +237,13 @@ public class VisionaryDetailActivity extends AppCompatActivity {
                 break;
             case LIKED:
                 ivLike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_thumb_up_36dp));
+                ivLike.setOnClickListener(null);
+                ivDislike.setOnClickListener(null);
                 break;
             case DISLIKED:
                 ivDislike.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_thumb_down_red_36dp));
+                ivLike.setOnClickListener(null);
+                ivDislike.setOnClickListener(null);
                 break;
         }
     }
@@ -225,7 +253,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onLikeButtonClickListener(View v){
-        Toast.makeText(this, "LIKED", Toast.LENGTH_SHORT).show();
+        viewModel.updateVisionaryStatus(Visionary.Status.LIKED);
     }
 
     /**
@@ -233,16 +261,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onDislikeButtonClickListener(View v){
-        Toast.makeText(this, "DISLIKED", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     *
-     *
-     */
-    private String getVimeoId(String src){
-        String[] split = src.split("/");
-        return split[split.length-1];
+        viewModel.updateVisionaryStatus(Visionary.Status.DISLIKED);
     }
 
     /**
@@ -250,7 +269,6 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void extractVideoStream(String vimeoId){
-        // Extract video stream
         VimeoExtractor
                 .getInstance()
                 .fetchVideoWithIdentifier(
@@ -347,6 +365,10 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     *
+     *
+     */
     @Override
     public void onBackPressed() {
         vvVideo.pause();

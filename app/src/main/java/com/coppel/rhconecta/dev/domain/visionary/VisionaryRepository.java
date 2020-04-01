@@ -29,4 +29,17 @@ public interface VisionaryRepository {
             UseCase.OnResultFunction<Either<Failure, Visionary>> callback
     );
 
+    /**
+     *
+     *
+     * @param visionaryId
+     * @param status
+     * @param callback
+     */
+    void updateVisionaryStatusById(
+            String visionaryId,
+            Visionary.Status status,
+            UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
+    );
+
 }

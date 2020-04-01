@@ -9,6 +9,8 @@ import com.coppel.rhconecta.dev.data.visionary.model.get_visionaries_previews.Ge
 import com.coppel.rhconecta.dev.data.visionary.model.get_visionaries_previews.GetVisionariesPreviewsResponse;
 import com.coppel.rhconecta.dev.data.visionary.model.get_visionary_by_id.GetVisionaryByIdRequest;
 import com.coppel.rhconecta.dev.data.visionary.model.get_visionary_by_id.GetVisionaryByIdResponse;
+import com.coppel.rhconecta.dev.data.visionary.model.update_visionary_status_by_id.UpdateVisionaryStatusByIdRequest;
+import com.coppel.rhconecta.dev.data.visionary.model.update_visionary_status_by_id.UpdateVisionaryStatusByIdResponse;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -57,7 +59,9 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
      * @param callback
      */
     @Override
-    public void getVisionariesPreviews(UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback) {
+    public void getVisionariesPreviews(
+            UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
+    ) {
         long employeeNum = Long.parseLong(getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
@@ -103,7 +107,10 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
      * @param callback
      */
     @Override
-    public void getVisionaryById(String visionaryId, UseCase.OnResultFunction<Either<Failure, Visionary>> callback) {
+    public void getVisionaryById(
+            String visionaryId,
+            UseCase.OnResultFunction<Either<Failure, Visionary>> callback
+    ) {
         long employeeNum = Long.parseLong(getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
@@ -138,6 +145,72 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             }
 
         });
+    }
+
+    /**
+     *
+     * @param visionaryId
+     * @param status
+     * @param callback
+     */
+    @Override
+    public void updateVisionaryStatusById(
+            String visionaryId,
+            Visionary.Status status,
+            UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
+    ) {
+        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        ));
+        int clvOption = 3;
+        int clvType = status == Visionary.Status.LIKED ? 5 : 6;
+        long visionaryIdInt = Long.parseLong(visionaryId);
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        UpdateVisionaryStatusByIdRequest request = new UpdateVisionaryStatusByIdRequest(
+                visionaryIdInt,
+                employeeNum,
+                clvOption,
+                clvType
+        );
+        apiService.updateVisionaryStatusById(
+                authHeader,
+                ServicesConstants.GET_VISIONARIOS,
+                request
+        ).enqueue(new Callback<UpdateVisionaryStatusByIdResponse>() {
+
+            @Override
+            public void onResponse(
+                    Call<UpdateVisionaryStatusByIdResponse> call,
+                    Response<UpdateVisionaryStatusByIdResponse> response
+            ) {
+                UpdateVisionaryStatusByIdResponse body = response.body();
+                Object obj = body.data.response;
+                Either<Failure, Visionary.Status> result =
+                        new Either<Failure, Visionary.Status>().new Right(status);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<UpdateVisionaryStatusByIdResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, Visionary.Status> result =
+                        new Either<Failure, Visionary.Status>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+
+
+
+
+        // TODO: Implementation
+        Either<Failure, Visionary.Status> result =
+                new Either<Failure, Visionary.Status>().new Right(status);
+        callback.onResult(result);
     }
 
 }
