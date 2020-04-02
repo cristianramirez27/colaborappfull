@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
@@ -62,8 +63,15 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
             return;
         }
 
-        tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        this.deviceId = tMgr.getDeviceId();
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            this.deviceId = tMgr.getDeviceId();
+        } else {
+            this.deviceId = Settings.Secure.getString(
+                    getApplicationContext().getContentResolver(),
+                    Settings.Secure.ANDROID_ID
+            );
+        }
 
         if (this.deviceId != "" && this.deviceId != null){
             this.hideLoader = true;
