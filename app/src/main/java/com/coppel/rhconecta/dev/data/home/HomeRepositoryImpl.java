@@ -13,11 +13,14 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.home.HomeRepository;
+import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -68,6 +71,7 @@ public class HomeRepositoryImpl implements HomeRepository {
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
         GetMainInformationRequest request = new GetMainInformationRequest(employeeNum, clvOption);
+
         apiService.getMainInformation(
                 authHeader,
                 ServicesConstants.GET_HOME,
@@ -77,7 +81,6 @@ public class HomeRepositoryImpl implements HomeRepository {
             @Override
             public void onResponse(Call<GetMainInformationResponse> call, Response<GetMainInformationResponse> response) {
                 GetMainInformationResponse body = response.body();
-                // TODO: if(body == null)
                 List<GetMainInformationResponse.BannerServer> carrusel = body.data.response.Carrusel;
                 ArrayList<Banner> banners = new ArrayList<>();
                 for (GetMainInformationResponse.BannerServer bannerServer: carrusel)
@@ -90,6 +93,55 @@ public class HomeRepositoryImpl implements HomeRepository {
             public void onFailure(Call<GetMainInformationResponse> call, Throwable t) {
                 Failure failure = new ServerFailure();
                 Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+    }
+
+    /**
+     *
+     * @param callback
+     * @return
+     */
+    @Override
+    public void getBadges(
+            UseCase.OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>> callback
+    ) {
+        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        ));
+        int clvOption = 1;
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        GetMainInformationRequest request = new GetMainInformationRequest(employeeNum, clvOption);
+
+        apiService.getMainInformation(
+                authHeader,
+                ServicesConstants.GET_HOME,
+                request
+        ).enqueue(new Callback<GetMainInformationResponse>() {
+
+            @Override
+            public void onResponse(Call<GetMainInformationResponse> call, Response<GetMainInformationResponse> response) {
+                GetMainInformationResponse body = response.body();
+                assert body != null;
+                HashMap<Badge.Type, Badge> badges = new HashMap<>();
+                badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBagde());
+                badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBagde());
+                Either<Failure, Map<Badge.Type, Badge>> result =
+                        new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetMainInformationResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, Map<Badge.Type, Badge>> result =
+                        new Either<Failure, Map<Badge.Type, Badge>>().new Left(failure);
                 callback.onResult(result);
             }
 

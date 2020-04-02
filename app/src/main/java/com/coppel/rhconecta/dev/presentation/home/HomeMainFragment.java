@@ -31,6 +31,7 @@ import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.NotificationEvent;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
+import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
@@ -75,6 +76,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -162,9 +164,6 @@ public class HomeMainFragment
         imgvArrowLeft.setOnClickListener(this);
         imgvArrowRight.setOnClickListener(this);
         presenter = new InicioPresenter(this);
-        notifications = new int[]{0,0};
-        itemsCarousel.clear();//Eliminamos los elementos del carrusel.
-        initMenu();
         presenter.guardarLogin();
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setOnClickListener(new View.OnClickListener() {
@@ -206,7 +205,7 @@ public class HomeMainFragment
         super.onViewCreated(view, savedInstanceState);
         DaggerDiComponent.create().inject(this);
         observeViewModel();
-        homeViewModel.loadBanners();
+        execute();
     }
 
     /* START Clean architecture functions */
@@ -216,7 +215,17 @@ public class HomeMainFragment
      *
      */
     private void observeViewModel() {
-        homeViewModel.getLoadBannersStatus().observe(this, getLoadBannersObserver());
+        homeViewModel.getLoadBannersProcessStatus().observe(this, getLoadBannersObserver());
+        homeViewModel.getLoadBadgesProcessStatus().observe(this, getLoadBadgesObserver());
+    }
+
+    /**
+     *
+     *
+     */
+    private void execute(){
+        homeViewModel.loadBadges();
+        homeViewModel.loadBanners();
     }
 
     /**
@@ -249,7 +258,34 @@ public class HomeMainFragment
 
     /**
      *
-     * @param banners
+     * @return
+     */
+    private Observer<ProcessStatus> getLoadBadgesObserver() {
+        View view = getView();
+        assert view != null;
+        View loader = view.findViewById(R.id.pbLoader);
+        return processStatus -> {
+            loader.setVisibility(View.GONE);
+            if(processStatus != null) {
+                switch (processStatus) {
+                    case LOADING:
+                        loader.setVisibility(View.VISIBLE);
+                        break;
+                    case FAILURE:
+                        String message = homeViewModel.getFailure().toString();
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        break;
+                    case COMPLETED:
+                        setBadges(homeViewModel.getBadges());
+                        break;
+                }
+            }
+        };
+    }
+
+    /**
+     *
+     *
      */
     private void setBanners(List<Banner> banners){
         assert getView() != null;
@@ -260,6 +296,19 @@ public class HomeMainFragment
         BannerViewPagerAdapter adapter  = new BannerViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabIndicator.setupWithViewPager(viewPager);
+    }
+
+    /**
+     *
+     *
+     */
+    private void setBadges(Map<Badge.Type, Badge> badges){
+        notifications = new int[]{
+                badges.get(Badge.Type.RELEASE).getValue(),
+                badges.get(Badge.Type.VISIONARY).getValue()
+        };
+        itemsCarousel.clear();
+        initMenu();
     }
 
     /* */
@@ -374,7 +423,11 @@ public class HomeMainFragment
         rcvMenu.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         rcvMenu.setLayoutManager(gridLayoutManager);
-        homeMenuRecyclerViewAdapter = new HomeMenuRecyclerViewAdapter(getContext(), MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications), gridLayoutManager.getSpanCount());
+        homeMenuRecyclerViewAdapter = new HomeMenuRecyclerViewAdapter(
+                getContext(),
+                MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications),
+                gridLayoutManager.getSpanCount()
+        );
         homeMenuRecyclerViewAdapter.setOnItemClick(this);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new HomeMenuItemTouchHelperCallback(homeMenuRecyclerViewAdapter));
         rcvMenu.setAdapter(homeMenuRecyclerViewAdapter);

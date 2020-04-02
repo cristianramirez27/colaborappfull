@@ -2,16 +2,17 @@ package com.coppel.rhconecta.dev.presentation.home;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
-import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
+import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.domain.home.use_case.GetBadgesUseCase;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetBannersUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -22,11 +23,16 @@ import javax.inject.Inject;
 public class HomeViewModel {
 
     // Use cases
-    @Inject GetBannersUseCase getBannersUseCase;
+    @Inject
+    GetBannersUseCase getBannersUseCase;
+    @Inject
+    GetBadgesUseCase getBadgesUseCase;
     // Observables
-    private MutableLiveData<ProcessStatus> loadBannersStatus = new MutableLiveData<>();
+    private MutableLiveData<ProcessStatus> loadBannersProcessStatus = new MutableLiveData<>();
+    private MutableLiveData<ProcessStatus> loadBadgesProcessStatus = new MutableLiveData<>();
     // Values
     private List<Banner> banners;
+    private Map<Badge.Type, Badge> badges;
     private Failure failure;
 
     /**
@@ -39,39 +45,69 @@ public class HomeViewModel {
      *
      *
      */
-    public void loadBanners() {
-        loadBannersStatus.postValue(ProcessStatus.LOADING);
+    void loadBanners() {
+        loadBannersProcessStatus.postValue(ProcessStatus.LOADING);
         getBannersUseCase.run(UseCase.None.getInstance(), result -> {
-            result.fold(onLoadBannersFailure, onLoadBannersRight);
+            result.fold(this::onLoadBannersFailure, this::onLoadBannersRight);
         });
     }
 
     /* */
-    private Either.Fn<Failure> onLoadBannersFailure = failure -> {
+    private void onLoadBannersFailure(Failure failure){
         this.failure = failure;
-        Log.e(getClass().getName(), failure.toString());
-        loadBannersStatus.postValue(ProcessStatus.FAILURE);
+        loadBannersProcessStatus.postValue(ProcessStatus.FAILURE);
     };
 
     /* */
-    private Either.Fn<List<Banner>> onLoadBannersRight = banners -> {
+    private void onLoadBannersRight(List<Banner> banners){
         this.banners = banners;
-        loadBannersStatus.postValue(ProcessStatus.COMPLETED);
+        loadBannersProcessStatus.postValue(ProcessStatus.COMPLETED);
     };
 
     /**
      *
-     * @return
+     *
      */
-    public LiveData<ProcessStatus> getLoadBannersStatus() {
-        return loadBannersStatus;
+    void loadBadges() {
+        loadBadgesProcessStatus.postValue(ProcessStatus.LOADING);
+        getBadgesUseCase.run(UseCase.None.getInstance(), result -> {
+            result.fold(this::onLoadBadgesFailure, this::onLoadBadgesRight);
+        });
+    }
+
+    /* */
+    private void onLoadBadgesFailure(Failure failure){
+        this.failure = failure;
+        loadBadgesProcessStatus.postValue(ProcessStatus.FAILURE);
+    };
+
+    /* */
+    private void onLoadBadgesRight(Map<Badge.Type, Badge> badges){
+        this.badges = badges;
+        loadBadgesProcessStatus.postValue(ProcessStatus.COMPLETED);
+    };
+
+    /**
+     *
+     *
+     */
+    LiveData<ProcessStatus> getLoadBannersProcessStatus() {
+        return loadBannersProcessStatus;
+    }
+
+    /**
+     *
+     *
+     */
+    LiveData<ProcessStatus> getLoadBadgesProcessStatus() {
+        return loadBadgesProcessStatus;
     }
 
     /**
      *
      * @return
      */
-    public List<Banner> getBanners() {
+    List<Banner> getBanners() {
         return banners;
     }
 
@@ -79,7 +115,16 @@ public class HomeViewModel {
      *
      * @return
      */
-    public Failure getFailure() {
+    Map<Badge.Type, Badge> getBadges() {
+        return badges;
+    }
+
+    /**
+     *
+     * @return
+     */
+    Failure getFailure() {
         return failure;
     }
+
 }
