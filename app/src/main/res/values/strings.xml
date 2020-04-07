@@ -396,6 +396,11 @@
     <string name="center_colaborators">Colaboradores del centro</string>
     <string name="number_of_views">%d Vistas</string>
     <string name="defautl_media_player_error">Ocurrió un error al reproducir el video</string>
+    <string name="send_poll">Enviar encuesta</string>
+    <string name="poll_progress">pregunta %d de %d</string>
+    <string name="poll_sent_success_title">Tu encuesta se envió con éxito</string>
+    <string name="poll_sent_success_content">¡Gracias!</string>
+    <string name="not_poll_available_message">No hay encuestas nuevas</string>
 
     <string-array name="uppercase_words">
         <item>IMSS</item>

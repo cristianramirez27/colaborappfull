@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,6 +14,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.release.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
 import com.coppel.rhconecta.dev.presentation.releases.adapter.ReleasePreviewAdapter;
 
@@ -33,7 +33,7 @@ public class ReleasesActivity extends AppCompatActivity {
     public ReleasesViewModel releasesViewModel;
     /* VIEWS */
     /* */
-    private Toolbar toolbar;
+    private PollToolbarFragment pollToolbarFragment;
     private RecyclerView rvReleases;
     private ProgressBar loader;
 
@@ -56,13 +56,32 @@ public class ReleasesActivity extends AppCompatActivity {
      *
      *
      */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        execute();
+    }
+
+    /**
+     *
+     *
+     */
     private void initViews(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolbar();
         rvReleases = (RecyclerView) findViewById(R.id.rvReleases);
         loader = (ProgressBar) findViewById(R.id.pbLoader);
-        // TODO: Read title form firebase
-        toolbar.setTitle(R.string.app_name);
         rvReleases.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    /**
+     *
+     *
+     */
+    private void initToolbar(){
+        pollToolbarFragment = (PollToolbarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
+        assert pollToolbarFragment != null;
+        pollToolbarFragment.setTitle("Comunicados");
     }
 
     /**
@@ -120,6 +139,16 @@ public class ReleasesActivity extends AppCompatActivity {
      */
     private void execute(){
         releasesViewModel.loadReleasesPreviews();
+    }
+
+    /**
+     *
+     *
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
 }

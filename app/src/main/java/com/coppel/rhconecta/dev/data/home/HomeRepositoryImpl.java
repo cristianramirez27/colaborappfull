@@ -132,6 +132,7 @@ public class HomeRepositoryImpl implements HomeRepository {
                 HashMap<Badge.Type, Badge> badges = new HashMap<>();
                 badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBagde());
                 badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBagde());
+                badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBagde());
                 Either<Failure, Map<Badge.Type, Badge>> result =
                         new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
                 callback.onResult(result);

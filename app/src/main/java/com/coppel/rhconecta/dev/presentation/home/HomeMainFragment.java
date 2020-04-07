@@ -36,6 +36,7 @@ import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
+import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
@@ -165,21 +166,26 @@ public class HomeMainFragment
         imgvArrowRight.setOnClickListener(this);
         presenter = new InicioPresenter(this);
         presenter.guardarLogin();
+        // Poll icon
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
-        ISurveyNotification.getSurveyIcon().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(ISurveyNotification.validateSurveyAccess()){
-                    if (ultimaEncuesta != null) {
-                        Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
-                        intentEncuesta.putExtra("encuesta", ultimaEncuesta);
-                        startActivity(intentEncuesta);
-                    } else {
-                        Toast.makeText(getActivity(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
-                    }
+        ISurveyNotification.getSurveyIcon().setCountMessages(0);
+        ISurveyNotification.getSurveyIcon().setOnClickListener(v -> {
+            Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
+            if(badge == null) return;
+            if(badge.getValue() > 0){
+                Intent intent = new Intent(getContext(), PollActivity.class);
+                startActivity(intent);
+            } else
+                Toast.makeText(getActivity(), R.string.not_poll_available_message, Toast.LENGTH_SHORT).show();
+            /*if(ISurveyNotification.validateSurveyAccess()){
+                if (ultimaEncuesta != null) {
+                    Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
+                    intentEncuesta.putExtra("encuesta", ultimaEncuesta);
+                    startActivity(intentEncuesta);
+                } else {
+                    Toast.makeText(getActivity(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }*/
         });
 
 
@@ -309,6 +315,9 @@ public class HomeMainFragment
         };
         itemsCarousel.clear();
         initMenu();
+        int countMessages = badges.get(Badge.Type.POLL).getValue();
+        ISurveyNotification.getSurveyIcon().setCountMessages(countMessages);
+
     }
 
     /* */
@@ -681,6 +690,7 @@ public class HomeMainFragment
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        execute();
     }
 
     @Override

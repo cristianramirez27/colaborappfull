@@ -8,6 +8,9 @@
     <dimen name="half_vertical_margin">14dp</dimen>
     <dimen name="vertical_margin">28dp</dimen>
     <dimen name="double_vertical_margin">56dp</dimen>
+    <!-- ICONS -->
+    <dimen name="back_icon_toolbar">38dp</dimen>
+    <dimen name="poll_icon_toolbar">38dp</dimen>
 
 
 

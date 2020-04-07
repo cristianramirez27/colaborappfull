@@ -45,7 +45,9 @@ public class Badge {
         /* */
         RELEASE,
         /* */
-        VISIONARY;
+        VISIONARY,
+        /* */
+        POLL;
 
     }
 

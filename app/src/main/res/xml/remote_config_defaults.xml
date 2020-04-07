@@ -46,6 +46,10 @@
         <value>rhconecta/api/v3/visionarios</value>
     </entry>
     <entry>
+        <key>ENDPOINT_ENCUESTAS</key>
+        <value>rhconecta/api/v3/encuestas</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_PASSWORD_RECOVER</key>
         <value>rhconecta/api/v2/recuperacontra</value>
     </entry>

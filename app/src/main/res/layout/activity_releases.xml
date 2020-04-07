@@ -7,9 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".presentation.releases.ReleasesActivity">
 
-    <include
-        android:id="@+id/toolbarReleases"
-        layout="@layout/toolbar"
+    <fragment
+        android:id="@+id/pollToolbarFragment"
+        android:name="com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/fila_lista_comunicados"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarReleases"
+        app:layout_constraintTop_toBottomOf="@id/pollToolbarFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

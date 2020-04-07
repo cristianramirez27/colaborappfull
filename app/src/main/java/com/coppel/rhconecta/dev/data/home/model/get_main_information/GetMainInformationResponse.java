@@ -5,11 +5,19 @@ import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 
 import java.util.List;
 
+/**
+ *
+ *
+ */
 public class GetMainInformationResponse {
 
     /* */
     public Data data;
 
+    /**
+     *
+     *
+     */
     public static class Data {
 
         /* */
@@ -17,6 +25,10 @@ public class GetMainInformationResponse {
 
     }
 
+    /**
+     *
+     *
+     */
     public static class Response {
 
         /* */
@@ -26,6 +38,10 @@ public class GetMainInformationResponse {
 
     }
 
+    /**
+     *
+     *
+     */
     public static class BannerServer {
 
         /* */
@@ -63,6 +79,10 @@ public class GetMainInformationResponse {
 
     }
 
+    /**
+     *
+     *
+     */
     public static class Badges {
 
         /* */
@@ -72,12 +92,28 @@ public class GetMainInformationResponse {
         /* */
         public int opc_encuesta;
 
+        /**
+         *
+         *
+         */
         public Badge getReleaseBagde() {
             return new Badge(num_noVistosComunicados, Badge.Type.RELEASE);
         }
 
+        /**
+         *
+         *
+         */
         public Badge getVisionaryBagde() {
             return new Badge(num_noVistosVideos, Badge.Type.VISIONARY);
+        }
+
+        /**
+         *
+         *
+         */
+        public Badge getPollBagde() {
+            return new Badge(opc_encuesta, Badge.Type.POLL);
         }
 
     }
