@@ -5,6 +5,8 @@ import android.content.Context;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
+import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountRequest;
+import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountResponse;
 import com.coppel.rhconecta.dev.data.poll.model.get_poll.GetPollRequest;
 import com.coppel.rhconecta.dev.data.poll.model.get_poll.GetPollResponse;
 import com.coppel.rhconecta.dev.data.poll.model.send_poll.SendPollRequest;
@@ -13,6 +15,7 @@ import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.poll.PollRepository;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
@@ -144,6 +147,49 @@ public class PollRepositoryImpl implements PollRepository {
             public void onFailure(Call<SendPollResponse> call, Throwable t) {
                 Failure failure = new ServerFailure();
                 Either<Failure, UseCase.None> result = new Either<Failure, UseCase.None>().new Left(failure);
+                callback.onResult(result);
+            }
+        };
+    }
+
+    /**
+     *
+     *
+     */
+    @Override
+    public void getAvailablePollCount(UseCase.OnResultFunction<Either<Failure, Integer>> callback) {
+        long employeeNum = getEmployeeNum();
+        int clvOption = 1;
+        String authHeader = getAuthHeader();
+        GetAvailablePollCountRequest request = new GetAvailablePollCountRequest(employeeNum, clvOption);
+        apiService.getAvailablePollCount(
+                authHeader,
+                ServicesConstants.GET_HOME,
+                request
+        ).enqueue(getAvailablePollCountResponseCallback(callback));
+    }
+
+    /**
+     *
+     *
+     */
+    private Callback<GetAvailablePollCountResponse> getAvailablePollCountResponseCallback(
+            UseCase.OnResultFunction<Either<Failure, Integer>> callback
+    ) {
+        return new Callback<GetAvailablePollCountResponse>() {
+            @Override
+            public void onResponse(Call<GetAvailablePollCountResponse> call, Response<GetAvailablePollCountResponse> response) {
+                GetAvailablePollCountResponse body = response.body();
+                assert body != null;
+                int availablePollCount = body.data.response.Badges.opc_encuesta;
+                Either<Failure, Integer> result = new Either<Failure, Integer>().new Right(availablePollCount);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetAvailablePollCountResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, Integer> result = new Either<Failure, Integer>().new Left(failure);
                 callback.onResult(result);
             }
         };

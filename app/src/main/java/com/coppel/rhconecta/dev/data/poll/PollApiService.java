@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.data.poll;
 
+import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountRequest;
+import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountResponse;
 import com.coppel.rhconecta.dev.data.poll.model.get_poll.GetPollRequest;
 import com.coppel.rhconecta.dev.data.poll.model.get_poll.GetPollResponse;
 import com.coppel.rhconecta.dev.data.poll.model.send_poll.SendPollRequest;
@@ -12,6 +14,10 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
+/**
+ *
+ *
+ */
 public interface PollApiService {
 
     /**
@@ -36,6 +42,18 @@ public interface PollApiService {
             @Header("Authorization") String authHeader,
             @Url String url,
             @Body SendPollRequest request
+    );
+
+    /**
+     *
+     *
+     */
+    @Headers("Content-Type: application/json")
+    @POST
+    Call<GetAvailablePollCountResponse> getAvailablePollCount(
+            @Header("Authorization") String authHeader,
+            @Url String url,
+            @Body GetAvailablePollCountRequest request
     );
 
 }

@@ -56,13 +56,13 @@ public class HomeViewModel {
     private void onLoadBannersFailure(Failure failure){
         this.failure = failure;
         loadBannersProcessStatus.postValue(ProcessStatus.FAILURE);
-    };
+    }
 
     /* */
     private void onLoadBannersRight(List<Banner> banners){
         this.banners = banners;
         loadBannersProcessStatus.postValue(ProcessStatus.COMPLETED);
-    };
+    }
 
     /**
      *

@@ -1,10 +1,10 @@
-package com.coppel.rhconecta.dev.data.home.model.get_main_information;
+package com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count;
 
 /**
  *
  *
  */
-public class GetMainInformationRequest {
+public class GetAvailablePollCountRequest {
 
     /* */
     public Long num_empleado;
@@ -15,7 +15,7 @@ public class GetMainInformationRequest {
      *
      *
      */
-    public GetMainInformationRequest(Long num_empleado, int clv_opcion) {
+    public GetAvailablePollCountRequest(Long num_empleado, int clv_opcion) {
         this.num_empleado = num_empleado;
         this.clv_opcion = clv_opcion;
     }

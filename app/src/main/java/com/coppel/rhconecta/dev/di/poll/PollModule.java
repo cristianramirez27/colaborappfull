@@ -7,10 +7,10 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class PollModule {
+class PollModule {
 
     @Provides
-    public PollRepository providePollRepository() {
+    PollRepository providePollRepository() {
         return new PollRepositoryImpl();
     }
 

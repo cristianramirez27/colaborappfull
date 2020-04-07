@@ -12,23 +12,10 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="60dp"
         tools:title="@string/app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlSymmetry" />
-
-    <ImageView
-        android:id="@+id/ivBack"
-        android:layout_width="@dimen/back_icon_toolbar"
-        android:layout_height="@dimen/back_icon_toolbar"
-        app:srcCompat="@drawable/ic_arrow_back_black_36dp"
-        android:layout_marginStart="@dimen/half_lateral_margin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
         android:layout_width="0dp"
@@ -39,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.coppel.rhconecta.dev.views.customviews.SurveyInboxView
-        android:id="@+id/siPollIcon"
+        android:id="@+id/surveyInboxView"
         android:layout_width="@dimen/poll_icon_toolbar"
         android:layout_height="@dimen/poll_icon_toolbar"
         android:layout_marginEnd="@dimen/half_lateral_margin"

@@ -13,18 +13,27 @@ public interface PollRepository {
 
     /**
      *
-     * @param callback
+     *
      */
     void getPoll(
             UseCase.OnResultFunction<Either<Failure, Poll>> callback
     );
+
     /**
      *
-     * @param callback
+     *
      */
     void sendPoll(
             Poll  poll,
             UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback
+    );
+
+    /**
+     *
+     *
+     */
+    void getAvailablePollCount(
+            UseCase.OnResultFunction<Either<Failure, Integer>> callback
     );
 
 }

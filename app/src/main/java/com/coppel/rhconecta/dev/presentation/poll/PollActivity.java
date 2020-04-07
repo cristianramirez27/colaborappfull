@@ -2,7 +2,6 @@ package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -35,8 +34,6 @@ public class PollActivity extends AppCompatActivity {
     /* */
     @Inject
     public PollViewModel viewModel;
-    /* VIEWS */
-    private Toolbar toolbar;
     private ProgressBar pbLoader;
     private ProgressBar pbPollProgress;
     private TextView tvPollProgress;
@@ -81,8 +78,6 @@ public class PollActivity extends AppCompatActivity {
         // On click listeners
         btnNext.setOnClickListener(this::onAnswerQuestionButtonClickListener);
         btnFinish.setOnClickListener(this::onAnswerQuestionButtonClickListener);
-        // Configuration
-        configureToolbar();
         rgAnswers.setOnCheckedChangeListener(this::onRadioGroupCheckedListener);
     }
 
@@ -110,9 +105,11 @@ public class PollActivity extends AppCompatActivity {
      *
      */
     private void initToolbar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbarPoll);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_36dp);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPoll);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     /**
@@ -123,18 +120,6 @@ public class PollActivity extends AppCompatActivity {
         viewModel.next(selectedAnswer);
     }
 
-
-    /**
-     *
-     *
-     */
-    private void configureToolbar(){
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_black_36dp));
-        setSupportActionBar(toolbar);
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
     /**
      *
      *
@@ -142,6 +127,7 @@ public class PollActivity extends AppCompatActivity {
     private void onRadioGroupCheckedListener(RadioGroup group, @IdRes int checkedId){
         RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
         Question.Answer auxAnswer = new Question.Answer(0, radioButton.getText().toString().trim());
+        assert viewModel.getCurrentQuestion().getValue() != null;
         List<Question.Answer> answers = viewModel.getCurrentQuestion().getValue().getAnswers();
         selectedAnswer = answers.get(answers.indexOf(auxAnswer));
         // Buttons visibility
@@ -165,6 +151,7 @@ public class PollActivity extends AppCompatActivity {
                 if(failure instanceof NotPollAvailableFailure)
                     message = getString(R.string.not_poll_available_message);
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             case COMPLETED:
                 setPoll(viewModel.getPoll());

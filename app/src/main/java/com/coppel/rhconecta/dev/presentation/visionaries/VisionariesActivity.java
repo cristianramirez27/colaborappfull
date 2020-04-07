@@ -1,12 +1,11 @@
 package com.coppel.rhconecta.dev.presentation.visionaries;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,6 +14,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 
@@ -28,15 +28,13 @@ public class VisionariesActivity extends AppCompatActivity {
     @Inject
     public VisionariesViewModel visionariesViewModel;
     /* VIEWS */
-    /* */
-    private Toolbar toolbar;
     private RecyclerView rvReleases;
     private ProgressBar loader;
 
 
     /**
      *
-     * @param savedInstanceState
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +51,9 @@ public class VisionariesActivity extends AppCompatActivity {
      *
      */
     private void initViews(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolbar();
         rvReleases = (RecyclerView) findViewById(R.id.rvVisionaries);
         loader = (ProgressBar) findViewById(R.id.pbLoader);
-        // TODO: Read title form firebase
-        toolbar.setTitle(R.string.app_name);
         rvReleases.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -66,50 +62,67 @@ public class VisionariesActivity extends AppCompatActivity {
      *
      */
     private void observeViewModel(){
-        visionariesViewModel.getLoadVisionariesPreviewsStatus().observe(this, getLoadVisionariesPreviewsObserver());
+        visionariesViewModel.getLoadVisionariesPreviewsStatus()
+                .observe(this, this::getLoadVisionariesPreviewsObserver);
     }
 
     /**
      *
-     * @return
+     *
      */
-    private Observer<ProcessStatus> getLoadVisionariesPreviewsObserver() {
-        return processStatus -> {
-            loader.setVisibility(View.GONE);
-            if(processStatus != null) {
-                switch (processStatus) {
-                    case LOADING:
-                        loader.setVisibility(View.VISIBLE);
-                        break;
-                    case FAILURE:
-                        // TODO: Validate failure instance
-                        String message = visionariesViewModel.getFailure().toString();
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                        break;
-                    case COMPLETED:
-                        setVisionariesPreviews(visionariesViewModel.getVisionariesPreviews());
-                        break;
-                }
-            }
-        };
+    private void getLoadVisionariesPreviewsObserver(ProcessStatus processStatus){
+        loader.setVisibility(View.GONE);
+        switch (processStatus) {
+            case LOADING:
+                loader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                 Log.e(getClass().getName(), visionariesViewModel.getFailure().toString());
+                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                 break;
+            case COMPLETED:
+                setVisionariesPreviews(visionariesViewModel.getVisionariesPreviews());
+                break;
+        }
     }
 
     /**
      *
-     * @param visionariesPreviews
+     *
+     */
+    private void initToolbar(){
+        PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
+                getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
+        assert pollToolbarFragment != null;
+        pollToolbarFragment.toolbar.setTitle(R.string.visionaries_activity_title);
+        setSupportActionBar(pollToolbarFragment.toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    /**
+     *
+     *
      */
     private void setVisionariesPreviews(List<VisionaryPreview> visionariesPreviews){
-        VisionaryPreviewAdapter adapter = new VisionaryPreviewAdapter(visionariesPreviews, onVisionaryPreviewClickListener);
+        VisionaryPreviewAdapter adapter =
+                new VisionaryPreviewAdapter(visionariesPreviews, this::onVisionaryPreviewClickListener);
         rvReleases.setAdapter(adapter);
+        findViewById(R.id.tvNotAvailableVisionaries)
+                .setVisibility(visionariesPreviews.isEmpty()? View.VISIBLE : View.GONE);
     }
 
-    /* */
-    private VisionaryPreviewAdapter.OnVisionaryPreviewClickListener onVisionaryPreviewClickListener = visionaryPreview -> {
+    /**
+     *
+     *
+     */
+    private void onVisionaryPreviewClickListener(VisionaryPreview visionaryPreview){
         Intent intent = new Intent(this, VisionaryDetailActivity.class);
         intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId());
         intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage());
         startActivity(intent);
-    };
+    }
 
     /**
      *
@@ -117,6 +130,16 @@ public class VisionariesActivity extends AppCompatActivity {
      */
     private void execute(){
         visionariesViewModel.loadReleasesPreviews();
+    }
+
+    /**
+     *
+     *
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
 }

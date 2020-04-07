@@ -1,12 +1,12 @@
 package com.coppel.rhconecta.dev.presentation.release_detail;
 
-import android.arch.lifecycle.Observer;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -34,8 +34,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     public static String RELEASE_ID = "RELEASE_ID";
     private int releaseId;
     /* VIEWS */
-    /* */
-    private Toolbar toolbar;
     private ImageView ivHeader;
     private TextView tvHeader;
     private ImageView ivImage;
@@ -47,7 +45,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     /**
      *
      *
-     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +72,14 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      *
      */
     private void initViews(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolbar();
         loader = (ProgressBar) findViewById(R.id.pbLoader);
         ivHeader = (ImageView) findViewById(R.id.ivHeader);
         tvHeader = (TextView) findViewById(R.id.tvHeader);
         ivImage = (ImageView) findViewById(R.id.ivImage);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvContent = (TextView) findViewById(R.id.tvContent);
-        // TODO: Read title form firebase
-        toolbar.setTitle(R.string.app_name);
+
     }
 
     /**
@@ -91,39 +87,47 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      *
      */
     private void observeViewModel(){
-        releaseDetailViewModel.getLoadReleaseStatus().observe(this, getLoadReleaseObserver());
+        releaseDetailViewModel.getLoadReleaseStatus().observe(this, this::getLoadReleaseObserver);
     }
 
 
     /**
      *
-     * @return
+     *
      */
-    private Observer<ProcessStatus> getLoadReleaseObserver() {
-        return processStatus -> {
-            loader.setVisibility(View.GONE);
-            if(processStatus != null) {
-                switch (processStatus) {
-                    case LOADING:
-                        loader.setVisibility(View.VISIBLE);
-                        break;
-                    case FAILURE:
-                        // TODO: Validate failure instance
-                        String message = releaseDetailViewModel.getFailure().toString();
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                        break;
-                    case COMPLETED:
-                        setReleaseInformation(releaseDetailViewModel.getRelease());
-                        break;
-                }
-            }
-        };
+    private void getLoadReleaseObserver(ProcessStatus processStatus){
+        loader.setVisibility(View.GONE);
+        switch (processStatus) {
+            case LOADING:
+                loader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                Log.e(getClass().getName(), releaseDetailViewModel.getFailure().toString());
+                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                setReleaseInformation(releaseDetailViewModel.getRelease());
+                break;
+        }
     }
 
     /**
      *
      *
-     * @param release
+     */
+    private void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.release_detail_activity_title);
+        setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    /**
+     *
+     *
+     *
      */
     private void setReleaseInformation(Release release){
         // Images
@@ -152,6 +156,16 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      */
     private void execute(){
         releaseDetailViewModel.loadRelease(releaseId);
+    }
+
+    /**
+     *
+     *
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
 }

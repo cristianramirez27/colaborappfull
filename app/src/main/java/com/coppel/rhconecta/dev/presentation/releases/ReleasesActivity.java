@@ -1,11 +1,11 @@
 package com.coppel.rhconecta.dev.presentation.releases;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,15 +32,13 @@ public class ReleasesActivity extends AppCompatActivity {
     @Inject
     public ReleasesViewModel releasesViewModel;
     /* VIEWS */
-    /* */
-    private PollToolbarFragment pollToolbarFragment;
     private RecyclerView rvReleases;
     private ProgressBar loader;
 
 
     /**
      *
-     * @param savedInstanceState
+     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +76,14 @@ public class ReleasesActivity extends AppCompatActivity {
      *
      */
     private void initToolbar(){
-        pollToolbarFragment = (PollToolbarFragment)
+        PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
         assert pollToolbarFragment != null;
-        pollToolbarFragment.setTitle("Comunicados");
+        pollToolbarFragment.toolbar.setTitle(R.string.releases_activity_title);
+        setSupportActionBar(pollToolbarFragment.toolbar);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     /**
@@ -89,49 +91,49 @@ public class ReleasesActivity extends AppCompatActivity {
      *
      */
     private void observeViewModel(){
-        releasesViewModel.getLoadReleasesPreviewsStatus().observe(this, getLoadReleasesPreviewsObserver());
+        releasesViewModel.getLoadReleasesPreviewsStatus().observe(this, this::getLoadReleasesPreviewsObserver);
     }
 
     /**
      *
-     * @return
+     *
      */
-    private Observer<ProcessStatus> getLoadReleasesPreviewsObserver() {
-        return processStatus -> {
-            loader.setVisibility(View.GONE);
-            if(processStatus != null) {
-                switch (processStatus) {
-                    case LOADING:
-                        loader.setVisibility(View.VISIBLE);
-                        break;
-                    case FAILURE:
-                        // TODO: Validate failure instance
-                        String message = releasesViewModel.getFailure().toString();
-                        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                        break;
-                    case COMPLETED:
-                        setReleasesPreviews(releasesViewModel.getReleasesPreviews());
-                        break;
-                }
-            }
-        };
+    private void getLoadReleasesPreviewsObserver(ProcessStatus processStatus) {
+        loader.setVisibility(View.GONE);
+        switch (processStatus) {
+            case LOADING:
+                loader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                Log.e(getClass().getName(), releasesViewModel.getFailure().toString());
+                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                setReleasesPreviews(releasesViewModel.getReleasesPreviews());
+                break;
+        }
     }
 
     /**
      *
-     * @param releasesPreviews
+     *
      */
     private void setReleasesPreviews(List<ReleasePreview> releasesPreviews){
-        ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, onReleasePreviewClickListener);
+        ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, this::onReleasePreviewClickListener);
         rvReleases.setAdapter(adapter);
+        findViewById(R.id.tvNotAvailableReleases)
+                .setVisibility(releasesPreviews.isEmpty()? View.VISIBLE : View.GONE);
     }
 
-    /* */
-    private ReleasePreviewAdapter.OnReleasePreviewClickListener onReleasePreviewClickListener = releasePreview -> {
+    /**
+     *
+     *
+     */
+    private void onReleasePreviewClickListener(ReleasePreview releasePreview) {
         Intent intent = new Intent(this, ReleaseDetailActivity.class);
         intent.putExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId());
         startActivity(intent);
-    };
+    }
 
     /**
      *

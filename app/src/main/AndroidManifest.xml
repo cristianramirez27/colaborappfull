@@ -35,7 +35,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.poll.PollActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".visionarios.MainActivity"
             android:launchMode="singleTask"
@@ -57,6 +57,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.visionary_detail.VisionaryDetailActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.visionary_full_screen.VisionaryDetailFullScreenActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity

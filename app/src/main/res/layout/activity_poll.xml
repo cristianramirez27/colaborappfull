@@ -18,7 +18,7 @@
             android:id="@+id/toolbarPoll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/poll"
+            app:title="@string/poll_activity_title"
             android:theme="@style/AppTheme"/>
     </android.support.design.widget.AppBarLayout>
 

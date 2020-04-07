@@ -1,16 +1,24 @@
 package com.coppel.rhconecta.dev.presentation.poll_toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.di.poll.DaggerPollToolbarComponent;
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
+import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+
+import javax.inject.Inject;
 
 /**
  *
@@ -18,9 +26,11 @@ import com.coppel.rhconecta.dev.R;
  */
 public class PollToolbarFragment extends Fragment {
 
+    @Inject
+    public PollToolbarViewModel viewModel;
     /* */
-    private Toolbar toolbar;
-    private ImageView ivBack;
+    public Toolbar toolbar;
+    private SurveyInboxView surveyInboxView;
 
     /**
      *
@@ -35,8 +45,11 @@ public class PollToolbarFragment extends Fragment {
      *
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         return inflater.inflate(R.layout.fragment_poll_toolbar, container, false);
     }
 
@@ -47,35 +60,78 @@ public class PollToolbarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ivBack = (ImageView) view.findViewById(R.id.ivBack);
-        ivBack.setOnClickListener(this::onBackPressed);
-
+        DaggerPollToolbarComponent.create().inject(this);
+        initViews();
+        observeViewModel();
+        execute();
     }
 
     /**
      *
      *
      */
-    public void setTitle(int title){
-        toolbar.setTitle(title);
+    @Override
+    public void onStart() {
+        super.onStart();
+        execute();
     }
 
     /**
      *
      *
      */
-    public void setTitle(String title){
-        toolbar.setTitle(title);
+    private void initViews(){
+        assert getView() != null;
+        toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+        surveyInboxView = (SurveyInboxView) getView().findViewById(R.id.surveyInboxView);
+        surveyInboxView.setOnClickListener(this::onSurveyInboxViewClickListener);
+        surveyInboxView.setCountMessages(0);
     }
 
     /**
      *
      *
      */
-    private void onBackPressed(View v){
-        if(getActivity() != null)
-            getActivity().onBackPressed();
+    private void observeViewModel(){
+        viewModel.getGetAvailablePollCountProcessStatus().observe(this, this::getAvailablePollCountObserver);
+    }
+
+    /**
+     *
+     *
+     */
+    private void execute(){
+        viewModel.loadAvailablePollCount();
+    }
+
+    /**
+     *
+     *
+     */
+    private void onSurveyInboxViewClickListener(View v){
+        if(viewModel.getAvailableCount() > 0){
+            Intent intent = new Intent(getContext(), PollActivity.class);
+            startActivity(intent);
+        } else
+            Toast.makeText(getContext(), R.string.not_poll_available_message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *
+     *
+     */
+    private void getAvailablePollCountObserver(ProcessStatus processStatus){
+        switch (processStatus) {
+            case LOADING:
+                break;
+            case FAILURE:
+                Log.e(getClass().getName(), viewModel.getFailure().toString());
+                Toast.makeText(getContext(), R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                surveyInboxView.setCountMessages(viewModel.getAvailableCount());
+                break;
+        }
     }
 
 }

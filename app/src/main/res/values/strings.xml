@@ -401,6 +401,16 @@
     <string name="poll_sent_success_title">Tu encuesta se envió con éxito</string>
     <string name="poll_sent_success_content">¡Gracias!</string>
     <string name="not_poll_available_message">No hay encuestas nuevas</string>
+    <string name="default_server_error">
+        Lo sentimos, tenemos un problema en nuestros servidores, intente mas tarde
+    </string>
+    <string name="releases_activity_title">Comunicados</string>
+    <string name="release_detail_activity_title">Comunicado</string>
+    <string name="visionaries_activity_title">Visionarios</string>
+    <string name="visionary_details_activity_title">Visionarios</string>
+    <string name="poll_activity_title">Encuesta</string>
+    <string name="not_available_releases">No hay comunicados que mostrar</string>
+    <string name="not_available_visionaries">No hay videos que mostrar</string>
 
     <string-array name="uppercase_words">
         <item>IMSS</item>
