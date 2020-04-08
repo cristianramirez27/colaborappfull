@@ -37,15 +37,18 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="220dp"
                 android:background="@color/colorBackgroundCoppelNegro">
 
-                <com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView
-                    android:id="@+id/vvVideo"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:foregroundGravity="center"
-                    android:background="@android:color/transparent"/>
+                    android:layout_height="match_parent">
+                    <com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView
+                        android:id="@+id/vvVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
 
                 <ProgressBar
                     android:id="@+id/pbVideoLoader"
@@ -59,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     tools:ignore="ContentDescription" />
 
                 <ImageView
@@ -88,7 +91,7 @@
 
                 <TextView
                     android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     tools:text="@tools:sample/lorem"
                     android:textColor="@color/colorPrimaryCoppelAzul"
@@ -96,8 +99,10 @@
                     android:textStyle="bold"
                     android:layout_marginStart="@dimen/lateral_margin"
                     android:layout_marginTop="@dimen/half_vertical_margin"
+                    android:layout_marginEnd="@dimen/lateral_margin"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/llActionContainer"/>
 
                 <TextView
                     android:id="@+id/tvDate"
@@ -112,6 +117,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
 
                 <LinearLayout
+                    android:id="@+id/llActionContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
                     android:orientation="horizontal"

@@ -23,7 +23,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
     /**
      *
-     * @param values
+     *
      */
     public VisionaryPreviewAdapter(
             List<VisionaryPreview> values,
@@ -35,9 +35,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
     /**
      *
-     * @param viewGroup
-     * @param position
-     * @return
+     *
      */
     @NonNull
     @Override
@@ -48,8 +46,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
     /**
      *
-     * @param viewHolder
-     * @param position
+     *
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
@@ -58,16 +55,17 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         // Simple values
         viewHolder.tvTitle.setText(visionaryPreview.getTitle());
         viewHolder.tvDate.setText(visionaryPreview.getDate());
-        String numberOfViews = Integer.toString(visionaryPreview.getNumberOfViews());
+        String numberOfViews = viewHolder.itemView.getContext()
+                .getString(R.string.number_of_views, visionaryPreview.getNumberOfViews());
         viewHolder.tvNumberOfViews.setText(numberOfViews);
         // Images
         Glide.with(viewHolder.itemView)
                 .load(visionaryPreview.getPreviewImage())
                 .into(viewHolder.ivPreview);
         // On click listener
-        viewHolder.itemView.setOnClickListener(v -> {
-            onVisionaryPreviewClickListener.onClick(visionaryPreview);
-        });
+        viewHolder.itemView.setOnClickListener(v ->
+                onVisionaryPreviewClickListener.onClick(visionaryPreview)
+        );
     }
 
     @Override
@@ -92,7 +90,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
         /**
          *
-         * @param itemView
+         *
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,7 +111,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         /**
          *
          *
-         * @param visionaryPreview
+         *
          */
         void onClick(VisionaryPreview visionaryPreview);
 

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.poll.DaggerPollToolbarComponent;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
@@ -112,8 +113,16 @@ public class PollToolbarFragment extends Fragment {
         if(viewModel.getAvailableCount() > 0){
             Intent intent = new Intent(getContext(), PollActivity.class);
             startActivity(intent);
-        } else
-            Toast.makeText(getContext(), R.string.not_poll_available_message, Toast.LENGTH_SHORT).show();
+        } else {
+            SingleActionDialog dialog = new SingleActionDialog(
+                    getActivity(),
+                    getString(R.string.not_available_poll_title),
+                    getString(R.string.not_available_poll_content),
+                    getString(R.string.not_available_poll_action),
+                    null
+            );
+            dialog.show();
+        }
     }
 
     /**

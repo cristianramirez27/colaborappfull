@@ -121,8 +121,6 @@ public class ReleasesActivity extends AppCompatActivity {
     private void setReleasesPreviews(List<ReleasePreview> releasesPreviews){
         ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, this::onReleasePreviewClickListener);
         rvReleases.setAdapter(adapter);
-        findViewById(R.id.tvNotAvailableReleases)
-                .setVisibility(releasesPreviews.isEmpty()? View.VISIBLE : View.GONE);
     }
 
     /**

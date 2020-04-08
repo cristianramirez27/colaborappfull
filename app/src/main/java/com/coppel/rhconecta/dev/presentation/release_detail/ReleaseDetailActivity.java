@@ -131,18 +131,18 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      */
     private void setReleaseInformation(Release release){
         // Images
-        Glide.with(this)
+        /*Glide.with(this)
                 .load(release.getHeaderImage())
                 .error(R.drawable.ic_image_grey_300_48dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .into(ivHeader);
+                .into(ivHeader);*/
         Glide.with(this)
                 .load(release.getImage())
                 .error(R.drawable.ic_image_grey_300_48dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivImage);
         // Texts
-        tvHeader.setText(release.getHeader());
+        /*tvHeader.setText(release.getHeader());*/
         tvTitle.setText(release.getTitle());
         Spanned content = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
                 Html.fromHtml(release.getContent(), Html.FROM_HTML_MODE_COMPACT) :

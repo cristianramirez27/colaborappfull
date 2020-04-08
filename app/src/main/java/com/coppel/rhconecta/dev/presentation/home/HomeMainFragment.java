@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
-import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -33,6 +32,7 @@ import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
@@ -55,7 +55,6 @@ import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosDetalle
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
-import com.coppel.rhconecta.dev.visionarios.encuestas.views.EncuestaActivity;
 import com.coppel.rhconecta.dev.visionarios.firebase.MyFirebaseReferences;
 import com.coppel.rhconecta.dev.visionarios.inicio.interfaces.Inicio;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.ItemCarousel;
@@ -88,7 +87,8 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ *
+ *
  */
 public class HomeMainFragment
         extends Fragment
@@ -152,7 +152,7 @@ public class HomeMainFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//COMMENT
+        //COMMENT
         //dialogFragmentLoader = new DialogFragmentLoader();
         // dialogFragmentLoader.show(getActivity().getSupportFragmentManager(), DialogFragmentLoader.TAG);
 
@@ -170,13 +170,22 @@ public class HomeMainFragment
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setCountMessages(0);
         ISurveyNotification.getSurveyIcon().setOnClickListener(v -> {
+            // TODO: Implements use case
             Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
             if(badge == null) return;
             if(badge.getValue() > 0){
                 Intent intent = new Intent(getContext(), PollActivity.class);
                 startActivity(intent);
-            } else
-                Toast.makeText(getActivity(), R.string.not_poll_available_message, Toast.LENGTH_SHORT).show();
+            } else {
+                SingleActionDialog dialog = new SingleActionDialog (
+                        getActivity(),
+                        getString(R.string.not_available_poll_title),
+                        getString(R.string.not_available_poll_content),
+                        getString(R.string.not_available_poll_action),
+                        null
+                );
+                dialog.show();
+            }
             /*if(ISurveyNotification.validateSurveyAccess()){
                 if (ultimaEncuesta != null) {
                     Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
@@ -190,21 +199,14 @@ public class HomeMainFragment
 
 
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                hideProgress();
-            }
-        }, 1200);
+        new Handler().postDelayed(this::hideProgress, 1200);
 
         return view;
     }
 
     /**
      *
-     * @param view
-     * @param savedInstanceState
+     *
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -221,8 +223,8 @@ public class HomeMainFragment
      *
      */
     private void observeViewModel() {
-        homeViewModel.getLoadBannersProcessStatus().observe(this, getLoadBannersObserver());
-        homeViewModel.getLoadBadgesProcessStatus().observe(this, getLoadBadgesObserver());
+        homeViewModel.getLoadBannersProcessStatus().observe(this, this::getLoadBannersObserver);
+        homeViewModel.getLoadBadgesProcessStatus().observe(this, this::getLoadBadgesObserver);
     }
 
     /**
@@ -236,57 +238,46 @@ public class HomeMainFragment
 
     /**
      *
-     * @return
+     *
      */
-    private Observer<ProcessStatus> getLoadBannersObserver() {
-        View view = getView();
-        assert view != null;
-        View loader = view.findViewById(R.id.pbLoader);
-        return processStatus -> {
-            loader.setVisibility(View.GONE);
-            if(processStatus != null) {
-                switch (processStatus) {
-                    case LOADING:
-                        loader.setVisibility(View.VISIBLE);
-                        break;
-                    case FAILURE:
-                        // TODO: Validate failure instance
-                        String message = homeViewModel.getFailure().toString();
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        break;
-                    case COMPLETED:
-                        setBanners(homeViewModel.getBanners());
-                        break;
-                }
-            }
-        };
+    private void getLoadBannersObserver(ProcessStatus processStatus) {
+        assert getView() != null;
+        View loader = getView().findViewById(R.id.pbLoader);
+        loader.setVisibility(View.GONE);
+        switch (processStatus) {
+            case LOADING:
+                loader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                Log.e(getClass().getName(), homeViewModel.getFailure().toString());
+                Toast.makeText(getContext(), R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                setBanners(homeViewModel.getBanners());
+                break;
+        }
     }
 
     /**
      *
-     * @return
+     *
      */
-    private Observer<ProcessStatus> getLoadBadgesObserver() {
-        View view = getView();
-        assert view != null;
-        View loader = view.findViewById(R.id.pbLoader);
-        return processStatus -> {
-            loader.setVisibility(View.GONE);
-            if(processStatus != null) {
-                switch (processStatus) {
-                    case LOADING:
-                        loader.setVisibility(View.VISIBLE);
-                        break;
-                    case FAILURE:
-                        String message = homeViewModel.getFailure().toString();
-                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                        break;
-                    case COMPLETED:
-                        setBadges(homeViewModel.getBadges());
-                        break;
-                }
-            }
-        };
+    private void getLoadBadgesObserver(ProcessStatus processStatus) {
+        assert getView() != null;
+        View loader = getView().findViewById(R.id.pbLoader);
+        loader.setVisibility(View.GONE);
+        switch (processStatus) {
+            case LOADING:
+                loader.setVisibility(View.VISIBLE);
+                break;
+            case FAILURE:
+                String message = homeViewModel.getFailure().toString();
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                break;
+            case COMPLETED:
+                setBadges(homeViewModel.getBadges());
+                break;
+        }
     }
 
     /**
@@ -298,7 +289,7 @@ public class HomeMainFragment
         ViewPager viewPager = getView().findViewById(R.id.vpBanner);
         ArrayList<Fragment> fragments = new ArrayList<>(banners.size());
         for(Banner banner: banners)
-            fragments.add(BannerFragment.createInstance(banner, onBannerClickListener));
+            fragments.add(BannerFragment.createInstance(banner, this::onBannerClickListener));
         BannerViewPagerAdapter adapter  = new BannerViewPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         tabIndicator.setupWithViewPager(viewPager);
@@ -321,7 +312,7 @@ public class HomeMainFragment
     }
 
     /* */
-    private BannerFragment.OnBannerClickListener onBannerClickListener = banner -> {
+    private void onBannerClickListener(Banner banner){
         Intent intent = null;
         if(banner.isRelease()) {
             intent = new Intent(getContext(), ReleaseDetailActivity.class);

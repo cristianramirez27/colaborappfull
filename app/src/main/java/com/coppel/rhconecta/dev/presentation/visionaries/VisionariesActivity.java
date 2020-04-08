@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
@@ -22,6 +23,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ *
+ *
+ */
 public class VisionariesActivity extends AppCompatActivity {
 
     /* */
@@ -43,6 +48,16 @@ public class VisionariesActivity extends AppCompatActivity {
         DaggerVisionariesComponent.create().inject(this);
         initViews();
         observeViewModel();
+        execute();
+    }
+
+    /**
+     *
+     *
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
         execute();
     }
 
@@ -77,9 +92,17 @@ public class VisionariesActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                 Log.e(getClass().getName(), visionariesViewModel.getFailure().toString());
-                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
-                 break;
+                Log.e(getClass().getName(), visionariesViewModel.getFailure().toString());
+                SingleActionDialog dialog = new SingleActionDialog(
+                        this,
+                        getString(R.string.visionaries_failure_default_title),
+                        getString(R.string.visionaries_failure_default_content),
+                        getString(R.string.visionaries_failure_default_action),
+                        v -> finish()
+                );
+                dialog.setCancelable(false);
+                dialog.show();
+                break;
             case COMPLETED:
                 setVisionariesPreviews(visionariesViewModel.getVisionariesPreviews());
                 break;
@@ -109,8 +132,6 @@ public class VisionariesActivity extends AppCompatActivity {
         VisionaryPreviewAdapter adapter =
                 new VisionaryPreviewAdapter(visionariesPreviews, this::onVisionaryPreviewClickListener);
         rvReleases.setAdapter(adapter);
-        findViewById(R.id.tvNotAvailableVisionaries)
-                .setVisibility(visionariesPreviews.isEmpty()? View.VISIBLE : View.GONE);
     }
 
     /**

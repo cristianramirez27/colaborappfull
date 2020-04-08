@@ -2,8 +2,10 @@ package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,6 +20,7 @@ import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
 import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.visionarios.utils.DialogCustom;
 
@@ -147,11 +150,19 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                String message = failure.toString();
+                Log.e(getClass().getName(), failure.toString());
+                String message = getString(R.string.default_server_error);
                 if(failure instanceof NotPollAvailableFailure)
-                    message = getString(R.string.not_poll_available_message);
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                finish();
+                    message = ((NotPollAvailableFailure) failure).message;
+                SingleActionDialog dialog = new SingleActionDialog(
+                        this,
+                        getString(R.string.poll_activity_failure_title),
+                        message,
+                        getString(R.string.poll_activity_failure_action),
+                        v -> finish()
+                );
+                dialog.setCancelable(false);
+                dialog.show();
                 break;
             case COMPLETED:
                 setPoll(viewModel.getPoll());

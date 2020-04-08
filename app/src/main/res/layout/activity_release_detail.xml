@@ -50,7 +50,7 @@
                 android:id="@+id/tvHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Comunicado"
+                android:text="@string/release_detail_activity_header"
                 android:textColor="@color/colorPrimaryCoppelAzul"
                 android:textSize="32sp"
                 android:textStyle="bold"

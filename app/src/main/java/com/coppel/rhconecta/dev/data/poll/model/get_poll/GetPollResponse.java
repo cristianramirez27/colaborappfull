@@ -36,6 +36,8 @@ public class GetPollResponse {
         public Header Encabezado;
         /* */
         public List<QuestionServer> Encuesta;
+        /* */
+        public String mensaje;
 
         /**
          *
@@ -60,6 +62,14 @@ public class GetPollResponse {
             for(QuestionServer questionServer : Encuesta)
                 questions.add(questionServer.toQuestion());
             return questions;
+        }
+
+        /**
+         *
+         *
+         */
+        public boolean wasFailed() {
+            return mensaje != null;
         }
 
     }

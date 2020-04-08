@@ -1,10 +1,11 @@
 package com.coppel.rhconecta.dev.data.poll;
 
-import android.content.Context;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
+import com.coppel.rhconecta.dev.data.common.BasicUserInformationFacade;
 import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountRequest;
 import com.coppel.rhconecta.dev.data.poll.model.get_available_poll_count.GetAvailablePollCountResponse;
 import com.coppel.rhconecta.dev.data.poll.model.get_poll.GetPollRequest;
@@ -15,13 +16,11 @@ import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
-import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.poll.PollRepository;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
 import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
-import com.coppel.rhconecta.dev.domain.poll.use_case.SendPollUseCase;
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.domain.poll.use_case.GetPollUseCase;
 
 import java.util.ArrayList;
 
@@ -32,8 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
-
 /**
  *
  *
@@ -43,14 +40,14 @@ public class PollRepositoryImpl implements PollRepository {
     /* */
     private PollApiService apiService;
     /* */
-    private Context context;
+    private BasicUserInformationFacade basicUserInformationFacade;
 
     /* */
     @Inject
     public PollRepositoryImpl() {
         Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
         apiService = retrofit.create(PollApiService.class);
-        context = CoppelApp.getContext();
+        basicUserInformationFacade = new BasicUserInformationFacade(CoppelApp.getContext());
     }
 
     /**
@@ -59,9 +56,9 @@ public class PollRepositoryImpl implements PollRepository {
      */
     @Override
     public void getPoll(UseCase.OnResultFunction<Either<Failure, Poll>> callback) {
-        long employeeNum = getEmployeeNum();
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
-        String authHeader = getAuthHeader();
+        String authHeader = basicUserInformationFacade.getAuthHeader();
         GetPollRequest request = new GetPollRequest(employeeNum, clvOption);
         apiService
                 .getPoll(authHeader, ServicesConstants.GET_ENCUESTAS, request)
@@ -80,21 +77,28 @@ public class PollRepositoryImpl implements PollRepository {
             public void onResponse(Call<GetPollResponse> call, Response<GetPollResponse> response) {
                 try {
                     GetPollResponse body = response.body();
-                    Poll poll = body.data.response.toPoll();
-                    Either<Failure, Poll> result = new Either<Failure, Poll>().new Right(poll);
-                    callback.onResult(result);
+                    assert body != null;
+                    GetPollResponse.Response responseInstance = body.data.response;
+                    if(responseInstance.wasFailed())
+                        callback.onResult(getNotPollAvailableFailure(responseInstance.mensaje));
+                    else {
+                        Poll poll = responseInstance.toPoll();
+                        Either<Failure, Poll> result = new Either<Failure, Poll>().new Right(poll);
+                        callback.onResult(result);
+                    }
                 } catch (Exception exception){
-                    callback.onResult(getNotPollAvailableFailure());
+                    Log.e(getClass().getName(), exception.toString());
+                    callback.onResult(getNotPollAvailableFailure(exception.getMessage()));
                 }
             }
 
             @Override
             public void onFailure(Call<GetPollResponse> call, Throwable t) {
-                callback.onResult(getNotPollAvailableFailure());
+                callback.onResult(getNotPollAvailableFailure(t.getMessage()));
             }
 
-            private Either<Failure, Poll> getNotPollAvailableFailure() {
-                Failure failure = new NotPollAvailableFailure();
+            private Either<Failure, Poll> getNotPollAvailableFailure(String message) {
+                NotPollAvailableFailure failure = new NotPollAvailableFailure(message);
                 return new Either<Failure, Poll>().new Left(failure);
             }
         };
@@ -106,9 +110,9 @@ public class PollRepositoryImpl implements PollRepository {
      */
     @Override
     public void sendPoll(Poll poll, UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback) {
-        long employeeNum = getEmployeeNum();
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 2;
-        String authHeader = getAuthHeader();
+        String authHeader = basicUserInformationFacade.getAuthHeader();
         ArrayList<SendPollRequest.AnswerServer> answersServer = new ArrayList<>();
         for(Question question : poll.getQuestions())
             answersServer.add(SendPollRequest.AnswerServer.fromQuestion(question));
@@ -158,9 +162,9 @@ public class PollRepositoryImpl implements PollRepository {
      */
     @Override
     public void getAvailablePollCount(UseCase.OnResultFunction<Either<Failure, Integer>> callback) {
-        long employeeNum = getEmployeeNum();
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
-        String authHeader = getAuthHeader();
+        String authHeader = basicUserInformationFacade.getAuthHeader();
         GetAvailablePollCountRequest request = new GetAvailablePollCountRequest(employeeNum, clvOption);
         apiService.getAvailablePollCount(
                 authHeader,
@@ -193,28 +197,6 @@ public class PollRepositoryImpl implements PollRepository {
                 callback.onResult(result);
             }
         };
-    }
-
-    /**
-     *
-     *
-     */
-    private Long getEmployeeNum(){
-        return Long.parseLong(getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ));
-    }
-
-    /**
-     *
-     *
-     */
-    private String getAuthHeader(){
-        return getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_TOKEN
-        );
     }
 
 }

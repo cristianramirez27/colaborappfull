@@ -85,5 +85,9 @@
         <item name="colorControlActivated">@color/colorBackgroundDialogDateTime</item>
     </style>
 
+    <style name="HorizontalProgressBar" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimaryCoppelAzul</item>
+    </style>
+
 
 </resources>
