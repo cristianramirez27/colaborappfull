@@ -22,6 +22,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -71,6 +72,10 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
                     getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID
             );
+        }
+
+        if (this.deviceId == "" || this.deviceId == null) {
+            this.deviceId = FirebaseInstanceId.getInstance().getId();
         }
 
         if (this.deviceId != "" && this.deviceId != null){
