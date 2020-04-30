@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
@@ -30,10 +29,14 @@ import javax.inject.Inject;
 public class VisionariesActivity extends AppCompatActivity {
 
     /* */
+    public static String TYPE = "TYPE";
+    private VisionaryType visionaryType;
+    /* */
     @Inject
     public VisionariesViewModel visionariesViewModel;
-    /* VIEWS */
+    /* */
     private RecyclerView rvReleases;
+    /* */
     private ProgressBar loader;
 
 
@@ -46,6 +49,7 @@ public class VisionariesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visionaries);
         DaggerVisionariesComponent.create().inject(this);
+        initValues();
         initViews();
         observeViewModel();
         execute();
@@ -65,10 +69,18 @@ public class VisionariesActivity extends AppCompatActivity {
      *
      *
      */
+    private void initValues(){
+        visionaryType = (VisionaryType) getIntent().getSerializableExtra(TYPE);
+    }
+
+    /**
+     *
+     *
+     */
     private void initViews(){
         initToolbar();
-        rvReleases = (RecyclerView) findViewById(R.id.rvVisionaries);
-        loader = (ProgressBar) findViewById(R.id.pbLoader);
+        rvReleases = findViewById(R.id.rvVisionaries);
+        loader = findViewById(R.id.pbLoader);
         rvReleases.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -79,6 +91,14 @@ public class VisionariesActivity extends AppCompatActivity {
     private void observeViewModel(){
         visionariesViewModel.getLoadVisionariesPreviewsStatus()
                 .observe(this, this::getLoadVisionariesPreviewsObserver);
+    }
+
+    /**
+     *
+     *
+     */
+    private void execute(){
+        visionariesViewModel.loadReleasesPreviews(visionaryType);
     }
 
     /**
@@ -117,7 +137,9 @@ public class VisionariesActivity extends AppCompatActivity {
         PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
         assert pollToolbarFragment != null;
-        pollToolbarFragment.toolbar.setTitle(R.string.visionaries_activity_title);
+        int titleResource = visionaryType == VisionaryType.VISIONARIES ?
+                R.string.visionaries_title : R.string.collaborator_at_home_title;
+        pollToolbarFragment.toolbar.setTitle(titleResource);
         setSupportActionBar(pollToolbarFragment.toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -142,15 +164,8 @@ public class VisionariesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, VisionaryDetailActivity.class);
         intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId());
         intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage());
+        intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType);
         startActivity(intent);
-    }
-
-    /**
-     *
-     *
-     */
-    private void execute(){
-        visionariesViewModel.loadReleasesPreviews();
     }
 
     /**

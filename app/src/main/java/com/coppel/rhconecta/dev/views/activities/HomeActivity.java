@@ -54,6 +54,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
@@ -94,6 +95,8 @@ import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.VISIONARIOS_URL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
@@ -109,6 +112,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
@@ -183,13 +187,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        notifications = new int[]{0,0};
+        notifications = new int[]{0,0,0};
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         getWindow().setBackgroundDrawable(null);
         initFirebase();
-
         coppelServicesPresenter = new CoppelServicesPresenter(this, this);
 
         Bundle bundle = getIntent().getExtras();
@@ -210,11 +213,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 navigationMenu(goTosection);
                 hideLoader = true;
             }
-
-
-        } else {
-            finish();
-        }
+        } else finish();
     }
 
     @Override
@@ -418,13 +417,20 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             case OPTION_VISIONARIES:
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
-                }else{
-                    // Change activity management
-                    // Intent intentVisionaries = new Intent(this, VideosActivity.class);
+                } else {
                     Intent intentVisionaries = new Intent(this, VisionariesActivity.class);
+                    intentVisionaries.putExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES);
                     startActivity(intentVisionaries);
                 }
-
+                break;
+            case OPTION_COLLABORATOR_AT_HOME:
+                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_STAYHOME).equals(YES))
+                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                else {
+                    Intent intentVisionaries = new Intent(this, VisionariesActivity.class);
+                    intentVisionaries.putExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME);
+                    startActivity(intentVisionaries);
+                }
                 break;
             case OPTION_LETTERS:
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)){

@@ -47,7 +47,9 @@ public class Badge {
         /* */
         VISIONARY,
         /* */
-        POLL;
+        COLLABORATOR_AT_HOME,
+        /* */
+        POLL
 
     }
 

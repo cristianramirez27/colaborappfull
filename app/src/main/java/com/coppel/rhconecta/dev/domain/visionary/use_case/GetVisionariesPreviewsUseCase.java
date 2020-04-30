@@ -5,6 +5,7 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import java.util.List;
 
@@ -14,25 +15,47 @@ import javax.inject.Inject;
  *
  *
  */
-public class GetVisionariesPreviewsUseCase extends UseCase<List<VisionaryPreview>, UseCase.None> {
+public class GetVisionariesPreviewsUseCase extends UseCase<List<VisionaryPreview>, GetVisionariesPreviewsUseCase.Params> {
 
+    /* */
     @Inject
-    public VisionaryRepository visionaryRepository;
+    VisionaryRepository visionaryRepository;
 
     /**
      *
      *
      */
-    @Inject public GetVisionariesPreviewsUseCase() { }
+    @Inject GetVisionariesPreviewsUseCase() { }
 
     /**
      *
-     * @param none
-     * @param callback
+     *
      */
     @Override
-    public void run(UseCase.None none, UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback) {
-        visionaryRepository.getVisionariesPreviews(callback);
+    public void run(
+            Params params,
+            UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
+    ) {
+        visionaryRepository.getVisionariesPreviews(params.type, callback);
+    }
+
+    /**
+     *
+     *
+     */
+    public static class Params {
+
+        /* */
+        public VisionaryType type;
+
+        /**
+         *
+         *
+         */
+        public Params(VisionaryType type) {
+            this.type = type;
+        }
+
     }
 
 }

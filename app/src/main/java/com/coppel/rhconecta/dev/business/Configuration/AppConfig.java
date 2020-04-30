@@ -37,6 +37,7 @@ public class AppConfig {
     public final static String ENDPOINT_HOME = "ENDPOINT_HOME";
     public final static String ENDPOINT_COMUNICADOS = "ENDPOINT_COMUNICADOS";
     public final static String ENDPOINT_VISIONARIOS = "ENDPOINT_VISIONARIOS";
+    public final static String ENDPOINT_STAYHOME = "ENDPOINT_STAYHOME";
     public final static String ENDPOINT_ENCUESTAS = "ENDPOINT_ENCUESTAS";
     public final static String ENDPOINT_PASSWORD_RECOVER = "ENDPOINT_PASSWORD_RECOVER";
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
@@ -64,10 +65,12 @@ public class AppConfig {
     public final static String BLOCK_HOLIDAYS = "BLOCK_HOLIDAYS";
     public final static String BLOCK_PROFILE = "BLOCK_PROFILE";
     public final static String BLOCK_VISIONARIOS = "BLOCK_VISIONARIOS";
+    public final static String BLOCK_STAYHOME = "BLOCK_STAYHOME";
     public final static String BLOCK_COMUNICADOS = "BLOCK_COMUNICADOS";
     public final static String BLOCK_ENCUESTAS = "BLOCK_ENCUESTAS";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
     public final static String YES = "YES";
+    public final static String NO = "NO";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
     /**Se almacenan los endpoints*/
@@ -86,6 +89,7 @@ public class AppConfig {
         String home = mFirebaseRemoteConfig.getString(ENDPOINT_HOME);
         String comunicados = mFirebaseRemoteConfig.getString(ENDPOINT_COMUNICADOS);
         String visionarios = mFirebaseRemoteConfig.getString(ENDPOINT_VISIONARIOS);
+        String stayHome = mFirebaseRemoteConfig.getString(ENDPOINT_STAYHOME);
         String encuestas = mFirebaseRemoteConfig.getString(ENDPOINT_ENCUESTAS);
         String passrecover = mFirebaseRemoteConfig.getString(ENDPOINT_PASSWORD_RECOVER);
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
@@ -116,6 +120,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOME, home);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COMUNICADOS, comunicados);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VISIONARIOS, visionarios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_STAYHOME, stayHome);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ENCUESTAS, encuestas);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER,passrecover);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
@@ -142,6 +147,7 @@ public class AppConfig {
         String block_holiday = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS);
         String block_profile = mFirebaseRemoteConfig.getString(BLOCK_PROFILE);
         String block_visionarios = mFirebaseRemoteConfig.getString(BLOCK_VISIONARIOS);
+        String block_stayhome = mFirebaseRemoteConfig.getString(BLOCK_STAYHOME);
         String block_communication = mFirebaseRemoteConfig.getString(BLOCK_COMUNICADOS);
         String block_surveys = mFirebaseRemoteConfig.getString(BLOCK_ENCUESTAS);
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
@@ -155,6 +161,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS,block_holiday);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PROFILE,block_profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS,block_visionarios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_STAYHOME, block_stayhome);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS,block_communication);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS,block_surveys);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);

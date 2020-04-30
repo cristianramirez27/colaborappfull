@@ -5,6 +5,7 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import java.util.List;
 
@@ -12,19 +13,19 @@ public interface VisionaryRepository {
 
     /**
      *
-     * @param callback
+     *
      */
     void getVisionariesPreviews(
+            VisionaryType type,
             UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
     );
 
     /**
      *
      *
-     * @param visionaryId
-     * @param callback
      */
     void getVisionaryById(
+            VisionaryType type,
             String visionaryId,
             UseCase.OnResultFunction<Either<Failure, Visionary>> callback
     );
@@ -32,11 +33,9 @@ public interface VisionaryRepository {
     /**
      *
      *
-     * @param visionaryId
-     * @param status
-     * @param callback
      */
     void updateVisionaryStatusById(
+            VisionaryType visionaryType,
             String visionaryId,
             Visionary.Status status,
             UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback

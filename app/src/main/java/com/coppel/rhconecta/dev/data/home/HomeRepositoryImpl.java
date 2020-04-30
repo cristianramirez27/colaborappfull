@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.data.home;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
@@ -130,9 +129,10 @@ public class HomeRepositoryImpl implements HomeRepository {
                 GetMainInformationResponse body = response.body();
                 assert body != null;
                 HashMap<Badge.Type, Badge> badges = new HashMap<>();
-                badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBagde());
-                badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBagde());
-                badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBagde());
+                badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBadge());
+                badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBadge());
+                badges.put(Badge.Type.COLLABORATOR_AT_HOME, body.data.response.Badges.getVisionaryBadge());
+                badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBadge());
                 Either<Failure, Map<Badge.Type, Badge>> result =
                         new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
                 callback.onResult(result);

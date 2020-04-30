@@ -11,7 +11,7 @@
     <com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView
         android:id="@+id/vvVideo"
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
         android:foregroundGravity="center"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"

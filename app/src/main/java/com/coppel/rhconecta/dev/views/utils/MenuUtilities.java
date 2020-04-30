@@ -4,17 +4,17 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.VoucherResponse;
 import com.coppel.rhconecta.dev.business.models.VoucherResponseV2;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
-import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,12 +24,16 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.NO;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
@@ -38,10 +42,14 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 
 public class MenuUtilities {
 
+    /**
+     *
+     *
+     */
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide,int[] notifications) {
 
         /*Setamos el menu por default*/
-        List<HomeMenuItem> listMenuDefault = Arrays.asList(
+        ArrayList<HomeMenuItem> listMenuDefault = new ArrayList<>(Arrays.asList(
                 new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
@@ -50,11 +58,16 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
                 new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
-                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]));
+                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]),
+                new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2])
+        ));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
 
-        String numgColaborator = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String numgColaborator = AppUtilities.getStringFromSharedPreferences(
+                CoppelApp.getContext(),
+                SHARED_PREFERENCES_NUM_COLABORADOR
+        );
 
         List<NotificationsUser> notificationSaved = RealmHelper.getNotifications(numgColaborator);
 
@@ -63,27 +76,28 @@ public class MenuUtilities {
         mapNotification.put(10,0);//Vacaciones
         mapNotification.put(11,0);//Gastos
 
-        if(notificationSaved!= null){
-            for(NotificationsUser notification : notificationSaved){
-                mapNotification.put(notification.getID_SISTEMA(),mapNotification.get(notification.getID_SISTEMA()) + 1);
+        if(notificationSaved != null) {
+            for (NotificationsUser notification : notificationSaved) {
+                mapNotification.put(
+                        notification.getID_SISTEMA(),
+                        mapNotification.get(notification.getID_SISTEMA()) + 1
+                );
             }
         }
 
-
-        for(HomeMenuItem item : listMenuDefault){
+        for(HomeMenuItem item : listMenuDefault)
             mapNames.put(item.getTAG(),item);
-        }
 
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
-        List<HomeMenuItem> homeMenuItems = new ArrayList<>();
+        ArrayList<HomeMenuItem> homeMenuItems = new ArrayList<>();
+
         if (userPreferences != null && userPreferences.getMenuItems() != null && userPreferences.getMenuItems().size() > 0 && !isSlide) {
 
             RealmList<HomeMenuItem> menus =  userPreferences.getMenuItems();
-
             List<String> listMenuSavedtTAG = new ArrayList<>();
-            for(HomeMenuItem item : menus){
+
+            for(HomeMenuItem item : menus)
                 listMenuSavedtTAG.add(item.getTAG());
-            }
 
 
 
@@ -95,6 +109,8 @@ public class MenuUtilities {
                     }
                 }
             }
+
+
 
 
             Realm realm = Realm.getDefaultInstance();
@@ -156,7 +172,17 @@ public class MenuUtilities {
             }
             homeMenuItems.addAll(listMenuDefault);
         }
-        return homeMenuItems;
+
+        // Se verifica la visibilidad de la opcion de stay home
+        boolean blockStayHome = AppUtilities.getStringFromSharedPreferences(context, BLOCK_STAYHOME).equals(YES);
+        ArrayList<HomeMenuItem> response = new ArrayList<>();
+        for (HomeMenuItem item : homeMenuItems) {
+            if(item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
+                continue;
+            response.add(item);
+        }
+
+        return response;
     }
 
     public static Drawable getIconByTag(String tag, Context context) {
@@ -179,6 +205,9 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_VISIONARIES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_visionaries);
+                break;
+            case AppConstants.OPTION_COLLABORATOR_AT_HOME:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_collaborator_at_home);
                 break;
             case AppConstants.OPTION_POLL:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_poll);

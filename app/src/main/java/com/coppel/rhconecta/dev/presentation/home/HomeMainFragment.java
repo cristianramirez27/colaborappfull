@@ -32,12 +32,14 @@ import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -170,7 +172,6 @@ public class HomeMainFragment
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setCountMessages(0);
         ISurveyNotification.getSurveyIcon().setOnClickListener(v -> {
-            // TODO: Implements use case
             Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
             if(badge == null) return;
             if(badge.getValue() > 0){
@@ -186,21 +187,8 @@ public class HomeMainFragment
                 );
                 dialog.show();
             }
-            /*if(ISurveyNotification.validateSurveyAccess()){
-                if (ultimaEncuesta != null) {
-                    Intent intentEncuesta = new Intent(v.getContext(), EncuestaActivity.class);
-                    intentEncuesta.putExtra("encuesta", ultimaEncuesta);
-                    startActivity(intentEncuesta);
-                } else {
-                    Toast.makeText(getActivity(), "No hay encuestas nuevas", Toast.LENGTH_SHORT).show();
-                }
-            }*/
         });
-
-
-
         new Handler().postDelayed(this::hideProgress, 1200);
-
         return view;
     }
 
@@ -223,8 +211,8 @@ public class HomeMainFragment
      *
      */
     private void observeViewModel() {
-        homeViewModel.getLoadBannersProcessStatus().observe(this, this::getLoadBannersObserver);
         homeViewModel.getLoadBadgesProcessStatus().observe(this, this::getLoadBadgesObserver);
+        homeViewModel.getLoadBannersProcessStatus().observe(this, this::getLoadBannersObserver);
     }
 
     /**
@@ -302,26 +290,32 @@ public class HomeMainFragment
     private void setBadges(Map<Badge.Type, Badge> badges){
         notifications = new int[]{
                 badges.get(Badge.Type.RELEASE).getValue(),
-                badges.get(Badge.Type.VISIONARY).getValue()
+                badges.get(Badge.Type.VISIONARY).getValue(),
+                badges.get(Badge.Type.COLLABORATOR_AT_HOME).getValue()
         };
         itemsCarousel.clear();
         initMenu();
         int countMessages = badges.get(Badge.Type.POLL).getValue();
         ISurveyNotification.getSurveyIcon().setCountMessages(countMessages);
-
     }
 
-    /* */
+    /**
+     *
+     *
+     */
     private void onBannerClickListener(Banner banner){
         Intent intent = null;
         if(banner.isRelease()) {
             intent = new Intent(getContext(), ReleaseDetailActivity.class);
             intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
         }
-        if(banner.isVisionary()){
+        if(banner.isVisionary() || banner.isVisionaryAtHome()){
+            VisionaryType type = banner.isVisionary() ?
+                    VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
             intent = new Intent(getContext(), VisionaryDetailActivity.class);
             intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
             intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
+            intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, type);
         }
         if(intent != null)
             startActivity(intent);
@@ -432,13 +426,10 @@ public class HomeMainFragment
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new HomeMenuItemTouchHelperCallback(homeMenuRecyclerViewAdapter));
         rcvMenu.setAdapter(homeMenuRecyclerViewAdapter);
         itemTouchHelper.attachToRecyclerView(rcvMenu);
-        viewBackFavorites.post(new Runnable() {
-            @Override
-            public void run() {
-                int backgroundFavoritesHeight = (homeMenuRecyclerViewAdapter.getItemSize() + txvFavorites.getHeight() + AppUtilities.dpToPx(getResources(), 8));
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, backgroundFavoritesHeight);
-                viewBackFavorites.setLayoutParams(layoutParams);
-            }
+        viewBackFavorites.post(() -> {
+            int backgroundFavoritesHeight = (homeMenuRecyclerViewAdapter.getItemSize() + txvFavorites.getHeight() + AppUtilities.dpToPx(getResources(), 8));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, backgroundFavoritesHeight);
+            viewBackFavorites.setLayoutParams(layoutParams);
         });
 
     }
@@ -447,14 +438,12 @@ public class HomeMainFragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgvArrowLeft:
-                if (vpBanner.getCurrentItem() != 0) {
+                if (vpBanner.getCurrentItem() != 0)
                     vpBanner.setCurrentItem(vpBanner.getCurrentItem() - 1);
-                }
                 break;
             case R.id.imgvArrowRight:
-                if (vpBanner.getCurrentItem() != (homeBannerPagerAdapter.getCount() - 1)) {
+                if (vpBanner.getCurrentItem() != (homeBannerPagerAdapter.getCount() - 1))
                     vpBanner.setCurrentItem(vpBanner.getCurrentItem() + 1);
-                }
                 break;
         }
     }

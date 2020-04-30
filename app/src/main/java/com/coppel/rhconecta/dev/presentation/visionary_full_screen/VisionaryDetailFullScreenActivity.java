@@ -3,14 +3,15 @@ package com.coppel.rhconecta.dev.presentation.visionary_full_screen;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
+
+import java.util.Timer;
 
 /**
  *
@@ -68,7 +69,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
      *
      */
     private void initVideoView(){
-        vvVideo = (MyVideoView) findViewById(R.id.vvVideo);
+        vvVideo = findViewById(R.id.vvVideo);
         // Media controller settings
         MediaController mediaController = getMyMediaController();
         mediaController.setAnchorView(vvVideo);

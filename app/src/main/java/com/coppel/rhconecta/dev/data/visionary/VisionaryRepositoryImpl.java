@@ -19,6 +19,7 @@ import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,17 +59,17 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
      */
     @Override
     public void getVisionariesPreviews(
+            VisionaryType type,
             UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
-        String authHeader =basicUserInformationFacade.getAuthHeader();
+        String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionariesPreviewsRequest request = new GetVisionariesPreviewsRequest(employeeNum, clvOption);
-        apiService.getVisionariesPreviews(
-                authHeader,
-                ServicesConstants.GET_VISIONARIOS,
-                request
-        ).enqueue(getCallbackGetVisionariesPreviewsResponse(callback));
+        String url = type == VisionaryType.VISIONARIES ?
+                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+        apiService.getVisionariesPreviews(authHeader, url, request)
+                .enqueue(getCallbackGetVisionariesPreviewsResponse(callback));
     }
 
     /**
@@ -116,6 +117,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
      */
     @Override
     public void getVisionaryById(
+            VisionaryType type,
             String visionaryId,
             UseCase.OnResultFunction<Either<Failure, Visionary>> callback
     ) {
@@ -124,9 +126,11 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         long visionaryIdInt = Long.parseLong(visionaryId);
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionaryByIdRequest request = new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
+        String url = type == VisionaryType.VISIONARIES ?
+                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionaryById(
                 authHeader,
-                ServicesConstants.GET_VISIONARIOS,
+                url,
                 request
         ).enqueue(getCallbackGetVisionaryByIdResponse(callback));
     }
@@ -174,6 +178,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
      */
     @Override
     public void updateVisionaryStatusById(
+            VisionaryType type,
             String visionaryId,
             Visionary.Status status,
             UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
@@ -189,11 +194,11 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                 clvOption,
                 clvType
         );
-        apiService.updateVisionaryStatusById(
-                authHeader,
-                ServicesConstants.GET_VISIONARIOS,
-                request
-        ).enqueue(getCallbackUpdateVisionaryStatusByIdResponse(status, callback));
+        String url = type == VisionaryType.VISIONARIES ?
+                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
+        apiService.updateVisionaryStatusById(authHeader, url, request)
+                .enqueue(getCallbackUpdateVisionaryStatusByIdResponse(status, callback));
     }
 
 
@@ -210,9 +215,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             @Override
             public void onResponse(Call<UpdateVisionaryStatusByIdResponse> call, Response<UpdateVisionaryStatusByIdResponse> response) {
                 try {
-                    UpdateVisionaryStatusByIdResponse body = response.body();
-                    assert body != null;
-                    Object obj = body.data.response;
                     Either<Failure, Visionary.Status> result =
                             new Either<Failure, Visionary.Status>().new Right(status);
                     callback.onResult(result);

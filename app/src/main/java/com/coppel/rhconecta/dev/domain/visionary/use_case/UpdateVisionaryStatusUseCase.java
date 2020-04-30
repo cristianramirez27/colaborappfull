@@ -5,6 +5,7 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import javax.inject.Inject;
 
@@ -16,7 +17,7 @@ public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.Status, Upda
 
     /* */
     @Inject
-    public VisionaryRepository visionaryRepository;
+    VisionaryRepository visionaryRepository;
 
     /**
      *
@@ -24,11 +25,20 @@ public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.Status, Upda
      */
     public static class Params {
 
+        /* */
         String visionaryId;
+        /* */
+        VisionaryType visionaryType;
+        /* */
         Visionary.Status status;
 
-        public Params(String visionaryId, Visionary.Status status) {
+        /**
+         *
+         *
+         */
+        public Params(VisionaryType visionaryType, String visionaryId, Visionary.Status status) {
             this.visionaryId = visionaryId;
+            this.visionaryType = visionaryType;
             this.status = status;
         }
     }
@@ -37,16 +47,16 @@ public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.Status, Upda
      *
      *
      */
-    @Inject public UpdateVisionaryStatusUseCase() { /* PASS */ }
+    @Inject UpdateVisionaryStatusUseCase() { }
 
     /**
      *
-     * @param params
-     * @param callback
+     *
      */
     @Override
     public void run(Params params, OnResultFunction<Either<Failure, Visionary.Status>> callback) {
         visionaryRepository.updateVisionaryStatusById(
+                params.visionaryType,
                 params.visionaryId,
                 params.status,
                 callback

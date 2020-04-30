@@ -82,6 +82,14 @@ public class Banner {
      *
      *
      */
+    public boolean isVisionaryAtHome(){
+        return type == 3;
+    }
+
+    /**
+     *
+     *
+     */
     @NonNull
     @Override
     public String toString() {

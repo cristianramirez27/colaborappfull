@@ -18,6 +18,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PREVIEW;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VALIDARFIRMA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WITHDRAWSAVINGS;
@@ -46,6 +47,7 @@ public class ServicesConstants {
     public static  String GET_HOME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_HOME);
     public static  String GET_COMUNICADOS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_COMUNICADOS);
     public static  String GET_VISIONARIOS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_VISIONARIOS);
+    public static  String GET_VISIONARIOS_STAY_HOME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_STAYHOME);
     public static  String GET_ENCUESTAS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_ENCUESTAS);
     public static  String GET_LETTERS_VALIDATE_SIGNATURE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_VALIDARFIRMA);
     public static  String GET_CONFIG = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_CARTASCONFIG);

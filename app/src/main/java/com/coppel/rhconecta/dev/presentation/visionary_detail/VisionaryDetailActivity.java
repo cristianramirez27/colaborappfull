@@ -25,6 +25,7 @@ import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
 import com.coppel.rhconecta.dev.presentation.common.listener.OnMyVimeoExtractionListener;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.presentation.visionary_full_screen.VisionaryDetailFullScreenActivity;
 
 import javax.inject.Inject;
@@ -41,12 +42,14 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     /* */
     public static String VISIONARY_ID = "VISIONARY_ID";
     public static String VISIONARY_IMAGE_PREVIEW = "VISIONARY_IMAGE_PREVIEW";
+    public static String VISIONARY_TYPE = "VISIONARY_TYPE";
     private final int REQUEST_CODE_FULL_SCREEN = 1;
     /* */
     @Inject
     public VisionaryDetailViewModel viewModel;
     private String visionaryId;
     private String visionaryVideoPreview;
+    private VisionaryType visionaryType;
     /* VIEWS */
     /* */
     private Toolbar toolbar;
@@ -88,6 +91,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private void initValues(){
         visionaryId = getIntent().getStringExtra(VISIONARY_ID);
         visionaryVideoPreview = getIntent().getStringExtra(VISIONARY_IMAGE_PREVIEW);
+        visionaryType = (VisionaryType) getIntent().getSerializableExtra(VISIONARY_TYPE);
     }
 
     /**
@@ -96,18 +100,18 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      */
     private void initViews(){
         initToolbar();
-        pbLoader = (ProgressBar) findViewById(R.id.pbLoader);
-        pbVideoLoader = (ProgressBar) findViewById(R.id.pbVideoLoader);
-        ivVideoPreview = (ImageView) findViewById(R.id.ivVideoPreview);
-        vvVideo = (MyVideoView) findViewById(R.id.vvVideo);
-        ivPlayButton = (ImageView) findViewById(R.id.ivPlayButton);
-        ImageView ivFullScreenButton = (ImageView) findViewById(R.id.ivFullScreenButton);
-        ivLike = (ImageView) findViewById(R.id.ivLike);
-        ivDislike = (ImageView) findViewById(R.id.ivDislike);
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvDate = (TextView) findViewById(R.id.tvDate);
-        tvNumberOfViews = (TextView) findViewById(R.id.tvNumberOfViews);
-        tvContent = (TextView) findViewById(R.id.tvContent);
+        pbLoader = findViewById(R.id.pbLoader);
+        pbVideoLoader = findViewById(R.id.pbVideoLoader);
+        ivVideoPreview = findViewById(R.id.ivVideoPreview);
+        vvVideo = findViewById(R.id.vvVideo);
+        ivPlayButton = findViewById(R.id.ivPlayButton);
+        ImageView ivFullScreenButton = findViewById(R.id.ivFullScreenButton);
+        ivLike = findViewById(R.id.ivLike);
+        ivDislike = findViewById(R.id.ivDislike);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvDate = findViewById(R.id.tvDate);
+        tvNumberOfViews = findViewById(R.id.tvNumberOfViews);
+        tvContent = findViewById(R.id.tvContent);
         // Video view configuration
         initVideoView();
         // Set image preview
@@ -136,7 +140,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void execute(){
-        viewModel.loadVisionary(visionaryId);
+        viewModel.loadVisionary(visionaryType, visionaryId);
     }
 
     /**
@@ -144,8 +148,10 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.visionary_details_activity_title);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        int titleResource = visionaryType == VisionaryType.VISIONARIES ?
+                R.string.visionary_details_activity_title : R.string.visionary_at_home_details_activity_title;
+        toolbar.setTitle(titleResource);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -268,7 +274,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onLikeButtonClickListener(View v){
-        viewModel.updateVisionaryStatus(Visionary.Status.LIKED);
+        viewModel.updateVisionaryStatus(visionaryType, Visionary.Status.LIKED);
     }
 
     /**
@@ -276,7 +282,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onDislikeButtonClickListener(View v){
-        viewModel.updateVisionaryStatus(Visionary.Status.DISLIKED);
+        viewModel.updateVisionaryStatus(visionaryType, Visionary.Status.DISLIKED);
     }
 
     /**

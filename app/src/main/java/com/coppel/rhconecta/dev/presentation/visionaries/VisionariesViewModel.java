@@ -3,22 +3,25 @@ package com.coppel.rhconecta.dev.presentation.visionaries;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
-import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionariesPreviewsUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionariesPreviewsUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ *
+ *
+ */
 public class VisionariesViewModel {
 
     // Use cases
     @Inject
-    public GetVisionariesPreviewsUseCase getVisionariesPreviewsUseCase;
+    GetVisionariesPreviewsUseCase getVisionariesPreviewsUseCase;
     // Observables
     private MutableLiveData<ProcessStatus> loadVisionariesPreviewsStatus = new MutableLiveData<>();
     // Values
@@ -29,52 +32,59 @@ public class VisionariesViewModel {
      *
      *
      */
-    @Inject public VisionariesViewModel() { }
+    @Inject VisionariesViewModel() { }
 
     /**
      *
      *
      */
-    public void loadReleasesPreviews() {
+    void loadReleasesPreviews(VisionaryType type) {
         loadVisionariesPreviewsStatus.postValue(ProcessStatus.LOADING);
-        getVisionariesPreviewsUseCase.run(UseCase.None.getInstance(), result -> {
-            result.fold(onLoadVisionariesPreviewsFailure, onLoadVisionariesPreviewsRight);
-        });
+        GetVisionariesPreviewsUseCase.Params params = new GetVisionariesPreviewsUseCase.Params(type);
+        getVisionariesPreviewsUseCase.run(params, result ->
+                result.fold(this::onLoadVisionariesPreviewsFailure, this::onLoadVisionariesPreviewsRight)
+        );
     }
 
-    /* */
-    private Either.Fn<Failure> onLoadVisionariesPreviewsFailure = failure -> {
+    /**
+     *
+     *
+     */
+    private void onLoadVisionariesPreviewsFailure(Failure failure){
         this.failure = failure;
         loadVisionariesPreviewsStatus.postValue(ProcessStatus.FAILURE);
-    };
-
-    /* */
-    private Either.Fn<List<VisionaryPreview>> onLoadVisionariesPreviewsRight = visionariesPreviews -> {
-        this.visionariesPreviews = visionariesPreviews;
-        loadVisionariesPreviewsStatus.postValue(ProcessStatus.COMPLETED);
-    };
+    }
 
     /**
      *
-     * @return
+     *
      */
-    public LiveData<ProcessStatus> getLoadVisionariesPreviewsStatus() {
+    private void onLoadVisionariesPreviewsRight(List<VisionaryPreview> visionariesPreviews){
+        this.visionariesPreviews = visionariesPreviews;
+        loadVisionariesPreviewsStatus.postValue(ProcessStatus.COMPLETED);
+    }
+
+    /**
+     *
+     *
+     */
+    LiveData<ProcessStatus> getLoadVisionariesPreviewsStatus() {
         return loadVisionariesPreviewsStatus;
     }
 
     /**
      *
-     * @return
+     *
      */
-    public List<VisionaryPreview> getVisionariesPreviews() {
+    List<VisionaryPreview> getVisionariesPreviews() {
         return visionariesPreviews;
     }
 
     /**
      *
-     * @return
+     *
      */
-    public Failure getFailure() {
+    Failure getFailure() {
         return failure;
     }
 

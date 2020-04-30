@@ -3,12 +3,12 @@ package com.coppel.rhconecta.dev.presentation.visionary_detail;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionaryUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.UpdateVisionaryStatusUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import javax.inject.Inject;
 
@@ -20,9 +20,9 @@ public class VisionaryDetailViewModel {
 
     // Use cases
     @Inject
-    public GetVisionaryUseCase getVisionaryUseCase;
+    GetVisionaryUseCase getVisionaryUseCase;
     @Inject
-    public UpdateVisionaryStatusUseCase updateVisionaryStatusUseCase;
+    UpdateVisionaryStatusUseCase updateVisionaryStatusUseCase;
     // Observables
     private MutableLiveData<ProcessStatus> loadVisionaryProcessStatus = new MutableLiveData<>();
     private MutableLiveData<ProcessStatus> updateVisionaryStatusProcessStatus = new MutableLiveData<>();
@@ -35,15 +35,15 @@ public class VisionaryDetailViewModel {
      *
      *
      */
-    @Inject public VisionaryDetailViewModel() { }
+    @Inject VisionaryDetailViewModel() { }
 
     /**
      *
-     * @param visionaryId
+     *
      */
-    void loadVisionary(String visionaryId) {
+    void loadVisionary(VisionaryType visionaryType, String visionaryId) {
         loadVisionaryProcessStatus.postValue(ProcessStatus.LOADING);
-        GetVisionaryUseCase.Params params = new GetVisionaryUseCase.Params(visionaryId);
+        GetVisionaryUseCase.Params params = new GetVisionaryUseCase.Params(visionaryType, visionaryId);
         getVisionaryUseCase.run(params, result ->
                 result.fold(this::onLoadVisionaryFailure, this::onLoadVisionaryRight)
         );
@@ -51,7 +51,7 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @param failure
+     *
      */
     private void onLoadVisionaryFailure(Failure failure){
         this.failure = failure;
@@ -60,22 +60,22 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @param visionary
+     *
      */
     private void onLoadVisionaryRight(Visionary visionary){
         this.visionary = visionary;
         loadVisionaryProcessStatus.postValue(ProcessStatus.COMPLETED);
-    };
+    }
 
     /**
      *
-     * @param status
+     *
      */
-    void updateVisionaryStatus(Visionary.Status status) {
+    void updateVisionaryStatus(VisionaryType visionaryType, Visionary.Status status) {
         String visionaryId = visionary.getId();
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.LOADING);
         UpdateVisionaryStatusUseCase.Params params =
-                new UpdateVisionaryStatusUseCase.Params(visionaryId, status);
+                new UpdateVisionaryStatusUseCase.Params(visionaryType, visionaryId, status);
         updateVisionaryStatusUseCase.run(params, result ->
                 result.fold(this::onUpdateVisionaryStatusFailure, this::onUpdateVisionaryStatusRight)
         );
@@ -83,7 +83,7 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @param failure
+     *
      */
     private void onUpdateVisionaryStatusFailure(Failure failure){
         this.failure = failure;
@@ -92,18 +92,18 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @param status
+     *
      */
     private void onUpdateVisionaryStatusRight(Visionary.Status status){
         Visionary updatedVisionary = visionary.cloneVisionary();
         updatedVisionary.setStatus(status);
         this.visionary = updatedVisionary;
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.COMPLETED);
-    };
+    }
 
     /**
      *
-     * @return
+     *
      */
     LiveData<ProcessStatus> getLoadVisionaryProcessStatus() {
         return loadVisionaryProcessStatus;
@@ -111,7 +111,7 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @return
+     *
      */
     LiveData<ProcessStatus> getUpdateVisionaryStatusProcessStatus() {
         return updateVisionaryStatusProcessStatus;
@@ -119,17 +119,17 @@ public class VisionaryDetailViewModel {
 
     /**
      *
-     * @return
+     *
      */
-    public Visionary getVisionary() {
+    Visionary getVisionary() {
         return visionary;
     }
 
     /**
      *
-     * @return
+     *
      */
-    public Failure getFailure() {
+    Failure getFailure() {
         return failure;
     }
 

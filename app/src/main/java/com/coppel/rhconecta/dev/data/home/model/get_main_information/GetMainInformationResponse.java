@@ -90,13 +90,15 @@ public class GetMainInformationResponse {
         /* */
         public int num_noVistosVideos;
         /* */
+        public int num_noVistosCampana;
+        /* */
         public int opc_encuesta;
 
         /**
          *
          *
          */
-        public Badge getReleaseBagde() {
+        public Badge getReleaseBadge() {
             return new Badge(num_noVistosComunicados, Badge.Type.RELEASE);
         }
 
@@ -104,7 +106,7 @@ public class GetMainInformationResponse {
          *
          *
          */
-        public Badge getVisionaryBagde() {
+        public Badge getVisionaryBadge() {
             return new Badge(num_noVistosVideos, Badge.Type.VISIONARY);
         }
 
@@ -112,7 +114,15 @@ public class GetMainInformationResponse {
          *
          *
          */
-        public Badge getPollBagde() {
+        public Badge getCollaboratorAtHomeBadge() {
+            return new Badge(num_noVistosCampana, Badge.Type.COLLABORATOR_AT_HOME);
+        }
+
+        /**
+         *
+         *
+         */
+        public Badge getPollBadge() {
             return new Badge(opc_encuesta, Badge.Type.POLL);
         }
 

@@ -46,6 +46,10 @@
         <value>rhconecta/api/v3/visionarios</value>
     </entry>
     <entry>
+        <key>ENDPOINT_STAYHOME</key>
+        <value>rhconecta/api/v3/colaboradorencasa</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_ENCUESTAS</key>
         <value>rhconecta/api/v3/encuestas</value>
     </entry>

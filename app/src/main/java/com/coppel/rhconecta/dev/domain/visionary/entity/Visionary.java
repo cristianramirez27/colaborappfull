@@ -25,14 +25,7 @@ public class Visionary {
 
     /**
      *
-     * @param id
-     * @param title
-     * @param date
-     * @param content
-     * @param video
-     * @param numberOfViews
-     * @param alreadyBeenSeen
-     * @param status
+     *
      */
     public Visionary(String id, String title, String date, String content, String video, int numberOfViews, boolean alreadyBeenSeen, Status status) {
         this.id = id;
@@ -48,7 +41,6 @@ public class Visionary {
     /**
      *
      *
-     * @return
      */
     public Visionary cloneVisionary(){
         return new Visionary(
@@ -68,46 +60,84 @@ public class Visionary {
      *
      */
     public enum Status {
-
+        /* */
         UNKNOWN,
+        /* */
         EMPTY,
+        /* */
         LIKED,
-        DISLIKED;
-
+        /* */
+        DISLIKED
     }
 
+    /**
+     *
+     *
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     *
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     *
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     *
+     *
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     *
+     *
+     */
     public String getVideo() {
         return video;
     }
 
+    /**
+     *
+     *
+     */
     public int getNumberOfViews() {
         return numberOfViews;
     }
 
+    /**
+     *
+     *
+     */
     public boolean isAlreadyBeenSeen() {
         return alreadyBeenSeen;
     }
 
+    /**
+     *
+     *
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     *
+     *
+     */
     public void setStatus(Status status) {
         this.status = status;
     }

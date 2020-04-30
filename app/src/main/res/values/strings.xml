@@ -1,4 +1,6 @@
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
     <string name="app_name">ColaborApp</string>
     <string name="welcome">Bienvenido</string>
     <string name="enrollment_message">
@@ -406,7 +408,7 @@
     </string>
     <string name="releases_activity_title">Comunicados</string>
     <string name="release_detail_activity_title">Comunicado</string>
-    <string name="visionaries_activity_title">Visionarios</string>
+    <string name="visionaries_title">Visionarios</string>
     <string name="visionary_details_activity_title">Visionarios</string>
     <string name="poll_activity_title">Encuesta</string>
     <string name="not_available_releases">No hay comunicados que mostrar</string>
@@ -420,6 +422,9 @@
     <string name="release_detail_activity_header">Comunicado</string>
     <string name="poll_activity_failure_title">Alerta</string>
     <string name="poll_activity_failure_action">Aceptar</string>
+    <string name="collaborator_at_home">Videos</string>
+    <string name="collaborator_at_home_title">Videos</string>
+    <string name="visionary_at_home_details_activity_title">Videos</string>
 
     <string-array name="uppercase_words">
         <item>IMSS</item>
