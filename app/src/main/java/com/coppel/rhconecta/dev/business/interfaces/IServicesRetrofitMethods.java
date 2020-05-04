@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
+import com.coppel.rhconecta.dev.business.models.AuthCodeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsAdvertisingRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesBenefitsCategoriesLocationRequest;
@@ -58,6 +59,8 @@ import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
+import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
+import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -316,5 +319,15 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> getCollageURL(@Url String url,@Header("Authorization") String token, @Body CoppelServicesCollageUrlRequest servicesRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> validateCode(@Url String url, @Body ValidateCodeRequest validateCodeRequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> authCode(@Url String url, @Body AuthCodeRequest authCodeRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> validateDeviceId(@Url String url, @Body ValidateDeviceIdRequest validateDeviceIdRequest);
 }

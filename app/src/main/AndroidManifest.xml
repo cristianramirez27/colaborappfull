@@ -103,6 +103,17 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".views.activities.QrCodeActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation" />
+
+        <activity
             android:name=".views.activities.GastosViajeDetalleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
@@ -143,6 +154,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -153,7 +165,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 </manifest>

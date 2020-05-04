@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -25,6 +27,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -125,6 +128,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_V
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -184,6 +188,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     private String goTosection="";
     private CoppelServicesPresenter coppelServicesPresenter;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,6 +199,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         getWindow().setBackgroundDrawable(null);
         initFirebase();
+
+        this.context = this;
+
         coppelServicesPresenter = new CoppelServicesPresenter(this, this);
 
         Bundle bundle = getIntent().getExtras();
@@ -215,6 +224,26 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             }
         } else finish();
     }
+
+    /*
+    public boolean editColaborador(String newNumber){
+        boolean res = false;
+        if (newNumber.equals("") || newNumber.equals(null) || newNumber.equals("0")){
+            Toast.makeText(context, "Numero de empleado invalido", Toast.LENGTH_LONG).show();
+        } else {
+            if (newNumber.length() == 8){
+                profileResponse.setColaborador(newNumber);
+                initMenu();
+                showWarningDialog("Numero de empleado cambiado correctamente");
+                res = true;
+            } else {
+                Toast.makeText(context, "Numero de empleado invalido", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        return res;
+    }
+    */
 
     @Override
     protected void onResume() {
@@ -488,6 +517,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                     break;
+            case OPTION_QR_CODE:
+                Intent intentQr = new Intent(this, QrCodeActivity.class);
+                intentQr.putExtra("numEmp", profileResponse.getColaborador());
+                intentQr.putExtra("emailEmp", profileResponse.getCorreo());
+                startActivity(intentQr);
+                break;
 
             case OPTION_COLLAGE:
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)){
@@ -840,7 +875,3 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     }
 }
-
-
-
-
