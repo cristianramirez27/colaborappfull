@@ -70,9 +70,9 @@ public class HomeViewModel {
      */
     void loadBadges() {
         loadBadgesProcessStatus.postValue(ProcessStatus.LOADING);
-        getBadgesUseCase.run(UseCase.None.getInstance(), result -> {
-            result.fold(this::onLoadBadgesFailure, this::onLoadBadgesRight);
-        });
+        getBadgesUseCase.run(UseCase.None.getInstance(), result ->
+                result.fold(this::onLoadBadgesFailure, this::onLoadBadgesRight)
+        );
     }
 
     /* */

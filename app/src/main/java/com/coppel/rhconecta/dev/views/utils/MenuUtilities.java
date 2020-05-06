@@ -158,13 +158,18 @@ public class MenuUtilities {
                             menus.get(i).setNotifications(notifications[1]);
                         }
                     }
+
+                    if(menus.get(i).getTAG().equals(OPTION_COLLABORATOR_AT_HOME)){ // agrega notificaciones a videos colaborador en casa
+                        if(notifications.length>1){
+                            menus.get(i).setNotifications(notifications[2]);
+                        }
+                    }
                 }catch (Exception e){
                     Log.d("MenuUtilities","Error add notifications menu: "+e.getMessage());
                 }
 
             }
             realm.commitTransaction();
-
             homeMenuItems.addAll(menus);
         } else {
             if (isSlide) {
