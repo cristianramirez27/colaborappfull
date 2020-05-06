@@ -114,6 +114,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.Map;
@@ -3802,4 +3803,126 @@ public class ServicesInteractor {
         }
     }
 
+
+
+    public void validateCode(ValidateCodeRequest validateCodeRequest) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+        iServicesRetrofitMethods.validateCode(url, validateCodeRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    QrCodeResponse validateCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                        response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                        QrCodeResponse.class
+                    );
+
+                    if(validateCodeResponse.getEstado() != 0){
+                        if (validateCodeResponse.getEstado() == 1) {
+                            authCode(validateCodeRequest, validateCodeResponse);
+                        } else {
+                            qrCodeResponseHandler(validateCodeResponse, 1, 1);
+                        }
+                    } else {
+                        qrCodeResponseHandler(null, 2, 1);
+                    }
+                } catch (Exception e) {
+                    qrCodeResponseHandler(null, 2, 1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                qrCodeResponseHandler(null, 2, 1);
+            }
+        });
+    }
+
+    public void authCode(ValidateCodeRequest validateCodeRequest, QrCodeResponse validateCodeResponse) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+        AuthCodeRequest authCodeRequest =  new AuthCodeRequest();
+        authCodeRequest.setOpcion(2);
+        authCodeRequest.setQrcode(validateCodeRequest.getQrcode());
+        authCodeRequest.setStatus(validateCodeResponse.getEstado());
+        authCodeRequest.setEmailemp(validateCodeRequest.getEmailemp());
+        authCodeRequest.setDeviceid(validateCodeRequest.getDeviceid());
+
+        iServicesRetrofitMethods.authCode(url, authCodeRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    QrCodeResponse authCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                        response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                        QrCodeResponse.class
+                    );
+
+                    if(authCodeResponse.getEstado() != 0){
+                        qrCodeResponseHandler(authCodeResponse, 1, 1);
+                    } else {
+                        qrCodeResponseHandler(null, 2, 1);
+                    }
+                } catch (Exception e) {
+                    qrCodeResponseHandler(null, 2, 1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                qrCodeResponseHandler(null, 2, 1);
+            }
+        });
+    }
+
+    public void qrCodeResponseHandler(QrCodeResponse res, int option, int type){
+        switch (option) {
+            case 1:
+                ServicesResponse<QrCodeResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(res);
+                servicesResponse.setType(type);
+                iServiceListener.onResponse(servicesResponse);
+                break;
+            case 2:
+                ServicesError servicesError = new ServicesError();
+                servicesError.setType(type);
+                iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, 1, "Ocurrió un error con la conexión", servicesError));
+                break;
+        }
+    }
+
+    public void validateDeviceId(ValidateDeviceIdRequest validateDeviceIdRequest) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+
+        iServicesRetrofitMethods.validateDeviceId(url, validateDeviceIdRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    QrCodeResponse validateDeviceIdResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
+                    );
+
+                    if(validateDeviceIdResponse.getEstado() != 0){
+                        qrCodeResponseHandler(validateDeviceIdResponse, 1, 2);
+                    } else {
+                        if (!validateDeviceIdResponse.getMensaje().equals("")){
+                            qrCodeResponseHandler(validateDeviceIdResponse, 1, 2);
+                        } else {
+                            qrCodeResponseHandler(null, 2, 2);
+                        }
+                    }
+                } catch (Exception e) {
+                    qrCodeResponseHandler(null, 2, 2);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                qrCodeResponseHandler(null, 2, 2);
+            }
+        });
+    }
 }

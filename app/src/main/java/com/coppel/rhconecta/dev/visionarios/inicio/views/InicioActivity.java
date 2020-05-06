@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,8 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
     private TextView textEstadoDeCuenta;
     private TextView textBeneficios;
     private TextView textFondoAhorro;
+    private TextView textQrCode;
+    private LinearLayout qrLayout;
 
     private ArrayList<ItemCarousel> itemsCarousel = new ArrayList<ItemCarousel>();
     private ArrayList<Video> videosLanding = new ArrayList<Video>();
@@ -77,6 +80,8 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
         textEstadoDeCuenta = (TextView) findViewById(R.id.textEstadoDeCuenta);
         textBeneficios = (TextView) findViewById(R.id.textBeneficios);
         textFondoAhorro = (TextView) findViewById(R.id.textFondoAhorro);
+        //textQrCode = (TextView) findViewById(R.id.textQrCode);
+        //qrLayout = (LinearLayout) findViewById(R.id.layoutQr);
         carouselView = (CarouselView) findViewById(R.id.carouselView);
 
 
@@ -87,13 +92,13 @@ public class InicioActivity extends AppCompatActivity implements Inicio.View {
         presenter.getTextoLabel("aItemsMenu/3", "estado de cuenta", R.id.textEstadoDeCuenta);
         presenter.getTextoLabel("aItemsMenu/4", "beneficios", R.id.textBeneficios);
         presenter.getTextoLabel("aItemsMenu/5", "fondo de ahorro", R.id.textFondoAhorro);
+        presenter.getTextoLabel("aItemsMenu/6", "Lectura de QR", R.id.textQrCode);
         presenter.getTextoLabel("cMisFavoritos", "mis favoritos", R.id.textFavoritos);
         presenter.getTextoLabel("cTitulo", "inicio", R.id.toolbar);
         presenter.getTextoLabelError("errorInternet", "Sin conexión a internet");
         presenter.guardarLogin();
 
     }
-
 
     /**
      * 6 Noviembre 2018

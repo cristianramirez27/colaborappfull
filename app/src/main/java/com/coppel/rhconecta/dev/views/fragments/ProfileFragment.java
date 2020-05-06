@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,12 +14,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -96,6 +101,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
     @BindView(R.id.imgvGallery)
     ImageView imgvGallery;
 
+//    @BindView(R.id.numberImgEdit)
+//    ImageView numberImgEdit;
+//    @BindView(R.id.editCollaboratorNumberValue)
+//    EditText editCollaboratorNumberValue;
+//    @BindView(R.id.btnEditNumberCollaborator)
+//    ImageView btnEditNumberCollaborator;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,9 +122,54 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         imgvEdit.setOnClickListener(this);
         imgvCamera.setOnClickListener(this);
         imgvGallery.setOnClickListener(this);
+
+//        numberImgEdit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                txvCollaboratorNumberValue.setVisibility(View.GONE);
+//                numberImgEdit.setVisibility(View.GONE);
+//                editCollaboratorNumberValue.setVisibility(View.VISIBLE);
+//                btnEditNumberCollaborator.setVisibility(View.VISIBLE);
+//                if(editCollaboratorNumberValue.requestFocus()) {
+//                    int pos = editCollaboratorNumberValue.getText().length();
+//                    editCollaboratorNumberValue.setSelection(pos);
+//                    InputMethodManager imm = (InputMethodManager) parent.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(editCollaboratorNumberValue, InputMethodManager.SHOW_IMPLICIT);
+//                }
+//            }
+//        });
+
+//        btnEditNumberCollaborator.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editColab();
+//            }
+//        });
+
+//        editCollaboratorNumberValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    editColab();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
         initProfile();
         return view;
     }
+
+//    private  void editColab(){
+//        String newNumber = editCollaboratorNumberValue.getText().toString();
+//        if (parent.editColaborador(newNumber)) {
+//            txvCollaboratorNumberValue.setVisibility(View.VISIBLE);
+//            numberImgEdit.setVisibility(View.VISIBLE);
+//            editCollaboratorNumberValue.setVisibility(View.GONE);
+//            btnEditNumberCollaborator.setVisibility(View.GONE);
+//            initProfile();
+//        }
+//    }
 
     private void initProfile() {
         if (userPreferences != null && userPreferences.getImage() != null && userPreferences.getImage().length > 0) {
@@ -122,6 +179,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         }
         txvName.setText(TextUtilities.capitalizeText(getActivity(),profileResponse.getNombreColaborador()));
         txvCollaboratorNumberValue.setText(profileResponse.getColaborador());
+//        editCollaboratorNumberValue.setText(profileResponse.getColaborador());
         txvCenterValue.setText(profileResponse.getCentro() + " - " + profileResponse.getNombreCentro());
         txvPositionValue.setText(profileResponse.getPuesto() + " - " + profileResponse.getNombrePuesto());
         txvEnterpriseValue.setText(profileResponse.getNombreEmpresa());
