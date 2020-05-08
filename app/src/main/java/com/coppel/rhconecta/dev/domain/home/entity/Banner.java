@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.domain.home.entity;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 
@@ -96,4 +97,14 @@ public class Banner {
         return new Gson().toJson(this);
     }
 
+    /**
+     *
+     *
+     */
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof Banner)
+            return ((Banner) obj).id.equals(id);
+        return false;
+    }
 }

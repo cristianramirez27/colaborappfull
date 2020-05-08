@@ -10,6 +10,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,6 +80,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -142,6 +144,8 @@ public class HomeMainFragment
     /* START Clean architecture attributes */
     @Inject
     public HomeViewModel homeViewModel;
+    private ViewPager viewPagerBanners;
+    private BannerViewPagerAdapter bannerViewPagerAdapter;
     /* END Clean architecture attributes */
 
     /**
@@ -200,11 +204,20 @@ public class HomeMainFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DaggerDiComponent.create().inject(this);
+        initViews();
         observeViewModel();
         execute();
     }
 
     /* START Clean architecture functions */
+
+    /**
+     *
+     *
+     */
+    private void initViews(){
+        initBannersViews();
+    }
 
     /**
      *
@@ -272,15 +285,22 @@ public class HomeMainFragment
      *
      *
      */
-    private void setBanners(List<Banner> banners){
+    private void initBannersViews(){
         assert getView() != null;
-        ViewPager viewPager = getView().findViewById(R.id.vpBanner);
-        ArrayList<Fragment> fragments = new ArrayList<>(banners.size());
-        for(Banner banner: banners)
-            fragments.add(BannerFragment.createInstance(banner, this::onBannerClickListener));
-        BannerViewPagerAdapter adapter  = new BannerViewPagerAdapter(getChildFragmentManager(), fragments);
-        viewPager.setAdapter(adapter);
-        tabIndicator.setupWithViewPager(viewPager);
+        viewPagerBanners = getView().findViewById(R.id.vpBanner);
+    }
+
+    /**
+     *
+     *
+     */
+    private void setBanners(List<Banner> banners){
+        viewPagerBanners.setAdapter(new BannerViewPagerAdapter(
+                getChildFragmentManager(),
+                banners,
+                getOnBannerClickListener()
+        ));
+        tabIndicator.setupWithViewPager(viewPagerBanners);
     }
 
     /**
@@ -303,23 +323,25 @@ public class HomeMainFragment
      *
      *
      */
-    private void onBannerClickListener(Banner banner){
-        Intent intent = null;
-        if(banner.isRelease()) {
-            intent = new Intent(getContext(), ReleaseDetailActivity.class);
-            intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
-        }
-        if(banner.isVisionary() || banner.isVisionaryAtHome()){
-            VisionaryType type = banner.isVisionary() ?
-                    VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
-            intent = new Intent(getContext(), VisionaryDetailActivity.class);
-            intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
-            intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
-            intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, type);
-        }
-        if(intent != null)
-            startActivity(intent);
-    };
+    private BannerFragment.OnBannerClickListener getOnBannerClickListener(){
+        return banner -> {
+            Intent intent = null;
+            if(banner.isRelease()) {
+                intent = new Intent(getContext(), ReleaseDetailActivity.class);
+                intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
+            }
+            if(banner.isVisionary() || banner.isVisionaryAtHome()){
+                VisionaryType type = banner.isVisionary() ?
+                        VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
+                intent = new Intent(getContext(), VisionaryDetailActivity.class);
+                intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
+                intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
+                intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, type);
+            }
+            if(intent != null)
+                startActivity(intent);
+        };
+    }
 
     /* END Clean architecture functions */
 

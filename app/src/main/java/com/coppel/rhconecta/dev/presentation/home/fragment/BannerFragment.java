@@ -21,7 +21,7 @@ import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 public class BannerFragment extends Fragment {
 
     /*  */
-    private Banner banner;
+    public Banner banner;
     private OnBannerClickListener onBannerClickListener;
 
 
