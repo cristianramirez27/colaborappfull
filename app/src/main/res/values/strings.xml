@@ -403,6 +403,7 @@
     <string name="poll_sent_success_title">Tu encuesta se envió con éxito</string>
     <string name="poll_sent_success_content">¡Gracias!</string>
     <string name="not_poll_available_message">El colaborador no tiene encuestas pendientes</string>
+    <string name="not_available_service">Servicio no disponible en este momento, intente más tarde</string>
     <string name="default_server_error">
         Lo sentimos, tenemos un problema en nuestros servidores, intente mas tarde
     </string>

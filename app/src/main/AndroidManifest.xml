@@ -42,12 +42,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".visionarios.inicio.views.InicioActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".visionarios.comunicados.views.ComunicadosActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".presentation.releases.ReleasesActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -64,21 +58,6 @@
             android:name=".presentation.visionary_full_screen.VisionaryDetailFullScreenActivity"
             android:hardwareAccelerated="true"
             android:configChanges="screenSize|orientation"/>
-        <activity
-            android:name=".visionarios.comunicados.views.ComunicadosDetalleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".visionarios.videos.views.VideosActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".visionarios.videos.views.VideosDetalleActivity"
-            android:configChanges="screenSize|orientation" />
-        <activity
-            android:name=".visionarios.encuestas.views.EncuestaActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".visionarios.videos.views.VideosFullScreenActivity"
-            android:configChanges="screenSize|orientation" />
         <activity
             android:name=".views.activities.ConfigLetterActivity"
             android:screenOrientation="portrait" />

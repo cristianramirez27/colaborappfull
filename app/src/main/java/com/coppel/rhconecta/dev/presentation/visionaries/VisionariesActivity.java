@@ -52,7 +52,6 @@ public class VisionariesActivity extends AppCompatActivity {
         initValues();
         initViews();
         observeViewModel();
-        execute();
     }
 
     /**

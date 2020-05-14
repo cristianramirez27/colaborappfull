@@ -2,7 +2,6 @@ package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -151,9 +150,9 @@ public class PollActivity extends AppCompatActivity {
             case FAILURE:
                 Failure failure = viewModel.getFailure();
                 Log.e(getClass().getName(), failure.toString());
-                String message = getString(R.string.default_server_error);
                 if(failure instanceof NotPollAvailableFailure)
-                    message = ((NotPollAvailableFailure) failure).message;
+                    Log.e(PollActivity.class.getName(), ((NotPollAvailableFailure) failure).message);
+                String message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.poll_activity_failure_title),
@@ -181,7 +180,9 @@ public class PollActivity extends AppCompatActivity {
                 pbLoader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                String message = viewModel.getFailure().toString();
+                Failure failure = viewModel.getFailure();
+                Log.e(getClass().getName(), failure.toString());
+                String message = getString(R.string.not_available_service);
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:

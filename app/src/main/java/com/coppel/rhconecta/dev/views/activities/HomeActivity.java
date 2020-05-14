@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.activities;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +26,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -55,6 +53,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
@@ -65,7 +64,6 @@ import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EmploymentLettersMenuFragment;
-import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.views.fragments.LoanSavingFundFragment;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.ProfileFragment;
@@ -77,16 +75,11 @@ import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRol
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
-import com.coppel.rhconecta.dev.visionarios.comunicados.views.ComunicadosActivity;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
-import com.coppel.rhconecta.dev.visionarios.databases.TableComunicados;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
-import com.coppel.rhconecta.dev.visionarios.databases.TableVideos;
-import com.coppel.rhconecta.dev.visionarios.encuestas.objects.Encuesta;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.coppel.rhconecta.dev.visionarios.videos.views.VideosActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -96,23 +89,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.VISIONARIOS_URL;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
@@ -126,9 +118,9 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -144,7 +136,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     private Realm realm;
     private DialogFragmentWarning dialogFragmentWarning;
     private int[] notifications  ;
-    private Encuesta ultimaEncuesta;
     @BindView(R.id.dlHomeContainer)
     DrawerLayout dlHomeContainer;
     @BindView(R.id.tbActionBar)
@@ -619,23 +610,8 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 profileResponse.getEstado(),
                 profileResponse.getNombreRegion());
 
-        Usuario usuarioLocalExistente = tableUsuario.select("1");
-
-        if(usuarioLocalExistente != null){
-            if(!profileResponse.getColaborador().equals(usuarioLocalExistente.getNumeroempleado())){
-                TableComunicados tableComunicados = new TableComunicados(idb,true);
-                TableVideos tableVideos = new TableVideos(idb,true);
-            }
-        }else{
-            TableComunicados tableComunicados = new TableComunicados(idb,true);
-            TableVideos tableVideos = new TableVideos(idb,true);
-        }
-
-
         tableUsuario.insertIfNotExist(usuario);
         tableUsuario.closeDB();
-
-
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

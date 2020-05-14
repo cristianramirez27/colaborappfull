@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -57,11 +58,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
             Random rand = new Random();
             int idNotification = rand.nextInt(999);
-
             if(remoteMessage.getNotification() != null){
-
-                Map<String, String> params = new HashMap<>();// getParamsIntent(remoteMessage);
-                createNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody(),params,idNotification);
+                Map<String, String> params = new HashMap<>();
+                createNotification(
+                        Objects.requireNonNull(remoteMessage.getNotification().getTitle()),
+                        remoteMessage.getNotification().getBody(),params,idNotification
+                );
 
             }else {
                 Log.d(TAG, "From: " + remoteMessage.getFrom());
@@ -71,24 +73,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (paramsData != null) {
                     try {
                         processNotification(idNotification, remoteMessage);
-                        //Obtenemos los datos para iniciar el Dashboard
-                       /* String loginResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE);
-                        String profileResponse =AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
-                        */
                         Map<String, String> params = getParamsIntent(remoteMessage);
-                        createNotification(paramsData.get(NOTIFICATION_TITLE), paramsData.get(NOTIFICATION_BODY),params,idNotification);
-                        // sendNotification( remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+                        createNotification(Objects.requireNonNull(paramsData.get(NOTIFICATION_TITLE)), paramsData.get(NOTIFICATION_BODY),params,idNotification);
                     }catch(Exception ex){
                         ex.printStackTrace();
                     }
                 }
             }
-
-
         }
     }
 
-    private void createNotification(String title,String body, Map<String, String> params, int idNotification){
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+    }
+
+    private void createNotification(String title, String body, Map<String, String> params, int idNotification){
 
         if(title.isEmpty()){
             title = getString(R.string.app_name);
@@ -102,15 +102,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Map<String,String> content = remoteMessage.getData();
         Map<String,String> params = new HashMap<>();
         if(content.containsKey(ID_SISTEMA)){
-            int idSistema = Integer.parseInt(content.get(ID_SISTEMA));
-            int idPantalla = Integer.parseInt(content.get(ID_PANTALLA));
+            int idSistema = Integer.parseInt(Objects.requireNonNull(content.get(ID_SISTEMA)));
+            int idPantalla = Integer.parseInt(Objects.requireNonNull(content.get(ID_PANTALLA)));
             if(idSistema == 9){
                 params.put(BUNDLE_GOTO_SECTION,OPTION_SAVING_FUND);
             }else if(idSistema == 10){
-                // Se agrega para enviar a pantalla de pendiente por autorizar
                 params.put(BUNDLE_GOTO_SECTION, OPTION_HOLIDAYS);
             }else if(idSistema == 11) {
-                // Se agrega para enviar a pantalla de pendiente por autorizar
                 params.put(BUNDLE_GOTO_SECTION, idPantalla == 2 ? OPTION_NOTIFICATION_EXPENSES_AUTHORIZE : OPTION_EXPENSES);
             }
         }

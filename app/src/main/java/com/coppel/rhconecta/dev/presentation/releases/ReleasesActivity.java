@@ -47,7 +47,6 @@ public class ReleasesActivity extends AppCompatActivity {
         DaggerReleasesComponent.create().inject(this);
         initViews();
         observeViewModel();
-        execute();
     }
 
     /**

@@ -64,7 +64,6 @@ public class PollToolbarFragment extends Fragment {
         DaggerPollToolbarComponent.create().inject(this);
         initViews();
         observeViewModel();
-        execute();
     }
 
     /**
