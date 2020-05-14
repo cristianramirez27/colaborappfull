@@ -417,6 +417,9 @@
     <string name="not_available_poll_title">Alerta</string>
     <string name="not_available_poll_content">No hay encuestas nuevas</string>
     <string name="not_available_poll_action">Aceptar</string>
+    <string name="releases_failure_default_title">Alerta</string>
+    <string name="releases_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="releases_failure_default_action">Aceptar</string>
     <string name="visionaries_failure_default_title">Alerta</string>
     <string name="visionaries_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
     <string name="visionaries_failure_default_action">Aceptar</string>

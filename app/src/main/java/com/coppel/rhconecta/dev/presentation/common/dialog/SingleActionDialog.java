@@ -39,7 +39,10 @@ public class SingleActionDialog extends Dialog {
         tvContent.setText(content);
         btnAction.setText(actionSrc);
         btnAction.setOnClickListener(
-                actionClickListener == null? v -> hide() : actionClickListener
+                actionClickListener == null? v -> hide() : v -> {
+                    actionClickListener.onClick(v);
+                    hide();
+                }
         );
     }
 

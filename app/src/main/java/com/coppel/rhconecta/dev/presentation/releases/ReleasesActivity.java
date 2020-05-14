@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.release.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
@@ -105,7 +106,15 @@ public class ReleasesActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Log.e(getClass().getName(), releasesViewModel.getFailure().toString());
-                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                SingleActionDialog dialog = new SingleActionDialog(
+                        this,
+                        getString(R.string.releases_failure_default_title),
+                        getString(R.string.releases_failure_default_content),
+                        getString(R.string.releases_failure_default_action),
+                        v -> finish()
+                );
+                dialog.setCancelable(false);
+                dialog.show();
                 break;
             case COMPLETED:
                 setReleasesPreviews(releasesViewModel.getReleasesPreviews());

@@ -24,6 +24,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherMenuRecyclerAdapter;
@@ -224,6 +225,15 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
             case ServicesRequestType.PAYROLL_VOUCHER:
                 rcvOptions.setVisibility(View.GONE);
                 ctlConnectionError.setVisibility(View.VISIBLE);
+                SingleActionDialog dialog = new SingleActionDialog(
+                        getContext(),
+                        getString(R.string.visionaries_failure_default_title),
+                        getString(R.string.visionaries_failure_default_content),
+                        getString(R.string.visionaries_failure_default_action),
+                        v -> parent.onBackPressed()
+                );
+                dialog.setCancelable(false);
+                dialog.show();
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
