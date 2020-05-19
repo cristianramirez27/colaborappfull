@@ -43,6 +43,7 @@ public class AppConfig {
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
+    public final static String URL_COVID_SURVEY = "URL_COVID_SURVEY";
 
     public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
 
@@ -71,6 +72,7 @@ public class AppConfig {
     public final static String BLOCK_COMUNICADOS = "BLOCK_COMUNICADOS";
     public final static String BLOCK_ENCUESTAS = "BLOCK_ENCUESTAS";
     public final static String BLOCK_QR = "BLOCK_QR";
+    public final static String BLOCK_COVID_SURVEY = "BLOCK_COVID_SURVEY";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
     public final static String YES = "YES";
     public final static String NO = "NO";
@@ -99,6 +101,8 @@ public class AppConfig {
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
+        // String url_covid_survey = mFirebaseRemoteConfig.getString(URL_COVID_SURVEY);
+        String url_covid_survey = "http://aplicaciones.coppel.com/registro_empleados/login.php";
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
@@ -130,6 +134,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_COVID_SURVEY,url_covid_survey);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS,holidays);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR,qr);
@@ -158,6 +163,7 @@ public class AppConfig {
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
+        String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
 
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
@@ -174,6 +180,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE,block_collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR,block_qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY,block_covid_survey);
 
     }
 

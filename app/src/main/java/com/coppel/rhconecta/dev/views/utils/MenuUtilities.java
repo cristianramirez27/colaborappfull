@@ -35,9 +35,11 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
@@ -61,7 +63,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]),
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
-                new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE)
+                new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
+                new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY)
         ));
 
         HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
@@ -297,6 +300,9 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_QR_CODE:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_scanqr_web);
+                break;
+            case AppConstants.OPTION_COVID_SURVEY:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_covid_survey);
                 break;
         }
         return icon;

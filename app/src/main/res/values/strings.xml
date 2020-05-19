@@ -436,6 +436,7 @@
     <string name="str_error_permisos">No se le otorgaron los permisos requeridos a la applicacion.</string>
     <string name="str_error_phone_number">Numero de telefono invalido.</string>
     <string name="str_error_unknown_device">No se pudo identificar el dispositivo.</string>
+    <string name="covid_survey_title">Encuesta COVID-19</string>
 
     <string-array name="uppercase_words">
         <item>IMSS</item>
