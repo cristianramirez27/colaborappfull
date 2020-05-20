@@ -3925,4 +3925,67 @@ public class ServicesInteractor {
             }
         });
     }
+
+
+    public void getExternalUrl(String num_empleado,int option, String token) {
+        this.token = token;
+        iServicesRetrofitMethods.getCollageURL(
+            ServicesConstants.GET_ENDPOINT_COLLAGES,
+            token,
+            (CoppelServicesCollageUrlRequest) builCollageRequest( num_empleado, option)
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    CollageResponse collageResponse = (CollageResponse) servicesUtilities.parseToObjectClass(response.body().toString(),CollageResponse.class);
+                    if (collageResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExternalUrlResponse(collageResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXTERNALURL, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.EXTERNALURL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXTERNALURL));
+            }
+        });
+    }
+
+    public void getExternalUrlResponse(CollageResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getExternalUrlSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getExternalUrlSuccess(CollageResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+
+        if (response != null && response != null) {
+
+            if (response.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<CollageResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(response);
+                servicesResponse.setType(ServicesRequestType.EXTERNALURL);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+            iServiceListener.onError(servicesError);
+        }
+    }
 }

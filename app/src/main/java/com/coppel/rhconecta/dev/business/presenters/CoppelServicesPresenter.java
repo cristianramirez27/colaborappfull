@@ -173,6 +173,11 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getCollage(num_empleado, option,token);
     }
 
+    public void getExternalUrl(String num_empleado,int option, String token){
+        view.showProgress();
+        servicesInteractor.getExternalUrl(num_empleado, option,token);
+    }
+
     public void validateCode(ValidateCodeRequest validateCodeRequest){
         view.showProgress();
         servicesInteractor.validateCode(validateCodeRequest);

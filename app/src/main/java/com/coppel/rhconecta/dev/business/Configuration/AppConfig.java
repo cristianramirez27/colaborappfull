@@ -102,7 +102,7 @@ public class AppConfig {
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
         // String url_covid_survey = mFirebaseRemoteConfig.getString(URL_COVID_SURVEY);
-        String url_covid_survey = "http://aplicaciones.coppel.com/registro_empleados/login.php";
+        String url_covid_survey = "http://aplicaciones.coppel.com/registro_empleados/token.php?token=";
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);

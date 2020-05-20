@@ -107,6 +107,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_COVI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXTERNALURL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
@@ -527,7 +528,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else{
-                    openCovidSurvey();
+                    getExternalUrl();
                 }
                 break;
 
@@ -549,22 +550,22 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     }
 
-    private void openCovidSurvey(){
+    private void getExternalUrl(){
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-        String url_covid_survey = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), URL_COVID_SURVEY);
-        String urlCovid = url_covid_survey + "?token=" + token;
+        coppelServicesPresenter.getExternalUrl( profileResponse.getColaborador(),39, token);
+    }
 
-        Intent intentCovidSurvey = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCovid));
-        intentCovidSurvey.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intentCovidSurvey.setPackage("com.android.chrome");
+    private void openExternalUrl(String url){
+        Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentExternalUrl.setPackage("com.android.chrome");
 
         try {
-            startActivity(intentCovidSurvey);
+            startActivity(intentExternalUrl);
         } catch (ActivityNotFoundException ex) {
-            intentCovidSurvey.setPackage(null);
-            startActivity(intentCovidSurvey);
+            intentExternalUrl.setPackage(null);
+            startActivity(intentExternalUrl);
         }
-        //coppelServicesPresenter.getCollege( profileResponse.getColaborador(),19,token);
     }
 
     public void setToolbarTitle(String title) {
@@ -726,6 +727,15 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     openCollage(url);
                 }
 
+                break;
+
+            case EXTERNALURL:
+                if(response.getResponse() instanceof CollageResponse) {
+                    CollageResponse externalUrlResponse = (CollageResponse) response.getResponse();
+                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
+                    String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
+                    openExternalUrl(url);
+                }
                 break;
 
         }
