@@ -40,6 +40,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.CollageResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.ExternalUrlResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -107,7 +108,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_COVI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXTERNALURL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
@@ -528,7 +529,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else{
-                    getExternalUrl();
+                    getExternalUrl(COVID_SURVEY);
                 }
                 break;
 
@@ -550,12 +551,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     }
 
-    private void getExternalUrl(){
+    private void getExternalUrl(int option){
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getExternalUrl( profileResponse.getColaborador(),39, token);
+        coppelServicesPresenter.getExternalUrl( profileResponse.getColaborador(), option, token);
     }
 
-    private void openExternalUrl(String url){
+    private void openCovidSurvey(String url){
         Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentExternalUrl.setPackage("com.android.chrome");
@@ -729,12 +730,12 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
                 break;
 
-            case EXTERNALURL:
-                if(response.getResponse() instanceof CollageResponse) {
-                    CollageResponse externalUrlResponse = (CollageResponse) response.getResponse();
+            case COVID_SURVEY:
+                if(response.getResponse() instanceof ExternalUrlResponse) {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
                     String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
                     String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
-                    openExternalUrl(url);
+                    openCovidSurvey(url);
                 }
                 break;
 

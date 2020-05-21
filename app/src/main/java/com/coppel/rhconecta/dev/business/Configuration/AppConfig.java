@@ -101,8 +101,6 @@ public class AppConfig {
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
-        // String url_covid_survey = mFirebaseRemoteConfig.getString(URL_COVID_SURVEY);
-        String url_covid_survey = "http://aplicaciones.coppel.com/registro_empleados/token.php?token=";
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
@@ -134,7 +132,6 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_COVID_SURVEY,url_covid_survey);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS,holidays);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR,qr);

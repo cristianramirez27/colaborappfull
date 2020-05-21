@@ -55,6 +55,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesSchedulePeriodsHol
 import com.coppel.rhconecta.dev.business.models.CoppelServicesSendAditionalDaysHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesSendPeriodsHolidaysRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesValidateAditionalDaysHolidaysRequest;
+import com.coppel.rhconecta.dev.business.models.ExternalUrlRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
@@ -330,4 +331,9 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> validateDeviceId(@Url String url, @Body ValidateDeviceIdRequest validateDeviceIdRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getExternalURL(@Url String url,@Header("Authorization") String token, @Body ExternalUrlRequest servicesRequest);
+
 }
