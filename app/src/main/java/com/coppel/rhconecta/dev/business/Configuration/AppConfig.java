@@ -162,7 +162,6 @@ public class AppConfig {
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
         String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
 
-
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG,block_letters);
@@ -203,7 +202,7 @@ public class AppConfig {
     /**PushSnackBar Configuration*/
     public static PushSnackBarConfig getPushSnackBar(Context context) {
         PushSnackBarConfig pushSnackBarConfig = new PushSnackBarConfig(R.layout.push_snackbar_layout);
-      //  pushSnackBarConfig.setView(new AVLoadingIndicatorView(context));
+        //  pushSnackBarConfig.setView(new AVLoadingIndicatorView(context));
         pushSnackBarConfig.setName("PushSnackBar");
         pushSnackBarConfig.setColorText(CoppelApp.getContext().getResources().getColor(R.color.colorBackgroundCoppelBlanco));
         pushSnackBarConfig.setColor(CoppelApp.getContext().getResources().getColor(R.color.colorRed));
