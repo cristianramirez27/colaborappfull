@@ -24,6 +24,7 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.NO;
@@ -188,12 +189,16 @@ public class MenuUtilities {
         // Se verifica la visibilidad de la opcion de stay home
         boolean blockStayHome = AppUtilities.getStringFromSharedPreferences(context, BLOCK_STAYHOME).equals(YES);
         boolean blockQr = AppUtilities.getStringFromSharedPreferences(context, BLOCK_QR).equals(YES);
+        boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         for (HomeMenuItem item : homeMenuItems) {
             if(item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
                 continue;
 
             if(item.getTAG().equals(OPTION_QR_CODE) && blockQr)
+                continue;
+
+            if(item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
                 continue;
 
             response.add(item);
