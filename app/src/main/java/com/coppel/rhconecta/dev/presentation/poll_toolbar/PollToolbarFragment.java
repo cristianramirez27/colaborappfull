@@ -134,7 +134,6 @@ public class PollToolbarFragment extends Fragment {
                 break;
             case FAILURE:
                 Log.e(getClass().getName(), viewModel.getFailure().toString());
-                Toast.makeText(getContext(), R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:
                 surveyInboxView.setCountMessages(viewModel.getAvailableCount());

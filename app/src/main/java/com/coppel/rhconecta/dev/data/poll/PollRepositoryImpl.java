@@ -183,11 +183,17 @@ public class PollRepositoryImpl implements PollRepository {
         return new Callback<GetAvailablePollCountResponse>() {
             @Override
             public void onResponse(Call<GetAvailablePollCountResponse> call, Response<GetAvailablePollCountResponse> response) {
-                GetAvailablePollCountResponse body = response.body();
-                assert body != null;
-                int availablePollCount = body.data.response.Badges.opc_encuesta;
-                Either<Failure, Integer> result = new Either<Failure, Integer>().new Right(availablePollCount);
-                callback.onResult(result);
+                try {
+                    GetAvailablePollCountResponse body = response.body();
+                    assert body != null;
+                    int availablePollCount = body.data.response.Badges.opc_encuesta;
+                    Either<Failure, Integer> result = new Either<Failure, Integer>().new Right(availablePollCount);
+                    callback.onResult(result);
+                } catch (Exception e){
+                    Failure failure = new ServerFailure();
+                    Either<Failure, Integer> result = new Either<Failure, Integer>().new Left(failure);
+                    callback.onResult(result);
+                }
             }
 
             @Override
