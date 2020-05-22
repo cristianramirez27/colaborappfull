@@ -3925,4 +3925,71 @@ public class ServicesInteractor {
             }
         });
     }
+
+
+    public void getExternalUrl(String num_empleado,int option, String token) {
+        this.token = token;
+        iServicesRetrofitMethods.getExternalURL(
+            ServicesConstants.GET_ENDPOINT_COLLAGES,
+            token,
+            new ExternalUrlRequest(num_empleado, option)
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) servicesUtilities.parseToObjectClass(response.body().toString(),ExternalUrlResponse.class);
+                    if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExternalUrlResponse(externalUrlResponse, response.code(), option);
+                    } else {
+                        sendGenericError(option, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(option, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, option));
+            }
+        });
+    }
+
+    public void getExternalUrlResponse(ExternalUrlResponse response, int code, int option) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getExternalUrlSuccess(response, option);
+        } else {
+            iServiceListener.onError(
+                servicesUtilities.getErrorByStatusCode(
+                    context, code, context.getString(R.string.error_generic_service), servicesError
+                )
+            );
+        }
+    }
+
+
+    public void getExternalUrlSuccess(ExternalUrlResponse response, int option) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(option);
+
+        if (response != null && response != null) {
+
+            if (response.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<ExternalUrlResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(response);
+                servicesResponse.setType(option);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+            iServiceListener.onError(servicesError);
+        }
+    }
 }

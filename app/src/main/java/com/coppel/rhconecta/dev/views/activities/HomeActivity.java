@@ -40,6 +40,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.CollageResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
+import com.coppel.rhconecta.dev.business.models.ExternalUrlResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -93,17 +94,21 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BE
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
@@ -119,6 +124,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICAT
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -509,10 +515,22 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                     break;
             case OPTION_QR_CODE:
-                Intent intentQr = new Intent(this, QrCodeActivity.class);
-                intentQr.putExtra("numEmp", profileResponse.getColaborador());
-                intentQr.putExtra("emailEmp", profileResponse.getCorreo());
-                startActivity(intentQr);
+                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_QR).equals(YES)){
+                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                }else {
+                    Intent intentQr = new Intent(this, QrCodeActivity.class);
+                    intentQr.putExtra("numEmp", profileResponse.getColaborador());
+                    intentQr.putExtra("emailEmp", profileResponse.getCorreo());
+                    startActivity(intentQr);
+                }
+                break;
+
+            case OPTION_COVID_SURVEY:
+                if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)){
+                    showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
+                }else{
+                    getExternalUrl(COVID_SURVEY);
+                }
                 break;
 
             case OPTION_COLLAGE:
@@ -531,6 +549,24 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             showError(new ServicesError(getString(R.string.network_error)));
         }
 
+    }
+
+    private void getExternalUrl(int option){
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getExternalUrl( profileResponse.getColaborador(), option, token);
+    }
+
+    private void openCovidSurvey(String url){
+        Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentExternalUrl.setPackage("com.android.chrome");
+
+        try {
+            startActivity(intentExternalUrl);
+        } catch (ActivityNotFoundException ex) {
+            intentExternalUrl.setPackage(null);
+            startActivity(intentExternalUrl);
+        }
     }
 
     public void setToolbarTitle(String title) {
@@ -692,6 +728,15 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     openCollage(url);
                 }
 
+                break;
+
+            case COVID_SURVEY:
+                if(response.getResponse() instanceof ExternalUrlResponse) {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
+                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
+                    String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
+                    openCovidSurvey(url);
+                }
                 break;
 
         }

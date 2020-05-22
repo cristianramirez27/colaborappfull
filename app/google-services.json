@@ -32,10 +32,18 @@
               "client_type": 3
             },
             {
+<<<<<<< HEAD
               "client_id": "905205267590-iamnpc244f49fo7tnk0kqtl3g3bh2agp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.kokonutstudio.coppel"
+=======
+              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coppel.rhconecta",
+                "app_store_id": "1437812036"
+>>>>>>> 0ef77cd785d83f03dbb0d6f018bdfbfdd357d38d
               }
             }
           ]
@@ -76,10 +84,18 @@
               "client_type": 3
             },
             {
+<<<<<<< HEAD
               "client_id": "905205267590-iamnpc244f49fo7tnk0kqtl3g3bh2agp.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.kokonutstudio.coppel"
+=======
+              "client_id": "905205267590-5tbql0b66rt85enn3j3d8gqgu2a466ck.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coppel.rhconecta",
+                "app_store_id": "1437812036"
+>>>>>>> 0ef77cd785d83f03dbb0d6f018bdfbfdd357d38d
               }
             }
           ]

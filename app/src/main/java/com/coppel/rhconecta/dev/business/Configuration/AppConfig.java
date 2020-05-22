@@ -43,6 +43,7 @@ public class AppConfig {
     public final static String ENDPOINT_LOGIN = "ENDPOINT_LOGIN";
     public final static String URL_MAIN_LOGIN = "URL_MAIN_LOGIN";
     public final static String URL_MAIN = "URL_MAIN";
+    public final static String URL_COVID_SURVEY = "URL_COVID_SURVEY";
 
     public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
 
@@ -71,6 +72,7 @@ public class AppConfig {
     public final static String BLOCK_COMUNICADOS = "BLOCK_COMUNICADOS";
     public final static String BLOCK_ENCUESTAS = "BLOCK_ENCUESTAS";
     public final static String BLOCK_QR = "BLOCK_QR";
+    public final static String BLOCK_COVID_SURVEY = "BLOCK_COVID_SURVEY";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
     public final static String YES = "YES";
     public final static String NO = "NO";
@@ -158,7 +160,7 @@ public class AppConfig {
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
-
+        String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
@@ -174,6 +176,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE,block_collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR,block_qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY,block_covid_survey);
 
     }
 
@@ -199,7 +202,7 @@ public class AppConfig {
     /**PushSnackBar Configuration*/
     public static PushSnackBarConfig getPushSnackBar(Context context) {
         PushSnackBarConfig pushSnackBarConfig = new PushSnackBarConfig(R.layout.push_snackbar_layout);
-      //  pushSnackBarConfig.setView(new AVLoadingIndicatorView(context));
+        //  pushSnackBarConfig.setView(new AVLoadingIndicatorView(context));
         pushSnackBarConfig.setName("PushSnackBar");
         pushSnackBarConfig.setColorText(CoppelApp.getContext().getResources().getColor(R.color.colorBackgroundCoppelBlanco));
         pushSnackBarConfig.setColor(CoppelApp.getContext().getResources().getColor(R.color.colorRed));
