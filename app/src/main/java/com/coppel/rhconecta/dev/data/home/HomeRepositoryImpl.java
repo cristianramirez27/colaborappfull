@@ -79,13 +79,19 @@ public class HomeRepositoryImpl implements HomeRepository {
 
             @Override
             public void onResponse(Call<GetMainInformationResponse> call, Response<GetMainInformationResponse> response) {
-                GetMainInformationResponse body = response.body();
-                List<GetMainInformationResponse.BannerServer> carrusel = body.data.response.Carrusel;
-                ArrayList<Banner> banners = new ArrayList<>();
-                for (GetMainInformationResponse.BannerServer bannerServer: carrusel)
-                    banners.add(bannerServer.toBanner());
-                Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Right(banners);
-                callback.onResult(result);
+                try {
+                    GetMainInformationResponse body = response.body();
+                    List<GetMainInformationResponse.BannerServer> carrusel = body.data.response.Carrusel;
+                    ArrayList<Banner> banners = new ArrayList<>();
+                    for (GetMainInformationResponse.BannerServer bannerServer: carrusel)
+                        banners.add(bannerServer.toBanner());
+                    Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Right(banners);
+                    callback.onResult(result);
+                } catch (Exception e){
+                    Failure failure = new ServerFailure();
+                    Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Left(failure);
+                    callback.onResult(result);
+                }
             }
 
             @Override
@@ -126,16 +132,23 @@ public class HomeRepositoryImpl implements HomeRepository {
 
             @Override
             public void onResponse(Call<GetMainInformationResponse> call, Response<GetMainInformationResponse> response) {
-                GetMainInformationResponse body = response.body();
-                assert body != null;
-                HashMap<Badge.Type, Badge> badges = new HashMap<>();
-                badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBadge());
-                badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBadge());
-                badges.put(Badge.Type.COLLABORATOR_AT_HOME, body.data.response.Badges.getCollaboratorAtHomeBadge());
-                badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBadge());
-                Either<Failure, Map<Badge.Type, Badge>> result =
-                        new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
-                callback.onResult(result);
+                try {
+                    GetMainInformationResponse body = response.body();
+                    assert body != null;
+                    HashMap<Badge.Type, Badge> badges = new HashMap<>();
+                    badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBadge());
+                    badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBadge());
+                    badges.put(Badge.Type.COLLABORATOR_AT_HOME, body.data.response.Badges.getCollaboratorAtHomeBadge());
+                    badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBadge());
+                    Either<Failure, Map<Badge.Type, Badge>> result =
+                            new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
+                    callback.onResult(result);
+                } catch (Exception e) {
+                    Failure failure = new ServerFailure();
+                    Either<Failure, Map<Badge.Type, Badge>> result =
+                            new Either<Failure, Map<Badge.Type, Badge>>().new Left(failure);
+                    callback.onResult(result);
+                }
             }
 
             @Override

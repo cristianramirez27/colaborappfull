@@ -11,6 +11,8 @@ import com.coppel.rhconecta.dev.domain.home.use_case.GetBadgesUseCase;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetBannersUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,9 +49,9 @@ public class HomeViewModel {
      */
     void loadBanners() {
         loadBannersProcessStatus.postValue(ProcessStatus.LOADING);
-        getBannersUseCase.run(UseCase.None.getInstance(), result -> {
-            result.fold(this::onLoadBannersFailure, this::onLoadBannersRight);
-        });
+        getBannersUseCase.run(UseCase.None.getInstance(), result ->
+                result.fold(this::onLoadBannersFailure, this::onLoadBannersRight)
+        );
     }
 
     /* */

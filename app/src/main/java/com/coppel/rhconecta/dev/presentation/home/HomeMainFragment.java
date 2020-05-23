@@ -50,6 +50,7 @@ import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -114,24 +115,46 @@ public class HomeMainFragment
         // Poll icon
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setCountMessages(0);
-        ISurveyNotification.getSurveyIcon().setOnClickListener(v -> {
-            Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
-            if(badge == null) return;
-            if(badge.getValue() > 0){
-                Intent intent = new Intent(getContext(), PollActivity.class);
-                startActivity(intent);
-            } else {
-                SingleActionDialog dialog = new SingleActionDialog (
-                        getActivity(),
-                        getString(R.string.not_available_poll_title),
-                        getString(R.string.not_available_poll_content),
-                        getString(R.string.not_available_poll_action),
-                        null
-                );
-                dialog.show();
-            }
-        });
+        ISurveyNotification.getSurveyIcon().setOnClickListener(this::onSurveyIconClickListener);
         return view;
+    }
+
+    /**
+     *
+     *
+     * @param view
+     */
+    private void onSurveyIconClickListener(View view){
+        if(homeViewModel.getBadges() == null){
+            String message = getString(R.string.not_available_service);
+            SingleActionDialog dialog = new SingleActionDialog(
+                    getActivity(),
+                    getString(R.string.home_fragment_failure_title),
+                    message,
+                    getString(R.string.home_fragment_failure_action),
+                    null
+            );
+            dialog.setCancelable(false);
+            try {
+                dialog.show();
+            } catch (Exception ignore) {}
+            return;
+        }
+        Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
+        if(badge == null) return;
+        if(badge.getValue() > 0){
+            Intent intent = new Intent(getContext(), PollActivity.class);
+            startActivity(intent);
+        } else {
+            SingleActionDialog dialog = new SingleActionDialog (
+                    getActivity(),
+                    getString(R.string.not_available_poll_title),
+                    getString(R.string.not_available_poll_content),
+                    getString(R.string.not_available_poll_action),
+                    null
+            );
+            dialog.show();
+        }
     }
 
     /**
@@ -196,8 +219,22 @@ public class HomeMainFragment
                 break;
             case FAILURE:
                 Log.e(getClass().getName(), homeViewModel.getFailure().toString());
-                if(isOnline())
-                    Toast.makeText(getContext(), R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                if(isOnline()) {
+                    Failure failure = homeViewModel.getFailure();
+                    Log.e(getClass().getName(), failure.toString());
+                    String message = getString(R.string.not_available_service);
+                    SingleActionDialog dialog = new SingleActionDialog(
+                            getActivity(),
+                            getString(R.string.home_fragment_failure_title),
+                            message,
+                            getString(R.string.home_fragment_failure_action),
+                            null
+                    );
+                    dialog.setCancelable(false);
+                    try {
+                        dialog.show();
+                    } catch (Exception ignore) {}
+                }
                 break;
             case COMPLETED:
                 setBanners(homeViewModel.getBanners());
@@ -221,7 +258,18 @@ public class HomeMainFragment
                 Failure failure = homeViewModel.getFailure();
                 Log.e(getClass().getName(), failure.toString());
                 String message = getString(R.string.not_available_service);
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                SingleActionDialog dialog = new SingleActionDialog(
+                        getContext(),
+                        getString(R.string.home_fragment_failure_title),
+                        message,
+                        getString(R.string.home_fragment_failure_action),
+                        null
+                );
+                dialog.setCancelable(false);
+                setBadges(new HashMap<>());
+                try {
+                    dialog.show();
+                } catch (Exception ignore) {}
                 break;
             case COMPLETED:
                 setBadges(homeViewModel.getBadges());
@@ -243,11 +291,13 @@ public class HomeMainFragment
      *
      */
     private void setBanners(List<Banner> banners){
-        viewPagerBanners.setAdapter(new BannerViewPagerAdapter(
-                getChildFragmentManager(),
-                banners,
-                getOnBannerClickListener()
-        ));
+        viewPagerBanners.setAdapter(
+                new BannerViewPagerAdapter(
+                        getChildFragmentManager(),
+                        banners,
+                        getOnBannerClickListener()
+                )
+        );
         tabIndicator.setupWithViewPager(viewPagerBanners);
     }
 
@@ -256,6 +306,14 @@ public class HomeMainFragment
      *
      */
     private void setBadges(Map<Badge.Type, Badge> badges){
+        if(badges.isEmpty()) {
+            HashMap<Badge.Type, Badge> map = new HashMap<>();
+            map.put(Badge.Type.RELEASE, new Badge(0, Badge.Type.RELEASE));
+            map.put(Badge.Type.VISIONARY, new Badge(0, Badge.Type.VISIONARY));
+            map.put(Badge.Type.COLLABORATOR_AT_HOME, new Badge(0, Badge.Type.COLLABORATOR_AT_HOME));
+            map.put(Badge.Type.POLL, new Badge(0, Badge.Type.POLL));
+            badges = map;
+        }
         notifications = new int[]{
                 Objects.requireNonNull(badges.get(Badge.Type.RELEASE)).getValue(),
                 Objects.requireNonNull(badges.get(Badge.Type.VISIONARY)).getValue(),
@@ -316,9 +374,11 @@ public class HomeMainFragment
     @Override
     public void onPause() {
         super.onPause();
-        RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
-        ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
-        reloadDashboard = true;
+        try {
+            RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
+            ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
+            reloadDashboard = true;
+        } catch (Exception ignore){ }
     }
 
     private void initMenu() {
