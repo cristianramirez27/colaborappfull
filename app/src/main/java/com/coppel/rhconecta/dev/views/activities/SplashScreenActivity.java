@@ -193,13 +193,7 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
     }
 
     private void fetchEndpoints() {
-        long cacheExpiration = 3600; // 1 hour in seconds.
-        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
-        // retrieve values from the service.
-        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpiration = 0;
-        }
-
+        long cacheExpiration = 0;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
                 .addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
                     @Override
