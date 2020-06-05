@@ -25,7 +25,12 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
@@ -119,15 +124,20 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
             return;
         }
 
+        List<BarcodeFormat> formats = new ArrayList<BarcodeFormat>();
+        formats.add(BarcodeFormat.QR_CODE);
+
         mScannerView = new ZXingScannerView(this);
         rl = (RelativeLayout) findViewById(R.id.qrScanner);
         rl.addView(mScannerView);
         mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
         mScannerView.setSoundEffectsEnabled(true);
         mScannerView.setAutoFocus(true);
         mScannerView.setBorderLineLength(150);
         mScannerView.setBorderStrokeWidth(20);
+        mScannerView.setSquareViewFinder(true);
+        mScannerView.setFormats(formats);
+        mScannerView.startCamera();
     }
 
 

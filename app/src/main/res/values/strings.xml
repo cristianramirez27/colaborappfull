@@ -439,7 +439,7 @@
     <string name="home_fragment_failure_title">Alerta</string>
     <string name="home_fragment_failure_action">Aceptar</string>
     <string name="covid_survey_title">COVID-19 GC</string>
-    <string name="str_sub_qrcode">Coloca el código para escanear dentro del recuadro</string>
+    <string name="str_sub_qrcode">Apunta al código para escanear.</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>
