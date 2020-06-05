@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +8,9 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
@@ -23,16 +25,16 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.google.zxing.Result;
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_PHONE_STATE;
 
 
-public class QrCodeActivity extends AppCompatActivity implements IServicesContract.View, DialogFragmentWarning.OnOptionClick{
+public class QrCodeActivity extends AppCompatActivity implements IServicesContract.View, DialogFragmentWarning.OnOptionClick, ZXingScannerView.ResultHandler{
     private static final int RC_STATE = 100;
     private CoppelServicesPresenter coppelServicesPresenter;
-    private IntentIntegrator intent;
     private DialogFragmentWarning dialogFragmentWarning;
     private DialogFragmentLoader dialogFragmentLoader;
     private boolean hideLoader;
@@ -41,9 +43,15 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
     private String emailEmp;
     private String deviceId;
 
+    private ZXingScannerView mScannerView;
+    private RelativeLayout rl;
+    private TextView closeBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_qr_scanner);
+
         this.coppelServicesPresenter = new CoppelServicesPresenter(this, this);
         this.dialogFragmentWarning = new DialogFragmentWarning();
         this.dialogFragmentLoader = new DialogFragmentLoader();
@@ -51,7 +59,17 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
         this.numEmp = Integer.parseInt(getIntent().getStringExtra("numEmp"));
         this.emailEmp = getIntent().getStringExtra("emailEmp");
 
-        if (ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+        closeBtn = (TextView) findViewById(R.id.closeBtn);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        if (
+            ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(this, CAMERA) == PackageManager.PERMISSION_GRANTED
+        ) {
             getDeviceId();
         } else {
             requestPermission();
@@ -74,11 +92,11 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
             );
         }
 
-        if (this.deviceId == "" || this.deviceId == null) {
+        if ("".equals(this.deviceId) || this.deviceId == null) {
             this.deviceId = FirebaseInstanceId.getInstance().getId();
         }
 
-        if (this.deviceId != "" && this.deviceId != null){
+        if (!("".equals(this.deviceId)) && this.deviceId != null){
             this.hideLoader = true;
             validateDeviceId();
         } else {
@@ -96,20 +114,26 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
     }
 
     public void initScan() {
-        intent = new IntentIntegrator(this);
-        intent.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        intent.setPrompt(getString(R.string.str_scan_title));
-        intent.setCameraId(0);
-        intent.setOrientationLocked(false);
-        intent.setBeepEnabled(true);
-        intent.setBarcodeImageEnabled(false);
-        intent.initiateScan();
+        if (ActivityCompat.checkSelfPermission(this, CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            showWarningDialog(getString(R.string.str_error_permisos));
+            return;
+        }
+
+        mScannerView = new ZXingScannerView(this);
+        rl = (RelativeLayout) findViewById(R.id.qrScanner);
+        rl.addView(mScannerView);
+        mScannerView.setResultHandler(this);
+        mScannerView.startCamera();
+        mScannerView.setSoundEffectsEnabled(true);
+        mScannerView.setAutoFocus(true);
+        mScannerView.setBorderLineLength(150);
+        mScannerView.setBorderStrokeWidth(20);
     }
 
 
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{READ_PHONE_STATE}, RC_STATE);
+            requestPermissions(new String[]{READ_PHONE_STATE, CAMERA}, RC_STATE);
         }
     }
 
@@ -118,35 +142,6 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
             case 100:
                 getDeviceId();
                 break;
-        }
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null){
-                Toast.makeText(this, getString(R.string.str_cancel_scan), Toast.LENGTH_LONG).show();
-                finish();
-            } else {
-                this.intent = null;
-                this.hideLoader = true;
-                String cadenaQr =  result.getContents();
-
-                ValidateCodeRequest validateCodeRequest = new ValidateCodeRequest();
-                validateCodeRequest.setOpcion(1);
-                validateCodeRequest.setQrcode(cadenaQr);
-                validateCodeRequest.setUsuario(this.numEmp);
-                validateCodeRequest.setEmailemp(this.emailEmp);
-                validateCodeRequest.setDeviceid(this.deviceId);
-
-                this.coppelServicesPresenter.validateCode(validateCodeRequest);
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -215,5 +210,42 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
     @Override
     public void onRightOptionClick() {
         finish();
+    }
+
+    @Override
+    public void handleResult(Result result) {
+        String cadenaQr = result.getText();
+
+        if ("".equals(cadenaQr) || cadenaQr == null){
+            Toast.makeText(this, getString(R.string.str_cancel_scan), Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            this.hideLoader = true;
+
+            ValidateCodeRequest validateCodeRequest = new ValidateCodeRequest();
+            validateCodeRequest.setOpcion(1);
+            validateCodeRequest.setQrcode(cadenaQr);
+            validateCodeRequest.setUsuario(this.numEmp);
+            validateCodeRequest.setEmailemp(this.emailEmp);
+            validateCodeRequest.setDeviceid(this.deviceId);
+
+            this.coppelServicesPresenter.validateCode(validateCodeRequest);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mScannerView != null) {
+            mScannerView.startCamera();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mScannerView != null) {
+            mScannerView.stopCamera();
+        }
     }
 }

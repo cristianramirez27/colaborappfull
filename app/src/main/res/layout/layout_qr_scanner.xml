@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/qrToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorFourthBlueCoppel"
+            android:elevation="6dp"
+            android:minHeight="56dp"
+            app:title="@string/qrCode"
+            app:titleTextColor="@color/mdtp_white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/qrTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:ellipsize="end"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="@string/qrCode"
+                    android:textColor="@color/mdtp_white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/closeBtn"
+                    android:layout_marginRight="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/mdtp_white"
+                    android:background="@drawable/ic_close_white"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <TextView
+            android:id="@+id/qrSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryBlueCoppel"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/str_sub_qrcode"
+            android:textColor="@color/mdtp_white"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <RelativeLayout
+            android:id="@+id/qrScanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

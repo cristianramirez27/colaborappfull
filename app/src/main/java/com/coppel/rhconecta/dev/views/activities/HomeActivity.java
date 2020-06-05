@@ -515,14 +515,17 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                     RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_NUM_COLABORADOR),10);
                     break;
             case OPTION_QR_CODE:
+                /*
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_QR).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else {
+
+                 */
                     Intent intentQr = new Intent(this, QrCodeActivity.class);
                     intentQr.putExtra("numEmp", profileResponse.getColaborador());
                     intentQr.putExtra("emailEmp", profileResponse.getCorreo());
                     startActivity(intentQr);
-                }
+                //}
                 break;
 
             case OPTION_COVID_SURVEY:
