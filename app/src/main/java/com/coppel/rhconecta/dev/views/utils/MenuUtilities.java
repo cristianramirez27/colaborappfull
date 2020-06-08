@@ -194,11 +194,9 @@ public class MenuUtilities {
         for (HomeMenuItem item : homeMenuItems) {
             if(item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
                 continue;
-/*
+
             if(item.getTAG().equals(OPTION_QR_CODE) && blockQr)
                 continue;
-
- */
 
             if(item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
                 continue;
