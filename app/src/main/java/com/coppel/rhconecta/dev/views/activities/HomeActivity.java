@@ -300,6 +300,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
     @Override
     public void onBackPressed() {
+
+        if(hideLoader){
+            forceHideProgress();
+        }
+
         if(isOpenMenuToolbar) {
             isOpenMenuToolbar = false;
             showTitle(true);
@@ -549,6 +554,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             showError(new ServicesError(getString(R.string.network_error)));
         }
 
+
+        forceHideProgress();
+
     }
 
     private void getExternalUrl(int option){
@@ -795,6 +803,7 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         if(hideLoader){
             dialogFragmentLoader = new DialogFragmentLoader();
             dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
+            hideLoader = true;
         }
 
     }
@@ -802,9 +811,18 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
     @Override
     public void hideProgress() {
 
-        if(dialogFragmentLoader != null && dialogFragmentLoader.isAdded()) {
+        if(dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
             dialogFragmentLoader.dismissAllowingStateLoss();
             dialogFragmentLoader.close();
+            hideLoader = false;
+        }
+    }
+
+    public void forceHideProgress(){
+        if(dialogFragmentLoader != null) {
+            dialogFragmentLoader.dismissAllowingStateLoss();
+            dialogFragmentLoader.close();
+            hideLoader = false;
         }
     }
 

@@ -102,6 +102,10 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 
+        if(getActivity() instanceof  HomeActivity){
+            ((HomeActivity) getActivity()).forceHideProgress();
+        }
+
         return view;
     }
 
