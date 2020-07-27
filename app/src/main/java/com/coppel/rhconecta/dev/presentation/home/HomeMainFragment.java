@@ -237,7 +237,9 @@ public class HomeMainFragment
                 }
                 break;
             case COMPLETED:
-                setBanners(homeViewModel.getBanners());
+
+                if(homeViewModel.getBanners() != null)
+                    setBanners(homeViewModel.getBanners());
                 break;
         }
     }
@@ -272,7 +274,8 @@ public class HomeMainFragment
                 } catch (Exception ignore) {}
                 break;
             case COMPLETED:
-                setBadges(homeViewModel.getBadges());
+                if(homeViewModel.getBadges() != null)
+                    setBadges(homeViewModel.getBadges());
                 break;
         }
     }

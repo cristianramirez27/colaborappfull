@@ -73,7 +73,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     @BindView(R.id.description)
     TextView description;
     private DialogFragmentGetDocument dialogFragmentGetDocument;
-    BenefitsCategoriesResponse.Category categorySelected;
+    BenefitsCategoriesResponse.CategoryResult categorySelected;
     private BenefitsRequestData benefitsRequestData;
 
     private List<BenefitsDiscountsResponse.Discount> discounts;
@@ -109,7 +109,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         rcvDiscounts.getRecycledViewPool().setMaxRecycledViews(0, 0);
         Bundle bundle = getArguments();
         if (bundle != null && bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS) != null){
-            categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS), BenefitsCategoriesResponse.Category.class);
+            categorySelected = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS), BenefitsCategoriesResponse.CategoryResult.class);
             benefitsRequestData = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA), BenefitsRequestData.class);
             title.setText(categorySelected.getNombre());
             description.setText(categorySelected.getDescripcion());

@@ -114,9 +114,14 @@ import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -1904,8 +1909,19 @@ public class ServicesInteractor {
 
                 try {
 
-                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
-                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    BenefitsBaseResponse benefitsBaseResponse ;
+                    JsonElement json = new JsonParser().parse(response.body().toString());
+
+                    JsonArray listCategories = json.getAsJsonObject().getAsJsonObject("data")
+                            .getAsJsonObject("response").getAsJsonArray("Categorias");
+
+                    if(listCategories.size() == 1 && listCategories.get(0).getAsJsonObject().get("cve").getAsInt() == 0){
+                        benefitsBaseResponse =   new Gson().fromJson(json.getAsJsonObject().toString(), BenefitsSearchEmptyResponse.class);
+                    }else {
+                        benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+
+                    }
+
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
