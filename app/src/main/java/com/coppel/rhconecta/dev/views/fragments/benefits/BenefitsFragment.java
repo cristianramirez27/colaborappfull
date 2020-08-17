@@ -43,7 +43,9 @@ import com.coppel.rhconecta.dev.business.interfaces.OnGeocoderFinishedListener;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCitiesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.BenefitsSearchEmptyResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsSearchResponse;
+import com.coppel.rhconecta.dev.business.models.BenefitsSearchResultsResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsStatesResponse;
 import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
@@ -339,13 +341,13 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
                 }else if(response.getResponse() instanceof BenefitsSearchResponse){
 
-                    List<BenefitsCategoriesResponse.Category> listCategory = ((BenefitsSearchResponse)response.getResponse()).getData().getResponse().getCategorias();
+                    if(response.getResponse() instanceof BenefitsSearchEmptyResponse){
+                        List<BenefitsCategoriesResponse.CategoryEmpty> listCategory = ((BenefitsSearchEmptyResponse)response.getResponse()).getData().getResponse().getCategorias();
 
-                    if(listCategory.size() == 1 && listCategory.get(0).getCve() == 0){
                         showGetVoucherDialog(listCategory.get(0).getDescripcion());
                     }else {
 
-                        for(BenefitsCategoriesResponse.Category category : ((BenefitsSearchResponse)response.getResponse()).getData().getResponse().getCategorias()){
+                        for(BenefitsCategoriesResponse.Category category : ((BenefitsSearchResultsResponse)response.getResponse()).getData().getResponse().getCategorias()){
                             categories.add(category);
                         }
 

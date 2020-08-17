@@ -106,6 +106,11 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         //LoanSavingFundMainChildFragment loanSavingFundMainChildFragment = LoanSavingFundMainChildFragment.getInstance(loanSavingFundResponse);
         //fragmentTransaction.add(R.id.flChildFragmentContainer,loanSavingFundMainChildFragment, LoanSavingFundMainChildFragment.TAG).commit();
         imgvRefresh.setOnClickListener(this);
+
+        if(getActivity() instanceof  HomeActivity){
+            ((HomeActivity) getActivity()).forceHideProgress();
+        }
+
         return view;
     }
 

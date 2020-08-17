@@ -104,6 +104,10 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 
+        if(getActivity() instanceof  HomeActivity){
+            ((HomeActivity) getActivity()).forceHideProgress();
+        }
+
         return view;
     }
 

@@ -181,8 +181,9 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
         rcvControles.setAdapter(expensesTravelColaboratorControlsRecyclerAdapter);
         rcvMonths.setAdapter(expensesTravelColaboratorMonthsRecyclerAdapter);
 
-
-
+        if(getActivity() instanceof  HomeActivity){
+            ((HomeActivity) getActivity()).forceHideProgress();
+        }
 
         return view;
     }

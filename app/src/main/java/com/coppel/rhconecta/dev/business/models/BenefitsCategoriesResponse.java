@@ -104,9 +104,6 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
         private String logo;
         private String nombre;
 
-        //Se agrega para los resultados de la busqueda
-
-        private List<BenefitsDiscountsResponse.Discount> servicios;
 
         public int getCve() {
             return cve;
@@ -140,12 +137,33 @@ public class BenefitsCategoriesResponse extends BenefitsBaseResponse {
             this.nombre = nombre;
         }
 
+    }
+
+
+    public class CategoryResult extends Category implements Serializable {
+        //Se agrega para los resultados de la busqueda
+
+        private List<BenefitsDiscountsResponse.Discount> servicios;
 
         public List<BenefitsDiscountsResponse.Discount> getServicios() {
             return servicios;
         }
 
         public void setServicios(List<BenefitsDiscountsResponse.Discount> servicios) {
+            this.servicios = servicios;
+        }
+    }
+
+
+    public class CategoryEmpty extends Category implements Serializable {
+
+        private String servicios;
+
+        public String getServicios() {
+            return servicios;
+        }
+
+        public void setServicios(String servicios) {
             this.servicios = servicios;
         }
     }
