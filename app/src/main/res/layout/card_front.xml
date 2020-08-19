@@ -144,20 +144,41 @@
 
 
 
-        <Button
-            android:id="@+id/btnAdvertising"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_btns"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/colorSecondBlueCoppel"
-            android:fontFamily="@font/lineto_circular_pro_medium"
-            android:text="Publicidad de la empresa"
-            android:textAllCaps="false"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/btnCode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btns"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorSecondBlueCoppel"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="Generar Codigo"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textSize="16sp"
+                android:layout_marginBottom="5dp"
+                android:layout_toStartOf="@id/btnAdvertising"
+                android:layout_alignStart="@id/btnAdvertising"
+                android:layout_alignBottom="@id/btnCode"/>
+
+            <Button
+                android:id="@+id/btnAdvertising"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btns"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/colorSecondBlueCoppel"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="Publicidad de la empresa"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textSize="16sp"/>
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -48,7 +48,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView icClose;
     @BindView(R.id.icClosePublicity)
     ImageView icClosePublicity;
-
+    @BindView(R.id.icCloseCode)
+    ImageView icCloseCode;
 
     @BindView(R.id.scrollview)
     ScrollView scrollview;
@@ -72,8 +73,17 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     TextView txtAddress;
     @BindView(R.id.txtPhone)
     TextView txtPhone;
+    @BindView(R.id.code)
+    TextView code;
+
     @BindView(R.id.btnAdvertising)
     Button btnAdvertising;
+    @BindView(R.id.btnCode)
+    Button btnCode;
+    @BindView(R.id.btnBackCompany)
+    Button btnBackCompany;
+
+
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
 
     private BenefitsCompaniesResponse.Company company;
@@ -86,6 +96,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     View mCardFrontLayout;
     @BindView(R.id.card_back)
     View mCardBackLayout;
+    @BindView(R.id.card_code_benefit)
+    View mCardCodeBenefit;
 
     private long mLastClickTime = 0;
 
@@ -151,10 +163,12 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             txtPhone.setText(Html.fromHtml(phone));
         }
 
-
         btnAdvertising.setOnClickListener(this);
         icClosePublicity.setOnClickListener(this);
-
+        btnCode.setOnClickListener(this);
+        btnBackCompany.setOnClickListener(this);
+        btnBackCompany.setClickable(false);
+        icCloseCode.setOnClickListener(this);
 
         icClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +233,14 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 btnAdvertising.setEnabled(false);
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
+            case R.id.btnCode:
+                getCodeBenefit();
+                break;
+            case R.id.btnBackCompany:
+                flipCodeCard();
+                break;
             case R.id.icClosePublicity:
+            case R.id.icCloseCode:
                 close();
                 getActivity().finish();
                 break;
@@ -281,6 +302,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         float scale = getResources().getDisplayMetrics().density * distance;
         mCardFrontLayout.setCameraDistance(scale);
         mCardBackLayout.setCameraDistance(scale);
+        mCardCodeBenefit.setCameraDistance(scale);
     }
 
     private void loadAnimations() {
@@ -290,6 +312,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
 
     public void flipCard() {
+        mCardCodeBenefit.setVisibility(View.GONE);
+        mCardBackLayout.setVisibility(View.VISIBLE);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(mCardFrontLayout);
             mSetLeftIn.setTarget(mCardBackLayout);
@@ -302,6 +326,36 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = false;
+        }
+    }
+
+    public void getCodeBenefit(){
+        code.setText("GAVA940915");
+        flipCodeCard();
+    }
+
+    public void flipCodeCard(){
+        loadAnimations();
+        mCardBackLayout.setVisibility(View.GONE);
+        mCardCodeBenefit.setVisibility(View.VISIBLE);
+        if (!mIsBackVisible) {
+            mSetRightOut.setTarget(mCardFrontLayout);
+            mSetLeftIn.setTarget(mCardCodeBenefit);
+            mSetRightOut.start();
+            mSetLeftIn.start();
+            mIsBackVisible = true;
+            btnAdvertising.setClickable(false);
+            btnCode.setClickable(false);
+            btnBackCompany.setClickable(true);
+        } else {
+            mSetRightOut.setTarget(mCardCodeBenefit);
+            mSetLeftIn.setTarget(mCardFrontLayout);
+            mSetRightOut.start();
+            mSetLeftIn.start();
+            mIsBackVisible = false;
+            btnBackCompany.setClickable(false);
+            btnAdvertising.setClickable(true);
+            btnCode.setClickable(true);
         }
     }
 
