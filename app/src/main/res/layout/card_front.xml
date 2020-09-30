@@ -164,7 +164,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_toStartOf="@id/btnAdvertising"
                 android:layout_alignStart="@id/btnAdvertising"
-                android:layout_alignBottom="@id/btnCode"/>
+                android:layout_alignBottom="@id/btnCode"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnAdvertising"

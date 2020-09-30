@@ -55,4 +55,8 @@ public class ServicesRequestType {
     public static final int LETTERPREVIEW= 28;
     public static final int LETTERGENERATE_SENDMAIL= 29;
     public static final int LETTERGENERATE_DOWNLOADMAIL= 30;
+
+    public static final int BENEFIT_CODE = 31;
+    public static final int BENEFIT_COMPANY = 32;
+
 }

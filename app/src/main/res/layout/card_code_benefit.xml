@@ -21,14 +21,14 @@
             android:gravity="center"
             android:layout_centerInParent="true"
             android:orientation="vertical"
-            android:padding="100px">
+            android:padding="50px">
             <TextView
                 android:id="@+id/code_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tu codigo promocional es: "
+                android:text="El codigo generado es:"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/mdtp_light_gray"
                 />
@@ -40,7 +40,7 @@
                 android:text="1GET23"
                 android:gravity="center"
                 android:textAllCaps="false"
-                android:textSize="40sp"
+                android:textSize="22sp"
                 android:layout_alignBottom="@id/code_title"
                 android:textStyle="bold"
                 android:textColor="@color/mdtp_light_gray"

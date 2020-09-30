@@ -25,11 +25,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.business.models.InfoCompanyResponse;
+import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
 import com.coppel.rhconecta.dev.views.customviews.ZoomableImageView;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.ortiz.touchview.TouchImageView;
 import com.squareup.picasso.Callback;
@@ -100,6 +105,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     View mCardCodeBenefit;
 
     private long mLastClickTime = 0;
+    private CoppelServicesPresenter coppelServicesPresenter;
+    private InfoCompanyResponse infoCompany;
 
     public static DialogFragmentCompany getInstance(BenefitsCompaniesResponse.Company company){
         DialogFragmentCompany dialogFragmentCompany = new DialogFragmentCompany();
@@ -201,6 +208,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 return false;
             }
         });
+
+        getInfoCompany();
     }
 
     public void close() {
@@ -329,9 +338,42 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         }
     }
 
+    public void setCoppelServicesPresenter(CoppelServicesPresenter coppelServicesPresenter){
+        this.coppelServicesPresenter = coppelServicesPresenter;
+    }
+
     public void getCodeBenefit(){
-        code.setText("GAVA940915");
+        String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        BenefitCodeRequest benefitCodeRequest = new BenefitCodeRequest();
+        benefitCodeRequest.setOpc(1);
+        benefitCodeRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
+        benefitCodeRequest.setNumEmpresa(company.getServicios());
+
+        this.coppelServicesPresenter.getBenefitCode(benefitCodeRequest, token);
+    }
+
+    public void getInfoCompany(){
+        String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        BenefitCodeRequest infoCompanyRequest = new BenefitCodeRequest();
+        infoCompanyRequest.setOpc(2);
+        infoCompanyRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
+        infoCompanyRequest.setNumEmpresa(company.getServicios());
+
+        this.coppelServicesPresenter.getInfoCompany(infoCompanyRequest, token);
+    }
+
+    public void setCodeView(String newCode){
+        code.setText(newCode);
         flipCodeCard();
+    }
+
+    public void setInfoCompany(InfoCompanyResponse infoCompanyResponse){
+        this.infoCompany = infoCompanyResponse;
+        if (infoCompany.getOpc_desc_app() == 1) {
+            btnCode.setVisibility(View.VISIBLE);
+        }
     }
 
     public void flipCodeCard(){

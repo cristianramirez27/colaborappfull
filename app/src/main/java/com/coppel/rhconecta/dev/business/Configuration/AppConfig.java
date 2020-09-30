@@ -50,6 +50,7 @@ public class AppConfig {
     public final static String ENDPOINT_HOLIDAYS = "ENDPOINT_HOLIDAYS";
     public final static String ENDPOINT_COLLAGE = "ENDPOINT_COLLAGE";
     public final static String ENDPOINT_QR = "ENDPOINT_QR";
+    public final static String ENDPOINT_BENEFIT_CODE = "ENDPOINT_BENEFIT_CODE";
 
 
     //VISIONARIOS
