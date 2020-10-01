@@ -105,7 +105,6 @@ public class ReleasesActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), releasesViewModel.getFailure().toString());
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.releases_failure_default_title),

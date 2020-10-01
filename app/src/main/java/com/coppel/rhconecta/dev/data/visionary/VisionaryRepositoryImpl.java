@@ -93,7 +93,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                             new Either<Failure, List<VisionaryPreview>>().new Right(visionariesPreviews);
                     callback.onResult(result);
                 } catch (Exception exception) {
-                    Log.e(getClass().getName(), exception.toString());
                     callback.onResult(getServerFailure());
                 }
 
@@ -154,7 +153,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     Either<Failure, Visionary> result = new Either<Failure, Visionary>().new Right(visionary);
                     callback.onResult(result);
                 } catch (Exception exception){
-                    Log.e(getClass().getName(), exception.toString());
                     callback.onResult(getServerFailure());
                 }
             }
@@ -219,7 +217,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                             new Either<Failure, Visionary.Status>().new Right(status);
                     callback.onResult(result);
                 } catch (Exception exception){
-                    Log.e(getClass().getName(), exception.toString());
                     callback.onResult(getServerFailure());
                 }
             }

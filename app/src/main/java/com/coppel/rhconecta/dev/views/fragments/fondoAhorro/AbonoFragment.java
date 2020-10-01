@@ -264,7 +264,6 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         tabLayout.getSelectedTabPosition();
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        Log.e("TabActivity", "indicator position " + tabLayout.getSelectedTabPosition());
         tabLayout.setSelectedTabIndicatorHeight(6);
         tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryCoppelAzul));
         tabLayout.setVisibility(VISIBLE);

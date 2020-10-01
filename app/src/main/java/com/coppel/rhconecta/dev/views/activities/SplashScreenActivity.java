@@ -64,7 +64,6 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
                 String newToken = instanceIdResult.getToken();
-                Log.e("newToken",newToken);
                 if(newToken != null && !newToken.isEmpty())
                     AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN,newToken);
             }
@@ -198,12 +197,8 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 .addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
-
                         if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
-                        } else {
-                            Log.d("RemoteConfig","Fetch Failed");
                         }
                         setEndpoints();
                     }

@@ -128,7 +128,6 @@ public class ImageLoaderUtil {
             ExifInterface exifInterface = new ExifInterface(Url);
             int orientation = exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION, 1);
-            Log.d("EXIF", "Exif: " + orientation);
             Matrix matrix = new Matrix();
 
             if (orientation == 6) {
@@ -143,7 +142,6 @@ public class ImageLoaderUtil {
                     bitmap.getHeight(), matrix, true); // rotating bitmap
         } catch (Exception e) {
             e.printStackTrace();
-//			Log.d(TAG + "rotar", e.getMessage());
         }
         return bitmap;
     }
@@ -162,7 +160,6 @@ public class ImageLoaderUtil {
         } while (bm != null
                 && (bm.getWidth() < minWidthQuality || bm.getHeight() < minHeightQuality)
                 && i < sampleSizes.length);
-        //Log.i(TAG, "Final bitmap width = " + (bm != null ? bm.getWidth() : "No final bitmap"));
         return bm;
     }
 
@@ -177,11 +174,6 @@ public class ImageLoaderUtil {
             fileDescriptor = context.getContentResolver().openAssetFileDescriptor(theUri, "r");
             actuallyUsableBitmap = BitmapFactory
                     .decodeFileDescriptor(fileDescriptor.getFileDescriptor(), null, options);
-            if (actuallyUsableBitmap != null) {
-                //Log.i(TAG, "Trying sample size " + options.inSampleSize + "\t\t"
-                //        + "Bitmap width: " + actuallyUsableBitmap.getWidth()
-                //        + "\theight: " + actuallyUsableBitmap.getHeight());
-            }
             fileDescriptor.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

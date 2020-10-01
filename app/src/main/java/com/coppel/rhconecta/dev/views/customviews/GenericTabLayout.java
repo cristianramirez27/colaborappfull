@@ -106,7 +106,6 @@ public class GenericTabLayout<T extends IEnumTab> extends TabLayout implements T
 
     @Override
     public void addTab(@NonNull Tab tab, boolean setSelected) {
-        Log.e("genric tab ", "addtab");
         int icon;
         if (mAdapter != null) {
             icon = mAdapter.getPageIcon(getTabCount());
@@ -146,7 +145,6 @@ public class GenericTabLayout<T extends IEnumTab> extends TabLayout implements T
 
     @Override
     public void onTabSelected(final Tab tab) {
-        Log.e("genric tab ", "ontabSelect");
         ViewGroup customParen = (ViewGroup) LayoutInflater.from(getContext()).inflate(selectedLayout, null, false);
 
         ((ViewGroup) ((ViewGroup) getChildAt(0)).getChildAt(tab.getPosition())).removeViewAt(2);

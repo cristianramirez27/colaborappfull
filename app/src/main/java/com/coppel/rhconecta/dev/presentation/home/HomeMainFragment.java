@@ -218,10 +218,8 @@ public class HomeMainFragment
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), homeViewModel.getFailure().toString());
                 if(isOnline()) {
                     Failure failure = homeViewModel.getFailure();
-                    Log.e(getClass().getName(), failure.toString());
                     String message = getString(R.string.not_available_service);
                     SingleActionDialog dialog = new SingleActionDialog(
                             getActivity(),
@@ -258,7 +256,6 @@ public class HomeMainFragment
                 break;
             case FAILURE:
                 Failure failure = homeViewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
                 String message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         getContext(),

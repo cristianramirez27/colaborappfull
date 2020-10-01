@@ -207,9 +207,6 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
                 break;
             }
             top = child.getTop();
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "child at " + (i - 1) + " has top " + top);
-            }
         } while (top < 0);
 
         // Compute the first and last position visible
@@ -217,10 +214,6 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
 
         if (setSelected) {
             mAdapter.setSelectedDay(mSelectedDay,false);
-        }
-
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "GoTo position " + position);
         }
         // Check if the selected day is now outside of our visible range
         // and if so scroll to the month that contains it

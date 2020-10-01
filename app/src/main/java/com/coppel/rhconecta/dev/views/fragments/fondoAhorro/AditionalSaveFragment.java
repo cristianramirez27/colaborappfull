@@ -424,13 +424,9 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if(s.toString().isEmpty()){
                    calculate();
                 }
-
-                Log.i("CHANGE","Text: "+ s.toString());
-
             }
         });
 

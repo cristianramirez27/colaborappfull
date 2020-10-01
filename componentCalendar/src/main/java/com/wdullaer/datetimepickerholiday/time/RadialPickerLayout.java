@@ -164,7 +164,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     public void initialize(Context context, Locale locale, TimePickerController timePickerController,
             Timepoint initialTime, boolean is24HourMode) {
         if (mTimeInitialized) {
-            Log.e(TAG, "Time has already been initialized.");
             return;
         }
 
@@ -634,7 +633,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      */
     public int getCurrentItemShowing() {
         if (mCurrentItemShowing != HOUR_INDEX && mCurrentItemShowing != MINUTE_INDEX && mCurrentItemShowing != SECOND_INDEX) {
-            Log.e(TAG, "Current item showing was unfortunately set to " + mCurrentItemShowing);
             return -1;
         }
         return mCurrentItemShowing;
@@ -646,7 +644,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
      */
     public void setCurrentItemShowing(int index, boolean animate) {
         if (index != HOUR_INDEX && index != MINUTE_INDEX && index != SECOND_INDEX) {
-            Log.e(TAG, "TimePicker does not support view at index "+index);
             return;
         }
 
@@ -785,7 +782,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 if (!mInputEnabled) {
                     // We shouldn't be in this state, because input is disabled.
-                    Log.e(TAG, "Input was disabled, but received ACTION_MOVE.");
                     return true;
                 }
 
@@ -836,7 +832,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             case MotionEvent.ACTION_UP:
                 if (!mInputEnabled) {
                     // If our touch input was disabled, tell the listener to re-enable us.
-                    Log.d(TAG, "Input was disabled, but received ACTION_UP.");
                     mListener.enablePicker();
                     return true;
                 }

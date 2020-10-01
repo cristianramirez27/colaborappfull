@@ -76,7 +76,6 @@ public class AmPmCirclesView extends View {
 
     public void initialize(Context context, Locale locale, TimePickerController controller, int amOrPm) {
         if (mIsInitialized) {
-            Log.e(TAG, "AmPmCirclesView may only be initialized once.");
             return;
         }
 

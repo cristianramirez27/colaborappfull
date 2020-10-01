@@ -599,7 +599,6 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
 
     private void askPermission() {
-        Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
                 getActivity(),
                 new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
@@ -621,7 +620,6 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult()");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_MAP_PERMISSION_CODE: {

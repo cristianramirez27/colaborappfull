@@ -66,10 +66,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 );
 
             }else {
-                Log.d(TAG, "From: " + remoteMessage.getFrom());
                 Map<String, String> paramsData = remoteMessage.getData();
                 JSONObject object = new JSONObject(paramsData);
-                Log.d("JSON_OBJECT", object.toString());
                 if (paramsData != null) {
                     try {
                         processNotification(idNotification, remoteMessage);

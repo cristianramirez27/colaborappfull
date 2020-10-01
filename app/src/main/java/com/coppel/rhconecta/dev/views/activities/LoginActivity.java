@@ -302,8 +302,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // After config data is successfully fetched, it must be activated before newly fetched
                             // values are returned.
                             mFirebaseRemoteConfig.activateFetched();
-                        } else {
-                            Log.d("RemoteConfig","Fetch Failed");
                         }
                         setEndpoints();
                     }

@@ -125,7 +125,6 @@ public class CurrencyEditText extends AppCompatEditText {
 
                 success = true;
             } catch (IllegalArgumentException e) {
-                Log.e(getClass().getCanonicalName(), e.getMessage());
                 locale = getDefaultLocale();
             }
         }
@@ -159,10 +158,8 @@ public class CurrencyEditText extends AppCompatEditText {
             setText(s);
             setSelection(s.length());
             addTextChangedListener(onTextChangeListener);
-        } catch (NumberFormatException e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
-        } catch (NullPointerException e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
+        } catch (NumberFormatException | NullPointerException ignored) {
+            /* PASS */
         }
     }
 
@@ -193,12 +190,9 @@ public class CurrencyEditText extends AppCompatEditText {
             } else {
                 try {
                     text = format(text);
-                } catch (NumberFormatException e) {
-                    Log.e(getClass().getCanonicalName(), e.getMessage());
-                } catch (NullPointerException e) {
-                    Log.e(getClass().getCanonicalName(), e.getMessage());
+                } catch (NumberFormatException | NullPointerException ignored) {
+                    /* PASS */
                 }
-
                 setText(text);
                 setSelection(text.length());
             }
@@ -223,9 +217,7 @@ public class CurrencyEditText extends AppCompatEditText {
         if (mEraseWhenZero) {
             try {
                 return Integer.valueOf(text) == 0;
-            } catch (NumberFormatException e) {
-                Log.e(getClass().getCanonicalName(), e.getMessage());
-            }
+            } catch (NumberFormatException ignored) { /* PASS */ }
         }
 
         return false;

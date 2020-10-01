@@ -111,7 +111,6 @@ public class VisionariesActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), visionariesViewModel.getFailure().toString());
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.visionaries_failure_default_title),

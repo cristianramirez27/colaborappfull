@@ -133,7 +133,6 @@ public class PollToolbarFragment extends Fragment {
             case LOADING:
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), viewModel.getFailure().toString());
                 break;
             case COMPLETED:
                 surveyInboxView.setCountMessages(viewModel.getAvailableCount());

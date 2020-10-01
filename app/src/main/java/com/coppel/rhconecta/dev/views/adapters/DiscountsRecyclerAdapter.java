@@ -83,7 +83,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
 
                                         @Override
                                         public void onError() {
-                                            Log.v("Picasso","Could not fetch image");
+
                                         }
                                     });
                         }
@@ -114,7 +114,7 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
 
                                     @Override
                                     public void onError() {
-                                        Log.v("Picasso","Could not fetch image");
+
                                     }
                                 });
                     }

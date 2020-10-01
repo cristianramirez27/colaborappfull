@@ -1354,7 +1354,6 @@ public class TimePickerDialog extends DialogFragment implements
             if (!mInKbMode) {
                 if (mTimePicker == null) {
                     // Something's wrong, because time picker should definitely not be null.
-                    Log.e(TAG, "Unable to initiate keyboard mode, TimePicker was null.");
                     return true;
                 }
                 mTypedTimes.clear();
@@ -1640,8 +1639,6 @@ public class TimePickerDialog extends DialogFragment implements
                     if (events != null && events.length == 4) {
                         mAmKeyCode = events[0].getKeyCode();
                         mPmKeyCode = events[2].getKeyCode();
-                    } else {
-                        Log.e(TAG, "Unable to find keycodes for AM and PM.");
                     }
                     break;
                 }

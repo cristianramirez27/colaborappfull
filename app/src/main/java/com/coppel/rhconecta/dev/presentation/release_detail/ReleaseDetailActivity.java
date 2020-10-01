@@ -102,7 +102,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), releaseDetailViewModel.getFailure().toString());
                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:

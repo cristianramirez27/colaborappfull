@@ -152,14 +152,11 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
          List<HomeMenuItem> customMenuTmp= this.getCustomMenu();
         if (!realm.isInTransaction()) realm.beginTransaction();
         for (int i =0;i<customMenuTmp.size();i++){
-            try{
+            try {
                 if(customMenuTmp.get(i).getTAG().equals(TAG)){ // agrega notificaciones a comunicados o videos
                     customMenuTmp.get(i).setNotifications(notifications);
                 }
-
-            }catch (Exception e){
-                Log.d("AdapterMenu","Error add notifications menu adapter: "+e.getMessage());
-            }
+            }catch (Exception e){ /* PASS */ }
         }
 
         realm.commitTransaction();
