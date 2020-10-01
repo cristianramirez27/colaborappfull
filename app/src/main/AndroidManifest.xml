@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.coppel.rhconecta.dev"
     tools:ignore="LockedOrientationActivity,UnusedAttribute">
@@ -20,7 +21,8 @@
             android:name=".views.activities.SplashScreenActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/FullScreen">
+            android:theme="@style/FullScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,74 +31,91 @@
         </activity>
         <activity
             android:name=".views.activities.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false"/>
         <activity
             android:name=".views.activities.HomeActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.poll.PollActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".visionarios.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.releases.ReleasesActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.release_detail.ReleaseDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.visionaries.VisionariesActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.visionary_detail.VisionaryDetailActivity"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".presentation.visionary_full_screen.VisionaryDetailFullScreenActivity"
             android:hardwareAccelerated="true"
-            android:configChanges="screenSize|orientation"/>
+            android:configChanges="screenSize|orientation"
+            android:exported="false" />
         <activity
             android:name=".views.activities.ConfigLetterActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".views.activities.DialogAlertActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:exported="false" />
         <activity
             android:name=".views.activities.BenefitsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
+            android:windowSoftInputMode="adjustResize|adjustPan"
+            android:exported="false" />
         <activity
             android:name=".views.activities.FondoAhorroActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
         <activity
             android:name=".views.activities.GastosViajeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
         <activity
             android:name=".views.activities.QrCodeActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".views.activities.GastosViajeDetalleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
         <activity
             android:name=".views.activities.VacacionesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- android:windowSoftInputMode="adjustResize" -->
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/icn_notificaciones_blanco" />
@@ -121,6 +140,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name=".visionarios.firebase.MyFirebaseInstanceIDService"
             android:exported="false">
@@ -130,6 +150,7 @@
         </service>
 
     </application>
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
