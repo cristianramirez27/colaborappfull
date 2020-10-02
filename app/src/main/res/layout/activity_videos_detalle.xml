@@ -66,8 +66,6 @@
                     android:src="@drawable/ic_play_button"
                     android:visibility="visible" />
 
-
-
                 <ImageView
                     android:id="@+id/imgFullScreen"
                     android:layout_width="48dp"
@@ -76,10 +74,10 @@
                     android:layout_marginRight="8dp"
                     android:onClick="setFullScreenVideo"
                     android:src="@drawable/ic_fullscreen_grey_300_48dp" />
+
             </RelativeLayout>
 
             <RelativeLayout
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -127,8 +125,8 @@
                     android:paddingTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                    <TextView
 
+                    <TextView
                         android:id="@+id/labelVisitas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -148,7 +146,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/labelEncabezado"
-
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp">
@@ -171,6 +168,7 @@
                             android:layout_height="24dp"
                             android:layout_marginLeft="24dp"
                             android:src="@drawable/ic_thumb_down_gris_36dp" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -195,7 +193,9 @@
                             android:text=""
                             android:textColor="@color/colorSecundaryCoppelGris"
                             android:textSize="12sp" />
+
                     </LinearLayout>
+
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -217,10 +217,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="32dp"
                 android:text=""
-                android:textColor="@color/colorTextCoppelNegro"
-
-                />
-
+                android:textColor="@color/colorTextCoppelNegro" />
 
         </LinearLayout>
 

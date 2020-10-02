@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="10dp"
@@ -13,34 +12,31 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_dialog_white_rounded">
 
-
         <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="14dp"
+            android:scrollbars="horizontal|vertical"
+            android:elevation="10dp">
+            <com.github.chrisbanes.photoview.PhotoView
+                android:id="@+id/imageFull"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardCornerRadius="14dp"
-            android:scrollbars="horizontal|vertical"
-                android:elevation="10dp">
+                android:scaleType="centerInside"
+                android:src="@drawable/img_publicidad"
+                android:background="@color/colorBackgroundCoppelBlanco"
+                android:adjustViewBounds="true"/>
+        </android.support.v7.widget.CardView>
 
-                <com.github.chrisbanes.photoview.PhotoView
-                    android:id="@+id/imageFull"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/img_publicidad"
-                    android:background="@color/colorBackgroundCoppelBlanco"
-                    android:adjustViewBounds="true"/>
-            </android.support.v7.widget.CardView>
-
-
-    <ImageView
-         android:id="@+id/icClosePublicity"
-         android:layout_width="30dp"
-         android:layout_height="30dp"
-         android:src="@drawable/ic_close_white"
-         android:layout_alignParentRight="true"
-         android:layout_margin="8dp"
-        android:elevation="6dp"
-         android:layout_alignParentTop="true"/>
+        <ImageView
+            android:id="@+id/icClosePublicity"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_close_white"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:elevation="6dp"
+            android:layout_alignParentTop="true"/>
 
     </RelativeLayout>
 

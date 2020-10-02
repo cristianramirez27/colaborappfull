@@ -25,7 +25,6 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
-
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewSearch"
                 android:layout_alignParentTop="true"
@@ -62,6 +61,7 @@
                         android:hint="@string/hint_search_name_colaborator"
                         android:imeOptions="actionSearch"
                         android:inputType="textVisiblePassword"
+                        android:importantForAutofill="no"
                         android:lines="1"
                         android:textColor="@color/colorTextBlueCoppel"
                         android:textColorHint="@color/colorTextBlueCoppel"
@@ -118,6 +118,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </LinearLayout>

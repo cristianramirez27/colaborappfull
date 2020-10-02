@@ -39,7 +39,7 @@
             android:layout_marginRight="8dp"
             android:onClick="setFullScreenVideoExit"
             android:src="@drawable/ic_fullscreen_exit_black_24dp" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -26,7 +26,6 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
-
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewSearch"
                 android:layout_alignParentTop="true"
@@ -63,6 +62,7 @@
                         android:hint="@string/hint_search_name_colaborator"
                         android:imeOptions="actionSearch"
                         android:inputType="textVisiblePassword"
+                        android:importantForAutofill="no"
                         android:lines="1"
                         android:textColor="@color/colorTextBlueCoppel"
                         android:textColorHint="@color/colorTextBlueCoppel"
@@ -108,7 +108,6 @@
                     app:srcCompat="@drawable/ic_down_arrow_blue" />
 
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:layout_below="@+id/layoutHeader"
@@ -157,7 +156,6 @@
                                 android:textColor="@color/colorSecundaryCoppelVerde"
                                 android:textSize="13sp" />
 
-
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -186,7 +184,6 @@
                                 android:text="@string/title_splice_colaborators"
                                 android:textColor="@color/colorMelon"
                                 android:textSize="13sp" />
-
 
                         </RelativeLayout>
 
@@ -220,8 +217,6 @@
 
                 </LinearLayout>
 
-
-
                 <RelativeLayout
                     android:layout_below="@+id/layoutControls"
                     android:id="@+id/layoutOptions"
@@ -238,7 +233,6 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp" />
 
-
                     <TextView
                         android:layout_centerVertical="true"
                         android:id="@+id/monthName"
@@ -251,7 +245,6 @@
                         android:textColor="@color/colorTextCoppelNegro"
                         android:textSize="18sp" />
 
-
                     <ImageView
                         android:id="@+id/nextMonth"
                         android:layout_width="30dp"
@@ -262,15 +255,14 @@
                         android:padding="8dp"
                         app:srcCompat="@drawable/arrow_right_calendar" />
 
-
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:layout_below="@+id/layoutOptions"
                     android:id="@+id/layoutData"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <LinearLayout
                         android:visibility="visible"
                         android:id="@+id/layoutList"
@@ -288,8 +280,6 @@
 
                     </LinearLayout>
 
-
-
                     <LinearLayout
                         android:id="@+id/layoutCalendar"
                         android:layout_width="match_parent"
@@ -298,7 +288,6 @@
                         android:layout_marginTop="16dp"
                         android:visibility="gone"
                         android:orientation="vertical">
-
 
                         <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
                             android:id="@+id/collapsibleCalendarView"
@@ -322,12 +311,8 @@
 
             </RelativeLayout>
 
-
-
-
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </RelativeLayout>

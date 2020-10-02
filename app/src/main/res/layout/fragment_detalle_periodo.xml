@@ -48,13 +48,11 @@
                     app:cardElevation="2dp"
                     card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
 
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_margin="4dp">
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -93,10 +91,10 @@
                                         android:paddingLeft="4dp"
                                         android:paddingRight="4dp"
                                         android:visibility="visible" />
+
                                 </LinearLayout>
 
                             </RelativeLayout>
-
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -153,7 +151,6 @@
                                     android:textSize="13sp"
                                     android:visibility="visible" />
 
-
                                 <TextView
                                     android:id="@+id/fechaFin"
                                     android:layout_width="wrap_content"
@@ -167,6 +164,7 @@
                                     android:textColor="@color/colorTextGrayDark"
                                     android:textSize="13sp"
                                     android:visibility="visible" />
+
                             </RelativeLayout>
 
                             <RelativeLayout
@@ -188,7 +186,6 @@
                                     android:textSize="13sp"
                                     android:visibility="visible" />
 
-
                                 <TextView
                                     android:id="@+id/diasVacaciones"
                                     android:layout_width="wrap_content"
@@ -202,8 +199,8 @@
                                     android:textColor="@color/colorBackgroundCoppelNegro"
                                     android:textSize="13sp"
                                     android:visibility="visible" />
-                            </RelativeLayout>
 
+                            </RelativeLayout>
 
                         </LinearLayout>
 
@@ -236,8 +233,7 @@
                     android:background="@color/colorBackgroundCoppelBlanco"
                     android:layout_height="wrap_content">
 
-                    <include
-                        layout="@layout/observaciones_periodo"/>
+                    <include layout="@layout/observaciones_periodo"/>
 
                     <View
                         android:id="@+id/bordeAmarillo"
@@ -246,7 +242,6 @@
                         android:background="@drawable/bg_gradient_grey" />
 
                 </LinearLayout>
-
 
             </LinearLayout>
 
@@ -275,13 +270,11 @@
                     app:buttonLeft_drawableTintColor="@android:color/white"
                     app:buttonRight_drawableTintColor="@android:color/white"
                     app:expandIconColor="@android:color/white"
-                    app:eventColor="@android:color/white">
-                </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+                    app:eventColor="@android:color/white"/>
 
             </RelativeLayout>
 
         </RelativeLayout>
-
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -292,7 +285,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <Button
             android:id="@+id/btnCancel"
@@ -308,7 +300,5 @@
             android:textSize="16sp" />
 
     </LinearLayout>
-
-
 
 </RelativeLayout>
