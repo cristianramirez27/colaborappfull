@@ -23,6 +23,7 @@
         android:fontFamily="@font/lineto_circular_pro_book"
         android:hint="@string/mail"
         android:inputType="textEmailAddress"
+        android:importantForAutofill="no"
         android:maxLines="1"
         android:textColor="@color/colorSecondBlueCoppel"
         android:textColorHint="@color/colorSecondBlueCoppel"

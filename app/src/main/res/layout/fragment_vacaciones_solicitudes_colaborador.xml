@@ -41,7 +41,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -80,7 +79,6 @@
                         android:textColor="@color/colorSecondBlueCoppel"
                         android:textSize="13sp" />
 
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -110,7 +108,6 @@
                         android:textColor="@color/colorMelon"
                         android:textSize="13sp" />
 
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -132,6 +129,7 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -175,10 +173,9 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/colorBackgroundCoppelBlanco"
                 android:textSize="16sp" />
+
         </LinearLayout>
 
-
     </LinearLayout>
-
 
 </RelativeLayout>

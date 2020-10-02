@@ -15,7 +15,6 @@
     card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
     app:cardCornerRadius="4dp">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,8 +48,6 @@
                 app:srcCompat="@drawable/ic_account_white"
                 android:backgroundTint="@color/colorGrisDeshabilitado"
                 android:background="@drawable/bg_circle_shadow"/>
-
-
 
         </RelativeLayout>
 
@@ -117,6 +114,7 @@
                     android:textColor="@color/colorTextGrayDark"
                     android:textSize="13sp"
                     android:visibility="visible" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -142,7 +140,6 @@
                     android:textSize="13sp"
                     android:textColor="@color/colorTextGrayDark" />
 
-
                 <TextView
                     android:layout_gravity="bottom|center_horizontal"
                     android:id="@+id/fechaFin"
@@ -156,6 +153,7 @@
                     android:textSize="13sp"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorTextGrayDark" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -178,12 +176,10 @@
                     android:textSize="13sp"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 
-
                 <RelativeLayout
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
 
                     <TextView
                         android:layout_gravity="bottom|center_horizontal"
@@ -201,7 +197,6 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorBackgroundCoppelNegro" />
 
-
                     <View
                         android:visibility="gone"
                         android:layout_alignParentRight="true"
@@ -211,16 +206,12 @@
                         android:layout_width="8dp"
                         android:layout_height="8dp" />
 
-
                 </RelativeLayout>
-
 
             </RelativeLayout>
 
         </LinearLayout>
 
     </RelativeLayout>
-
-
 
 </android.support.v7.widget.CardView>

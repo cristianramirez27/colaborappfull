@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctlContainer"
     android:paddingRight="20dp"
     android:paddingLeft="20dp"
@@ -39,12 +37,9 @@
                 android:buttonTint="@color/colorSecundaryCoppelVerde"
                 android:checked="true"/>
 
-
         </RelativeLayout>
 
     </RelativeLayout>
-
-
     
     <View
         android:layout_width="match_parent"

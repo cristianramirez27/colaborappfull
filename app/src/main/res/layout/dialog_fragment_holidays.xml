@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <RelativeLayout
         android:layout_width="285dp"
         android:layout_height="wrap_content"
@@ -20,7 +19,6 @@
             android:layout_marginTop="24dp"
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/ic_warning" />
-
 
         <LinearLayout
             android:layout_below="@+id/imgvAction"
@@ -41,7 +39,6 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
-
             <TextView
                 android:id="@+id/txvMsg"
                 android:layout_width="match_parent"
@@ -56,7 +53,6 @@
                 android:visibility="visible"/>
 
         </LinearLayout>
-
 
         <Button
             android:layout_below="@+id/layoutContent"

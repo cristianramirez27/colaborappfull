@@ -21,12 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">
-            <!--
-                            android:layout_above="@+id/btnDeposit"-->
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:isScrollContainer="false">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -131,8 +131,6 @@
                                     android:textColor="@android:color/black"
                                     android:textSize="14sp"/>
 
-
-
                             </LinearLayout>
 
                             <LinearLayout
@@ -172,8 +170,6 @@
                                     android:text="$0.00"
                                     android:textColor="@android:color/black"
                                     android:textSize="14sp"/>
-
-
 
                             </LinearLayout>
 
@@ -230,7 +226,6 @@
 
                             </LinearLayout>
 
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -282,7 +277,6 @@
                                 android:gravity="center">
 
                             </LinearLayout>
-
 
                         </LinearLayout>
 
@@ -338,6 +332,7 @@
                                         app:tabIndicatorFullWidth="false"
                                         app:tabSelectedTextColor="@color/colorPrimaryCoppelAzul"
                                         app:tabMaxWidth="0dp"/>
+
                                 </LinearLayout>
 
                                 <com.coppel.rhconecta.dev.views.customviews.NoSwipeViewPager
@@ -347,7 +342,6 @@
                                     android:minHeight="300dp"
                                     android:background="@color/transparent"
                                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
                             </LinearLayout>
 
@@ -376,23 +370,14 @@
                             android:textColor="@android:color/white"
                             android:textSize="16sp"/>
 
-
                     </LinearLayout>
 
                 </LinearLayout>
 
             </ScrollView>
 
-
-
         </RelativeLayout>
 
     </RelativeLayout>
-
-
-
-
-
-
 
 </RelativeLayout>

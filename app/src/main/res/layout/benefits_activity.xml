@@ -28,9 +28,7 @@
 
         </RelativeLayout>
 
-
     </android.support.design.widget.AppBarLayout>
-
 
     <FrameLayout
         android:layout_below="@+id/appBar"

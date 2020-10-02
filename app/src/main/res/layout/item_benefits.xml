@@ -1,72 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/cardViewBenefits"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="12dp"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardViewBenefits"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="1dp"
+    app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="1dp"
-        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/imageBenefits"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:src="@drawable/placeholder_category"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
 
-            <ImageView
-                android:id="@+id/imageBenefits"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:src="@drawable/placeholder_category"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
+        <View
+            android:id="@+id/shadowImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shadow_images"/>
 
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/are_you_in_culiacan"
+            android:padding="4dp"
+            android:layout_above="@+id/description"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textSize="22sp" />
 
-            <View
-                android:id="@+id/shadowImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shadow_images"/>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:layout_alignParentBottom="true"
+            android:padding="4dp"
+            android:maxLines="3"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:text="@string/are_you_in_culiacan"
-                android:padding="4dp"
-                android:layout_above="@+id/description"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:textSize="22sp" />
+    </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:layout_alignParentBottom="true"
-                android:padding="4dp"
-                android:maxLines="3"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="10dp"
-                android:layout_centerVertical="true"
-                android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:textSize="12sp" />
-
-
-
-        </RelativeLayout>
-
-
-    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>
 
 
 

@@ -32,14 +32,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <com.coppel.rhconecta.dev.views.customviews.CircleImageView
                     android:id="@+id/imgColaborador"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/bg_circle_shadow"
                     android:layout_alignParentLeft="true"/>
-
 
                 <RelativeLayout
                     android:layout_toRightOf="@+id/imgColaborador"
@@ -72,7 +70,6 @@
                         android:layout_marginRight="10dp"
                         android:textColor="@color/colorTextGrayDark" />
 
-
                     <TextView
                         android:layout_gravity="bottom|center_horizontal"
                         android:id="@+id/numColaborador"
@@ -88,9 +85,7 @@
 
                 </RelativeLayout>
 
-
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -124,7 +119,6 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorTextGrayDark" />
 
-
                 <TextView
                     android:layout_gravity="bottom|center_horizontal"
                     android:id="@+id/descripcion"
@@ -147,7 +141,6 @@
                 android:fillViewport="true"
                 android:orientation="horizontal">
 
-
                 <LinearLayout
                     android:layout_toRightOf="@+id/imgColaborador"
                     android:layout_width="match_parent"
@@ -163,7 +156,6 @@
                         android:text="Itinerario"
                         android:textColor="@color/colorTextGray"
                         android:textSize="11sp" />
-
 
                     <TextView
                         android:id="@+id/itinerario"
@@ -192,7 +184,6 @@
                         android:textColor="@color/colorTextGray"
                         android:textSize="11sp"
                         android:gravity="left"/>
-
 
                     <TextView
                         android:id="@+id/fechas"
@@ -256,6 +247,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
