@@ -173,7 +173,7 @@ public class MenuUtilities {
                         }
                     }
                 }catch (Exception e){
-                    Log.d("MenuUtilities","Error add notifications menu: "+e.getMessage());
+                    /* Error add notifications menu: e.getMessage() */
                 }
 
             }

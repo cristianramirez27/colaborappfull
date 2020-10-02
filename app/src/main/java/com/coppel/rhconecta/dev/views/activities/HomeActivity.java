@@ -624,7 +624,6 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                         if (!task.isSuccessful()) {
                             msg = "Error al registrar";
                         }
-                        Log.d(TAG, msg);
                     }
                 });
     }

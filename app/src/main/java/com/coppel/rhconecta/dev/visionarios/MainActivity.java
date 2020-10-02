@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         msg = "Error al registrar";
                     }
-                    Log.d(TAG, msg);
                 });
     }
 

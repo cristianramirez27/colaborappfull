@@ -87,7 +87,6 @@ public class PollRepositoryImpl implements PollRepository {
                         callback.onResult(result);
                     }
                 } catch (Exception exception){
-                    Log.e(getClass().getName(), exception.toString());
                     callback.onResult(getNotPollAvailableFailure(exception.getMessage()));
                 }
             }

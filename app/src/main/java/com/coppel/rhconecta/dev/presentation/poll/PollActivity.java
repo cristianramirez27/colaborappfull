@@ -149,9 +149,6 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
-                if(failure instanceof NotPollAvailableFailure)
-                    Log.e(PollActivity.class.getName(), ((NotPollAvailableFailure) failure).message);
                 String message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
@@ -181,7 +178,6 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
                 String message = getString(R.string.not_available_service);
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 break;

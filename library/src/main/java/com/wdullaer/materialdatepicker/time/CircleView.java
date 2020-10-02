@@ -53,7 +53,6 @@ public class CircleView extends View {
 
     public void initialize(Context context, TimePickerController controller) {
         if (mIsInitialized) {
-            Log.e(TAG, "CircleView may only be initialized once.");
             return;
         }
 
