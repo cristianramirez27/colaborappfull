@@ -45,11 +45,10 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
         initViews();
         setToolbar();
        if(getIntent().hasExtra(KEY_URL)){
-            url = getIntent().getStringExtra(KEY_URL);
-            renderWebPage(url);
-        }else{
-          finish();
-        }
+           renderWebPage();
+        } else  {
+           finish();
+       }
     }
 
     protected void initViews() {
@@ -75,7 +74,7 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
 
 
     // Custom method to render a web page
-    protected void renderWebPage(String urlToRender) {
+    protected void renderWebPage() {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -84,32 +83,32 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                if(mWebView.canGoBack()){
+                if(mWebView.canGoBack()) {
                     mButtonBack.setEnabled(true);
                     mButtonBack.setImageResource(R.mipmap.wv_left_selected_icon);
-                }else {
+                } else {
                     mButtonBack.setEnabled(false);
                     mButtonBack.setImageResource(R.mipmap.wv_left_icon);
                 }
-                if(mWebView.canGoForward()){
+                if(mWebView.canGoForward()) {
                     mButtonForward.setEnabled(true);
                     mButtonForward.setImageResource(R.mipmap.wv_right_selected_icon);
-                }else {
+                } else {
                     mButtonForward.setEnabled(false);
                     mButtonForward.setImageResource(R.mipmap.wv_righ_icon);
                 }
             }
+
         });
 
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int newProgress) {
             }
         });
-
-        // Enable the javascript
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        // Render the web page
-        mWebView.loadUrl(urlToRender);
+        // Disable the javascript because can introduce XSS vulnerabilities
+        mWebView.getSettings().setJavaScriptEnabled(false);
+        url = getIntent().getStringExtra(KEY_URL);
+        mWebView.loadUrl(getIntent().getStringExtra(KEY_URL));
     }
 
     @Override
@@ -123,11 +122,9 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
                 if (mWebView.canGoForward())
                     mWebView.goForward();
                 break;
-
-
             case R.id.btn_share:
-                if(url!= null && !url.isEmpty())
-                    ShareUtil.shareString(this,url);
+                if(url != null && !url.isEmpty())
+                    ShareUtil.shareString(this, url);
                 break;
         }
     }
