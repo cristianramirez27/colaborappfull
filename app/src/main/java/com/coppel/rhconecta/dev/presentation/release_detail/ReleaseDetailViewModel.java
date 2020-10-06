@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 /**
  *
- *
  */
 public class ReleaseDetailViewModel {
 
@@ -29,13 +28,11 @@ public class ReleaseDetailViewModel {
 
     /**
      *
-     *
      */
     @Inject public ReleaseDetailViewModel() { }
 
     /**
      *
-     * @param releaseId
      */
     public void loadRelease(int releaseId) {
         loadReleaseStatus.postValue(ProcessStatus.LOADING);
@@ -59,7 +56,6 @@ public class ReleaseDetailViewModel {
 
     /**
      *
-     * @return
      */
     public LiveData<ProcessStatus> getLoadReleaseStatus() {
         return loadReleaseStatus;
@@ -67,7 +63,6 @@ public class ReleaseDetailViewModel {
 
     /**
      *
-     * @return
      */
     public Release getRelease() {
         return release;
@@ -75,7 +70,6 @@ public class ReleaseDetailViewModel {
 
     /**
      *
-     * @return
      */
     public Failure getFailure() {
         return failure;

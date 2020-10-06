@@ -55,6 +55,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
@@ -464,10 +465,10 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
             edtSearch.setText("");
 
 
-        Intent intent = new Intent(getActivity(), BenefitsActivity.class);
-        intent.putExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category);
-        intent.putExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData);
-
+        Intent intent = new IntentBuilder(new Intent(getActivity(), BenefitsActivity.class))
+                .putSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category)
+                .putSerializableExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData)
+                .build();
         benefitsRequestData.setNum_estado(stateSelected);
         benefitsRequestData.setNum_ciudad(citySelected);
         getActivity().startActivityForResult(intent, 231);

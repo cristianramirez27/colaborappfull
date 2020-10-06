@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,6 +17,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
@@ -62,9 +62,7 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      *
      */
     private void initValues(){
-        releaseId = getIntent().getIntExtra(RELEASE_ID, -1);
-        if(releaseId == -1)
-            finish();
+        releaseId = IntentExtension.getIntExtra(getIntent(), RELEASE_ID);
     }
 
     /**

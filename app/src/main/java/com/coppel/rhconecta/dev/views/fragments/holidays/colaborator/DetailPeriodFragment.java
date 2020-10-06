@@ -411,8 +411,12 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     @Override
     public void onAccept() {
         if(isCanceled){
-            NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+            NavigationUtil.openActivityWithStringParam(
+                    getActivity(),
+                    VacacionesActivity.class,
+                    BUNDLE_OPTION_HOLIDAYS,
+                    BUNDLE_OPTION_HOLIDAYREQUESTS
+            );
             getActivity().finish();
         }
 

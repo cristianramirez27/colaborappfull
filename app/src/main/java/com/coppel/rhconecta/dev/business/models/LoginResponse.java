@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class LoginResponse extends CoppelGeneralParameterResponse {
+import java.io.Serializable;
+
+public class LoginResponse extends CoppelGeneralParameterResponse implements Serializable {
 
     private Data data;
 
@@ -12,7 +14,7 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         this.data = data;
     }
 
-    public class Data {
+    public class Data implements Serializable {
 
         private Response response;
 
@@ -25,7 +27,7 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Response {
+    public class Response implements Serializable {
         private String app;
         private String cliente;
         private String email;

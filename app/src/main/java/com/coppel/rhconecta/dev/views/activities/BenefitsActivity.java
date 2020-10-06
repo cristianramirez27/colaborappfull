@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.benefits.DiscountsFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.google.gson.Gson;
@@ -60,9 +61,10 @@ public class BenefitsActivity extends AppCompatActivity  {
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
 
-        category = (BenefitsCategoriesResponse.Category) getIntent().getSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS);
-        benefitsRequestData = (BenefitsRequestData) getIntent().getSerializableExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA);
-
+        category = (BenefitsCategoriesResponse.Category) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS);
+        benefitsRequestData = (BenefitsRequestData) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNDLE_SELECTED_BENEFIT_DATA);
 
         DiscountsFragment discountsFragment = new DiscountsFragment();
         Bundle bundle = new Bundle();

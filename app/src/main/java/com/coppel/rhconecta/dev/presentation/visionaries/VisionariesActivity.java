@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
@@ -69,7 +70,7 @@ public class VisionariesActivity extends AppCompatActivity {
      *
      */
     private void initValues(){
-        visionaryType = (VisionaryType) getIntent().getSerializableExtra(TYPE);
+        visionaryType = (VisionaryType) IntentExtension.getSerializableExtra(getIntent(), TYPE);
     }
 
     /**
@@ -159,10 +160,11 @@ public class VisionariesActivity extends AppCompatActivity {
      *
      */
     private void onVisionaryPreviewClickListener(VisionaryPreview visionaryPreview){
-        Intent intent = new Intent(this, VisionaryDetailActivity.class);
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId());
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage());
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType);
+        Intent intent = new IntentBuilder(new Intent(this, VisionaryDetailActivity.class))
+                .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId())
+                .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage())
+                .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType)
+                .build();
         startActivity(intent);
     }
 

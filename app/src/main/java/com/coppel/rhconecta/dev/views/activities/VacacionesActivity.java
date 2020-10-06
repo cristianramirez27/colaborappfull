@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.ColaboratorAditionalDaysHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralPeriodsHolidaysFragment;
@@ -84,11 +85,12 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_HOLIDAYS);
-        data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_HOLIDAYS);
+        TAG_FRAGMENT = IntentExtension.getStringExtra(getIntent(), BUNDLE_OPTION_HOLIDAYS);
+        data = IntentExtension.getSerializableExtra(getIntent(), BUNDLE_OPTION_DATA_HOLIDAYS);
+
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
-        onEvent(TAG_FRAGMENT,data);
+        onEvent(TAG_FRAGMENT, data);
     }
 
     public void setToolbarTitle(String title) {

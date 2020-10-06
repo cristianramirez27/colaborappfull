@@ -377,10 +377,13 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
         DetailExpenseTravelType detailExpenseTravelType = requestComplementsColaborator.getTipo() == 1 ? DetailExpenseTravelType.COMPLEMENTO : DetailExpenseTravelType.SOLICITUD;
         DetailExpenseTravelData detailExpenseTravelData = new DetailExpenseTravelData(detailExpenseTravelType,requestComplementsColaborator.getClv_solicitud());
         detailExpenseTravelData.setData(requestComplementsColaborator);
-        NavigationUtil.openActivityParamsSerializable(getActivity(), GastosViajeActivity.class,
-                BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,detailExpenseTravelData,
-                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS);
-
+        NavigationUtil.openActivityParamsSerializable(
+                getActivity(),
+                GastosViajeActivity.class,
+                BUNDLE_OPTION_DATA_TRAVEL_EXPENSES,
+                detailExpenseTravelData,
+                BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_DETAIL_REQUETS_CONTROLS
+        );
     }
 
     @Override

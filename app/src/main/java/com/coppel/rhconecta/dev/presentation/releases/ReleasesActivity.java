@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.release.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
@@ -135,8 +136,9 @@ public class ReleasesActivity extends AppCompatActivity {
      *
      */
     private void onReleasePreviewClickListener(ReleasePreview releasePreview) {
-        Intent intent = new Intent(this, ReleaseDetailActivity.class);
-        intent.putExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId());
+        Intent intent = new IntentBuilder(new Intent(this, ReleaseDetailActivity.class))
+                .putIntExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId())
+                .build();
         startActivity(intent);
     }
 

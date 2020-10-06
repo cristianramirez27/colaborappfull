@@ -370,17 +370,16 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
             sendRequestSuccess = false;
             if(configurationHolidaysData.isColaborator()){
                 getActivity().setResult(Activity.RESULT_OK);
-                getActivity().finish();
-            }else {
-                //Se valida si se ingreso como colaborador
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-                getActivity().finish();
+            } else {
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAYREQUESTS
+                );
             }
-
-            //vacacionesActivity.onEvent(,null);
+            getActivity().finish();
         }
-
         dialogFragmentGetDocument.close();
     }
 

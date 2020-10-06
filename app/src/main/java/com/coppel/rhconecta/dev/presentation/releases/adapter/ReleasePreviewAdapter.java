@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  *
- *
  */
 public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAdapter.ViewHolder> {
 
@@ -27,7 +26,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     * @param values
      */
     public ReleasePreviewAdapter(
             List<ReleasePreview> values,
@@ -39,9 +37,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     * @param viewGroup
-     * @param position
-     * @return
      */
     @NonNull
     @Override
@@ -52,8 +47,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     * @param viewHolder
-     * @param position
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
@@ -79,7 +72,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -90,7 +82,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
         /**
          *
-         * @param itemView
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,14 +95,11 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     *
      */
     public interface OnReleasePreviewClickListener {
 
         /**
          *
-         *
-         * @param releasePreview
          */
         void onClick(ReleasePreview releasePreview);
 

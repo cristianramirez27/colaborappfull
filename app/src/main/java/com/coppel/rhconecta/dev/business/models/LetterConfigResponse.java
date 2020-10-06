@@ -3,7 +3,7 @@ package com.coppel.rhconecta.dev.business.models;
 import java.io.Serializable;
 import java.util.List;
 
-public class LetterConfigResponse extends CoppelGeneralParameterResponse {
+public class LetterConfigResponse extends CoppelGeneralParameterResponse implements Serializable {
     private Data data;
 
     public Data getData() {
