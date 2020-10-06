@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.DialogAlertActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -195,10 +196,10 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     }
 
     private void showCompanyDialog(BenefitsCompaniesResponse.Company company) {
-        Intent intent = new Intent(getActivity(), DialogAlertActivity.class);
-        intent.putExtra(KEY_COMPANY, company);
+        Intent intent = new IntentBuilder(new Intent(getActivity(), DialogAlertActivity.class))
+                .putSerializableExtra(KEY_COMPANY, company)
+                .build();
         startActivity(intent);
-
     }
 
     @Override

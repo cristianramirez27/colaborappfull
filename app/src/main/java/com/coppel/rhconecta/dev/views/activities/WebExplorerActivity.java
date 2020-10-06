@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.utils.ShareUtil;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,8 +108,8 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
         });
         // Disable the javascript because can introduce XSS vulnerabilities
         mWebView.getSettings().setJavaScriptEnabled(false);
-        url = getIntent().getStringExtra(KEY_URL);
-        mWebView.loadUrl(getIntent().getStringExtra(KEY_URL));
+        url = IntentExtension.getStringExtra(getIntent(), KEY_URL);
+        mWebView.loadUrl(IntentExtension.getStringExtra(getIntent(), KEY_URL));
     }
 
     @Override

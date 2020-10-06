@@ -111,23 +111,26 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
 
     @Override
     public void onItemClick(String tag) {
-
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-
         switch (tag) {
-
             case AppConstants.OPTION_MENU_COLABORATOR:
-                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAYREQUESTS
+                );
                 break;
             case OPTION_MENU_GTE:
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAY_MENU_GTE);
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAY_MENU_GTE
+                );
                 break;
         }
     }
@@ -158,21 +161,20 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
 
         switch (view.getId()) {
             case R.id.btnColaborator:
-                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAYREQUESTS
+                );
                 break;
-
             case R.id.btnManager:
-
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAY_MENU_GTE);
-                //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
-
-                //parent.replaceFragment(new ColaboratorHolidaysFragment(), ColaboratorHolidaysFragment.TAG);
-
-
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAY_MENU_GTE
+                );
                 break;
         }
     }

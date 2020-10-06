@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -220,11 +221,11 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                         (letterConfigResponse.getData().getResponse().getClave().equals(String.valueOf(CLAVE_LETTER_MAX)))){
                     showAlertPrints(letterConfigResponse.getData().getResponse().getMensaje());
                 }else {
-
-                    Intent intentConfigLetter = new Intent(getActivity(), ConfigLetterActivity.class);
-                    intentConfigLetter.putExtra(BUNDLE_RESPONSE_CONFIG_LETTER,letterConfigResponse);
-                    intentConfigLetter.putExtra(BUNDLE_LETTER,typeLetterSelected);
-                    startActivityForResult(intentConfigLetter,REQUEST_LETTER);
+                    Intent intentConfigLetter = new IntentBuilder(new Intent(getActivity(), ConfigLetterActivity.class))
+                            .putSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER, letterConfigResponse)
+                            .putIntExtra(BUNDLE_LETTER, typeLetterSelected)
+                            .build();
+                    startActivityForResult(intentConfigLetter, REQUEST_LETTER);
                 }
 
                 hideProgress();

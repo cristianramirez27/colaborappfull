@@ -6,10 +6,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
@@ -19,6 +16,8 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -31,13 +30,13 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
-import io.realm.Realm;
-
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 
+/**
+ *
+ */
 public class SplashScreenActivity extends AppCompatActivity implements IServicesContract.View,
         DialogFragmentWarning.OnOptionClick {
 
@@ -70,8 +69,10 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
         });
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.getString(AppConstants.BUNDLE_GOTO_SECTION) != null) {
-            goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+        String bundleGotoSection = IntentExtension
+                .getStringExtra(getIntent(), AppConstants.BUNDLE_GOTO_SECTION);
+        if (bundle != null && bundleGotoSection != null) {
+            goTosection = bundleGotoSection;
             startApp();
         }else{
             init();
@@ -132,11 +133,14 @@ public class SplashScreenActivity extends AppCompatActivity implements IServices
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE,gson.toJson(loginResponse));
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, gson.toJson(profileResponse));
 
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("LOGIN_RESPONSE", gson.toJson(loginResponse));
-                intent.putExtra("PROFILE_RESPONSE", gson.toJson(profileResponse));
+                Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
+                        .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
+                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                        .build();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                if(!goTosection.isEmpty())intent.putExtra(BUNDLE_GOTO_SECTION,goTosection);
+                if(!goTosection.isEmpty())
+                    IntentExtension.putStringExtra(intent, BUNDLE_GOTO_SECTION, goTosection);
+
                 startActivity(intent);
                 finish();
                 break;

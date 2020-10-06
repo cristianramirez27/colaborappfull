@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
@@ -43,7 +44,8 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_alert_container);
         initViews();
-        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)getIntent().getSerializableExtra(KEY_COMPANY);
+        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)
+                IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
         coppelServicesPresenter = new CoppelServicesPresenter(this, DialogAlertActivity.this);
         showCompanyDialog(company);
     }

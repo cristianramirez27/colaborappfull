@@ -61,7 +61,6 @@ public class ReleasesViewModel {
 
     /**
      *
-     * @return
      */
     public MutableLiveData<ProcessStatus> getLoadReleasesPreviewsStatus() {
         return loadReleasesPreviewsStatus;
@@ -69,7 +68,6 @@ public class ReleasesViewModel {
 
     /**
      *
-     * @return
      */
     public List<ReleasePreview> getReleasesPreviews() {
         return releasesPreviews;
@@ -77,7 +75,6 @@ public class ReleasesViewModel {
 
     /**
      *
-     * @return
      */
     public Failure getFailure() {
         return failure;

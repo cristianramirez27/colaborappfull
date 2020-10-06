@@ -7,6 +7,7 @@ import android.view.Window;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.PushData;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
 import butterknife.ButterKnife;
 
@@ -30,8 +31,7 @@ public class PushInvasiveActivity extends AppCompatActivity {
         initViews();
         //ToolbarUI.setStatusBarTranslucent(this,true);
         if(getIntent().hasExtra(KEY_PUSH_DATA)){
-            pushData = (PushData)getIntent().getSerializableExtra(KEY_PUSH_DATA);
-
+            pushData = (PushData) IntentExtension.getSerializableExtra(getIntent(), KEY_PUSH_DATA);
            /* PushInvasiveDialog pushInvasiveDialog = PushInvasiveDialog.getInstance((PushData)data);
             pushInvasiveDialog.setCancelable(true);
             pushInvasiveDialog.show(getSupportFragmentManager(),PushInvasiveDialog.TAG);*/

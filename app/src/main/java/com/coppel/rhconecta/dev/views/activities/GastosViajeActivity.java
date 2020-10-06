@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.PayrollVoucherMenuFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
@@ -59,11 +60,12 @@ public class GastosViajeActivity extends AppCompatActivity implements OnEventLis
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_TRAVEL_EXPENSES);
-        data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
-        if( getIntent().hasExtra( "AUTHORIZE")){
-            goToAuthorize =   getIntent().getBooleanExtra("AUTHORIZE",false);
+        TAG_FRAGMENT = IntentExtension.getStringExtra(getIntent(), BUNDLE_OPTION_TRAVEL_EXPENSES);
+        data = IntentExtension.getSerializableExtra(getIntent(), BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
+        if(getIntent().hasExtra( "AUTHORIZE")){
+            goToAuthorize = IntentExtension.getBooleanExtra(getIntent(), "AUTHORIZE");
         }
+
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT,data);

@@ -17,6 +17,7 @@ import com.coppel.rhconecta.dev.business.models.DetailControlColaboratorResponse
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.models.ImportsList;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailControlFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.DetailRequestComplementFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.EditImportsFragment;
@@ -56,8 +57,8 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_TRAVEL_EXPENSES);
-        data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
+        TAG_FRAGMENT = IntentExtension.getStringExtra(getIntent(), BUNDLE_OPTION_TRAVEL_EXPENSES);
+        data = IntentExtension.getSerializableExtra(getIntent(), BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT,data);

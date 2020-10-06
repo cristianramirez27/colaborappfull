@@ -9,9 +9,9 @@ import android.view.KeyEvent;
 import android.widget.MediaController;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
-
-import java.util.Timer;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
 /**
  *
@@ -48,9 +48,10 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
      *
      */
     private void initValues(){
-        videoStream = getIntent().getStringExtra(VIDEO_STREAM);
-        if(videoStream == null) finish();
-        position = getIntent().getIntExtra(POSITION, 0);
+        videoStream = IntentExtension.getStringExtra(getIntent(), VIDEO_STREAM);
+        if(videoStream == null)
+            finish();
+        position = IntentExtension.getIntExtra(getIntent(), POSITION);
     }
 
     /**
@@ -119,8 +120,9 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         vvVideo.pause();
-        Intent intent = new Intent();
-        intent.putExtra(POSITION, vvVideo.getCurrentPosition());
+        Intent intent = new IntentBuilder(new Intent())
+                .putIntExtra(POSITION, vvVideo.getCurrentPosition())
+                .build();
         setResult(AppCompatActivity.RESULT_OK, intent);
         finish();
     }

@@ -128,10 +128,12 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
 
                 break;
             case OPTION_MENU_GTE:
-
-                NavigationUtil.openActivityWithStringParam(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
-
-
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        GastosViajeActivity.class,
+                        BUNDLE_OPTION_TRAVEL_EXPENSES,
+                        OPTION_MANAGER
+                );
                 break;
         }
 
@@ -168,13 +170,14 @@ public class TravelExpensesRolMenuFragment extends Fragment implements  View.OnC
             case R.id.btnColaborator:
                 //NavigationUtil.openActivityClearTask(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_COLABORATOR);
                 parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
-
                 break;
-
             case R.id.btnManager:
-
-                NavigationUtil.openActivityWithStringParam(getActivity(), GastosViajeActivity.class,BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
-
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        GastosViajeActivity.class,
+                        BUNDLE_OPTION_TRAVEL_EXPENSES,
+                        OPTION_MANAGER
+                );
                 break;
         }
     }

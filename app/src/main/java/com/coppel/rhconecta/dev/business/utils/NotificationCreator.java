@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
 import java.util.Map;
 
@@ -71,35 +72,28 @@ public class NotificationCreator {
     }
 
 
-    public static PendingIntent getPendindIntentSection(Context context, Class clazz, Map<String,String> params){
+    public static PendingIntent getPendindIntentSection(
+            Context context,
+            Class clazz,
+            Map<String,String> params
+    ){
         Intent resultIntent = new Intent(context, clazz);
-
         //resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         for(String key : params.keySet()){
-            resultIntent.putExtra(key,params.get(key));
+            IntentExtension.putStringExtra(resultIntent, key, params.get(key));
         }
-
-
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        context,
-                        REQUEST_CODE_PUSH,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);//FLAG_UPDATE_CURRENT
-
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                context,
+                REQUEST_CODE_PUSH,
+                resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
         return resultPendingIntent;
     }
 
-
-
-
-
     private static int getSmallIconId() {
-
         boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
         return whiteIcon ? R.drawable.icn_notificaciones_azul : R.drawable.icn_notificaciones_azul;
-
     }
 
 }

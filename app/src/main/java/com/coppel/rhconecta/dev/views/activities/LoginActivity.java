@@ -29,6 +29,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import com.coppel.rhconecta.dev.views.customviews.EditTextPassword;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -171,9 +172,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  break;
             case ServicesRequestType.PROFILE:
                 ProfileResponse profileResponse = (ProfileResponse) response.getResponse();
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, gson.toJson(loginResponse));
-                intent.putExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, gson.toJson(profileResponse));
+                Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
+                        .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
+                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                        .build();
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, cedtEmail.getText());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);

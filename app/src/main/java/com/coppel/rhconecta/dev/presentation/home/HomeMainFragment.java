@@ -31,6 +31,7 @@ import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
@@ -60,9 +61,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
- *
  *
  */
 public class HomeMainFragment
@@ -336,16 +335,18 @@ public class HomeMainFragment
             }
             Intent intent = null;
             if(banner.isRelease()) {
-                intent = new Intent(getContext(), ReleaseDetailActivity.class);
-                intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
+                intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
+                        .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
+                        .build();
             }
             if(banner.isVisionary() || banner.isVisionaryAtHome()){
                 VisionaryType type = banner.isVisionary() ?
                         VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
-                intent = new Intent(getContext(), VisionaryDetailActivity.class);
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, type);
+                intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
+                        .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId())
+                        .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
+                        .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
+                        .build();
             }
             if(intent != null)
                 startActivity(intent);

@@ -54,6 +54,9 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
@@ -202,12 +205,17 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
         coppelServicesPresenter = new CoppelServicesPresenter(this, this);
 
         Bundle bundle = getIntent().getExtras();
+        LoginResponse bundleLoginResponse = (LoginResponse) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNDLE_LOGIN_RESPONSE);
+        ProfileResponse bundleProfileResponse = (ProfileResponse) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNLDE_PROFILE_RESPONSE);
+        String bundleGotoSection = IntentExtension
+                .getStringExtra(getIntent(), AppConstants.BUNDLE_GOTO_SECTION);
 
-        if (bundle != null && bundle.getString(AppConstants.BUNDLE_LOGIN_RESPONSE) != null
-                && bundle.getString(AppConstants.BUNLDE_PROFILE_RESPONSE) != null) {
+        if (bundle != null && bundleLoginResponse != null && bundleProfileResponse != null) {
             realm = Realm.getDefaultInstance();
-            loginResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNDLE_LOGIN_RESPONSE), LoginResponse.class).getData().getResponse();
-            profileResponse = new Gson().fromJson(bundle.getString(AppConstants.BUNLDE_PROFILE_RESPONSE), ProfileResponse.class).getData().getResponse()[0];
+            loginResponse = bundleLoginResponse.getData().getResponse();
+            profileResponse = bundleProfileResponse.getData().getResponse()[0];
 
             initNavigationComponents();
             initMenu();
@@ -215,10 +223,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
             ctlLogout.setOnClickListener(this);
 
             if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
-                goTosection = bundle.getString(AppConstants.BUNDLE_GOTO_SECTION);
+                goTosection = bundleGotoSection;
                 navigationMenu(goTosection);
                 hideLoader = true;
             }
+
         } else finish();
     }
 
@@ -449,8 +458,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 } else {
-                    Intent intentVisionaries = new Intent(this, VisionariesActivity.class);
-                    intentVisionaries.putExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES);
+                    Intent intentVisionaries = new IntentBuilder(new Intent(this, VisionariesActivity.class))
+                            .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES)
+                            .build();
                     startActivity(intentVisionaries);
                 }
                 break;
@@ -458,8 +468,9 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_STAYHOME).equals(YES))
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 else {
-                    Intent intentVisionaries = new Intent(this, VisionariesActivity.class);
-                    intentVisionaries.putExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME);
+                    Intent intentVisionaries = new IntentBuilder(new Intent(this, VisionariesActivity.class))
+                            .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME)
+                            .build();
                     startActivity(intentVisionaries);
                 }
                 break;
@@ -510,8 +521,11 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
 
             case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
-                    NavigationUtil.openActivityToAuthorize(this, GastosViajeActivity.class,
-                            BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER);
+                    NavigationUtil.openActivityToAuthorize(
+                            this,
+                            GastosViajeActivity.class,
+                            BUNDLE_OPTION_TRAVEL_EXPENSES,OPTION_MANAGER
+                    );
 
                   /*  if(currentHomeFragment != null){
                         ((HomeMainFragment)currentHomeFragment).hideProgress();
@@ -523,9 +537,10 @@ public class HomeActivity extends AppCompatActivity implements  IServicesContrac
                 if(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_QR).equals(YES)){
                     showWarningDialog(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK));
                 }else {
-                    Intent intentQr = new Intent(this, QrCodeActivity.class);
-                    intentQr.putExtra("numEmp", profileResponse.getColaborador());
-                    intentQr.putExtra("emailEmp", profileResponse.getCorreo());
+                    Intent intentQr = new IntentBuilder(new Intent(this, QrCodeActivity.class))
+                            .putStringExtra("numEmp", profileResponse.getColaborador())
+                            .putStringExtra("emailEmp", profileResponse.getCorreo())
+                            .build();
                     startActivity(intentQr);
                 }
                 break;

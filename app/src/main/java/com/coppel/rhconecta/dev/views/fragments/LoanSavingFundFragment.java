@@ -25,6 +25,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -244,9 +245,10 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
 
     @Override
     public void openOption(int optionSelected) {
-        Intent intentFondo = new Intent(getActivity(), FondoAhorroActivity.class);
-        intentFondo.putExtra(BUNDLE_TYPE_SAVING_OPTION,optionSelected);
-        intentFondo.putExtra(BUNDLE_SAVINFOUND,loanSavingFundResponse);
+        Intent intentFondo = new IntentBuilder(new Intent(getActivity(), FondoAhorroActivity.class))
+                .putIntExtra(BUNDLE_TYPE_SAVING_OPTION, optionSelected)
+                .putSerializableExtra(BUNDLE_SAVINFOUND, loanSavingFundResponse)
+                .build();
         startActivityForResult(intentFondo,REQUEST_SAVING);
     }
 

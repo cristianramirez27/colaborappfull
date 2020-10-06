@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class ProfileResponse extends CoppelGeneralParameterResponse {
+import java.io.Serializable;
+
+public class ProfileResponse extends CoppelGeneralParameterResponse implements Serializable {
     private Data data;
 
     public Data getData() {
@@ -11,7 +13,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         this.data = data;
     }
 
-    public class Data {
+    public class Data implements Serializable {
 
         private Response[] response;
 
@@ -24,7 +26,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Response {
+    public class Response implements Serializable {
         private String Antiguedad;
         private String Centro;
         private int Ciudad;

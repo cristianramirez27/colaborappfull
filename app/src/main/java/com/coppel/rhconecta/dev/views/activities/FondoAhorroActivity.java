@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AbonoFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AditionalSaveFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
@@ -42,8 +43,9 @@ public class FondoAhorroActivity extends AppCompatActivity  {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        loanSavingFundResponse = (LoanSavingFundResponse) getIntent().getSerializableExtra(BUNDLE_SAVINFOUND);
-        optionSelected =  getIntent().getIntExtra(BUNDLE_TYPE_SAVING_OPTION,0);
+        loanSavingFundResponse = (LoanSavingFundResponse) IntentExtension
+                .getSerializableExtra(getIntent(), BUNDLE_SAVINFOUND);
+        optionSelected = IntentExtension.getIntExtra(getIntent(), BUNDLE_TYPE_SAVING_OPTION);
 
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
