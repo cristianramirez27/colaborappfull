@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesExtension;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
@@ -32,65 +33,114 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
+/**
+ *
+ */
 public class AppUtilities {
 
-    public static void saveStringInSharedPreferences(Context context, String key, String value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
-        editor.putString(key, value);
-        editor.apply();
+    /**
+     *
+     */
+    private static SharedPreferences getSharedPreferences(Context context){
+        return context.getSharedPreferences(
+                AppConstants.SHARED_PREFERENCES_NAME,
+                Context.MODE_PRIVATE
+        );
     }
 
-    public static String getStringFromSharedPreferences(Context context, String key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(key, null);
+    /**
+     *
+     */
+    public static void saveStringInSharedPreferences(
+            Context context,
+            String key,
+            String value
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferencesExtension.putString(sharedPreferences, key, value);
     }
 
-    public static void saveBooleanInSharedPreferences(Context context, String key, boolean value) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(key, value);
-        editor.apply();
+    /**
+     *
+     */
+    public static String getStringFromSharedPreferences(
+            Context context,
+            String key
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return SharedPreferencesExtension.getString(sharedPreferences, key,null);
     }
 
-    public static boolean getBooleanFromSharedPreferences(Context context, String key) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(key, false);
+    /**
+     *
+     */
+    public static void saveBooleanInSharedPreferences(
+            Context context,
+            String key,
+            boolean value
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferencesExtension.putBoolean(sharedPreferences, key, value);
     }
 
+    /**
+     *
+     */
+    public static boolean getBooleanFromSharedPreferences(
+            Context context,
+            String key
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return SharedPreferencesExtension.getBoolean(sharedPreferences, key, false);
+    }
+
+    /**
+     *
+     */
     public static void deleteSharedPreferences(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }
 
+    /**
+     *
+     */
     public static void deleteSharedPreferencesWithoutFirebase(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(AppConstants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        for(String key :sharedPreferences.getAll().keySet()){
-            if(!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN) ){
+        for(String key : sharedPreferences.getAll().keySet()){
+            if(!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN)){
                 editor.remove(key).commit();
             }
         }
-
-        //editor.clear();
-       // editor.apply();
-
-         editor.apply();
+        // editor.clear();
+        // editor.apply();
+        editor.apply();
     }
 
-
+    /**
+     *
+     */
     public static void closeApp(Activity activity) {
         deleteSharedPreferencesWithoutFirebase(activity.getApplicationContext());
         activity.startActivity(new Intent(activity, LoginActivity.class));
         activity.finish();
     }
 
+    /**
+     *
+     */
     public static void openAppSettings(Context context) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", context.getPackageName(), null));
         context.startActivity(intent);
     }
 
+    /**
+     *
+     */
     public static boolean validatePermissions(int permissionsCount, int[] grantResults) {
         boolean allGranted = false;
         for (int i = 0; i < permissionsCount; i++) {
@@ -104,23 +154,56 @@ public class AppUtilities {
         return allGranted;
     }
 
+    /**
+     *
+     */
     public static int dpToPx(Resources resource, int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,resource.getDisplayMetrics());
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                resource.getDisplayMetrics()
+        );
     }
 
+    /**
+     *
+     */
     public static float pxToDp(Resources resource, float px)  {
-        return (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px,resource.getDisplayMetrics());
+        return (float) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_PX,
+                px,
+                resource.getDisplayMetrics()
+        );
     }
 
-    public static void setProfileImage(Context context, String email, String serviceImage, ImageView imageView) {
+    /**
+     *
+     */
+    public static void setProfileImage(
+            Context context,
+            String email,
+            String serviceImage,
+            ImageView imageView
+    ) {
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         if (userPreferences != null && userPreferences.getImage() != null && userPreferences.getImage().length > 0) {
-            AppUtilities.loadLocalProfileImage(context, BitmapFactory.decodeByteArray(userPreferences.getImage(), 0, userPreferences.getImage().length), imageView);
+            AppUtilities.loadLocalProfileImage(
+                    context,
+                    BitmapFactory.decodeByteArray(
+                            userPreferences.getImage(),
+                            0,
+                            userPreferences.getImage().length
+                    ),
+                    imageView
+            );
         } else {
             AppUtilities.loadServiceProfileImage(context, serviceImage, imageView);
         }
     }
 
+    /**
+     *
+     */
     public static void loadLocalProfileImage(Context context, Bitmap image, ImageView imageView) {
         GlideApp.with(context)
                 .load(image)
@@ -130,6 +213,9 @@ public class AppUtilities {
                 .into(imageView);
     }
 
+    /**
+     *
+     */
     public static void loadServiceProfileImage(Context context, String image, ImageView imageView) {
         GlideApp.with(context)
                 .load(image)
@@ -139,6 +225,9 @@ public class AppUtilities {
                 .into(imageView);
     }
 
+    /**
+     *
+     */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static File savePDFFile(String name, String base64) {
         try {
@@ -158,6 +247,9 @@ public class AppUtilities {
         }
     }
 
+    /**
+     *
+     */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static File savePDFFileLetter(String name, String base64) {
         try {
@@ -177,6 +269,9 @@ public class AppUtilities {
         }
     }
 
+    /**
+     *
+     */
     public static void sharePDF(Context context, File pdf) {
         Uri uri = FileProvider.getUriForFile(context, AppConstants.FILEPROVIDER, pdf);
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -186,9 +281,10 @@ public class AppUtilities {
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.share)));
     }
 
-
+    /**
+     *
+     */
     public static void openPDF(Context context, File pdf) {
-
         try {
             Uri uriFile = FileProvider.getUriForFile(context, AppConstants.FILEPROVIDER, pdf);
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -196,10 +292,9 @@ public class AppUtilities {
             intent.putExtra(Intent.EXTRA_STREAM, uriFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
-
-        }catch (Exception e){
-
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
+
 }
