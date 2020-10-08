@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.dialogs;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
@@ -87,6 +89,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     Button btnCode;
     @BindView(R.id.btnBackCompany)
     Button btnBackCompany;
+    @BindView(R.id.btnCopyCode)
+    Button btnCopyCode;
 
 
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
@@ -175,6 +179,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         btnCode.setOnClickListener(this);
         btnBackCompany.setOnClickListener(this);
         btnBackCompany.setClickable(false);
+        btnCopyCode.setOnClickListener(this);
+        btnCopyCode.setClickable(false);
         icCloseCode.setOnClickListener(this);
 
         icClose.setOnClickListener(new View.OnClickListener() {
@@ -248,12 +254,14 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             case R.id.btnBackCompany:
                 flipCodeCard();
                 break;
+            case R.id.btnCopyCode:
+                copyBenefitCode();
+                break;
             case R.id.icClosePublicity:
             case R.id.icCloseCode:
                 close();
                 getActivity().finish();
                 break;
-
         }
     }
 
@@ -389,6 +397,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             btnAdvertising.setClickable(false);
             btnCode.setClickable(false);
             btnBackCompany.setClickable(true);
+            btnCopyCode.setClickable(true);
         } else {
             mSetRightOut.setTarget(mCardCodeBenefit);
             mSetLeftIn.setTarget(mCardFrontLayout);
@@ -396,9 +405,18 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetLeftIn.start();
             mIsBackVisible = false;
             btnBackCompany.setClickable(false);
+            btnCopyCode.setClickable(false);
             btnAdvertising.setClickable(true);
             btnCode.setClickable(true);
         }
+    }
+
+    private void copyBenefitCode() {
+        Context context = getApplicationContext();
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Código Copiado", code.getText());
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(context, "Código Copiado", Toast.LENGTH_SHORT).show();
     }
 
     @Override

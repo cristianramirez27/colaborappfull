@@ -26,7 +26,7 @@
                 android:id="@+id/code_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="El codigo generado es:"
+                android:text="@string/str_benefit_code_title"
                 android:gravity="center"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -37,7 +37,7 @@
                 android:id="@+id/code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1GET23"
+                android:text="@string/str_code_benefit_loading"
                 android:gravity="center"
                 android:textAllCaps="false"
                 android:textSize="22sp"
@@ -51,24 +51,47 @@
             android:id="@+id/icCloseCode"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_close_white"
+            app:srcCompat="@drawable/ic_close_white"
             android:layout_alignParentRight="true"
             android:layout_margin="8dp"
             android:elevation="6dp"
             android:layout_alignParentTop="true"/>
-
-        <Button
-            android:id="@+id/btnBackCompany"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_btns"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/colorSecondBlueCoppel"
-            android:fontFamily="@font/lineto_circular_pro_medium"
-            android:text="Regresar"
-            android:textAllCaps="false"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:textSize="16sp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnBackCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_btns"
+                android:background="@color/colorSecondBlueCoppel"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="Regresar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnCopyCode"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_btns"
+                android:background="@color/colorSecondBlueCoppel"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="Copiar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 </FrameLayout>
