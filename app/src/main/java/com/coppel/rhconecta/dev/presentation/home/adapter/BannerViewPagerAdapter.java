@@ -52,7 +52,7 @@ public class BannerViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(@NonNull Object item) {
         BannerFragment fragment = (BannerFragment) item;
         String id = fragment.banner.getId();
-        Banner banner = new Banner(id, null, null, 1);
+        Banner banner = new Banner(id, null, null, 1, null);
         int position = banners.indexOf(banner);
         if (position >= 0) return position;
         else return POSITION_NONE;

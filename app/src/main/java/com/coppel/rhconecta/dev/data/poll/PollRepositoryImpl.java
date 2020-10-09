@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.data.poll;
 
-import android.util.Log;
-
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
@@ -20,7 +18,6 @@ import com.coppel.rhconecta.dev.domain.poll.PollRepository;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
 import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
-import com.coppel.rhconecta.dev.domain.poll.use_case.GetPollUseCase;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**
- *
  *
  */
 public class PollRepositoryImpl implements PollRepository {
@@ -52,7 +48,6 @@ public class PollRepositoryImpl implements PollRepository {
 
     /**
      *
-     *
      */
     @Override
     public void getPoll(UseCase.OnResultFunction<Either<Failure, Poll>> callback) {
@@ -66,7 +61,6 @@ public class PollRepositoryImpl implements PollRepository {
     }
 
     /**
-     *
      *
      */
     private Callback<GetPollResponse> getCallbackGetPollResponse(
@@ -105,7 +99,6 @@ public class PollRepositoryImpl implements PollRepository {
 
     /**
      *
-     *
      */
     @Override
     public void sendPoll(Poll poll, UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback) {
@@ -123,7 +116,6 @@ public class PollRepositoryImpl implements PollRepository {
     }
 
     /**
-     *
      *
      */
     private Callback<SendPollResponse> getCallbackSendPollResponse(
@@ -157,7 +149,6 @@ public class PollRepositoryImpl implements PollRepository {
 
     /**
      *
-     *
      */
     @Override
     public void getAvailablePollCount(UseCase.OnResultFunction<Either<Failure, Integer>> callback) {
@@ -173,7 +164,6 @@ public class PollRepositoryImpl implements PollRepository {
     }
 
     /**
-     *
      *
      */
     private Callback<GetAvailablePollCountResponse> getAvailablePollCountResponseCallback(
