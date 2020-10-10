@@ -1,9 +1,11 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -234,7 +236,6 @@ public class HomeMainFragment
                 }
                 break;
             case COMPLETED:
-
                 if(homeViewModel.getBanners() != null)
                     setBanners(homeViewModel.getBanners());
                 break;
@@ -333,13 +334,14 @@ public class HomeMainFragment
                 showConecctionError();
                 return;
             }
-            Intent intent = null;
+            Intent intent;
             if(banner.isRelease()) {
                 intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
                         .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
                         .build();
+                startActivity(intent);
             }
-            if(banner.isVisionary() || banner.isVisionaryAtHome()){
+            if(banner.isVisionary() || banner.isVisionaryAtHome()) {
                 VisionaryType type = banner.isVisionary() ?
                         VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
                 intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
@@ -347,9 +349,20 @@ public class HomeMainFragment
                         .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
                         .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
                         .build();
-            }
-            if(intent != null)
                 startActivity(intent);
+            }
+            if(banner.isLink() && banner.getUrlLink() != null) {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.chrome");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed so allow user to choose instead
+                    intent.setPackage(null);
+                    startActivity(intent);
+                }
+            }
         };
     }
 

@@ -12,7 +12,6 @@ import javax.inject.Inject;
 
 /**
  *
- *
  */
 public class GetBannersUseCase extends UseCase<List<Banner>, UseCase.None> {
 
@@ -22,14 +21,11 @@ public class GetBannersUseCase extends UseCase<List<Banner>, UseCase.None> {
 
     /**
      *
-     *
      */
     @Inject public GetBannersUseCase() { }
 
     /**
      *
-     * @param none
-     * @param callback
      */
     @Override
     public void run(None none, OnResultFunction<Either <Failure, List<Banner>>> callback) {

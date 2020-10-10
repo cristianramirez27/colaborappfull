@@ -1,11 +1,8 @@
 package com.coppel.rhconecta.dev.presentation.release_detail;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -22,8 +19,10 @@ import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
 
+import io.noties.markwon.Markwon;
+import io.noties.markwon.html.HtmlPlugin;
+
 /**
- *
  *
  */
 public class ReleaseDetailActivity extends AppCompatActivity {
@@ -44,7 +43,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +57,12 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initValues(){
         releaseId = IntentExtension.getIntExtra(getIntent(), RELEASE_ID);
     }
 
     /**
-     *
      *
      */
     private void initViews(){
@@ -82,7 +78,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void observeViewModel(){
         releaseDetailViewModel.getLoadReleaseStatus().observe(this, this::getLoadReleaseObserver);
@@ -90,7 +85,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
 
     /**
-     *
      *
      */
     private void getLoadReleaseObserver(ProcessStatus processStatus){
@@ -110,7 +104,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initToolbar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -123,32 +116,21 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
-     *
      */
     private void setReleaseInformation(Release release){
-        // Images
-        /*Glide.with(this)
-                .load(release.getHeaderImage())
-                .error(R.drawable.ic_image_grey_300_48dp)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(ivHeader);*/
         Glide.with(this)
                 .load(release.getImage())
                 .error(R.drawable.ic_image_grey_300_48dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivImage);
-        // Texts
-        /*tvHeader.setText(release.getHeader());*/
         tvTitle.setText(release.getTitle());
-        Spanned content = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
-                Html.fromHtml(release.getContent(), Html.FROM_HTML_MODE_COMPACT) :
-                Html.fromHtml(release.getContent());
-        tvContent.setText(content);
+        Markwon markwon = Markwon.builder(this)
+                .usePlugin(HtmlPlugin.create())
+                .build();
+        markwon.setMarkdown(tvContent, release.getContent());
     }
 
     /**
-     *
      *
      */
     private void execute(){
@@ -156,7 +138,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     }
 
     /**
-     *
      *
      */
     @Override

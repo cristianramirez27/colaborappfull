@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  *
- *
  */
 public class GetMainInformationResponse {
 
@@ -15,7 +14,6 @@ public class GetMainInformationResponse {
     public Data data;
 
     /**
-     *
      *
      */
     public static class Data {
@@ -26,7 +24,6 @@ public class GetMainInformationResponse {
     }
 
     /**
-     *
      *
      */
     public static class Response {
@@ -40,7 +37,6 @@ public class GetMainInformationResponse {
 
     /**
      *
-     *
      */
     public static class BannerServer {
 
@@ -52,20 +48,21 @@ public class GetMainInformationResponse {
         public String img_caratula;
         /* */
         public int clv_visionarios;
+        /* */
+        public String url_link;
 
         /**
          *
-         *
          */
-        public BannerServer(String idu_videos, String src, String img_caratula, int clv_visionarios) {
+        public BannerServer(String idu_videos, String src, String img_caratula, int clv_visionarios, String url_link) {
             this.idu_videos = idu_videos;
             this.src = src;
             this.img_caratula = img_caratula;
             this.clv_visionarios = clv_visionarios;
+            this.url_link = url_link;
         }
 
         /**
-         *
          *
          */
         public Banner toBanner() {
@@ -73,14 +70,21 @@ public class GetMainInformationResponse {
                     idu_videos,
                     src,
                     img_caratula,
-                    clv_visionarios
+                    clv_visionarios,
+                    getUrlIfNotNA()
             );
+        }
+
+        /**
+         *
+         */
+        private String getUrlIfNotNA() {
+            return url_link.equals("N/A") ? null : url_link;
         }
 
     }
 
     /**
-     *
      *
      */
     public static class Badges {
@@ -96,14 +100,12 @@ public class GetMainInformationResponse {
 
         /**
          *
-         *
          */
         public Badge getReleaseBadge() {
             return new Badge(num_noVistosComunicados, Badge.Type.RELEASE);
         }
 
         /**
-         *
          *
          */
         public Badge getVisionaryBadge() {
@@ -112,14 +114,12 @@ public class GetMainInformationResponse {
 
         /**
          *
-         *
          */
         public Badge getCollaboratorAtHomeBadge() {
             return new Badge(num_noVistosCampana, Badge.Type.COLLABORATOR_AT_HOME);
         }
 
         /**
-         *
          *
          */
         public Badge getPollBadge() {

@@ -11,13 +11,11 @@ import java.util.Map;
 
 /**
  *
- *
  */
 public interface HomeRepository {
 
     /**
      *
-     * @return
      */
     void getBanners(
             UseCase.OnResultFunction<Either<Failure, List<Banner>>> callback
@@ -25,7 +23,6 @@ public interface HomeRepository {
 
     /**
      *
-     * @return
      */
     void getBadges(
             UseCase.OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>> callback
