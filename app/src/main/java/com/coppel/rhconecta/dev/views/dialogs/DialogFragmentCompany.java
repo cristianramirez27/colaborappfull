@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,12 +17,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,8 +93,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     Button btnCode;
     @BindView(R.id.btnBackCompany)
     Button btnBackCompany;
-    @BindView(R.id.btnCopyCode)
-    Button btnCopyCode;
 
 
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
@@ -179,9 +181,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         btnCode.setOnClickListener(this);
         btnBackCompany.setOnClickListener(this);
         btnBackCompany.setClickable(false);
-        btnCopyCode.setOnClickListener(this);
-        btnCopyCode.setClickable(false);
         icCloseCode.setOnClickListener(this);
+        code.setOnClickListener(this);
 
         icClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,7 +255,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             case R.id.btnBackCompany:
                 flipCodeCard();
                 break;
-            case R.id.btnCopyCode:
+            case R.id.code:
                 copyBenefitCode();
                 break;
             case R.id.icClosePublicity:
@@ -325,6 +326,15 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     private void loadAnimations() {
         mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.out_animation);
         mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.in_animation);
+
+        mSetLeftIn.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mIsBackVisible){
+                    scrollview.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
 
@@ -380,6 +390,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     public void setInfoCompany(InfoCompanyResponse infoCompanyResponse){
         this.infoCompany = infoCompanyResponse;
         if (infoCompany.getOpc_desc_app() == 1) {
+            ((LinearLayout.LayoutParams) btnAdvertising.getLayoutParams()).weight = 1;
             btnCode.setVisibility(View.VISIBLE);
         }
     }
@@ -388,6 +399,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         loadAnimations();
         mCardBackLayout.setVisibility(View.GONE);
         mCardCodeBenefit.setVisibility(View.VISIBLE);
+
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(mCardFrontLayout);
             mSetLeftIn.setTarget(mCardCodeBenefit);
@@ -396,8 +408,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mIsBackVisible = true;
             btnAdvertising.setClickable(false);
             btnCode.setClickable(false);
+            //scrollview.setVisibility(View.GONE);
+            code.setClickable(true);
             btnBackCompany.setClickable(true);
-            btnCopyCode.setClickable(true);
         } else {
             mSetRightOut.setTarget(mCardCodeBenefit);
             mSetLeftIn.setTarget(mCardFrontLayout);
@@ -405,7 +418,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetLeftIn.start();
             mIsBackVisible = false;
             btnBackCompany.setClickable(false);
-            btnCopyCode.setClickable(false);
+            code.setClickable(false);
+            //scrollview.setVisibility(View.VISIBLE);
             btnAdvertising.setClickable(true);
             btnCode.setClickable(true);
         }
@@ -416,7 +430,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("Código Copiado", code.getText());
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, "Código Copiado", Toast.LENGTH_SHORT).show();
+        Toast toast= Toast.makeText(context, R.string.str_copied_code, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
     }
 
     @Override

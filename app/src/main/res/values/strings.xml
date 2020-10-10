@@ -442,6 +442,9 @@
     <string name="str_sub_qrcode">Apunta al código para escanear.</string>
     <string name="str_benefit_code_title">El código generado es:</string>
     <string name="str_code_benefit_loading">Cargando...</string>
+    <string name="str_btn_advertising">Publicidad de\nla empresa</string>
+    <string name="str_btn_generate_code">Generar\nCódigo</string>
+    <string name="str_copied_code">Código Copiado</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>
