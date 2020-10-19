@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,15 +15,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
@@ -50,8 +46,6 @@ import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,14 +76,8 @@ public class HomeMainFragment
     ViewPagerIndicator tabIndicator;
     @BindView(R.id.rcvMenu)
     RecyclerView rcvMenu;
-    @BindView(R.id.imgvArrowLeft)
-    ImageView imgvArrowLeft;
-    @BindView(R.id.imgvArrowRight)
-    ImageView imgvArrowRight;
     @BindView(R.id.txvFavorites)
     TextView txvFavorites;
-    @BindView(R.id.viewBackFavorites)
-    View viewBackFavorites;
     private long mLastClickTime = 0;
     private boolean reloadDashboard;
     private ISurveyNotification ISurveyNotification;
@@ -408,11 +396,6 @@ public class HomeMainFragment
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new HomeMenuItemTouchHelperCallback(homeMenuRecyclerViewAdapter));
         rcvMenu.setAdapter(homeMenuRecyclerViewAdapter);
         itemTouchHelper.attachToRecyclerView(rcvMenu);
-        viewBackFavorites.post(() -> {
-            int backgroundFavoritesHeight = (homeMenuRecyclerViewAdapter.getItemSize() + txvFavorites.getHeight() + AppUtilities.dpToPx(getResources(), 8));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, backgroundFavoritesHeight);
-            viewBackFavorites.setLayoutParams(layoutParams);
-        });
     }
 
     @Override
