@@ -92,6 +92,7 @@ public class AppConfig {
         String paysheet = mFirebaseRemoteConfig.getString(ENDPOINT_PAYSHEET);
         String savings = mFirebaseRemoteConfig.getString(ENDPOINT_SAVINGS);
         String qr = mFirebaseRemoteConfig.getString(ENDPOINT_QR);
+        String benefitCode = mFirebaseRemoteConfig.getString(ENDPOINT_BENEFIT_CODE);
         String profile = mFirebaseRemoteConfig.getString(ENDPOINT_PROFILE);
         String home = mFirebaseRemoteConfig.getString(ENDPOINT_HOME);
         String comunicados = mFirebaseRemoteConfig.getString(ENDPOINT_COMUNICADOS);
@@ -136,6 +137,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS,holidays);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR,qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFIT_CODE,benefitCode);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE,collage);
 
 

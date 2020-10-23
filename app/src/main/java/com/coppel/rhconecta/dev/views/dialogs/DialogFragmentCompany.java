@@ -431,7 +431,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         android.content.ClipData clip = android.content.ClipData.newPlainText("Código Copiado", code.getText());
         clipboard.setPrimaryClip(clip);
         Toast toast= Toast.makeText(context, R.string.str_copied_code, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+        //toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
     }
 
