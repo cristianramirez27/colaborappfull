@@ -47,6 +47,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/mdtp_light_gray"
                 android:background="@color/mdtp_white"
+                android:fontFamily="@font/fira_mono"
                 />
         </LinearLayout>
 
