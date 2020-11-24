@@ -2,13 +2,13 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,7 +34,6 @@ import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCal
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidaySpliceCalendarListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.HolidaysMenuGteFragment;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,8 +1,8 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;

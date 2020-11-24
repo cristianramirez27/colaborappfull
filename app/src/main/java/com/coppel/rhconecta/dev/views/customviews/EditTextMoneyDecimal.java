@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -12,9 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.utils.MoneyDecimalTextWatcher;
-import com.coppel.rhconecta.dev.business.utils.MoneyDecimalV2TextWatcher;
-import com.coppel.rhconecta.dev.business.utils.MoneyTextWatcher;
 import com.coppel.rhconecta.dev.business.utils.NumberTextWatcher;
 
 import butterknife.BindView;

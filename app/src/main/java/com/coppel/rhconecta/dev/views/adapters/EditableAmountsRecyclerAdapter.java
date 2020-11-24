@@ -1,8 +1,8 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ITotalAmounts;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
-import com.coppel.rhconecta.dev.views.customviews.EditTextMoney;
 import com.coppel.rhconecta.dev.views.customviews.EditTextMoneyDecimal;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 

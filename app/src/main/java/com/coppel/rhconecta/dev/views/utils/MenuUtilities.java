@@ -2,9 +2,7 @@ package com.coppel.rhconecta.dev.views.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.content.res.AppCompatResources;
-import android.util.Log;
-import android.view.MenuItem;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -14,7 +12,6 @@ import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +24,6 @@ import io.realm.RealmList;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.NO;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
@@ -41,7 +37,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SUR
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 

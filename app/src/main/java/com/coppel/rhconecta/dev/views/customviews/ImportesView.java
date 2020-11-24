@@ -1,16 +1,15 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.models.AuthorizedRequestColaboratorSingleton;
 import com.coppel.rhconecta.dev.business.models.DetailRequest;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.views.adapters.AmountsRecyclerAdapter;

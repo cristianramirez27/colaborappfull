@@ -50,9 +50,9 @@ public class PushSnackBarView extends SlideAnimationView {
         LayoutInflater li = (LayoutInflater)getContext().getSystemService(infService);
         pushSnackBarConfig = AppConfig.getPushSnackBar(this.context);
         li.inflate(pushSnackBarConfig.getiResLayout(), this, true);
-        layoutContainer = ButterKnife.findById(this, R.id.container_notinvasive);
-        txtMessage = ButterKnife.findById(this, R.id.txtMessage);
-        imgPuskSnackbar = ButterKnife.findById(this, R.id.imgPuskSnackbar);
+        layoutContainer = findViewById(R.id.container_notinvasive);
+        txtMessage = findViewById(R.id.txtMessage);
+        imgPuskSnackbar = findViewById(R.id.imgPuskSnackbar);
 
         imgPuskSnackbar.setOnClickListener(new OnClickListener() {
             @Override

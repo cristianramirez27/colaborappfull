@@ -3,13 +3,11 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.EditText;
 
 import com.coppel.rhconecta.dev.R;
 

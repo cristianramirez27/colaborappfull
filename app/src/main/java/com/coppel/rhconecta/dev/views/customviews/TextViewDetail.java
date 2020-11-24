@@ -2,8 +2,8 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;

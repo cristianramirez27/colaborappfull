@@ -1,22 +1,18 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
-import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.views.customviews.CircleImageView;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 

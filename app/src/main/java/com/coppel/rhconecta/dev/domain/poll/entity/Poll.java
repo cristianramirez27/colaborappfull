@@ -1,6 +1,6 @@
 package com.coppel.rhconecta.dev.domain.poll.entity;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 

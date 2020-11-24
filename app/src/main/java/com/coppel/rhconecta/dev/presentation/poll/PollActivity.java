@@ -1,10 +1,10 @@
 package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,7 +18,6 @@ import com.coppel.rhconecta.dev.di.poll.DaggerPollComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
-import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.visionarios.utils.DialogCustom;

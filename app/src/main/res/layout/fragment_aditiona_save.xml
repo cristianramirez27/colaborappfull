@@ -93,7 +93,7 @@
                     android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="14sp" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:id="@+id/content_element"
@@ -150,7 +150,7 @@
 
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:layout_below="@id/content_element"

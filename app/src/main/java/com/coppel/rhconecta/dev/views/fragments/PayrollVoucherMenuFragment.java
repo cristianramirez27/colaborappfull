@@ -3,11 +3,11 @@ package com.coppel.rhconecta.dev.views.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +53,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_GAS;
 
 /**
  * A simple {@link Fragment} subclass.

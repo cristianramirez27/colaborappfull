@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.fragment.app.Fragment;
+
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
@@ -204,7 +206,7 @@ public class NavigationUtil {
     }
 
     public static<T> void openActivityForResult(
-            android.support.v4.app.Fragment f,
+            Fragment f,
             Activity activity,
             Class<T> classTarget,
             int requestCode

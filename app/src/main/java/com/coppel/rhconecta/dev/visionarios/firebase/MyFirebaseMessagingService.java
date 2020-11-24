@@ -8,8 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+import androidx.core.app.NotificationCompat;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -18,7 +17,6 @@ import com.coppel.rhconecta.dev.business.utils.NotificationCreator;
 import com.coppel.rhconecta.dev.business.utils.NotificationHelper;
 import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;

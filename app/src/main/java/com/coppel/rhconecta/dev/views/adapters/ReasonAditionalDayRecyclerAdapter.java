@@ -1,8 +1,8 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IControlViews;
-import com.coppel.rhconecta.dev.business.models.Center;
 import com.coppel.rhconecta.dev.business.models.ReasonAditionaDay;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentControlAditionalDays;
 
 import java.util.List;
 

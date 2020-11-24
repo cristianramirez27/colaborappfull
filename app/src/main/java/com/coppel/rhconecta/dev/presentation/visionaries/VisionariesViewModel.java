@@ -1,9 +1,8 @@
 package com.coppel.rhconecta.dev.presentation.visionaries;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionariesPreviewsUseCase;

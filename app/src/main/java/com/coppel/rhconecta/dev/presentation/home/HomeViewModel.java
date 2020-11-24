@@ -1,7 +1,7 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -11,8 +11,6 @@ import com.coppel.rhconecta.dev.domain.home.use_case.GetBadgesUseCase;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetBannersUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

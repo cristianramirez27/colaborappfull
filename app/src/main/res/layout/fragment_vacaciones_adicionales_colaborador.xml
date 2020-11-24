@@ -10,7 +10,7 @@
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContainer"
         android:layout_above="@+id/layoutBtn"
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
 
         </RelativeLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_alignParentBottom="true"

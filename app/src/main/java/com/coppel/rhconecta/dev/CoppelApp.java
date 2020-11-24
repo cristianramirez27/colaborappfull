@@ -1,9 +1,8 @@
 package com.coppel.rhconecta.dev;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.coppel.rhconecta.dev.business.utils.Foreground;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;

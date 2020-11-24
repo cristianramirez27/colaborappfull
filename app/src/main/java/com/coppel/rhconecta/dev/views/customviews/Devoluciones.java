@@ -1,22 +1,19 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.Devolution;
 import com.coppel.rhconecta.dev.views.adapters.DevolutionsRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
 

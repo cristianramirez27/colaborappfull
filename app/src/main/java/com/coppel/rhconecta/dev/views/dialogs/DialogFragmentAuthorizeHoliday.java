@@ -1,16 +1,13 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -19,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -27,38 +23,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.IControlViews;
 import com.coppel.rhconecta.dev.business.interfaces.IDialogControlKeboard;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
-import com.coppel.rhconecta.dev.business.models.HolidayPeriodData;
-import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysReasonsAditionalDaysResponse;
-import com.coppel.rhconecta.dev.business.models.ReasonAditionaDay;
-import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
-import com.coppel.rhconecta.dev.views.adapters.ReasonAditionalDayRecyclerAdapter;
-import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_REASON_ADITIONAL_DAYS;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SCHEDULE_GTE_HOLIDAY_REQUEST;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_ADITIONAL_DAYS;
-import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.SEND_HOLIDAY_REQUEST;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidays;
 
 public class DialogFragmentAuthorizeHoliday extends DialogFragment implements View.OnClickListener ,
         IServicesContract.View {

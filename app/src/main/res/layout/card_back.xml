@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_dialog_white_rounded">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="14dp"
@@ -26,7 +26,7 @@
                 android:src="@drawable/img_publicidad"
                 android:background="@color/colorBackgroundCoppelBlanco"
                 android:adjustViewBounds="true"/>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/icClosePublicity"

@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.resources.db.models;
 
-import android.support.annotation.NonNull;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

@@ -34,8 +34,8 @@ public class SurveyInboxView extends RelativeLayout {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         li.inflate(R.layout.survey_inbox, this, true);
-        iconSurvey = ButterKnife.findById(this, R.id.iconoEncuesta);
-        indicatorInbox = ButterKnife.findById(this, R.id.txvCenter);
+        iconSurvey = findViewById(R.id.iconoEncuesta);
+        indicatorInbox = findViewById(R.id.txvCenter);
     }
 
     public void setCountMessages(int numberMessages){

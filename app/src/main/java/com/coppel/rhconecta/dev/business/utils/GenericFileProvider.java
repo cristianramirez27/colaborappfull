@@ -1,6 +1,6 @@
 package com.coppel.rhconecta.dev.business.utils;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /**
  * Created by faustolima on 13/11/18.
