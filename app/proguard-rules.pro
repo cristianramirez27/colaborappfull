@@ -27,6 +27,7 @@
 # Required classes
 
 -keep public class com.coppel.rhconecta.dev.business.models.** { *; }
+-keep public class com.coppel.rhconecta.dev.business.Enums.** { *; }
 -keep public class com.coppel.rhconecta.dev.data.** { *; }
 -keep public class noman.weekcalendar.** { *; }
 -keep public class com.wdullaer.datetimepickerholiday.** { *; }
