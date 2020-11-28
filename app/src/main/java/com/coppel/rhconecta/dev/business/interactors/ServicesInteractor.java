@@ -1980,8 +1980,8 @@ public class ServicesInteractor {
                 break;
 
             case BENEFITS_SEARCH:
-                benefitsBaseResponse = new BenefitsSearchResponse();
-                clazz = BenefitsSearchResponse.class;
+                benefitsBaseResponse = new BenefitsSearchResultsResponse();
+                clazz = BenefitsSearchResultsResponse.class;
                 break;
         }
 
