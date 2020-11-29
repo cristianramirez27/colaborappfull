@@ -66,7 +66,6 @@ public class HomeViewModel {
 
     /**
      *
-     *
      */
     void loadBadges() {
         loadBadgesProcessStatus.postValue(ProcessStatus.LOADING);

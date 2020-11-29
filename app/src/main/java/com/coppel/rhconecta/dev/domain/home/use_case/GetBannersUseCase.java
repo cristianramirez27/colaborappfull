@@ -18,7 +18,6 @@ public class GetBannersUseCase extends UseCase<List<Banner>, UseCase.None> {
     /* */
     @Inject HomeRepository homeRepository;
 
-
     /**
      *
      */

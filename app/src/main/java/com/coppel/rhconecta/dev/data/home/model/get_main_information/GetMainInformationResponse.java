@@ -79,6 +79,8 @@ public class GetMainInformationResponse {
          *
          */
         private String getUrlIfNotNA() {
+            if (url_link == null)
+                return null;
             return url_link.equals("N/A") ? null : url_link;
         }
 

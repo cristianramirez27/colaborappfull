@@ -84,7 +84,7 @@ public class HomeRepositoryImpl implements HomeRepository {
                     Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Right(banners);
                     callback.onResult(result);
                 } catch (Exception e){
-                    Failure failure = new ServerFailure();
+                    Failure failure = new ServerFailure(e.getMessage());
                     Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Left(failure);
                     callback.onResult(result);
                 }

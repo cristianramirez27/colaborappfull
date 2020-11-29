@@ -8,23 +8,25 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
+import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
@@ -85,7 +87,6 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
     @Override
     public View onCreateView(
@@ -107,11 +108,9 @@ public class HomeMainFragment
 
     /**
      *
-     *
-     * @param view
      */
-    private void onSurveyIconClickListener(View view){
-        if(homeViewModel.getBadges() == null){
+    private void onSurveyIconClickListener(View view) {
+        if (homeViewModel.getBadges() == null) {
             String message = getString(R.string.not_available_service);
             SingleActionDialog dialog = new SingleActionDialog(
                     getActivity(),
@@ -123,16 +122,17 @@ public class HomeMainFragment
             dialog.setCancelable(false);
             try {
                 dialog.show();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
             return;
         }
         Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
-        if(badge == null) return;
-        if(badge.getValue() > 0){
+        if (badge == null) return;
+        if (badge.getValue() > 0) {
             Intent intent = new Intent(getContext(), PollActivity.class);
             startActivity(intent);
         } else {
-            SingleActionDialog dialog = new SingleActionDialog (
+            SingleActionDialog dialog = new SingleActionDialog(
                     getActivity(),
                     getString(R.string.not_available_poll_title),
                     getString(R.string.not_available_poll_content),
@@ -145,7 +145,6 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -157,7 +156,6 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
     @Override
     public void onStart() {
@@ -167,14 +165,12 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void initViews(){
+    private void initViews() {
         initBannersViews();
     }
 
     /**
-     *
      *
      */
     private void observeViewModel() {
@@ -184,15 +180,13 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void execute(){
+    private void execute() {
         homeViewModel.loadBadges();
         homeViewModel.loadBanners();
     }
 
     /**
-     *
      *
      */
     private void getLoadBannersObserver(ProcessStatus processStatus) {
@@ -204,7 +198,7 @@ public class HomeMainFragment
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                if(isOnline()) {
+                if (isOnline()) {
                     Failure failure = homeViewModel.getFailure();
                     String message = getString(R.string.not_available_service);
                     SingleActionDialog dialog = new SingleActionDialog(
@@ -217,18 +211,18 @@ public class HomeMainFragment
                     dialog.setCancelable(false);
                     try {
                         dialog.show();
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
                 break;
             case COMPLETED:
-                if(homeViewModel.getBanners() != null)
+                if (homeViewModel.getBanners() != null)
                     setBanners(homeViewModel.getBanners());
                 break;
         }
     }
 
     /**
-     *
      *
      */
     private void getLoadBadgesObserver(ProcessStatus processStatus) {
@@ -253,10 +247,11 @@ public class HomeMainFragment
                 setBadges(new HashMap<>());
                 try {
                     dialog.show();
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
                 break;
             case COMPLETED:
-                if(homeViewModel.getBadges() != null)
+                if (homeViewModel.getBadges() != null)
                     setBadges(homeViewModel.getBadges());
                 break;
         }
@@ -264,18 +259,16 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void initBannersViews(){
+    private void initBannersViews() {
         assert getView() != null;
         viewPagerBanners = getView().findViewById(R.id.vpBanner);
     }
 
     /**
      *
-     *
      */
-    private void setBanners(List<Banner> banners){
+    private void setBanners(List<Banner> banners) {
         viewPagerBanners.setAdapter(
                 new BannerViewPagerAdapter(
                         getChildFragmentManager(),
@@ -288,10 +281,9 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void setBadges(Map<Badge.Type, Badge> badges){
-        if(badges.isEmpty()) {
+    private void setBadges(Map<Badge.Type, Badge> badges) {
+        if (badges.isEmpty()) {
             HashMap<Badge.Type, Badge> map = new HashMap<>();
             map.put(Badge.Type.RELEASE, new Badge(0, Badge.Type.RELEASE));
             map.put(Badge.Type.VISIONARY, new Badge(0, Badge.Type.VISIONARY));
@@ -311,22 +303,21 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private BannerFragment.OnBannerClickListener getOnBannerClickListener(){
+    private BannerFragment.OnBannerClickListener getOnBannerClickListener() {
         return banner -> {
-            if(!isOnline()) {
+            if (!isOnline()) {
                 showConecctionError();
                 return;
             }
             Intent intent;
-            if(banner.isRelease()) {
+            if (banner.isRelease()) {
                 intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
                         .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
                         .build();
                 startActivity(intent);
             }
-            if(banner.isVisionary() || banner.isVisionaryAtHome()) {
+            if (banner.isVisionary() || banner.isVisionaryAtHome()) {
                 VisionaryType type = banner.isVisionary() ?
                         VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
                 intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
@@ -336,7 +327,7 @@ public class HomeMainFragment
                         .build();
                 startActivity(intent);
             }
-            if(banner.isLink() && banner.getUrlLink() != null) {
+            if (banner.isLink() && banner.getUrlLink() != null) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setPackage("com.android.chrome");
@@ -354,17 +345,17 @@ public class HomeMainFragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ISurveyNotification = (ISurveyNotification)context;
+        ISurveyNotification = (ISurveyNotification) context;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(!isOnline()){
+        if (!isOnline()) {
             showConecctionError();
             return;
         }
-        if(reloadDashboard){
+        if (reloadDashboard) {
             reloadDashboard = false;
             updateDashboard();
         }
@@ -377,7 +368,8 @@ public class HomeMainFragment
             RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
             ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
             reloadDashboard = true;
-        } catch (Exception ignore){ }
+        } catch (Exception ignore) {
+        }
     }
 
     private void initMenu() {
@@ -415,7 +407,8 @@ public class HomeMainFragment
     }
 
     @Override
-    public void onLeftOptionClick() { }
+    public void onLeftOptionClick() {
+    }
 
     @Override
     public void onRightOptionClick() {
@@ -429,8 +422,8 @@ public class HomeMainFragment
         dialogFragmentWarning.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    private void updateDashboard(){
-        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications));
+    private void updateDashboard() {
+        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications));
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
     }
 
