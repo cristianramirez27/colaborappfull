@@ -20,12 +20,9 @@ android {
         debug {
             // Enable the debuggable option
             debuggable true
-            // Enables code shrinking, obfuscation, and optimization for only
-            // your project's release build type
+            // Habilitado en ambiente de desarrollo para que no haya problemas al pasar al
+            // ambiente release
             minifyEnabled true
-            // Includes the default ProGuard rules files that are packaged with
-            // the Android Gradle plugin. To learn more, go to the section about
-            // R8 configuration files
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
