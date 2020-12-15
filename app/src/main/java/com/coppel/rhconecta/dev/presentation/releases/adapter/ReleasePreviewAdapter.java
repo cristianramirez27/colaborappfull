@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.presentation.releases.adapter;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,9 +57,11 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
         viewHolder.tvTitle.setText(releasePreview.getTitle());
         viewHolder.tvDate.setText(releasePreview.getDate());
         // Was read indicator
-        int drawableResource =
-                releasePreview.wasRead() ? R.drawable.ic_dot_grey_400_36dp : R.drawable.ic_punto_rojo;
-        viewHolder.ivWasRead.setImageResource(drawableResource);
+        if (releasePreview.wasRead()) {
+            viewHolder.ivWasRead.setVisibility(View.GONE);
+            if (releasePreview.isUpdated())
+                viewHolder.isUpdated.setVisibility(View.VISIBLE);
+        }
         // On click listener
         viewHolder.cvContainer.setOnClickListener(v -> {
             onReleasePreviewClickListener.onClick(releasePreview);
@@ -75,9 +78,15 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        /* */
         CardView cvContainer;
+        /* */
         ImageView ivWasRead;
+        /* */
+        TextView isUpdated;
+        /* */
         TextView tvTitle;
+        /* */
         TextView tvDate;
 
         /**
@@ -85,10 +94,11 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cvContainer =  (CardView) itemView.findViewById(R.id.cardFila);
-            ivWasRead= (ImageView) cvContainer.findViewById(R.id.iconoNuevo);
+            cvContainer = (CardView) itemView.findViewById(R.id.cardFila);
+            ivWasRead = (ImageView) cvContainer.findViewById(R.id.iconoNuevo);
+            isUpdated = (TextView) cvContainer.findViewById(R.id.labelActualizado);
             tvTitle = (TextView) cvContainer.findViewById(R.id.labelTitulo);
-            tvDate= (TextView) cvContainer.findViewById(R.id.labelFecha);
+            tvDate = (TextView) cvContainer.findViewById(R.id.labelFecha);
         }
 
     }

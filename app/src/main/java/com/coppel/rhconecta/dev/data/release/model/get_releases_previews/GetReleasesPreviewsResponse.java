@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  *
- *
  */
 public class GetReleasesPreviewsResponse {
 
@@ -14,7 +13,6 @@ public class GetReleasesPreviewsResponse {
     public Data data;
 
     /**
-     *
      *
      */
     public static class Data {
@@ -25,7 +23,6 @@ public class GetReleasesPreviewsResponse {
     }
 
     /**
-     *
      *
      */
     public static class ReleasePreviewServer {
@@ -38,14 +35,20 @@ public class GetReleasesPreviewsResponse {
         public String fec_comunicado;
         /* */
         public int opc_visto;
+        /* */
+        public int clv_edito;
 
         /**
          *
-         *
-         * @return
          */
         public ReleasePreview toReleasePreview() {
-            return new ReleasePreview(idu_avisos, des_titulo, fec_comunicado, opc_visto == 1);
+            return new ReleasePreview(
+                    idu_avisos,
+                    des_titulo,
+                    fec_comunicado,
+                    opc_visto == 1,
+                    clv_edito == 1
+            );
         }
 
     }

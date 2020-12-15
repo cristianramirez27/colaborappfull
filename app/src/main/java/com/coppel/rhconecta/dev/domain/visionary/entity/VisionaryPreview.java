@@ -11,14 +11,16 @@ public class VisionaryPreview {
     private String date;
     private String previewImage;
     private int numberOfViews;
+    private boolean isUpdated;
     private boolean alreadyBeenSeen;
 
-    public VisionaryPreview(String id, String title, String date, String previewImage, int numberOfViews, boolean alreadyBeenSeen) {
+    public VisionaryPreview(String id, String title, String date, String previewImage, int numberOfViews, boolean isUpdated, boolean alreadyBeenSeen) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.previewImage = previewImage;
         this.numberOfViews = numberOfViews;
+        this.isUpdated = isUpdated;
         this.alreadyBeenSeen = alreadyBeenSeen;
     }
 
@@ -40,6 +42,10 @@ public class VisionaryPreview {
 
     public int getNumberOfViews() {
         return numberOfViews;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
     }
 
     public boolean isAlreadyBeenSeen() {

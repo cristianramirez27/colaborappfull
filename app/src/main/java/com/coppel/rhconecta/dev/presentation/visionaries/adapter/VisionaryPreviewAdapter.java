@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.presentation.visionaries.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,17 @@ import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPreviewAdapter.ViewHolder> {
 
     /* */
-    private List<VisionaryPreview> values;
-    private OnVisionaryPreviewClickListener onVisionaryPreviewClickListener;
-
+    private final List<VisionaryPreview> values;
+    /* */
+    private final OnVisionaryPreviewClickListener onVisionaryPreviewClickListener;
 
     /**
-     *
      *
      */
     public VisionaryPreviewAdapter(
@@ -35,7 +38,6 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
     /**
      *
-     *
      */
     @NonNull
     @Override
@@ -46,13 +48,17 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
 
     /**
      *
-     *
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         // Definition
         VisionaryPreview visionaryPreview = values.get(position);
         // Simple values
+        if (visionaryPreview.isAlreadyBeenSeen()) {
+            viewHolder.ivWatchedIcon.setVisibility(View.GONE);
+            if (visionaryPreview.isUpdated())
+                viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
+        }
         viewHolder.tvTitle.setText(visionaryPreview.getTitle());
         viewHolder.tvDate.setText(visionaryPreview.getDate());
         String numberOfViews = viewHolder.itemView.getContext()
@@ -68,13 +74,15 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         );
     }
 
+    /**
+     *
+     */
     @Override
     public int getItemCount() {
         return values.size();
     }
 
     /**
-     *
      *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,33 +94,33 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         /* */
         TextView tvDate;
         /* */
+        TextView tvIsUpdated;
+        /* */
+        ImageView ivWatchedIcon;
+        /* */
         TextView tvNumberOfViews;
 
         /**
          *
-         *
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivPreview = (ImageView) itemView.findViewById(R.id.imgVideoPreview);
-            tvTitle =  (TextView) itemView.findViewById(R.id.labelTitulo);
-            tvDate =  (TextView) itemView.findViewById(R.id.labelFecha);
-            tvNumberOfViews =  (TextView) itemView.findViewById(R.id.labelVisitas);
+            ivPreview = itemView.findViewById(R.id.imgVideoPreview);
+            tvTitle = itemView.findViewById(R.id.labelTitulo);
+            tvDate = itemView.findViewById(R.id.labelFecha);
+            tvIsUpdated = itemView.findViewById(R.id.labelActualizado);
+            ivWatchedIcon = itemView.findViewById(R.id.ivWatchedIcon);
+            tvNumberOfViews = itemView.findViewById(R.id.labelVisitas);
         }
 
     }
 
     /**
      *
-     *
      */
     public interface OnVisionaryPreviewClickListener {
 
-        /**
-         *
-         *
-         *
-         */
+        /* */
         void onClick(VisionaryPreview visionaryPreview);
 
     }

@@ -18,13 +18,8 @@ android {
 
     buildTypes {
         debug {
-            // Enable the debuggable option
             debuggable true
-            // Habilitado en ambiente de desarrollo para que no haya problemas al pasar al
-            // ambiente release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            zipAlignEnabled true
+            minifyEnabled false
         }
         release {
             // Disable the debuggable option

@@ -42,6 +42,7 @@ import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
@@ -55,6 +56,11 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
 /**
  *
@@ -110,6 +116,12 @@ public class HomeMainFragment
      *
      */
     private void onSurveyIconClickListener(View view) {
+        // Verifica que la opcion de encuestas este disponible
+        if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES)) {
+            showWarningDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK));
+            return;
+        }
+        // Verifica que los badges hayan sido cargados correctamente.
         if (homeViewModel.getBadges() == null) {
             String message = getString(R.string.not_available_service);
             SingleActionDialog dialog = new SingleActionDialog(
@@ -126,6 +138,7 @@ public class HomeMainFragment
             }
             return;
         }
+        // Coloca la informacion en la opcion de encuesta
         Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
         if (badge == null) return;
         if (badge.getValue() > 0) {
@@ -141,6 +154,16 @@ public class HomeMainFragment
             );
             dialog.show();
         }
+    }
+
+    /**
+     *
+     */
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(getChildFragmentManager(), DialogFragmentWarning.TAG);
     }
 
     /**

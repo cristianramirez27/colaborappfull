@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.business.Configuration;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -17,9 +18,8 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
  *
  * @author fausto@kokonutstudio
  * @version 1.0
- *
+ * <p>
  * Clase para definir las constantes utilizadas en la aplicación.
- *
  */
 public class AppConfig {
 
@@ -78,8 +78,11 @@ public class AppConfig {
     public final static String NO = "NO";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
-    /**Se almacenan los endpoints*/
-    public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig){
+
+    /**
+     * Se almacenan los endpoints
+     */
+    public static void setEndpointConfig(FirebaseRemoteConfig mFirebaseRemoteConfig) {
 
 
         String fondoConsulta = mFirebaseRemoteConfig.getString(ENDPOINT_WITHDRAWSAVINGS);
@@ -107,46 +110,41 @@ public class AppConfig {
         String collage = mFirebaseRemoteConfig.getString(ENDPOINT_COLLAGE);
 
 
-
-
-
         //VISIONARIOS
         String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
         String aplicacion_key = mFirebaseRemoteConfig.getString(APLICACION_KEY);
 
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS,fondoConsulta);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VALIDARFIRMA,validarFirma);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PREVIEW,preview);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CARTASGENERAR,cartasgenerar);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CARTASCONFIG,cartasconfig);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PAYSHEET,paysheet);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SAVINGS,savings);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE,profile);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WITHDRAWSAVINGS, fondoConsulta);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS, beneficios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VALIDARFIRMA, validarFirma);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PREVIEW, preview);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CARTASGENERAR, cartasgenerar);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CARTASCONFIG, cartasconfig);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PAYSHEET, paysheet);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SAVINGS, savings);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PROFILE, profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOME, home);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COMUNICADOS, comunicados);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VISIONARIOS, visionarios);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_STAYHOME, stayHome);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ENCUESTAS, encuestas);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER,passrecover);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN,login);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN,main_login);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN,url_main);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL,expenses_travel);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS,holidays);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR,qr);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE,collage);
-
-
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_PASSWORD_RECOVER, passrecover);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN, login);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN, main_login);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN, url_main);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL, expenses_travel);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS, holidays);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
 
 
         //VISIONARIOS
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL,visionarios_url);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY,aplicacion_key);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
 
 
         /*Bloquear modulos*/
-        String block_saving= mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
+        String block_saving = mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
         String block_paysheet = mFirebaseRemoteConfig.getString(BLOCK_PAYSHEET);
         String block_letters = mFirebaseRemoteConfig.getString(BLOCK_CARTASCONFIG);
         String block_benefits = mFirebaseRemoteConfig.getString(BLOCK_BENEFICIOS);
@@ -162,21 +160,21 @@ public class AppConfig {
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
         String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
 
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS,block_saving);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET,block_paysheet);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG,block_letters);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS,block_benefits);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES,block_travel);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS,block_holiday);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PROFILE,block_profile);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS,block_visionarios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS, block_saving);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET, block_paysheet);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG, block_letters);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS, block_benefits);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES, block_travel);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS, block_holiday);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PROFILE, block_profile);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS, block_visionarios);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_STAYHOME, block_stayhome);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS,block_communication);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS,block_surveys);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK,block_message);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE,block_collage);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR,block_qr);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY,block_covid_survey);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS, block_communication);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS, block_surveys);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK, block_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE, block_collage);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR, block_qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY, block_covid_survey);
 
     }
 
@@ -199,7 +197,9 @@ public class AppConfig {
     }*/
 
 
-    /**PushSnackBar Configuration*/
+    /**
+     * PushSnackBar Configuration
+     */
     public static PushSnackBarConfig getPushSnackBar(Context context) {
         PushSnackBarConfig pushSnackBarConfig = new PushSnackBarConfig(R.layout.push_snackbar_layout);
         //  pushSnackBarConfig.setView(new AVLoadingIndicatorView(context));
@@ -209,12 +209,12 @@ public class AppConfig {
         return pushSnackBarConfig;
     }
 
-    public static String getVersionApp(){
+    public static String getVersionApp() {
         PackageManager manager = CoppelApp.getContext().getPackageManager();
         PackageInfo info = null;
         try {
             info = manager.getPackageInfo(CoppelApp.getContext().getPackageName(), 0);
-            return  info.versionName;
+            return info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return "";

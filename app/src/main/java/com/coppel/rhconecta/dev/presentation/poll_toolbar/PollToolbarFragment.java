@@ -17,20 +17,28 @@ import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import javax.inject.Inject;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
 /**
  *
  *
  */
-public class PollToolbarFragment extends Fragment {
+public class PollToolbarFragment extends Fragment implements DialogFragmentWarning.OnOptionClick {
 
     @Inject
     public PollToolbarViewModel viewModel;
     /* */
     public Toolbar toolbar;
     private SurveyInboxView surveyInboxView;
+    /* */
+    private DialogFragmentWarning dialogFragmentWarning;
 
     /**
      *
@@ -108,6 +116,12 @@ public class PollToolbarFragment extends Fragment {
      *
      */
     private void onSurveyInboxViewClickListener(View v){
+        if (isOptionDisabled()) {
+            showWarningDialog(
+                    AppUtilities.getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK)
+            );
+            return;
+        }
         if(viewModel.getAvailableCount() > 0){
             Intent intent = new Intent(getContext(), PollActivity.class);
             startActivity(intent);
@@ -121,6 +135,22 @@ public class PollToolbarFragment extends Fragment {
             );
             dialog.show();
         }
+    }
+
+    /* */
+    private boolean isOptionDisabled() {
+        return AppUtilities
+                .getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES);
+    }
+
+    /**
+     *
+     */
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(getChildFragmentManager(), DialogFragmentWarning.TAG);
     }
 
     /**
@@ -137,6 +167,20 @@ public class PollToolbarFragment extends Fragment {
                 surveyInboxView.setCountMessages(viewModel.getAvailableCount());
                 break;
         }
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void onLeftOptionClick() { /* IGNORE */ }
+
+    /**
+     *
+     */
+    @Override
+    public void onRightOptionClick() {
+        dialogFragmentWarning.close();
     }
 
 }
