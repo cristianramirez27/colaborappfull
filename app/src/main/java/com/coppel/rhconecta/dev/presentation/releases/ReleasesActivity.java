@@ -36,9 +36,7 @@ public class ReleasesActivity extends AppCompatActivity {
     private RecyclerView rvReleases;
     private ProgressBar loader;
 
-
     /**
-     *
      *
      */
     @Override
@@ -52,7 +50,6 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onStart() {
@@ -61,7 +58,6 @@ public class ReleasesActivity extends AppCompatActivity {
     }
 
     /**
-     *
      *
      */
     private void initViews(){
@@ -72,7 +68,6 @@ public class ReleasesActivity extends AppCompatActivity {
     }
 
     /**
-     *
      *
      */
     private void initToolbar(){
@@ -88,14 +83,12 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void observeViewModel(){
         releasesViewModel.getLoadReleasesPreviewsStatus().observe(this, this::getLoadReleasesPreviewsObserver);
     }
 
     /**
-     *
      *
      */
     private void getLoadReleasesPreviewsObserver(ProcessStatus processStatus) {
@@ -123,7 +116,6 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void setReleasesPreviews(List<ReleasePreview> releasesPreviews){
         ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, this::onReleasePreviewClickListener);
@@ -143,14 +135,12 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void execute(){
         releasesViewModel.loadReleasesPreviews();
     }
 
     /**
-     *
      *
      */
     @Override

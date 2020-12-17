@@ -26,7 +26,6 @@ import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
-import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
@@ -57,7 +56,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
@@ -118,7 +116,7 @@ public class HomeMainFragment
     private void onSurveyIconClickListener(View view) {
         // Verifica que la opcion de encuestas este disponible
         if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES)) {
-            showWarningDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK));
+            showBlockOptionWarningDialog();
             return;
         }
         // Verifica que los badges hayan sido cargados correctamente.
@@ -159,11 +157,16 @@ public class HomeMainFragment
     /**
      *
      */
-    private void showWarningDialog(String message) {
-        dialogFragmentWarning = new DialogFragmentWarning();
-        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
-        dialogFragmentWarning.setOnOptionClick(this);
-        dialogFragmentWarning.show(getChildFragmentManager(), DialogFragmentWarning.TAG);
+    private void showBlockOptionWarningDialog() {
+        try {
+            String message = AppUtilities
+                    .getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK);
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning
+                    .show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        } catch (Exception ignore) { /* IGNORE */ }
     }
 
     /**
