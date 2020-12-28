@@ -13,10 +13,7 @@ import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class PollViewModel {
 
     /* */
@@ -25,15 +22,15 @@ public class PollViewModel {
     @Inject
     SendPollUseCase sendPollUseCase;
     // Observables
-    private MutableLiveData<ProcessStatus> loadPollProcessStatus = new MutableLiveData<>();
-    private MutableLiveData<ProcessStatus> sendPollProcessStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> loadPollProcessStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> sendPollProcessStatus = new MutableLiveData<>();
     // Values
     private Poll poll;
     private Failure failure;
     // Questions
-    private MutableLiveData<Question> currentQuestion = new MutableLiveData<>();
+    private final MutableLiveData<Question> currentQuestion = new MutableLiveData<>();
     private int currentQuestionIndex;
-    private MutableLiveData<Integer> pollProgress = new MutableLiveData<>();
+    private final MutableLiveData<Integer> pollProgress = new MutableLiveData<>();
 
 
     /**

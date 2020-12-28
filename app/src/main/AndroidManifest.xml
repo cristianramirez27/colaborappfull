@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
         <activity
-            android:name=".views.activities.SplashScreenActivity"
+            android:name=".presentation.splash.SplashScreenActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreen"
@@ -133,8 +133,9 @@
                 android:resource="@xml/file_provider_paths" />
         </provider>
 
+
         <service
-            android:name=".visionarios.firebase.MyFirebaseMessagingService"
+            android:name=".system.notification.CoppelFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

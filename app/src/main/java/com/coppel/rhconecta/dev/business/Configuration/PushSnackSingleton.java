@@ -31,8 +31,8 @@ public class PushSnackSingleton {
 
     public static PushSnackSingleton getInstance() {
 
-        if(pushSnackSingleton == null){
-            pushSnackSingleton  = new PushSnackSingleton();
+        if (pushSnackSingleton == null) {
+            pushSnackSingleton = new PushSnackSingleton();
         }
 
         return pushSnackSingleton;
@@ -43,11 +43,11 @@ public class PushSnackSingleton {
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message message) {
-                if(message.what == PushType.INVASIVE.getId()){
-                    NavigationUtil.openActivityWithSerializable(CoppelApp.getContext(), PushInvasiveActivity.class,KEY_PUSH_DATA,(PushData)message.obj);
-                }else if(message.what == PushType.NOINVASIVE.getId()){
+                if (message.what == PushType.INVASIVE.getId()) {
+                    NavigationUtil.openActivityWithSerializable(CoppelApp.getContext(), PushInvasiveActivity.class, KEY_PUSH_DATA, (PushData) message.obj);
+                } else if (message.what == PushType.NOINVASIVE.getId()) {
                     if (pushSnackbar != null) {
-                        pushSnackbar.setPushData((PushData)message.obj);
+                        pushSnackbar.setPushData((PushData) message.obj);
                         pushSnackbar.setVisibility(View.VISIBLE);
                         slideDown(pushSnackbar);
                         new Handler().postDelayed(new Runnable() {

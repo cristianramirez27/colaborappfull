@@ -18,6 +18,8 @@ import com.coppel.rhconecta.dev.di.poll.DaggerPollComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
+import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
+import com.coppel.rhconecta.dev.domain.poll.use_case.GetPollUseCase;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.visionarios.utils.DialogCustom;
@@ -148,7 +150,11 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                String message = getString(R.string.not_available_service);
+                String message;
+                if (failure instanceof NotPollAvailableFailure)
+                    message = getString(R.string.not_poll_available_message);
+                else
+                    message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.poll_activity_failure_title),

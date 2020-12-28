@@ -441,6 +441,9 @@
     <string name="covid_survey_title">COVID-19 GC</string>
     <string name="str_sub_qrcode">Apunta al código para escanear.</string>
     <string name="visionaries_updated_label">Actualizado</string>
+    <string name="default_notification_channel_id">Canal de notificaciones Coppel</string>
+    <string name="default_notification_channel_name">Canal de notificaciones Coppel</string>
+    <string name="default_notification_channel_description">Notificaciones generales Coppel</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>
