@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.presentation.releases.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -21,8 +22,8 @@ import java.util.List;
 public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAdapter.ViewHolder> {
 
     /* */
-    private List<ReleasePreview> values;
-    private OnReleasePreviewClickListener onReleasePreviewClickListener;
+    private final List<ReleasePreview> values;
+    private final OnReleasePreviewClickListener onReleasePreviewClickListener;
 
 
     /**
@@ -58,6 +59,11 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
         viewHolder.tvDate.setText(releasePreview.getDate());
         // Was read indicator
         if (releasePreview.wasRead()) {
+            int readColor = ContextCompat.getColor(
+                    viewHolder.itemView.getContext(),
+                    R.color.colorTextCoppelNegro
+            );
+            viewHolder.tvTitle.setTextColor(readColor);
             viewHolder.ivWasRead.setVisibility(View.GONE);
             if (releasePreview.isUpdated())
                 viewHolder.isUpdated.setVisibility(View.VISIBLE);
