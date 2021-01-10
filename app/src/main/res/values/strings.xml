@@ -444,6 +444,8 @@
     <string name="default_notification_channel_id">Canal de notificaciones Coppel</string>
     <string name="default_notification_channel_name">Canal de notificaciones Coppel</string>
     <string name="default_notification_channel_description">Notificaciones generales Coppel</string>
+    <string name="video_decoder_failure">No se pudo recuperar el video por el siguiente motivo: %s</string>
+    <string name="default_video_decoder_failure">No se pudo recuperar el video.</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>
