@@ -82,10 +82,18 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
-public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick, BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener,
-        DialogFragmentSelectState.OnButonOptionClick, DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
+/* */
+public class BenefitsFragment
+        extends Fragment
+        implements View.OnClickListener,
+        IServicesContract.View,
+        DialogFragmentWarning.OnOptionClick,
+        BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener,
+        DialogFragmentSelectState.OnButonOptionClick,
+        DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
         DialogFragmentGetDocument.OnButtonClickListener {
+
+
     public static final int REQUEST_MAP_PERMISSION_CODE = 741;
     public static final int REQUEST_ACTIVATE_GPS = 742;
     public static final String TAG = BenefitsFragment.class.getSimpleName();
@@ -209,14 +217,9 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //loadDataBenefitsBasic();
         if (validateGeolocalization()) {
             getGeolocalization();
-        } else {
-            askPermission();
-        }
-
+        } else askPermission();
     }
 
 
@@ -298,17 +301,12 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                             citySelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_ciudad());
                             txtCity.setText(String.format("%s %s?", getString(R.string.are_you_in_),
                                     TextUtilities.capitalizeText(getActivity(), benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNombre_ciudad())));
-
-
                         }
-
                         categories.clear();
                         for (BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse) response.getResponse()).getData().getResponse().getCategorias()) {
                             categories.add(category);
                         }
-
                         benefitsRecyclerAdapter.notifyDataSetChanged();
-
                     }
 
                 } else if (response.getResponse() instanceof BenefitsStatesResponse) {
@@ -358,45 +356,38 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
-            case ServicesRequestType.LETTERSCONFIG:
-
-                new Handler().postDelayed(() -> {
-                    dialogFragmentWarning = new DialogFragmentWarning();
-                    dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-                    dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
-
-                        @Override
-                        public void onLeftOptionClick() { }
-
-                        @Override
-                        public void onRightOptionClick() {
-                            dialogFragmentWarning.close();
-                            getActivity().finish();
-                        }
-
-                    });
-                    dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                    dialogFragmentLoader.close();
-                }, 500);
-
-                break;
-
             case ServicesRequestType.INVALID_TOKEN:
-                // EXPIRED_SESSION = true;
-                showWarningDialog(getString(R.string.expired_session));
+                showErrorDialog(getString(R.string.expired_session));
                 break;
-
             default:
-                ctlConnectionError.setVisibility(View.VISIBLE);
-                ctlContent.setVisibility(View.GONE);
-
-                new Handler().postDelayed(this::hideProgress, 800);
-
+                showErrorDialog(coppelServicesError.getMessage());
                 break;
         }
-
-
         hideProgress();
+    }
+
+    /**
+     *
+     */
+    private void showErrorDialog(String message) {
+        new Handler().postDelayed(() -> {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+
+                @Override
+                public void onLeftOptionClick() { }
+
+                @Override
+                public void onRightOptionClick() {
+                    dialogFragmentWarning.close();
+                    getActivity().onBackPressed();
+                }
+
+            });
+            dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            dialogFragmentLoader.close();
+        }, 500);
     }
 
     @Override
@@ -415,21 +406,17 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         dialogFragmentWarning.close();
     }
 
+    /**
+     *
+     */
     @Override
     public void onRightOptionClick() {
-      /*  if (EXPIRED_SESSION) {
-            AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
-                    !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
-                AppUtilities.openAppSettings(parent);
-            }
-        }*/
-        //  WARNING_PERMISSIONS = false;
         dialogFragmentWarning.close();
-
     }
 
+    /**
+     *
+     */
     private void showWarningDialog(String message) {
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
@@ -437,17 +424,16 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
+    /**
+     *
+     */
     @Override
     public void onCategoryClick(BenefitsCategoriesResponse.Category category) {
-
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 800) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800)
             return;
-        }
         mLastClickTime = SystemClock.elapsedRealtime();
-
         if (!edtSearch.getText().toString().isEmpty())
             edtSearch.setText("");
-
 
         Intent intent = new IntentBuilder(new Intent(getActivity(), BenefitsActivity.class))
                 .putSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category)
@@ -456,23 +442,15 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         benefitsRequestData.setNum_estado(stateSelected);
         benefitsRequestData.setNum_ciudad(citySelected);
         getActivity().startActivityForResult(intent, 231);
-
-
-       /* DiscountsFragment discountsFragment = new DiscountsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, new Gson().toJson(category));
-        bundle.putString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, new Gson().toJson(benefitsRequestData));
-        discountsFragment.setArguments(bundle);
-        parent.replaceFragment(discountsFragment, DiscountsFragment.TAG);*/
-
-
     }
 
+    /**
+     *
+     */
     private void selectState() {
-
-        if (statesAvailables != null && !statesAvailables.isEmpty()) {
+        if (statesAvailables != null && !statesAvailables.isEmpty())
             showSelectState(statesAvailables);
-        } else {
+        else {
             String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
             coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_STATES, 1), token);
         }
