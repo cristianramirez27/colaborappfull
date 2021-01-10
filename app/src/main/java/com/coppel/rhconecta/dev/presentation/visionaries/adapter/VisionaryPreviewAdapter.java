@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.presentation.visionaries.adapter;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -53,21 +54,26 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         // Definition
         VisionaryPreview visionaryPreview = values.get(position);
-        // Simple values
-        if (visionaryPreview.isAlreadyBeenSeen()) {
-            viewHolder.ivWatchedIcon.setVisibility(View.GONE);
-            if (visionaryPreview.isUpdated())
-                viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
-        }
+        // Content values
         viewHolder.tvTitle.setText(visionaryPreview.getTitle());
         viewHolder.tvDate.setText(visionaryPreview.getDate());
         String numberOfViews = viewHolder.itemView.getContext()
                 .getString(R.string.number_of_views, visionaryPreview.getNumberOfViews());
         viewHolder.tvNumberOfViews.setText(numberOfViews);
-        // Images
         Glide.with(viewHolder.itemView)
                 .load(visionaryPreview.getPreviewImage())
                 .into(viewHolder.ivPreview);
+        // Was read indicator
+        if (visionaryPreview.isAlreadyBeenSeen()) {
+            int readColor = ContextCompat.getColor(
+                    viewHolder.itemView.getContext(),
+                    R.color.colorTextCoppelNegro
+            );
+            viewHolder.tvTitle.setTextColor(readColor);
+            viewHolder.ivWatchedIcon.setVisibility(View.GONE);
+            if (visionaryPreview.isUpdated())
+                viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
+        }
         // On click listener
         viewHolder.itemView.setOnClickListener(v ->
                 onVisionaryPreviewClickListener.onClick(visionaryPreview)
