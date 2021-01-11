@@ -203,26 +203,27 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
+            case ServicesRequestType.BENEFITS:
+                showErrorDialog(coppelServicesError.getMessage());
+                break;
             case ServicesRequestType.LETTERSCONFIG:
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialogFragmentWarning = new DialogFragmentWarning();
-                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-                        dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
-                            @Override
-                            public void onLeftOptionClick() {
-                            }
 
-                            @Override
-                            public void onRightOptionClick() {
-                                dialogFragmentWarning.close();
-                                getActivity().finish();
-                            }
-                        });
-                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                        dialogFragmentLoader.close();
-                    }
+                new Handler().postDelayed(() -> {
+                    dialogFragmentWarning = new DialogFragmentWarning();
+                    dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                    dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+                        @Override
+                        public void onLeftOptionClick() {
+                        }
+
+                        @Override
+                        public void onRightOptionClick() {
+                            dialogFragmentWarning.close();
+                            getActivity().finish();
+                        }
+                    });
+                    dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                    dialogFragmentLoader.close();
                 }, 500);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
@@ -231,6 +232,30 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
                 break;
         }
         hideProgress();
+    }
+
+    /**
+     *
+     */
+    private void showErrorDialog(String message) {
+        new Handler().postDelayed(() -> {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+
+                @Override
+                public void onLeftOptionClick() { }
+
+                @Override
+                public void onRightOptionClick() {
+                    dialogFragmentWarning.close();
+                    getActivity().onBackPressed();
+                }
+
+            });
+            dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            dialogFragmentLoader.close();
+        }, 500);
     }
 
     @Override
