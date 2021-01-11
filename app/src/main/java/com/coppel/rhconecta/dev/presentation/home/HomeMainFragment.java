@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
@@ -164,8 +165,10 @@ public class HomeMainFragment
             dialogFragmentWarning = new DialogFragmentWarning();
             dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
             dialogFragmentWarning.setOnOptionClick(this);
-            dialogFragmentWarning
-                    .show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            dialogFragmentWarning.show(
+                    Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                    DialogFragmentWarning.TAG
+            );
         } catch (Exception ignore) { /* IGNORE */ }
     }
 
@@ -337,9 +340,11 @@ public class HomeMainFragment
                 return;
             }
             Intent intent;
+            AccessOption accessOption = AccessOption.BANNER;
             if (banner.isRelease()) {
                 intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
                         .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
+                        .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
                         .build();
                 startActivity(intent);
             }
@@ -350,6 +355,7 @@ public class HomeMainFragment
                         .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId())
                         .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
                         .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
+                        .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
                         .build();
                 startActivity(intent);
             }
@@ -398,6 +404,9 @@ public class HomeMainFragment
         }
     }
 
+    /**
+     *
+     */
     private void initMenu() {
         rcvMenu.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -417,7 +426,8 @@ public class HomeMainFragment
     public void onItemClick(String tag) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) return;
         mLastClickTime = SystemClock.elapsedRealtime();
-        parent.navigationMenu(tag);
+        AccessOption accessOption = AccessOption.ICON;
+        parent.navigationMenu(tag, accessOption);
     }
 
     @Override

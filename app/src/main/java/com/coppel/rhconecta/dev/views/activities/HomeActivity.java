@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
 import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
@@ -230,7 +231,7 @@ public class HomeActivity
 
             if (bundle.containsKey(AppConstants.BUNDLE_GOTO_SECTION)) {
                 goTosection = bundleGotoSection;
-                navigationMenu(goTosection);
+                navigationMenu(goTosection, null);
                 hideLoader = true;
             }
 
@@ -249,7 +250,9 @@ public class HomeActivity
                 navigateToVisionaries();
                 break;
             case RELEASES:
-                navigateToReleases();
+                // TODO: Verificar si el código de acceso desde notificacion es igual que ICON.
+                AccessOption accessOption = AccessOption.ICON;
+                navigateToReleases(accessOption);
                 break;
             case POLL:
                 navigateToPoll();
@@ -394,7 +397,8 @@ public class HomeActivity
             return;
         mLastClickTime = SystemClock.elapsedRealtime();
         HomeMenuItem option = (HomeMenuItem) adapterView.getItemAtPosition(i);
-        navigationMenu(option.getTAG());
+        AccessOption accessOption = AccessOption.MENU;
+        navigationMenu(option.getTAG(), accessOption);
     }
 
     /**
@@ -442,7 +446,7 @@ public class HomeActivity
     /**
      *
      */
-    public void navigationMenu(String tag) {
+    public void navigationMenu(String tag, AccessOption accessOption) {
         if (DeviceManager.isOnline(this)) {
             switch (tag) {
                 case OPTION_HOME:
@@ -453,7 +457,7 @@ public class HomeActivity
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)) {
                         showBlockDialog();
                     } else
-                        navigateToReleases();
+                        navigateToReleases(accessOption);
                     break;
                 case OPTION_PAYROLL_VOUCHER:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)) {
@@ -567,8 +571,10 @@ public class HomeActivity
     }
 
     /* */
-    private void navigateToReleases() {
-        Intent intentReleases = new Intent(this, ReleasesActivity.class);
+    private void navigateToReleases(AccessOption accessOption) {
+        Intent intentReleases = new IntentBuilder(new Intent(this, ReleasesActivity.class))
+                .putSerializableExtra(ReleasesActivity.ACCESS_OPTION, accessOption)
+                .build();
         startActivity(intentReleases);
     }
 

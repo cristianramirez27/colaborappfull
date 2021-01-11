@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.presentation.releases;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -13,10 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class ReleasesViewModel {
 
     // Use cases
@@ -30,7 +28,6 @@ public class ReleasesViewModel {
 
     /**
      *
-     *
      */
     @Inject public ReleasesViewModel() {
 
@@ -38,11 +35,11 @@ public class ReleasesViewModel {
 
     /**
      *
-     *
      */
-    public void loadReleasesPreviews() {
+    public void loadReleasesPreviews(AccessOption accessOption) {
         loadReleasesPreviewsStatus.postValue(ProcessStatus.LOADING);
-        getReleasesPreviewsUseCase.run(UseCase.None.getInstance(), result -> {
+        GetReleasesPreviewsUseCase.Params params = new GetReleasesPreviewsUseCase.Params(accessOption);
+        getReleasesPreviewsUseCase.run(params, result -> {
             result.fold(onLoadReleasesPreviewsFailure, onLoadReleasesPreviewsRight);
         });
     }

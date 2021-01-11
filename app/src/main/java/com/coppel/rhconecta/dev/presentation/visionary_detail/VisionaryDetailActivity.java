@@ -46,6 +46,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     public static String VISIONARY_ID = "VISIONARY_ID";
     public static String VISIONARY_IMAGE_PREVIEW = "VISIONARY_IMAGE_PREVIEW";
     public static String VISIONARY_TYPE = "VISIONARY_TYPE";
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
     private final int REQUEST_CODE_FULL_SCREEN = 1;
     /* */
     @Inject

@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.presentation.release_detail;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
@@ -34,9 +35,9 @@ public class ReleaseDetailViewModel {
     /**
      *
      */
-    public void loadRelease(int releaseId) {
+    public void loadRelease(int releaseId, AccessOption accessOption) {
         loadReleaseStatus.postValue(ProcessStatus.LOADING);
-        GetReleaseUseCase.Params params = new GetReleaseUseCase.Params(releaseId);
+        GetReleaseUseCase.Params params = new GetReleaseUseCase.Params(releaseId, accessOption);
         getReleaseUseCase.run(params, result -> {
             result.fold(onLoadReleaseFailure, onLoadReleaseRight);
         });

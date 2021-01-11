@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.release.model.get_release_by_id.GetReleaseByIdRequest;
@@ -55,20 +56,24 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
     /**
      *
-     * @param callback
      */
     @Override
-    public void getReleasesPreviews(UseCase.OnResultFunction<Either<Failure, List<ReleasePreview>>> callback) {
+    public void getReleasesPreviews(
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, List<ReleasePreview>>> callback
+    ) {
         long employeeNum = Long.parseLong(getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
         ));
         int clvOption = 1;
+        int accessOptionValue = accessOption.toInt();
         String authHeader = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
-        GetReleasesPreviewsRequest request = new GetReleasesPreviewsRequest(employeeNum, clvOption);
+        GetReleasesPreviewsRequest request = new
+                GetReleasesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
         apiService.getReleasesPreviews(
                 authHeader,
                 ServicesConstants.GET_COMUNICADOS,
@@ -99,21 +104,25 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
     /**
      *
-     * @param releaseId
-     * @param callback
      */
     @Override
-    public void getReleaseById(int releaseId, UseCase.OnResultFunction<Either<Failure, Release>> callback) {
+    public void getReleaseById(
+            int releaseId,
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, Release>> callback
+    ) {
         long employeeNum = Long.parseLong(getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
         ));
         int clvOption = 2;
+        int accessOptionValue = accessOption == AccessOption.BANNER ? accessOption.toInt() : 0;
         String authHeader = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
-        GetReleaseByIdRequest request = new GetReleaseByIdRequest(employeeNum, clvOption, releaseId);
+        GetReleaseByIdRequest request = new
+                GetReleaseByIdRequest(employeeNum, clvOption, releaseId, accessOptionValue);
         apiService.getReleaseById(
                 authHeader,
                 ServicesConstants.GET_COMUNICADOS,

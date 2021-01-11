@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
@@ -31,7 +32,9 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     @Inject
     public ReleaseDetailViewModel releaseDetailViewModel;
     public static String RELEASE_ID = "RELEASE_ID";
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
     private int releaseId;
+    private AccessOption accessOption;
     /* VIEWS */
     private ImageView ivHeader;
     private TextView tvHeader;
@@ -60,6 +63,7 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      */
     private void initValues(){
         releaseId = IntentExtension.getIntExtra(getIntent(), RELEASE_ID);
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
     /**
@@ -134,7 +138,7 @@ public class ReleaseDetailActivity extends AppCompatActivity {
      *
      */
     private void execute(){
-        releaseDetailViewModel.loadRelease(releaseId);
+        releaseDetailViewModel.loadRelease(releaseId, accessOption);
     }
 
     /**
