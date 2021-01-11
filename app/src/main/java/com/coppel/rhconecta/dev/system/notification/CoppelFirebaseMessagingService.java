@@ -1,11 +1,17 @@
 package com.coppel.rhconecta.dev.system.notification;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /* */
 public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
@@ -16,10 +22,22 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (isUserLogged()) {
-            NotificationType notificationType =
-                    notificationTypeFromData(remoteMessage.getData(), remoteMessage.getNotification());
-            CoppelNotificationManager coppelNotificationManager = new CoppelNotificationManager(this);
-            coppelNotificationManager.showNotification(notificationType);
+            if (remoteMessage != null) {
+                if (remoteMessage.getData() != null) {
+                    String title = remoteMessage.getData().get("title");
+                    String body = remoteMessage.getData().get("body");
+                    RemoteMessage.Notification notification = remoteMessage.getNotification();
+                    if (notification != null) {
+                        title = notification.getTitle() == null ? title : notification.getTitle();
+                        body = notification.getBody() == null ? body : notification.getBody();
+                    }
+                    NotificationType notificationType =
+                            notificationTypeFromData(remoteMessage.getData(), title, body);
+                    CoppelNotificationManager cnm = new CoppelNotificationManager(this);
+                    cnm.showNotification(notificationType);
+
+                }
+            }
         }
     }
 
@@ -36,27 +54,21 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
      */
     private NotificationType notificationTypeFromData(
             Map<String, String> data,
-            RemoteMessage.Notification notification
-    ) {
-        String title = notification.getTitle();
-        String content = notification.getBody();
-        return notificationTypeFromData(title, content, data);
-    }
-
-    /**
-     *
-     */
-    private NotificationType notificationTypeFromData(
             String title,
-            String content,
-            Map<String, String> data
+            String body
     ) {
         String IDU_SYSTEM = "idu_sistema";
+        String iduSystemValue = data.get(IDU_SYSTEM);
+        int iduSystem = iduSystemValue == null ? -1 : Integer.parseInt(iduSystemValue);
         String IDU_DESTINATION = "idu_pantalla";
-        int iduSystem = Integer.parseInt(data.get(IDU_SYSTEM));
-        int iduDestination = Integer.parseInt(data.get(IDU_DESTINATION));
+        String ID_DESTINATION = "id_pantalla";
+        String iduDestinationValue = data.get(IDU_DESTINATION);
+        String idDestinationValue = data.get(ID_DESTINATION);
+        int iduDestination = iduDestinationValue == null ?
+                idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
+                : Integer.parseInt(iduDestinationValue);
         NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
-        return new NotificationType(title, content, destination);
+        return new NotificationType(title, body, destination);
     }
 
     /**
