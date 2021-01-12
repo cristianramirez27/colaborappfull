@@ -31,6 +31,13 @@ public enum NotificationDestination implements Serializable {
      */
     public static NotificationDestination fromInt(int value, int aux) {
         switch (value) {
+            case -1:
+                switch (aux) {
+                    case 39:
+                    case 40:
+                        return HOLIDAYS;
+                    default: return MAIN;
+                }
             case 9:
                 return SAVING_FOUND;
             case 10:

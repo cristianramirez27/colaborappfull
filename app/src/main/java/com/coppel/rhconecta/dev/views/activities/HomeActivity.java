@@ -213,12 +213,6 @@ public class HomeActivity
         String bundleGotoSection = IntentExtension
                 .getStringExtra(getIntent(), AppConstants.BUNDLE_GOTO_SECTION);
 
-        if (bundle.containsKey(NotificationDestination.NOTIFICATION_DESTINATION)) {
-            NotificationDestination destination = (NotificationDestination) IntentExtension
-                    .getSerializableExtra(getIntent(), NotificationDestination.NOTIFICATION_DESTINATION);
-            navigateToDestination(destination);
-        }
-
         if (bundle != null && bundleLoginResponse != null && bundleProfileResponse != null) {
             realm = Realm.getDefaultInstance();
             loginResponse = bundleLoginResponse.getData().getResponse();
@@ -236,6 +230,12 @@ public class HomeActivity
             }
 
         } else finish();
+
+        if (bundle.containsKey(NotificationDestination.NOTIFICATION_DESTINATION)) {
+            NotificationDestination destination = (NotificationDestination) IntentExtension
+                    .getSerializableExtra(getIntent(), NotificationDestination.NOTIFICATION_DESTINATION);
+            navigateToDestination(destination);
+        }
     }
 
     /**
@@ -244,6 +244,9 @@ public class HomeActivity
     private void navigateToDestination(NotificationDestination notificationDestination) {
         AccessOption accessOption = AccessOption.MENU;
         switch (notificationDestination) {
+            case HOLIDAYS:
+                new Handler().postDelayed(this::executeOptionHolidays, 0);
+                break;
             case VIDEOS:
                 navigateToCollaboratorAtHome(accessOption);
                 break;
@@ -260,7 +263,6 @@ public class HomeActivity
                 /* Stay here */
                 break;
             case SAVING_FOUND:
-            case HOLIDAYS:
             case EXPENSES:
             case EXPENSES_AUTHORIZE:
                 /* Managed by goto variable */
@@ -517,18 +519,7 @@ public class HomeActivity
                     }
                     break;
                 case OPTION_HOLIDAYS:
-                    if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
-                        showBlockDialog();
-                    } else {
-                        if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
-                            replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
-                        } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
-                            getRolType(HOLIDAYS);
-                        } else {
-                            getRolType(HOLIDAYS);
-                        }
-                        RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_NUM_COLABORADOR), 10);
-                    }
+                    executeOptionHolidays();
                     break;
                 case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
@@ -567,6 +558,24 @@ public class HomeActivity
         } else
             showError(new ServicesError(getString(R.string.network_error)));
         forceHideProgress();
+    }
+
+    /**
+     *
+     */
+    private void executeOptionHolidays() {
+        if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
+            showBlockDialog();
+        } else {
+            if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
+                replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
+            } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
+                getRolType(HOLIDAYS);
+            } else {
+                getRolType(HOLIDAYS);
+            }
+            RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_NUM_COLABORADOR), 10);
+        }
     }
 
     /* */

@@ -67,6 +67,10 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
         int iduDestination = iduDestinationValue == null ?
                 idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
                 : Integer.parseInt(iduDestinationValue);
+        Log.e("DESTINATION", title+"");
+        Log.e("DESTINATION", body+"");
+        Log.e("DESTINATION", iduSystem+"");
+        Log.e("DESTINATION", iduDestination+"");
         NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
         return new NotificationType(title, body, destination);
     }

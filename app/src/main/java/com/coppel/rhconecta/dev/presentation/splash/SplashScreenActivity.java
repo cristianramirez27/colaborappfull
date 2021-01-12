@@ -186,12 +186,15 @@ public class SplashScreenActivity
                 .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
                 .build();
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        if (notificationDestination != null)
+
+        if (notificationDestination != null) {
             IntentExtension.putSerializableExtra(
                     intent,
                     NotificationDestination.NOTIFICATION_DESTINATION,
                     notificationDestination
             );
+        }
+
         if (!goTosection.isEmpty())
             IntentExtension.putStringExtra(intent, BUNDLE_GOTO_SECTION, goTosection);
 
