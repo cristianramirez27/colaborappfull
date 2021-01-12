@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionaryComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
@@ -54,6 +55,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private String visionaryId;
     private String visionaryVideoPreview;
     private VisionaryType visionaryType;
+    private AccessOption accessOption;
     /* VIEWS */
     /* */
     private Toolbar toolbar;
@@ -96,6 +98,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         visionaryId = IntentExtension.getStringExtra(getIntent(), VISIONARY_ID);
         visionaryVideoPreview = IntentExtension.getStringExtra(getIntent(), VISIONARY_IMAGE_PREVIEW);
         visionaryType = (VisionaryType) IntentExtension.getSerializableExtra(getIntent(), VISIONARY_TYPE);
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
     /**
@@ -141,7 +144,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void execute() {
-        viewModel.loadVisionary(visionaryType, visionaryId);
+        viewModel.loadVisionary(visionaryType, visionaryId, accessOption);
     }
 
     /**

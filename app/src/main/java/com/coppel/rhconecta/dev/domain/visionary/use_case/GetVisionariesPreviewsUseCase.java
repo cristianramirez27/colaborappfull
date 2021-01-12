@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.domain.visionary.use_case;
 
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -23,12 +24,10 @@ public class GetVisionariesPreviewsUseCase extends UseCase<List<VisionaryPreview
 
     /**
      *
-     *
      */
     @Inject GetVisionariesPreviewsUseCase() { }
 
     /**
-     *
      *
      */
     @Override
@@ -36,24 +35,28 @@ public class GetVisionariesPreviewsUseCase extends UseCase<List<VisionaryPreview
             Params params,
             UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
     ) {
-        visionaryRepository.getVisionariesPreviews(params.type, callback);
+        visionaryRepository.getVisionariesPreviews(
+                params.type,
+                params.accessOption,
+                callback
+        );
     }
 
-    /**
-     *
-     *
-     */
+    /* */
     public static class Params {
 
         /* */
         public VisionaryType type;
 
+        /* */
+        public AccessOption accessOption;
+
         /**
          *
-         *
          */
-        public Params(VisionaryType type) {
+        public Params(VisionaryType type, AccessOption accessOption) {
             this.type = type;
+            this.accessOption = accessOption;
         }
 
     }

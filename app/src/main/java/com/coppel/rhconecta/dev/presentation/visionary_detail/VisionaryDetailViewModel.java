@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.presentation.visionary_detail;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionaryUseCase;
@@ -41,9 +42,10 @@ public class VisionaryDetailViewModel {
      *
      *
      */
-    void loadVisionary(VisionaryType visionaryType, String visionaryId) {
+    void loadVisionary(VisionaryType visionaryType, String visionaryId, AccessOption accessOption) {
         loadVisionaryProcessStatus.postValue(ProcessStatus.LOADING);
-        GetVisionaryUseCase.Params params = new GetVisionaryUseCase.Params(visionaryType, visionaryId);
+        GetVisionaryUseCase.Params params =
+                new GetVisionaryUseCase.Params(visionaryType, visionaryId, accessOption);
         getVisionaryUseCase.run(params, result ->
                 result.fold(this::onLoadVisionaryFailure, this::onLoadVisionaryRight)
         );

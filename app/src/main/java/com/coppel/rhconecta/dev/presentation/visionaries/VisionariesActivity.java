@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
@@ -30,19 +31,22 @@ import javax.inject.Inject;
 public class VisionariesActivity extends AppCompatActivity {
 
     /* */
-    public static String TYPE = "TYPE";
-    private VisionaryType visionaryType;
-    /* */
     @Inject
     public VisionariesViewModel visionariesViewModel;
-    /* */
+
+    /* VIEWS */
     private RecyclerView rvReleases;
-    /* */
     private ProgressBar loader;
 
+    /* */
+    public static String TYPE = "TYPE";
+    private VisionaryType visionaryType;
+
+    /* */
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
+    private AccessOption accessOption;
 
     /**
-     *
      *
      */
     @Override
@@ -57,7 +61,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onStart() {
@@ -67,14 +70,13 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initValues(){
         visionaryType = (VisionaryType) IntentExtension.getSerializableExtra(getIntent(), TYPE);
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
     /**
-     *
      *
      */
     private void initViews(){
@@ -86,7 +88,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void observeViewModel(){
         visionariesViewModel.getLoadVisionariesPreviewsStatus()
@@ -95,14 +96,12 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void execute(){
-        visionariesViewModel.loadReleasesPreviews(visionaryType);
+        visionariesViewModel.loadReleasesPreviews(visionaryType, accessOption);
     }
 
     /**
-     *
      *
      */
     private void getLoadVisionariesPreviewsObserver(ProcessStatus processStatus){
@@ -130,7 +129,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initToolbar(){
         PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
@@ -147,7 +145,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void setVisionariesPreviews(List<VisionaryPreview> visionariesPreviews){
         VisionaryPreviewAdapter adapter =
@@ -157,19 +154,18 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void onVisionaryPreviewClickListener(VisionaryPreview visionaryPreview){
         Intent intent = new IntentBuilder(new Intent(this, VisionaryDetailActivity.class))
                 .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId())
                 .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage())
                 .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType)
+                .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
                 .build();
         startActivity(intent);
     }
 
     /**
-     *
      *
      */
     @Override

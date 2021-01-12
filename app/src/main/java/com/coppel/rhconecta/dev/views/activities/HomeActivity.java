@@ -242,16 +242,15 @@ public class HomeActivity
      *
      */
     private void navigateToDestination(NotificationDestination notificationDestination) {
+        AccessOption accessOption = AccessOption.MENU;
         switch (notificationDestination) {
             case VIDEOS:
-                navigateToCollaboratorAtHome();
+                navigateToCollaboratorAtHome(accessOption);
                 break;
             case VISIONARIES:
-                navigateToVisionaries();
+                navigateToVisionaries(accessOption);
                 break;
             case RELEASES:
-                // TODO: Verificar si el código de acceso desde notificacion es igual que ICON.
-                AccessOption accessOption = AccessOption.ICON;
                 navigateToReleases(accessOption);
                 break;
             case POLL:
@@ -489,13 +488,13 @@ public class HomeActivity
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES))
                         showBlockDialog();
                     else
-                        navigateToVisionaries();
+                        navigateToVisionaries(accessOption);
                     break;
                 case OPTION_COLLABORATOR_AT_HOME:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_STAYHOME).equals(YES))
                         showBlockDialog();
                     else
-                        navigateToCollaboratorAtHome();
+                        navigateToCollaboratorAtHome(accessOption);
                     break;
                 case OPTION_LETTERS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)) {
@@ -579,17 +578,19 @@ public class HomeActivity
     }
 
     /* */
-    private void navigateToVisionaries() {
+    private void navigateToVisionaries(AccessOption accessOption) {
         Intent intentVisionaries = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES)
+                .putSerializableExtra(VisionariesActivity.ACCESS_OPTION, accessOption)
                 .build();
         startActivity(intentVisionaries);
     }
 
     /* */
-    private void navigateToCollaboratorAtHome() {
+    private void navigateToCollaboratorAtHome(AccessOption accessOption) {
         Intent collaboratorAtHome = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME)
+                .putSerializableExtra(VisionariesActivity.ACCESS_OPTION, accessOption)
                 .build();
         startActivity(collaboratorAtHome);
     }

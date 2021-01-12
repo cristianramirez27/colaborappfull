@@ -61,9 +61,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_EN
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
-/**
- *
- */
+/* */
 public class HomeMainFragment
         extends Fragment
         implements HomeMenuRecyclerViewAdapter.OnItemClick, DialogFragmentWarning.OnOptionClick {

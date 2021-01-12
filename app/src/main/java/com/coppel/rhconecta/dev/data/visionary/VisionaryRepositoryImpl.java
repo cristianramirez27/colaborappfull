@@ -1,8 +1,7 @@
 package com.coppel.rhconecta.dev.data.visionary;
 
-import android.util.Log;
-
 import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.common.BasicUserInformationFacade;
@@ -31,19 +30,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-/**
- *
- *
- */
+/* */
 public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /* */
-    private VisionaryApiService apiService;
+    private final VisionaryApiService apiService;
+
     /* */
-    private BasicUserInformationFacade basicUserInformationFacade;
+    private final BasicUserInformationFacade basicUserInformationFacade;
 
     /**
-     *
      *
      */
     @Inject
@@ -55,17 +51,19 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /**
      *
-     *
      */
     @Override
     public void getVisionariesPreviews(
             VisionaryType type,
+            AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
+        int accessOptionValue = accessOption.toInt();
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        GetVisionariesPreviewsRequest request = new GetVisionariesPreviewsRequest(employeeNum, clvOption);
+        GetVisionariesPreviewsRequest request =
+                new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionariesPreviews(authHeader, url, request)
@@ -118,13 +116,17 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     public void getVisionaryById(
             VisionaryType type,
             String visionaryId,
+            AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, Visionary>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 2;
         long visionaryIdInt = Long.parseLong(visionaryId);
+        int accessOptionValue = accessOption == AccessOption.BANNER ? accessOption.toInt() : 0;
+
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        GetVisionaryByIdRequest request = new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
+        GetVisionaryByIdRequest request =
+                new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt, accessOptionValue);
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionaryById(

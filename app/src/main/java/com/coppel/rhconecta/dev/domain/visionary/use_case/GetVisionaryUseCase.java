@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.domain.visionary.use_case;
 
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -9,10 +10,7 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class GetVisionaryUseCase extends UseCase<Visionary, GetVisionaryUseCase.Params> {
 
     /* */
@@ -21,34 +19,34 @@ public class GetVisionaryUseCase extends UseCase<Visionary, GetVisionaryUseCase.
 
     /**
      *
-     *
      */
     public static class Params {
 
         /* */
         VisionaryType visionaryType;
+
         /* */
         String visionaryId;
 
+        AccessOption accessOption;
+
         /**
          *
-         *
          */
-        public Params(VisionaryType visionaryType, String visionaryId) {
+        public Params(VisionaryType visionaryType, String visionaryId, AccessOption accessOption) {
             this.visionaryType = visionaryType;
             this.visionaryId = visionaryId;
+            this.accessOption = accessOption;
         }
 
     }
 
     /**
      *
-     *
      */
     @Inject GetVisionaryUseCase() { }
 
     /**
-     *
      *
      */
     @Override
@@ -56,6 +54,7 @@ public class GetVisionaryUseCase extends UseCase<Visionary, GetVisionaryUseCase.
         visionaryRepository.getVisionaryById(
                 params.visionaryType,
                 params.visionaryId,
+                params.accessOption,
                 callback
         );
     }
