@@ -435,12 +435,14 @@ public class BenefitsFragment
         if (!edtSearch.getText().toString().isEmpty())
             edtSearch.setText("");
 
+        benefitsRequestData.setNum_estado(stateSelected);
+        benefitsRequestData.setNum_ciudad(citySelected);
+
         Intent intent = new IntentBuilder(new Intent(getActivity(), BenefitsActivity.class))
                 .putSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category)
                 .putSerializableExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData)
                 .build();
-        benefitsRequestData.setNum_estado(stateSelected);
-        benefitsRequestData.setNum_ciudad(citySelected);
+
         getActivity().startActivityForResult(intent, 231);
     }
 
