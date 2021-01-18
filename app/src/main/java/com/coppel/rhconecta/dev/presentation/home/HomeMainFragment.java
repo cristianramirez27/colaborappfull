@@ -25,7 +25,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
+import com.coppel.rhconecta.dev.di.home.DaggerHomeComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
@@ -176,7 +176,7 @@ public class HomeMainFragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DaggerDiComponent.create().inject(this);
+        DaggerHomeComponent.create().inject(this);
         initViews();
         observeViewModel();
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.release.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
@@ -29,7 +30,7 @@ import javax.inject.Inject;
 /**
  *
  */
-public class ReleasesActivity extends AppCompatActivity {
+public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
 
     /* */
     @Inject

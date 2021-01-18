@@ -18,7 +18,6 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
-import com.coppel.rhconecta.dev.system.notification.CoppelNotificationManager;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;

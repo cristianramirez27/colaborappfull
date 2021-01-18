@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
@@ -24,11 +25,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
-public class VisionariesActivity extends AppCompatActivity {
+/* */
+public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
 
     /* */
     @Inject

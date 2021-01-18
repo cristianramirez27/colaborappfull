@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -9,30 +8,31 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeManager;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
@@ -46,7 +46,6 @@ import com.coppel.rhconecta.dev.business.models.ExternalUrlResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
-import com.coppel.rhconecta.dev.business.models.LogoutResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
@@ -56,9 +55,11 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
+import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
-import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
@@ -88,9 +89,9 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,13 +113,14 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
@@ -129,7 +131,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICAT
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -193,11 +194,20 @@ public class HomeActivity
     private String goTosection = "";
     private CoppelServicesPresenter coppelServicesPresenter;
 
+    /* */
+    @Inject
+    public HomeActivityViewModel homeActivityViewModel;
+
+    /**
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         notifications = new int[]{0, 0, 0};
         setContentView(R.layout.activity_home);
+        DaggerAnalyticsComponent.create().inject(this);
+
         ButterKnife.bind(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         getWindow().setBackgroundDrawable(null);
@@ -235,6 +245,52 @@ public class HomeActivity
             NotificationDestination destination = (NotificationDestination) IntentExtension
                     .getSerializableExtra(getIntent(), NotificationDestination.NOTIFICATION_DESTINATION);
             navigateToDestination(destination);
+        }
+        observeViewModel();
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkoutAnalyticsTime();
+    }
+
+    /**
+     *
+     */
+    private void checkoutAnalyticsTime() {
+        AnalyticsTimeManager atm = AnalyticsTimeManager.getInstance();
+        AnalyticsFlow analyticsFlow = atm.getAnalyticsFlow();
+        if (analyticsFlow == null)
+            return;
+        long totalTimeInSeconds = atm.end();
+        homeActivityViewModel.sendTimeByAnalyticsFlow(analyticsFlow, totalTimeInSeconds);
+    }
+
+    /**
+     *
+     */
+    private void observeViewModel() {
+        homeActivityViewModel.getSendTimeByAnalyticsFlowStatus()
+                .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
+    }
+
+    /**
+     *
+     */
+    private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus){
+        switch (processStatus) {
+            case LOADING: break;
+            case FAILURE:
+                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                AnalyticsTimeManager.getInstance().clear();
+                break;
+            case COMPLETED:
+                AnalyticsTimeManager.getInstance().clear();
+                break;
         }
     }
 
@@ -583,6 +639,7 @@ public class HomeActivity
         Intent intentReleases = new IntentBuilder(new Intent(this, ReleasesActivity.class))
                 .putSerializableExtra(ReleasesActivity.ACCESS_OPTION, accessOption)
                 .build();
+        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.RELEASES);
         startActivity(intentReleases);
     }
 
@@ -592,6 +649,7 @@ public class HomeActivity
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES)
                 .putSerializableExtra(VisionariesActivity.ACCESS_OPTION, accessOption)
                 .build();
+        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.VISIONARIES);
         startActivity(intentVisionaries);
     }
 
@@ -601,6 +659,7 @@ public class HomeActivity
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME)
                 .putSerializableExtra(VisionariesActivity.ACCESS_OPTION, accessOption)
                 .build();
+        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.VIDEOS);
         startActivity(collaboratorAtHome);
     }
 
@@ -610,6 +669,14 @@ public class HomeActivity
     private void navigateToPoll() {
         Intent intent = new Intent(this, PollActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     *
+     */
+    private void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
+        AnalyticsTimeManager atm = AnalyticsTimeManager.getInstance();
+        atm.start(analyticsFlow);
     }
 
     /**

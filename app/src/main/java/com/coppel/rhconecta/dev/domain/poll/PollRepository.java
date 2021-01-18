@@ -5,10 +5,7 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 
-/**
- *
- *
- */
+/* */
 public interface PollRepository {
 
     /**
