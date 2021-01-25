@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeManager;
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
@@ -56,7 +57,6 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
-import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -138,7 +138,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 
 /* */
 public class HomeActivity
-        extends AppCompatActivity
+        extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, View.OnClickListener, ListView.OnItemClickListener,
         ProfileFragment.OnPictureChangedListener, DialogFragmentWarning.OnOptionClick,
         ISurveyNotification, IScheduleOptions {
@@ -261,13 +261,13 @@ public class HomeActivity
     /**
      *
      */
-    private void checkoutAnalyticsTime() {
-        AnalyticsTimeManager atm = AnalyticsTimeManager.getInstance();
-        AnalyticsFlow analyticsFlow = atm.getAnalyticsFlow();
-        if (analyticsFlow == null)
-            return;
-        long totalTimeInSeconds = atm.end();
-        homeActivityViewModel.sendTimeByAnalyticsFlow(analyticsFlow, totalTimeInSeconds);
+    public void checkoutAnalyticsTime() {
+        AnalyticsTimeManager atm = getAnalyticsTimeManager();
+        if (atm.existsFlow()) {
+            AnalyticsFlow analyticsFlow = atm.getAnalyticsFlow();
+            long totalTimeInSeconds = atm.end();
+            homeActivityViewModel.sendTimeByAnalyticsFlow(analyticsFlow, totalTimeInSeconds);
+        }
     }
 
     /**
@@ -281,15 +281,16 @@ public class HomeActivity
     /**
      *
      */
-    private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus){
+    private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
         switch (processStatus) {
-            case LOADING: break;
+            case LOADING:
+                break;
             case FAILURE:
                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
-                AnalyticsTimeManager.getInstance().clear();
+                getAnalyticsTimeManager().clear();
                 break;
             case COMPLETED:
-                AnalyticsTimeManager.getInstance().clear();
+                getAnalyticsTimeManager().clear();
                 break;
         }
     }
@@ -298,6 +299,8 @@ public class HomeActivity
      *
      */
     private void navigateToDestination(NotificationDestination notificationDestination) {
+        checkoutAnalyticsTime();
+
         AccessOption accessOption = AccessOption.MENU;
         switch (notificationDestination) {
             case HOLIDAYS:
@@ -504,11 +507,14 @@ public class HomeActivity
      *
      */
     public void navigationMenu(String tag, AccessOption accessOption) {
+        checkoutAnalyticsTime();
+
         if (DeviceManager.isOnline(this)) {
             switch (tag) {
                 case OPTION_HOME:
                     fragmentManager.popBackStack(HomeMainFragment.TAG, 0);
                     dlHomeContainer.closeDrawers();
+                    getAnalyticsTimeManager().clear();
                     break;
                 case OPTION_NOTICE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)) {
@@ -519,19 +525,24 @@ public class HomeActivity
                 case OPTION_PAYROLL_VOUCHER:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)) {
                         showBlockDialog();
-                    } else
+                    } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.PAYROLL_VOUCHER);
                         replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
+                    }
                     break;
                 case OPTION_BENEFITS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS).equals(YES)) {
                         showBlockDialog();
-                    } else
+                    } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.BENEFITS);
                         replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
+                    }
                     break;
                 case OPTION_SAVING_FUND:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_SAVINGS).equals(YES)) {
                         showBlockDialog();
                     } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.SAVING_FUND);
                         replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
                         RealmHelper.deleteNotifications(
                                 AppUtilities.getStringFromSharedPreferences(
@@ -557,13 +568,16 @@ public class HomeActivity
                 case OPTION_LETTERS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)) {
                         showBlockDialog();
-                    } else
+                    } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.LETTERS);
                         replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
+                    }
                     break;
                 case OPTION_EXPENSES:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)) {
                         showBlockDialog();
                     } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
                             replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                         } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
@@ -578,6 +592,7 @@ public class HomeActivity
                     executeOptionHolidays();
                     break;
                 case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
+                    initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                     NavigationUtil.openActivityToAuthorize(
                             this,
@@ -600,14 +615,18 @@ public class HomeActivity
                 case OPTION_COVID_SURVEY:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)) {
                         showBlockDialog();
-                    } else
+                    } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
                         getExternalUrl(COVID_SURVEY);
+                    }
                     break;
                 case OPTION_COLLAGE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)) {
                         showBlockDialog();
-                    } else
+                    } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         getCollageURL();
+                    }
                 case OPTION_POLL:
                     break;
             }
@@ -623,6 +642,7 @@ public class HomeActivity
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
             showBlockDialog();
         } else {
+            initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS);
             if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
                 replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
             } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
@@ -666,7 +686,7 @@ public class HomeActivity
     /**
      *
      */
-    private void navigateToPoll() {
+    private void  navigateToPoll() {
         Intent intent = new Intent(this, PollActivity.class);
         startActivity(intent);
     }
@@ -675,7 +695,7 @@ public class HomeActivity
      *
      */
     private void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
-        AnalyticsTimeManager atm = AnalyticsTimeManager.getInstance();
+        AnalyticsTimeManager atm = getAnalyticsTimeManager();
         atm.start(analyticsFlow);
     }
 

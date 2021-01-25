@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.di.poll.DaggerPollComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
@@ -32,7 +34,7 @@ import javax.inject.Inject;
  *
  *
  */
-public class PollActivity extends AppCompatActivity {
+public class PollActivity extends AnalyticsTimeAppCompatActivity {
 
     /* */
     @Inject
@@ -52,16 +54,23 @@ public class PollActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poll);
         DaggerPollComponent.create().inject(this);
+        initAnalyticsTimer();
         initViews();
         observeViewModel();
         execute();
+    }
+
+    /**
+     *
+     */
+    private void initAnalyticsTimer() {
+        getAnalyticsTimeManager().start(AnalyticsFlow.POLL);
     }
 
     /**

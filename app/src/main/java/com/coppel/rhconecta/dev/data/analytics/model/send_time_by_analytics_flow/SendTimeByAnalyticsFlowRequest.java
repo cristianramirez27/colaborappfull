@@ -38,9 +38,18 @@ public class SendTimeByAnalyticsFlowRequest {
      */
     private int getClvSistemaByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
         switch (analyticsFlow) {
-            case RELEASES: return 19;
-            case VISIONARIES: return 18;
+            case SAVING_FUND: return 9;
+            case HOLIDAYS: return 10;
+            case TRAVEL_EXPENSES: return 11;
             case VIDEOS: return 17;
+            case VISIONARIES: return 18;
+            case RELEASES: return 19;
+            case POLL: return 20;
+            case PAYROLL_VOUCHER: return 21;
+            case LETTERS: return 22;
+            case BENEFITS: return 23;
+            case COLLAGE: return 24;
+            case COVID_SURVEY: return 25;
         }
         return 0;
     }

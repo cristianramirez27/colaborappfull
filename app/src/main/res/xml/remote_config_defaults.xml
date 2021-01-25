@@ -18,6 +18,10 @@
         <value>rhconecta/api/v2/cartasGenerar</value>
     </entry>
     <entry>
+        <key>ENDPOINT_SECTION_TIME</key>
+        <value>v3/tiempovisitaseccion</value>
+    </entry>
+    <entry>
         <key>ENDPOINT_CARTASCONFIG</key>
         <value>rhconecta/api/v2/cartasConfig</value>
     </entry>

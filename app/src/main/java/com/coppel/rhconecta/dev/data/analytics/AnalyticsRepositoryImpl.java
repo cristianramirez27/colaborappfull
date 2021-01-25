@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowRequest;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowResponse;
@@ -56,8 +57,7 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
         );
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        // TODO: ServicesConstants.TIEMPO_VISITA_SECCION
-        String url = "v3/tiempovisitaseccion";
+        String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
         apiService
                 .sendTimeByAnalyticsFlow(authHeader, url, request)
                 .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
@@ -83,14 +83,14 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                     SendTimeByAnalyticsFlowResponse body = response.body();
                     assert body != null;
                     SendTimeByAnalyticsFlowResponse.Response responseInstance = body.data.response;
-                    if(responseInstance.wasFailed())
+                    if (responseInstance.wasFailed())
                         callback.onResult(getSendTimeByAnalyticsFlowResponse(responseInstance.userMessage));
                     else {
                         Either<Failure, UseCase.None> result =
                                 new Either<Failure, UseCase.None>().new Right(UseCase.None.getInstance());
                         callback.onResult(result);
                     }
-                } catch (Exception exception){
+                } catch (Exception exception) {
                     callback.onResult(getSendTimeByAnalyticsFlowResponse(exception.getMessage()));
                 }
             }

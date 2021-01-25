@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeManager;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
@@ -16,11 +18,14 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
+import com.coppel.rhconecta.dev.views.activities.HomeActivityViewModel;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -29,6 +34,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
+
+import javax.inject.Inject;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
@@ -40,8 +47,12 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 
 /* */
 public class SplashScreenActivity
-        extends AppCompatActivity
+        extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
+
+    /* */
+    @Inject
+    public SplashViewModel splashViewModel;
 
     /* */
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -68,6 +79,8 @@ public class SplashScreenActivity
         setupFirebaseInstanceId();
         setupViews();
         initValues();
+        observeViewModel();
+        checkAndSendAnalyticsIfExists();
     }
 
     /**
@@ -92,6 +105,7 @@ public class SplashScreenActivity
      *
      */
     private void initValues() {
+        DaggerAnalyticsComponent.create().injectSplash(this);
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
         if (notificationType == null)
@@ -100,6 +114,43 @@ public class SplashScreenActivity
             notificationDestination = notificationType.getNotificationDestination();
             setupGoto();
             startApp();
+        }
+    }
+
+    /**
+     *
+     */
+    private void checkAndSendAnalyticsIfExists() {
+        AnalyticsTimeManager atm = getAnalyticsTimeManager();
+        if (atm.existsFlow()) {
+            AnalyticsFlow analyticsFlow = atm.getAnalyticsFlow();
+            long totalTimeInSeconds = atm.end();
+            splashViewModel.sendTimeByAnalyticsFlow(analyticsFlow, totalTimeInSeconds);
+        }
+    }
+
+    /**
+     *
+     */
+    private void observeViewModel() {
+        splashViewModel.getSendTimeByAnalyticsFlowStatus()
+                .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
+    }
+
+    /**
+     *
+     */
+    private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
+        switch (processStatus) {
+            case LOADING:
+                break;
+            case FAILURE:
+                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
+                getAnalyticsTimeManager().clear();
+                break;
+            case COMPLETED:
+                getAnalyticsTimeManager().clear();
+                break;
         }
     }
 

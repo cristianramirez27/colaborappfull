@@ -16,10 +16,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class HomeViewModel {
 
     // Use cases

@@ -38,7 +38,7 @@ public class AppUtilities {
     /**
      *
      */
-    private static SharedPreferences getSharedPreferences(Context context){
+    public static SharedPreferences getSharedPreferences(Context context){
         return context.getSharedPreferences(
                 AppConstants.SHARED_PREFERENCES_NAME,
                 Context.MODE_PRIVATE

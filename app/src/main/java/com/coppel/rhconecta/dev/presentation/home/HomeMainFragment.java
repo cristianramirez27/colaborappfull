@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
@@ -188,6 +189,8 @@ public class HomeMainFragment
     public void onStart() {
         super.onStart();
         execute();
+        if (getActivity() instanceof HomeActivity)
+            ((HomeActivity) getActivity()).checkoutAnalyticsTime();
     }
 
     /**

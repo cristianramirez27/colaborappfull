@@ -9,9 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-/**
- *
- */
+/* */
 public class SharedPreferencesExtension {
 
     /**
@@ -88,6 +86,38 @@ public class SharedPreferencesExtension {
             } catch (Exception ignore) { /* PASS */ }
             // Si no es posible obtener el valor de forma String o Integer, se retorna el valor
             // por omision.
+            return defaultValue;
+        }
+    }
+
+    /**
+     *
+     */
+    public static void putLong(
+            SharedPreferences sharedPreferences,
+            String key,
+            long value
+    ){
+        String encryptedSerializable = EncryptionAES.encryptLong(value);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, encryptedSerializable);
+        editor.apply();
+    }
+
+    /**
+     *
+     */
+    public static long getLong(
+            SharedPreferences sharedPreferences,
+            String key,
+            long defaultValue
+    ){
+        try {
+            String encryptedValue = sharedPreferences.getString(key, null);
+            if (encryptedValue == null)
+                return defaultValue;
+            return EncryptionAES.decryptLong(encryptedValue);
+        } catch (Exception exception) {
             return defaultValue;
         }
     }
