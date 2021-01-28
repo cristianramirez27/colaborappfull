@@ -81,6 +81,7 @@ public class AnalyticsTimeManager {
      *
      */
     public void breakPoint() {
+        if (analyticsFlow == null) return;
         if (analyticsFlow.availableRunOnBackgroundThreat())
             return;
         totalTimeInSeconds += getRangeTimeInSeconds();
