@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.coppel.rhconecta.dev"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionName "2.7"
         versionCode 80
@@ -104,6 +104,9 @@ dependencies {
     implementation "com.google.firebase:firebase-config:${rootProject.ext.firebaseConfigVersion}"
     // PageIndicator
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
+
+    // App Center
+    implementation "com.microsoft.appcenter:appcenter-crashes:4.1.0"
 
     // Testing
     testImplementation 'junit:junit:4.12'
