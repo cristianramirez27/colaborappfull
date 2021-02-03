@@ -1,8 +1,7 @@
 package com.coppel.rhconecta.dev.visionarios;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.coppel.rhconecta.dev.R;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -22,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         msg = "Error al registrar";
                     }
-                    Log.d(TAG, msg);
                 });
     }
 

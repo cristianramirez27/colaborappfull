@@ -12,7 +12,7 @@
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContainer"
         android:layout_above="@+id/layoutBtn"
         android:layout_width="match_parent"
@@ -39,7 +39,6 @@
                     android:id="@+id/headerColaborator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
 
             </RelativeLayout>
 
@@ -79,7 +78,6 @@
                         android:textColor="@color/colorSecundaryCoppelVerde"
                         android:textSize="13sp" />
 
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -109,7 +107,6 @@
                         android:textColor="@color/colorMelon"
                         android:textSize="13sp" />
 
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -136,7 +133,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-
                         <ImageView
                             android:id="@+id/iconList"
                             android:layout_toLeftOf="@id/iconCalendar"
@@ -145,7 +141,6 @@
                             app:srcCompat="@drawable/ic_calendar_list_disable"
                             android:layout_width="30dp"
                             android:layout_height="30dp" />
-
 
                         <ImageView
                             android:id="@+id/iconCalendar"
@@ -158,17 +153,13 @@
 
                     </RelativeLayout>
 
-
-
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:layout_below="@+id/layoutOptions"
                     android:id="@+id/layoutData"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
 
                     <LinearLayout
                         android:visibility="visible"
@@ -179,15 +170,13 @@
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcvSolicitudes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="8dp" />
 
                     </LinearLayout>
-
-
 
                     <LinearLayout
                         android:id="@+id/layoutCalendar"
@@ -197,7 +186,6 @@
                         android:visibility="gone"
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
-
 
                         <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
                             android:id="@+id/collapsibleCalendarView"
@@ -212,8 +200,7 @@
                             app:buttonLeft_drawableTintColor="@android:color/white"
                             app:buttonRight_drawableTintColor="@android:color/white"
                             app:expandIconColor="@android:color/white"
-                            app:eventColor="@android:color/white">
-                        </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+                            app:eventColor="@android:color/white"/>
 
                     </LinearLayout>
 
@@ -222,7 +209,7 @@
             </RelativeLayout>
 
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
 
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

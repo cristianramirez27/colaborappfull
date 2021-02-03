@@ -2,25 +2,17 @@ package com.coppel.rhconecta.dev.views.activities;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.benefits.DiscountsFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.google.gson.Gson;
@@ -60,9 +52,10 @@ public class BenefitsActivity extends AppCompatActivity  {
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
 
-        category = (BenefitsCategoriesResponse.Category) getIntent().getSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS);
-        benefitsRequestData = (BenefitsRequestData) getIntent().getSerializableExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA);
-
+        category = (BenefitsCategoriesResponse.Category) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS);
+        benefitsRequestData = (BenefitsRequestData) IntentExtension
+                .getSerializableExtra(getIntent(), AppConstants.BUNDLE_SELECTED_BENEFIT_DATA);
 
         DiscountsFragment discountsFragment = new DiscountsFragment();
         Bundle bundle = new Bundle();

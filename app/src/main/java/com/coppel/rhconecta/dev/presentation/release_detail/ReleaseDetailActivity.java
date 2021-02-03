@@ -1,12 +1,8 @@
 package com.coppel.rhconecta.dev.presentation.release_detail;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,14 +12,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.release.DaggerReleaseComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
 
+import io.noties.markwon.Markwon;
+import io.noties.markwon.html.HtmlPlugin;
+
 /**
- *
  *
  */
 public class ReleaseDetailActivity extends AppCompatActivity {
@@ -32,7 +32,9 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     @Inject
     public ReleaseDetailViewModel releaseDetailViewModel;
     public static String RELEASE_ID = "RELEASE_ID";
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
     private int releaseId;
+    private AccessOption accessOption;
     /* VIEWS */
     private ImageView ivHeader;
     private TextView tvHeader;
@@ -43,7 +45,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
 
     /**
-     *
      *
      */
     @Override
@@ -59,16 +60,13 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initValues(){
-        releaseId = getIntent().getIntExtra(RELEASE_ID, -1);
-        if(releaseId == -1)
-            finish();
+        releaseId = IntentExtension.getIntExtra(getIntent(), RELEASE_ID);
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
     /**
-     *
      *
      */
     private void initViews(){
@@ -84,7 +82,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void observeViewModel(){
         releaseDetailViewModel.getLoadReleaseStatus().observe(this, this::getLoadReleaseObserver);
@@ -92,7 +89,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
 
     /**
-     *
      *
      */
     private void getLoadReleaseObserver(ProcessStatus processStatus){
@@ -102,7 +98,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), releaseDetailViewModel.getFailure().toString());
                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:
@@ -112,7 +107,6 @@ public class ReleaseDetailActivity extends AppCompatActivity {
     }
 
     /**
-     *
      *
      */
     private void initToolbar(){
@@ -126,40 +120,28 @@ public class ReleaseDetailActivity extends AppCompatActivity {
 
     /**
      *
-     *
-     *
      */
     private void setReleaseInformation(Release release){
-        // Images
-        /*Glide.with(this)
-                .load(release.getHeaderImage())
-                .error(R.drawable.ic_image_grey_300_48dp)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(ivHeader);*/
         Glide.with(this)
                 .load(release.getImage())
                 .error(R.drawable.ic_image_grey_300_48dp)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivImage);
-        // Texts
-        /*tvHeader.setText(release.getHeader());*/
         tvTitle.setText(release.getTitle());
-        Spanned content = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ?
-                Html.fromHtml(release.getContent(), Html.FROM_HTML_MODE_COMPACT) :
-                Html.fromHtml(release.getContent());
-        tvContent.setText(content);
+        Markwon markwon = Markwon.builder(this)
+                .usePlugin(HtmlPlugin.create())
+                .build();
+        markwon.setMarkdown(tvContent, release.getContent());
     }
 
     /**
-     *
      *
      */
     private void execute(){
-        releaseDetailViewModel.loadRelease(releaseId);
+        releaseDetailViewModel.loadRelease(releaseId, accessOption);
     }
 
     /**
-     *
      *
      */
     @Override

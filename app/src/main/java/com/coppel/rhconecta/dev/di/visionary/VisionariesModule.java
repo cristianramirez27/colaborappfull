@@ -6,17 +6,12 @@ import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- *
- *
- */
+/* */
 @Module
 public class VisionariesModule {
 
     /**
      *
-     *
-     * @return
      */
     @Provides
     public VisionaryRepository provideVisionaryRepository() {

@@ -4,17 +4,13 @@ import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 
 import java.util.List;
 
-/**
- *
- *
- */
+/* */
 public class GetVisionariesPreviewsResponse {
 
     /* */
     public Data data;
 
     /**
-     *
      *
      */
     public static class Data {
@@ -25,7 +21,6 @@ public class GetVisionariesPreviewsResponse {
     }
 
     /**
-     *
      *
      */
     public static class VisionaryPreviewServer {
@@ -41,12 +36,12 @@ public class GetVisionariesPreviewsResponse {
         /* */
         public int num_vistas;
         /* */
+        public int clv_edito;
+        /* */
         public int opc_visto;
 
         /**
          *
-         *
-         * @return
          */
         public VisionaryPreview toVisionaryPreview() {
             return new VisionaryPreview(
@@ -55,6 +50,7 @@ public class GetVisionariesPreviewsResponse {
                     fec_video,
                     img_videoPreview,
                     num_vistas,
+                    clv_edito == 1,
                     opc_visto == 1
             );
         }

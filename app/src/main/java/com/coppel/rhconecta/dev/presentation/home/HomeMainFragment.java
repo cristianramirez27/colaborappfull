@@ -1,36 +1,36 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.di.home.DaggerDiComponent;
+import com.coppel.rhconecta.dev.di.home.DaggerHomeComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter;
@@ -48,8 +48,6 @@ import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +58,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
-/**
- *
- *
- */
+/* */
 public class HomeMainFragment
         extends Fragment
         implements HomeMenuRecyclerViewAdapter.OnItemClick, DialogFragmentWarning.OnOptionClick {
@@ -81,14 +79,8 @@ public class HomeMainFragment
     ViewPagerIndicator tabIndicator;
     @BindView(R.id.rcvMenu)
     RecyclerView rcvMenu;
-    @BindView(R.id.imgvArrowLeft)
-    ImageView imgvArrowLeft;
-    @BindView(R.id.imgvArrowRight)
-    ImageView imgvArrowRight;
     @BindView(R.id.txvFavorites)
     TextView txvFavorites;
-    @BindView(R.id.viewBackFavorites)
-    View viewBackFavorites;
     private long mLastClickTime = 0;
     private boolean reloadDashboard;
     private ISurveyNotification ISurveyNotification;
@@ -98,7 +90,6 @@ public class HomeMainFragment
     private ViewPager viewPagerBanners;
 
     /**
-     *
      *
      */
     @Override
@@ -121,11 +112,15 @@ public class HomeMainFragment
 
     /**
      *
-     *
-     * @param view
      */
-    private void onSurveyIconClickListener(View view){
-        if(homeViewModel.getBadges() == null){
+    private void onSurveyIconClickListener(View view) {
+        // Verifica que la opcion de encuestas este disponible
+        if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES)) {
+            showBlockOptionWarningDialog();
+            return;
+        }
+        // Verifica que los badges hayan sido cargados correctamente.
+        if (homeViewModel.getBadges() == null) {
             String message = getString(R.string.not_available_service);
             SingleActionDialog dialog = new SingleActionDialog(
                     getActivity(),
@@ -137,16 +132,18 @@ public class HomeMainFragment
             dialog.setCancelable(false);
             try {
                 dialog.show();
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
             return;
         }
+        // Coloca la informacion en la opcion de encuesta
         Badge badge = homeViewModel.getBadges().get(Badge.Type.POLL);
-        if(badge == null) return;
-        if(badge.getValue() > 0){
+        if (badge == null) return;
+        if (badge.getValue() > 0) {
             Intent intent = new Intent(getContext(), PollActivity.class);
             startActivity(intent);
         } else {
-            SingleActionDialog dialog = new SingleActionDialog (
+            SingleActionDialog dialog = new SingleActionDialog(
                     getActivity(),
                     getString(R.string.not_available_poll_title),
                     getString(R.string.not_available_poll_content),
@@ -159,36 +156,51 @@ public class HomeMainFragment
 
     /**
      *
+     */
+    private void showBlockOptionWarningDialog() {
+        try {
+            String message = AppUtilities
+                    .getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK);
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(
+                    Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                    DialogFragmentWarning.TAG
+            );
+        } catch (Exception ignore) { /* IGNORE */ }
+    }
+
+    /**
      *
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        DaggerDiComponent.create().inject(this);
+        DaggerHomeComponent.create().inject(this);
         initViews();
         observeViewModel();
     }
 
     /**
      *
-     *
      */
     @Override
     public void onStart() {
         super.onStart();
         execute();
+        if (getActivity() instanceof HomeActivity)
+            ((HomeActivity) getActivity()).checkoutAnalyticsTime();
     }
 
     /**
      *
-     *
      */
-    private void initViews(){
+    private void initViews() {
         initBannersViews();
     }
 
     /**
-     *
      *
      */
     private void observeViewModel() {
@@ -198,15 +210,13 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void execute(){
+    private void execute() {
         homeViewModel.loadBadges();
         homeViewModel.loadBanners();
     }
 
     /**
-     *
      *
      */
     private void getLoadBannersObserver(ProcessStatus processStatus) {
@@ -218,10 +228,8 @@ public class HomeMainFragment
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), homeViewModel.getFailure().toString());
-                if(isOnline()) {
+                if (isOnline()) {
                     Failure failure = homeViewModel.getFailure();
-                    Log.e(getClass().getName(), failure.toString());
                     String message = getString(R.string.not_available_service);
                     SingleActionDialog dialog = new SingleActionDialog(
                             getActivity(),
@@ -233,19 +241,18 @@ public class HomeMainFragment
                     dialog.setCancelable(false);
                     try {
                         dialog.show();
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) {
+                    }
                 }
                 break;
             case COMPLETED:
-
-                if(homeViewModel.getBanners() != null)
+                if (homeViewModel.getBanners() != null)
                     setBanners(homeViewModel.getBanners());
                 break;
         }
     }
 
     /**
-     *
      *
      */
     private void getLoadBadgesObserver(ProcessStatus processStatus) {
@@ -258,7 +265,6 @@ public class HomeMainFragment
                 break;
             case FAILURE:
                 Failure failure = homeViewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
                 String message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         getContext(),
@@ -271,10 +277,11 @@ public class HomeMainFragment
                 setBadges(new HashMap<>());
                 try {
                     dialog.show();
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
                 break;
             case COMPLETED:
-                if(homeViewModel.getBadges() != null)
+                if (homeViewModel.getBadges() != null)
                     setBadges(homeViewModel.getBadges());
                 break;
         }
@@ -282,18 +289,16 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void initBannersViews(){
+    private void initBannersViews() {
         assert getView() != null;
         viewPagerBanners = getView().findViewById(R.id.vpBanner);
     }
 
     /**
      *
-     *
      */
-    private void setBanners(List<Banner> banners){
+    private void setBanners(List<Banner> banners) {
         viewPagerBanners.setAdapter(
                 new BannerViewPagerAdapter(
                         getChildFragmentManager(),
@@ -306,10 +311,9 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private void setBadges(Map<Badge.Type, Badge> badges){
-        if(badges.isEmpty()) {
+    private void setBadges(Map<Badge.Type, Badge> badges) {
+        if (badges.isEmpty()) {
             HashMap<Badge.Type, Badge> map = new HashMap<>();
             map.put(Badge.Type.RELEASE, new Badge(0, Badge.Type.RELEASE));
             map.put(Badge.Type.VISIONARY, new Badge(0, Badge.Type.VISIONARY));
@@ -329,46 +333,62 @@ public class HomeMainFragment
 
     /**
      *
-     *
      */
-    private BannerFragment.OnBannerClickListener getOnBannerClickListener(){
+    private BannerFragment.OnBannerClickListener getOnBannerClickListener() {
         return banner -> {
-            if(!isOnline()) {
+            if (!isOnline()) {
                 showConecctionError();
                 return;
             }
-            Intent intent = null;
-            if(banner.isRelease()) {
-                intent = new Intent(getContext(), ReleaseDetailActivity.class);
-                intent.putExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()));
+            Intent intent;
+            AccessOption accessOption = AccessOption.BANNER;
+            if (banner.isRelease()) {
+                intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
+                        .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
+                        .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
+                        .build();
+                startActivity(intent);
             }
-            if(banner.isVisionary() || banner.isVisionaryAtHome()){
+            if (banner.isVisionary() || banner.isVisionaryAtHome()) {
                 VisionaryType type = banner.isVisionary() ?
                         VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
-                intent = new Intent(getContext(), VisionaryDetailActivity.class);
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId());
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage());
-                intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, type);
-            }
-            if(intent != null)
+                intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
+                        .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId())
+                        .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
+                        .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
+                        .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
+                        .build();
                 startActivity(intent);
+            }
+            if (banner.isLink() && banner.getUrlLink() != null) {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.chrome");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed so allow user to choose instead
+                    intent.setPackage(null);
+                    startActivity(intent);
+                }
+            }
         };
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ISurveyNotification = (ISurveyNotification)context;
+        ISurveyNotification = (ISurveyNotification) context;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(!isOnline()){
+        if (!isOnline()) {
             showConecctionError();
             return;
         }
-        if(reloadDashboard){
+        if (reloadDashboard) {
             reloadDashboard = false;
             updateDashboard();
         }
@@ -381,9 +401,13 @@ public class HomeMainFragment
             RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
             ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
             reloadDashboard = true;
-        } catch (Exception ignore){ }
+        } catch (Exception ignore) {
+        }
     }
 
+    /**
+     *
+     */
     private void initMenu() {
         rcvMenu.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -397,18 +421,14 @@ public class HomeMainFragment
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new HomeMenuItemTouchHelperCallback(homeMenuRecyclerViewAdapter));
         rcvMenu.setAdapter(homeMenuRecyclerViewAdapter);
         itemTouchHelper.attachToRecyclerView(rcvMenu);
-        viewBackFavorites.post(() -> {
-            int backgroundFavoritesHeight = (homeMenuRecyclerViewAdapter.getItemSize() + txvFavorites.getHeight() + AppUtilities.dpToPx(getResources(), 8));
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, backgroundFavoritesHeight);
-            viewBackFavorites.setLayoutParams(layoutParams);
-        });
     }
 
     @Override
     public void onItemClick(String tag) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) return;
         mLastClickTime = SystemClock.elapsedRealtime();
-        parent.navigationMenu(tag);
+        AccessOption accessOption = AccessOption.ICON;
+        parent.navigationMenu(tag, accessOption);
     }
 
     @Override
@@ -424,7 +444,8 @@ public class HomeMainFragment
     }
 
     @Override
-    public void onLeftOptionClick() { }
+    public void onLeftOptionClick() {
+    }
 
     @Override
     public void onRightOptionClick() {
@@ -438,8 +459,8 @@ public class HomeMainFragment
         dialogFragmentWarning.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    private void updateDashboard(){
-        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false,notifications));
+    private void updateDashboard() {
+        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications));
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
     }
 

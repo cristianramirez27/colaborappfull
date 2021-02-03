@@ -1,9 +1,9 @@
 package com.coppel.rhconecta.dev.presentation.visionaries;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.coppel.rhconecta.dev.domain.common.UseCase;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionariesPreviewsUseCase;
@@ -38,9 +38,10 @@ public class VisionariesViewModel {
      *
      *
      */
-    void loadReleasesPreviews(VisionaryType type) {
+    void loadReleasesPreviews(VisionaryType type, AccessOption accessOption) {
         loadVisionariesPreviewsStatus.postValue(ProcessStatus.LOADING);
-        GetVisionariesPreviewsUseCase.Params params = new GetVisionariesPreviewsUseCase.Params(type);
+        GetVisionariesPreviewsUseCase.Params params =
+                new GetVisionariesPreviewsUseCase.Params(type, accessOption);
         getVisionariesPreviewsUseCase.run(params, result ->
                 result.fold(this::onLoadVisionariesPreviewsFailure, this::onLoadVisionariesPreviewsRight)
         );

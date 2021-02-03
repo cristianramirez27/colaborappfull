@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;

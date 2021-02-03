@@ -4,7 +4,7 @@ import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
 
 import java.io.Serializable;
 
-public class BenefitsRequestData implements Serializable{
+public class BenefitsRequestData implements Serializable {
 
     private BenefitsType benefits_type;
     private int solicitud;

@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.business.models;
 
 import java.io.Serializable;
 
-public class LoanSavingFundResponse extends CoppelGeneralParameterResponse {
+public class LoanSavingFundResponse extends CoppelGeneralParameterResponse implements Serializable {
     private Data data;
 
     public Data getData() {

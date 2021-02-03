@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:orientation="vertical">
 
-
-
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbarFadeDuration="1"
         android:fadeScrollbars="true"
         android:scrollbarSize="0.5dp">
 
-
-    <LinearLayout android:orientation="vertical"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <LinearLayout
                 android:layout_gravity="center"
@@ -61,21 +55,17 @@
 
             </LinearLayout>
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_below="@+id/headerItinerario"
-                    android:id="@+id/rcvViajeros"
-                    android:paddingRight="20dp"
-                    android:paddingLeft="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/headerItinerario"
+                android:id="@+id/rcvViajeros"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-
-
-    </android.support.v4.widget.NestedScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
 

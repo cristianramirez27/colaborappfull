@@ -3,13 +3,11 @@ package com.coppel.rhconecta.dev.views.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.widget.EditText;
 
 import com.coppel.rhconecta.dev.R;
 
@@ -125,7 +123,6 @@ public class CurrencyEditText extends AppCompatEditText {
 
                 success = true;
             } catch (IllegalArgumentException e) {
-                Log.e(getClass().getCanonicalName(), e.getMessage());
                 locale = getDefaultLocale();
             }
         }
@@ -159,10 +156,8 @@ public class CurrencyEditText extends AppCompatEditText {
             setText(s);
             setSelection(s.length());
             addTextChangedListener(onTextChangeListener);
-        } catch (NumberFormatException e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
-        } catch (NullPointerException e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
+        } catch (NumberFormatException | NullPointerException ignored) {
+            /* PASS */
         }
     }
 
@@ -193,12 +188,9 @@ public class CurrencyEditText extends AppCompatEditText {
             } else {
                 try {
                     text = format(text);
-                } catch (NumberFormatException e) {
-                    Log.e(getClass().getCanonicalName(), e.getMessage());
-                } catch (NullPointerException e) {
-                    Log.e(getClass().getCanonicalName(), e.getMessage());
+                } catch (NumberFormatException | NullPointerException ignored) {
+                    /* PASS */
                 }
-
                 setText(text);
                 setSelection(text.length());
             }
@@ -223,9 +215,7 @@ public class CurrencyEditText extends AppCompatEditText {
         if (mEraseWhenZero) {
             try {
                 return Integer.valueOf(text) == 0;
-            } catch (NumberFormatException e) {
-                Log.e(getClass().getCanonicalName(), e.getMessage());
-            }
+            } catch (NumberFormatException ignored) { /* PASS */ }
         }
 
         return false;

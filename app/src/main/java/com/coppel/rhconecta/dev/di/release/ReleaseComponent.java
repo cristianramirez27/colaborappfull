@@ -9,7 +9,6 @@ public interface ReleaseComponent {
 
     /**
      *
-     * @param releaseDetailActivity
      */
     void inject(ReleaseDetailActivity releaseDetailActivity);
 

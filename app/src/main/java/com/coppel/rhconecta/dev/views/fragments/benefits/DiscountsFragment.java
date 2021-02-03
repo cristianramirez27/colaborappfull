@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
-import com.coppel.rhconecta.dev.business.models.Benefits;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
@@ -28,9 +27,9 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.DialogAlertActivity;
-import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.DiscountsRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -195,35 +194,36 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
     }
 
     private void showCompanyDialog(BenefitsCompaniesResponse.Company company) {
-        Intent intent = new Intent(getActivity(), DialogAlertActivity.class);
-        intent.putExtra(KEY_COMPANY, company);
+        Intent intent = new IntentBuilder(new Intent(getActivity(), DialogAlertActivity.class))
+                .putSerializableExtra(KEY_COMPANY, company)
+                .build();
         startActivity(intent);
-
     }
 
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
+            case ServicesRequestType.BENEFITS:
+                showErrorDialog(coppelServicesError.getMessage());
+                break;
             case ServicesRequestType.LETTERSCONFIG:
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialogFragmentWarning = new DialogFragmentWarning();
-                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-                        dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
-                            @Override
-                            public void onLeftOptionClick() {
-                            }
 
-                            @Override
-                            public void onRightOptionClick() {
-                                dialogFragmentWarning.close();
-                                getActivity().finish();
-                            }
-                        });
-                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                        dialogFragmentLoader.close();
-                    }
+                new Handler().postDelayed(() -> {
+                    dialogFragmentWarning = new DialogFragmentWarning();
+                    dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                    dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+                        @Override
+                        public void onLeftOptionClick() {
+                        }
+
+                        @Override
+                        public void onRightOptionClick() {
+                            dialogFragmentWarning.close();
+                            getActivity().finish();
+                        }
+                    });
+                    dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                    dialogFragmentLoader.close();
                 }, 500);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
@@ -232,6 +232,30 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
                 break;
         }
         hideProgress();
+    }
+
+    /**
+     *
+     */
+    private void showErrorDialog(String message) {
+        new Handler().postDelayed(() -> {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+
+                @Override
+                public void onLeftOptionClick() { }
+
+                @Override
+                public void onRightOptionClick() {
+                    dialogFragmentWarning.close();
+                    getActivity().onBackPressed();
+                }
+
+            });
+            dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            dialogFragmentLoader.close();
+        }, 500);
     }
 
     @Override

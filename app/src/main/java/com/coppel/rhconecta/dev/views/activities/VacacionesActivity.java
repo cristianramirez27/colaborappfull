@@ -2,13 +2,13 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.ColaboratorAditionalDaysHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.ColaboratorCalendarGralPeriodsHolidaysFragment;
@@ -33,7 +34,6 @@ import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCal
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidaySpliceCalendarListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.HolidaysMenuGteFragment;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,11 +84,12 @@ public class VacacionesActivity extends AppCompatActivity implements OnEventList
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        TAG_FRAGMENT =  getIntent().getStringExtra(BUNDLE_OPTION_HOLIDAYS);
-        data = getIntent().getSerializableExtra(BUNDLE_OPTION_DATA_HOLIDAYS);
+        TAG_FRAGMENT = IntentExtension.getStringExtra(getIntent(), BUNDLE_OPTION_HOLIDAYS);
+        data = IntentExtension.getSerializableExtra(getIntent(), BUNDLE_OPTION_DATA_HOLIDAYS);
+
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
-        onEvent(TAG_FRAGMENT,data);
+        onEvent(TAG_FRAGMENT, data);
     }
 
     public void setToolbarTitle(String title) {

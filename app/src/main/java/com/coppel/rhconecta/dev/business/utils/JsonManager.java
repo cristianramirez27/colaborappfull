@@ -55,20 +55,12 @@ public class JsonManager {
     }
 
     public static Object jsonToObject(String json, Type type) {
-
         Object o = null;
         try {
             o = new GsonBuilder()
                     .setDateFormat("dd-MM-yyyy HH:mm:ss")
                     .create().
                             fromJson(json, type);
-
-        }catch (JsonSyntaxException eSyntax){
-
-            Log.e("JSONManager",eSyntax.toString());
-
-
-
         } catch (Exception e) {
             o = null;
         }

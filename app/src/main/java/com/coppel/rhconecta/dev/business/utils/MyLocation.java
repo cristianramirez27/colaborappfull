@@ -78,7 +78,6 @@ public class MyLocation {
 
 
     public static Location find_Location(Context con) {
-        Log.d("Find Location", "in find_location");
         String location_context = Context.LOCATION_SERVICE;
         locationManager = (LocationManager) con.getSystemService(location_context);
         List<String> providers = locationManager.getProviders(true);

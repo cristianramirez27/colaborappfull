@@ -7,15 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -72,10 +71,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.COMPLEMENTO_A_AUTORIZAR;
-import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROL;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROLES_GTE;
-import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.CONTROL_LIQUIDO_NOLIQUIDO;
-import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.SOLICITUD;
 import static com.coppel.rhconecta.dev.business.Enums.DetailExpenseTravelType.SOLICITUD_A_AUTORIZAR;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_EXPENSES_TRAVEL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
@@ -86,7 +82,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MORE_DETA
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MORE_DETAIL_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REFUSE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 /**

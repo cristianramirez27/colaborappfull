@@ -2,17 +2,20 @@ package com.coppel.rhconecta.dev.presentation.visionaries;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionariesComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
@@ -22,26 +25,26 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
-public class VisionariesActivity extends AppCompatActivity {
+/* */
+public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
+
+    /* */
+    @Inject
+    public VisionariesViewModel visionariesViewModel;
+
+    /* VIEWS */
+    private RecyclerView rvReleases;
+    private ProgressBar loader;
 
     /* */
     public static String TYPE = "TYPE";
     private VisionaryType visionaryType;
-    /* */
-    @Inject
-    public VisionariesViewModel visionariesViewModel;
-    /* */
-    private RecyclerView rvReleases;
-    /* */
-    private ProgressBar loader;
 
+    /* */
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
+    private AccessOption accessOption;
 
     /**
-     *
      *
      */
     @Override
@@ -56,7 +59,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onStart() {
@@ -66,14 +68,13 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initValues(){
-        visionaryType = (VisionaryType) getIntent().getSerializableExtra(TYPE);
+        visionaryType = (VisionaryType) IntentExtension.getSerializableExtra(getIntent(), TYPE);
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
     /**
-     *
      *
      */
     private void initViews(){
@@ -85,7 +86,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void observeViewModel(){
         visionariesViewModel.getLoadVisionariesPreviewsStatus()
@@ -94,14 +94,12 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void execute(){
-        visionariesViewModel.loadReleasesPreviews(visionaryType);
+        visionariesViewModel.loadReleasesPreviews(visionaryType, accessOption);
     }
 
     /**
-     *
      *
      */
     private void getLoadVisionariesPreviewsObserver(ProcessStatus processStatus){
@@ -111,7 +109,6 @@ public class VisionariesActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), visionariesViewModel.getFailure().toString());
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.visionaries_failure_default_title),
@@ -130,7 +127,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void initToolbar(){
         PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
@@ -147,7 +143,6 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void setVisionariesPreviews(List<VisionaryPreview> visionariesPreviews){
         VisionaryPreviewAdapter adapter =
@@ -157,18 +152,18 @@ public class VisionariesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     private void onVisionaryPreviewClickListener(VisionaryPreview visionaryPreview){
-        Intent intent = new Intent(this, VisionaryDetailActivity.class);
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId());
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage());
-        intent.putExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType);
+        Intent intent = new IntentBuilder(new Intent(this, VisionaryDetailActivity.class))
+                .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId())
+                .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage())
+                .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType)
+                .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
+                .build();
         startActivity(intent);
     }
 
     /**
-     *
      *
      */
     @Override

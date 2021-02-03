@@ -14,18 +14,11 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
-/**
- *
- *
- */
+/* */
 public interface VisionaryApiService {
 
     /**
      *
-     * @param authHeader
-     * @param url
-     * @param request
-     * @return
      */
     @Headers("Content-Type: application/json")
     @POST
@@ -37,10 +30,6 @@ public interface VisionaryApiService {
 
     /**
      *
-     * @param authHeader
-     * @param url
-     * @param request
-     * @return
      */
     @Headers("Content-Type: application/json")
     @POST
@@ -52,10 +41,6 @@ public interface VisionaryApiService {
 
     /**
      *
-     * @param authHeader
-     * @param url
-     * @param request
-     * @return
      */
     @Headers("Content-Type: application/json")
     @POST

@@ -1,9 +1,7 @@
 package com.coppel.rhconecta.dev.presentation.poll;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.os.Handler;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
@@ -15,10 +13,7 @@ import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class PollViewModel {
 
     /* */
@@ -27,15 +22,15 @@ public class PollViewModel {
     @Inject
     SendPollUseCase sendPollUseCase;
     // Observables
-    private MutableLiveData<ProcessStatus> loadPollProcessStatus = new MutableLiveData<>();
-    private MutableLiveData<ProcessStatus> sendPollProcessStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> loadPollProcessStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> sendPollProcessStatus = new MutableLiveData<>();
     // Values
     private Poll poll;
     private Failure failure;
     // Questions
-    private MutableLiveData<Question> currentQuestion = new MutableLiveData<>();
+    private final MutableLiveData<Question> currentQuestion = new MutableLiveData<>();
     private int currentQuestionIndex;
-    private MutableLiveData<Integer> pollProgress = new MutableLiveData<>();
+    private final MutableLiveData<Integer> pollProgress = new MutableLiveData<>();
 
 
     /**

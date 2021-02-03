@@ -30,12 +30,7 @@ public class TableUsuario {
 
     public void dropTable() {
         String query = "DROP TABLE IF EXISTS " + this.TABLA_NOMBRE + " ";
-
-        if (this.db.Query(query)) {
-            Log.d("MYSQLITE", " drop table " + TABLA_NOMBRE + " OK!");
-        } else {
-            Log.d("MYSQLITE", "drop table " + TABLA_NOMBRE + " ERROR!");
-        }
+        this.db.Query(query);
     }
 
     public void createTable() {
@@ -56,11 +51,7 @@ public class TableUsuario {
                 "estado VARCHAR(50) NULL," +
                 "PRIMARY KEY (id)) ";
 
-        if (this.db.Query(query)) {
-            Log.d("MYSQLITE", "create table " + TABLA_NOMBRE + " OK!");
-        } else {
-            Log.d("MYSQLITE", "create table " + TABLA_NOMBRE + " ERROR!");
-        }
+        this.db.Query(query);
     }
 
     public void insert(Usuario obj) {
@@ -81,11 +72,7 @@ public class TableUsuario {
                 " \"" + obj.getIdestado() + "\", " +
                 " \"" + obj.getEstado() + "\" ) ";
 
-        if (this.db.Query(query)) {
-            Log.d("MYSQLITE", "INSERT  " + this.TABLA_NOMBRE + " OK!");
-        } else {
-            Log.d("MYSQLITE", "INSERT  " + this.TABLA_NOMBRE + "  ERROR!");
-        }
+        this.db.Query(query);
     }
 
     public void update(Usuario obj) {
@@ -106,11 +93,7 @@ public class TableUsuario {
                 " idestado=\"" + obj.getIdestado() + "\", " +
                 " estado=\"" + obj.getEstado() + "\" WHERE id=" + obj.getId() + " ";
 
-        if (this.db.Query(query)) {
-            Log.d("MYSQLITE", "UPDATE  " + this.TABLA_NOMBRE + " OK!");
-        } else {
-            Log.d("MYSQLITE", "UPDATE  " + this.TABLA_NOMBRE + "  ERROR!");
-        }
+        this.db.Query(query);
     }
 
     public Usuario select(String id) {
@@ -138,17 +121,11 @@ public class TableUsuario {
 
 
                 } while (cursor.moveToNext());
-                Log.d("MYSQLITE", "SELECT ONE " + this.TABLA_NOMBRE + "  OK! CON RESULTADOS");
-
             } else {
-                Log.d("MYSQLITE", "SELECT ONE " + this.TABLA_NOMBRE + "  OK! SIN RESULTADOS!");
                 obj = null;
             }
-
         } catch (Exception e) {
-            Log.d("MYSQLITE", "SELECT ONE ERROR!");
             obj = null;
-
         }
 
         if (cursor != null) {
@@ -186,17 +163,11 @@ public class TableUsuario {
 
 
                 } while (cursor.moveToNext());
-                Log.d("MYSQLITE", "SELECT MULTI " + this.TABLA_NOMBRE + "  OK! CON RESULTADOS");
-
             } else {
-                Log.d("MYSQLITE", "SELECT MULTI " + this.TABLA_NOMBRE + "  OK! SIN RESULTADOS!");
                 objs = null;
             }
-
         } catch (Exception e) {
-            Log.d("MYSQLITE", "SELECT MULTI ERROR! " + e.getMessage());
             objs = null;
-
         }
 
         if (cursor != null) {
@@ -207,14 +178,8 @@ public class TableUsuario {
     }
 
     public void delete(String id) {
-
         String query = "DELETE FROM " + this.TABLA_NOMBRE + " WHERE idavisos=" + id + " ";
-
-        if (this.db.Query(query)) {
-            Log.d("MYSQLITE", "DELETE " + this.TABLA_NOMBRE + " OK!");
-        } else {
-            Log.d("MYSQLITE", "DELETE " + this.TABLA_NOMBRE + " ERROR!");
-        }
+        this.db.Query(query);
     }
 
     public void insertIfNotExist(Usuario obj) {

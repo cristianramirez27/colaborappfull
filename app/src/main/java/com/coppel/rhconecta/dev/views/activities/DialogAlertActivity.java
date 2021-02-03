@@ -2,10 +2,9 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.BenefitCodeResponse;
@@ -17,6 +16,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -48,7 +48,8 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         setContentView(R.layout.activity_alert_container);
         initViews();
         this.dialogFragmentWarning = new DialogFragmentWarning();
-        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)getIntent().getSerializableExtra(KEY_COMPANY);
+        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)
+            IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
         coppelServicesPresenter = new CoppelServicesPresenter(this, DialogAlertActivity.this);
         showCompanyDialog(company);
     }

@@ -12,16 +12,11 @@ import retrofit2.http.Url;
 
 /**
  *
- *
  */
 public interface HomeApiService {
 
     /**
      *
-     * @param authHeader
-     * @param url
-     * @param request
-     * @return
      */
     @Headers("Content-Type: application/json")
     @POST

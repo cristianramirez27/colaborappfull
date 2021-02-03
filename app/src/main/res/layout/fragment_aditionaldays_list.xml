@@ -25,8 +25,7 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
-
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewSearch"
                 android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
@@ -69,7 +68,7 @@
 
                 </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
                 android:id="@+id/seleccionCentroLayout"
@@ -108,8 +107,6 @@
 
             </RelativeLayout>
 
-
-
             <TextView
                 android:id="@+id/tituloControles"
                 android:layout_width="wrap_content"
@@ -120,7 +117,7 @@
                 android:textColor="@color/colorBackgroundCoppelNegro"
                 android:textSize="18sp" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSolicitudes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -130,6 +127,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
 </LinearLayout>

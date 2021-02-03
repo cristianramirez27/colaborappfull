@@ -9,7 +9,6 @@
     android:scrollbars="none"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +16,8 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvOptions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,9 +69,6 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
 
-
     </RelativeLayout>
-
-
 
 </RelativeLayout>

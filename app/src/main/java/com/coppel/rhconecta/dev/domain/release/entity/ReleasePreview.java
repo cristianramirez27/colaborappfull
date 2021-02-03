@@ -1,6 +1,6 @@
 package com.coppel.rhconecta.dev.domain.release.entity;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
@@ -10,12 +10,14 @@ public class ReleasePreview {
     private String title;
     private String date;
     private boolean wasRead;
+    private boolean isUpdated;
 
-    public ReleasePreview(int id, String title, String date, boolean wasRead) {
+    public ReleasePreview(int id, String title, String date, boolean wasRead, boolean isUpdated) {
         this.id = id;
         this.title = title;
         this.date = date;
         this.wasRead = wasRead;
+        this.isUpdated = isUpdated;
     }
 
     public int getId() {
@@ -32,6 +34,10 @@ public class ReleasePreview {
 
     public boolean wasRead() {
         return wasRead;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
     }
 
     @NonNull

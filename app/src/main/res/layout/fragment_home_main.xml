@@ -1,140 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundCoppelBlanco"
+    android:fillViewport="true"
     tools:context=".presentation.home.HomeMainFragment">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vpBanner"
-        android:layout_width="0dp"
-        android:layout_height="240dp"
-        android:focusableInTouchMode="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.github.vivchar.viewpagerindicator.ViewPagerIndicator
-        android:id="@+id/tabIndicator"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"
-        app:delimiterSize="8dp"
-        app:itemScale="1.5"
-        app:itemSize="10dp"
-        app:itemSelectedTint="@color/transparentIndicatorSelected"
-        app:itemTint="@color/transparentIndicator"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/vpBanner" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imgvArrowLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
-        app:layout_constraintStart_toStartOf="@+id/guideline44"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_left_arrow_white" />
-
-    <ImageView
-        android:id="@+id/imgvArrowRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
-        app:layout_constraintEnd_toStartOf="@+id/guideline47"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_right_arrow_white" />
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:background="@color/colorBackgroundCoppelBlanco"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vpBanner">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBackgroundCoppelBlanco">
+            android:layout_height="match_parent"
+            android:background="@color/colorBackgroundCoppelBlanco"
+            android:orientation="vertical">
 
-            <View
-                android:id="@+id/viewBackFavorites"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorBackgroundFavorites" />
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:focusableInTouchMode="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txvFavorites"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/lineto_circular_pro_book"
-                    android:text="@string/my_favorites"
-                    android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="14sp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rcvMenu"
+                <com.github.vivchar.viewpagerindicator.ViewPagerIndicator
+                    android:id="@+id/tabIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusableInTouchMode="false"
-                    android:overScrollMode="never"
-                    android:scrollbars="none" />
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    app:delimiterSize="8dp"
+                    app:itemScale="1.5"
+                    app:itemSelectedTint="@color/transparentIndicatorSelected"
+                    app:itemSize="10dp"
+                    app:itemTint="@color/transparentIndicator"
+                    app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            </LinearLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/txvFavorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:text="@string/my_favorites"
+                android:textColor="@color/colorSecondBlueCoppel"
+                android:textSize="14sp"
+                android:layout_marginStart="@dimen/lateral_margin"
+                android:layout_marginTop="@dimen/half_vertical_margin" />
 
-    </android.support.v4.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:layout_marginTop="@dimen/half_vertical_margin"/>
 
-    <!--<android.support.constraint.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".42"/>-->
+        </LinearLayout>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline44"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        <ProgressBar
+            android:id="@+id/pbLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline47"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <ProgressBar
-        android:id="@+id/pbLoader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-</android.support.constraint.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -5,8 +5,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
@@ -61,8 +62,8 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
         this.dialogFragmentWarning = new DialogFragmentWarning();
         this.dialogFragmentLoader = new DialogFragmentLoader();
         this.hideLoader = false;
-        this.numEmp = Integer.parseInt(getIntent().getStringExtra("numEmp"));
-        this.emailEmp = getIntent().getStringExtra("emailEmp");
+        this.numEmp = IntentExtension.getIntExtra(getIntent(), "numEmp");
+        this.emailEmp = IntentExtension.getStringExtra(getIntent(), "emailEmp");
 
         closeBtn = (TextView) findViewById(R.id.closeBtn);
         closeBtn.setOnClickListener(new View.OnClickListener() {

@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -220,11 +221,11 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                         (letterConfigResponse.getData().getResponse().getClave().equals(String.valueOf(CLAVE_LETTER_MAX)))){
                     showAlertPrints(letterConfigResponse.getData().getResponse().getMensaje());
                 }else {
-
-                    Intent intentConfigLetter = new Intent(getActivity(), ConfigLetterActivity.class);
-                    intentConfigLetter.putExtra(BUNDLE_RESPONSE_CONFIG_LETTER,letterConfigResponse);
-                    intentConfigLetter.putExtra(BUNDLE_LETTER,typeLetterSelected);
-                    startActivityForResult(intentConfigLetter,REQUEST_LETTER);
+                    Intent intentConfigLetter = new IntentBuilder(new Intent(getActivity(), ConfigLetterActivity.class))
+                            .putSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER, letterConfigResponse)
+                            .putIntExtra(BUNDLE_LETTER, typeLetterSelected)
+                            .build();
+                    startActivityForResult(intentConfigLetter, REQUEST_LETTER);
                 }
 
                 hideProgress();

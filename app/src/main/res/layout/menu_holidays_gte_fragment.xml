@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +13,8 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:orientation="vertical">
-        <android.support.v7.widget.RecyclerView
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvOptions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,7 +57,6 @@
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
-
         <Button
             android:id="@+id/btnAditionals"
             android:layout_width="match_parent"
@@ -83,7 +82,6 @@
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
-
         <Button
             android:id="@+id/btnCalendar"
             android:layout_width="match_parent"
@@ -108,11 +106,6 @@
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
-
-
     </LinearLayout>
-
-
-
 
 </RelativeLayout>

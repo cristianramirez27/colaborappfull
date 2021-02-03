@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,7 +24,6 @@
             android:textColor="@color/colorSecondBlueCoppel"
             android:textSize="14sp" />
 
-
         <EditText
             android:id="@+id/observationGte"
             android:layout_width="match_parent"
@@ -36,13 +32,12 @@
             android:padding="8dp"
             android:textSize="13sp"
             android:inputType="textMultiLine"
+            android:importantForAutofill="no"
             android:focusable="true"
             android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
             android:background="@drawable/background_gray_rounded"
             android:layout_height="120dp" />
 
-
     </LinearLayout>
 
 </RelativeLayout>
-

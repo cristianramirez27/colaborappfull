@@ -1,10 +1,12 @@
 package com.coppel.rhconecta.dev.domain.visionary.entity;
 
-/**
- *
- *
- */
-public class Visionary {
+import androidx.annotation.Keep;
+
+import java.io.Serializable;
+
+/* */
+@Keep
+public class Visionary implements Serializable {
 
     /* */
     private String id;
@@ -21,13 +23,24 @@ public class Visionary {
     /* */
     private boolean alreadyBeenSeen;
     /* */
-    private Status status;
+    private RateStatus rateStatus;
+    /* */
+    private VisionaryRate visionaryRate;
 
     /**
      *
-     *
      */
-    public Visionary(String id, String title, String date, String content, String video, int numberOfViews, boolean alreadyBeenSeen, Status status) {
+    public Visionary(
+            String id,
+            String title,
+            String date,
+            String content,
+            String video,
+            int numberOfViews,
+            boolean alreadyBeenSeen,
+            RateStatus rateStatus,
+            VisionaryRate visionaryRate
+    ) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -35,14 +48,14 @@ public class Visionary {
         this.video = video;
         this.numberOfViews = numberOfViews;
         this.alreadyBeenSeen = alreadyBeenSeen;
-        this.status = status;
+        this.rateStatus = rateStatus;
+        this.visionaryRate = visionaryRate;
     }
 
     /**
      *
-     *
      */
-    public Visionary cloneVisionary(){
+    public Visionary cloneVisionary() {
         return new Visionary(
                 id,
                 title,
@@ -51,27 +64,32 @@ public class Visionary {
                 video,
                 numberOfViews,
                 alreadyBeenSeen,
-                status
+                rateStatus,
+                visionaryRate
         );
     }
 
     /**
      *
-     *
      */
-    public enum Status {
+    @Keep
+    public enum RateStatus implements Serializable {
+
         /* */
         UNKNOWN,
+
         /* */
         EMPTY,
+
         /* */
         LIKED,
+
         /* */
         DISLIKED
+
     }
 
     /**
-     *
      *
      */
     public String getId() {
@@ -80,14 +98,12 @@ public class Visionary {
 
     /**
      *
-     *
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     *
      *
      */
     public String getDate() {
@@ -96,14 +112,12 @@ public class Visionary {
 
     /**
      *
-     *
      */
     public String getContent() {
         return content;
     }
 
     /**
-     *
      *
      */
     public String getVideo() {
@@ -112,14 +126,12 @@ public class Visionary {
 
     /**
      *
-     *
      */
     public int getNumberOfViews() {
         return numberOfViews;
     }
 
     /**
-     *
      *
      */
     public boolean isAlreadyBeenSeen() {
@@ -128,17 +140,23 @@ public class Visionary {
 
     /**
      *
-     *
      */
-    public Status getStatus() {
-        return status;
+    public RateStatus getRateStatus() {
+        return rateStatus;
     }
 
     /**
      *
+     */
+    public void setRateStatus(RateStatus rateStatus) {
+        this.rateStatus = rateStatus;
+    }
+
+    /**
      *
      */
-    public void setStatus(Status status) {
-        this.status = status;
+    public VisionaryRate getVisionaryRate() {
+        return visionaryRate;
     }
+
 }

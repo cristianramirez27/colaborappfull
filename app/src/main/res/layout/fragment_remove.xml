@@ -18,7 +18,6 @@
 
         <include layout="@layout/view_connection_error" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,7 +81,6 @@
 
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,11 +119,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="14sp"/>
 
-
-
                 </LinearLayout>
-
-
 
             </LinearLayout>
 
@@ -133,7 +127,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="24dp">
-
 
                 <TextView
                     android:id="@+id/removeFrom"
@@ -150,7 +143,7 @@
                     android:textColor="@color/colorPrimaryCoppelAzul"
                     android:textSize="14sp" />
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:id="@+id/content_element"
@@ -163,7 +156,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-
                         android:id="@+id/contentView"
                         android:padding="15dp"
                         android:orientation="vertical">
@@ -183,7 +175,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
 
-
                             <TextView
                                 android:id="@+id/txtValueCreditMargin"
                                 android:layout_weight="2.3"
@@ -193,7 +184,6 @@
                                 android:fontFamily="@font/lineto_circular_pro_bold"
                                 android:layout_height="wrap_content"/>
 
-
                         </LinearLayout>
 
                         <com.coppel.rhconecta.dev.views.customviews.EditTextMoney
@@ -202,7 +192,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="14dp"
                             android:visibility="visible"/>
-
 
                         <com.coppel.rhconecta.dev.views.customviews.EditTextMoney
                             android:id="@+id/edtRetiro"
@@ -215,7 +204,6 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="16dp"
                             android:background="#f6f7f9"/>
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -232,7 +220,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
 
-
                             <TextView
                                 android:id="@+id/txtValueAditionaSave"
                                 android:layout_weight="2.3"
@@ -241,7 +228,6 @@
                                 android:fontFamily="@font/lineto_circular_pro_bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
-
 
                         </LinearLayout>
 
@@ -252,14 +238,11 @@
                             android:layout_marginBottom="14dp"
                             android:visibility="visible"/>
 
-
-
                         <com.coppel.rhconecta.dev.views.customviews.EditTextMoney
                             android:id="@+id/edtRetiroAhorro"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="visible"/>
-
 
                         <TextView
                             android:id="@+id/totalImporte"
@@ -274,11 +257,10 @@
                             android:text="@string/totalRemove"
                             android:textColor="@color/colorPrimaryCoppelAzul"
                             android:textSize="14sp" />
+
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
-
+                </androidx.cardview.widget.CardView>
 
                 <Button
                     android:layout_below="@id/content_element"
@@ -295,6 +277,7 @@
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"/>
+
             </RelativeLayout>
 
         </LinearLayout>

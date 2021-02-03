@@ -1,8 +1,7 @@
 package com.coppel.rhconecta.dev.data.visionary;
 
-import android.util.Log;
-
 import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.common.BasicUserInformationFacade;
@@ -31,23 +30,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-/**
- *
- *
- */
+/* */
 public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /* */
-    private VisionaryApiService apiService;
+    private final VisionaryApiService apiService;
+
     /* */
-    private BasicUserInformationFacade basicUserInformationFacade;
+    private final BasicUserInformationFacade basicUserInformationFacade;
 
     /**
      *
-     *
      */
     @Inject
-    public VisionaryRepositoryImpl(){
+    public VisionaryRepositoryImpl() {
         Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
         apiService = retrofit.create(VisionaryApiService.class);
         basicUserInformationFacade = new BasicUserInformationFacade(CoppelApp.getContext());
@@ -55,17 +51,19 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /**
      *
-     *
      */
     @Override
     public void getVisionariesPreviews(
             VisionaryType type,
+            AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
+        int accessOptionValue = accessOption.toInt();
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        GetVisionariesPreviewsRequest request = new GetVisionariesPreviewsRequest(employeeNum, clvOption);
+        GetVisionariesPreviewsRequest request =
+                new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionariesPreviews(authHeader, url, request)
@@ -73,7 +71,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     }
 
     /**
-     *
      *
      */
     private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionariesPreviewsResponse(
@@ -87,13 +84,12 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     assert body != null;
                     List<GetVisionariesPreviewsResponse.VisionaryPreviewServer> visionariesPreviewsServer = body.data.response;
                     ArrayList<VisionaryPreview> visionariesPreviews = new ArrayList<>();
-                    for (GetVisionariesPreviewsResponse.VisionaryPreviewServer visionaryPreviewServer: visionariesPreviewsServer)
+                    for (GetVisionariesPreviewsResponse.VisionaryPreviewServer visionaryPreviewServer : visionariesPreviewsServer)
                         visionariesPreviews.add(visionaryPreviewServer.toVisionaryPreview());
                     Either<Failure, List<VisionaryPreview>> result =
                             new Either<Failure, List<VisionaryPreview>>().new Right(visionariesPreviews);
                     callback.onResult(result);
                 } catch (Exception exception) {
-                    Log.e(getClass().getName(), exception.toString());
                     callback.onResult(getServerFailure());
                 }
 
@@ -113,19 +109,22 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /**
      *
-     *De
      */
     @Override
     public void getVisionaryById(
             VisionaryType type,
             String visionaryId,
+            AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, Visionary>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 2;
         long visionaryIdInt = Long.parseLong(visionaryId);
+        int accessOptionValue = accessOption == AccessOption.BANNER ? accessOption.toInt() : 0;
+
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        GetVisionaryByIdRequest request = new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
+        GetVisionaryByIdRequest request =
+                new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt, accessOptionValue);
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionaryById(
@@ -136,7 +135,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     }
 
     /**
-     *
      *
      */
     private Callback<GetVisionaryByIdResponse> getCallbackGetVisionaryByIdResponse(
@@ -153,8 +151,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     Visionary visionary = visionaryServer.toVisionary();
                     Either<Failure, Visionary> result = new Either<Failure, Visionary>().new Right(visionary);
                     callback.onResult(result);
-                } catch (Exception exception){
-                    Log.e(getClass().getName(), exception.toString());
+                } catch (Exception exception) {
                     callback.onResult(getServerFailure());
                 }
             }
@@ -174,26 +171,32 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /**
      *
-     *
      */
     @Override
     public void updateVisionaryStatusById(
             VisionaryType type,
             String visionaryId,
-            Visionary.Status status,
-            UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
+            Visionary.RateStatus status,
+            String rateOptionId,
+            UseCase.OnResultFunction<Either<Failure, Visionary.RateStatus>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 3;
-        int clvType = status == Visionary.Status.LIKED ? 5 : 6;
+        int clvType = status == Visionary.RateStatus.LIKED ? 5 : 6;
         long visionaryIdInt = Long.parseLong(visionaryId);
+        Integer rateOptionIdAsInteger = null;
+        if (rateOptionId != null)
+            rateOptionIdAsInteger = Integer.parseInt(rateOptionId);
         String authHeader = basicUserInformationFacade.getAuthHeader();
+
         UpdateVisionaryStatusByIdRequest request = new UpdateVisionaryStatusByIdRequest(
                 visionaryIdInt,
                 employeeNum,
                 clvOption,
-                clvType
+                clvType,
+                rateOptionIdAsInteger
         );
+
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
 
@@ -204,22 +207,20 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
     /**
      *
-     *
      */
     private Callback<UpdateVisionaryStatusByIdResponse> getCallbackUpdateVisionaryStatusByIdResponse(
-            Visionary.Status status,
-            UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
+            Visionary.RateStatus status,
+            UseCase.OnResultFunction<Either<Failure, Visionary.RateStatus>> callback
     ) {
         return new Callback<UpdateVisionaryStatusByIdResponse>() {
 
             @Override
             public void onResponse(Call<UpdateVisionaryStatusByIdResponse> call, Response<UpdateVisionaryStatusByIdResponse> response) {
                 try {
-                    Either<Failure, Visionary.Status> result =
-                            new Either<Failure, Visionary.Status>().new Right(status);
+                    Either<Failure, Visionary.RateStatus> result =
+                            new Either<Failure, Visionary.RateStatus>().new Right(status);
                     callback.onResult(result);
-                } catch (Exception exception){
-                    Log.e(getClass().getName(), exception.toString());
+                } catch (Exception exception) {
                     callback.onResult(getServerFailure());
                 }
             }
@@ -229,9 +230,9 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                 callback.onResult(getServerFailure());
             }
 
-            private Either<Failure, Visionary.Status> getServerFailure() {
+            private Either<Failure, Visionary.RateStatus> getServerFailure() {
                 Failure failure = new ServerFailure();
-                return new Either<Failure, Visionary.Status>().new Left(failure);
+                return new Either<Failure, Visionary.RateStatus>().new Left(failure);
             }
         };
     }

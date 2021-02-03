@@ -40,7 +40,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -91,7 +90,6 @@
                                 android:textColor="@color/colorSecundaryCoppelVerde"
                                 android:textSize="13sp" />
 
-
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -119,9 +117,7 @@
                                 android:textColor="@color/colorMelon"
                                 android:textSize="13sp" />
 
-
                         </RelativeLayout>
-
 
                     </LinearLayout>
 
@@ -129,7 +125,6 @@
                         android:layout_weight="4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
 
                         <ImageView
                             android:id="@+id/iconList"
@@ -139,7 +134,6 @@
                             app:srcCompat="@drawable/ic_calendar_list"
                             android:layout_width="30dp"
                             android:layout_height="30dp" />
-
 
                         <ImageView
                             android:id="@+id/iconCalendarTool"
@@ -162,39 +156,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:id="@+id/lastmonth"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:padding="8dp"
-                            app:srcCompat="@drawable/arrow_left_calendar"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp" />
+                    <ImageView
+                        android:id="@+id/lastmonth"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:padding="8dp"
+                        app:srcCompat="@drawable/arrow_left_calendar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
 
-                        <TextView
-                            android:layout_centerVertical="true"
-                            android:id="@+id/monthName"
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/lineto_circular_pro_medium"
-                            android:text="Octubre 2019"
-                            android:textColor="@color/colorTextCoppelNegro"
-                            android:textSize="18sp" />
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:id="@+id/monthName"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="Octubre 2019"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="18sp" />
 
-                        <ImageView
-                            android:id="@+id/nextMonth"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="0dp"
-                            android:padding="8dp"
-                            app:srcCompat="@drawable/arrow_right_calendar" />
+                    <ImageView
+                        android:id="@+id/nextMonth"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="0dp"
+                        android:padding="8dp"
+                        app:srcCompat="@drawable/arrow_right_calendar" />
 
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:layout_below="@+id/layoutOptions"
@@ -211,7 +204,7 @@
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcvSolicitudes"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -228,7 +221,7 @@
                         android:layout_marginTop="16dp"
                         android:orientation="vertical">
 
-                        <android.support.v4.widget.NestedScrollView
+                        <androidx.core.widget.NestedScrollView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
@@ -245,13 +238,9 @@
                                 app:buttonLeft_drawableTintColor="@android:color/white"
                                 app:buttonRight_drawableTintColor="@android:color/white"
                                 app:expandIconColor="@android:color/white"
-                                app:eventColor="@android:color/white">
-                            </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
+                                app:eventColor="@android:color/white" />
 
-
-                        </android.support.v4.widget.NestedScrollView>
-
-
+                        </androidx.core.widget.NestedScrollView>
 
                     </LinearLayout>
 
@@ -260,8 +249,8 @@
             </RelativeLayout>
 
         </RelativeLayout>
-    </RelativeLayout>
 
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/layoutButton"
@@ -284,9 +273,7 @@
             android:layout_marginLeft="20dp"
             android:textColor="@color/colorBackgroundCoppelBlanco"
             android:textSize="16sp" />
+
     </LinearLayout>
-
-
-
 
 </RelativeLayout>

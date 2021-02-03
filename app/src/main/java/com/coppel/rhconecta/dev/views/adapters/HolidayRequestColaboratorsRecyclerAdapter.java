@@ -1,19 +1,11 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
@@ -21,14 +13,10 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.views.customviews.RequestHolidaysColaboratorView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adapter<HolidayRequestColaboratorsRecyclerAdapter.ViewHolder> {
 

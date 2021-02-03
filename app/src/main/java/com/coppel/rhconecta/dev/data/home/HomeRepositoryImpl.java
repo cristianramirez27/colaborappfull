@@ -32,7 +32,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSha
 
 /**
  *
- *
  */
 public class HomeRepositoryImpl implements HomeRepository {
 
@@ -43,7 +42,6 @@ public class HomeRepositoryImpl implements HomeRepository {
 
     /**
      *
-     *
      */
     @Inject public HomeRepositoryImpl(){
         Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
@@ -53,8 +51,6 @@ public class HomeRepositoryImpl implements HomeRepository {
 
     /**
      *
-     * @param callback
-     * @return
      */
     @Override
     public void getBanners(
@@ -88,7 +84,7 @@ public class HomeRepositoryImpl implements HomeRepository {
                     Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Right(banners);
                     callback.onResult(result);
                 } catch (Exception e){
-                    Failure failure = new ServerFailure();
+                    Failure failure = new ServerFailure(e.getMessage());
                     Either<Failure, List<Banner>> result = new Either<Failure, List<Banner>>().new Left(failure);
                     callback.onResult(result);
                 }
@@ -106,8 +102,6 @@ public class HomeRepositoryImpl implements HomeRepository {
 
     /**
      *
-     * @param callback
-     * @return
      */
     @Override
     public void getBadges(

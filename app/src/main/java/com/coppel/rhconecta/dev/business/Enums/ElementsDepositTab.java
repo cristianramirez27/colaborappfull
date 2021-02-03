@@ -1,8 +1,9 @@
 package com.coppel.rhconecta.dev.business.Enums;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Keep;
+import androidx.annotation.StringRes;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IEnumTab;
@@ -11,7 +12,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IEnumTab;
 /**
  * @author flima on 22/05/2017.
  */
-
+@Keep
 public enum ElementsDepositTab implements IEnumTab {
 
     CORRIENTE(R.string.acount_title,NO_ICON),

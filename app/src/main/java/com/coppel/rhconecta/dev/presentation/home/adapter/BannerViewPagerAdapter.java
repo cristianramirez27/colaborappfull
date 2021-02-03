@@ -1,9 +1,9 @@
 package com.coppel.rhconecta.dev.presentation.home.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
@@ -52,7 +52,7 @@ public class BannerViewPagerAdapter extends FragmentStatePagerAdapter {
     public int getItemPosition(@NonNull Object item) {
         BannerFragment fragment = (BannerFragment) item;
         String id = fragment.banner.getId();
-        Banner banner = new Banner(id, null, null, 1);
+        Banner banner = new Banner(id, null, null, 1, null);
         int position = banners.indexOf(banner);
         if (position >= 0) return position;
         else return POSITION_NONE;

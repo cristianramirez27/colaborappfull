@@ -3,10 +3,10 @@ package com.coppel.rhconecta.dev.views.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -152,14 +152,11 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
          List<HomeMenuItem> customMenuTmp= this.getCustomMenu();
         if (!realm.isInTransaction()) realm.beginTransaction();
         for (int i =0;i<customMenuTmp.size();i++){
-            try{
+            try {
                 if(customMenuTmp.get(i).getTAG().equals(TAG)){ // agrega notificaciones a comunicados o videos
                     customMenuTmp.get(i).setNotifications(notifications);
                 }
-
-            }catch (Exception e){
-                Log.d("AdapterMenu","Error add notifications menu adapter: "+e.getMessage());
-            }
+            }catch (Exception e){ /* PASS */ }
         }
 
         realm.commitTransaction();

@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,12 +44,8 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
-
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,13 +61,11 @@ import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.M
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYREQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
-import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidays;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidaysSchedule;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDayNameFromDate;
 
@@ -370,17 +364,16 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
             sendRequestSuccess = false;
             if(configurationHolidaysData.isColaborator()){
                 getActivity().setResult(Activity.RESULT_OK);
-                getActivity().finish();
-            }else {
-                //Se valida si se ingreso como colaborador
-                NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                        BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
-                getActivity().finish();
+            } else {
+                NavigationUtil.openActivityWithStringParam(
+                        getActivity(),
+                        VacacionesActivity.class,
+                        BUNDLE_OPTION_HOLIDAYS,
+                        BUNDLE_OPTION_HOLIDAYREQUESTS
+                );
             }
-
-            //vacacionesActivity.onEvent(,null);
+            getActivity().finish();
         }
-
         dialogFragmentGetDocument.close();
     }
 

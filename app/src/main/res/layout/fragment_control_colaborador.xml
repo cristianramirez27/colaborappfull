@@ -24,77 +24,73 @@
             android:visibility="invisible"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical">
-
-
-            <com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl
-                android:id="@+id/cardColaboratorControl"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"/>
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="vertical">
 
-            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                android:id="@+id/totalAutorizado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:visibility="gone" />
+                <com.coppel.rhconecta.dev.views.customviews.CardColaboratorControl
+                    android:id="@+id/cardColaboratorControl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"/>
 
-            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                android:id="@+id/totalComprobado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/totalAutorizado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone" />
 
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/totalComprobado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
-            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                android:id="@+id/totalDevolucion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent" />
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/totalDevolucion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/verDetalles"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:padding="6dp"
-                android:gravity="center"
-                android:text="Ver detalles"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:textColor="@color/colorPrimaryCoppelAzul"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/verDetalles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    android:text="Ver detalles"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="12sp" />
 
-            <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                android:id="@+id/totalComplemento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:visibility="gone" />
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/totalComplemento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/verDetallesComplemento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:padding="6dp"
-                android:visibility="gone"
-                android:gravity="center"
-                android:text="Ver detalles"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:textColor="@color/colorPrimaryCoppelAzul"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/verDetallesComplemento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:padding="6dp"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:text="Ver detalles"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="12sp" />
 
-
-
-        </LinearLayout>
+            </LinearLayout>
 
             <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
                 android:id="@+id/expMotivoRechazo"
@@ -167,7 +163,6 @@
 
             </LinearLayout>
 
-
             <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
                 android:id="@+id/expItinerario"
                 android:layout_width="match_parent"
@@ -190,7 +185,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="30dp"
-                    android:paddingRight="20dp"></com.coppel.rhconecta.dev.views.customviews.Itinerario>
+                    android:paddingRight="20dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -223,10 +218,7 @@
                     <com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales
                         android:id="@+id/viajeroAdicionales"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </com.coppel.rhconecta.dev.views.customviews.ViajerosAdicionales>
-
+                        android:layout_height="wrap_content" />
 
                     <View
                         android:layout_width="match_parent"
@@ -235,74 +227,70 @@
 
                 </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/layoutTipoHospedaje"
-            android:layout_width="match_parent"
-            android:visibility="visible"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:background="@color/colorBackgroundFragments"
-            android:layout_height="wrap_content">
-
-
             <LinearLayout
-                android:id="@+id/layoutHospedaje"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
+                android:id="@+id/layoutTipoHospedaje"
                 android:layout_width="match_parent"
+                android:visibility="visible"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
                 android:background="@color/colorBackgroundFragments"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_marginTop="6dp"
+                <LinearLayout
+                    android:id="@+id/layoutHospedaje"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
-                    android:text="Tipo de hospedaje"
-                    android:paddingLeft="8dp"
-                    android:textColor="@color/colorBackgroundCoppelNegro"
-                    android:textSize="15sp"/>
+                    android:background="@color/colorBackgroundFragments"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/hospedaje"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_book"
-                    android:paddingLeft="8dp"
-                    android:textSize="13sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="6dp"
-                    android:textColor="@color/colorBackgroundCoppelNegro" />
+                    <TextView
+                        android:layout_marginTop="6dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="Tipo de hospedaje"
+                        android:paddingLeft="8dp"
+                        android:textColor="@color/colorBackgroundCoppelNegro"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/hospedaje"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:paddingLeft="8dp"
+                        android:textSize="13sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/colorBackgroundCoppelNegro" />
 
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorBackgroundGray"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorBackgroundGray"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/layoutObservaciones"
+                android:layout_width="match_parent"
+                android:visibility="visible"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                android:background="@color/colorBackgroundFragments"
+                android:layout_height="wrap_content">
 
-        </LinearLayout>
+                <include layout="@layout/observaciones"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:id="@+id/layoutObservaciones"
-            android:layout_width="match_parent"
-            android:visibility="visible"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:paddingBottom="20dp"
-            android:background="@color/colorBackgroundFragments"
-            android:layout_height="wrap_content">
-
-            <include
-                layout="@layout/observaciones"/>
-
-
-        </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -315,8 +303,7 @@
                 android:background="@color/colorBackgroundFragments"
                 android:layout_height="wrap_content">
 
-                <include
-                    layout="@layout/observacionesgte"/>
+                <include layout="@layout/observacionesgte"/>
 
                 <LinearLayout
                     android:id="@+id/layoutBtns"
@@ -358,15 +345,10 @@
 
                 </LinearLayout>
 
-
-
             </LinearLayout>
-
 
         </LinearLayout>
 
     </ScrollView>
-
-
 
 </LinearLayout>

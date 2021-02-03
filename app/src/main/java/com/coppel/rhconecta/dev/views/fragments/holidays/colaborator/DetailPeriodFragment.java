@@ -7,10 +7,10 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +41,6 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.shrikanthravi.collapsiblecalendarview.data.CalendarAdapter;
 import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
@@ -411,8 +410,12 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     @Override
     public void onAccept() {
         if(isCanceled){
-            NavigationUtil.openActivityWithStringParam(getActivity(), VacacionesActivity.class,
-                    BUNDLE_OPTION_HOLIDAYS,BUNDLE_OPTION_HOLIDAYREQUESTS);
+            NavigationUtil.openActivityWithStringParam(
+                    getActivity(),
+                    VacacionesActivity.class,
+                    BUNDLE_OPTION_HOLIDAYS,
+                    BUNDLE_OPTION_HOLIDAYREQUESTS
+            );
             getActivity().finish();
         }
 

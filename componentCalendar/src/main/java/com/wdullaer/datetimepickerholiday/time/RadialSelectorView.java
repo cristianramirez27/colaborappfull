@@ -94,7 +94,6 @@ public class RadialSelectorView extends View {
     public void initialize(Context context, TimePickerController controller, boolean hasInnerCircle,
             boolean disappearsOut, int selectionDegrees, boolean isInnerCircle) {
         if (mIsInitialized) {
-            Log.e(TAG, "This RadialSelectorView may only be initialized once.");
             return;
         }
 
@@ -311,7 +310,6 @@ public class RadialSelectorView extends View {
 
     public ObjectAnimator getDisappearAnimator() {
         if (!mIsInitialized || !mDrawValuesReady) {
-            Log.e(TAG, "RadialSelectorView was not ready for animation.");
             return null;
         }
 
@@ -338,7 +336,6 @@ public class RadialSelectorView extends View {
 
     public ObjectAnimator getReappearAnimator() {
         if (!mIsInitialized || !mDrawValuesReady) {
-            Log.e(TAG, "RadialSelectorView was not ready for animation.");
             return null;
         }
 

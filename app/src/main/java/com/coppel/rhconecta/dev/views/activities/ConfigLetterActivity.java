@@ -1,15 +1,16 @@
 package com.coppel.rhconecta.dev.views.activities;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.adapters.PagerAdapter;
 import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ChildInfoLetterFragment;
 import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ConfigFieldLetterFragment;
@@ -44,8 +45,9 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_letter);
         ButterKnife.bind(this);
-        typeLetter = getIntent().getIntExtra(BUNDLE_LETTER,0);
-        letterConfigResponse= (LetterConfigResponse) getIntent().getSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER);
+        typeLetter = IntentExtension.getIntExtra(getIntent(), BUNDLE_LETTER);
+        letterConfigResponse = (LetterConfigResponse)
+                IntentExtension.getSerializableExtra(getIntent(), BUNDLE_RESPONSE_CONFIG_LETTER);
         setSupportActionBar(tbActionBar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

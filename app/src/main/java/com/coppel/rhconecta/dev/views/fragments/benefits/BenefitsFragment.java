@@ -5,25 +5,23 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,7 +33,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
@@ -51,10 +48,10 @@ import com.coppel.rhconecta.dev.business.models.CatalogueData;
 import com.coppel.rhconecta.dev.business.models.LocationEntity;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.MyLocation;
-import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.BenefitsRecyclerAdapter;
@@ -66,7 +63,6 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,22 +72,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.internal.IOException;
 
-import static android.app.Activity.RESULT_OK;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CATEGORIES;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CITY;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_SEARCH;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_STATES;
-import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_ABONO;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_RESULT_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
-public class BenefitsFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick, BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener ,
-        DialogFragmentSelectState.OnButonOptionClick , DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
-        DialogFragmentGetDocument.OnButtonClickListener{
+/* */
+public class BenefitsFragment
+        extends Fragment
+        implements View.OnClickListener,
+        IServicesContract.View,
+        DialogFragmentWarning.OnOptionClick,
+        BenefitsRecyclerAdapter.OnBenefitsCategoryClickListener,
+        DialogFragmentSelectState.OnButonOptionClick,
+        DialogFragmentSelectLocation.OnSelectLocationsButtonsClickListener,
+        DialogFragmentGetDocument.OnButtonClickListener {
+
+
     public static final int REQUEST_MAP_PERMISSION_CODE = 741;
     public static final int REQUEST_ACTIVATE_GPS = 742;
     public static final String TAG = BenefitsFragment.class.getSimpleName();
@@ -139,15 +141,16 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     private List<BenefitsCategoriesResponse.Category> categories;
     private List<BenefitsStatesResponse.States> statesAvailables;
     private List<BenefitsCitiesResponse.City> citiesAvailables;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
 
-    public static BenefitsFragment getInstance(int tipoCarta){
+    public static BenefitsFragment getInstance(int tipoCarta) {
         BenefitsFragment fragment = new BenefitsFragment();
         Bundle args = new Bundle();
-        args.putInt(BUNDLE_LETTER,tipoCarta);
+        args.putInt(BUNDLE_LETTER, tipoCarta);
         fragment.setArguments(args);
         return fragment;
     }
@@ -185,21 +188,21 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void performSearch(String search) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
 
         mLastClickTime = SystemClock.elapsedRealtime();
-        if(search != null && !search.isEmpty()){
+        if (search != null && !search.isEmpty()) {
             errorMessage.setVisibility(View.INVISIBLE);
-            BenefitsRequestData benefitsRequestData = new BenefitsRequestData(BENEFITS_SEARCH,6,stateSelected,citySelected);
+            BenefitsRequestData benefitsRequestData = new BenefitsRequestData(BENEFITS_SEARCH, 6, stateSelected, citySelected);
             benefitsRequestData.setDes_busqueda(search);
             edtSearch.clearFocus();
-            InputMethodManager in = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             in.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
-            String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-            coppelServicesPresenter.getBenefits(benefitsRequestData,token);
-        }else {
+            String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+            coppelServicesPresenter.getBenefits(benefitsRequestData, token);
+        } else {
             errorMessage.setVisibility(View.VISIBLE);
         }
 
@@ -214,40 +217,36 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //loadDataBenefitsBasic();
-        if(validateGeolocalization()){
-          getGeolocalization();
-        }else {
-            askPermission();
-        }
-
+        if (validateGeolocalization()) {
+            getGeolocalization();
+        } else askPermission();
     }
 
 
-
-    private void loadDataBenefitsBasic(){
+    private void loadDataBenefitsBasic() {
 
         if (benefitsCategoriesResponse == null) {
-            if(citySelectedName != null && !citySelectedName.isEmpty()){
-                txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),citySelectedName));
-            }else {
-                stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);;
-                citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);;
-                if(stateSelected== null || (stateSelected != null &&  stateSelected.equals("0")))
+            if (citySelectedName != null && !citySelectedName.isEmpty()) {
+                txtCity.setText(String.format("%s %s?", getString(R.string.are_you_in_), citySelectedName));
+            } else {
+                stateSelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR);
+                ;
+                citySelected = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR);
+                ;
+                if (stateSelected == null || (stateSelected != null && stateSelected.equals("0")))
                     stateSelected = "2";
-                if(citySelected== null || (citySelected != null && citySelected.equals("0")))
+                if (citySelected == null || (citySelected != null && citySelected.equals("0")))
                     citySelected = "104";
             }
 
-            requestCategories(stateSelected,citySelected);
+            requestCategories(stateSelected, citySelected);
         }
     }
 
-    private void requestCategories(String state,String city){
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES,3,state,city);
-        coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+    private void requestCategories(String state, String city) {
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+        benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES, 3, state, city);
+        coppelServicesPresenter.getBenefits(benefitsRequestData, token);
 
     }
 
@@ -262,12 +261,11 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.titleChangeCity:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -276,7 +274,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 break;
 
             case R.id.imgvRefresh:
-                requestCategories(stateSelected,citySelected);
+                requestCategories(stateSelected, citySelected);
                 break;
         }
     }
@@ -287,67 +285,61 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         ctlContent.setVisibility(View.VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.BENEFITS:
-                categories.clear();
                 /*Obtenemos categorias*/
-                if(response.getResponse() instanceof BenefitsCategoriesResponse){
+                if (response.getResponse() instanceof BenefitsCategoriesResponse) {
+                    categories.clear();
 
-                    BenefitsCategoriesResponse benefitsCategoriesResponse = (BenefitsCategoriesResponse)response.getResponse();
+                    BenefitsCategoriesResponse benefitsCategoriesResponse = (BenefitsCategoriesResponse) response.getResponse();
 
-                    if(benefitsCategoriesResponse.getData().getResponse().getClave() == 1){
+                    if (benefitsCategoriesResponse.getData().getResponse().getClave() == 1) {
                         closeBenefits = true;
                         showGetVoucherDialog(benefitsCategoriesResponse.getData().getResponse().getMensaje());
-                    }else{
+                    } else {
 
-                        if(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad() != null){
+                        if (benefitsCategoriesResponse.getData().getResponse().getDatosCiudad() != null) {
                             stateSelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_estado());
                             citySelected = String.valueOf(benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNum_ciudad());
-                            txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),
-                                    TextUtilities.capitalizeText(getActivity(),benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNombre_ciudad())));
-
-
-
+                            txtCity.setText(String.format("%s %s?", getString(R.string.are_you_in_),
+                                    TextUtilities.capitalizeText(getActivity(), benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNombre_ciudad())));
                         }
-
                         categories.clear();
-                        for(BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse)response.getResponse()).getData().getResponse().getCategorias()){
+                        for (BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse) response.getResponse()).getData().getResponse().getCategorias()) {
                             categories.add(category);
                         }
-
                         benefitsRecyclerAdapter.notifyDataSetChanged();
-
                     }
 
-                }else  if(response.getResponse() instanceof BenefitsStatesResponse){
-                    if(statesAvailables == null)
+                } else if (response.getResponse() instanceof BenefitsStatesResponse) {
+                    if (statesAvailables == null)
                         statesAvailables = new ArrayList<>();
 
                     statesAvailables.clear();
-                    for(BenefitsStatesResponse.States state : ((BenefitsStatesResponse)response.getResponse()).getData().getResponse().getEstados()){
+                    for (BenefitsStatesResponse.States state : ((BenefitsStatesResponse) response.getResponse()).getData().getResponse().getEstados()) {
                         statesAvailables.add(state);
                     }
 
                     showSelectState(statesAvailables);
 
-                }else  if(response.getResponse() instanceof BenefitsCitiesResponse){
-                    if(citiesAvailables == null)
+                } else if (response.getResponse() instanceof BenefitsCitiesResponse) {
+                    if (citiesAvailables == null)
                         citiesAvailables = new ArrayList<>();
 
                     citiesAvailables.clear();
-                    for(BenefitsCitiesResponse.City city : ((BenefitsCitiesResponse)response.getResponse()).getData().getResponse().getCiudades()){
+                    for (BenefitsCitiesResponse.City city : ((BenefitsCitiesResponse) response.getResponse()).getData().getResponse().getCiudades()) {
                         citiesAvailables.add(city);
                     }
 
                     showSelectCity(citiesAvailables);
 
-                }else if(response.getResponse() instanceof BenefitsSearchResponse){
+                } else if (response.getResponse() instanceof BenefitsSearchResponse) {
 
-                    if(response.getResponse() instanceof BenefitsSearchEmptyResponse){
-                        List<BenefitsCategoriesResponse.CategoryEmpty> listCategory = ((BenefitsSearchEmptyResponse)response.getResponse()).getData().getResponse().getCategorias();
+                    if (response.getResponse() instanceof BenefitsSearchEmptyResponse) {
+                        List<BenefitsCategoriesResponse.CategoryEmpty> listCategory = ((BenefitsSearchEmptyResponse) response.getResponse()).getData().getResponse().getCategorias();
 
                         showGetVoucherDialog(listCategory.get(0).getDescripcion());
-                    }else {
+                    } else {
 
-                        for(BenefitsCategoriesResponse.Category category : ((BenefitsSearchResultsResponse)response.getResponse()).getData().getResponse().getCategorias()){
+                        for (BenefitsCategoriesResponse.Category category : ((BenefitsSearchResultsResponse) response.getResponse()).getData().getResponse().getCategorias()) {
                             categories.add(category);
                         }
 
@@ -364,53 +356,38 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void showError(ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
-            case ServicesRequestType.LETTERSCONFIG:
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialogFragmentWarning = new DialogFragmentWarning();
-                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-                        dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
-                            @Override
-                            public void onLeftOptionClick() {
-
-                            }
-
-                            @Override
-                            public void onRightOptionClick() {
-                                dialogFragmentWarning.close();
-                                getActivity().finish();
-                            }
-                        });
-                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                        dialogFragmentLoader.close();
-                    }
-                }, 500);
-
-                break;
-
             case ServicesRequestType.INVALID_TOKEN:
-                // EXPIRED_SESSION = true;
-                showWarningDialog(getString(R.string.expired_session));
+                showErrorDialog(getString(R.string.expired_session));
                 break;
-
             default:
-                ctlConnectionError.setVisibility(View.VISIBLE);
-                ctlContent.setVisibility(View.GONE);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideProgress();
-                    }
-                }, 800);
-
+                showErrorDialog(coppelServicesError.getMessage());
                 break;
         }
-
-
         hideProgress();
+    }
+
+    /**
+     *
+     */
+    private void showErrorDialog(String message) {
+        new Handler().postDelayed(() -> {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+
+                @Override
+                public void onLeftOptionClick() { }
+
+                @Override
+                public void onRightOptionClick() {
+                    dialogFragmentWarning.close();
+                    getActivity().onBackPressed();
+                }
+
+            });
+            dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            dialogFragmentLoader.close();
+        }, 500);
     }
 
     @Override
@@ -424,27 +401,22 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         dialogFragmentLoader.close();
     }
 
-
     @Override
     public void onLeftOptionClick() {
         dialogFragmentWarning.close();
     }
 
+    /**
+     *
+     */
     @Override
     public void onRightOptionClick() {
-      /*  if (EXPIRED_SESSION) {
-            AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
-                    !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
-                AppUtilities.openAppSettings(parent);
-            }
-        }*/
-        //  WARNING_PERMISSIONS = false;
         dialogFragmentWarning.close();
-
     }
 
+    /**
+     *
+     */
     private void showWarningDialog(String message) {
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
@@ -452,54 +424,48 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
+    /**
+     *
+     */
     @Override
     public void onCategoryClick(BenefitsCategoriesResponse.Category category) {
-
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 800){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 800)
             return;
-        }
         mLastClickTime = SystemClock.elapsedRealtime();
-
-        if(!edtSearch.getText().toString().isEmpty())
+        if (!edtSearch.getText().toString().isEmpty())
             edtSearch.setText("");
-
-
-        Intent intent = new Intent(getActivity(), BenefitsActivity.class);
-        intent.putExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category);
-        intent.putExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData);
 
         benefitsRequestData.setNum_estado(stateSelected);
         benefitsRequestData.setNum_ciudad(citySelected);
+
+        Intent intent = new IntentBuilder(new Intent(getActivity(), BenefitsActivity.class))
+                .putSerializableExtra(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, category)
+                .putSerializableExtra(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, benefitsRequestData)
+                .build();
+
         getActivity().startActivityForResult(intent, 231);
-
-
-       /* DiscountsFragment discountsFragment = new DiscountsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(AppConstants.BUNDLE_SELECTED_CATEGORY_BENEFITS, new Gson().toJson(category));
-        bundle.putString(AppConstants.BUNDLE_SELECTED_BENEFIT_DATA, new Gson().toJson(benefitsRequestData));
-        discountsFragment.setArguments(bundle);
-        parent.replaceFragment(discountsFragment, DiscountsFragment.TAG);*/
-
-
     }
 
-    private void selectState(){
-        if(statesAvailables != null && !statesAvailables.isEmpty()){
+    /**
+     *
+     */
+    private void selectState() {
+        if (statesAvailables != null && !statesAvailables.isEmpty())
             showSelectState(statesAvailables);
-        }else {
-            String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-            coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_STATES,1),token);
+        else {
+            String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+            coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_STATES, 1), token);
         }
     }
 
-    private void showSelectLocation(){
+    private void showSelectLocation() {
         dialogFragmentSelectLocation = DialogFragmentSelectLocation.getInstance();
         dialogFragmentSelectLocation.setOnSelectLocationsButtonsClickListener(this);
         dialogFragmentSelectLocation.setCancelable(true);
         dialogFragmentSelectLocation.show(parent.getSupportFragmentManager(), DialogFragmentSelectLocation.TAG);
     }
 
-    private void showSelectState( List<BenefitsStatesResponse.States> statesList){
+    private void showSelectState(List<BenefitsStatesResponse.States> statesList) {
         CatalogueData statesData = new CatalogueData();
         statesData.setData(statesList);
         dialogFragmentSelectState = DialogFragmentSelectState.newInstance(statesData, R.layout.dialog_fragment_scheduledata);
@@ -507,7 +473,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         dialogFragmentSelectState.show(parent.getSupportFragmentManager(), DialogFragmentSelectState.TAG);
     }
 
-    private void showSelectCity(List<BenefitsCitiesResponse.City> cities){
+    private void showSelectCity(List<BenefitsCitiesResponse.City> cities) {
         dialogFragmentSelectState.close();
         CatalogueData statesData = new CatalogueData();
         statesData.setData(cities);
@@ -523,24 +489,26 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onRightOptionStateClick(LocationEntity data) {
-        if(data instanceof BenefitsStatesResponse.States){
-            stateSelected = String.valueOf(((BenefitsStatesResponse.States)data).getId_es());
-            dialogFragmentSelectLocation.setState((BenefitsStatesResponse.States)data);
+        if (data instanceof BenefitsStatesResponse.States) {
+            stateSelected = String.valueOf(((BenefitsStatesResponse.States) data).getId_es());
+            dialogFragmentSelectLocation.setState((BenefitsStatesResponse.States) data);
             dialogFragmentSelectState.close();
-        } else if(data instanceof BenefitsCitiesResponse.City){
+        } else if (data instanceof BenefitsCitiesResponse.City) {
             dialogFragmentSelectState.close();
-            citySelected =  String.valueOf( ((BenefitsCitiesResponse.City)data).getId_es());
-            citySelectedName = capitalizeText(getActivity(),String.valueOf( ((BenefitsCitiesResponse.City)data).getNombre()));
-            txtCity.setText(String.format("%s %s?",getString(R.string.are_you_in_),citySelectedName));
-            dialogFragmentSelectLocation.setCity((BenefitsCitiesResponse.City)data);
+            citySelected = String.valueOf(((BenefitsCitiesResponse.City) data).getId_es());
+            citySelectedName = capitalizeText(getActivity(), String.valueOf(((BenefitsCitiesResponse.City) data).getNombre()));
+            dialogFragmentSelectLocation.setCity((BenefitsCitiesResponse.City) data);
             dialogFragmentSelectState.close();
         }
     }
 
-    /**Location*/
+    /**
+     * Location
+     */
     @Override
     public void onSelectLocation() {
-        requestCategories(stateSelected,citySelected);
+        requestCategories(stateSelected, citySelected);
+        txtCity.setText(String.format("%s %s?", getString(R.string.are_you_in_), citySelectedName));
         dialogFragmentSelectLocation.close();
     }
 
@@ -551,8 +519,8 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onSelectCity(BenefitsStatesResponse.States state) {
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_CITY,2,stateSelected),token);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_CITY, 2, stateSelected), token);
     }
 
     @Override
@@ -578,7 +546,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
 
         dialogFragmentGetDocument.close();
 
-        if(closeBenefits){
+        if (closeBenefits) {
             closeBenefits = false;
             getActivity().onBackPressed();
         }
@@ -590,19 +558,20 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
         citySelectedName = "";
     }
 
-    /**Geolocalización*/
+    /**
+     * Geolocalización
+     */
 
-    private boolean validateGeolocalization(){
+    private boolean validateGeolocalization() {
         return ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
 
     private void askPermission() {
-        Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
                 getActivity(),
-                new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_MAP_PERMISSION_CODE
         );
     }
@@ -610,18 +579,17 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_ACTIVATE_GPS){
-            if(MyLocation.isGPSEnabled(getActivity())){
+        if (requestCode == REQUEST_ACTIVATE_GPS) {
+            if (MyLocation.isGPSEnabled(getActivity())) {
                 getGeolocalization();
-            }else {
-               loadDataBenefitsBasic();
+            } else {
+                loadDataBenefitsBasic();
             }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult()");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_MAP_PERMISSION_CODE: {
@@ -636,23 +604,23 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
     }
 
 
-    private void getGeolocalization(){
-        if(MyLocation.isGPSEnabled(getActivity())){
+    private void getGeolocalization() {
+        if (MyLocation.isGPSEnabled(getActivity())) {
             loadDataBenefitsLocation();
-        }else {
+        } else {
             showDialogGPS();
         }
     }
 
-    private void loadDataBenefitsLocation(){
+    private void loadDataBenefitsLocation() {
 
         Location location = MyLocation.find_Location(getActivity());
-            if (location != null) {
-                String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-                benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES,8);
-                benefitsRequestData.setLatitud(String.valueOf(location.getLatitude()));
-                benefitsRequestData.setLongitud(String.valueOf(location.getLongitude()));
-                coppelServicesPresenter.getBenefits(benefitsRequestData,token);
+        if (location != null) {
+            String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+            benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES, 8);
+            benefitsRequestData.setLatitud(String.valueOf(location.getLatitude()));
+            benefitsRequestData.setLongitud(String.valueOf(location.getLongitude()));
+            coppelServicesPresenter.getBenefits(benefitsRequestData, token);
 
 
                /* getCityName(location, new OnGeocoderFinishedListener() {
@@ -668,14 +636,14 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                     }
                 });*/
 
-            }else{
-                //Sino se obtiene la ubicación hacemos la petición normal
-                loadDataBenefitsBasic();
-            }
+        } else {
+            //Sino se obtiene la ubicación hacemos la petición normal
+            loadDataBenefitsBasic();
+        }
     }
 
 
-    private void showDialogGPS(){
+    private void showDialogGPS() {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getActivity());
@@ -689,7 +657,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                                 Intent callGPSSettingIntent = new Intent(
                                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 //startActivity(callGPSSettingIntent);
-                                startActivityForResult(callGPSSettingIntent,REQUEST_ACTIVATE_GPS);
+                                startActivityForResult(callGPSSettingIntent, REQUEST_ACTIVATE_GPS);
                             }
                         });
         alertDialogBuilder.setNegativeButton("Cancelar",
@@ -717,7 +685,7 @@ public class BenefitsFragment extends Fragment implements View.OnClickListener, 
                 } catch (IOException e) {
                     // nothing
                     e.printStackTrace();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return results;

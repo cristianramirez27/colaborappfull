@@ -27,8 +27,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.Align;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import androidx.core.content.ContextCompat;
+
 import android.view.View;
 
 import com.wdullaer.materialdatepicker.R;
@@ -89,7 +89,6 @@ public class RadialTextsView extends View {
     public void initialize(Context context, String[] texts, String[] innerTexts,
             TimePickerController controller, SelectionValidator validator, boolean disappearsOut) {
         if (mIsInitialized) {
-            Log.e(TAG, "This RadialTextsView may only be initialized once.");
             return;
         }
         Resources res = context.getResources();
@@ -378,7 +377,6 @@ public class RadialTextsView extends View {
 
     public ObjectAnimator getDisappearAnimator() {
         if (!mIsInitialized || !mDrawValuesReady || mDisappearAnimator == null) {
-            Log.e(TAG, "RadialTextView was not ready for animation.");
             return null;
         }
 
@@ -387,7 +385,6 @@ public class RadialTextsView extends View {
 
     public ObjectAnimator getReappearAnimator() {
         if (!mIsInitialized || !mDrawValuesReady || mReappearAnimator == null) {
-            Log.e(TAG, "RadialTextView was not ready for animation.");
             return null;
         }
 

@@ -2,18 +2,22 @@ package com.coppel.rhconecta.dev.presentation.releases;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.release.DaggerReleasesComponent;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
@@ -25,9 +29,8 @@ import javax.inject.Inject;
 
 /**
  *
- *
  */
-public class ReleasesActivity extends AppCompatActivity {
+public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
 
     /* */
     @Inject
@@ -35,10 +38,11 @@ public class ReleasesActivity extends AppCompatActivity {
     /* VIEWS */
     private RecyclerView rvReleases;
     private ProgressBar loader;
-
+    /* VALUES */
+    public static String ACCESS_OPTION = "ACCESS_OPTION";
+    private AccessOption accessOption;
 
     /**
-     *
      *
      */
     @Override
@@ -46,12 +50,12 @@ public class ReleasesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_releases);
         DaggerReleasesComponent.create().inject(this);
+        initValues();
         initViews();
         observeViewModel();
     }
 
     /**
-     *
      *
      */
     @Override
@@ -62,9 +66,15 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
+     */
+    private void initValues(){
+        accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
+    }
+
+    /**
      *
      */
-    private void initViews(){
+    private void initViews() {
         initToolbar();
         rvReleases = (RecyclerView) findViewById(R.id.rvReleases);
         loader = (ProgressBar) findViewById(R.id.pbLoader);
@@ -73,9 +83,8 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
-    private void initToolbar(){
+    private void initToolbar() {
         PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
         assert pollToolbarFragment != null;
@@ -88,14 +97,12 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
-    private void observeViewModel(){
+    private void observeViewModel() {
         releasesViewModel.getLoadReleasesPreviewsStatus().observe(this, this::getLoadReleasesPreviewsObserver);
     }
 
     /**
-     *
      *
      */
     private void getLoadReleasesPreviewsObserver(ProcessStatus processStatus) {
@@ -105,7 +112,6 @@ public class ReleasesActivity extends AppCompatActivity {
                 loader.setVisibility(View.VISIBLE);
                 break;
             case FAILURE:
-                Log.e(getClass().getName(), releasesViewModel.getFailure().toString());
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.releases_failure_default_title),
@@ -124,33 +130,31 @@ public class ReleasesActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
-    private void setReleasesPreviews(List<ReleasePreview> releasesPreviews){
+    private void setReleasesPreviews(List<ReleasePreview> releasesPreviews) {
         ReleasePreviewAdapter adapter = new ReleasePreviewAdapter(releasesPreviews, this::onReleasePreviewClickListener);
         rvReleases.setAdapter(adapter);
     }
 
     /**
      *
-     *
      */
     private void onReleasePreviewClickListener(ReleasePreview releasePreview) {
-        Intent intent = new Intent(this, ReleaseDetailActivity.class);
-        intent.putExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId());
+        Intent intent = new IntentBuilder(new Intent(this, ReleaseDetailActivity.class))
+                .putIntExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId())
+                .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
+                .build();
         startActivity(intent);
     }
 
     /**
      *
-     *
      */
-    private void execute(){
-        releasesViewModel.loadReleasesPreviews();
+    private void execute() {
+        releasesViewModel.loadReleasesPreviews(accessOption);
     }
 
     /**
-     *
      *
      */
     @Override

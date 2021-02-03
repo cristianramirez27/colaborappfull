@@ -1,7 +1,7 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ExpenseAuthorizedDetail;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesExpensesList;
-import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;

@@ -2,9 +2,9 @@ package com.coppel.rhconecta.dev.views.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.content.res.AppCompatResources;
 import android.util.Log;
-import android.view.MenuItem;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -14,7 +14,6 @@ import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +26,6 @@ import io.realm.RealmList;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.NO;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
@@ -41,7 +39,6 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SUR
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
@@ -49,13 +46,12 @@ public class MenuUtilities {
 
     /**
      *
-     *
      */
-    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide,int[] notifications) {
+    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications) {
 
         /*Setamos el menu por default*/
         ArrayList<HomeMenuItem> listMenuDefault = new ArrayList<>(Arrays.asList(
-                new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE,notifications[0]),
+                new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE, notifications[0]),
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),
@@ -63,14 +59,14 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
                 new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
-                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES,notifications[1]),
+                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES, notifications[1]),
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY)
         ));
 
 
-        HashMap<String,HomeMenuItem> mapNames = new HashMap<>();
+        HashMap<String, HomeMenuItem> mapNames = new HashMap<>();
 
         String numgColaborator = AppUtilities.getStringFromSharedPreferences(
                 CoppelApp.getContext(),
@@ -79,12 +75,12 @@ public class MenuUtilities {
 
         List<NotificationsUser> notificationSaved = RealmHelper.getNotifications(numgColaborator);
 
-        Map<Integer,Integer> mapNotification = new HashMap<>();
-        mapNotification.put(9,0);//fondo
-        mapNotification.put(10,0);//Vacaciones
-        mapNotification.put(11,0);//Gastos
+        Map<Integer, Integer> mapNotification = new HashMap<>();
+        mapNotification.put(9, 0);//fondo
+        mapNotification.put(10, 0);//Vacaciones
+        mapNotification.put(11, 0);//Gastos
 
-        if(notificationSaved != null) {
+        if (notificationSaved != null) {
             for (NotificationsUser notification : notificationSaved) {
                 mapNotification.put(
                         notification.getID_SISTEMA(),
@@ -93,87 +89,84 @@ public class MenuUtilities {
             }
         }
 
-        for(HomeMenuItem item : listMenuDefault)
-            mapNames.put(item.getTAG(),item);
+        for (HomeMenuItem item : listMenuDefault)
+            mapNames.put(item.getTAG(), item);
 
         UserPreference userPreferences = RealmHelper.getUserPreferences(email);
         ArrayList<HomeMenuItem> homeMenuItems = new ArrayList<>();
 
         if (userPreferences != null && userPreferences.getMenuItems() != null && userPreferences.getMenuItems().size() > 0 && !isSlide) {
 
-            RealmList<HomeMenuItem> menus =  userPreferences.getMenuItems();
+            RealmList<HomeMenuItem> menus = userPreferences.getMenuItems();
             List<String> listMenuSavedtTAG = new ArrayList<>();
 
-            for(HomeMenuItem item : menus)
+            for (HomeMenuItem item : menus)
                 listMenuSavedtTAG.add(item.getTAG());
 
 
-
             /**Validamos si se agregaron todos los items del menu en las preferencias, en caso contrario, lo agregamos*/
-            if(listMenuSavedtTAG.size() < listMenuDefault.size()){
-                for (HomeMenuItem homeMenuItem : listMenuDefault){
-                    if(!listMenuSavedtTAG.contains(homeMenuItem.getTAG())){
+            if (listMenuSavedtTAG.size() < listMenuDefault.size()) {
+                for (HomeMenuItem homeMenuItem : listMenuDefault) {
+                    if (!listMenuSavedtTAG.contains(homeMenuItem.getTAG())) {
                         menus.add(homeMenuItem);
                     }
                 }
             }
 
 
-
-
             Realm realm = Realm.getDefaultInstance();
             if (!realm.isInTransaction()) realm.beginTransaction();
-            for (int i =0;i<menus.size();i++){
-                try{
+            for (int i = 0; i < menus.size(); i++) {
+                try {
 
 
                     /*Actualizamos el nombre de las opciones del menu guardadas*/
-                    if(menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0){
+                    if (menus.get(i).getName().compareToIgnoreCase(mapNames.get(menus.get(i).getTAG()).getName()) != 0) {
                         menus.get(i).setName(mapNames.get(menus.get(i).getTAG()).getName());
                     }
 
 
                     /***Notificaciones de Fondo de ahorro**/
-                    if(menus.get(i).getTAG().equals(OPTION_SAVING_FUND)){ // agrega notificaciones a vacaciones
-                        if(mapNotification.containsKey(9)){
+                    if (menus.get(i).getTAG().equals(OPTION_SAVING_FUND)) { // agrega notificaciones a vacaciones
+                        if (mapNotification.containsKey(9)) {
                             menus.get(i).setNotifications(mapNotification.get(9));
                         }
                     }
 
 
                     /***Notificaciones de Vacaciones**/
-                    if(menus.get(i).getTAG().equals(OPTION_HOLIDAYS)){ // agrega notificaciones a vacaciones
-                        if(mapNotification.containsKey(10)){
+                    if (menus.get(i).getTAG().equals(OPTION_HOLIDAYS)) { // agrega notificaciones a vacaciones
+                        if (mapNotification.containsKey(10)) {
                             menus.get(i).setNotifications(mapNotification.get(10));
                         }
                     }
 
                     /***Notificaciones de Gastos de viaje**/
-                    if(menus.get(i).getTAG().equals(OPTION_EXPENSES)){ // agrega notificaciones a vacaciones
-                        if(mapNotification.containsKey(11)){
+                    if (menus.get(i).getTAG().equals(OPTION_EXPENSES)) { // agrega notificaciones a vacaciones
+                        if (mapNotification.containsKey(11)) {
                             menus.get(i).setNotifications(mapNotification.get(11));
                         }
                     }
 
-                    if(menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)){ // agrega notificaciones a comunicados
-                        if(notifications.length>0){
+                    if (menus.get(i).getTAG().equals(AppConstants.OPTION_NOTICE)) { // agrega notificaciones a comunicados
+                        if (notifications.length > 0) {
                             menus.get(i).setNotifications(notifications[0]);
                         }
                     }
 
-                    if(menus.get(i).getTAG().equals(AppConstants.OPTION_VISIONARIES)){ // agrega notificaciones a videos visionarios
-                        if(notifications.length>1){
+                    if (menus.get(i).getTAG().equals(AppConstants.OPTION_VISIONARIES)) { // agrega notificaciones a videos visionarios
+                        if (notifications.length > 1) {
                             menus.get(i).setNotifications(notifications[1]);
                         }
                     }
 
-                    if(menus.get(i).getTAG().equals(OPTION_COLLABORATOR_AT_HOME)){ // agrega notificaciones a videos colaborador en casa
-                        if(notifications.length>1){
+                    if (menus.get(i).getTAG().equals(OPTION_COLLABORATOR_AT_HOME)) { // agrega notificaciones a videos colaborador en casa
+                        if (notifications.length > 1) {
                             menus.get(i).setNotifications(notifications[2]);
                         }
                     }
-                }catch (Exception e){
-                    Log.d("MenuUtilities","Error add notifications menu: "+e.getMessage());
+                } catch (Exception e) {
+                    /* Error add notifications menu: e.getMessage() */
                 }
 
             }
@@ -186,24 +179,20 @@ public class MenuUtilities {
             homeMenuItems.addAll(listMenuDefault);
         }
 
-        // Se verifica la visibilidad de la opcion de stay home
+        // Se verifica la visibilidad de las opciones
         boolean blockStayHome = AppUtilities.getStringFromSharedPreferences(context, BLOCK_STAYHOME).equals(YES);
         boolean blockQr = AppUtilities.getStringFromSharedPreferences(context, BLOCK_QR).equals(YES);
         boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         for (HomeMenuItem item : homeMenuItems) {
-            if(item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
+            if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
                 continue;
-
-            if(item.getTAG().equals(OPTION_QR_CODE) && blockQr)
+            if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
                 continue;
-
-            if(item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
+            if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
                 continue;
-
             response.add(item);
         }
-
         return response;
     }
 
@@ -322,9 +311,9 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getPayrollMenu(Context context, VoucherResponseV2.Response voucherResponse) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        for(VoucherResponseV2.OpcionNomina opcionNomina : voucherResponse.getOpciones_nomina()){
-            if(!opcionNomina.getSfechanomina().equals("0")){
-                switch (opcionNomina.itipocomprobante){
+        for (VoucherResponseV2.OpcionNomina opcionNomina : voucherResponse.getOpciones_nomina()) {
+            if (!opcionNomina.getSfechanomina().equals("0")) {
+                switch (opcionNomina.itipocomprobante) {
 
                     case ICON_NOMINA:
                         menuItems.add(new HomeMenuItem(context.getString(R.string.payroll), AppConstants.OPTION_PAYROLL_VOUCHER));

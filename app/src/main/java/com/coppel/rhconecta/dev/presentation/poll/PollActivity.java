@@ -1,10 +1,10 @@
 package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -14,11 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.di.poll.DaggerPollComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
 import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
+import com.coppel.rhconecta.dev.domain.poll.use_case.GetPollUseCase;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.visionarios.utils.DialogCustom;
@@ -31,7 +34,7 @@ import javax.inject.Inject;
  *
  *
  */
-public class PollActivity extends AppCompatActivity {
+public class PollActivity extends AnalyticsTimeAppCompatActivity {
 
     /* */
     @Inject
@@ -51,16 +54,23 @@ public class PollActivity extends AppCompatActivity {
 
     /**
      *
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poll);
         DaggerPollComponent.create().inject(this);
+        initAnalyticsTimer();
         initViews();
         observeViewModel();
         execute();
+    }
+
+    /**
+     *
+     */
+    private void initAnalyticsTimer() {
+        getAnalyticsTimeManager().start(AnalyticsFlow.POLL);
     }
 
     /**
@@ -149,10 +159,11 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
-                if(failure instanceof NotPollAvailableFailure)
-                    Log.e(PollActivity.class.getName(), ((NotPollAvailableFailure) failure).message);
-                String message = getString(R.string.not_available_service);
+                String message;
+                if (failure instanceof NotPollAvailableFailure)
+                    message = getString(R.string.not_poll_available_message);
+                else
+                    message = getString(R.string.not_available_service);
                 SingleActionDialog dialog = new SingleActionDialog(
                         this,
                         getString(R.string.poll_activity_failure_title),
@@ -181,7 +192,6 @@ public class PollActivity extends AppCompatActivity {
                 break;
             case FAILURE:
                 Failure failure = viewModel.getFailure();
-                Log.e(getClass().getName(), failure.toString());
                 String message = getString(R.string.not_available_service);
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 break;

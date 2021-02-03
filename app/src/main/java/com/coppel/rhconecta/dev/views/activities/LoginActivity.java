@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +29,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import com.coppel.rhconecta.dev.views.customviews.EditTextPassword;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -171,9 +172,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  break;
             case ServicesRequestType.PROFILE:
                 ProfileResponse profileResponse = (ProfileResponse) response.getResponse();
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, gson.toJson(loginResponse));
-                intent.putExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, gson.toJson(profileResponse));
+                Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
+                        .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
+                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                        .build();
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, cedtEmail.getText());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);
@@ -302,8 +304,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // After config data is successfully fetched, it must be activated before newly fetched
                             // values are returned.
                             mFirebaseRemoteConfig.activateFetched();
-                        } else {
-                            Log.d("RemoteConfig","Fetch Failed");
                         }
                         setEndpoints();
                     }

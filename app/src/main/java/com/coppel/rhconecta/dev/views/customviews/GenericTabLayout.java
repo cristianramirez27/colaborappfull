@@ -2,13 +2,12 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +105,6 @@ public class GenericTabLayout<T extends IEnumTab> extends TabLayout implements T
 
     @Override
     public void addTab(@NonNull Tab tab, boolean setSelected) {
-        Log.e("genric tab ", "addtab");
         int icon;
         if (mAdapter != null) {
             icon = mAdapter.getPageIcon(getTabCount());
@@ -146,7 +144,6 @@ public class GenericTabLayout<T extends IEnumTab> extends TabLayout implements T
 
     @Override
     public void onTabSelected(final Tab tab) {
-        Log.e("genric tab ", "ontabSelect");
         ViewGroup customParen = (ViewGroup) LayoutInflater.from(getContext()).inflate(selectedLayout, null, false);
 
         ((ViewGroup) ((ViewGroup) getChildAt(0)).getChildAt(tab.getPosition())).removeViewAt(2);

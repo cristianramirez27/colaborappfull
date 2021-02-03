@@ -1,8 +1,10 @@
 package com.coppel.rhconecta.dev.presentation.releases.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +18,16 @@ import java.util.List;
 
 /**
  *
- *
  */
 public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAdapter.ViewHolder> {
 
     /* */
-    private List<ReleasePreview> values;
-    private OnReleasePreviewClickListener onReleasePreviewClickListener;
+    private final List<ReleasePreview> values;
+    private final OnReleasePreviewClickListener onReleasePreviewClickListener;
 
 
     /**
      *
-     * @param values
      */
     public ReleasePreviewAdapter(
             List<ReleasePreview> values,
@@ -39,9 +39,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     * @param viewGroup
-     * @param position
-     * @return
      */
     @NonNull
     @Override
@@ -52,8 +49,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     * @param viewHolder
-     * @param position
      */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
@@ -63,9 +58,16 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
         viewHolder.tvTitle.setText(releasePreview.getTitle());
         viewHolder.tvDate.setText(releasePreview.getDate());
         // Was read indicator
-        int drawableResource =
-                releasePreview.wasRead() ? R.drawable.ic_dot_grey_400_36dp : R.drawable.ic_punto_rojo;
-        viewHolder.ivWasRead.setImageResource(drawableResource);
+        if (releasePreview.wasRead()) {
+            int readColor = ContextCompat.getColor(
+                    viewHolder.itemView.getContext(),
+                    R.color.colorTextCoppelNegro
+            );
+            viewHolder.tvTitle.setTextColor(readColor);
+            viewHolder.ivWasRead.setVisibility(View.GONE);
+            if (releasePreview.isUpdated())
+                viewHolder.isUpdated.setVisibility(View.VISIBLE);
+        }
         // On click listener
         viewHolder.cvContainer.setOnClickListener(v -> {
             onReleasePreviewClickListener.onClick(releasePreview);
@@ -79,39 +81,41 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
 
     /**
      *
-     *
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        /* */
         CardView cvContainer;
+        /* */
         ImageView ivWasRead;
+        /* */
+        TextView isUpdated;
+        /* */
         TextView tvTitle;
+        /* */
         TextView tvDate;
 
         /**
          *
-         * @param itemView
          */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cvContainer =  (CardView) itemView.findViewById(R.id.cardFila);
-            ivWasRead= (ImageView) cvContainer.findViewById(R.id.iconoNuevo);
+            cvContainer = (CardView) itemView.findViewById(R.id.cardFila);
+            ivWasRead = (ImageView) cvContainer.findViewById(R.id.iconoNuevo);
+            isUpdated = (TextView) cvContainer.findViewById(R.id.labelActualizado);
             tvTitle = (TextView) cvContainer.findViewById(R.id.labelTitulo);
-            tvDate= (TextView) cvContainer.findViewById(R.id.labelFecha);
+            tvDate = (TextView) cvContainer.findViewById(R.id.labelFecha);
         }
 
     }
 
     /**
      *
-     *
      */
     public interface OnReleasePreviewClickListener {
 
         /**
          *
-         *
-         * @param releasePreview
          */
         void onClick(ReleasePreview releasePreview);
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<androidx.cardview.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,7 +14,6 @@
     android:layout_marginLeft="1dp"
     card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
     app:cardCornerRadius="4dp">
-
 
     <RelativeLayout
         android:id="@+id/layoutRequest"
@@ -31,6 +30,7 @@
             android:layout_width="30dp"
             android:paddingTop="4dp"
             android:layout_height="wrap_content">
+
             <CheckBox
                 android:theme="@style/MyCheckBox"
                 android:id="@+id/checkboxElement"
@@ -79,9 +79,8 @@
                         android:textColor="@color/colorBackgroundCoppelBlanco"
                         android:textSize="13sp"
                         android:visibility="visible" />
+
                 </LinearLayout>
-
-
 
                 <ImageView
                     android:id="@+id/ic_solicitud"
@@ -94,8 +93,8 @@
                     android:adjustViewBounds="true"
                     android:padding="2dp"
                     android:scaleType="centerInside" />
-            </RelativeLayout>
 
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_gravity="center"
@@ -128,6 +127,7 @@
                     android:textSize="13sp"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorTextGrayDark" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -152,7 +152,6 @@
                     android:textSize="13sp"
                     android:textColor="@color/colorTextGrayDark" />
 
-
                 <TextView
                     android:layout_gravity="bottom|center_horizontal"
                     android:id="@+id/fechaFin"
@@ -166,6 +165,7 @@
                     android:textSize="13sp"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorTextGrayDark" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -187,12 +187,10 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBackgroundCoppelNegro" />
 
-
                 <RelativeLayout
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
 
                     <TextView
                         android:layout_gravity="bottom|center_horizontal"
@@ -210,7 +208,6 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorBackgroundCoppelNegro" />
 
-
                     <View
                         android:visibility="gone"
                         android:layout_alignParentRight="true"
@@ -220,17 +217,12 @@
                         android:layout_width="8dp"
                         android:layout_height="8dp" />
 
-
                 </RelativeLayout>
 
-
             </RelativeLayout>
-
 
         </LinearLayout>
 
     </RelativeLayout>
 
-
-
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

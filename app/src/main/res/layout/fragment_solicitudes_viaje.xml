@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +10,7 @@
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="20dp"
@@ -42,7 +40,6 @@
                     android:textColor="@color/colorSecondBlueCoppel"
                     android:textSize="18sp" />
 
-
                 <TextView
                     android:layout_below="@+id/tituloSolicitudes"
                     android:layout_marginTop="20dp"
@@ -69,7 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvSolicitudes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -78,7 +75,6 @@
                 </LinearLayout>
 
             </RelativeLayout>
-
 
             <RelativeLayout
                 android:id="@+id/layoutControles"
@@ -123,7 +119,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvControles"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -134,56 +130,50 @@
 
             </RelativeLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@color/transparent"
-            android:orientation="vertical">
-
-            <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
-                android:id="@+id/expMonths"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
-            <TextView
-                android:layout_marginTop="20dp"
-                android:id="@+id/txtNoMeses"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:text="@string/empty_months"
-                android:textColor="@color/colorTextGrayDark"
-                android:textSize="18sp" />
-
             <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/layoutMeses"
-                android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:background="@color/transparent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rcvMonths"
-                    android:background="@color/transparent"
+                <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                    android:id="@+id/expMonths"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content"/>
 
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoMeses"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_months"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/layoutMeses"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/transparent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvMonths"
+                        android:background="@color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-
         </LinearLayout>
 
-        </LinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
