@@ -4,17 +4,13 @@ import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 
 import java.util.List;
 
-/**
- *
- *
- */
+/* */
 public class GetVisionariesPreviewsResponse {
 
     /* */
     public Data data;
 
     /**
-     *
      *
      */
     public static class Data {
@@ -25,7 +21,6 @@ public class GetVisionariesPreviewsResponse {
     }
 
     /**
-     *
      *
      */
     public static class VisionaryPreviewServer {

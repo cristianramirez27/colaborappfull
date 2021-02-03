@@ -9,11 +9,8 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
-public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.Status, UpdateVisionaryStatusUseCase.Params> {
+/* */
+public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.RateStatus, UpdateVisionaryStatusUseCase.Params> {
 
     /* */
     @Inject
@@ -21,44 +18,57 @@ public class UpdateVisionaryStatusUseCase extends UseCase<Visionary.Status, Upda
 
     /**
      *
-     *
      */
     public static class Params {
 
         /* */
         String visionaryId;
+
         /* */
         VisionaryType visionaryType;
+
         /* */
-        Visionary.Status status;
+        Visionary.RateStatus status;
+
+        /* */
+        String rateOptionId;
 
         /**
          *
-         *
          */
-        public Params(VisionaryType visionaryType, String visionaryId, Visionary.Status status) {
+        public Params(VisionaryType visionaryType, String visionaryId, Visionary.RateStatus status) {
             this.visionaryId = visionaryId;
             this.visionaryType = visionaryType;
             this.status = status;
+            rateOptionId = null;
         }
+
+        /**
+         *
+         */
+        public Params(VisionaryType visionaryType, String visionaryId, Visionary.RateStatus status, String rateOptionId) {
+            this.visionaryId = visionaryId;
+            this.visionaryType = visionaryType;
+            this.status = status;
+            this.rateOptionId = rateOptionId;
+        }
+
     }
 
-    /**
-     *
-     *
-     */
-    @Inject UpdateVisionaryStatusUseCase() { }
+    /* */
+    @Inject
+    UpdateVisionaryStatusUseCase() { /* Empty body */ }
 
     /**
-     *
      *
      */
     @Override
-    public void run(Params params, OnResultFunction<Either<Failure, Visionary.Status>> callback) {
+    public void run(Params params, OnResultFunction<Either<Failure, Visionary.RateStatus>> callback) {
         visionaryRepository.updateVisionaryStatusById(
                 params.visionaryType,
                 params.visionaryId,
                 params.status,
+                params.rateOptionId,
                 callback
         );
     }

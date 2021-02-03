@@ -4,12 +4,12 @@ import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailAct
 
 import dagger.Component;
 
+/* */
 @Component(modules = { VisionaryModule.class })
 public interface VisionaryComponent {
 
     /**
      *
-     * @param visionaryDetailActivity
      */
     void inject(VisionaryDetailActivity visionaryDetailActivity);
 

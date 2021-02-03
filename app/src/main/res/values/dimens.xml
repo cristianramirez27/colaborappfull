@@ -25,6 +25,10 @@
     <dimen name="padding_push_snackbar">12dp</dimen>
 
     <dimen name="margin_general">20dp</dimen>
+    <dimen name="visionary_rate_icon_size">120dp</dimen>
+    <dimen name="rate_option_height">68dp</dimen>
+    <dimen name="view_holder_rate_option_check_icon_size">18dp</dimen>
+    <dimen name="big_button_height">60dp</dimen>
 
     <integer name="anim_length">3000</integer>
     <integer name="anim_length_half">1500</integer>

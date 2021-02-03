@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.visionary_detail.visionary_rate.VisionaryRateActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/aplToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:title="@string/app_name" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/visionary_rate_icon_size"
+                    android:layout_height="@dimen/visionary_rate_icon_size"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:contentDescription="@null"
+                    tools:src="@drawable/ic_visionary_rate_like" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/lateral_margin"
+                    android:layout_marginTop="@dimen/vertical_margin"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="@string/visionary_rate_title_like" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="4dp"
+                    android:layout_weight="1"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/view_holder_rate_option" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mb_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/big_button_height"
+                    android:background="@color/colorPrimaryCoppelAzul"
+                    android:text="@string/visionary_rate_action"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/pb_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+
+</layout>

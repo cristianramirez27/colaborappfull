@@ -43,7 +43,7 @@ public class ServicesRetrofitManager {
     /**
      *
      */
-    public Retrofit getRetrofitAPI() {
+    public Retrofit getRetrofitAPI(){
         return new Retrofit.Builder()
                 .baseUrl(ServicesConstants.URL_BASE)
                 .addConverterFactory(GsonConverterFactory.create())

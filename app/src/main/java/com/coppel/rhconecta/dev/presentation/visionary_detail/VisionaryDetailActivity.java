@@ -25,12 +25,14 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionaryComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
+import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryRate;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.listener.OnMyVimeoExtractionListener;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
+import com.coppel.rhconecta.dev.presentation.visionary_detail.visionary_rate.VisionaryRateActivity;
 import com.coppel.rhconecta.dev.presentation.visionary_full_screen.VisionaryDetailFullScreenActivity;
 
 import javax.inject.Inject;
@@ -88,6 +90,14 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         initValues();
         initViews();
         observeViewModel();
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
         execute();
     }
 
@@ -219,7 +229,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:
-                setVisionaryStatusViews(viewModel.getVisionary().getStatus());
+                setVisionaryStatusViews(viewModel.getVisionary().getRateStatus());
                 break;
         }
     }
@@ -228,7 +238,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void setVisionaryViews(Visionary visionary) {
-        setVisionaryStatusViews(visionary.getStatus());
+        setVisionaryStatusViews(visionary.getRateStatus());
         // Vimeo video
         String[] split = visionary.getVideo().split("/");
         String vimeoId = split[split.length - 1];
@@ -244,7 +254,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     /**
      *
      */
-    private void setVisionaryStatusViews(Visionary.Status status) {
+    private void setVisionaryStatusViews(Visionary.RateStatus status) {
         switch (status) {
             case UNKNOWN:
             case EMPTY:
@@ -268,14 +278,33 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onLikeButtonClickListener(View v) {
-        viewModel.updateVisionaryStatus(visionaryType, Visionary.Status.LIKED);
+        if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenLike().isEmpty())
+            viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.LIKED);
+        else {
+            Intent intent = buildIntentToRateActivityFromRateStatus(Visionary.RateStatus.LIKED);
+            startActivity(intent);
+        }
     }
 
     /**
      *
      */
     private void onDislikeButtonClickListener(View v) {
-        viewModel.updateVisionaryStatus(visionaryType, Visionary.Status.DISLIKED);
+        if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenDislike().isEmpty())
+            viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.DISLIKED);
+        else {
+            Intent intent = buildIntentToRateActivityFromRateStatus(Visionary.RateStatus.DISLIKED);
+            startActivity(intent);
+        }
+    }
+
+    /* */
+    private Intent buildIntentToRateActivityFromRateStatus(Visionary.RateStatus rateStatus) {
+        return new IntentBuilder(new Intent(this, VisionaryRateActivity.class))
+                .putSerializableExtra(VisionaryRateActivity.VISIONARY, viewModel.getVisionary())
+                .putSerializableExtra(VisionaryRateActivity.VISIONARY_TYPE, visionaryType)
+                .putSerializableExtra(VisionaryRateActivity.VISIONARY_RATE_STATUS, rateStatus)
+                .build();
     }
 
     /**

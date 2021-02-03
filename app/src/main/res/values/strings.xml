@@ -1,6 +1,4 @@
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">ColaborApp</string>
     <string name="welcome">Bienvenido</string>
     <string name="enrollment_message">
@@ -447,6 +445,9 @@
     <string name="video_decoder_failure">No se pudo recuperar el video por el siguiente motivo: %s</string>
     <string name="default_video_decoder_failure">No se pudo recuperar el video.</string>
     <string name="app_center_id">ed0f9a3a-2f9c-41f2-b963-017fef1b8972</string>
+    <string name="visionary_rate_title_like">¿Por qué te gustó el video?</string>
+    <string name="visionary_rate_action">Enviar</string>
+    <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>

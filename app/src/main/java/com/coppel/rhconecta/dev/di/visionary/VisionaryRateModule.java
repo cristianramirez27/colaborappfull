@@ -8,7 +8,7 @@ import dagger.Provides;
 
 /* */
 @Module
-public class VisionaryModule {
+public class VisionaryRateModule {
 
     /**
      *

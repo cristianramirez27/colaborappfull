@@ -26,18 +26,24 @@ import retrofit2.Retrofit;
 public class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
     /* */
-    private AnalyticsApiService apiService;
-    /* */
-    private BasicUserInformationFacade basicUserInformationFacade;
+    private final BasicUserInformationFacade basicUserInformationFacade;
 
     /**
      *
      */
     @Inject
     public AnalyticsRepositoryImpl() {
-        Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
-        apiService = retrofit.create(AnalyticsApiService.class);
         basicUserInformationFacade = new BasicUserInformationFacade(CoppelApp.getContext());
+    }
+
+    /**
+     *
+     */
+    private AnalyticsApiService getAnalyticsApiService() {
+        try {
+            Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
+            return retrofit.create(AnalyticsApiService.class);
+        } catch (Exception ignore) { return null; }
     }
 
     /**
@@ -58,9 +64,12 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
         String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
-        apiService
-                .sendTimeByAnalyticsFlow(authHeader, url, request)
-                .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+        AnalyticsApiService apiService = getAnalyticsApiService();
+        if(apiService != null) {
+            apiService
+                    .sendTimeByAnalyticsFlow(authHeader, url, request)
+                    .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+        }
     }
 
     /**

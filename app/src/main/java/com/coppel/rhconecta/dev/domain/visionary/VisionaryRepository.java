@@ -38,8 +38,9 @@ public interface VisionaryRepository {
     void updateVisionaryStatusById(
             VisionaryType visionaryType,
             String visionaryId,
-            Visionary.Status status,
-            UseCase.OnResultFunction<Either<Failure, Visionary.Status>> callback
+            Visionary.RateStatus status,
+            String rateOptionId,
+            UseCase.OnResultFunction<Either<Failure, Visionary.RateStatus>> callback
     );
 
 }

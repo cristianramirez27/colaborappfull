@@ -28,6 +28,7 @@ public class GetVisionaryUseCase extends UseCase<Visionary, GetVisionaryUseCase.
         /* */
         String visionaryId;
 
+        /* */
         AccessOption accessOption;
 
         /**
@@ -41,10 +42,8 @@ public class GetVisionaryUseCase extends UseCase<Visionary, GetVisionaryUseCase.
 
     }
 
-    /**
-     *
-     */
-    @Inject GetVisionaryUseCase() { }
+    /* */
+    @Inject GetVisionaryUseCase() { /* Empty body */ }
 
     /**
      *
