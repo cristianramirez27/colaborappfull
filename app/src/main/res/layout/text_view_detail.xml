@@ -24,23 +24,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txvValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="6dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/lineto_circular_pro_bold"
-        android:gravity="end"
-        android:maxLines="1"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/viewDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline73"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/txvValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/lineto_circular_pro_bold"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/viewDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline73"
+            app:layout_constraintTop_toTopOf="parent" android:textAlignment="textEnd"/>
 
     <View
         android:id="@+id/viewDivider"
