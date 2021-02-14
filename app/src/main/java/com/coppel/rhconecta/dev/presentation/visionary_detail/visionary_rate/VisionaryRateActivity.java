@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.presentation.visionary_detail.visionary_rate;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -11,15 +10,12 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.databinding.ActivityVisionaryRateBinding;
-import com.coppel.rhconecta.dev.di.visionary.DaggerVisionaryComponent;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionaryRateComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryRate;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
-import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailViewModel;
-import com.coppel.rhconecta.dev.presentation.visionary_detail.visionary_rate.adapter.OnOptionClickListener;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.visionary_rate.adapter.RateOptionAdapter;
 
 import java.util.ArrayList;
@@ -84,6 +80,7 @@ public class VisionaryRateActivity extends AppCompatActivity {
      */
     private void setupViews() {
         setupToolbar();
+        setupHeaderImage();
         setupOptionsRecyclerView();
         setupActionButton();
     }
@@ -92,11 +89,29 @@ public class VisionaryRateActivity extends AppCompatActivity {
      *
      */
     private void setupToolbar() {
-        binding.toolbar.setTitle("");
+        int titleResource = visionaryType == VisionaryType.VISIONARIES ?
+                R.string.visionary_details_activity_title : R.string.visionary_at_home_details_activity_title;
+        binding.toolbar.setTitle(titleResource);
         setSupportActionBar(binding.toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    /**
+     *
+     */
+    private void setupHeaderImage() {
+        switch (requiredRateStatus) {
+            case LIKED:
+                binding.ivIcon.setImageResource(R.drawable.ic_visionary_rate_like);
+                break;
+            case DISLIKED:
+                binding.ivIcon.setImageResource(R.drawable.ic_visionary_rate_dislike);
+                break;
+            default:
+                finish();
+        }
     }
 
     /**
@@ -123,12 +138,14 @@ public class VisionaryRateActivity extends AppCompatActivity {
      *
      */
     private void setupActionButton() {
-        if (selectedOption == null) {
-            String message = getString(R.string.visionary_rate_action_option_not_selected);
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        } else {
-            viewModel.updateVisionaryStatus(visionaryType, visionary, requiredRateStatus, selectedOption);
-        }
+        binding.btnAction.setOnClickListener(v -> {
+            if (selectedOption == null) {
+                String message = getString(R.string.visionary_rate_action_option_not_selected);
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.updateVisionaryStatus(visionaryType, visionary, requiredRateStatus, selectedOption);
+            }
+        });
     }
 
     /**
@@ -171,6 +188,7 @@ public class VisionaryRateActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
                     break;
                 case COMPLETED:
+                    Toast.makeText(this, R.string.update_visionary_process_status_done, Toast.LENGTH_SHORT).show();
                     finish();
                     break;
             }
@@ -181,7 +199,7 @@ public class VisionaryRateActivity extends AppCompatActivity {
      *
      */
     private void setTitle(String title) {
-        binding.toolbar.setTitle(title);
+        binding.tvTitle.setText(title);
     }
 
     /**
@@ -199,6 +217,15 @@ public class VisionaryRateActivity extends AppCompatActivity {
         RateOptionAdapter rateOptionAdapter = (RateOptionAdapter) binding.rvOptions.getAdapter();
         if (rateOptionAdapter != null)
             rateOptionAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
 }

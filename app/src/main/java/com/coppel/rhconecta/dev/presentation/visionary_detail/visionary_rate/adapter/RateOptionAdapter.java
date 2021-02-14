@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.presentation.visionary_detail.visionary_rate.adapter;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class RateOptionAdapter extends RecyclerView.Adapter<RateOptionAdapter.Op
                 android.R.color.black
         );
         holder.binding.tvContent.setTextColor(selectedColor);
+        holder.binding.tvContent.setTypeface(Typeface.DEFAULT_BOLD);
         holder.binding.ivCheck.setVisibility(View.VISIBLE);
     }
 
@@ -77,11 +79,12 @@ public class RateOptionAdapter extends RecyclerView.Adapter<RateOptionAdapter.Op
      *
      */
     private void setupHolderAsUnelected(OptionViewHolder holder) {
-        int selectedColor = ContextCompat.getColor(
+        int unselectedColor = ContextCompat.getColor(
                 holder.itemView.getContext(),
-                android.R.color.black
+                R.color.holder_unselected_text_color
         );
-        holder.binding.tvContent.setTextColor(selectedColor);
+        holder.binding.tvContent.setTextColor(unselectedColor);
+        holder.binding.tvContent.setTypeface(Typeface.DEFAULT);
         holder.binding.ivCheck.setVisibility(View.GONE);
     }
 
