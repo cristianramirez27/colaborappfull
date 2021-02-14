@@ -48,6 +48,7 @@ public class AppConfig {
     public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
 
     public final static String ENDPOINT_HOLIDAYS = "ENDPOINT_HOLIDAYS";
+    public final static String ENDPOINT_HOLIDAY_BONUS = "ENDPOINT_HOLIDAY_BONUS";
     public final static String ENDPOINT_COLLAGE = "ENDPOINT_COLLAGE";
     public final static String ENDPOINT_QR = "ENDPOINT_QR";
     public final static String ENDPOINT_SECTION_TIME = "ENDPOINT_SECTION_TIME";
@@ -109,6 +110,7 @@ public class AppConfig {
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
+        String holidayBonus = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAY_BONUS);
         String collage = mFirebaseRemoteConfig.getString(ENDPOINT_COLLAGE);
 
 
@@ -136,6 +138,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN, url_main);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL, expenses_travel);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS, holidays);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAY_BONUS, holidayBonus);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);

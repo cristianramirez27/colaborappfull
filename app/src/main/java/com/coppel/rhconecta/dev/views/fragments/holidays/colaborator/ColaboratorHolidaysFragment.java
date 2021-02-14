@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
@@ -30,6 +31,10 @@ import com.coppel.rhconecta.dev.business.models.HolidayPeriodFolio;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysCancelResponse;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
+import com.coppel.rhconecta.dev.business.models.HolidayBonusResponse;
+import com.coppel.rhconecta.dev.business.models.HolidayBonusPeriodResponse;
+import com.coppel.rhconecta.dev.business.models.HolidayBonusEditPeriodResponse;
+import com.coppel.rhconecta.dev.business.models.DatePrima;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
@@ -47,6 +52,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentDeletePeriods;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCalendar;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
 import com.wdullaer.datetimepickerholiday.date.DaySelectedHoliday;
@@ -57,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +73,9 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CANCEL_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.CONSULTA_VACACIONES;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.HOLIDAY_BONUS;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.HOLIDAY_BONUS_PERIOD;
+import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.HOLIDAY_BONUS_EDITH_PERIOD;
 import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_COLABORATOR_SCHEDULE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_HOLIDAYS;
@@ -113,8 +123,10 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     private HolidayRequestRecyclerAdapter holidayRequestRecyclerAdapter;
     private long mLastClickTime = 0;
     private boolean EXPIRED_SESSION;
+    private String dateHolidayBonus = null;
 
     private ISurveyNotification ISurveyNotification;
+    private DialogFragmentCalendar dialogFragmentCalendar = new DialogFragmentCalendar();
 
     @Override
     public void onAttach(Context context) {
@@ -169,7 +181,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getHolidayBonusGeneric(HOLIDAY_BONUS, 1, null);
         getHolidaysPeriods();
+        dialogFragmentCalendar.setAcceptAction(
+                params -> Arrays.stream(params)
+                        .findFirst()
+                        .ifPresent(selected -> getHolidayBonusGeneric(HOLIDAY_BONUS_EDITH_PERIOD, 3, selected.toString()))
+        );
     }
 
     private void getHolidaysPeriods(){
@@ -177,6 +195,16 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         HolidayRequestData  holidayRequestData = new HolidayRequestData(CONSULTA_VACACIONES, 2,numEmployer);
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
+    }
+
+    private void getHolidayBonusGeneric(HolidaysType holidaysType, int option, String dateSelected) {
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(holidaysType, option,numEmployer);
+        if( dateSelected!=null){
+            holidayRequestData.setNum_empconsulta(dateSelected);
+        }
+        coppelServicesPresenter.getHolidays(holidayRequestData, token);
     }
 
     @Override
@@ -236,6 +264,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
             case ServicesRequestType.HOLIDAYS:
                 if(response.getResponse() instanceof HolidaysPeriodsResponse) {
                     holidaysPeriodsResponse = (HolidaysPeriodsResponse) response.getResponse();
+                    if (dateHolidayBonus != null) {
+                        holidaysPeriodsResponse.getData().getResponse().setFec_primavacacional(dateHolidayBonus);
+                    }
                     headerHoliday.setDetailData(holidaysPeriodsResponse);
                     if(holidaysPeriodsResponse.getData().getResponse().getPeriodos().size() > 0){
                         holidayPeriodList.clear();
@@ -269,10 +300,47 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
                     layoutContainer.setVisibility(VISIBLE);
 
+                } else if (response.getResponse() instanceof HolidayBonusEditPeriodResponse){
+                    HolidayBonusEditPeriodResponse holidayBonusEditPeriodResponse = (HolidayBonusEditPeriodResponse) response.getResponse();
+                    HolidayBonusEditPeriodResponse.Response responseDetail = holidayBonusEditPeriodResponse.getData().getResponse();
+                    if (responseDetail.getClv_estado() == 0) {
+                        getHolidayBonusGeneric(HOLIDAY_BONUS, 1, null);
+                        showSuccessDialog(MSG_HOLIDAYS_OK, responseDetail.getDes_mensaje(), "");
+                    } else {
+                        showSuccessDialog(MSG_HOLIDAYS_OK, responseDetail.getDes_mensaje(),"");
+                    }
+                    isCanceled = false;
                 } else if(response.getResponse() instanceof HolidaysCancelResponse) {
                     HolidaysCancelResponse responseDetail = (HolidaysCancelResponse)response.getResponse();
                     showSuccessDialog(MSG_HOLIDAYS_OK,responseDetail.getData().getResponse().get(0).getDes_mensaje(), "");
                     isCanceled = true;
+                } else if (response.getResponse() instanceof HolidayBonusResponse) {
+                    HolidayBonusResponse responseHolidayBonus = (HolidayBonusResponse) response.getResponse();
+                    HolidayBonusResponse.Response responseDetail = responseHolidayBonus.getData().getResponse();
+                    if (responseDetail.getClv_estado() == 0) {
+                        dateHolidayBonus = responseDetail.getFec_diaprimavacacional();
+                        headerHoliday.setDataHolidayBonus(dateHolidayBonus);
+                        headerHoliday.iconPrimaVacacionalOnClickListener(v -> {
+                            getHolidayBonusGeneric(HOLIDAY_BONUS_PERIOD, 2, null);
+                        });
+                    } else {
+                        headerHoliday.setDataHolidayBonus(responseDetail.getFec_diaprimavacacional());
+                        headerHoliday.iconPrimaVacacionalOnClickListener(null);
+                    }
+                } else if (response.getResponse() instanceof HolidayBonusPeriodResponse) {
+                    HolidayBonusPeriodResponse holidayBonusPeriodResponse = (HolidayBonusPeriodResponse) response.getResponse();
+                    HolidayBonusPeriodResponse.Response responseDetail = holidayBonusPeriodResponse.getData().getResponse();
+                    if (responseDetail.getClv_estado() == 0) {
+                        List<DatePrima> list = new ArrayList<>();
+                        responseDetail.getFechas_primas().forEach(periodDate -> {
+                            list.add(new DatePrima(periodDate.getNom_mes(), periodDate.toMapDateCalendarList()));
+                        });
+                        dialogFragmentCalendar.setDateHolidayBonus(list);
+                        dialogFragmentCalendar.show(getChildFragmentManager(), DialogFragmentCalendar.TAG);
+
+                    } else {
+                        showSuccessDialog(MSG_HOLIDAYS_OK, responseDetail.getDes_mensaje(), "");
+                    }
                 }
 
                 break;
@@ -346,6 +414,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
     @Override
     public void showProgress() {
+        if(dialogFragmentLoader !=null){
+            dialogFragmentLoader.dismiss();
+        }
         dialogFragmentLoader = new DialogFragmentLoader();
        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }

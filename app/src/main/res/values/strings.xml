@@ -312,6 +312,10 @@
     <string name="empty_controls">No hay controles disponibles</string>
     <string name="request_holidays">Solicitud de vacaciones</string>
 
+    <!--    Prima Vacacional-->
+    <string name="dilog_title_prima_vacacional">Elige el día de tu prima vacacional</string>
+    <string name="dilog_button_accept_prima_vacacional">Aceptar</string>
+    <string name="dilog_button_cancel_prima_vacacional">Cancelar</string>
 
     <!--Vacaciones-->
     <string name="title_holidays">Vacaciones</string>
