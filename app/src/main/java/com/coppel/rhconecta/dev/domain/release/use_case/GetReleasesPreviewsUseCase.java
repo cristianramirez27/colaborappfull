@@ -11,10 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-/**
- *
- *
- */
+/* */
 public class GetReleasesPreviewsUseCase
         extends UseCase<List<ReleasePreview>, GetReleasesPreviewsUseCase.Params> {
 
