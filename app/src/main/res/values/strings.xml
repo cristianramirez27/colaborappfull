@@ -425,6 +425,15 @@
     <string name="visionaries_failure_default_title">Alerta</string>
     <string name="visionaries_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
     <string name="visionaries_failure_default_action">Aceptar</string>
+
+    <string name="profile_actions_failure_default_title">Alerta</string>
+    <string name="profile_actions_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="profile_actions_failure_default_action">Aceptar</string>
+
+    <string name="fingerprint_failure_default_title">Alerta</string>
+    <string name="fingerprint_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="fingerprint_failure_default_action">Aceptar</string>
+
     <string name="release_detail_activity_header">Comunicado</string>
     <string name="poll_activity_failure_title">Alerta</string>
     <string name="poll_activity_failure_action">Aceptar</string>
@@ -453,6 +462,12 @@
     <string name="visionary_rate_action">Enviar</string>
     <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
     <string name="update_visionary_process_status_done">Gracias por tu retroalimentación</string>
+    <string name="go_to_profile_label"><u>Ver perfil</u></string>
+    <string name="user_profile_label">Mis datos</string>
+    <string name="fingerprint_label">Huellas adicionales</string>
+    <string name="profile_actions_activity_title">Perfil</string>
+    <string name="profile_details_activity_title">Mis datos</string>
+    <string name="fingerprint_title">Huellas Adicionales</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>

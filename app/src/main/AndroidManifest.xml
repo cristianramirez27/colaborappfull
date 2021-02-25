@@ -58,6 +58,18 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.profile_actions.ProfileActionsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.profile_actions.fingerprint.FingerprintActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.profile_actions.profile_details.ProfileDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.releases.ReleasesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

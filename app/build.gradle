@@ -69,6 +69,16 @@ dependencies {
     // Dagger
     implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
     annotationProcessor "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+    // Koin
+    implementation "org.koin:koin-android-viewmodel:1.0.2"
+
+    /** KOTLIN */
+    // Standard library
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
 
     // Android
     implementation 'androidx.multidex:multidex:2.0.0'
@@ -143,3 +153,4 @@ realm {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'

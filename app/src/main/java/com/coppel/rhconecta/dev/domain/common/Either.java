@@ -8,6 +8,9 @@ package com.coppel.rhconecta.dev.domain.common;
  */
 public class Either<L, R> {
 
+    /** */
+    public Either() { }
+
     /**
      * Represents the left side of [Either] class which by convention is a "Failure".
      */

@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import androidx.multidex.MultiDexApplication;
 
 import com.coppel.rhconecta.dev.business.utils.Foreground;
+import com.coppel.rhconecta.dev.di.AppModuleKt;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import com.microsoft.appcenter.AppCenter;
@@ -23,6 +24,7 @@ public class CoppelApp extends MultiDexApplication {
         Realm.init(this);
         Foreground.init(this);
         initAppCenter();
+        AppModuleKt.initKoin(this);
         Realm.setDefaultConfiguration(RealmHelper.configurateRealm(this));
         TextUtilities.adjustFontScale(getApplicationContext(), getResources().getConfiguration());
         contextApp = this;
