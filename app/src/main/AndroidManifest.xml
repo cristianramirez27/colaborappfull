@@ -27,7 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".presentation.visionary_detail.visionary_rate.VisionaryRateActivity"></activity>
         <activity
             android:name=".presentation.splash.SplashScreenActivity"
             android:exported="true"
@@ -80,6 +79,10 @@
             android:configChanges="screenSize|orientation"
             android:exported="false"
             android:hardwareAccelerated="true" />
+        <activity
+            android:name=".presentation.visionary_detail.visionary_rate.VisionaryRateActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.ConfigLetterActivity"
             android:exported="false"

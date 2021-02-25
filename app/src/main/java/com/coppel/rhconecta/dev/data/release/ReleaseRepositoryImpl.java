@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.data.release;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
@@ -32,23 +31,19 @@ import retrofit2.Retrofit;
 
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
-/**
- *
- *
- */
+/** */
 public class ReleaseRepositoryImpl implements ReleaseRepository {
 
     /* */
-    private ReleaseApiService apiService;
+    private final ReleaseApiService apiService;
     /* */
-    private Context context;
+    private final Context context;
 
     /**
      *
-     *
      */
     @Inject
-    public ReleaseRepositoryImpl(){
+    public ReleaseRepositoryImpl() {
         Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
         apiService = retrofit.create(ReleaseApiService.class);
         context = CoppelApp.getContext();
@@ -68,6 +63,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
         ));
         int clvOption = 1;
         int accessOptionValue = accessOption.toInt();
+
         String authHeader = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_TOKEN
@@ -85,7 +81,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
                 GetReleasesPreviewsResponse body = response.body();
                 List<GetReleasesPreviewsResponse.ReleasePreviewServer> releasePreviewsServer = body.data.response;
                 ArrayList<ReleasePreview> releasePreviews = new ArrayList<>();
-                for (GetReleasesPreviewsResponse.ReleasePreviewServer releasePreviewServer: releasePreviewsServer)
+                for (GetReleasesPreviewsResponse.ReleasePreviewServer releasePreviewServer : releasePreviewsServer)
                     releasePreviews.add(releasePreviewServer.toReleasePreview());
                 Either<Failure, List<ReleasePreview>> result =
                         new Either<Failure, List<ReleasePreview>>().new Right(releasePreviews);

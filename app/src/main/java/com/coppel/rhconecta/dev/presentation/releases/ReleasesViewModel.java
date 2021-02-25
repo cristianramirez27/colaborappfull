@@ -39,19 +39,19 @@ public class ReleasesViewModel {
     public void loadReleasesPreviews(AccessOption accessOption) {
         loadReleasesPreviewsStatus.postValue(ProcessStatus.LOADING);
         GetReleasesPreviewsUseCase.Params params = new GetReleasesPreviewsUseCase.Params(accessOption);
-        getReleasesPreviewsUseCase.run(params, result -> {
-            result.fold(onLoadReleasesPreviewsFailure, onLoadReleasesPreviewsRight);
-        });
+        getReleasesPreviewsUseCase.run(params, result ->
+                result.fold(onLoadReleasesPreviewsFailure, onLoadReleasesPreviewsRight)
+        );
     }
 
     /* */
-    private Either.Fn<Failure> onLoadReleasesPreviewsFailure = failure -> {
+    private final Either.Fn<Failure> onLoadReleasesPreviewsFailure = failure -> {
         this.failure = failure;
         loadReleasesPreviewsStatus.postValue(ProcessStatus.FAILURE);
     };
 
     /* */
-    private Either.Fn<List<ReleasePreview>> onLoadReleasesPreviewsRight = releasesPreviews -> {
+    private final Either.Fn<List<ReleasePreview>> onLoadReleasesPreviewsRight = releasesPreviews -> {
         this.releasesPreviews = releasesPreviews;
         loadReleasesPreviewsStatus.postValue(ProcessStatus.COMPLETED);
     };
