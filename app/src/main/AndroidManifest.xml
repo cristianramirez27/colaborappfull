@@ -76,7 +76,8 @@
         <activity
             android:name=".presentation.release_detail.ReleaseDetailActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ReleaseDetail" />
         <activity
             android:name=".presentation.visionaries.VisionariesActivity"
             android:exported="false"

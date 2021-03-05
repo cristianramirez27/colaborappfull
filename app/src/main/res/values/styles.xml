@@ -10,6 +10,10 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_left_arrow_black</item>
     </style>
 
+    <style name="AppTheme.ReleaseDetail">
+        <item name="colorAccent">@color/colorPrimaryBlueCoppel</item>
+    </style>
+
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
