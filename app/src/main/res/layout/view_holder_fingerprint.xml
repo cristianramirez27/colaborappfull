@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fingerprint"
+            type="com.coppel.rhconecta.dev.domain.fingerprint.entity.Fingerprint" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_holder_fingerprint_height">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="@dimen/view_holder_fingerprint_image_size"
+            android:layout_height="@dimen/view_holder_fingerprint_image_size"
+            android:layout_marginStart="@dimen/lateral_margin"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_fingerprint_image_holder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/lateral_margin"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_image"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:text="@{ fingerprint.name }"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                tools:text="@tools:sample/full_names" />
+
+            <TextView
+                android:id="@+id/tv_relationship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lineto_circular_pro_bold"
+                android:text="@{ fingerprint.relationship }"
+                android:textColor="#979797"
+                tools:text="Esposa" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#f1f2f6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

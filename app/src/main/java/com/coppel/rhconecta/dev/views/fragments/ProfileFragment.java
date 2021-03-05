@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
     private final int CAMERA_PERMISSIONS_REQUEST_CODE = 10;
     private final int STORAGE_PERMISSIONS_REQUEST_CODE = 15;
     private final int PICK_IMAGE = 20;
-    private HomeActivity parent;
+    private ProfileDetailsActivity parent;
     private DialogFragmentCamera dialogFragmentCamera;
     private DialogFragmentWarning dialogFragmentWarning;
     private boolean WARNING_PERMISSIONS;
@@ -111,8 +111,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        parent = (HomeActivity) getActivity();
-        parent.setToolbarTitle(getString(R.string.profile));
+        parent = (ProfileDetailsActivity) getActivity();
         profileResponse = parent.getProfileResponse();
         userPreferences = RealmHelper.getUserPreferences(profileResponse.getCorreo());
         imgvEdit.setOnClickListener(this);

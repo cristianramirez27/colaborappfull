@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.business.Configuration;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -53,6 +52,7 @@ public class AppConfig {
     public final static String ENDPOINT_QR = "ENDPOINT_QR";
     public final static String ENDPOINT_SECTION_TIME = "ENDPOINT_SECTION_TIME";
 
+    public final static String ENDPOINT_ADDITIONALS = "ENDPOINT__ADDITIONALS";
 
     //VISIONARIOS
     public final static String VISIONARIOS_URL = "VISIONARIOS_URL";
@@ -108,6 +108,8 @@ public class AppConfig {
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
 
+        String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
+
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
         String holidayBonus = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAY_BONUS);
@@ -143,6 +145,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
 
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
 
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".presentation.profile_actions.ProfileActionsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSecondBlueCoppel"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/toolbar_fragment"
+            android:name="com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/lateral_margin"
+                    android:paddingVertical="@dimen/half_vertical_margin">
+
+                    <ImageView
+                        android:id="@+id/iv_user_image"
+                        android:layout_width="@dimen/image_profile_size"
+                        android:layout_height="@dimen/image_profile_size"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_profile_image_holder" />
+
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/half_vertical_margin"
+                        android:fontFamily="@font/lineto_circular_pro_bold"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
+                        tools:text="@tools:sample/full_names" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_vertical_margin"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lineto_circular_pro_book"
+                            android:text="@string/collaborator"
+                            android:textColor="@android:color/white" />
+
+                        <TextView
+                            android:id="@+id/tv_user_number"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lineto_circular_pro_book"
+                            android:textColor="@color/colorYellowCoppel"
+                            tools:text="97658912" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="#fafafa">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fl_user_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/profile_action_height">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/lateral_margin"
+                                android:fontFamily="@font/lineto_circular_pro_book"
+                                android:text="@string/user_profile_label"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center_vertical"
+                                android:layout_marginEnd="@dimen/lateral_margin"
+                                android:contentDescription="@null"
+                                android:src="@drawable/right_icon" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_gravity="bottom"
+                                android:background="#f1f2f6" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/fl_fingerprints"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/profile_action_height"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/lateral_margin"
+                                android:fontFamily="@font/lineto_circular_pro_book"
+                                android:text="@string/fingerprint_label"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center_vertical"
+                                android:layout_marginEnd="@dimen/lateral_margin"
+                                android:contentDescription="@null"
+                                android:src="@drawable/right_icon" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_gravity="bottom"
+                                android:background="#f1f2f6" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/pb_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>

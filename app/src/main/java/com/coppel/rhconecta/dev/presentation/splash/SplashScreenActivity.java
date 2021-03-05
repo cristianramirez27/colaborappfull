@@ -342,14 +342,15 @@ public class SplashScreenActivity
      */
     private void fetchEndpoints() {
         long cacheExpiration = 0;
-        mFirebaseRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(
-                SplashScreenActivity.this,
-                task -> {
-                    if (task.isSuccessful())
-                        mFirebaseRemoteConfig.activateFetched();
-                    setEndpoints();
-                }
-        );
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnCompleteListener(
+                        SplashScreenActivity.this,
+                        task -> {
+                            if (task.isSuccessful())
+                                mFirebaseRemoteConfig.activateFetched();
+                            setEndpoints();
+                        }
+                );
     }
 
     /**

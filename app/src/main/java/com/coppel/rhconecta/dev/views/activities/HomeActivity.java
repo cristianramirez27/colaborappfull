@@ -62,6 +62,7 @@ import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.home.HomeMainFragment;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
+import com.coppel.rhconecta.dev.presentation.profile_actions.ProfileActionsActivity;
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
@@ -468,9 +469,10 @@ public class HomeActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ctlProfile:
-                ProfileFragment profileFragment = new ProfileFragment();
-                profileFragment.setOnPictureChanged(this);
-                replaceFragment(profileFragment, ProfileFragment.TAG);
+                Intent intent = new IntentBuilder(new Intent(this, ProfileActionsActivity.class))
+                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                        .build();
+                startActivity(intent);
                 break;
             case R.id.ctlLogout:
                 dlHomeContainer.closeDrawers();
@@ -686,7 +688,7 @@ public class HomeActivity
     /**
      *
      */
-    private void  navigateToPoll() {
+    private void navigateToPoll() {
         Intent intent = new Intent(this, PollActivity.class);
         startActivity(intent);
     }

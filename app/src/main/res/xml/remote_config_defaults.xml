@@ -69,6 +69,10 @@
         <value>rhconecta/api/v2/inicioSesion</value>
     </entry>
     <entry>
+        <key>ENDPOINT__ADDITIONALS</key>
+        <value>rhconecta/api/v3/huellasadicionales</value>
+    </entry>
+    <entry>
         <key>URL_MAIN_LOGIN</key>
         <value>http://qa-apipos.coppel.com:9000/rhconecta/api/v1/</value>
     </entry>

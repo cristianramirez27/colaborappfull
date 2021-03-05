@@ -29,6 +29,11 @@
     <dimen name="rate_option_height">68dp</dimen>
     <dimen name="view_holder_rate_option_check_icon_size">18dp</dimen>
     <dimen name="big_button_height">60dp</dimen>
+    <dimen name="image_profile_size">56dp</dimen>
+    <dimen name="small_vertical_margin">4dp</dimen>
+    <dimen name="profile_action_height">56dp</dimen>
+    <dimen name="view_holder_fingerprint_height">72dp</dimen>
+    <dimen name="view_holder_fingerprint_image_size">40dp</dimen>
 
     <integer name="anim_length">3000</integer>
     <integer name="anim_length_half">1500</integer>
