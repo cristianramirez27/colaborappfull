@@ -63,6 +63,7 @@ public class HolidayBonusPeriodResponse extends HolidaysBaseResponse {
            private String fec_diames2;
            private String fec_quincena1;
            private String fec_quincena2;
+           private String des_periodo;
 
            public String getNom_mes() {
                return nom_mes;
@@ -104,11 +105,21 @@ public class HolidayBonusPeriodResponse extends HolidaysBaseResponse {
                this.fec_quincena2 = fec_quincena2;
            }
 
+            public String getDes_periodo() {
+                return des_periodo;
+            }
+
+            public void setDes_periodo(String des_periodo) {
+                this.des_periodo = des_periodo;
+            }
+
            public List<DateCalendar> toMapDateCalendarList(){
                List<DateCalendar> result = new ArrayList<>();
-               DateCalendar date = new DateCalendar(fec_quincena1.substring(0,2),fec_diames1.replace(",",",\n"),fec_quincena1);
-               result.add(date);
-               if (fec_diames2 != null && !fec_diames2.isEmpty() && !fec_quincena2.isEmpty()) {
+               if (fec_diames1 != null && !fec_diames1.isEmpty() && fec_quincena1 != null && !fec_quincena1.isEmpty()) {
+                   DateCalendar date = new DateCalendar(fec_quincena1.substring(0,2),fec_diames1.replace(",",",\n"),fec_quincena1);
+                   result.add(date);
+               }
+               if (fec_diames2 != null && !fec_diames2.isEmpty() && fec_quincena2 != null && !fec_quincena2.isEmpty()) {
                    DateCalendar date2 = new DateCalendar(fec_quincena2.substring(0, 2), fec_diames2.replace(",", ",\n"), fec_quincena2);
                    result.add(date2);
                }

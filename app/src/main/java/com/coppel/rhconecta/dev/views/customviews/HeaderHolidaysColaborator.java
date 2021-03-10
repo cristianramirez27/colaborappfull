@@ -150,6 +150,10 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         iconPrimaVacacional.setOnClickListener(l);
     }
 
+    public void showIconPrima(Boolean enable) {
+        iconPrimaVacacional.setVisibility(enable ? VISIBLE : GONE);
+    }
+
     public void setDataHolidayBonus(String date) {
         fechaPrimaVacacional.setSingleLine(true);
         fechaPrimaVacacional.setGuideline73(0.47f);
