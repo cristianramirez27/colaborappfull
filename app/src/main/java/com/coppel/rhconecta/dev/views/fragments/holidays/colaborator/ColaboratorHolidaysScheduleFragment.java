@@ -32,6 +32,7 @@ import com.coppel.rhconecta.dev.business.models.HolidayBonusResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayBonusPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayBonusEditPeriodResponse;
 import com.coppel.rhconecta.dev.business.models.DatePrima;
+import com.coppel.rhconecta.dev.business.models.DateCalendar;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DateTimeUtil;
@@ -386,6 +387,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
                     } else {
                         headerHoliday.setDataHolidayBonus(responseDetail.getFec_diaprimavacacional());
                         headerHoliday.iconPrimaVacacionalOnClickListener(null);
+                        headerHoliday.showIconPrima(false);
                     }
                 } else if (response.getResponse() instanceof HolidayBonusPeriodResponse) {
                     HolidayBonusPeriodResponse holidayBonusPeriodResponse = (HolidayBonusPeriodResponse) response.getResponse();
@@ -393,11 +395,12 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
                     if (responseDetail.getClv_estado() == 0) {
                         List<DatePrima> list = new ArrayList<>();
                         responseDetail.getFechas_primas().forEach(periodDate -> {
-                            list.add(new DatePrima(periodDate.getNom_mes(), periodDate.toMapDateCalendarList()));
+                            List<DateCalendar> items = periodDate.toMapDateCalendarList();
+                            if (!items.isEmpty())
+                                list.add(new DatePrima(periodDate.getNom_mes(), periodDate.getDes_periodo(), items));
                         });
                         dialogFragmentCalendar.setDateHolidayBonus(list);
                         dialogFragmentCalendar.show(getChildFragmentManager(), DialogFragmentCalendar.TAG);
-
                     } else {
                         showSuccessDialog(MSG_HOLIDAYS_OK, responseDetail.getDes_mensaje(), "");
                         sendRequestSuccess = false;

@@ -21,6 +21,8 @@ import com.coppel.rhconecta.dev.business.models.DatePrima;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.views.adapters.DateCalendarRecyclerAdapter;
 
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.MSG_HOLIDAYS_OK;
+
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
     private String selectDate;
     private StateListDrawable stateList;
     private int length;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,19 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
     }
 
     private void initView() {
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setContentText("");
+        dialogFragmentGetDocument.setMsgText("");
+        dialogFragmentGetDocument.setType(MSG_HOLIDAYS_OK, getActivity());
+        dialogFragmentGetDocument.setOnButtonClickListener(new DialogFragmentGetDocument.OnButtonClickListener(){
+            @Override
+            public void onSend(String email) { }
+
+            @Override
+            public void onAccept() {
+                dialogFragmentGetDocument.dismiss();
+            }
+        });
         previousMonth.setOnClickListener(this);
         nextMonth.setOnClickListener(this);
         buttonAccept.setOnClickListener(this);
@@ -85,10 +101,12 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
         if(!dateHolidayBonus.isEmpty()){
             length = dateHolidayBonus.size()-1;
             index++;
-            List<DateCalendar> dates = dateHolidayBonus.get(index).getDates();
-            month.setText(dateHolidayBonus.get(index).getMonth());
+            DatePrima datePrima = dateHolidayBonus.get(index);
+            List<DateCalendar> dates = datePrima.getDates();
+            month.setText(datePrima.getMonth());
             gridLayoutManager.setSpanCount(dates.size());
             dateCalendarRecyclerAdapter.setList(dates);
+            showDialogDescriptionPeriod(datePrima);
             previousMonth.setAlpha(0.6f);
         }
 
@@ -108,6 +126,13 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
     public void setDateHolidayBonus(List<DatePrima> dateHolidayBonus) {
         index = -1;
         this.dateHolidayBonus = dateHolidayBonus;
+    }
+
+    private void showDialogDescriptionPeriod(DatePrima datePrima) {
+        if (datePrima.getDescriptionPeriod() !=null){
+            dialogFragmentGetDocument.setContentText(datePrima.getDescriptionPeriod());
+            dialogFragmentGetDocument.show(getActivity().getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+        }
     }
 
     @Override
@@ -132,6 +157,7 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
                     gridLayoutManager.setSpanCount(dates.size());
                     dateCalendarRecyclerAdapter.setList(dates);
                     buttonAccept.setEnabled(false);
+                    showDialogDescriptionPeriod(next);
                     previousMonth.setAlpha(index == 0 ? 0.6f : 1.0f);
                     nextMonth.setAlpha(index == length ? 0.6f : 1.0f );
                 }
@@ -145,6 +171,7 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
                     gridLayoutManager.setSpanCount(dates.size());
                     dateCalendarRecyclerAdapter.setList(dates);
                     buttonAccept.setEnabled(false);
+                    showDialogDescriptionPeriod(next);
                     nextMonth.setAlpha(index == length ? 0.6f : 1.0f );
                     previousMonth.setAlpha(index == 0 ? 0.6f : 1.0f);
                 }
