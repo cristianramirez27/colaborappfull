@@ -7,13 +7,16 @@ import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionaryUseCase;
+import com.coppel.rhconecta.dev.domain.visionary.use_case.SendVisionaryActionUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.UpdateVisionaryStatusUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 
 import javax.inject.Inject;
 
-/* */
+import kotlin.Unit;
+
+/** */
 public class VisionaryDetailViewModel {
 
     // Use cases
@@ -21,21 +24,21 @@ public class VisionaryDetailViewModel {
     GetVisionaryUseCase getVisionaryUseCase;
     @Inject
     UpdateVisionaryStatusUseCase updateVisionaryStatusUseCase;
+    @Inject
+    SendVisionaryActionUseCase sendVisionaryActionUseCase;
     // Observables
     private final MutableLiveData<ProcessStatus> loadVisionaryProcessStatus = new MutableLiveData<>();
     private final MutableLiveData<ProcessStatus> updateVisionaryStatusProcessStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> sendVisionaryActionProcessStatus = new MutableLiveData<>();
     // Values
     private Visionary visionary;
     private Failure failure;
-
 
     /* */
     @Inject
     VisionaryDetailViewModel() { /* Empty body */ }
 
-    /**
-     *
-     */
+    /** */
     void loadVisionary(VisionaryType visionaryType, String visionaryId, AccessOption accessOption) {
         loadVisionaryProcessStatus.postValue(ProcessStatus.LOADING);
         GetVisionaryUseCase.Params params =
@@ -45,25 +48,19 @@ public class VisionaryDetailViewModel {
         );
     }
 
-    /**
-     *
-     */
+    /** */
     private void onLoadVisionaryFailure(Failure failure) {
         this.failure = failure;
         loadVisionaryProcessStatus.postValue(ProcessStatus.FAILURE);
     }
 
-    /**
-     *
-     */
+    /** */
     private void onLoadVisionaryRight(Visionary visionary) {
         this.visionary = visionary;
         loadVisionaryProcessStatus.postValue(ProcessStatus.COMPLETED);
     }
 
-    /**
-     *
-     */
+    /** */
     void updateVisionaryStatus(VisionaryType visionaryType, Visionary.RateStatus status) {
         String visionaryId = visionary.getId();
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.LOADING);
@@ -74,17 +71,13 @@ public class VisionaryDetailViewModel {
         );
     }
 
-    /**
-     *
-     */
+    /** */
     private void onUpdateVisionaryStatusFailure(Failure failure) {
         this.failure = failure;
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.FAILURE);
     }
 
-    /**
-     *
-     */
+    /** */
     private void onUpdateVisionaryStatusRight(Visionary.RateStatus status) {
         Visionary updatedVisionary = visionary.cloneVisionary();
         updatedVisionary.setRateStatus(status);
@@ -92,30 +85,52 @@ public class VisionaryDetailViewModel {
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.COMPLETED);
     }
 
-    /**
-     *
-     */
+    /** */
+    void sendVisionaryAction(VisionaryType type, int clvOption) {
+        long visionaryId = Long.parseLong(visionary.getId());
+        sendVisionaryActionProcessStatus.postValue(ProcessStatus.LOADING);
+        SendVisionaryActionUseCase.Params params = new SendVisionaryActionUseCase.Params(
+                type,
+                visionaryId,
+                clvOption
+        );
+        sendVisionaryActionUseCase.run(params, result ->
+                result.fold(this::onSendVisionaryActionFailure, this::onSendVisionaryActionRight)
+        );
+    }
+
+    /** */
+    private void onSendVisionaryActionFailure(Failure failure) {
+        this.failure = failure;
+        sendVisionaryActionProcessStatus.postValue(ProcessStatus.FAILURE);
+    }
+
+    /** */
+    private void onSendVisionaryActionRight(Unit unit) {
+        sendVisionaryActionProcessStatus.postValue(ProcessStatus.COMPLETED);
+    }
+
+    /** */
     LiveData<ProcessStatus> getLoadVisionaryProcessStatus() {
         return loadVisionaryProcessStatus;
     }
 
-    /**
-     *
-     */
+    /** */
     LiveData<ProcessStatus> getUpdateVisionaryStatusProcessStatus() {
         return updateVisionaryStatusProcessStatus;
     }
 
-    /**
-     *
-     */
+    /** */
+    LiveData<ProcessStatus> getSendVisionaryActionProcessStatus() {
+        return sendVisionaryActionProcessStatus;
+    }
+
+    /** */
     Visionary getVisionary() {
         return visionary;
     }
 
-    /**
-     *
-     */
+    /** */
     Failure getFailure() {
         return failure;
     }

@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import kotlin.Unit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -204,7 +205,6 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                 .enqueue(getCallbackUpdateVisionaryStatusByIdResponse(status, callback));
     }
 
-
     /**
      *
      */
@@ -233,6 +233,64 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             private Either<Failure, Visionary.RateStatus> getServerFailure() {
                 Failure failure = new ServerFailure();
                 return new Either<Failure, Visionary.RateStatus>().new Left(failure);
+            }
+        };
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void sendVisionaryAction(
+            VisionaryType type,
+            long visionaryId,
+            int clvType,
+            UseCase.OnResultFunction<Either<Failure, Unit>> callback
+    ) {
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        int clvOption = 3;
+        String authHeader = basicUserInformationFacade.getAuthHeader();
+        String url = type == VisionaryType.VISIONARIES ?
+                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
+        UpdateVisionaryStatusByIdRequest request = new UpdateVisionaryStatusByIdRequest(
+                visionaryId,
+                employeeNum,
+                clvOption,
+                clvType,
+                null
+        );
+
+        apiService.updateVisionaryStatusById(authHeader, url, request)
+                .enqueue(getCallbackUpdateVisionaryStatusByIdResponse(callback));
+    }
+
+    /**
+     *
+     */
+    private Callback<UpdateVisionaryStatusByIdResponse> getCallbackUpdateVisionaryStatusByIdResponse(
+            UseCase.OnResultFunction<Either<Failure, Unit>> callback
+    ) {
+        return new Callback<UpdateVisionaryStatusByIdResponse>() {
+
+            @Override
+            public void onResponse(Call<UpdateVisionaryStatusByIdResponse> call, Response<UpdateVisionaryStatusByIdResponse> response) {
+                try {
+                    Either<Failure, Unit> result = new Either<Failure, Unit>().new Right(Unit.INSTANCE);
+                    callback.onResult(result);
+                } catch (Exception exception) {
+                    callback.onResult(getServerFailure());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdateVisionaryStatusByIdResponse> call, Throwable t) {
+                callback.onResult(getServerFailure());
+            }
+
+            private Either<Failure, Unit> getServerFailure() {
+                Failure failure = new ServerFailure();
+                return new Either<Failure, Unit>().new Left(failure);
             }
         };
     }
