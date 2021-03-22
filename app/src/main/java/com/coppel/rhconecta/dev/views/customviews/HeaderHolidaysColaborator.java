@@ -1,10 +1,11 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import androidx.core.content.res.ResourcesCompat;
+import android.view.Gravity;
 
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -28,6 +29,8 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
     TextViewDetail diasAdicionalesRegistrados;
     @BindView(R.id.fechaPrimaVacacional)
     TextViewDetail fechaPrimaVacacional;
+    @BindView(R.id.imageView2)
+    ImageView iconPrimaVacacional;
 
 
     @BindView(R.id.layoutDetail)
@@ -139,15 +142,29 @@ public class HeaderHolidaysColaborator extends RelativeLayout {
         diasAdicionalesRegistrados.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
         diasAdicionalesRegistrados.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
 
-        fechaPrimaVacacional.setSingleLine(true);
-
-        fechaPrimaVacacional.setGuideline73(0.50f);
-        fechaPrimaVacacional.setTexts(getContext().getString(R.string.title_bonus_date),String.valueOf(response.getFec_primavacacional()));
-        fechaPrimaVacacional.setTextsSize(12,12);
-        fechaPrimaVacacional.setStartTextColor(getContext().getResources().getColor(R.color.disable_text_color));
-        fechaPrimaVacacional.setEndTextColor(getContext().getResources().getColor(R.color.colorTextGrayDark));
+        setDataHolidayBonus(response.getFec_primavacacional());
 
     }
 
+    public void iconPrimaVacacionalOnClickListener(View.OnClickListener l) {
+        iconPrimaVacacional.setOnClickListener(l);
+    }
+
+    public void showIconPrima(Boolean enable) {
+        iconPrimaVacacional.setVisibility(enable ? VISIBLE : GONE);
+    }
+
+    public void setDataHolidayBonus(String date) {
+        fechaPrimaVacacional.setSingleLine(true);
+        fechaPrimaVacacional.setGuideline73(0.47f);
+        fechaPrimaVacacional.setTexts(getContext().getString(R.string.title_bonus_date), String.valueOf(date));
+        fechaPrimaVacacional.setTextsSize(12, 12);
+        fechaPrimaVacacional.setGravityValue(Gravity.CENTER);
+        int color = getContext().getResources().getColor(android.R.color.black);
+        fechaPrimaVacacional.setStartTextColor(color);
+        fechaPrimaVacacional.setEndTextColor(color);
+        fechaPrimaVacacional.txvTitle.setPadding(24, 0, 0, 0);
+        fechaPrimaVacacional.txvValue.setPadding(0, 0, 136, 0);
+    }
 
 }

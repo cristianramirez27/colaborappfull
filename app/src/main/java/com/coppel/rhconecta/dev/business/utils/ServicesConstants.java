@@ -12,6 +12,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_EXPENSES_TRAVEL;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOLIDAY_BONUS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PASSWORD_RECOVER;
@@ -65,6 +66,7 @@ public class ServicesConstants {
 
     public static  String GET_EXPENSES_TRAVEL = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_EXPENSES_TRAVEL);
     public static  String GET_ENDPOINT_HOLIDAYS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_HOLIDAYS);
+    public static  String GET_ENDPOINT_HOLIDAY_BONUS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_HOLIDAY_BONUS);
     public static  String GET_ENDPOINT_COLLAGES = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_COLLAGE);
     public static  String GET_ENDPOINT_BENEFIT_CODE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_BENEFIT_CODE);
     public static  String GET_ENDPOINT_QR = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_QR);
