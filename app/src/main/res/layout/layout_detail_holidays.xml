@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -60,11 +60,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
-                    android:id="@+id/fechaPrimaVacacional"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
             </LinearLayout>
 
         </LinearLayout>
@@ -76,5 +71,22 @@
             android:background="@drawable/bg_gradient_grey" />
 
     </LinearLayout>
+    <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+            android:layout_below="@id/layoutDetail"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fechaPrimaVacacional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit_blue"
+                android:id="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="24dp" android:layout_marginTop="12dp"/>
+    </com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
 
 </RelativeLayout>

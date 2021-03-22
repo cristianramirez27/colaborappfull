@@ -2925,6 +2925,11 @@ public class ServicesInteractor {
             case EDIT_PERIOD_HOLIDAY:
                 editHolidays(holidayRequestData,token);
                 break;
+            case HOLIDAY_BONUS:
+            case HOLIDAY_BONUS_PERIOD:
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                getHolidayBonus(holidayRequestData, token);
+                break;
 
         }
     }
@@ -3356,6 +3361,31 @@ public class ServicesInteractor {
         });
     }
 
+    private void getHolidayBonus(HolidayRequestData requestData, String token) {
+        iServicesRetrofitMethods.getHolidayBonus(ServicesConstants.GET_ENDPOINT_HOLIDAY_BONUS, token,
+                (HolidayBonusRequestData) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse holidaysBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (holidaysBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(holidaysBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
 
     public void getHolidayResponse(HolidaysBaseResponse response, int code) {
         ServicesError servicesError = new ServicesError();
@@ -3465,6 +3495,15 @@ public class ServicesInteractor {
             case EDIT_PERIOD_HOLIDAY:
                 clazz = HolidayChangeStatusResponse.class;
                 break;
+            case HOLIDAY_BONUS:
+                clazz = HolidayBonusResponse.class;
+                break;
+            case HOLIDAY_BONUS_PERIOD:
+                clazz = HolidayBonusPeriodResponse.class;
+                break;
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                clazz = HolidayBonusEditPeriodResponse.class;
+                break;
         }
 
         return clazz;
@@ -3571,6 +3610,14 @@ public class ServicesInteractor {
                 coppelServicesBaseHolidaysRequest = new CoppelServicesSchedulePeriodsHolidaysRequest((holidaysRequestData.getNum_empleado()),holidaysRequestData.getOpcion(),holidaysRequestData.getNum_gerente(),
                         holidaysRequestData.getDes_observaciones(),holidaysRequestData.getPeriodos());
 
+                break;
+
+            case HOLIDAY_BONUS:
+            case HOLIDAY_BONUS_PERIOD:
+                coppelServicesBaseHolidaysRequest = new HolidayBonusRequestData(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion());
+                break;
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                coppelServicesBaseHolidaysRequest = new HolidayBonusRequestData(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(), holidaysRequestData.getNum_empconsulta());
                 break;
 
         }

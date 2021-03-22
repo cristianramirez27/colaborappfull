@@ -89,5 +89,12 @@
         <item name="colorAccent">@color/colorPrimaryCoppelAzul</item>
     </style>
 
+    <style name="TextViewPrimaVacacional">
+        <item name="android:background">@color/colorPrimaryBlueCoppel</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
 
 </resources>

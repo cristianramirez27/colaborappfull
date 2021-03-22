@@ -63,6 +63,7 @@ import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
+import com.coppel.rhconecta.dev.business.models.HolidayBonusRequestData;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -344,5 +345,9 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getInfoCompany(@Url String url,@Header("Authorization") String token, @Body BenefitCodeRequest infoCompanyRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getHolidayBonus(@Url String url,@Header("Authorization") String token, @Body HolidayBonusRequestData holidayBonusRequestData);
 
 }
