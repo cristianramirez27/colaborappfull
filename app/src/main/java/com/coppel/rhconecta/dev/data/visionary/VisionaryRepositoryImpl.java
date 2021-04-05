@@ -108,6 +108,63 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         };
     }
 
+    /** */
+    @Override
+    public void getVisionaryPreview(
+            VisionaryType type,
+            String visionaryId,
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, VisionaryPreview>> callback
+    ) {
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        int clvOption = 1;
+        int accessOptionValue = accessOption.toInt();
+        String authHeader = basicUserInformationFacade.getAuthHeader();
+        GetVisionariesPreviewsRequest request =
+                new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
+        String url = type == VisionaryType.VISIONARIES ?
+                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+        apiService.getVisionariesPreviews(authHeader, url, request)
+                .enqueue(getCallbackGetVisionaryPreviewResponse(visionaryId, callback));
+    }
+
+    /** */
+    private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionaryPreviewResponse(
+            String visionaryId,
+            UseCase.OnResultFunction<Either<Failure, VisionaryPreview>> callback
+    ) {
+        return new Callback<GetVisionariesPreviewsResponse>() {
+            @Override
+            public void onResponse(Call<GetVisionariesPreviewsResponse> call, Response<GetVisionariesPreviewsResponse> response) {
+                try {
+                    GetVisionariesPreviewsResponse body = response.body();
+                    assert body != null;
+                    List<GetVisionariesPreviewsResponse.VisionaryPreviewServer> visionariesPreviewsServer = body.data.response;
+                    VisionaryPreview visionaryPreview = null;
+                    for (GetVisionariesPreviewsResponse.VisionaryPreviewServer visionaryPreviewServer : visionariesPreviewsServer)
+                        if (visionaryPreviewServer.idu_videos.equals(visionaryId))
+                            visionaryPreview = visionaryPreviewServer.toVisionaryPreview();
+
+                    Either<Failure, VisionaryPreview> result = new Either<Failure, VisionaryPreview>().new Right(visionaryPreview);
+                    callback.onResult(result);
+                } catch (Exception exception) {
+                    callback.onResult(getServerFailure());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetVisionariesPreviewsResponse> call, Throwable t) {
+                callback.onResult(getServerFailure());
+            }
+
+            private Either<Failure, VisionaryPreview> getServerFailure() {
+                Failure failure = new ServerFailure();
+                return new Either<Failure, VisionaryPreview>().new Left(failure);
+            }
+        };
+    }
+
     /**
      *
      */

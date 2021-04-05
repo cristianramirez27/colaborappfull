@@ -13,10 +13,7 @@ import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 
-/**
- *
- *
- */
+/** */
 public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
 
     /* */
@@ -30,11 +27,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
     /* */
     private MyVideoView vvVideo;
 
-
-    /**
-     *
-     *
-     */
+    /** */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +36,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
         initViews();
     }
 
-    /**
-     *
-     *
-     */
+    /** */
     private void initValues(){
         videoStream = IntentExtension.getStringExtra(getIntent(), VIDEO_STREAM);
         if(videoStream == null)
@@ -54,21 +44,14 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
         position = IntentExtension.getIntExtra(getIntent(), POSITION);
     }
 
-    /**
-     *
-     *
-     */
+    /** */
     private void initViews(){
         initVideoView();
         playVideo();
         findViewById(R.id.ivFullScreenBack).setOnClickListener(v -> onBackPressed());
     }
 
-
-    /**
-     *
-     *
-     */
+    /** */
     private void initVideoView(){
         vvVideo = findViewById(R.id.vvVideo);
         // Media controller settings
@@ -78,10 +61,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
         vvVideo.setMediaController(mediaController);
     }
 
-    /**
-     *
-     *
-     */
+    /** */
     private void playVideo() {
         vvVideo.setVideoURI(Uri.parse(videoStream));
         vvVideo.setOnPreparedListener(this::onMediaPlayerPreparedListener);
@@ -96,10 +76,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
         vvVideo.start();
     }
 
-    /**
-     *
-     *
-     */
+    /** */
     private MediaController getMyMediaController() {
         return new MediaController(this){
             @Override
@@ -113,10 +90,7 @@ public class VisionaryDetailFullScreenActivity extends AppCompatActivity {
         };
     }
 
-    /**
-     *
-     *
-     */
+    /** */
     @Override
     public void onBackPressed() {
         vvVideo.pause();
