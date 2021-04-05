@@ -1,17 +1,9 @@
 package com.coppel.rhconecta.dev.presentation.visionary_detail;
 
-import androidx.lifecycle.MutableLiveData;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,12 +12,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
+
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.di.visionary.DaggerVisionaryComponent;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
-import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryRate;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.custom_view.MyVideoView;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
@@ -148,6 +145,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private void observeViewModel() {
         viewModel.getLoadVisionaryProcessStatus().observe(this, this::loadVisionaryObserver);
         viewModel.getUpdateVisionaryStatusProcessStatus().observe(this, this::updateVisionaryStatusObserver);
+        viewModel.getSendVisionaryActionProcessStatus().observe(this, this::sendVisionaryActionObserver);
     }
 
     /**
@@ -192,6 +190,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private void onPlayButtonClickListener(View v) {
         if (videoStream != null) {
             playVideo();
+            viewModel.sendVisionaryAction(visionaryType, 1);
             ivVideoPreview.setVisibility(View.GONE);
             ivPlayButton.setVisibility(View.GONE);
             pbVideoLoader.setVisibility(View.VISIBLE);
@@ -387,6 +386,12 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private void onMediaPlayerPreparedListener(MediaPlayer mediaPlayer) {
         vvVideo.requestFocus();
         vvVideo.start();
+    }
+
+    /** */
+    private void sendVisionaryActionObserver(ProcessStatus processStatus) {
+        if (processStatus == ProcessStatus.FAILURE)
+            Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
     }
 
     /**
