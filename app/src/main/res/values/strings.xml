@@ -468,6 +468,7 @@
     <string name="profile_actions_activity_title">Perfil</string>
     <string name="profile_details_activity_title">Mis datos</string>
     <string name="fingerprint_title">Huellas Adicionales</string>
+    <string name="invalid_url_link">No se puede abrir este enlace</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>
