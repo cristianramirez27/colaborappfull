@@ -25,7 +25,6 @@ import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.activities.HomeActivityViewModel;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
