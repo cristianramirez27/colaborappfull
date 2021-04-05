@@ -237,11 +237,19 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void setVisionaryViews(Visionary visionary) {
+        if (visionary.getId() == null) {
+            String invalidData = getString(R.string.invalid_data_loaded);
+            Toast.makeText(this, invalidData, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         setVisionaryStatusViews(visionary.getRateStatus());
         // Vimeo video
-        String[] split = visionary.getVideo().split("/");
-        String vimeoId = split[split.length - 1];
-        extractVideoStream(vimeoId);
+        if (visionary.getVideo() != null) {
+            String[] split = visionary.getVideo().split("/");
+            String vimeoId = split[split.length - 1];
+            extractVideoStream(vimeoId);
+        }
         // Fill views
         tvTitle.setText(visionary.getTitle());
         tvDate.setText(visionary.getDate());
