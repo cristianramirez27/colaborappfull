@@ -16,9 +16,7 @@ import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 
 import java.util.List;
 
-/**
- *
- */
+/** */
 public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPreviewAdapter.ViewHolder> {
 
     /* */
@@ -26,9 +24,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
     /* */
     private final OnVisionaryPreviewClickListener onVisionaryPreviewClickListener;
 
-    /**
-     *
-     */
+    /** */
     public VisionaryPreviewAdapter(
             List<VisionaryPreview> values,
             OnVisionaryPreviewClickListener onVisionaryPreviewClickListener
@@ -37,9 +33,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         this.onVisionaryPreviewClickListener = onVisionaryPreviewClickListener;
     }
 
-    /**
-     *
-     */
+    /** */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
@@ -47,9 +41,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         return new ViewHolder(inflater.inflate(R.layout.fila_lista_videos, viewGroup, false));
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         // Definition
@@ -70,7 +62,7 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
                     R.color.colorTextCoppelNegro
             );
             viewHolder.tvTitle.setTextColor(readColor);
-            viewHolder.ivWatchedIcon.setVisibility(View.GONE);
+            viewHolder.ivWatchedIcon.setImageResource(R.drawable.ic_punto_gris);
             if (visionaryPreview.isUpdated())
                 viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
         }
