@@ -371,10 +371,7 @@ public class HomeMainFragment
                         // Chrome browser presumably not installed so allow user to choose instead
                         intent.setPackage(null);
                         startActivity(intent);
-                    } catch (Exception exception) {
-                        String message = getString(R.string.invalid_url_link);
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-                    }
+                    } catch (Exception ignore) { /* PASS */ }
                 }
             }
         };
