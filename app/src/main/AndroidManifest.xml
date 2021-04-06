@@ -145,7 +145,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/icn_notificaciones_blanco" />
+            android:resource="@drawable/ic_notification_v1" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorSecondBlueCoppel" />
