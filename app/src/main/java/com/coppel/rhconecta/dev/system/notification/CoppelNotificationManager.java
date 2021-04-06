@@ -95,7 +95,7 @@ public class CoppelNotificationManager {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         return new NotificationCompat.Builder(context, getChannelId())
-                .setSmallIcon(R.drawable.ic_colaborapp_notificacion)
+                .setSmallIcon(R.drawable.ic_notification_v1)
                 .setContentTitle(notificationType.getTitle())
                 .setContentText(notificationType.getContent())
                 .setSound(defaultSoundUri)
