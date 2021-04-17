@@ -287,9 +287,6 @@ public class HomeActivity
             case LOADING:
                 break;
             case FAILURE:
-                Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
-                getAnalyticsTimeManager().clear();
-                break;
             case COMPLETED:
                 getAnalyticsTimeManager().clear();
                 break;
@@ -305,7 +302,7 @@ public class HomeActivity
         AccessOption accessOption = AccessOption.MENU;
         switch (notificationDestination) {
             case HOLIDAYS:
-                new Handler().postDelayed(this::executeOptionHolidays, 0);
+                executeOptionHolidays();
                 break;
             case VIDEOS:
                 navigateToCollaboratorAtHome(accessOption);
@@ -652,6 +649,7 @@ public class HomeActivity
             } else {
                 getRolType(HOLIDAYS);
             }
+            forceHideProgress();
             RealmHelper.deleteNotifications(AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_NUM_COLABORADOR), 10);
         }
     }
