@@ -14,12 +14,9 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
-/* */
+/** */
 public interface VisionaryApiService {
 
-    /**
-     *
-     */
     @Headers("Content-Type: application/json")
     @POST
     Call<GetVisionariesPreviewsResponse> getVisionariesPreviews(
@@ -28,9 +25,7 @@ public interface VisionaryApiService {
             @Body GetVisionariesPreviewsRequest request
     );
 
-    /**
-     *
-     */
+
     @Headers("Content-Type: application/json")
     @POST
     Call<GetVisionaryByIdResponse> getVisionaryById(
@@ -39,9 +34,7 @@ public interface VisionaryApiService {
             @Body GetVisionaryByIdRequest request
     );
 
-    /**
-     *
-     */
+
     @Headers("Content-Type: application/json")
     @POST
     Call<UpdateVisionaryStatusByIdResponse> updateVisionaryStatusById(

@@ -23,6 +23,14 @@ public interface VisionaryRepository {
     );
 
     /** */
+    void getVisionaryPreview(
+            VisionaryType type,
+            String visionaryId,
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, VisionaryPreview>> callback
+    );
+
+    /** */
     void getVisionaryById(
             VisionaryType type,
             String visionaryId,

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
+import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
+import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionaryPreviewUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.GetVisionaryUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.SendVisionaryActionUseCase;
 import com.coppel.rhconecta.dev.domain.visionary.use_case.UpdateVisionaryStatusUseCase;
@@ -23,6 +25,8 @@ public class VisionaryDetailViewModel {
     @Inject
     GetVisionaryUseCase getVisionaryUseCase;
     @Inject
+    GetVisionaryPreviewUseCase getVisionaryPreviewUseCase;
+    @Inject
     UpdateVisionaryStatusUseCase updateVisionaryStatusUseCase;
     @Inject
     SendVisionaryActionUseCase sendVisionaryActionUseCase;
@@ -32,6 +36,7 @@ public class VisionaryDetailViewModel {
     private final MutableLiveData<ProcessStatus> sendVisionaryActionProcessStatus = new MutableLiveData<>();
     // Values
     private Visionary visionary;
+    private VisionaryPreview visionaryPreview;
     private Failure failure;
 
     /* */
@@ -61,6 +66,28 @@ public class VisionaryDetailViewModel {
     }
 
     /** */
+    void loadVisionaryPreview(VisionaryType visionaryType, String visionaryId, AccessOption accessOption) {
+        loadVisionaryProcessStatus.postValue(ProcessStatus.LOADING);
+        GetVisionaryPreviewUseCase.Params params =
+                new GetVisionaryPreviewUseCase.Params(visionaryType, visionaryId, accessOption);
+        getVisionaryPreviewUseCase.run(params, result ->
+                result.fold(this::onLoadVisionaryPreviewFailure, this::onLoadVisionaryPreviewRight)
+        );
+    }
+
+    /** */
+    private void onLoadVisionaryPreviewFailure(Failure failure) {
+        this.failure = failure;
+        loadVisionaryProcessStatus.postValue(ProcessStatus.FAILURE);
+    }
+
+    /** */
+    private void onLoadVisionaryPreviewRight(VisionaryPreview visionaryPreview) {
+        this.visionaryPreview = visionaryPreview;
+        loadVisionaryProcessStatus.postValue(ProcessStatus.COMPLETED);
+    }
+
+    /** */
     void updateVisionaryStatus(VisionaryType visionaryType, Visionary.RateStatus status) {
         String visionaryId = visionary.getId();
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.LOADING);
@@ -86,13 +113,13 @@ public class VisionaryDetailViewModel {
     }
 
     /** */
-    void sendVisionaryAction(VisionaryType type, int clvOption) {
+    void sendVisionaryAction(VisionaryType type, int clvType) {
         long visionaryId = Long.parseLong(visionary.getId());
         sendVisionaryActionProcessStatus.postValue(ProcessStatus.LOADING);
         SendVisionaryActionUseCase.Params params = new SendVisionaryActionUseCase.Params(
                 type,
                 visionaryId,
-                clvOption
+                clvType
         );
         sendVisionaryActionUseCase.run(params, result ->
                 result.fold(this::onSendVisionaryActionFailure, this::onSendVisionaryActionRight)
@@ -128,6 +155,11 @@ public class VisionaryDetailViewModel {
     /** */
     Visionary getVisionary() {
         return visionary;
+    }
+
+    /** */
+    VisionaryPreview getVisionaryPreview() {
+        return visionaryPreview;
     }
 
     /** */

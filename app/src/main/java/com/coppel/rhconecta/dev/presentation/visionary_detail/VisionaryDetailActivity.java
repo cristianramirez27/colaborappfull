@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,9 +38,7 @@ import javax.inject.Inject;
 import uk.breedrapps.vimeoextractor.OnVimeoExtractionListener;
 import uk.breedrapps.vimeoextractor.VimeoExtractor;
 
-/**
- *
- */
+/** */
 public class VisionaryDetailActivity extends AppCompatActivity {
 
     /* */
@@ -76,9 +75,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
     private String videoThrowableMessage;
     private MutableLiveData<Boolean> isVideoPlaying;
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,18 +86,14 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         observeViewModel();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onStart() {
         super.onStart();
         execute();
     }
 
-    /**
-     *
-     */
+    /** */
     private void initValues() {
         visionaryId = IntentExtension.getStringExtra(getIntent(), VISIONARY_ID);
         visionaryVideoPreview = IntentExtension.getStringExtra(getIntent(), VISIONARY_IMAGE_PREVIEW);
@@ -108,9 +101,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         accessOption = (AccessOption) IntentExtension.getSerializableExtra(getIntent(), ACCESS_OPTION);
     }
 
-    /**
-     *
-     */
+    /** */
     private void initViews() {
         initToolbar();
         pbLoader = findViewById(R.id.pbLoader);
@@ -139,25 +130,20 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         isVideoPlaying.observe(this, this::setPlayingVideoViewsProperties);
     }
 
-    /**
-     *
-     */
+    /** */
     private void observeViewModel() {
         viewModel.getLoadVisionaryProcessStatus().observe(this, this::loadVisionaryObserver);
         viewModel.getUpdateVisionaryStatusProcessStatus().observe(this, this::updateVisionaryStatusObserver);
         viewModel.getSendVisionaryActionProcessStatus().observe(this, this::sendVisionaryActionObserver);
     }
 
-    /**
-     *
-     */
+    /** */
     private void execute() {
         viewModel.loadVisionary(visionaryType, visionaryId, accessOption);
+        viewModel.loadVisionaryPreview(visionaryType, visionaryId, accessOption);
     }
 
-    /**
-     *
-     */
+    /** */
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         int titleResource = visionaryType == VisionaryType.VISIONARIES ?
@@ -169,9 +155,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    /**
-     *
-     */
+    /** */
     private void initVideoView() {
         // Media controller settings
         MediaController mediaController = getMyMediaController();
@@ -184,22 +168,17 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         vvVideo.setOnCompletionListener(this::onMediaPlayerCompletionListener);
     }
 
-    /**
-     *
-     */
+    /** */
     private void onPlayButtonClickListener(View v) {
         if (videoStream != null) {
             playVideo();
-            viewModel.sendVisionaryAction(visionaryType, 1);
             ivVideoPreview.setVisibility(View.GONE);
             ivPlayButton.setVisibility(View.GONE);
             pbVideoLoader.setVisibility(View.VISIBLE);
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void loadVisionaryObserver(ProcessStatus processStatus) {
         pbLoader.setVisibility(View.GONE);
         switch (processStatus) {
@@ -215,9 +194,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void updateVisionaryStatusObserver(ProcessStatus processStatus) {
         pbLoader.setVisibility(View.GONE);
         switch (processStatus) {
@@ -233,9 +210,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void setVisionaryViews(Visionary visionary) {
         if (visionary.getId() == null) {
             String invalidData = getString(R.string.invalid_data_loaded);
@@ -258,9 +233,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         tvContent.setText(visionary.getContent());
     }
 
-    /**
-     *
-     */
+    /** */
     private void setVisionaryStatusViews(Visionary.RateStatus status) {
         switch (status) {
             case UNKNOWN:
@@ -281,9 +254,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void onLikeButtonClickListener(View v) {
         if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenLike().isEmpty())
             viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.LIKED);
@@ -293,9 +264,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void onDislikeButtonClickListener(View v) {
         if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenDislike().isEmpty())
             viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.DISLIKED);
@@ -305,7 +274,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         }
     }
 
-    /* */
+    /** */
     private Intent buildIntentToRateActivityFromRateStatus(Visionary.RateStatus rateStatus) {
         return new IntentBuilder(new Intent(this, VisionaryRateActivity.class))
                 .putSerializableExtra(VisionaryRateActivity.VISIONARY, viewModel.getVisionary())
@@ -314,9 +283,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
                 .build();
     }
 
-    /**
-     *
-     */
+    /** */
     private void extractVideoStream(String vimeoId) {
         VimeoExtractor
                 .getInstance()
@@ -327,9 +294,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
                 );
     }
 
-    /**
-     *
-     */
+    /** */
     private OnVimeoExtractionListener createOnVimeoExtractionCompleted() {
         return new OnMyVimeoExtractionListener((throwable, video) -> {
             if (video != null)
@@ -345,9 +310,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     *
-     */
+    /** */
     private void manageVideoDecoderFailure() {
         if (videoThrowableMessage != null) {
             runOnUiThread(() -> {
@@ -377,12 +340,12 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      * Called when media player resource are completed
      */
     private void onMediaPlayerCompletionListener(MediaPlayer mediaPlayer) {
-        // TODO: Implementation
+        boolean isAlreadyBeenSeen = viewModel.getVisionaryPreview().isAlreadyBeenSeen();
+        int clvType = isAlreadyBeenSeen ? 4 : 1;
+        viewModel.sendVisionaryAction(visionaryType, clvType);
     }
 
-    /**
-     *
-     */
+    /** */
     private void playVideo() {
         vvVideo.setVideoURI(Uri.parse(videoStream));
         vvVideo.setOnPreparedListener(this::onMediaPlayerPreparedListener);
@@ -402,9 +365,7 @@ public class VisionaryDetailActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     *
-     */
+    /** */
     private void navigateToFullScreenVideo(View v) {
         vvVideo.pause();
         Intent intent = new IntentBuilder(new Intent(this, VisionaryDetailFullScreenActivity.class))
@@ -414,17 +375,13 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CODE_FULL_SCREEN);
     }
 
-    /**
-     *
-     */
+    /**  */
     private void setPlayingVideoViewsProperties(boolean isVideoPlaying) {
         if (isVideoPlaying)
             pbVideoLoader.setVisibility(View.GONE);
     }
 
-    /**
-     *
-     */
+    /**  */
     private MediaController getMyMediaController() {
         return new MediaController(this) {
             @Override
@@ -438,27 +395,48 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         };
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onBackPressed() {
         vvVideo.pause();
+        atCloseScreen();
         finish();
     }
 
-    /**
-     *
-     */
+    /** */
+    private void atCloseScreen() {
+        if (videoWasNotSeen())
+            viewModel.sendVisionaryAction(visionaryType, 3);
+        if (videoWasSeenUncompleted())
+            viewModel.sendVisionaryAction(visionaryType, 2);
+    }
+
+    /** */
+    private boolean videoWasNotSeen() {
+        return vvVideo.getDuration() == -1;
+    }
+
+    /** */
+    private boolean videoWasSeenUncompleted() {
+        return !videoWasSeenCompleted();
+    }
+
+    /** */
+    private boolean videoWasSeenCompleted() {
+        int totalDuration = vvVideo.getDuration();
+        int currentPosition = vvVideo.getCurrentPosition();
+        int range = 1000;
+        return currentPosition >= (totalDuration - range);
+    }
+
+    /** */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
