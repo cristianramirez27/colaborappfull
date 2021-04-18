@@ -64,7 +64,7 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
                     R.color.colorTextCoppelNegro
             );
             viewHolder.tvTitle.setTextColor(readColor);
-            viewHolder.ivWasRead.setVisibility(View.GONE);
+            viewHolder.ivWasRead.setImageResource(R.drawable.ic_punto_gris);
             if (releasePreview.isUpdated())
                 viewHolder.isUpdated.setVisibility(View.VISIBLE);
         }
