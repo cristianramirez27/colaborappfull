@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.presentation.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.system.notification.CoppelNotificationManager;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -107,6 +109,13 @@ public class SplashScreenActivity
         DaggerAnalyticsComponent.create().injectSplash(this);
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
+        if (notificationType == null) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                CoppelNotificationManager cnm = new CoppelNotificationManager(this);
+                notificationType = cnm.fromBundle(bundle);
+            }
+        }
         if (notificationType == null)
             init();
         else {

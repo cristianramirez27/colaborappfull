@@ -132,8 +132,7 @@ public class HomeMainFragment
             dialog.setCancelable(false);
             try {
                 dialog.show();
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) { /* PASS */ }
             return;
         }
         // Coloca la informacion en la opcion de encuesta

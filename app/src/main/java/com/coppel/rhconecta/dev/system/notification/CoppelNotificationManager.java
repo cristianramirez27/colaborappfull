@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -19,45 +21,68 @@ import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.splash.SplashScreenActivity;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-/* */
+import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.IDU_DESTINATION;
+import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.IDU_SYSTEM;
+import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.ID_DESTINATION;
+
+/** */
 public class CoppelNotificationManager {
 
     /* */
     private final Context context;
 
-    /**
-     *
-     */
+    /** */
     public CoppelNotificationManager(Context context) {
         this.context = context;
         createNotificationChannel();
     }
 
-    /**
-     *
-     */
+    /** */
     private String getChannelId() {
         return context.getString(R.string.default_notification_channel_id);
     }
 
-    /**
-     *
-     */
+    /** */
     private String getChannelName() {
         return context.getString(R.string.default_notification_channel_name);
     }
 
-    /**
-     *
-     */
+    /** */
     private String getChannelDescription() {
         return context.getString(R.string.default_notification_channel_description);
     }
 
-    /**
-     *
-     */
+    /** */
+    public NotificationType fromBundle(Bundle bundle) {
+        Map<String, String> data = new HashMap<>();
+        try {
+            String value = String.valueOf(bundle.getInt(IDU_SYSTEM));
+            data.put(IDU_SYSTEM, value);
+        } catch (Exception ignore) { /* PASS */ }
+        return notificationTypeFromData(data, null, null);
+    }
+
+    /** */
+    public NotificationType notificationTypeFromData(
+            Map<String, String> data,
+            String title,
+            String body
+    ) {
+        String iduSystemValue = data.get(IDU_SYSTEM);
+        int iduSystem = iduSystemValue == null ? -1 : Integer.parseInt(iduSystemValue);
+        String iduDestinationValue = data.get(IDU_DESTINATION);
+        String idDestinationValue = data.get(ID_DESTINATION);
+        int iduDestination = iduDestinationValue == null ?
+                idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
+                : Integer.parseInt(iduDestinationValue);
+        NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
+        return new NotificationType(title, body, destination);
+    }
+
+    /** */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -65,13 +90,12 @@ public class CoppelNotificationManager {
             channel.setDescription(getChannelDescription());
             NotificationManager notificationManager =
                     ContextCompat.getSystemService(context, NotificationManager.class);
+            if (notificationManager == null) return;
             notificationManager.createNotificationChannel(channel);
         }
     }
 
-    /**
-     *
-     */
+    /** */
     public void showNotification(NotificationType notificationType) {
         Notification notification = buildNotification(notificationType);
         NotificationManagerCompat nmc = NotificationManagerCompat.from(context);
@@ -79,9 +103,7 @@ public class CoppelNotificationManager {
         nmc.notify(notificationId, notification);
     }
 
-    /**
-     *
-     */
+    /** */
     private Notification buildNotification(NotificationType notificationType) {
         Intent intent = new IntentBuilder(new Intent(context, SplashScreenActivity.class))
                 .putSerializableExtra(NotificationType.NOTIFICATION_TYPE, notificationType)
@@ -101,7 +123,7 @@ public class CoppelNotificationManager {
                 .setSound(defaultSoundUri)
                 .setAutoCancel(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationType.getContent()))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .build();
     }
