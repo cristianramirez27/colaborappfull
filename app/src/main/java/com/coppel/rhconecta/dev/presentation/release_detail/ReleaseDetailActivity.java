@@ -137,6 +137,7 @@ public class ReleaseDetailActivity extends AppCompatActivity {
         tvTitle.setText(release.getTitle());
 
         String body = release.getContent();
+        body = body.replace("text-align: right", "text-align: end");
         Spanned spanned = Html.fromHtml(body);
         tvContent.setText(spanned);
     }
