@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -140,6 +141,8 @@ public class ReleaseDetailActivity extends AppCompatActivity {
         body = body.replace("text-align: right", "text-align: end");
         Spanned spanned = Html.fromHtml(body);
         tvContent.setText(spanned);
+        tvContent.setMovementMethod(LinkMovementMethod.getInstance());
+        tvContent.setLinksClickable(true);
     }
 
     /**
