@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,7 +80,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ISurveyNotification = (ISurveyNotification)context;
+        ISurveyNotification = (ISurveyNotification) context;
     }
 
     @Override
@@ -147,8 +149,11 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.payroll_voucher).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        getContext(),
+                        getString(R.string.payroll_voucher).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
@@ -242,8 +247,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     /**
      * 7 Noviembre 2018
      * Modificacion: Se cambia el share por intent para abrir el PDF.---
-     *
-     * **/
+     **/
     @Override
     public void onAccept() {
         if (SHARE_PDF) {
@@ -263,7 +267,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        }else if(GO_BACK) {
+        } else if (GO_BACK) {
             getActivity().onBackPressed();
 
         } else if (WARNING_PERMISSIONS) {
