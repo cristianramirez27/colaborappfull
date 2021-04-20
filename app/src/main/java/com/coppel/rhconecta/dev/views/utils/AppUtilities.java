@@ -1,7 +1,10 @@
 package com.coppel.rhconecta.dev.views.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,9 +12,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
+
 import androidx.core.content.FileProvider;
+
 import android.util.Base64;
 import android.util.TypedValue;
 import android.widget.ImageView;
@@ -26,6 +33,7 @@ import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
@@ -38,7 +46,7 @@ public class AppUtilities {
     /**
      *
      */
-    public static SharedPreferences getSharedPreferences(Context context){
+    public static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(
                 AppConstants.SHARED_PREFERENCES_NAME,
                 Context.MODE_PRIVATE
@@ -65,7 +73,7 @@ public class AppUtilities {
             String key
     ) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
-        return SharedPreferencesExtension.getString(sharedPreferences, key,null);
+        return SharedPreferencesExtension.getString(sharedPreferences, key, null);
     }
 
     /**
@@ -107,8 +115,8 @@ public class AppUtilities {
     public static void deleteSharedPreferencesWithoutFirebase(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        for(String key : sharedPreferences.getAll().keySet()){
-            if(!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN)){
+        for (String key : sharedPreferences.getAll().keySet()) {
+            if (!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN)) {
                 editor.remove(key).commit();
             }
         }
@@ -165,7 +173,7 @@ public class AppUtilities {
     /**
      *
      */
-    public static float pxToDp(Resources resource, float px)  {
+    public static float pxToDp(Resources resource, float px) {
         return (float) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_PX,
                 px,
@@ -244,6 +252,35 @@ public class AppUtilities {
         }
     }
 
+    /** */
+    public static File savePDFFile(Context context, String name, String base64) {
+        try {
+            String directoryPath = Environment.DIRECTORY_DOWNLOADS + "/" + AppConstants.APP_FOLDER;
+            ContentResolver contentResolver = context.getContentResolver();
+            ContentValues values = new ContentValues();
+
+            String timeStamp = TextUtilities
+                    .dateFormatter(new Date(), AppConstants.DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS);
+            String fileName = name + "_" + timeStamp + ".pdf";
+
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
+
+            Uri uri = contentResolver.insert(MediaStore.Files.getContentUri("external"), values);
+            byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
+            OutputStream outputStream = contentResolver.openOutputStream(uri);
+            outputStream.write(pdfAsBytes);
+            outputStream.flush();
+            outputStream.close();
+            return new File(directoryPath, fileName);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      *
      */
@@ -289,7 +326,7 @@ public class AppUtilities {
             intent.putExtra(Intent.EXTRA_STREAM, uriFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
