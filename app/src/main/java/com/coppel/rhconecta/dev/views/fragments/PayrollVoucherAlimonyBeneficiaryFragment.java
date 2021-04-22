@@ -140,8 +140,11 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.alimony).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.alimony).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);

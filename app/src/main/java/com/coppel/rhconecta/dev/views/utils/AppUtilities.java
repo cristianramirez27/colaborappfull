@@ -230,28 +230,6 @@ public class AppUtilities {
                 .into(imageView);
     }
 
-    /**
-     *
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File savePDFFile(String name, String base64) {
-        try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.APP_FOLDER);
-            path.mkdirs();
-            File pdf = new File(path, name + "_" + TextUtilities.dateFormatter(new Date(), AppConstants.DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS) + ".pdf");
-            byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
-            FileOutputStream os;
-            os = new FileOutputStream(pdf);
-            os.write(pdfAsBytes);
-            os.flush();
-            os.close();
-            return pdf;
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return null;
-        }
-    }
-
     /** */
     public static File savePDFFile(Context context, String name, String base64) {
         try {
