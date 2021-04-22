@@ -58,6 +58,7 @@
                 android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
+                android:layout_marginTop="4dp"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"
                 android:visibility="gone" />
