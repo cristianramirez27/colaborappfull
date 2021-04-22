@@ -117,10 +117,11 @@ public class CoppelNotificationManager {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         return new NotificationCompat.Builder(context, getChannelId())
-                .setSmallIcon(R.drawable.ic_notification_v1)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle(notificationType.getTitle())
                 .setContentText(notificationType.getContent())
                 .setSound(defaultSoundUri)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimaryCoppelAzul2))
                 .setAutoCancel(true)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationType.getContent()))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
