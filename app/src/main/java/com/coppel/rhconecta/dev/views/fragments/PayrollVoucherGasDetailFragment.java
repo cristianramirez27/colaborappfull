@@ -184,8 +184,11 @@ public class PayrollVoucherGasDetailFragment extends Fragment implements IServic
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_GAS_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.gas).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.gas).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
