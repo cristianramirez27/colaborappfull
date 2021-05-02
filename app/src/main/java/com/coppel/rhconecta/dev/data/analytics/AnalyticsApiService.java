@@ -10,12 +10,10 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Url;
 
-/* */
+/** */
 public interface AnalyticsApiService {
 
-    /**
-     *
-     */
+    /** */
     @Headers("Content-Type: application/json")
     @POST
     Call<SendTimeByAnalyticsFlowResponse> sendTimeByAnalyticsFlow(

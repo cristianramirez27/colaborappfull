@@ -17,6 +17,9 @@ public class SendTimeByAnalyticsFlowRequest {
     public int clv_sistema;
 
     /* */
+    public Integer clv_acceso;
+
+    /* */
     public long seg_acceso;
 
     /**
@@ -25,12 +28,14 @@ public class SendTimeByAnalyticsFlowRequest {
     public SendTimeByAnalyticsFlowRequest(
             long employeeNumber,
             AnalyticsFlow analyticsFlow,
-            long timeInSeconds
+            long timeInSeconds,
+            Integer clvAcceso
     ) {
         this.num_empleado = employeeNumber;
         this.clv_opcion = 1;
         this.clv_sistema = getClvSistemaByAnalyticsFlow(analyticsFlow);
         this.seg_acceso = timeInSeconds;
+        this.clv_acceso = clvAcceso;
     }
 
     /**
@@ -39,8 +44,9 @@ public class SendTimeByAnalyticsFlowRequest {
     private int getClvSistemaByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
         switch (analyticsFlow) {
             case SAVING_FUND: return 9;
-            case HOLIDAYS: return 10;
-            case TRAVEL_EXPENSES: return 11;
+            case HOLIDAYS_COLABORADOR:
+            case HOLIDAYS_GERENTE: return 10;
+            case TRAVEL_EXPENSES_COLABORADOR: return 11;
             case VIDEOS: return 17;
             case VISIONARIES: return 18;
             case RELEASES: return 19;

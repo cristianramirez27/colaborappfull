@@ -22,6 +22,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.analytics.AnalyticsFlow.HOLIDAYS_COLABORADOR;
+import static com.coppel.rhconecta.dev.analytics.AnalyticsFlow.HOLIDAYS_GERENTE;
+
 /* */
 public class AnalyticsRepositoryImpl implements AnalyticsRepository {
 
@@ -56,10 +59,13 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        Integer clvAcceso = getClaveAccesoByAnalyticsFlow(analyticsFlow);
+
         SendTimeByAnalyticsFlowRequest request = new SendTimeByAnalyticsFlowRequest(
                 employeeNum,
                 analyticsFlow,
-                timeInSecondsByFlow
+                timeInSecondsByFlow,
+                clvAcceso
         );
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
@@ -69,6 +75,17 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             apiService
                     .sendTimeByAnalyticsFlow(authHeader, url, request)
                     .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+        }
+    }
+
+    /** */
+    private Integer getClaveAccesoByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
+        switch (analyticsFlow) {
+            case HOLIDAYS_COLABORADOR:
+            case TRAVEL_EXPENSES_COLABORADOR: return 1;
+            case HOLIDAYS_GERENTE:
+            case TRAVEL_EXPENSES_GERENTE:return 2;
+            default: return null;
         }
     }
 
