@@ -40,13 +40,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:layout_marginTop="12dp"
                 android:padding="2dp"
                 android:text="Atención"
                 android:textColor="@android:color/white"
-                android:textSize="26sp"
+                style="@style/TextBold20Coppel"
                 android:visibility="visible" />
 
             <TextView
@@ -55,11 +54,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
+                style="@style/TextBook14Coppel"
                 android:gravity="center"
                 android:text="Tu forma de pago es:"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/txvTitle"
@@ -67,12 +65,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Atención"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                style="@style/TextBold20Coppel"
                 android:visibility="visible" />
 
             <TextView
@@ -81,12 +78,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
+                style="@style/TextBook14Coppel"
                 android:padding="2dp"
                 android:text="Monto a abonar:"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
                 android:visibility="visible" />
 
             <TextView
@@ -95,13 +91,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="$3000"
                 android:layout_marginBottom="15dp"
                 android:textColor="@android:color/white"
-                android:textSize="26sp"
+                style="@style/TextBold20Coppel"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -123,11 +118,10 @@
                android:layout_marginRight="8dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="16sp" />
+                style="@style/ButtonCoppel" />
 
             <Button
                 android:id="@+id/btnActionAccept"
@@ -136,11 +130,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/confirm"
+                style="@style/ButtonCoppel"
                 android:textAllCaps="false"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="16sp" />
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
         </LinearLayout>
 

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuHolidayRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
@@ -55,7 +57,7 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
     @BindView(R.id.rcvOptions)
     RecyclerView rcvOptions;
     private List<HomeMenuItem> menuItems;
-    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
+    private IconsMenuHolidayRecyclerAdapter iconsMenuHolidayRecyclerAdapter;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -88,12 +90,12 @@ public class HolidaysRolMenuFragment extends Fragment implements  View.OnClickLi
         /**Se inicia menu con iconos**/
         rcvOptions.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        rcvOptions.setLayoutManager(gridLayoutManager);
+        rcvOptions.setLayoutManager(new LinearLayoutManager(getContext()));
         menuItems = new ArrayList<>();
         menuItems.addAll(MenuUtilities.getRolUserMenu(parent));
-        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
-        iconsMenuRecyclerAdapter.setOnItemClick(this);
-        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
+        iconsMenuHolidayRecyclerAdapter = new IconsMenuHolidayRecyclerAdapter(parent, menuItems);
+        iconsMenuHolidayRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuHolidayRecyclerAdapter);
 
         if(getActivity() instanceof  HomeActivity){
             ((HomeActivity) getActivity()).forceHideProgress();

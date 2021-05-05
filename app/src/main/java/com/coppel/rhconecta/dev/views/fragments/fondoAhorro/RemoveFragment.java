@@ -47,6 +47,10 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
@@ -197,12 +201,6 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         edtRetiroAhorroProceso.setPaddinRigthTitle();
         edtRetiroAhorro.setPaddinRigthTitle();
 
-        edtRetiroProceso.setSizeQuantity(22);
-        edtRetiro.setSizeQuantity(22);
-        edtRetiroAhorroProceso.setSizeQuantity(22);
-        edtRetiroAhorro.setSizeQuantity(22);
-
-
         setEnableButton(false);
         setFocusChangeListener(edtRetiro);
         setFocusChangeListener(edtRetiroProceso);
@@ -263,13 +261,13 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private void guardarRetiro(){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        int margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiro.getQuantity()) : 0;
+        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Double.parseDouble(edtRetiro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
         /*if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
             margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroProceso.getQuantity()) : 0;
         }*/
 
-        int ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorro.getQuantity()) : 0;
+        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Double.parseDouble(edtRetiroAhorro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
         /*if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
             ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorroProceso.getQuantity()) : 0;
@@ -346,7 +344,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroProceso.setVisibility(VISIBLE);
             edtRetiroProceso.setInformativeMode(
                     retiroResponse.getData().getResponse().getDes_proceso(), "");
-            edtRetiroProceso.setInformativeQuantity(String.format("$%s",retiroResponse.getData().getResponse().getImp_margencredito()));
+            edtRetiroProceso.setInformativeQuantity(String.format(Locale.getDefault(),"$%.2f",retiroResponse.getData().getResponse().getImp_margencredito()));
             edtRetiro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
             edtRetiro.setHint("Ingresa otra cantidad");
             edtRetiro.setEnableQuantity(true);
@@ -355,13 +353,13 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiro.setHint("Ingresa una cantidad");
             edtRetiro.setEnableQuantity(true);
             edtRetiroProceso.setVisibility(View.GONE);
-            edtRetiro.setTextWatcherMoney();
+            edtRetiro.setTextWatcherMoneyDecimal();
         }
 
         if(retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0){
             edtRetiroAhorroProceso.setInformativeMode(
                     retiroResponse.getData().getResponse().getDes_proceso(), "");
-            edtRetiroAhorroProceso.setInformativeQuantity(String.format("$%s",retiroResponse.getData().getResponse().getImp_ahorroadicional()));
+            edtRetiroAhorroProceso.setInformativeQuantity(String.format(Locale.getDefault(), "$%.2f", retiroResponse.getData().getResponse().getImp_ahorroadicional()));
             edtRetiroAhorro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
             edtRetiroAhorro.setHint("Ingresa otra cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
@@ -370,10 +368,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroAhorro.setHint("Ingresa una cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
             edtRetiroAhorroProceso.setVisibility(View.GONE);
-            edtRetiroAhorro.setTextWatcherMoney();
+            edtRetiroAhorro.setTextWatcherMoneyDecimal();
         }
 
-        totalImporte.setText(String.format("%s $%s",getString(R.string.totalRemove),String.valueOf(retiroResponse.getData().getResponse().getImp_total())));
+        totalImporte.setText(String.format("%s $%.2f",getString(R.string.totalRemove),retiroResponse.getData().getResponse().getImp_total()));
 
     }
 
@@ -467,7 +465,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-                    editTextMoney.setTextWatcherMoney();
+                    editTextMoney.setTextWatcherMoneyDecimal();
                     DeviceManager.showKeyBoard(getActivity());
                 }
 
@@ -484,25 +482,25 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     public void calculate() {
         String contentMargin = edtRetiro.getQuantity();
         String contentAhorro= edtRetiroAhorro.getQuantity();
-        int margin;
-        int ahorro;
+        float margin;
+        float ahorro;
         try{
-            margin = !contentMargin.isEmpty() ? Integer.parseInt(contentMargin) : 0;
+            margin = !contentMargin.isEmpty() ? Float.parseFloat(contentMargin) : 0f;
         }catch (Exception e){
-            margin = 0;
+            margin = 0f;
         }
 
 
 
         try{
-            ahorro = !contentAhorro.isEmpty() ?Integer.parseInt(contentAhorro) : 0;
+            ahorro = !contentAhorro.isEmpty() ? Float.parseFloat(contentAhorro) : 0f;
         }catch (Exception e){
-            ahorro = 0;
+            ahorro = 0f;
         }
 
 
-        int total = margin + ahorro;
-        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(total)));
+        float total = margin + ahorro;
+        totalImporte.setText(String.format("%s $%.2f",getString(R.string.totalRemove), total));
 
 
         if((int) Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())) < margin ||

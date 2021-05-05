@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:orientation="vertical">
-
-    <RelativeLayout
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="50dp"
+        android:paddingTop="50dp"
         android:background="@drawable/background_dialog_white_rounded">
 
-        <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="14dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
             android:scrollbars="horizontal|vertical"
             android:elevation="10dp">
-            <com.github.chrisbanes.photoview.PhotoView
+        <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/imageFull"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -26,18 +22,6 @@
                 android:src="@drawable/img_publicidad"
                 android:background="@color/colorBackgroundCoppelBlanco"
                 android:adjustViewBounds="true"/>
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-        <ImageView
-            android:id="@+id/icClosePublicity"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_close_white"
-            android:layout_alignParentRight="true"
-            android:layout_margin="8dp"
-            android:elevation="6dp"
-            android:layout_alignParentTop="true"/>
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>

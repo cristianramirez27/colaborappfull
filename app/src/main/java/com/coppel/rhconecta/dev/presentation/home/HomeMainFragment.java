@@ -58,9 +58,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.*;
 
 /* */
 public class HomeMainFragment
@@ -116,7 +114,7 @@ public class HomeMainFragment
     private void onSurveyIconClickListener(View view) {
         // Verifica que la opcion de encuestas este disponible
         if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES)) {
-            showBlockOptionWarningDialog();
+            showBlockOptionWarningDialog(BLOCK_MESSAGE_ENCUESTAS);
             return;
         }
         // Verifica que los badges hayan sido cargados correctamente.
@@ -156,10 +154,10 @@ public class HomeMainFragment
     /**
      *
      */
-    private void showBlockOptionWarningDialog() {
+    private void showBlockOptionWarningDialog(String key) {
         try {
             String message = AppUtilities
-                    .getStringFromSharedPreferences(requireContext(), MESSAGE_FOR_BLOCK);
+                    .getStringFromSharedPreferences(requireContext(), key);
             dialogFragmentWarning = new DialogFragmentWarning();
             dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
             dialogFragmentWarning.setOnOptionClick(this);

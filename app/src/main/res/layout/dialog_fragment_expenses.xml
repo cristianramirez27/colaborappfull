@@ -43,10 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:textColor="@android:color/white"
                 android:gravity="center"
-                android:textSize="16sp" />
+                style="@style/TextBook14Coppel"/>
 
             <TextView
                 android:id="@+id/txvMsg"
@@ -54,11 +53,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="13sp"
+                style="@style/TextBook14Coppel"
                 android:visibility="gone" />
 
         </RelativeLayout>
@@ -70,11 +68,10 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/background_white_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/accept"
+            style="@style/ButtonCoppel"
             android:textAllCaps="false"
             android:textColor="@color/colorSecondBlueCoppel"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline95"
             app:layout_constraintStart_toStartOf="@+id/guideline94"
@@ -130,10 +127,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/send"
             android:textColor="@android:color/white"
-            android:textSize="26sp"
+            style="@style/TextBold20Coppel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -144,11 +140,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:gravity="center"
             android:text="@string/send_to"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            style="@style/TextBook14Coppel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txvSend" />
@@ -171,11 +166,10 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/background_white_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/accept"
+            style="@style/ButtonCoppel"
             android:textAllCaps="false"
             android:textColor="@color/colorSecondBlueCoppel"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline93"
             app:layout_constraintStart_toStartOf="@+id/guideline92"

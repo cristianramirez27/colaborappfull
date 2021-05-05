@@ -23,8 +23,8 @@ import android.util.AttributeSet;
 
 public class SimpleMonthView extends MonthView {
 
-    public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
-        super(context, attr, controller);
+    public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller, boolean enableTheme) {
+        super(context, attr, controller, enableTheme);
     }
 
     @Override

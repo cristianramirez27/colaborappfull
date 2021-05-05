@@ -38,11 +38,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     public static final String TAG = DialogFragmentCompany.class.getSimpleName();
     public static final String KEY_COMPANY = "KEY_COMPANY";
-    @BindView(R.id.icClose)
-    ImageView icClose;
-    @BindView(R.id.icClosePublicity)
-    ImageView icClosePublicity;
-
 
     @BindView(R.id.scrollview)
     ScrollView scrollview;
@@ -51,13 +46,15 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView image;
     @BindView(R.id.imageFull)
     PhotoView imageFull;
-    @BindView(R.id.viewCover)
-    View viewCover;
 
     @BindView(R.id.txtDiscountQuantity)
     TextView txtDiscountQuantity;
     @BindView(R.id.txtDiscount)
     TextView txtDiscount;
+    @BindView(R.id.percent_benefit)
+    TextView txtPercent;
+    @BindView(R.id.text_label)
+    TextView txtLabelPercent;
     @BindView(R.id.txtDescription)
     TextView txtDescription;
     @BindView(R.id.txtNote)
@@ -66,6 +63,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     TextView txtAddress;
     @BindView(R.id.txtPhone)
     TextView txtPhone;
+    @BindView(R.id.textView4)
+    TextView moreInfo;
     @BindView(R.id.btnAdvertising)
     Button btnAdvertising;
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
@@ -76,6 +75,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
     private boolean mIsBackVisible = false;
+    private boolean isExpandable = false;
     @BindView(R.id.card_front)
     View mCardFrontLayout;
     @BindView(R.id.card_back)
@@ -108,6 +108,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     /*    if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
         }*/
+        getDialog().setCancelable(true);
+        getDialog().setCanceledOnTouchOutside(true);
         return view;
     }
 
@@ -128,7 +130,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             discountQuantity = discount.substring(0,discount.indexOf("%")+1);
             discount = discount.substring(discount.indexOf("%")+1,discount.length());
             txtDiscountQuantity.setText(discountQuantity);
-            txtDiscount.setText(discount);
+            txtLabelPercent.setText(discount);
+            txtDiscount.setText(discountQuantity);
+            txtPercent.setText(discountQuantity);
         }else {
             txtDiscountQuantity.setText(discount);
             txtDiscount.setVisibility(View.GONE);
@@ -147,17 +151,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
 
         btnAdvertising.setOnClickListener(this);
-        icClosePublicity.setOnClickListener(this);
-
-
-        icClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                close();
-                onBenefitsAdvertisingClickListener.closeCategoryDialog();
-            }
-        });
-
         txtAddress.setMovementMethod(new ScrollingMovementMethod());
 
         scrollview.setOnTouchListener(new View.OnTouchListener() {
@@ -181,6 +174,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 return false;
             }
         });
+        moreInfo.setOnClickListener(this);
     }
 
     public void close() {
@@ -191,10 +185,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
-        return dialog;
+        return new Dialog(getActivity(), R.style.AlertDialogCopper);
     }
 
     @Override
@@ -213,11 +204,13 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 btnAdvertising.setEnabled(false);
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
-            case R.id.icClosePublicity:
-                close();
-                getActivity().finish();
+            case R.id.textView4:
+                    isExpandable = !isExpandable;
+                    int visibility = isExpandable ? View.VISIBLE : View.GONE;
+                    scrollview.setVisibility(visibility);
+                    btnAdvertising.setVisibility(visibility);
+                    moreInfo.setText(isExpandable ? R.string.label_less_information : R.string.label_more_information);
                 break;
-
         }
     }
 
@@ -290,12 +283,14 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = true;
+            mCardBackLayout.setVisibility(View.VISIBLE);
         } else {
             mSetRightOut.setTarget(mCardBackLayout);
             mSetLeftIn.setTarget(mCardFrontLayout);
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = false;
+            mCardBackLayout.setVisibility(View.GONE);
         }
     }
 

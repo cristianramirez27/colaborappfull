@@ -34,7 +34,9 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +48,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTEN;
 
 public class ConfigFieldLetterFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick {
+        DialogFragmentWarning.OnOptionClick, FieldLetterRecyclerAdapter.OnClickItemListerner {
 
     public static final String TAG = ConfigFieldLetterFragment.class.getSimpleName();
     private ConfigLetterActivity parent;
@@ -56,6 +58,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     private List<LetterConfigResponse.Datos> fieldsLetter;
     private FieldLetterRecyclerAdapter fieldLetterRecyclerAdapter;
     private long mLastClickTime = 0;
+    private Map<Integer,Boolean> disable = new HashMap<>();
 
     private DialogFragmentWarning dialogFragmentWarning;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -100,6 +103,8 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
         rcvFields.setLayoutManager(new LinearLayoutManager(getContext()));
         fieldsLetter = new ArrayList<>();
         fieldLetterRecyclerAdapter = new FieldLetterRecyclerAdapter(getContext(), fieldsLetter);
+        if(typeLetter == TYPE_KINDERGARTEN)
+            fieldLetterRecyclerAdapter.setOnClickItemListerner(this);
         rcvFields.setAdapter(fieldLetterRecyclerAdapter);
         btnNext.setOnClickListener(this);
 
@@ -164,6 +169,20 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     }
 
     @Override
+    public void showFragmentAtPosition(int position, boolean enabled) {
+        if (enabled) {
+            parent.getPreviewDataVO().setFieldsLetter(fieldsLetter);
+            ILettersNavigation.setKinderGardenData(letterConfigResponse);
+            ILettersNavigation.showFragmentAtPosition(position);
+            if (position > 0)
+                disable.remove(position);
+        }else {
+            if (position > 0)
+                disable.put(position, true);
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnNext:
@@ -177,10 +196,54 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
                     if(typeLetter != TYPE_KINDERGARTEN){
                         showAlertStampLetter();
                     }else {
-                        PreviewDataVO previewDataVO = new PreviewDataVO();
-                        previewDataVO.setFieldsLetter(fieldsLetter);
-                        ILettersNavigation.setKinderGardenData(letterConfigResponse);
-                        ILettersNavigation.showFragmentAtPosition(1,previewDataVO);
+                        disable.forEach((id, aBoolean) ->
+                                {
+                                        if ( id == 1) {
+                                            if(parent.getPreviewDataVO() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional().getChildrenData() != null ){
+                                                parent.getPreviewDataVO().getDataOptional().setChildrenData(null);
+                                            }
+                                        }
+                                        if ( id == 3) {
+                                            if(parent.getPreviewDataVO() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional().getLetterHolidayData() != null ){
+                                                parent.getPreviewDataVO().getDataOptional().setLetterHolidayData(null);
+                                            }
+                                        }
+                                        if ( id == 2) {
+                                            if(parent.getPreviewDataVO() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional().getJobScheduleData() != null ){
+                                                parent.getPreviewDataVO().getDataOptional().setJobScheduleData(null);
+                                            }
+                                            if(parent.getPreviewDataVO() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional().getScheduleData() != null ){
+                                                parent.getPreviewDataVO().getDataOptional().setScheduleData(null);
+                                            }
+
+                                            if(parent.getPreviewDataVO() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional() != null &&
+                                                    parent.getPreviewDataVO().getDataOptional().getSectionScheduleData() != null ){
+                                                parent.getPreviewDataVO().getDataOptional().setSectionScheduleData(null);
+                                            }
+                                        }
+                                }
+                        );
+                        if(parent.getPreviewDataVO() != null &&
+                                parent.getPreviewDataVO().getDataOptional() != null &&
+                                parent.getPreviewDataVO().getDataOptional().getChildrenData() != null &&
+                                !parent.getPreviewDataVO().getDataOptional().getChildrenData().isEmpty()
+                        ) {
+                            ILettersNavigation.setKinderGardenData(letterConfigResponse);
+                            showAlertStampLetter();
+
+                        }
+                        else {
+                            Toast.makeText(getActivity(),"Selecciona el nombre de tus hijos",Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                 }else {
@@ -197,7 +260,13 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
             case ServicesRequestType.LETTERSCONFIG:
                // letterConfigResponse = (LetterConfigResponse) response.getResponse();
                 for(LetterConfigResponse.Datos datos : letterConfigResponse.getData().getResponse().getDatosCarta()){
-                    datos.setSelected(datos.getIdu_defaultdatoscarta() == 1);
+                    if(datos.getIdu_datoscartas() == 16 || datos.getIdu_datoscartas() == 15 || datos.getIdu_datoscartas() == 12){
+                        datos.setSelected(false);
+                        datos.setOpc_estatus(1);
+                    }else {
+                        datos.setSelected(datos.getIdu_defaultdatoscarta() == 1);
+                    }
+
                     fieldsLetter.add(datos);
                 }
 
@@ -211,7 +280,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
                 previewDataVO.setDataLetter(letterPreviewResponse.getData());
                 previewDataVO.setFieldsLetter(fieldsLetter);
                 previewDataVO.setHasStamp(hasStamp);
-                ILettersNavigation.showFragmentAtPosition(1,previewDataVO);
+                ILettersNavigation.showFragmentAtPosition((typeLetter ==TYPE_KINDERGARTEN)? 4 : 1,previewDataVO);
                 break;
         }
     }
@@ -300,7 +369,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
             @Override
             public void run() {
                 dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setTwoOptionsData(getString(R.string.title_stamp_letter), getString(R.string.question_stamp_letter), getString(R.string.no),getString(R.string.yes));
+                dialogFragmentWarning.setTwoOptionsData(getString(R.string.title_config_letter), letterConfigResponse.getData().getResponse().getMensajeSello(), getString(R.string.no),getString(R.string.yes));
                 dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
                     @Override
                     public void onLeftOptionClick() {
@@ -327,7 +396,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         coppelServicesPresenter.requestLettersPreviewView(numEmployer,typeLetter,fieldsLetter,
-                null,stampLetter,token);
+                parent.getPreviewDataVO().getDataOptional(),stampLetter,token);
     }
 
 }

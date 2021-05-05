@@ -23,6 +23,7 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
     private List<HolidayPeriod> dataItems;
     private IScheduleOptions IScheduleOptions;
     private boolean showMarker;
+    private boolean enableThemeHoliday;
 
     private OnRequestSelectedClickListener OnRequestSelectedClickListener;
    // private OnGasVoucherClickListener onGasVoucherClickListener;
@@ -38,19 +39,31 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
         this.showMarker = showMarker;
     }
 
+    public void setEnableThemeHoliday(boolean enableThemeHoliday) {
+        this.enableThemeHoliday = enableThemeHoliday;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_solicitud_colaborador_vacaciones, viewGroup, false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+        if(enableThemeHoliday){
+            viewHolder.requestColaborator.setThemeHoliday();
+        }
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         viewHolder.itemView.setHasTransientState(true);
-        dataItems.get(i).setShowMarker(showMarker);
-        viewHolder.requestColaborator.setDetailData(dataItems.get(i),false);
+        HolidayPeriod data = dataItems.get(i);
+        data.setShowMarker(showMarker);
+        viewHolder.requestColaborator.setDetailData(data,false);
+        if(data.getIdu_marca() == 1)
+            OnRequestSelectedClickListener.showLabelSplice(true);
 
         viewHolder.requestColaborator.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +123,7 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
 
     public interface OnRequestSelectedClickListener {
         void onRequestSelectedClick(HolidayPeriod holidayPeriod);
+        void showLabelSplice(boolean enable);
     }
 
     public void setOnRequestSelectedClickListener(HolidayRequestColaboratorsRecyclerAdapter.OnRequestSelectedClickListener onRequestSelectedClickListener) {

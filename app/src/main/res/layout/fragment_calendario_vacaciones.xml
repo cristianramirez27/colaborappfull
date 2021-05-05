@@ -64,9 +64,9 @@
                         android:inputType="textVisiblePassword"
                         android:importantForAutofill="no"
                         android:lines="1"
+                        style="@style/TextBook14Coppel"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"
-                        android:textSize="14sp" />
+                        android:textColorHint="@color/colorTextBlueCoppel"/>
 
                 </RelativeLayout>
 
@@ -86,9 +86,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
+                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="14sp" />
+                    android:textColor="@color/colorTextCoppelNegro"/>
 
                 <TextView
                     android:id="@+id/centro"
@@ -151,10 +151,9 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lineto_circular_pro_medium"
                                 android:text="@string/title_holidays"
-                                android:textColor="@color/colorSecundaryCoppelVerde"
-                                android:textSize="13sp" />
+                                style="@style/TextBook12Coppel"
+                                android:textColor="@color/colorSecundaryCoppelVerde"/>
 
                         </RelativeLayout>
 
@@ -180,10 +179,9 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lineto_circular_pro_medium"
                                 android:text="@string/title_splice_colaborators"
                                 android:textColor="@color/colorMelon"
-                                android:textSize="13sp" />
+                                style="@style/TextBook12Coppel"/>
 
                         </RelativeLayout>
 

@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -146,6 +147,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     private TextView titleCustomCalendar;
     private String titleCustom;
+    private String titleButtonCalendar = "test first";
 
     private int mCurrentView = UNINITIALIZED;
 
@@ -192,6 +194,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private TextView daysAvailable;
     private TextView daysSelected;
     private TextView daysSelectedConfig;
+    TextView configDaysBtn;
+    private boolean isThemeHoliday = false;
 
 
 
@@ -469,8 +473,25 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         daysAvailable.setText(String.format("%s %s",totalVacacionesAsString, num_total_vacaciones > 1 ? "días" :"día"));
 
         final Activity activity = getActivity();
-        mDayPickerView = new DayPickerGroup(activity, this);
+        mDayPickerView = new DayPickerGroup(activity, this,isThemeHoliday);
         mYearPickerView = new YearPickerView(activity, this);
+
+        if(isThemeHoliday){
+            LinearLayout containerHeader = view.findViewById(R.id.mdtp_day_picker_selected_date_layout);
+            containerHeader.setBackgroundColor(getContext().getColor(R.color.background_color_blue));
+            containerHeader.setPadding(30,30,30,50);
+            titleCustomCalendar.setTextColor(getContext().getColor(R.color.colorCoppelAmarillo));
+            titleCustomCalendar.setPadding(0,0,0,10);
+            daysAvailable.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            daysAvailable.setText(String.format("%s %s",totalVacacionesAsString, num_total_vacaciones > 1 ? "Días" :"Día"));
+            daysAvailable.setTextSize(12f);
+            daysSelected.setTextSize(12f);
+            daysSelected.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            TextView titleDaysAvailable = view.findViewById(R.id.titleDayAvailable);
+            TextView titleDaysSelected = view.findViewById(R.id.titleDaysSelected);
+            titleDaysAvailable.setTextSize(12f);
+            titleDaysSelected.setTextSize(12f);
+        }
 
         // if theme mode has not been set by java code, check if it is specified in Style.xml
         if (!mThemeDarkChanged) {
@@ -534,7 +555,19 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         cancelButton.setVisibility(isCancelable() ? View.VISIBLE : View.GONE);
 
 
-        TextView configDaysBtn = view.findViewById(R.id.configDays);
+        configDaysBtn = view.findViewById(R.id.configDays);
+        if (titleButtonCalendar != null && !titleButtonCalendar.isEmpty()){
+            configDaysBtn.setText(titleButtonCalendar);
+            showHalfDaysOption = true;
+        }
+        if (isThemeHoliday) {
+            okButton.setBackground(getContext().getDrawable(R.drawable.background_green_rounded));
+            cancelButton.setBackground(getContext().getDrawable(R.drawable.background_red_rounder));
+            cancelButton.setText(R.string.holiday_label_button_cancel);
+            configDaysBtn.setBackground(null);
+//            configDaysBtn.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            configDaysBtn.setTextColor(getContext().getColor(R.color.colorTextConfig));
+        }
 
         configDaysBtn.setEnabled(showHalfDaysOption);
         configDaysBtn.setVisibility(showHalfDaysOption ? View.VISIBLE : View.INVISIBLE);
@@ -612,6 +645,10 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
         mHapticFeedbackController = new HapticFeedbackController(activity);
         return view;
+    }
+
+    public void setThemeHolday(boolean enable) {
+        isThemeHoliday = enable;
     }
 
     @Override
@@ -1340,6 +1377,10 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         titleCustom = title;
     }
 
+    public void setTextButtonCalendar(String text) {
+        titleButtonCalendar = text;
+    }
+
 
     @Override
     public void setIsTappedSelected(boolean isTappedSelected) {
@@ -1416,11 +1457,11 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         String days = String.valueOf(getTotalDaysSelected());
 
         if(days.contains(".5")){
-            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
-            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, "días"));
+            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" : days, isThemeHoliday ?"Días" :"días"));
+            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" : days,isThemeHoliday ?"Días" : "días"));
         }else {
-            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(), "días"));
-            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(), "días"));
+            daysSelected.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(),isThemeHoliday ?"Días" : "días"));
+            daysSelectedConfig.setText(String.format("%s %s",days.equals("0.0") ? "0" :  days.replace(".0","").trim(),isThemeHoliday ?"Días" : "días"));
         }
 
       /*  if( this.daysSelectedMap != null){

@@ -7,6 +7,9 @@ public class ColaboratorHoliday implements Serializable {
     private String nom_empleado;
     private String fotoperfil;
     private String num_empleado;
+    private String color;
+    private String colorletra;
+    private String nom_estatus;
     private int num_centro;
     private boolean hasSplice;
 
@@ -63,5 +66,29 @@ public class ColaboratorHoliday implements Serializable {
 
     public void setHasSplice(boolean hasSplice) {
         this.hasSplice = hasSplice;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColorletra() {
+        return colorletra;
+    }
+
+    public void setColorletra(String colorletra) {
+        this.colorletra = colorletra;
+    }
+
+    public String getNom_estatus() {
+        return nom_estatus;
+    }
+
+    public void setNom_estatus(String nom_estatus) {
+        this.nom_estatus = nom_estatus;
     }
 }

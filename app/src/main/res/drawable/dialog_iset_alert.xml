@@ -2,8 +2,8 @@
 <inset
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@color/transparent"
-    android:insetRight="25dp"
-    android:insetLeft="25dp"
-    android:insetBottom="25dp"
-    android:insetTop="25dp">
+    android:insetRight="0dp"
+    android:insetLeft="0dp"
+    android:insetBottom="0dp"
+    android:insetTop="0dp">
 </inset>

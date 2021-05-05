@@ -22,9 +22,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="4dp"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        style="@style/TextMedium14Coppel"
         app:layout_constraintEnd_toStartOf="@+id/guideline117"
         app:layout_constraintStart_toEndOf="@+id/imgvArrow"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,10 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
-        android:fontFamily="@font/lineto_circular_pro_medium"
         android:gravity="end"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        style="@style/TextBold18Coppel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline117"
         app:layout_constraintTop_toTopOf="parent" />

@@ -28,27 +28,45 @@ public class IconsMenuRecyclerAdapter extends RecyclerView.Adapter<IconsMenuRecy
     private List<HomeMenuItem> menu;
     private int itemSize;
     private OnItemClick onItemClick;
+    private int layout;
+    private boolean enableCardView;
+    private int width = -1;
 
     public IconsMenuRecyclerAdapter(Context context, List<HomeMenuItem> menu, int spanCount) {
         this.context = context;
         this.menu = menu;
         itemSize = getItemSize(spanCount);
+        layout = R.layout.item_payroll_voucher_menu;
+    }
+    public IconsMenuRecyclerAdapter(int width, Context context, List<HomeMenuItem> menu, boolean enableCardView) {
+        this.context = context;
+        this.menu = menu;
+        this.enableCardView = enableCardView;
+        layout = enableCardView ? R.layout.item_payroll_voucher_menu_vacation : R.layout.item_payroll_voucher_menu;
+        this.width = width;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_payroll_voucher_menu, viewGroup, false);
+                .inflate(layout, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.ctlContainer.getLayoutParams().width = itemSize;
-        viewHolder.ctlContainer.getLayoutParams().height = itemSize;
+        if (!enableCardView) {
+            viewHolder.ctlContainer.getLayoutParams().width = itemSize;
+            viewHolder.ctlContainer.getLayoutParams().height = itemSize;
+        }
         viewHolder.imgvIcon.setImageDrawable(MenuUtilities.getIconByTag(menu.get(i).getTAG(), context));
         viewHolder.txvName.setText(menu.get(i).getName());
+        if (width != -1){
+            ViewGroup.LayoutParams layoutParams = viewHolder.txvName.getLayoutParams();
+            layoutParams.width = width;
+            viewHolder.txvName.setLayoutParams(layoutParams);
+        }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

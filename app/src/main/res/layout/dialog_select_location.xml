@@ -17,11 +17,10 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:gravity="center"
             android:text="¿Dónde estás?"
-            android:textColor="@android:color/white"
-            android:textSize="26sp" />
+            style="@style/TextBold20Coppel"
+            android:textColor="@android:color/white"/>
 
         <RelativeLayout
             android:id="@+id/layoutState"
@@ -39,15 +38,14 @@
                 android:layout_width="match_parent"
                 android:duplicateParentState="true"
                 android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:fontFamily="@font/lineto_circular_pro_medium"
                 android:background="@null"
                 android:hint="Selecciona el estado"
                 android:textColorHint="@color/hint_text_color"
                 android:enabled="false"
                 android:clickable="false"
+                style="@style/TextBook14Coppel"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
                 android:textAllCaps="false"
                 android:paddingLeft="8dp"
                 android:layout_height="60dp">
@@ -71,17 +69,17 @@
         </RelativeLayout>
 
         <TextView
+                style="@style/TextBook14Coppel"
             android:layout_below="@+id/layoutState"
             android:id="@+id/stateError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:gravity="right"
             android:layout_marginRight="20dp"
             android:text="El campo no puede estar vacío"
             android:textColor="@android:color/white"
-            android:textSize="13sp" />
+             />
 
         <RelativeLayout
             android:layout_below="@+id/stateError"
@@ -99,15 +97,14 @@
                 android:enabled="false"
                 android:duplicateParentState="true"
                 android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:hint="Selecciona la ciudad"
-                android:textSize="16sp"
+                android:hint="@string/label_dialog_city"
+                style="@style/TextBook14Coppel"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:textAllCaps="false"
                 android:paddingLeft="8dp"
                 android:layout_centerVertical="true"
                 android:textColorHint="@color/hint_text_color"
-                android:fontFamily="@font/lineto_circular_pro_medium"
                 android:layout_height="60dp"/>
 
                 <ImageView
@@ -131,13 +128,12 @@
             android:id="@+id/cityError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:gravity="right"
             android:layout_marginRight="20dp"
             android:visibility="invisible"
+            style="@style/TextBook14Coppel"
             android:text="El campo no puede estar vacío"
-            android:textColor="@android:color/white"
-            android:textSize="13sp" />
+            android:textColor="@android:color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,12 +152,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_medium"
                 android:text="@string/cancel"
+                style="@style/ButtonCoppel"
                 android:textAllCaps="false"
                 android:layout_weight="1"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="12sp" />
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
             <Button
                 android:id="@+id/btnRightOption"
@@ -170,12 +165,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_medium"
                 android:text="@string/accept"
                 android:textAllCaps="false"
                 android:layout_weight="1"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="12sp" />
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
         </LinearLayout>
 

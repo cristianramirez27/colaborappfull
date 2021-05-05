@@ -52,7 +52,6 @@ public class EditTextMoney extends ConstraintLayout {
     }
 
     public void setEnableQuantity(boolean enable) {
-        edtQuantity.setTextSize(22);
         edtQuantity.setEnabled(enable);
     }
 
@@ -103,6 +102,15 @@ public class EditTextMoney extends ConstraintLayout {
         }
 
         return "";
+    }
+    public void setTextWatcherMoneyDecimal() {
+        edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        InputFilter[] filterArray = new InputFilter[1];
+        filterArray[0] = new InputFilter.LengthFilter(12);
+        edtQuantity.setFilters(filterArray);
+
+        edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity, true));
     }
 
     public void setTextWatcherMoney(){

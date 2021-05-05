@@ -37,7 +37,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     private  int typeLetter;
-    private PreviewDataVO previewDataVO;
+    private PreviewDataVO previewDataVO = new PreviewDataVO();
     private LetterConfigResponse letterConfigResponse;
 
     @Override
@@ -68,6 +68,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
             ScheduleInfoLetterFragment scheduleInfoLetterFragment = ScheduleInfoLetterFragment.getInstance(typeLetter);
             HolidaysLetterFragment holidaysLetterFragment = HolidaysLetterFragment.getInstance(typeLetter);
             ChildInfoLetterFragment childInfoLetterFragment = ChildInfoLetterFragment.getInstance(typeLetter);
+            scheduleInfoLetterFragment.setDataSchedule(letterConfigResponse.getData().getResponse().getDatosGuarderia().getDatoshorario());
             pagerAdapter.addFragment(childInfoLetterFragment);
             pagerAdapter.addFragment(scheduleInfoLetterFragment);
             pagerAdapter.addFragment(holidaysLetterFragment);
@@ -87,7 +88,11 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
             PreviewLetterFragment previewLetterFragment = (PreviewLetterFragment) ((PagerAdapter)viewPager.getAdapter()).getFragmentAtPosition(position);
             previewLetterFragment.setDataLetter(previewDataVO);
         }
+        viewPager.setCurrentItem(position);
+    }
 
+    @Override
+    public void showFragmentAtPosition(int position) {
         viewPager.setCurrentItem(position);
     }
 

@@ -82,6 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lineto_circular_pro_medium"
+                        style="@style/TextBold14Coppel"
                         android:textColor="@color/colorTextCoppelNegro"
                         android:textSize="13sp" />
 

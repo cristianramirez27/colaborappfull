@@ -30,8 +30,8 @@ public class SimpleMonthView extends MonthView {
 
     HashMap<String,DaySelectedHoliday> daysSelectedlist;
 
-    public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller) {
-        super(context, attr, controller);
+    public SimpleMonthView(Context context, AttributeSet attr, DatePickerController controller, boolean enableThemeHoliday) {
+        super(context, attr, controller, enableThemeHoliday);
         daysSelectedlist = mController.getDaysSelected();
 
     }

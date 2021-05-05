@@ -35,10 +35,9 @@
                     android:id="@+id/tituloSolicitudes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_request_complements"
                     android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="18sp" />
+                    style="@style/TextMedium18Coppel"/>
 
                 <TextView
                     android:layout_below="@+id/tituloSolicitudes"
@@ -47,10 +46,9 @@
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    style="@style/TextMedium18Coppel"
                     android:text="@string/empty_request_complements"
-                    android:textColor="@color/colorTextGrayDark"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorTextGrayDark"/>
 
                 <LinearLayout
                     android:id="@+id/layoutSolicitudesContainer"
@@ -88,10 +86,9 @@
                     android:id="@+id/tituloControles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_tracking_request"
                     android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="18sp" />
+                    style="@style/TextMedium18Coppel"/>
 
                 <TextView
                     android:layout_below="@+id/tituloControles"
@@ -100,10 +97,9 @@
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    style="@style/TextMedium18Coppel"
                     android:text="@string/empty_controls"
-                    android:textColor="@color/colorTextGrayDark"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorTextGrayDark"/>
 
                 <LinearLayout
                     android:id="@+id/layoutControlesContainer"

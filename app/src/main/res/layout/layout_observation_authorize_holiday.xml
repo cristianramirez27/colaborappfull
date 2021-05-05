@@ -44,20 +44,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="Observaciones (Opcional)"
-                    android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="22sp" />
+                    style="@style/TextBold20Coppel"
+                    android:textColor="@color/colorSecondBlueCoppel"/>
 
                 <TextView
                     android:layout_below="@+id/title"
                     android:id="@+id/subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    style="@style/TextBook14Coppel"
                     android:text="@string/subtitle_observation_authorize"
-                    android:textColor="@color/colorTextGrayDark"
-                    android:textSize="14sp" />
+                    android:textColor="@color/colorTextGrayDark"/>
 
                 <EditText
                     android:layout_below="@+id/subtitle"
@@ -69,8 +67,8 @@
                     android:layout_marginBottom="24dp"
                     android:gravity="top"
                     android:padding="8dp"
-                    android:textSize="13sp"
                     android:inputType="text"
+                    style="@style/TextBook12Coppel"
                     android:importantForAutofill="no"
                     android:imeOptions="actionNext"
                     android:digits="abcdefghijklmnñopqrstuvwxyzáéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
@@ -94,12 +92,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_blue_rounded"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/cancel"
                         android:textAllCaps="false"
+                        style="@style/ButtonCoppel"
                         android:layout_marginRight="10dp"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
                     <Button
                         android:id="@+id/btnActionRight"
@@ -107,12 +104,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/backgroud_rounder_grey"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/send"
                         android:textAllCaps="false"
+                        style="@style/ButtonCoppel"
                         android:layout_marginLeft="10dp"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
                 </LinearLayout>
 

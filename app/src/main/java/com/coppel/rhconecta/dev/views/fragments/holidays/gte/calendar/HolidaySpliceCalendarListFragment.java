@@ -196,6 +196,10 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
     }
 
     @Override
+    public void showLabelSplice(boolean enable) {
+    }
+
+    @Override
     public void onClick(View view) {
 
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200){

@@ -252,8 +252,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 */
             }
         });
-
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
 
@@ -364,7 +363,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         this.num_anio = collapsibleCalendar.getYear();
 
         getPeriodsColaborators(this.colaboratorHoliday.getNum_empleado(),1,this.num_mes,this.num_anio);
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         setVisibilityLasttMonth();
         setVisibilityNextMonth();
@@ -372,7 +371,9 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
 
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
+        datePickerDialog.setThemeHolday(true);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
+        datePickerDialog.setTextButtonCalendar(holidaysPeriodsResponse.getData().getResponse().getDes_config());
         datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null
                 && !holidaysPeriodsResponse.getData().getResponse().getDes_marca().isEmpty() ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
@@ -759,7 +760,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         collapsibleCalendar.select(listDaySelected);
 
 
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
 

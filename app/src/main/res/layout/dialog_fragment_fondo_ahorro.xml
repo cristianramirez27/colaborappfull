@@ -47,11 +47,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
+                style="@style/TextBook14Coppel"
                 android:text="Tu solicitud de retiro fue capturada con éxito"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/txvFolio"
@@ -59,12 +58,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Folio: fdsfsdfsdfsdf"
                 android:textColor="@android:color/white"
-                android:textSize="13sp"
+                style="@style/TextBook14Coppel"
                 android:visibility="visible" />
 
             <TextView
@@ -73,12 +71,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Folio: fdsfsdfsdfsdf"
                 android:textColor="@android:color/white"
-                android:textSize="13sp"
+                style="@style/TextBook14Coppel"
                 android:visibility="visible" />
 
             <TextView
@@ -87,12 +84,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:text="Hora: fdsfsdfsdfsdf"
                 android:textColor="@android:color/white"
-                android:textSize="13sp"
+                style="@style/TextBook14Coppel"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -108,11 +104,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/background_white_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/accept"
             android:textAllCaps="false"
-            android:textColor="@color/colorSecondBlueCoppel"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel"
+            android:textColor="@color/colorSecondBlueCoppel"/>
 
     </RelativeLayout>
 

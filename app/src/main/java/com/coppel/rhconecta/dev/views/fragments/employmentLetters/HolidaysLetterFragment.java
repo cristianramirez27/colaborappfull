@@ -184,7 +184,7 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
         if((dateStartHoliday.getText() != null && !dateStartHoliday.getText().toString().isEmpty()) &&
                 (dateEndHoliday.getText() != null && !dateEndHoliday.getText().toString().isEmpty())){
 
-            showAlertStampLetter();
+            ILettersNavigation.showFragmentAtPosition(0,getData());
 
         }else {
             Toast.makeText(getActivity(),"Debes llenar todos los datos",Toast.LENGTH_SHORT).show();
@@ -194,8 +194,9 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
     public void showDatePicker(boolean isStart){
         //MyDatePickerFragment newFragment = new MyDatePickerFragment();
         DatePickerDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(isStart ? dateSetListenerStart : dateSetListenerEnd);
+        datePickerDialog.enableNewStyle(true);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
-        datePickerDialog.setCustomTitle(isStart ? "Inicio de vacaciones" : "Regreso de vacaciones");
+        datePickerDialog.setCustomTitle(isStart ? "Inicio de vacaciones" : "Fin de vacaciones");
         Calendar today = Calendar.getInstance();
         datePickerDialog.setMinDate( isStart ?  today : (startDate != null ? startDate : today));
         datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerHolidayDialog");
@@ -217,7 +218,7 @@ public class HolidaysLetterFragment extends Fragment implements View.OnClickList
                 CoppelServicesLettersGenerateRequest.Data dataOptional =  previewDataVOOParent.getDataOptional();
 
                 previewDataVO.setDataOptional(dataOptional);
-                ILettersNavigation.showFragmentAtPosition(4,previewDataVO);
+                ILettersNavigation.showFragmentAtPosition(0,previewDataVO);
                 break;
         }
 

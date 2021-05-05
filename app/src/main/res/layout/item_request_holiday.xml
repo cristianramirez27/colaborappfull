@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:id="@+id/cardview"
+        app:cardElevation="2dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginLeft="1dp"
+        card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+        app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+            android:id="@+id/layoutRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+        <RelativeLayout
+                android:id="@+id/cbxLayout"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:layout_height="wrap_content">
+
+            <CheckBox
+                    android:theme="@style/MyCheckBox"
+                    android:id="@+id/checkboxElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:checked="true"/>
+            <RelativeLayout
+                    android:visibility="visible"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/layoutEstatusContainer"
+                    android:layout_toEndOf="@+id/checkboxElement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:id="@+id/layoutEstatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true">
+
+                    <TextView
+                            android:id="@+id/estatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:gravity="left|center_vertical"
+                            android:layout_alignParentLeft="true"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            style="@style/TextMedium12Coppel"
+                            android:textColor="@color/colorBackgroundCoppelBlanco"
+                            android:visibility="visible"/>
+
+                </LinearLayout>
+                <TextView
+                        android:id="@+id/ic_solicitud"
+                        android:paddingRight="20dp"
+                        android:textColor="@color/colorTextConfig"
+                        android:text="Dias propuestos"
+                        android:layout_width="wrap_content"
+                        android:drawableLeft="@drawable/ic_icn_calendar"
+                        android:layout_alignParentRight="true"
+                        style="@style/TextMedium12Coppel"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center" android:drawablePadding="10dp"
+                        android:gravity="center_vertical"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp" android:id="@+id/view3"
+                android:layout_below="@+id/cbxLayout"
+                android:background="@android:drawable/divider_horizontal_textfield"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/container_request"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:visibility="visible" android:layout_below="@+id/view3">
+
+
+            <RelativeLayout
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="left|center_vertical"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/title_date_start"
+                        style="@style/TextBook12Coppel"
+                        android:textColor="@android:color/black"
+                        android:visibility="visible" android:paddingTop="8dp"/>
+
+                <TextView
+                        android:id="@+id/fechaInicio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="left|center_vertical"
+                        android:visibility="visible"
+                        android:text="Miércoles, 15-08-2019"
+                        style="@style/TextMedium12Coppel"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@android:color/black" android:paddingTop="8dp" android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="20dp"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left|center_vertical"
+                        android:visibility="visible"
+                        android:text="@string/title_date_end"
+                        style="@style/TextBook12Coppel"
+                        android:layout_centerHorizontal="true"
+                        android:maxLines="2"
+                        android:textColor="@android:color/black" android:paddingTop="8dp" android:paddingBottom="8dp"/>
+
+                <TextView
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:id="@+id/fechaFin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
+                        android:text="Miércoles, 15-08-2019"
+                        style="@style/TextMedium12Coppel"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@android:color/black" android:paddingTop="8dp" android:paddingBottom="8dp"
+                        android:textStyle="bold"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/divider_"
+                android:layout_below="@+id/container_request"
+                android:background="@android:drawable/divider_horizontal_textfield"/>
+
+        <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_below="@+id/divider_"
+                android:layout_width="match_parent"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/title_holidays_days"
+                    android:layout_alignParentLeft="true"
+                    style="@style/TextBook12Coppel"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBackgroundCoppelNegro"/>
+
+            <RelativeLayout
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:id="@+id/diasVacaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        style="@style/TextMedium12Coppel"
+                        android:visibility="visible"
+                        android:layout_centerVertical="true"
+                        android:paddingStart="4dp"
+                        android:text="3 días"
+                        android:layout_marginRight="4dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/colorBackgroundCoppelNegro"/>
+
+                <View
+                        android:layout_toLeftOf="@+id/diasVacaciones"
+                        android:id="@+id/markerSplice"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backgroud_circle_melon"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

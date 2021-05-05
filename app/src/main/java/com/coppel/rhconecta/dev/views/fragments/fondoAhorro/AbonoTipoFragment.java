@@ -211,7 +211,7 @@ private IButtonControl IButtonControl;
             edtAbonoProceso.setVisibility(VISIBLE);
             edtAbonoProceso.setInformativeMode(
                     datosAbonoOpcion.getDes_proceso(), "");
-            edtAbonoProceso.setInformativeQuantity(String.format("$%d",datosAbonoOpcion.getImporte()));
+            edtAbonoProceso.setInformativeQuantity(String.format("$%.2f",datosAbonoOpcion.getImporte()));
             edtAbonoActual.setInformativeMode(datosAbonoOpcion.getDes_cambiar(),"");
             edtAbonoActual.setHint("Ingresa otra cantidad");
             edtAbonoActual.setEnableQuantity(true);
@@ -221,7 +221,7 @@ private IButtonControl IButtonControl;
             edtAbonoActual.setHint("Ingresa una cantidad");
             edtAbonoActual.setEnableQuantity(true);
             edtAbonoProceso.setVisibility(View.GONE);
-            edtAbonoActual.setTextWatcherMoney();
+            edtAbonoActual.setTextWatcherMoneyDecimal();
         }
     }
     private void setFocusChangeListener(EditTextMoney editTextMoney){
@@ -253,7 +253,7 @@ private IButtonControl IButtonControl;
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if(hasFocus){
-                    editTextMoney.setTextWatcherMoney();
+                    editTextMoney.setTextWatcherMoneyDecimal();
                     DeviceManager.showKeyBoard(getActivity());
                 }
 
@@ -435,7 +435,7 @@ private IButtonControl IButtonControl;
     public void calculate() {
         String content = edtAbonoActual.getQuantity();
         Double importe = !content.isEmpty() ? Double.parseDouble(content) : 0.0;
-        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(importe)));
+        totalImporte.setText(String.format("%s$%.2f",getString(R.string.totalRemove),importe));
     }
 
     public DatosAbonoOpcion getDatosAbonoOpcion() {

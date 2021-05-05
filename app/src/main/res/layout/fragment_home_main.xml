@@ -53,10 +53,9 @@
                 android:id="@+id/txvFavorites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
+                style="@style/TextBook14Coppel"
                 android:text="@string/my_favorites"
                 android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="14sp"
                 android:layout_marginStart="@dimen/lateral_margin"
                 android:layout_marginTop="@dimen/half_vertical_margin" />
 

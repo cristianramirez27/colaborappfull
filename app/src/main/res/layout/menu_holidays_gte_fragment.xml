@@ -13,6 +13,16 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp"
         android:orientation="vertical">
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/select_rol_expenses"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                style="@style/TextMedium22Coppel"
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvOptions"
@@ -37,11 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/btn_request_holidays"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -62,11 +71,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/btn_aditional_days"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -87,11 +95,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/btn_calendar_holidays"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="match_parent"

@@ -16,10 +16,15 @@ public class MoneyTextWatcher implements TextWatcher {
     private static String prefix = "$";
     private static final int MAX_LENGTH = 20;
     private String previousCleanString;
+    private boolean supportDecimal = false;
 
     public MoneyTextWatcher(EditText editText) {
         editTextWeakReference = new WeakReference<EditText>(editText);
         //setFocus();
+    }
+    public MoneyTextWatcher(EditText editText, boolean supportDecimal) {
+        editTextWeakReference = new WeakReference<EditText>(editText);
+        this.supportDecimal = supportDecimal;
     }
 
     private void setFocus(){
@@ -57,10 +62,16 @@ public class MoneyTextWatcher implements TextWatcher {
             editText.setSelection(prefix.length());
             return;
         }*/
+        if (str.length()> 2 &&str.substring(0,1).equals(prefix) && str.lastIndexOf(".") == str.length()-3)
+            return;
+
         if (str.equals(prefix)) {
             str = str.replace(prefix, "");
             previousCleanString ="";
             editText.setText(str);
+            return;
+        }
+        if( supportDecimal && str.lastIndexOf(".") == str.length()-1  ){
             return;
         }
         // cleanString this the string which not contain prefix and ,
@@ -72,7 +83,7 @@ public class MoneyTextWatcher implements TextWatcher {
         previousCleanString = cleanString;
 
         String formattedString;
-        formattedString = formatInteger(cleanString);
+        formattedString = supportDecimal ? formatIntegerDecimal(cleanString) : formatInteger(cleanString);
 
         editText.removeTextChangedListener(this); // Remove listener
         editText.setText(formattedString);
@@ -111,6 +122,14 @@ public class MoneyTextWatcher implements TextWatcher {
         BigDecimal parsed = new BigDecimal(str);
         DecimalFormat formatter =
                 new DecimalFormat(prefix + "#,###", new DecimalFormatSymbols(Locale.US));
+        return formatter.format(parsed);
+    }
+    private String formatIntegerDecimal(String str) {
+        System.out.println("Amount preview ----> "+str);
+        BigDecimal parsed = new BigDecimal(str);
+        System.out.println("Amount ----> "+parsed);
+        DecimalFormat formatter =
+                new DecimalFormat(prefix + "#,###.##", new DecimalFormatSymbols(Locale.US));
         return formatter.format(parsed);
     }
 

@@ -98,21 +98,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.*;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
@@ -517,13 +503,13 @@ public class HomeActivity
                     break;
                 case OPTION_NOTICE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COMUNICADOS);
                     } else
                         navigateToReleases(accessOption);
                     break;
                 case OPTION_PAYROLL_VOUCHER:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_PAYSHEET);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.PAYROLL_VOUCHER);
                         replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
@@ -531,7 +517,7 @@ public class HomeActivity
                     break;
                 case OPTION_BENEFITS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_BENEFICIOS);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.BENEFITS);
                         replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
@@ -539,7 +525,7 @@ public class HomeActivity
                     break;
                 case OPTION_SAVING_FUND:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_SAVINGS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_SAVINGS);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.SAVING_FUND);
                         replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
@@ -554,19 +540,19 @@ public class HomeActivity
                     break;
                 case OPTION_VISIONARIES:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES))
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_VISIONARIOS);
                     else
                         navigateToVisionaries(accessOption);
                     break;
                 case OPTION_COLLABORATOR_AT_HOME:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_STAYHOME).equals(YES))
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_STAYHOME);
                     else
                         navigateToCollaboratorAtHome(accessOption);
                     break;
                 case OPTION_LETTERS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_CARTASCONFIG);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.LETTERS);
                         replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
@@ -574,7 +560,7 @@ public class HomeActivity
                     break;
                 case OPTION_EXPENSES:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_TRAVEL_EXPENSES);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
@@ -602,7 +588,7 @@ public class HomeActivity
                     break;
                 case OPTION_QR_CODE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_QR).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_QR);
                     } else {
                         Intent intentQr = new IntentBuilder(new Intent(this, QrCodeActivity.class))
                                 .putStringExtra("numEmp", profileResponse.getColaborador())
@@ -613,7 +599,7 @@ public class HomeActivity
                     break;
                 case OPTION_COVID_SURVEY:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COVID_SURVEY);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
                         getExternalUrl(COVID_SURVEY);
@@ -621,7 +607,7 @@ public class HomeActivity
                     break;
                 case OPTION_COLLAGE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COLLAGE);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         getCollageURL();
@@ -639,7 +625,7 @@ public class HomeActivity
      */
     private void executeOptionHolidays() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
-            showBlockDialog();
+            showBlockDialog(BLOCK_MESSAGE_HOLIDAYS);
         } else {
             initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS);
             if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
@@ -936,9 +922,9 @@ public class HomeActivity
     /**
      *
      */
-    private void showBlockDialog() {
+    private void showBlockDialog(String key) {
         String message = AppUtilities
-                .getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK);
+                .getStringFromSharedPreferences(getApplicationContext(), key);
         showWarningDialog(message);
     }
 
@@ -1012,7 +998,7 @@ public class HomeActivity
     @Override
     public boolean validateSurveyAccess() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS).equals(YES)) {
-            showBlockDialog();
+            showBlockDialog(BLOCK_MESSAGE_ENCUESTAS);
             return false;
         }
         return true;

@@ -13,12 +13,11 @@
         android:id="@+id/titleLetters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_medium"
         android:text="@string/title_choose_holiday"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="22sp" />
+        style="@style/TextBold20Coppel"
+        android:textColor="@color/colorSecondBlueCoppel"/>
 
     <androidx.cardview.widget.CardView
         android:layout_below="@+id/titleLetters"
@@ -63,9 +62,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/imgVideoPreview"
                             android:gravity="center"
+                            style="@style/TextMedium12Coppel"
                             android:text="@string/date_start_holiday"
-                            android:textColor="@color/colorTextCoppelNegro"
-                            android:textSize="14sp" />
+                            android:textColor="@color/colorScheduler"/>
 
                         <TextView
                             android:id="@+id/dateStartHoliday"
@@ -74,8 +73,9 @@
                             android:layout_below="@+id/dateStartHolidayLabel"
                             android:gravity="center"
                             android:layout_marginTop="6dp"
-                            android:textColor="@color/colorTextCoppelNegro"
-                            android:textSize="14sp" />
+                            style="@style/TextBook14Coppel"
+                            android:hint="@string/start_day_hint"
+                            android:textColor="@color/colorTextCoppelNegro"/>
 
                         <ImageView
                             android:layout_width="30dp"
@@ -103,8 +103,8 @@
                             android:layout_below="@+id/imgVideoPreview"
                             android:gravity="center"
                             android:text="@string/date_end_holiday"
-                            android:textColor="@color/colorTextCoppelNegro"
-                            android:textSize="14sp" />
+                            style="@style/TextMedium12Coppel"
+                            android:textColor="@color/colorScheduler"/>
 
                         <TextView
                             android:id="@+id/dateEndHoliday"
@@ -113,8 +113,9 @@
                             android:layout_below="@+id/dateEndHolidayLabel"
                             android:gravity="center"
                             android:layout_marginTop="6dp"
-                            android:textColor="@color/colorTextCoppelNegro"
-                            android:textSize="14sp" />
+                            android:hint="@string/start_hour"
+                            style="@style/TextBook14Coppel"
+                            android:textColor="@color/colorTextCoppelNegro"/>
 
                         <ImageView
                             android:layout_width="30dp"
@@ -138,13 +139,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/background_blue_rounded"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        style="@style/ButtonCoppel"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

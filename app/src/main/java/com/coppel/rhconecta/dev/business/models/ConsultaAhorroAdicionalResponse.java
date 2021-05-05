@@ -25,36 +25,36 @@ public class ConsultaAhorroAdicionalResponse extends WithDrawSavingBaseResponse 
     }
 
     public class Response {
-        private int imp_cuotaahorro;
-        private int imp_cuotaproceso;
-        private int imp_maximo;
+        private Float imp_cuotaahorro;
+        private Float imp_cuotaproceso;
+        private Float imp_maximo;
         private String des_titulo;
         private String des_actual;
         private String des_proceso;
         private String des_ahorro;
         private String des_cuota;
 
-        public int getImp_cuotaahorro() {
+        public Float getImp_cuotaahorro() {
             return imp_cuotaahorro;
         }
 
-        public void setImp_cuotaahorro(int imp_cuotaahorro) {
+        public void setImp_cuotaahorro(Float imp_cuotaahorro) {
             this.imp_cuotaahorro = imp_cuotaahorro;
         }
 
-        public int getImp_cuotaproceso() {
+        public Float getImp_cuotaproceso() {
             return imp_cuotaproceso;
         }
 
-        public void setImp_cuotaproceso(int imp_cuotaproceso) {
+        public void setImp_cuotaproceso(Float imp_cuotaproceso) {
             this.imp_cuotaproceso = imp_cuotaproceso;
         }
 
-        public int getImp_maximo() {
+        public Float getImp_maximo() {
             return imp_maximo;
         }
 
-        public void setImp_maximo(int imp_maximo) {
+        public void setImp_maximo(Float imp_maximo) {
             this.imp_maximo = imp_maximo;
         }
 

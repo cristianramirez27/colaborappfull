@@ -22,7 +22,6 @@
             android:id="@+id/layoutMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:orientation="vertical">
 
             <LinearLayout
@@ -51,11 +50,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ellipsize="end"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:gravity="center"
                         android:text="@string/additional_saving_title"
                         android:textColor="@color/colorSavingHeaderText"
-                        android:textSize="15sp"
+                        style="@style/TextBook12Coppel"
                         tools:ignore="SmallSp" />
 
                     <TextView
@@ -66,6 +64,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="4dp"
                         android:ellipsize="end"
+                        style="@style/TextBold12Coppel"
                         android:fontFamily="@font/lineto_circular_pro_medium"
                         android:gravity="center"
                         android:maxLines="1"
@@ -87,11 +86,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:gravity="left"
                     android:maxLines="1"
-                    android:textColor="@color/colorPrimaryCoppelAzul"
-                    android:textSize="14sp" />
+                    style="@style/TextBook14Coppel"
+                    android:textColor="@color/colorPrimaryCoppelAzul"/>
 
                 <androidx.cardview.widget.CardView
                     android:orientation="horizontal"
@@ -119,8 +117,7 @@
                             <TextView
                                 android:id="@+id/txtCurrentAmount"
                                 android:layout_weight="1"
-                                android:textSize="13sp"
-                                android:fontFamily="@font/lineto_circular_pro_book"
+                                style="@style/TextBook12Coppel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
 
@@ -129,8 +126,8 @@
                                 android:layout_weight="2.5"
                                 android:layout_width="match_parent"
                                 android:gravity="right"
+                                style="@style/TextBold12Coppel"
                                 android:textColor="@color/colorTextCoppelNegro"
-                                android:fontFamily="@font/lineto_circular_pro_bold"
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>
@@ -162,11 +159,11 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginLeft="40dp"
                     android:background="@drawable/background_blue_rounded"
-                    android:fontFamily="@font/lineto_circular_pro_book"
                     android:text="@string/btnAddAditionalSave"
                     android:textAllCaps="false"
+                    style="@style/ButtonCoppel"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"/>
+                    />
 
             </RelativeLayout>
 

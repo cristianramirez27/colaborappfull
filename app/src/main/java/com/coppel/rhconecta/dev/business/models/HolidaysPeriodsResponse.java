@@ -43,6 +43,7 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
         private int clv_mensaje;
         private String des_mensaje;
         private String des_marca;
+        private String des_config;
 
         private String des_nota;
 
@@ -211,6 +212,13 @@ public class HolidaysPeriodsResponse extends HolidaysBaseResponse {
             this.des_nota = des_nota;
         }
 
+        public String getDes_config() {
+            return des_config;
+        }
+
+        public void setDes_config(String des_config) {
+            this.des_config = des_config;
+        }
     }
 
 

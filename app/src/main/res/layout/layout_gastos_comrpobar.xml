@@ -11,10 +11,9 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_bold"
         android:visibility="visible"
         android:text="Gastos por comprobar"
-        android:textSize="16sp"
+        style="@style/TextBold16Coppel"
         android:paddingLeft="8dp"
         android:layout_centerHorizontal="true"
         android:textColor="@color/colorBackgroundCoppelNegro" />

@@ -262,7 +262,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
         monthCurrent = collapsibleCalendar.getMonth();
         yearCurrent = collapsibleCalendar.getYear();
 
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
     @Override
@@ -428,7 +428,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
                int m = currentDate.get(Calendar.MONTH);
 
 
-                formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+                    monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
                 }
 
 
@@ -518,7 +518,7 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
         yearCurrent = collapsibleCalendar.getYear();
 
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
         getCalendarInfo();
     }
 

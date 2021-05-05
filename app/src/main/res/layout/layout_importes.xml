@@ -16,10 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:visibility="visible"
             android:text="Importes"
-            android:textSize="16sp"
+            style="@style/TextBold16Coppel"
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorBackgroundCoppelNegro" />
 

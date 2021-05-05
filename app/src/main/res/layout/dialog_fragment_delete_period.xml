@@ -40,12 +40,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:layout_marginTop="12dp"
                 android:padding="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="26sp"
+                style="@style/TextBold20Coppel"
                 android:visibility="visible" />
 
             <TextView
@@ -54,10 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="21sp" />
+                style="@style/TextBold20Coppel"
+                android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/txvTitle"
@@ -65,11 +63,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txvAction"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:gravity="center"
                 android:padding="2dp"
                 android:textColor="@android:color/white"
-                android:textSize="20sp"
+                style="@style/TextBold20Coppel"
                 android:visibility="visible" />
 
         </LinearLayout>
@@ -91,11 +88,10 @@
                android:layout_marginRight="8dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/no"
+                style="@style/ButtonCoppel"
                 android:textAllCaps="false"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="16sp" />
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
             <Button
                 android:id="@+id/btnActionAccept"
@@ -104,11 +100,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/yes"
+                style="@style/ButtonCoppel"
                 android:textAllCaps="false"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="16sp" />
+                android:textColor="@color/colorSecondBlueCoppel"/>
 
         </LinearLayout>
 

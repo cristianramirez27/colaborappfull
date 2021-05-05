@@ -20,6 +20,7 @@
             android:textColor="@color/colorTextGrayDark"
             android:layout_centerVertical="true"
             android:text="Nombre"
+            style="@style/TextBook16Coppel"
             android:layout_toLeftOf="@+id/layoutCheck"
             android:textSize="14sp" />
 

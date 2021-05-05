@@ -40,17 +40,16 @@
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@{ fingerprint.name }"
                 android:textColor="@android:color/black"
-                android:textSize="17sp"
+                style="@style/TextBook17Coppel"
                 tools:text="@tools:sample/full_names" />
 
             <TextView
                 android:id="@+id/tv_relationship"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_bold"
+                style="@style/TextBold14Coppel"
                 android:text="@{ fingerprint.relationship }"
                 android:textColor="#979797"
                 tools:text="Esposa" />

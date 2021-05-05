@@ -356,8 +356,8 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getRolUserMenu(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.manager), AppConstants.OPTION_MENU_GTE));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator), AppConstants.OPTION_MENU_COLABORATOR));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
 
         return menuItems;
     }

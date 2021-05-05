@@ -7,5 +7,6 @@ package com.coppel.rhconecta.dev.business.interfaces;
 public interface ILettersNavigation<T> {
 
     void showFragmentAtPosition(int position, T data);
+    void showFragmentAtPosition(int position);
     void setKinderGardenData(T data);
 }

@@ -1,8 +1,15 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +83,18 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
             viewHolder.markerSplice.setVisibility(View.VISIBLE);
             viewHolder.markerSplice.setBackgroundResource(currentItem.isHasSplice() ? R.drawable.backgroud_circle_melon : R.drawable.backgroud_circle_green);
         }
+        if (currentItem.getNom_estatus() != null && !currentItem.getNom_estatus().isEmpty()) {
+            viewHolder.status.setVisibility(View.VISIBLE);
+            viewHolder.status.setText(currentItem.getNom_estatus());
+            viewHolder.status.setTextColor(Color.parseColor(currentItem.getColorletra()));
+            GradientDrawable gd = new GradientDrawable();
+            gd.setColor(Color.parseColor(currentItem.getColor()));
+            gd.setCornerRadius(80);
+            viewHolder.status.setBackgroundDrawable(gd);
+
+        }else {
+            viewHolder.status.setVisibility(View.GONE);
+        }
     }
 
 
@@ -106,6 +125,8 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
         CircleImageView imgColaborador;
         @BindView(R.id.nameElement)
         TextView txvName;
+        @BindView(R.id.status)
+        TextView status;
         @BindView(R.id.markerSplice)
         View markerSplice;
 
@@ -114,6 +135,7 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
 
     }
 

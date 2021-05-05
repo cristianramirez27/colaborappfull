@@ -144,6 +144,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
         this.stateSelected =stateSelected;
         state.setText(stateSelected.getNombre());
 
+        city.setText(R.string.label_dialog_city);
         viewCity.setEnabled(true);
         viewCity.setAlpha(1f);
     }

@@ -46,7 +46,7 @@
                     android:layout_marginHorizontal="@dimen/lateral_margin"
                     android:layout_marginTop="@dimen/vertical_margin"
                     android:textColor="@color/colorPrimaryCoppelAzul"
-                    android:textSize="18sp"
+                    style="@style/TextBold20Coppel"
                     android:textStyle="bold"
                     tools:text="@string/visionary_rate_title_like" />
 
@@ -66,6 +66,7 @@
                     android:background="@color/colorPrimaryCoppelAzul"
                     android:text="@string/visionary_rate_action"
                     android:textAllCaps="false"
+                    style="@style/ButtonCoppel"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
