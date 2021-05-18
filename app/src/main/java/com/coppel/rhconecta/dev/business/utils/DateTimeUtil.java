@@ -1,17 +1,15 @@
 package com.coppel.rhconecta.dev.business.utils;
 
 
-import android.util.Log;
-
-import com.wdullaer.materialdatepicker.date.DatePickerDialog;
 import com.wdullaer.datetimepickerholiday.date.DatePickerHolidayDialog;
-
-//import com.wdullaer.materialdatepicker.date.DatePickerHolidaysDialog;
+import com.wdullaer.materialdatepicker.date.DatePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+//import com.wdullaer.materialdatepicker.date.DatePickerHolidaysDialog;
 
 /**
  * Created by Fausto on 6/29/16.

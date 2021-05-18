@@ -2,7 +2,6 @@ package com.coppel.rhconecta.dev.views.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import androidx.appcompat.content.res.AppCompatResources;
 

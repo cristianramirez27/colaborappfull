@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.business.Configuration;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;

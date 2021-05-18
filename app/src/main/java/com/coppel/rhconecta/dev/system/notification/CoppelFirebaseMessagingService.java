@@ -1,17 +1,11 @@
 package com.coppel.rhconecta.dev.system.notification;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 /* */
 public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
@@ -67,10 +61,6 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
         int iduDestination = iduDestinationValue == null ?
                 idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
                 : Integer.parseInt(iduDestinationValue);
-        Log.e("DESTINATION", title+"");
-        Log.e("DESTINATION", body+"");
-        Log.e("DESTINATION", iduSystem+"");
-        Log.e("DESTINATION", iduDestination+"");
         NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
         return new NotificationType(title, body, destination);
     }

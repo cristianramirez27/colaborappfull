@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.visionarios.databases;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 

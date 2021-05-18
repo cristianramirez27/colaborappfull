@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.data.release;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;

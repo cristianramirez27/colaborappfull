@@ -20,12 +20,8 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
-import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
-import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
-import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.activities.HomeActivityViewModel;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -39,11 +35,6 @@ import javax.inject.Inject;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 
 /** */
 public class SplashScreenActivity
