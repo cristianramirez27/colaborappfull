@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:orientation="vertical"
     tools:context=".presentation.home.HomeMainFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,25 +49,39 @@
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <TextView
-                android:id="@+id/txvFavorites"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
-                android:text="@string/my_favorites"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:textSize="14sp"
-                android:layout_marginStart="@dimen/lateral_margin"
-                android:layout_marginTop="@dimen/half_vertical_margin" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvMenu"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                android:layout_marginTop="@dimen/half_vertical_margin"/>
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txvFavorites"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_book"
+                        android:text="@string/my_favorites"
+                        android:textColor="@color/colorSecondBlueCoppel"
+                        android:textSize="14sp"
+                        android:layout_marginStart="@dimen/lateral_margin"
+                        android:layout_marginTop="@dimen/half_vertical_margin" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        android:layout_marginTop="@dimen/half_vertical_margin"/>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
 
@@ -80,4 +94,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>
