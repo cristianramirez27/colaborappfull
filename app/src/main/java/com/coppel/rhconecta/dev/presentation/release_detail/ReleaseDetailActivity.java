@@ -3,6 +3,9 @@ package com.coppel.rhconecta.dev.presentation.release_detail;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -128,10 +131,10 @@ public class ReleaseDetailActivity extends AppCompatActivity {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivImage);
         tvTitle.setText(release.getTitle());
-        Markwon markwon = Markwon.builder(this)
-                .usePlugin(HtmlPlugin.create())
-                .build();
-        markwon.setMarkdown(tvContent, release.getContent());
+
+        String body = release.getContent();
+        Spanned spanned = Html.fromHtml(body);
+        tvContent.setText(spanned);
     }
 
     /**
