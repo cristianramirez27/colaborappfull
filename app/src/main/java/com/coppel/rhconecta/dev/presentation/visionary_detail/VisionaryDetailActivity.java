@@ -278,24 +278,14 @@ public class VisionaryDetailActivity extends AppCompatActivity {
      *
      */
     private void onLikeButtonClickListener(View v) {
-        if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenLike().isEmpty())
-            viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.LIKED);
-        else {
-            Intent intent = buildIntentToRateActivityFromRateStatus(Visionary.RateStatus.LIKED);
-            startActivity(intent);
-        }
+        viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.LIKED);
     }
 
     /**
      *
      */
     private void onDislikeButtonClickListener(View v) {
-        if (viewModel.getVisionary().getVisionaryRate().getOptionsWhenDislike().isEmpty())
-            viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.DISLIKED);
-        else {
-            Intent intent = buildIntentToRateActivityFromRateStatus(Visionary.RateStatus.DISLIKED);
-            startActivity(intent);
-        }
+        viewModel.updateVisionaryStatus(visionaryType, Visionary.RateStatus.DISLIKED);
     }
 
     /* */
