@@ -7,16 +7,13 @@ public class GetReleasesPreviewsRequest {
     public Long num_empleado;
     /* */
     public int clv_opcion;
-    /* */
-    public long opc_acceso;
 
     /**
      *
      */
-    public GetReleasesPreviewsRequest(Long num_empleado, int clv_opcion, long opc_acceso) {
+    public GetReleasesPreviewsRequest(Long num_empleado, int clv_opcion) {
         this.num_empleado = num_empleado;
         this.clv_opcion = clv_opcion;
-        this.opc_acceso = opc_acceso;
     }
 
 }
