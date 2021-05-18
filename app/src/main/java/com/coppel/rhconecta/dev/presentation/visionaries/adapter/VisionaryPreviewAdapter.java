@@ -63,17 +63,6 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
         Glide.with(viewHolder.itemView)
                 .load(visionaryPreview.getPreviewImage())
                 .into(viewHolder.ivPreview);
-        // Was read indicator
-        if (visionaryPreview.isAlreadyBeenSeen()) {
-            int readColor = ContextCompat.getColor(
-                    viewHolder.itemView.getContext(),
-                    R.color.colorTextCoppelNegro
-            );
-            viewHolder.tvTitle.setTextColor(readColor);
-            viewHolder.ivWatchedIcon.setVisibility(View.GONE);
-            if (visionaryPreview.isUpdated())
-                viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
-        }
         // On click listener
         viewHolder.itemView.setOnClickListener(v ->
                 onVisionaryPreviewClickListener.onClick(visionaryPreview)
