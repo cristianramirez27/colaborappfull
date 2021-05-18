@@ -57,17 +57,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
         // Simple values
         viewHolder.tvTitle.setText(releasePreview.getTitle());
         viewHolder.tvDate.setText(releasePreview.getDate());
-        // Was read indicator
-        if (releasePreview.wasRead()) {
-            int readColor = ContextCompat.getColor(
-                    viewHolder.itemView.getContext(),
-                    R.color.colorTextCoppelNegro
-            );
-            viewHolder.tvTitle.setTextColor(readColor);
-            viewHolder.ivWasRead.setVisibility(View.GONE);
-            if (releasePreview.isUpdated())
-                viewHolder.isUpdated.setVisibility(View.VISIBLE);
-        }
         // On click listener
         viewHolder.cvContainer.setOnClickListener(v -> {
             onReleasePreviewClickListener.onClick(releasePreview);
