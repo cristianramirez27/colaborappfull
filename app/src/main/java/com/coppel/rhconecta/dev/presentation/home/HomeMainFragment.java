@@ -360,18 +360,6 @@ public class HomeMainFragment
                         .build();
                 startActivity(intent);
             }
-            if (banner.isLink() && banner.getUrlLink() != null) {
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setPackage("com.android.chrome");
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException ex) {
-                    // Chrome browser presumably not installed so allow user to choose instead
-                    intent.setPackage(null);
-                    startActivity(intent);
-                }
-            }
         };
     }
 
