@@ -54,23 +54,7 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             AnalyticsFlow analyticsFlow,
             long timeInSecondsByFlow,
             UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback
-    ) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
-        SendTimeByAnalyticsFlowRequest request = new SendTimeByAnalyticsFlowRequest(
-                employeeNum,
-                analyticsFlow,
-                timeInSecondsByFlow
-        );
-
-        String authHeader = basicUserInformationFacade.getAuthHeader();
-        String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
-        AnalyticsApiService apiService = getAnalyticsApiService();
-        if(apiService != null) {
-            apiService
-                    .sendTimeByAnalyticsFlow(authHeader, url, request)
-                    .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
-        }
-    }
+    ) { /* EMPTY IMPLEMENTATION */ }
 
     /**
      *
