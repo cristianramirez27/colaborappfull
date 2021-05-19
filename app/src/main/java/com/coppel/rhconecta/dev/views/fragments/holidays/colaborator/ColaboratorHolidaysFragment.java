@@ -318,13 +318,14 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                 } else if (response.getResponse() instanceof HolidayBonusResponse) {
                     HolidayBonusResponse responseHolidayBonus = (HolidayBonusResponse) response.getResponse();
                     HolidayBonusResponse.Response responseDetail = responseHolidayBonus.getData().getResponse();
-                    if (responseDetail.getClv_estado() == 0) {
                         dateHolidayBonus = responseDetail.getFec_diaprimavacacional();
+                    if (responseDetail.getClv_estado() == 0) {
                         headerHoliday.setDataHolidayBonus(dateHolidayBonus);
                         headerHoliday.iconPrimaVacacionalOnClickListener(v -> {
                             getHolidayBonusGeneric(HOLIDAY_BONUS_PERIOD, 2, null);
                         });
                     } else {
+                        headerHoliday.setDataHolidayBonus(dateHolidayBonus);
                         headerHoliday.setDataHolidayBonus(responseDetail.getFec_diaprimavacacional());
                         headerHoliday.iconPrimaVacacionalOnClickListener(null);
                         headerHoliday.showIconPrima(false);
