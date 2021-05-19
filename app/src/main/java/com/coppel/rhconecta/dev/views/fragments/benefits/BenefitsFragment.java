@@ -172,15 +172,12 @@ public class BenefitsFragment
         rcvBenefits.setOnClickListener(this);
         titleChangeCity.setOnClickListener(this);
         edtSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        edtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(edtSearch.getText().toString());
-                    return true;
-                }
-                return false;
+        edtSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch(edtSearch.getText().toString());
+                return true;
             }
+            return false;
         });
 
         imgvRefresh.setOnClickListener(this);
@@ -338,7 +335,7 @@ public class BenefitsFragment
 
                         showGetVoucherDialog(listCategory.get(0).getDescripcion());
                     } else {
-
+                        categories.clear();
                         for (BenefitsCategoriesResponse.Category category : ((BenefitsSearchResultsResponse) response.getResponse()).getData().getResponse().getCategorias()) {
                             categories.add(category);
                         }
@@ -671,33 +668,6 @@ public class BenefitsFragment
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
 
-    }
-
-
-    public void getCityName(final Location location, final OnGeocoderFinishedListener listener) {
-        new AsyncTask<Void, Integer, List<Address>>() {
-            @Override
-            protected List<Address> doInBackground(Void... arg0) {
-                Geocoder coder = new Geocoder(getContext(), Locale.ENGLISH);
-                List<Address> results = null;
-                try {
-                    results = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                } catch (IOException e) {
-                    // nothing
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return results;
-            }
-
-            @Override
-            protected void onPostExecute(List<Address> results) {
-                if (results != null && listener != null) {
-                    listener.onFinished(results);
-                }
-            }
-        }.execute();
     }
 
 }
