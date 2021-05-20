@@ -20,7 +20,8 @@
             android:id="@+id/iconoFlechaAbajo"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@null"
             app:srcCompat="@drawable/ic_flecha_dropdown" />
 
         <TextView
@@ -63,7 +64,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_punto_rojo" />
@@ -73,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:textColor="@color/colorTextCoppelNegro"
+                android:textColor="@color/colorPrimaryCoppelAzul"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,9 +87,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorSecundaryCoppelGris"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/labelTitulo"
                 app:layout_constraintTop_toBottomOf="@id/labelTitulo"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="29-04-2020" />
 
             <TextView
@@ -109,7 +109,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelTitulo"
                 tools:ignore="SmallSp"
-                tools:targetApi="lollipop" />
+                tools:targetApi="lollipop"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
