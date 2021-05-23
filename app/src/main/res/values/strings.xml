@@ -457,6 +457,7 @@
     <string name="visionary_rate_title_like">¿Por qué te gustó el video?</string>
     <string name="visionary_rate_action">Enviar</string>
     <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
+    <string name="alert">Alerta</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>

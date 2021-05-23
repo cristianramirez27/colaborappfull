@@ -221,29 +221,57 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
                         (letterConfigResponse.getData().getResponse().getClave().equals(String.valueOf(CLAVE_LETTER_MAX)))){
                     showAlertPrints(letterConfigResponse.getData().getResponse().getMensaje());
                 }else {
-                    Intent intentConfigLetter = new IntentBuilder(new Intent(getActivity(), ConfigLetterActivity.class))
-                            .putSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER, letterConfigResponse)
-                            .putIntExtra(BUNDLE_LETTER, typeLetterSelected)
-                            .build();
-                    startActivityForResult(intentConfigLetter, REQUEST_LETTER);
+                    String message = letterConfigResponse.getData().getResponse().getMensaje();
+                    if (message == null) {
+                        Intent intentConfigLetter = new IntentBuilder(new Intent(getActivity(), ConfigLetterActivity.class))
+                                .putSerializableExtra(BUNDLE_RESPONSE_CONFIG_LETTER, letterConfigResponse)
+                                .putIntExtra(BUNDLE_LETTER, typeLetterSelected)
+                                .build();
+                        startActivityForResult(intentConfigLetter, REQUEST_LETTER);
+                    } else {
+                        DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(
+                                getString(R.string.attention),
+                                message,
+                                getString(R.string.accept)
+                        );
+                        dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+                            @Override
+                            public void onLeftOptionClick() { }
+                            @Override
+                            public void onRightOptionClick() { dialogFragmentWarning.close(); }
+                        });
+                        dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                    }
                 }
-
                 hideProgress();
                 break;
-
-
         }
     }
 
     @Override
     public void showError(ServicesError coppelServicesError) {
+        DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
         switch (coppelServicesError.getType()) {
+            case ServicesRequestType.LETTERSCONFIG:
+                dialogFragmentWarning.setSinlgeOptionData(
+                        getString(R.string.alert),
+                        getString(R.string.error_generic_service),
+                        getString(R.string.accept)
+                );
+                dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+                    @Override
+                    public void onLeftOptionClick() { }
+                    @Override
+                    public void onRightOptionClick() { dialogFragmentWarning.close(); }
+                });
+                dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                break;
             case ServicesRequestType.LETTERSVALIDATIONSIGNATURE:
                 rcvOptions.setVisibility(View.GONE);
                 ctlConnectionError.setVisibility(View.VISIBLE);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
-                DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
                 dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.expired_session), getString(R.string.accept));
                 dialogFragmentWarning.setOnOptionClick(this);
                 dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
