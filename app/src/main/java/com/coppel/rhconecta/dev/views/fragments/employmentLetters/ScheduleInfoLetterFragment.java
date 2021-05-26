@@ -349,7 +349,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
             int dayNumbers = getNumberDays(startDay, endDay);
             int numberHours = getHoursCount(startHour, endHour);
             double hoursLunch = 0.0;
-            if(!lunchTime.equals("0")){
+            if(!lunchTime.equals("0") && !lunchTime.equals("Horario corrido")){
                 String []timeLunchPart = lunchTime.split(":");
 
                 hoursLunch += Integer.parseInt(timeLunchPart[0]);
