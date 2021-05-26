@@ -65,8 +65,6 @@ public class ReleasePreviewAdapter extends RecyclerView.Adapter<ReleasePreviewAd
             );
             viewHolder.tvTitle.setTextColor(readColor);
             viewHolder.ivWasRead.setVisibility(View.GONE);
-            if (releasePreview.isUpdated())
-                viewHolder.isUpdated.setVisibility(View.VISIBLE);
         }
         // On click listener
         viewHolder.cvContainer.setOnClickListener(v -> {
