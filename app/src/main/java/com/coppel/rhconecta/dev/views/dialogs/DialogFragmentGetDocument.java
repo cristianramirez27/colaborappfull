@@ -94,6 +94,10 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     }
 
     private void initViews(int type) {
+        if (contentText == null) {
+            dismiss();
+            return;
+        }
         switch (type) {
             case SEND_TO:
                 ctlReady.setVisibility(GONE);
