@@ -359,6 +359,7 @@ public class HomeMainFragment
                         .build();
                 startActivity(intent);
             }
+
             if (banner.isLink() && banner.getUrlLink() != null) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -373,6 +374,7 @@ public class HomeMainFragment
                     } catch (Exception ignore) { /* PASS */ }
                 }
             }
+
         };
     }
 

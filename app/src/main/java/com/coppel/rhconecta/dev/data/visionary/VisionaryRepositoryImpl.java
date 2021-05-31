@@ -178,11 +178,10 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 2;
         long visionaryIdInt = Long.parseLong(visionaryId);
-        int accessOptionValue = accessOption == AccessOption.BANNER ? accessOption.toInt() : 0;
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionaryByIdRequest request =
-                new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt, accessOptionValue);
+                new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
         String url = type == VisionaryType.VISIONARIES ?
                 ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
         apiService.getVisionaryById(

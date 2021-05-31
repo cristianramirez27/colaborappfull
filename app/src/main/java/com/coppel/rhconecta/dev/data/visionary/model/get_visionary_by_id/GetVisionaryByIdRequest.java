@@ -9,17 +9,14 @@ public class GetVisionaryByIdRequest {
     public int clv_opcion;
     /* */
     public long idu_videos;
-    /* */
-    public long opc_acceso;
 
     /**
      *
      */
-    public GetVisionaryByIdRequest(Long num_empleado, int clv_opcion, long idu_videos, long opc_acceso) {
+    public GetVisionaryByIdRequest(Long num_empleado, int clv_opcion, long idu_videos) {
         this.num_empleado = num_empleado;
         this.clv_opcion = clv_opcion;
         this.idu_videos = idu_videos;
-        this.opc_acceso = opc_acceso;
     }
 
 }

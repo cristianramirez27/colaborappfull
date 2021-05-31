@@ -7,22 +7,29 @@
     android:elevation="8dp">
 
     <FrameLayout
+        android:id="@+id/card_code_benefit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <include layout="@layout/card_code_benefit" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/card_back"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+    >
         <include layout="@layout/card_back" />
-
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/card_front"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
-
+        android:gravity="center"
+    >
         <include layout="@layout/card_front" />
-
     </FrameLayout>
 
 </RelativeLayout>

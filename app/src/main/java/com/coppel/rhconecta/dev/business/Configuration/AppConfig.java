@@ -50,6 +50,7 @@ public class AppConfig {
     public final static String ENDPOINT_HOLIDAY_BONUS = "ENDPOINT_HOLIDAY_BONUS";
     public final static String ENDPOINT_COLLAGE = "ENDPOINT_COLLAGE";
     public final static String ENDPOINT_QR = "ENDPOINT_QR";
+    public final static String ENDPOINT_BENEFIT_CODE = "ENDPOINT_BENEFIT_CODE";
     public final static String ENDPOINT_SECTION_TIME = "ENDPOINT_SECTION_TIME";
 
     public final static String ENDPOINT_ADDITIONALS = "ENDPOINT__ADDITIONALS";
@@ -96,6 +97,7 @@ public class AppConfig {
         String paysheet = mFirebaseRemoteConfig.getString(ENDPOINT_PAYSHEET);
         String savings = mFirebaseRemoteConfig.getString(ENDPOINT_SAVINGS);
         String qr = mFirebaseRemoteConfig.getString(ENDPOINT_QR);
+        String benefitCode = mFirebaseRemoteConfig.getString(ENDPOINT_BENEFIT_CODE);
         String sectionTime = mFirebaseRemoteConfig.getString(ENDPOINT_SECTION_TIME);
         String profile = mFirebaseRemoteConfig.getString(ENDPOINT_PROFILE);
         String home = mFirebaseRemoteConfig.getString(ENDPOINT_HOME);
@@ -142,11 +144,10 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS, holidays);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAY_BONUS, holidayBonus);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFIT_CODE,benefitCode);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
-
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
-
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);

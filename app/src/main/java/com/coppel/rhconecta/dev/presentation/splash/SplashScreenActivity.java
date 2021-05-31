@@ -45,7 +45,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 
-/* */
+/** */
 public class SplashScreenActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
@@ -69,9 +69,7 @@ public class SplashScreenActivity
     /* */
     private String goTosection = "";
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +81,7 @@ public class SplashScreenActivity
         checkAndSendAnalyticsIfExists();
     }
 
-    /**
-     *
-     */
+    /** */
     private void setupFirebaseInstanceId() {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
                 SplashScreenActivity.this,
@@ -101,11 +97,10 @@ public class SplashScreenActivity
         );
     }
 
-    /**
-     *
-     */
+    /** */
     private void initValues() {
         DaggerAnalyticsComponent.create().injectSplash(this);
+
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
         if (notificationType == null) {
@@ -122,11 +117,10 @@ public class SplashScreenActivity
             setupGoto();
             startApp();
         }
+
     }
 
-    /**
-     *
-     */
+    /** */
     private void checkAndSendAnalyticsIfExists() {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         if (atm.existsFlow()) {
@@ -136,17 +130,13 @@ public class SplashScreenActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void observeViewModel() {
         splashViewModel.getSendTimeByAnalyticsFlowStatus()
                 .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
     }
 
-    /**
-     *
-     */
+    /** */
     private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
         switch (processStatus) {
             case LOADING:
@@ -173,18 +163,14 @@ public class SplashScreenActivity
             goTosection = OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
     }
 
-    /**
-     *
-     */
+    /** */
     private void setupViews() {
         TextView versionTxt = (TextView) findViewById(R.id.versionTxt);
         versionTxt.setText(String.format("V. %s", getVersionApp()));
         getWindow().setBackgroundDrawable(null);
     }
 
-    /**
-     *
-     */
+    /** */
     private void startApp() {
         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
             coppelServicesPresenter = new CoppelServicesPresenter(this, this);
@@ -213,9 +199,7 @@ public class SplashScreenActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void manageLoginResponse(LoginResponse loginResponse) {
         if (loginResponse.getData().getResponse().getErrorCode() == -10) {
             showMessageUser(loginResponse.getData().getResponse().getUserMessage());
@@ -228,9 +212,7 @@ public class SplashScreenActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void manageProfileResponse(ProfileResponse profileResponse) {
         LoginResponse.Response loginInternalResponse = loginResponse.getData().getResponse();
         saveLoginInternalResponse(loginInternalResponse);
@@ -255,18 +237,19 @@ public class SplashScreenActivity
         if (!goTosection.isEmpty())
             IntentExtension.putStringExtra(intent, BUNDLE_GOTO_SECTION, goTosection);
 
+
         startActivity(intent);
         finish();
     }
 
-    /* */
+    /** */
     private void saveLoginInternalResponse(LoginResponse.Response loginInternalResponse) {
         saveString(AppConstants.SHARED_PREFERENCES_TOKEN, loginInternalResponse.getToken());
         saveString(AppConstants.SHARED_PREFERENCES_TOKEN_USER, loginInternalResponse.getToken_user());
         saveString(AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE, new Gson().toJson(loginResponse));
     }
 
-    /* */
+    /** */
     private void saveProfileInternalResponse(ProfileResponse.Response profileInternalResponse) {
         saveString(AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileInternalResponse.getColaborador());
         saveString(AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR, String.valueOf(profileInternalResponse.getEstado()));
@@ -278,19 +261,17 @@ public class SplashScreenActivity
         saveString(AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profileResponse));
     }
 
-    /* */
+    /** */
     private void saveString(String key, String value) {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), key, value);
     }
 
-    /* */
+    /** */
     private void saveBoolean(String key, boolean value) {
         AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), key, value);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError.isExecuteInBackground()) {
@@ -304,27 +285,19 @@ public class SplashScreenActivity
         dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showProgress() { /* USELESS IMPLEMENTATION */ }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void hideProgress() { /* USELESS IMPLEMENTATION */ }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onLeftOptionClick() { /* USELESS IMPLEMENTATION */ }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onRightOptionClick() {
         dialogFragmentWarning.close();
@@ -332,9 +305,7 @@ public class SplashScreenActivity
 
     }
 
-    /**
-     *
-     */
+    /** */
     private void init() {
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -344,9 +315,7 @@ public class SplashScreenActivity
         fetchEndpoints();
     }
 
-    /**
-     *
-     */
+    /** */
     private void fetchEndpoints() {
         long cacheExpiration = 0;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
@@ -360,17 +329,13 @@ public class SplashScreenActivity
                 );
     }
 
-    /**
-     *
-     */
+    /** */
     private void setEndpoints() {
         setEndpointConfig(mFirebaseRemoteConfig);
         startApp();
     }
 
-    /**
-     *
-     */
+    /** */
     private void showMessageUser(String msg) {
         new Handler().postDelayed(() -> {
             dialogFragmentWarning = new DialogFragmentWarning();

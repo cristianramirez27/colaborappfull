@@ -69,6 +69,6 @@
     <color name="background_calendar_splice">#ededed</color>
     <color name="gray_checkbox_disable">#61000000</color>
     <color name="holder_unselected_text_color">#5f6062</color>
-
+    <color name="show_code_color">#4ec5fc</color>
 
 </resources>

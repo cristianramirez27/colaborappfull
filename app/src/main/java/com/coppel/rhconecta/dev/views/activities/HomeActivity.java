@@ -135,7 +135,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARI
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
-/* */
+/** */
 public class HomeActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, View.OnClickListener, ListView.OnItemClickListener,
@@ -176,9 +176,7 @@ public class HomeActivity
     private String titleActivity = "";
     private DialogFragmentLoader dialogFragmentLoader;
 
-
     private Fragment currentHomeFragment;
-
 
     private long mLastClickTime = 0;
 
@@ -197,9 +195,8 @@ public class HomeActivity
     @Inject
     public HomeActivityViewModel homeActivityViewModel;
 
-    /**
-     *
-     */
+
+    /** */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,21 +242,18 @@ public class HomeActivity
                     .getSerializableExtra(getIntent(), NotificationDestination.NOTIFICATION_DESTINATION);
             navigateToDestination(destination);
         }
+
         observeViewModel();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onStart() {
         super.onStart();
         checkoutAnalyticsTime();
     }
 
-    /**
-     *
-     */
+    /** */
     public void checkoutAnalyticsTime() {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         if (atm.existsFlow()) {
@@ -269,17 +263,13 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void observeViewModel() {
         homeActivityViewModel.getSendTimeByAnalyticsFlowStatus()
                 .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
     }
 
-    /**
-     *
-     */
+    /** */
     private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
         switch (processStatus) {
             case LOADING:
@@ -291,16 +281,14 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void navigateToDestination(NotificationDestination notificationDestination) {
         checkoutAnalyticsTime();
 
         AccessOption accessOption = AccessOption.MENU;
         switch (notificationDestination) {
             case HOLIDAYS:
-                executeOptionHolidays();
+                new Handler().postDelayed(this::executeOptionHolidays, 0);
                 break;
             case VIDEOS:
                 navigateToCollaboratorAtHome(accessOption);
@@ -325,36 +313,29 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+
+    /** */
     @Override
     protected void onResume() {
         super.onResume();
         AppUtilities.setProfileImage(this, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item))
@@ -362,9 +343,7 @@ public class HomeActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     *
-     */
+    /** */
     public void hideOptionToolbar() {
         if (isOpenMenuToolbar) {
             isOpenMenuToolbar = false;
@@ -374,9 +353,7 @@ public class HomeActivity
             onBackPressed();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onBackPressed() {
         if (hideLoader)
@@ -398,18 +375,14 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
     }
 
-    /**
-     *
-     */
+    /** */
     private void initNavigationComponents() {
         ctlProfile.setOnClickListener(this);
         setSupportActionBar(tbActionBar);
@@ -431,9 +404,7 @@ public class HomeActivity
         dlHomeContainer.addDrawerListener(actionBarDrawerToggle);
     }
 
-    /**
-     *
-     */
+    /** */
     private void initMenu() {
         String name = profileResponse.getNombreColaborador().split(" ")[0];
         name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
@@ -444,9 +415,7 @@ public class HomeActivity
         lvOptions.setOnItemClickListener(this);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
@@ -457,9 +426,7 @@ public class HomeActivity
         navigationMenu(option.getTAG(), accessOption);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -481,17 +448,13 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void pictureChanged() {
         AppUtilities.setProfileImage(this, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
     }
 
-    /**
-     *
-     */
+    /** */
     public void replaceFragment(Fragment fragment, String tag) {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -500,9 +463,7 @@ public class HomeActivity
         dlHomeContainer.closeDrawers();
     }
 
-    /**
-     *
-     */
+    /** */
     public void navigationMenu(String tag, AccessOption accessOption) {
         checkoutAnalyticsTime();
 
@@ -631,9 +592,7 @@ public class HomeActivity
         forceHideProgress();
     }
 
-    /**
-     *
-     */
+    /** */
     private void executeOptionHolidays() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
             showBlockDialog();
@@ -650,7 +609,7 @@ public class HomeActivity
         }
     }
 
-    /* */
+    /** */
     private void navigateToReleases(AccessOption accessOption) {
         Intent intentReleases = new IntentBuilder(new Intent(this, ReleasesActivity.class))
                 .putSerializableExtra(ReleasesActivity.ACCESS_OPTION, accessOption)
@@ -659,7 +618,7 @@ public class HomeActivity
         startActivity(intentReleases);
     }
 
-    /* */
+    /** */
     private void navigateToVisionaries(AccessOption accessOption) {
         Intent intentVisionaries = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES)
@@ -669,7 +628,7 @@ public class HomeActivity
         startActivity(intentVisionaries);
     }
 
-    /* */
+    /** */
     private void navigateToCollaboratorAtHome(AccessOption accessOption) {
         Intent collaboratorAtHome = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME)
@@ -695,17 +654,13 @@ public class HomeActivity
         atm.start(analyticsFlow);
     }
 
-    /**
-     *
-     */
+    /** */
     private void getExternalUrl(int option) {
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         coppelServicesPresenter.getExternalUrl(profileResponse.getColaborador(), option, token);
     }
 
-    /**
-     *
-     */
+    /** */
     private void openCovidSurvey(String url) {
         Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -718,30 +673,22 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     public void setToolbarTitle(String title) {
         titleToolbar.setText(title);
     }
 
-    /**
-     *
-     */
+    /** */
     public LoginResponse.Response getLoginResponse() {
         return loginResponse;
     }
 
-    /**
-     *
-     */
+    /** */
     public ProfileResponse.Response getProfileResponse() {
         return profileResponse;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onLeftOptionClick() {
         dialogFragmentWarning.close();
@@ -749,9 +696,7 @@ public class HomeActivity
             requestLogout = false;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
@@ -774,9 +719,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void initFirebase() {
         FirebaseMessaging.getInstance().subscribeToTopic("general")
                 .addOnCompleteListener(task -> {
@@ -785,9 +728,7 @@ public class HomeActivity
                 });
     }
 
-    /**
-     *
-     */
+    /** */
     private void getData() {
         InternalDatabase idb = new InternalDatabase(this);
 
@@ -823,17 +764,13 @@ public class HomeActivity
         fragmentTransaction.add(R.id.flFragmentContainer, currentHomeFragment, HomeMainFragment.TAG).commit();
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public SurveyInboxView getSurveyIcon() {
         return surveyInboxView;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -842,9 +779,7 @@ public class HomeActivity
             myFragment.onActivityResult(requestCode, resultCode, data);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
@@ -890,9 +825,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void openCollage(String urlString) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -905,9 +838,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError.getMessage() != null) {
@@ -929,18 +860,14 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void showBlockDialog() {
         String message = AppUtilities
                 .getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK);
         showWarningDialog(message);
     }
 
-    /**
-     *
-     */
+    /** */
     private void showWarningDialog(String message) {
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
@@ -948,9 +875,7 @@ public class HomeActivity
         dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showProgress() {
         if (hideLoader) {
@@ -961,9 +886,7 @@ public class HomeActivity
 
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void hideProgress() {
         if (dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
@@ -973,9 +896,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     public void forceHideProgress() {
         if (dialogFragmentLoader != null) {
             dialogFragmentLoader.dismissAllowingStateLoss();
@@ -984,9 +905,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private void getRolType(int type) {
         String numEmployer = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
@@ -1002,9 +921,7 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public boolean validateSurveyAccess() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS).equals(YES)) {
@@ -1014,9 +931,7 @@ public class HomeActivity
         return true;
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -1025,9 +940,7 @@ public class HomeActivity
             f.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    /**
-     *
-     */
+    /** */
     private void getCollageURL() {
         String token = AppUtilities
                 .getStringFromSharedPreferences(
@@ -1037,9 +950,7 @@ public class HomeActivity
         coppelServicesPresenter.getCollege(profileResponse.getColaborador(), 19, token);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showTitle(boolean show) {
         tbActionBar.setTitle(show ? titleActivity : "");
@@ -1049,17 +960,13 @@ public class HomeActivity
         }
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void changeIconToolbar(int icon) {
         tbActionBar.setNavigationIcon(icon);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showEliminatedOption(boolean show, String name) {
         eliminateOption.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -1067,23 +974,17 @@ public class HomeActivity
         surveyInboxView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void showAuthorizeOption(boolean show) { /* USELESS IMPLEMENTATION */ }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void setActionEliminatedOption(Command action) {
         eliminateOption.setOnClickListener(action::execute);
     }
 
-    /**
-     *
-     */
+    /** */
     @Override
     public void setActionAuthorizeOption(Command action) { /* USELESS IMPLEMENTATION */ }
 

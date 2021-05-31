@@ -1,12 +1,7 @@
 package com.coppel.rhconecta.dev.presentation.release_detail;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.Html;
-import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -14,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -25,11 +23,6 @@ import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
 import javax.inject.Inject;
-
-import io.noties.markwon.Markwon;
-import io.noties.markwon.html.HtmlEmptyTagReplacement;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.html.TagHandlerNoOp;
 
 /**
  *

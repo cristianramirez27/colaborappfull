@@ -41,6 +41,26 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     /** */
+    private NotificationType notificationTypeFromData(
+            Map<String, String> data,
+            String title,
+            String body
+    ) {
+        String IDU_SYSTEM = "idu_sistema";
+        String iduSystemValue = data.get(IDU_SYSTEM);
+        int iduSystem = iduSystemValue == null ? -1 : Integer.parseInt(iduSystemValue);
+        String IDU_DESTINATION = "idu_pantalla";
+        String ID_DESTINATION = "id_pantalla";
+        String iduDestinationValue = data.get(IDU_DESTINATION);
+        String idDestinationValue = data.get(ID_DESTINATION);
+        int iduDestination = iduDestinationValue == null ?
+                idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
+                : Integer.parseInt(iduDestinationValue);
+        NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
+        return new NotificationType(title, body, destination);
+    }
+
+    /** */
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);

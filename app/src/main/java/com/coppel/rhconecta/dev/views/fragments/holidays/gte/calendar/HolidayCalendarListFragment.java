@@ -524,15 +524,18 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
 
 
     private void showWarningDialog(String message) {
-        dialogFragmentWarning = new DialogFragmentWarning();
-        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
-        dialogFragmentWarning.setOnOptionClick(this);
-        dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        if (dialogFragmentWarning == null) {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        }
     }
 
     @Override
     public void onLeftOptionClick() {
         dialogFragmentWarning.close();
+        dialogFragmentWarning = null;
     }
 
     @Override
@@ -541,7 +544,8 @@ public class HolidayCalendarListFragment extends Fragment implements  View.OnCli
             AppUtilities.closeApp(parent);
         }else {
             dialogFragmentWarning.close();
-           getActivity().onBackPressed();
+            dialogFragmentWarning = null;
+            getActivity().onBackPressed();
         }
     }
 

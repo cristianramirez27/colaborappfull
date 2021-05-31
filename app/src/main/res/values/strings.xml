@@ -451,6 +451,11 @@
     <string name="home_fragment_failure_action">Aceptar</string>
     <string name="covid_survey_title">COVID-19 GC</string>
     <string name="str_sub_qrcode">Apunta al código para escanear.</string>
+    <string name="str_benefit_code_title">El código generado es:</string>
+    <string name="str_code_benefit_loading">Cargando...</string>
+    <string name="str_btn_advertising">Publicidad de\nla empresa</string>
+    <string name="str_btn_generate_code">Generar\nCódigo</string>
+    <string name="str_copied_code">Código Copiado</string>
     <string name="visionaries_updated_label">Actualizado</string>
     <string name="default_notification_channel_id">Canal de notificaciones Coppel</string>
     <string name="default_notification_channel_name">Canal de notificaciones Coppel</string>
@@ -471,6 +476,7 @@
     <string name="invalid_url_link">No se puede abrir este enlace</string>
     <string name="invalid_data_loaded">No es posible mostrar información de este elemento</string>
     <string name="voucher_download_message">Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp</string>
+    <string name="alert">Alerta</string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>

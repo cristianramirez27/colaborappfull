@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.business.interfaces;
 
+import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedRequest;
 import com.coppel.rhconecta.dev.business.models.AuthCodeRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesAuthorizedV2Request;
@@ -336,6 +337,14 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getExternalURL(@Url String url,@Header("Authorization") String token, @Body ExternalUrlRequest servicesRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getBenefitCode(@Url String url,@Header("Authorization") String token, @Body BenefitCodeRequest benefitCodeRequest);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getInfoCompany(@Url String url,@Header("Authorization") String token, @Body BenefitCodeRequest infoCompanyRequest);
 
     @Headers({"Content-Type: application/json"})
     @POST

@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
