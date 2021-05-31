@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.models.CalendarProposedData;
 import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
@@ -54,7 +55,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HO
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 
-public class VacacionesActivity extends AppCompatActivity implements OnEventListener, IScheduleOptions {
+public class VacacionesActivity extends AnalyticsTimeAppCompatActivity implements OnEventListener, IScheduleOptions {
 
     @BindView(R.id.tbActionBar)
     Toolbar tbActionBar;

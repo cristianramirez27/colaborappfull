@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
 import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
@@ -32,7 +33,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_C
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
-public class GastosViajeActivity extends AppCompatActivity implements OnEventListener {
+public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implements OnEventListener {
 
     @BindView(R.id.tbActionBar)
     Toolbar tbActionBar;

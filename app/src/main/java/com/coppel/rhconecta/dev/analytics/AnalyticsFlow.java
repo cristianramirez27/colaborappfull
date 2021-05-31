@@ -10,9 +10,13 @@ public enum AnalyticsFlow implements Serializable {
 
     SAVING_FUND,
 
-    HOLIDAYS,
+    HOLIDAYS_COLABORADOR,
 
-    TRAVEL_EXPENSES,
+    HOLIDAYS_GERENTE,
+
+    TRAVEL_EXPENSES_COLABORADOR,
+
+    TRAVEL_EXPENSES_GERENTE,
 
     RELEASES,
 
@@ -32,9 +36,7 @@ public enum AnalyticsFlow implements Serializable {
 
     COVID_SURVEY;
 
-    /**
-     *
-     */
+    /** */
     public boolean availableRunOnBackgroundThreat() {
         switch (this) {
             case COLLAGE:
