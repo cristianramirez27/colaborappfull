@@ -253,8 +253,11 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                 successGenerate = true;
                 LetterGenerateResponse letterGenerateResponse= (LetterGenerateResponse) response.getResponse();
                 String nameFile = String.format("Constancia_%s",getName());
-                pdf = AppUtilities.savePDFFileLetter(nameFile.replace(" ", "_"),
-                        letterGenerateResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        getContext(),
+                        nameFile.replace(" ", "_"),
+                        letterGenerateResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherReadyDialog(DialogFragmentGetDocument.LETTER_DOWNLOADED,"");
