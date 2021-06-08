@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.business.models.ColaboratorHoliday;
 import com.coppel.rhconecta.dev.business.models.HolidayPeriod;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidaysPeriodsResponse;
+import com.coppel.rhconecta.dev.business.models.SpliceSelectedVO;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -50,12 +51,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.shrikanthravi.collapsiblecalendarview.widget.CommandSplice;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.HolidaysType.GET_CALENDAR_DAYS_PROPOSED;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.capitalizeText;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDateFormatToHolidaysInverse;
 import static com.coppel.rhconecta.dev.views.utils.TextUtilities.getDayNameFromDate;
@@ -107,8 +110,11 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
     private HolidayRequestColaboratorsRecyclerAdapter holidayRequestRecyclerAdapter;
     private VacacionesActivity vacacionesActivity;
     private boolean showLayoutSplice;
+    private List<Day>  listDaySelectedCurrent;
+    private List<HolidayPeriod> periodos;
 
     private HolidayPeriod periodSelected;
+    private String name = "";
 
     private long mLastClickTime = 0;
     @Override
@@ -178,13 +184,25 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         collapsibleCalendar.setVisibilityBtnNext(View.INVISIBLE);
         collapsibleCalendar.setVisibilityBtnPrev(View.INVISIBLE);
         collapsibleCalendar.setExpandIconVisible(false);
+        collapsibleCalendar.setNameDayGray(true);
         collapsibleCalendar.setMultipleDays(true);
-        collapsibleCalendar.setEnable(false);
+        collapsibleCalendar.setEnable(true);
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
         collapsibleCalendar.setTitleMonthVisible(false);
         monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
         layoutSplice.setVisibility(showLayoutSplice ? VISIBLE: GONE);
+        collapsibleCalendar.setSpliceActionEnable(true);
+        collapsibleCalendar.setActionSplice(new CommandSplice() {
+            @Override
+            public void action(Day daySelected) {
+                SpliceSelectedVO data = new SpliceSelectedVO( periodos,daySelected);
+                data.setListDaySelectedCurrent(listDaySelectedCurrent);
+                data.setShowDetail(true);
+                data.setEnableAction(false);
+                ((VacacionesActivity)getActivity()).onEvent(BUNDLE_OPTION_HOLIDAY_SPLICE_CALENDAR,data);
+            }
+        });
         return view;
     }
 
@@ -267,6 +285,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
                     HolidaysPeriodsResponse holidaysPeriodsResponse = (HolidaysPeriodsResponse)response.getResponse();
                     headerHoliday.setDetailData(this.colaboratorHoliday,holidaysPeriodsResponse);
                     holidayPeriodList.clear();
+                    periodos = holidaysPeriodsResponse.getData().getResponse().getPeriodos();
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         holidayPeriodList.add(period);
                     }
@@ -384,7 +403,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         for(String dateAsString : daysInCalendar.keySet()){
             listDaySelected.add(daysInCalendar.get(dateAsString));
         }
-
+        listDaySelectedCurrent = listDaySelected;
         collapsibleCalendar.select(listDaySelected);
     }
 
@@ -426,7 +445,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
             if(daysInCalendar.containsKey(dateAsString)){
                 daysInCalendar.get(dateAsString).setHasSplice(1);
             }else {
-                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), 0);
+                Day dayToAdd = new Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH), -1);
                 daysInCalendar.put(dateAsString,dayToAdd);
             }
 
