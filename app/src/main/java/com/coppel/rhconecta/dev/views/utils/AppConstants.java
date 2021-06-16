@@ -26,7 +26,7 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_LOGIN_RESPONSE = "LOGIN_RESPONSE";
     public static final String SHARED_PREFERENCES_PROFILE_RESPONSE = "PROFILE_RESPONSE";
 
-    public static final String APP_FOLDER = "ConectaCoppel";
+    public static final String APP_FOLDER = "ColaborApp";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
     public static final String CONTENT_TYPE_PDF = "application/pdf";
 

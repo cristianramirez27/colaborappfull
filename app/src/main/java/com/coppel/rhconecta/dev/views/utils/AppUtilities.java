@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.views.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +11,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import androidx.core.content.FileProvider;
 import android.util.Base64;
@@ -26,6 +30,7 @@ import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
@@ -225,41 +230,28 @@ public class AppUtilities {
     /**
      *
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File savePDFFile(String name, String base64) {
+    public static File savePDFFile(Context context, String name, String base64) {
         try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.APP_FOLDER);
-            path.mkdirs();
-            File pdf = new File(path, name + "_" + TextUtilities.dateFormatter(new Date(), AppConstants.DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS) + ".pdf");
-            byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
-            FileOutputStream os;
-            os = new FileOutputStream(pdf);
-            os.write(pdfAsBytes);
-            os.flush();
-            os.close();
-            return pdf;
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            return null;
-        }
-    }
+            String directoryPath = Environment.DIRECTORY_DOWNLOADS + "/" + AppConstants.APP_FOLDER;
+            ContentResolver contentResolver = context.getContentResolver();
+            ContentValues values = new ContentValues();
 
-    /**
-     *
-     */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static File savePDFFileLetter(String name, String base64) {
-        try {
-            File path = new File(Environment.getExternalStorageDirectory() + "/" + AppConstants.APP_FOLDER);
-            path.mkdirs();
-            File pdf = new File(path, name + ".pdf");
+            String timeStamp = TextUtilities
+                    .dateFormatter(new Date(), AppConstants.DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS);
+            String fileName = name + "_" + timeStamp + ".pdf";
+
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
+
+            Uri uri = contentResolver.insert(MediaStore.Files.getContentUri("external"), values);
             byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
-            FileOutputStream os;
-            os = new FileOutputStream(pdf);
-            os.write(pdfAsBytes);
-            os.flush();
-            os.close();
-            return pdf;
+            OutputStream outputStream = contentResolver.openOutputStream(uri);
+            outputStream.write(pdfAsBytes);
+            outputStream.flush();
+            outputStream.close();
+            return new File(directoryPath, fileName);
         } catch (IOException ioe) {
             ioe.printStackTrace();
             return null;

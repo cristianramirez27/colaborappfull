@@ -144,8 +144,11 @@ public class PayrollVoucherBonusFragment extends PayrollVoucherDetailFragment im
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_BONUS_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.bonus).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.bonus).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);

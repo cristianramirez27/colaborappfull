@@ -459,6 +459,7 @@
     <string name="visionary_rate_action">Enviar</string>
     <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
     <string name="alert">Alerta</string>
+    <string name="voucher_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
     <string-array name="uppercase_words">
         <item>IMSS</item>
         <item>ISR</item>

@@ -145,8 +145,11 @@ public class PayrollVoucherSavingFundFragment extends Fragment implements IServi
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.saving_fund).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.saving_fund).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
                     showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);

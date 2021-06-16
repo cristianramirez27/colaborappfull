@@ -94,10 +94,6 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     }
 
     private void initViews(int type) {
-        if (contentText == null) {
-            dismiss();
-            return;
-        }
         switch (type) {
             case SEND_TO:
                 ctlReady.setVisibility(GONE);
@@ -132,8 +128,10 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
             case VOUCHER_DOWNLOADED:
                 ctlReady.setVisibility(View.VISIBLE);
                 ctlSentTo.setVisibility(GONE);
+                txvMsg.setVisibility(View.VISIBLE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.voucher_download));
+                txvMsg.setText(getString(R.string.voucher_download_message));
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
