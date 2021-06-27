@@ -25,6 +25,7 @@
 # For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
 
 # Required classes
+-keepattributes LineNumberTable,SourceFile
 
 -keep public class com.coppel.rhconecta.dev.business.models.** { *; }
 -keep public class com.coppel.rhconecta.dev.business.Enums.** { *; }

@@ -17,7 +17,8 @@
 
     <application
         android:name=".CoppelApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup, android:appComponentFactory"
         android:appComponentFactory="whateverString"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,8 +26,7 @@
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.splash.SplashScreenActivity"
             android:exported="true"
