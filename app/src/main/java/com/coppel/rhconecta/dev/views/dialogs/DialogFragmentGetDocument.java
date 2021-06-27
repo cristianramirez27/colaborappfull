@@ -2,11 +2,13 @@ package com.coppel.rhconecta.dev.views.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +74,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
 
     private String contentText;
     private String msgText;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(selectedType == LETTER_SENT ? R.layout.dialog_fragment_get_voucher_short :
                 (selectedType == MSG_EXPENSES_TRAVEL ? R.layout.dialog_fragment_expenses :
-                        (selectedType == MSG_HOLIDAYS_OK  || selectedType == MSG_HOLIDAYS_WARNING ? R.layout.dialog_fragment_holidays :R.layout.dialog_fragment_get_voucher)) , container, false);
+                        (selectedType == MSG_HOLIDAYS_OK || selectedType == MSG_HOLIDAYS_WARNING ? R.layout.dialog_fragment_holidays : R.layout.dialog_fragment_get_voucher)), container, false);
         ButterKnife.bind(this, view);
         initViews(selectedType);
         if (getDialog().getWindow() != null) {
@@ -99,7 +102,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 ctlReady.setVisibility(GONE);
                 ctlSentTo.setVisibility(View.VISIBLE);
                 editTextEmail.setWhiteMode();
-                if(email != null && !email.isEmpty()) {
+                if (email != null && !email.isEmpty()) {
                     editTextEmail.setText(email);
                 }
                 imgvClose.setOnClickListener(this);
@@ -110,7 +113,7 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
                 ctlSentTo.setVisibility(View.VISIBLE);
                 textViewSendTo.setText(getString(R.string.send_to_letter));
                 editTextEmail.setWhiteMode();
-                if(email != null && !email.isEmpty()) {
+                if (email != null && !email.isEmpty()) {
                     editTextEmail.setText(email);
                 }
                 imgvClose.setOnClickListener(this);
@@ -166,9 +169,10 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
             case LETTER_DOWNLOADED:
                 ctlReady.setVisibility(View.VISIBLE);
                 ctlSentTo.setVisibility(GONE);
-                txvMsg.setVisibility(GONE);
+                txvMsg.setVisibility(View.VISIBLE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.employment_letters_download));
+                txvMsg.setText(getString(R.string.letters_download_message));
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
