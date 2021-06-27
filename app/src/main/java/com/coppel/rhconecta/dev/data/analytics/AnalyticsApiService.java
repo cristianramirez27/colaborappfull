@@ -2,6 +2,8 @@ package com.coppel.rhconecta.dev.data.analytics;
 
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowRequest;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowResponse;
+import com.coppel.rhconecta.dev.data.analytics.model.send_visit_section.SendVisitSectionRequest;
+import com.coppel.rhconecta.dev.data.analytics.model.send_visit_section.SendVisitSectionResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -20,6 +22,15 @@ public interface AnalyticsApiService {
             @Header("Authorization") String authHeader,
             @Url String url,
             @Body SendTimeByAnalyticsFlowRequest request
+    );
+
+    /** */
+    @Headers("Content-Type: application/json")
+    @POST
+    Call<SendVisitSectionResponse> sendVisitSection(
+            @Header("Authorization") String authHeader,
+            @Url String url,
+            @Body SendVisitSectionRequest request
     );
 
 }

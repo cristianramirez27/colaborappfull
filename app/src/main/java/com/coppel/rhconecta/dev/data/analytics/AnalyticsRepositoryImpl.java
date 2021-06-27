@@ -8,12 +8,16 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowRequest;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowResponse;
+import com.coppel.rhconecta.dev.data.analytics.model.send_visit_section.SendVisitSectionRequest;
+import com.coppel.rhconecta.dev.data.analytics.model.send_visit_section.SendVisitSectionResponse;
 import com.coppel.rhconecta.dev.data.common.BasicUserInformationFacade;
 import com.coppel.rhconecta.dev.domain.analytics.AnalyticsRepository;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -46,7 +50,9 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
         try {
             Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
             return retrofit.create(AnalyticsApiService.class);
-        } catch (Exception ignore) { return null; }
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
     /**
@@ -59,33 +65,20 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
-        Integer clvAcceso = getClaveAccesoByAnalyticsFlow(analyticsFlow);
 
         SendTimeByAnalyticsFlowRequest request = new SendTimeByAnalyticsFlowRequest(
                 employeeNum,
                 analyticsFlow,
-                timeInSecondsByFlow,
-                clvAcceso
+                timeInSecondsByFlow
         );
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
         String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
         AnalyticsApiService apiService = getAnalyticsApiService();
-        if(apiService != null) {
+        if (apiService != null) {
             apiService
                     .sendTimeByAnalyticsFlow(authHeader, url, request)
                     .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
-        }
-    }
-
-    /** */
-    private Integer getClaveAccesoByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
-        switch (analyticsFlow) {
-            case HOLIDAYS_COLABORADOR:
-            case TRAVEL_EXPENSES_COLABORADOR: return 1;
-            case HOLIDAYS_GERENTE:
-            case TRAVEL_EXPENSES_GERENTE:return 2;
-            default: return null;
         }
     }
 
@@ -141,6 +134,37 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             }
 
         };
+    }
+
+    /**
+     *
+     */
+    public void sendVisitFlow(
+            int clvSistema,
+            int clvAcceso
+    ) {
+        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        SendVisitSectionRequest request =
+                new SendVisitSectionRequest(employeeNum, clvSistema, clvAcceso);
+        String authHeader = basicUserInformationFacade.getAuthHeader();
+        String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
+
+        AnalyticsApiService apiService = getAnalyticsApiService();
+        if (apiService != null) {
+            try {
+                apiService.sendVisitSection(authHeader, url, request)
+                        .enqueue(new Callback<SendVisitSectionResponse>() {
+                            @Override
+                            public void onResponse(Call<SendVisitSectionResponse> call, Response<SendVisitSectionResponse> response) {
+                            }
+
+                            @Override
+                            public void onFailure(Call<SendVisitSectionResponse> call, Throwable t) {
+                            }
+                        });
+            } catch (Exception ignore) {
+            }
+        }
     }
 
 }

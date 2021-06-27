@@ -1,10 +1,10 @@
-package com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow;
+package com.coppel.rhconecta.dev.data.analytics.model.send_visit_section;
 
 import androidx.annotation.Keep;
 
 /* */
 @Keep
-public class SendTimeByAnalyticsFlowResponse {
+public class SendVisitSectionResponse {
 
     /* */
     public Data data;
@@ -38,5 +38,5 @@ public class SendTimeByAnalyticsFlowResponse {
         }
 
     }
-
+    
 }

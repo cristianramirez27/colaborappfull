@@ -22,6 +22,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
@@ -100,9 +101,12 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
+
+        AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
         mLastClickTime = SystemClock.elapsedRealtime();
         switch (tag) {
             case AppConstants.OPTION_MENU_COLABORATOR:
+                analyticsRepositoryImpl.sendVisitFlow(10, 1);
                 initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS_COLABORADOR);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),
@@ -112,6 +116,7 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
                 );
                 break;
             case OPTION_MENU_GTE:
+                analyticsRepositoryImpl.sendVisitFlow(10, 2);
                 initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS_GERENTE);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),

@@ -27,6 +27,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.data.analytics.model.AccessInformation;
 import com.coppel.rhconecta.dev.data.analytics.model.AccessScreen;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
@@ -116,13 +117,16 @@ public class TravelExpensesRolMenuFragment extends Fragment implements View.OnCl
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
             return;
 
+        AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
         mLastClickTime = SystemClock.elapsedRealtime();
         switch (tag) {
             case AppConstants.OPTION_MENU_COLABORATOR:
+                analyticsRepositoryImpl.sendVisitFlow(11, 1);
                 initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES_COLABORADOR);
                 parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
                 break;
             case OPTION_MENU_GTE:
+                analyticsRepositoryImpl.sendVisitFlow(11, 2);
                 initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES_GERENTE);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),
