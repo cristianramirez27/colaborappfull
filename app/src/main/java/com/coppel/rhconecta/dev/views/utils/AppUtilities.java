@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
 import android.util.Base64;
@@ -230,10 +231,46 @@ public class AppUtilities {
                 .into(imageView);
     }
 
-    /** */
+    /**
+     *
+     */
     public static File savePDFFile(Context context, String name, String base64) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            return savePdfFileQ(context, name, base64);
+        return savePdfFile(name, base64);
+    }
+
+    /**
+     *
+     */
+    private static File savePdfFile(String name, String base64) {
+        try {
+            String downloadPath =
+                    Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS;
+            File path = new File(downloadPath + "/" + AppConstants.APP_FOLDER);
+            path.mkdirs();
+            File pdf = new File(path, name + "_" + TextUtilities.dateFormatter(new Date(), AppConstants.DATE_FORMAT_YYYY_MM_DD_T_HH_MM_SS) + ".pdf");
+            byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
+            FileOutputStream os;
+            os = new FileOutputStream(pdf);
+            os.write(pdfAsBytes);
+            os.flush();
+            os.close();
+            return pdf;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private static File savePdfFileQ(Context context, String name, String base64) {
         try {
             String directoryPath = Environment.DIRECTORY_DOWNLOADS + "/" + AppConstants.APP_FOLDER;
+
             ContentResolver contentResolver = context.getContentResolver();
             ContentValues values = new ContentValues();
 
@@ -245,6 +282,7 @@ public class AppUtilities {
             values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
 
             Uri uri = contentResolver.insert(MediaStore.Files.getContentUri("external"), values);
             byte[] pdfAsBytes = Base64.decode(base64, Base64.DEFAULT);
