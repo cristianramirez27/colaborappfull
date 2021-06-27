@@ -475,6 +475,7 @@
     <string name="fingerprint_title">Huellas Adicionales</string>
     <string name="invalid_url_link">No se puede abrir este enlace</string>
     <string name="invalid_data_loaded">No es posible mostrar información de este elemento</string>
+    <string name="letters_download_message">Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp</string>
     <string name="voucher_download_message">Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp</string>
     <string name="alert">Alerta</string>
     <string-array name="uppercase_words">

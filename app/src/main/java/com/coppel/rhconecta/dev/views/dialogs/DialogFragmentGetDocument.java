@@ -166,9 +166,10 @@ public class DialogFragmentGetDocument extends DialogFragment implements View.On
             case LETTER_DOWNLOADED:
                 ctlReady.setVisibility(View.VISIBLE);
                 ctlSentTo.setVisibility(GONE);
-                txvMsg.setVisibility(GONE);
+                txvMsg.setVisibility(View.VISIBLE);
                 imgvAction.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sent));
                 txvAction.setText(getString(R.string.employment_letters_download));
+                txvMsg.setText(getString(R.string.letters_download_message));
                 btnActionAccept.setText(getString(R.string.accept));
                 btnActionAccept.setOnClickListener(this);
                 break;
