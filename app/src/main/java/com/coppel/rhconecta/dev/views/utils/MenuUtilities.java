@@ -276,7 +276,7 @@ public class MenuUtilities {
                 break;
 
             case AppConstants.OPTION_COLLAGE:
-                icon = AppCompatResources.getDrawable(context, R.drawable.ic_class);
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_collage);
                 break;
             /**Iconos para menu con iconos*/
             case AppConstants.OPTION_MENU_COLABORATOR:
