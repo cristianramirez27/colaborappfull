@@ -150,7 +150,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
             case ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
                 pdf = AppUtilities.savePDFFile(
-                        getContext(),
+                        requireContext(),
                         getString(R.string.payroll_voucher).replace(" ", "_"),
                         voucherDownloadResponse.getData().getResponse().getPdf()
                 );

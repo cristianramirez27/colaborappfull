@@ -110,6 +110,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ST
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
@@ -132,6 +133,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -585,6 +588,14 @@ public class HomeActivity
                         getCollageURL();
                     }
                 case OPTION_POLL:
+                    break;
+                case OPTION_WHEATHER:
+                    String url = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER);
+                    if (url.isEmpty())
+                        url = URL_DEFAULT_WHEATHER;
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
                     break;
             }
         } else

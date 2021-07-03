@@ -77,10 +77,14 @@ public class AppConfig {
     public final static String BLOCK_QR = "BLOCK_QR";
     public final static String BLOCK_COVID_SURVEY = "BLOCK_COVID_SURVEY";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
+    public final static String BLOCK_WHEATHER = "BLOCK_WHEATER";
     public final static String YES = "YES";
     public final static String NO = "NO";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
+
+    public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
+    public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
 
     /**
      * Se almacenan los endpoints
@@ -109,6 +113,7 @@ public class AppConfig {
         String login = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN);
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
+        String url_wheather = mFirebaseRemoteConfig.getString(ENDPOINT_WHEATHER);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
 
@@ -148,6 +153,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
@@ -168,7 +174,9 @@ public class AppConfig {
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
+        String block_wheather = mFirebaseRemoteConfig.getString(BLOCK_WHEATHER);
         String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
+        String block_title_wheather = mFirebaseRemoteConfig.getString(TITLE_WHEATHER);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS, block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET, block_paysheet);
@@ -185,6 +193,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE, block_collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR, block_qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY, block_covid_survey);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), TITLE_WHEATHER, block_title_wheather);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_WHEATHER, block_wheather);
 
     }
 

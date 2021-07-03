@@ -254,7 +254,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
                 LetterGenerateResponse letterGenerateResponse= (LetterGenerateResponse) response.getResponse();
                 String nameFile = String.format("Constancia_%s",getName());
                 pdf = AppUtilities.savePDFFile(
-                        getContext(),
+                        requireContext(),
                         nameFile.replace(" ", "_"),
                         letterGenerateResponse.getData().getResponse().getPdf()
                 );

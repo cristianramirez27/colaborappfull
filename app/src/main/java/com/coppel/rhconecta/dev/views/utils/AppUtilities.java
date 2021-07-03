@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,13 +15,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
-
 import android.util.Base64;
 import android.util.TypedValue;
 import android.widget.ImageView;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
@@ -280,8 +278,7 @@ public class AppUtilities {
 
             values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
             values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
+
             values.put(MediaStore.MediaColumns.RELATIVE_PATH, directoryPath);
 
             Uri uri = contentResolver.insert(MediaStore.Files.getContentUri("external"), values);
