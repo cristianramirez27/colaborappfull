@@ -10,13 +10,9 @@ public enum AnalyticsFlow implements Serializable {
 
     SAVING_FUND,
 
-    HOLIDAYS_COLABORADOR,
+    HOLIDAYS,
 
-    HOLIDAYS_GERENTE,
-
-    TRAVEL_EXPENSES_COLABORADOR,
-
-    TRAVEL_EXPENSES_GERENTE,
+    TRAVEL_EXPENSES,
 
     RELEASES,
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -107,7 +106,6 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
         switch (tag) {
             case AppConstants.OPTION_MENU_COLABORATOR:
                 analyticsRepositoryImpl.sendVisitFlow(10, 1);
-                initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS_COLABORADOR);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),
                         VacacionesActivity.class,
@@ -117,7 +115,6 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
                 break;
             case OPTION_MENU_GTE:
                 analyticsRepositoryImpl.sendVisitFlow(10, 2);
-                initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS_GERENTE);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),
                         VacacionesActivity.class,
@@ -126,11 +123,6 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
                 );
                 break;
         }
-    }
-
-    private void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
-        ((HomeActivity) requireActivity())
-                .initAnalyticsTimeManagerByAnalyticsFlow(analyticsFlow);
     }
 
     @Override

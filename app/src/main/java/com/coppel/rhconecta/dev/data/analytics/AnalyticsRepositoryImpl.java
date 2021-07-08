@@ -17,17 +17,12 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.coppel.rhconecta.dev.analytics.AnalyticsFlow.HOLIDAYS_COLABORADOR;
-import static com.coppel.rhconecta.dev.analytics.AnalyticsFlow.HOLIDAYS_GERENTE;
 
 /* */
 public class AnalyticsRepositoryImpl implements AnalyticsRepository {

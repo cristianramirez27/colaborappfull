@@ -250,13 +250,6 @@ public class HomeActivity
     }
 
     /** */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkoutAnalyticsTime();
-    }
-
-    /** */
     public void checkoutAnalyticsTime() {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         if (atm.existsFlow()) {
@@ -538,6 +531,7 @@ public class HomeActivity
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)) {
                         showBlockDialog();
                     } else {
+                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
                             replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                         } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
@@ -552,7 +546,7 @@ public class HomeActivity
                     executeOptionHolidays();
                     break;
                 case OPTION_NOTIFICATION_EXPENSES_AUTHORIZE:
-                    initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES_COLABORADOR);
+                    initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                     replaceFragment(new TravelExpensesRolMenuFragment(), TravelExpensesRolMenuFragment.TAG);
                     NavigationUtil.openActivityToAuthorize(
                             this,
@@ -608,6 +602,7 @@ public class HomeActivity
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
             showBlockDialog();
         } else {
+            initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS);
             if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
                 replaceFragment(new HolidaysRolMenuFragment(), HolidaysRolMenuFragment.TAG);
             } else if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE)) {
@@ -660,7 +655,7 @@ public class HomeActivity
     /**
      *
      */
-    public void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
+    private void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         atm.start(analyticsFlow);
     }

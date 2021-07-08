@@ -2,12 +2,10 @@ package com.coppel.rhconecta.dev.views.fragments.travelExpenses;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,14 +20,11 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
-import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
-import com.coppel.rhconecta.dev.data.analytics.model.AccessInformation;
-import com.coppel.rhconecta.dev.data.analytics.model.AccessScreen;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -107,12 +102,6 @@ public class TravelExpensesRolMenuFragment extends Fragment implements View.OnCl
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        ((HomeActivity) requireActivity()).checkoutAnalyticsTime();
-    }
-
-    @Override
     public void onItemClick(String tag) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
             return;
@@ -122,12 +111,10 @@ public class TravelExpensesRolMenuFragment extends Fragment implements View.OnCl
         switch (tag) {
             case AppConstants.OPTION_MENU_COLABORATOR:
                 analyticsRepositoryImpl.sendVisitFlow(11, 1);
-                initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES_COLABORADOR);
                 parent.replaceFragment(new MyRequestAndControlsFragment(), MyRequestAndControlsFragment.TAG);
                 break;
             case OPTION_MENU_GTE:
                 analyticsRepositoryImpl.sendVisitFlow(11, 2);
-                initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES_GERENTE);
                 NavigationUtil.openActivityWithStringParam(
                         getActivity(),
                         GastosViajeActivity.class,
@@ -136,11 +123,6 @@ public class TravelExpensesRolMenuFragment extends Fragment implements View.OnCl
                 );
                 break;
         }
-    }
-
-    private void initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow analyticsFlow) {
-        ((HomeActivity) requireActivity())
-                .initAnalyticsTimeManagerByAnalyticsFlow(analyticsFlow);
     }
 
     @Override
