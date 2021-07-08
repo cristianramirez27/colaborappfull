@@ -21,7 +21,7 @@ public class ReleasesViewModel {
     @Inject
     public GetReleasesPreviewsUseCase getReleasesPreviewsUseCase;
     // Observables
-    private MutableLiveData<ProcessStatus> loadReleasesPreviewsStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> loadReleasesPreviewsStatus = new MutableLiveData<>();
     // Values
     private List<ReleasePreview> releasesPreviews;
     private Failure failure;
@@ -30,7 +30,6 @@ public class ReleasesViewModel {
      *
      */
     @Inject public ReleasesViewModel() {
-
     }
 
     /**

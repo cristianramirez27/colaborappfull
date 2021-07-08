@@ -17,7 +17,7 @@ class GetVisionaryPreviewUseCase @Inject constructor()
     class Params(
             val type: VisionaryType,
             val visionaryId: String,
-            val accessOption: AccessOption,
+            val accessOption: AccessOption?,
     )
 
     @Inject

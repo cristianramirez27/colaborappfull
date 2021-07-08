@@ -23,7 +23,7 @@ public class VisionariesViewModel {
     @Inject
     GetVisionariesPreviewsUseCase getVisionariesPreviewsUseCase;
     // Observables
-    private MutableLiveData<ProcessStatus> loadVisionariesPreviewsStatus = new MutableLiveData<>();
+    private final MutableLiveData<ProcessStatus> loadVisionariesPreviewsStatus = new MutableLiveData<>();
     // Values
     private List<VisionaryPreview> visionariesPreviews;
     private Failure failure;

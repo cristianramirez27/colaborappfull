@@ -19,12 +19,12 @@ public enum AccessOption implements Serializable {
     /**
      * Obtains the integer representation of the value.
      */
-    public int toInt() {
+    public Integer toInteger() {
         switch (this) {
             case ICON: return 1;
             case BANNER: return 2;
             case MENU: return 3;
-            default: return -1;
+            default: return null;
         }
     }
 

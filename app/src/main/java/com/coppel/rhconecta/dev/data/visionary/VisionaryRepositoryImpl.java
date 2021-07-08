@@ -61,7 +61,9 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
-        int accessOptionValue = accessOption.toInt();
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionariesPreviewsRequest request =
                 new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
@@ -118,7 +120,9 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     ) {
         long employeeNum = basicUserInformationFacade.getEmployeeNum();
         int clvOption = 1;
-        int accessOptionValue = accessOption.toInt();
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionariesPreviewsRequest request =
                 new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);

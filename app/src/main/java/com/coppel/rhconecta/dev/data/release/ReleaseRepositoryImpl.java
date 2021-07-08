@@ -62,7 +62,9 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
         ));
         int clvOption = 1;
-        int accessOptionValue = accessOption.toInt();
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
 
         String authHeader = getStringFromSharedPreferences(
                 context,
@@ -112,13 +114,17 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
         ));
         int clvOption = 2;
-        int accessOptionValue = accessOption == AccessOption.BANNER ? accessOption.toInt() : 0;
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
+
         String authHeader = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
         GetReleaseByIdRequest request = new
                 GetReleaseByIdRequest(employeeNum, clvOption, releaseId, accessOptionValue);
+
         apiService.getReleaseById(
                 authHeader,
                 ServicesConstants.GET_COMUNICADOS,

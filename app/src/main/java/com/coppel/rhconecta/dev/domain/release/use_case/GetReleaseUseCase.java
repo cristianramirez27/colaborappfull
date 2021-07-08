@@ -21,8 +21,8 @@ public class GetReleaseUseCase extends UseCase<Release, GetReleaseUseCase.Params
      */
     public static class Params {
 
-        private int releaseId;
-        private AccessOption accessOption;
+        private final int releaseId;
+        private final AccessOption accessOption;
 
         public Params(int releaseId, AccessOption accessOption) {
             this.releaseId = releaseId;

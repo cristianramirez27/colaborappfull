@@ -24,7 +24,7 @@ public class GetReleasesPreviewsUseCase
      */
     public static class Params {
 
-        private AccessOption accessOption;
+        private final AccessOption accessOption;
 
         public Params(AccessOption accessOption) {
             this.accessOption = accessOption;

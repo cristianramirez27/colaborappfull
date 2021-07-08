@@ -10,12 +10,10 @@ public class GetReleaseByIdRequest {
     /* */
     public long idu_avisos;
     /* */
-    public long opc_acceso;
+    public Integer opc_acceso;
 
-    /**
-     *
-     */
-    public GetReleaseByIdRequest(Long num_empleado, int clv_opcion, long idu_avisos, long opc_acceso) {
+    /** */
+    public GetReleaseByIdRequest(Long num_empleado, int clv_opcion, long idu_avisos, Integer opc_acceso) {
         this.num_empleado = num_empleado;
         this.clv_opcion = clv_opcion;
         this.idu_avisos = idu_avisos;
