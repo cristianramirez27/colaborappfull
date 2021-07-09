@@ -63,9 +63,18 @@ public class VisionaryPreviewAdapter extends RecyclerView.Adapter<VisionaryPrevi
             );
             viewHolder.tvTitle.setTextColor(readColor);
             viewHolder.ivWatchedIcon.setImageResource(R.drawable.ic_punto_gris);
-            if (visionaryPreview.isUpdated())
-                viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.tvTitle.setTextColor(ContextCompat.getColor(
+                    viewHolder.itemView.getContext(),
+                    R.color.colorPrimaryCoppelAzul));
+            viewHolder.ivWatchedIcon.setImageResource(R.drawable.ic_punto_rojo);
         }
+
+        if (visionaryPreview.isUpdated())
+            viewHolder.tvIsUpdated.setVisibility(View.VISIBLE);
+        else
+            viewHolder.tvIsUpdated.setVisibility(View.GONE);
+
         // On click listener
         viewHolder.itemView.setOnClickListener(v ->
                 onVisionaryPreviewClickListener.onClick(visionaryPreview)

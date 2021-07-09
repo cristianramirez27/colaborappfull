@@ -47,7 +47,7 @@ public class GetReleasesPreviewsResponse {
                     des_titulo,
                     fec_comunicado,
                     opc_visto == 1,
-                    clv_edito == 1
+                    opc_visto == 1 && clv_edito == 1
             );
         }
 
