@@ -99,6 +99,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.*;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
@@ -120,6 +121,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
@@ -612,6 +615,14 @@ public class HomeActivity
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         getCollageURL();
                     }
+                case OPTION_COCREA:
+                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    if (urlCoCrea.isEmpty())
+                        urlCoCrea = URL_DEFAULT_COCREA;
+
+                    Intent intentCoCrea = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCoCrea));
+                    startActivity(intentCoCrea);
+                    break;
                 case OPTION_POLL:
                     break;
             }

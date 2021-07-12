@@ -448,6 +448,7 @@
     <string name="poll_activity_failure_title">Alerta</string>
     <string name="poll_activity_failure_action">Aceptar</string>
     <string name="collaborator_at_home">Videos</string>
+    <string name="title_cocrea">CoCrea</string>
     <string name="collaborator_at_home_title">Videos</string>
     <string name="visionary_at_home_details_activity_title">Videos</string>
     <string name="qrCode">Lectura de QR</string>

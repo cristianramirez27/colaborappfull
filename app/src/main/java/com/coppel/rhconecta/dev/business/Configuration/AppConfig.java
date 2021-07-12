@@ -76,6 +76,7 @@ public class AppConfig {
     public final static String BLOCK_QR = "BLOCK_QR";
     public final static String BLOCK_COVID_SURVEY = "BLOCK_COVID_SURVEY";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
+    public final static String BLOCK_COCREA = "BLOCK_COCREA";
     public final static String YES = "YES";
     public final static String NO = "NO";
 
@@ -93,6 +94,10 @@ public class AppConfig {
     public final static String BLOCK_MESSAGE_QR = "BLOCK_MESSAGE_QR";
     public final static String BLOCK_MESSAGE_STAYHOME = "BLOCK_MESSAGE_STAYHOME";
     public final static String BLOCK_MESSAGE_COVID_SURVEY = "BLOCK_MESSAGE_COVID_SURVEY";
+
+    public final static String TITLE_COCREA = "TITLE_COCREA";
+    public final static String ENDPOINT_COCREA = "URL_COCREA";
+    public final static String ENDPOINT_COCREA_STORE = "URL_COCREA_STORE";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
 
@@ -124,6 +129,9 @@ public class AppConfig {
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
+
+        String url_coCrea = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA);
+        String url_coCreaSite = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA_STORE);
 
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
@@ -159,6 +167,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COCREA, url_coCrea);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COCREA_STORE, url_coCreaSite);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
 
@@ -182,6 +192,8 @@ public class AppConfig {
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
+        String block_coCrea = mFirebaseRemoteConfig.getString(BLOCK_COCREA);
+        String block_title_coCrea = mFirebaseRemoteConfig.getString(TITLE_COCREA);
         String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
         String block_message_profile = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_PROFILE);
         String block_message_savings = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_SAVINGS);
@@ -228,6 +240,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE, block_collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR, block_qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY, block_covid_survey);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), TITLE_COCREA, block_title_coCrea);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COCREA, block_coCrea);
 
     }
 

@@ -26,6 +26,8 @@ import io.realm.RealmList;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
@@ -40,6 +42,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MenuUtilities {
@@ -48,6 +51,10 @@ public class MenuUtilities {
      *
      */
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications) {
+
+        String title_cocrea = AppUtilities.getStringFromSharedPreferences(context, TITLE_COCREA);
+        if (title_cocrea.isEmpty())
+            title_cocrea = context.getString(R.string.title_cocrea);
 
         /*Setamos el menu por default*/
         ArrayList<HomeMenuItem> listMenuDefault = new ArrayList<>(Arrays.asList(
@@ -62,7 +69,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES, notifications[1]),
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
-                new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY)
+                new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),
+                new HomeMenuItem(title_cocrea, OPTION_COCREA)
         ));
 
 
@@ -183,6 +191,7 @@ public class MenuUtilities {
         boolean blockStayHome = AppUtilities.getStringFromSharedPreferences(context, BLOCK_STAYHOME).equals(YES);
         boolean blockQr = AppUtilities.getStringFromSharedPreferences(context, BLOCK_QR).equals(YES);
         boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
+        boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         for (HomeMenuItem item : homeMenuItems) {
             if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
@@ -190,6 +199,8 @@ public class MenuUtilities {
             if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
                 continue;
             if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
+                continue;
+            if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea)
                 continue;
             response.add(item);
         }
@@ -304,6 +315,9 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_COVID_SURVEY:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_covid_survey);
+                break;
+            case AppConstants.OPTION_COCREA:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_cocrea);
                 break;
         }
         return icon;
