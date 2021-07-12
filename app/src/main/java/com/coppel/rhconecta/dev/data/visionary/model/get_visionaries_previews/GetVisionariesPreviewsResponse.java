@@ -50,7 +50,7 @@ public class GetVisionariesPreviewsResponse {
                     fec_video,
                     img_videoPreview,
                     num_vistas,
-                    clv_edito == 1,
+                    opc_visto == 1 && clv_edito == 1,
                     opc_visto == 1
             );
         }
