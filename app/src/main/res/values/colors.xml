@@ -63,6 +63,8 @@
     <color name="transparent">#00FFFFFF</color>
 
     <color name="colorTextBlueCoppel">#0065b2</color>
+    <color name="colorTextCode">#00599c</color>
+    <color name="colorBackgroundCode">#f8f8f8</color>
 
     <color name="black_transparency_seven">#85000000</color>
 

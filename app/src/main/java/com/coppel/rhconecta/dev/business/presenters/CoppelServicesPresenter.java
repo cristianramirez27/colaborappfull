@@ -5,6 +5,7 @@ import android.content.Context;
 import com.coppel.rhconecta.dev.business.interactors.ServicesInteractor;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
@@ -198,5 +199,15 @@ public class CoppelServicesPresenter implements IServiceListener {
     public void validateDeviceId(ValidateDeviceIdRequest validateDeviceIdRequest) {
         view.showProgress();
         servicesInteractor.validateDeviceId(validateDeviceIdRequest);
+    }
+
+    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token) {
+        view.showProgress();
+        servicesInteractor.getBenefitCode(benefitCodeRequest, token);
+    }
+
+    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token) {
+        view.showProgress();
+        servicesInteractor.getInfoCompany(infoCompanyRequest, token);
     }
 }

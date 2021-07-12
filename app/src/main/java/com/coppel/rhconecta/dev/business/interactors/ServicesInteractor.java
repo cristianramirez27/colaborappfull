@@ -3954,4 +3954,81 @@ public class ServicesInteractor {
             iServiceListener.onError(servicesError);
         }
     }
+
+    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.BENEFIT_CODE;
+
+        iServicesRetrofitMethods.getBenefitCode(
+                ServicesConstants.GET_ENDPOINT_BENEFIT_CODE,
+                token,
+                benefitCodeRequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitCodeResponse benefitCodeResponse = (BenefitCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").getAsJsonArray("res").get(0).toString(),
+                            BenefitCodeResponse.class
+                    );
+
+                    if (benefitCodeResponse.getDes_codigo() != null) {
+                        ServicesResponse<BenefitCodeResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(benefitCodeResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.BENEFIT_COMPANY;
+
+        iServicesRetrofitMethods.getInfoCompany(
+                ServicesConstants.GET_ENDPOINT_BENEFIT_CODE,
+                token,
+                infoCompanyRequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    InfoCompanyResponse infoCompanyResponse = (InfoCompanyResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").getAsJsonArray("res").get(0).toString(),
+                            InfoCompanyResponse.class
+                    );
+
+                    if (infoCompanyResponse.getEmpresa() != null) {
+                        ServicesResponse<InfoCompanyResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(infoCompanyResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
 }

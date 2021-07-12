@@ -7,17 +7,21 @@ import android.view.Window;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.BenefitCodeResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsRequestData;
+import com.coppel.rhconecta.dev.business.models.InfoCompanyResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -30,12 +34,13 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
  * Created by flima on 18/01/2018.
  */
 
-public class DialogAlertActivity extends AppCompatActivity implements IServicesContract.View , DialogFragmentCompany.OnBenefitsAdvertisingClickListener  {
+public class DialogAlertActivity extends AppCompatActivity implements IServicesContract.View , DialogFragmentCompany.OnBenefitsAdvertisingClickListener, DialogFragmentWarning.OnOptionClick  {
     private String TAG = getClass().getSimpleName();
     public static String KEY_COMPANY = "KEY_COMPANY";
 
     private DialogFragmentCompany dialogFragmentCompany;
     private CoppelServicesPresenter coppelServicesPresenter;
+    private DialogFragmentWarning dialogFragmentWarning;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,9 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_alert_container);
         initViews();
-        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)
-                IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
+        this.dialogFragmentWarning = new DialogFragmentWarning();
+        Serializable temp = IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
+        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company) temp;
         coppelServicesPresenter = new CoppelServicesPresenter(this, DialogAlertActivity.this);
         showCompanyDialog(company);
     }
@@ -58,6 +64,7 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
     private void showCompanyDialog(BenefitsCompaniesResponse.Company company){
         dialogFragmentCompany = DialogFragmentCompany.getInstance(company);
         dialogFragmentCompany.setOnBenefitsAdvertisingClickListener(this);
+        dialogFragmentCompany.setCoppelServicesPresenter(this.coppelServicesPresenter);
         dialogFragmentCompany.show(getSupportFragmentManager(), DialogFragmentCompany.TAG);
     }
 
@@ -94,6 +101,17 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
                     if(!advertisingList.isEmpty())
                         showAdvertising(advertisingList.get(0));
                 }
+                break;
+            case ServicesRequestType.BENEFIT_CODE:
+                if (response.getResponse() instanceof BenefitCodeResponse) {
+                    dialogFragmentCompany.setCodeView(((BenefitCodeResponse) response.getResponse()).getDes_codigo());
+                }
+                break;
+            case ServicesRequestType.BENEFIT_COMPANY:
+                if (response.getResponse() instanceof InfoCompanyResponse) {
+                    dialogFragmentCompany.setInfoCompany(((InfoCompanyResponse) response.getResponse()));
+                }
+                break;
         }
     }
 
@@ -104,7 +122,17 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
 
     @Override
     public void showError(ServicesError coppelServicesError) {
+        if (coppelServicesError != null) {
+            showWarningDialog(coppelServicesError.getMessage());
+        } else {
+            showWarningDialog(getString(R.string.str_error_conexion));
+        }
+    }
 
+    private void showWarningDialog(String message) {
+        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+        dialogFragmentWarning.setOnOptionClick(this);
+        dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
     @Override
@@ -119,6 +147,16 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
 
     @Override
     public void closeCategoryDialog() {
+        finish();
+    }
+
+    @Override
+    public void onLeftOptionClick() {
+
+    }
+
+    @Override
+    public void onRightOptionClick() {
         finish();
     }
 }

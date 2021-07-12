@@ -487,4 +487,5 @@
         <item>ISR</item>
     </string-array>
     <string name="label_dialog_city">Selecciona la ciudad</string>
+    <string name="label_title_code">Tu código es</string>
 </resources>

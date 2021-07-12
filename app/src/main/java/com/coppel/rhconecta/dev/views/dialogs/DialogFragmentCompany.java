@@ -2,12 +2,14 @@ package com.coppel.rhconecta.dev.views.dialogs;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -24,8 +26,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
+import com.coppel.rhconecta.dev.business.models.InfoCompanyResponse;
+import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.views.customviews.TicketView;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +75,15 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     TextView moreInfo;
     @BindView(R.id.btnAdvertising)
     Button btnAdvertising;
+    @BindView(R.id.btnCode)
+    Button btnCode;
+    @BindView(R.id.ticketView)
+    TicketView ticketView;
+    @BindView(R.id.textViewCode)
+    TextView textViewCode;
+    @BindView(R.id.textView5)
+    TextView titleCode;
+
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
 
     private BenefitsCompaniesResponse.Company company;
@@ -74,6 +91,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
+    private ObjectAnimator ticketAnimation = null;
     private boolean mIsBackVisible = false;
     private boolean isExpandable = false;
     @BindView(R.id.card_front)
@@ -82,6 +100,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     View mCardBackLayout;
 
     private long mLastClickTime = 0;
+    private CoppelServicesPresenter coppelServicesPresenter;
+    private InfoCompanyResponse infoCompany;
+    private boolean isCodeView = false;
 
     public static DialogFragmentCompany getInstance(BenefitsCompaniesResponse.Company company){
         DialogFragmentCompany dialogFragmentCompany = new DialogFragmentCompany();
@@ -151,6 +172,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
 
         btnAdvertising.setOnClickListener(this);
+        btnCode.setOnClickListener(this);
         txtAddress.setMovementMethod(new ScrollingMovementMethod());
 
         scrollview.setOnTouchListener(new View.OnTouchListener() {
@@ -175,6 +197,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             }
         });
         moreInfo.setOnClickListener(this);
+        getInfoCompany();
     }
 
     public void close() {
@@ -205,11 +228,22 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
             case R.id.textView4:
-                    isExpandable = !isExpandable;
-                    int visibility = isExpandable ? View.VISIBLE : View.GONE;
-                    scrollview.setVisibility(visibility);
-                    btnAdvertising.setVisibility(visibility);
-                    moreInfo.setText(isExpandable ? R.string.label_less_information : R.string.label_more_information);
+                isExpandable = !isExpandable;
+                int visibility = isExpandable ? View.VISIBLE : View.GONE;
+                scrollview.setVisibility(visibility);
+                btnAdvertising.setVisibility(visibility);
+                if (infoCompany.getOpc_desc_app() == 1) {
+                    btnCode.setVisibility(visibility);
+                    if (!isExpandable && isCodeView) {
+                        isCodeView = false;
+                        showViewCode();
+                        showViewTicket();
+                    }
+                }
+                moreInfo.setText(isExpandable ? R.string.label_less_information : R.string.label_more_information);
+                break;
+            case R.id.btnCode:
+                getCodeBenefit();
                 break;
         }
     }
@@ -275,8 +309,17 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.in_animation);
     }
 
+    private void loadAnimationsTickets() {
+        if (ticketAnimation == null) {
+            ticketAnimation = ObjectAnimator.ofFloat(ticketView, "rotationX", 0.0f, 180f);
+            ticketAnimation.setDuration(1000);
+            ticketAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        }
+    }
+
 
     public void flipCard() {
+        mCardBackLayout.setVisibility(View.VISIBLE);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(mCardFrontLayout);
             mSetLeftIn.setTarget(mCardBackLayout);
@@ -290,8 +333,66 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = false;
-            mCardBackLayout.setVisibility(View.GONE);
         }
+    }
+
+    public void setCoppelServicesPresenter(CoppelServicesPresenter coppelServicesPresenter) {
+        this.coppelServicesPresenter = coppelServicesPresenter;
+    }
+
+    public void getCodeBenefit() {
+        String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        BenefitCodeRequest benefitCodeRequest = new BenefitCodeRequest();
+        benefitCodeRequest.setOpc(1);
+        benefitCodeRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
+        benefitCodeRequest.setNumEmpresa(company.getServicios());
+
+        this.coppelServicesPresenter.getBenefitCode(benefitCodeRequest, token);
+    }
+
+    public void getInfoCompany() {
+        String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        BenefitCodeRequest infoCompanyRequest = new BenefitCodeRequest();
+        infoCompanyRequest.setOpc(2);
+        infoCompanyRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
+        infoCompanyRequest.setNumEmpresa(company.getServicios());
+
+        this.coppelServicesPresenter.getInfoCompany(infoCompanyRequest, token);
+    }
+
+    public void setCodeView(String newCode) {
+        textViewCode.setText(newCode);
+        flipCodeCard();
+    }
+
+    public void setInfoCompany(InfoCompanyResponse infoCompanyResponse) {
+        this.infoCompany = infoCompanyResponse;
+    }
+
+    public void flipCodeCard() {
+        loadAnimationsTickets();
+        isCodeView = !isCodeView;
+        showViewTicket();
+        ticketAnimation.start();
+        ticketView.setBackgroundBeforeDivider(requireContext().getDrawable(android.R.color.white));
+        btnCode.setVisibility(View.GONE);
+        new Handler().postDelayed(this::showViewCode, 1300);
+    }
+
+    private void showViewCode() {
+        int visibility = isCodeView ? View.VISIBLE : View.GONE;
+        textViewCode.setVisibility(visibility);
+        titleCode.setVisibility(visibility);
+    }
+
+    private void showViewTicket() {
+        int visibility = isCodeView ? View.GONE : View.VISIBLE;
+        image.setVisibility(visibility);
+        txtLabelPercent.setVisibility(visibility);
+        txtPercent.setVisibility(visibility);
+        ticketView.setBackgroundBeforeDivider(requireContext().getDrawable(R.color.colorPrimaryCoppelAzul));
     }
 
     @Override
