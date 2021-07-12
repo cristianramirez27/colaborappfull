@@ -10,7 +10,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -59,7 +58,7 @@ public class CoppelNotificationManager {
     public NotificationType fromBundle(Bundle bundle) {
         Map<String, String> data = new HashMap<>();
         try {
-            String value = String.valueOf(bundle.getInt(IDU_SYSTEM));
+            String value = bundle.getString(IDU_SYSTEM);
             data.put(IDU_SYSTEM, value);
         } catch (Exception ignore) { /* PASS */ }
         return notificationTypeFromData(data, null, null);
@@ -76,8 +75,8 @@ public class CoppelNotificationManager {
         String iduDestinationValue = data.get(IDU_DESTINATION);
         String idDestinationValue = data.get(ID_DESTINATION);
         int iduDestination = iduDestinationValue == null ?
-                idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)
-                : Integer.parseInt(iduDestinationValue);
+                (idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)) :
+                Integer.parseInt(iduDestinationValue);
         NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
         return new NotificationType(title, body, destination);
     }

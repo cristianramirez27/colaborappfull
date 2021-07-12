@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.presentation.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +104,7 @@ public class SplashScreenActivity
 
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
+
         if (notificationType == null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
@@ -110,6 +112,7 @@ public class SplashScreenActivity
                 notificationType = cnm.fromBundle(bundle);
             }
         }
+
         if (notificationType == null)
             init();
         else {
