@@ -43,7 +43,6 @@ public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
     /* */
     public static String ACCESS_OPTION = "ACCESS_OPTION";
     private AccessOption accessOption;
-    private boolean alreadySendAccessOption = false;
 
     /**
      *
@@ -97,10 +96,8 @@ public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
      *
      */
     private void execute(){
-        if (alreadySendAccessOption)
-            accessOption = null;
-        alreadySendAccessOption = true;
         visionariesViewModel.loadReleasesPreviews(visionaryType, accessOption);
+        accessOption = AccessOption.NOTHING;
     }
 
     /**
@@ -162,6 +159,7 @@ public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
                 .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, visionaryPreview.getId())
                 .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, visionaryPreview.getPreviewImage())
                 .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, visionaryType)
+                .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
                 .build();
         startActivity(intent);
     }

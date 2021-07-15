@@ -41,7 +41,6 @@ public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
     /* VALUES */
     public static String ACCESS_OPTION = "ACCESS_OPTION";
     private AccessOption accessOption;
-    private boolean alreadySendAccessOption = false;
 
     /**
      *
@@ -143,6 +142,7 @@ public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
     private void onReleasePreviewClickListener(ReleasePreview releasePreview) {
         Intent intent = new IntentBuilder(new Intent(this, ReleaseDetailActivity.class))
                 .putIntExtra(ReleaseDetailActivity.RELEASE_ID, releasePreview.getId())
+                .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
                 .build();
         startActivity(intent);
     }
@@ -151,10 +151,8 @@ public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
      *
      */
     private void execute() {
-        if (alreadySendAccessOption)
-            accessOption = null;
-        alreadySendAccessOption = true;
         releasesViewModel.loadReleasesPreviews(accessOption);
+        accessOption = AccessOption.NOTHING;
     }
 
     /**

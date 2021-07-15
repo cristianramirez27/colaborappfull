@@ -7,6 +7,9 @@ import java.io.Serializable;
 @Keep
 public enum AccessOption implements Serializable {
 
+    /* If the access option must be ignored for count */
+    NOTHING,
+
     /* If the access option is the main menu icon */
     ICON,
 
@@ -21,6 +24,7 @@ public enum AccessOption implements Serializable {
      */
     public Integer toInteger() {
         switch (this) {
+            case NOTHING: return 0;
             case ICON: return 1;
             case BANNER: return 2;
             case MENU: return 3;
@@ -33,6 +37,7 @@ public enum AccessOption implements Serializable {
      */
     public static AccessOption fromInt(int value) {
         switch (value) {
+            case 0: return NOTHING;
             case 1: return ICON;
             case 2: return BANNER;
             case 3: return MENU;
