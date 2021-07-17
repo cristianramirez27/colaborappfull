@@ -15,17 +15,25 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.splash.SplashScreenActivity;
+import com.coppel.rhconecta.dev.resources.db.RealmTransactions;
+import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.IDU_DESTINATION;
 import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.IDU_SYSTEM;
 import static com.coppel.rhconecta.dev.system.notification.NotificationKeyKt.ID_DESTINATION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 /** */
 public class CoppelNotificationManager {
@@ -77,8 +85,20 @@ public class CoppelNotificationManager {
         int iduDestination = iduDestinationValue == null ?
                 (idDestinationValue == null ? -1 : Integer.parseInt(idDestinationValue)) :
                 Integer.parseInt(iduDestinationValue);
+        processNotification(iduSystem);
         NotificationDestination destination = NotificationDestination.fromInt(iduSystem, iduDestination);
         return new NotificationType(title, body, destination);
+    }
+
+    private void processNotification(int iduSystem) {
+        if (iduSystem >= 9 && iduSystem < 12) {
+            String numgColaborator = AppUtilities.getStringFromSharedPreferences(
+                    CoppelApp.getContext(),
+                    SHARED_PREFERENCES_NUM_COLABORADOR
+            );
+            RealmTransactions.insertInto(new NotificationsUser(UUID.randomUUID().toString(), numgColaborator, iduSystem),
+                    params -> LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(AppConstants.INTENT_NOTIFICATION_ACTON)));
+        }
     }
 
     /** */

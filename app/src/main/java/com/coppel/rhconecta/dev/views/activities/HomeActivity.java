@@ -885,6 +885,9 @@ public class HomeActivity
     @Override
     public void showProgress() {
         if (hideLoader) {
+            if (dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
+                dialogFragmentLoader.close();
+            }
             dialogFragmentLoader = new DialogFragmentLoader();
             dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
             hideLoader = true;
@@ -904,7 +907,7 @@ public class HomeActivity
 
     /** */
     public void forceHideProgress() {
-        if (dialogFragmentLoader != null) {
+        if (dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
             dialogFragmentLoader.dismissAllowingStateLoss();
             dialogFragmentLoader.close();
             hideLoader = false;

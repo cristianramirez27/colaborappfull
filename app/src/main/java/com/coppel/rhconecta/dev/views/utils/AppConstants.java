@@ -169,6 +169,7 @@ public class AppConstants {
     public static final String ID_PANTALLA = "id_pantalla";
         public static final String NOTIFICATION_TITLE = "title";
     public static final String NOTIFICATION_BODY = "body";
+    public static final String INTENT_NOTIFICATION_ACTON = "INTENT_NOTIFICATION_ACTON";
 
 
     public static final int ICON_NOMINA = 1;

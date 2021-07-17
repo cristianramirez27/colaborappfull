@@ -5,6 +5,7 @@ import com.coppel.rhconecta.dev.CoppelApp;
 
 import java.util.List;
 
+import com.coppel.rhconecta.dev.business.utils.Command;
 import io.realm.Realm;
 import io.realm.RealmObject;
 
@@ -48,6 +49,20 @@ public class RealmTransactions {
             e.printStackTrace();
         }
 
+    }
+
+    public static <T extends RealmObject> void insertInto(final T passedObject, Command action){
+        try {
+
+            Realm backgroundRealm = Realm.getDefaultInstance();
+            backgroundRealm.beginTransaction();
+            backgroundRealm.insert(passedObject);
+            backgroundRealm.commitTransaction();
+            action.execute();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

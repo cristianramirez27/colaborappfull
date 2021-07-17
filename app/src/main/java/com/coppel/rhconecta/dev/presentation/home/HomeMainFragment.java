@@ -3,6 +3,8 @@ package com.coppel.rhconecta.dev.presentation.home;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +46,7 @@ import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
@@ -88,6 +92,14 @@ public class HomeMainFragment
     @Inject
     public HomeViewModel homeViewModel;
     private ViewPager viewPagerBanners;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateDashboard();
+        }
+    };
+
+    private IntentFilter filter = new IntentFilter(AppConstants.INTENT_NOTIFICATION_ACTON);
 
     /**
      *
@@ -186,6 +198,7 @@ public class HomeMainFragment
      */
     @Override
     public void onStart() {
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, filter);
         super.onStart();
         execute();
         if (getActivity() instanceof HomeActivity)
@@ -399,6 +412,7 @@ public class HomeMainFragment
 
     @Override
     public void onPause() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver);
         super.onPause();
         try {
             RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());

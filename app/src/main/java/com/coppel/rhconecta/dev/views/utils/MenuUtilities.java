@@ -89,9 +89,10 @@ public class MenuUtilities {
 
         if (notificationSaved != null) {
             for (NotificationsUser notification : notificationSaved) {
+                int count = mapNotification.get(notification.getID_SISTEMA()) + 1;
                 mapNotification.put(
                         notification.getID_SISTEMA(),
-                        mapNotification.get(notification.getID_SISTEMA()) + 1
+                        count
                 );
             }
         }
