@@ -43,6 +43,7 @@ import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivit
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
+import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
@@ -73,10 +74,10 @@ public class HomeMainFragment
 
     public static final String TAG = HomeMainFragment.class.getSimpleName();
     private HomeActivity parent;
-    private HomeMenuRecyclerViewAdapter homeMenuRecyclerViewAdapter;
+    private HomeMenuRecyclerViewAdapter homeMenuRecyclerViewAdapter = null;
     private ProfileResponse.Response profileResponse;
 
-    int[] notifications;
+    int[] notifications = {0,0,0};
     @BindView(R.id.vpBanner)
     ViewPager vpBanner;
     @BindView(R.id.tabIndicator)
@@ -110,12 +111,13 @@ public class HomeMainFragment
             ViewGroup container,
             Bundle savedInstanceState
     ) {
-        ((HomeActivity) Objects.requireNonNull(getActivity())).showProgress();
+//        ((HomeActivity) Objects.requireNonNull(getActivity())).showProgress();
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
         ButterKnife.bind(this, view);
         parent = (HomeActivity) getActivity();
         profileResponse = parent.getProfileResponse();
         // Poll icon
+        initMenu();
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setCountMessages(0);
         ISurveyNotification.getSurveyIcon().setOnClickListener(this::onSurveyIconClickListener);
@@ -338,7 +340,7 @@ public class HomeMainFragment
                 Objects.requireNonNull(badges.get(Badge.Type.VISIONARY)).getValue(),
                 Objects.requireNonNull(badges.get(Badge.Type.COLLABORATOR_AT_HOME)).getValue()
         };
-        initMenu();
+        updateDashboard();
         int countMessages = Objects.requireNonNull(badges.get(Badge.Type.POLL)).getValue();
         ISurveyNotification.getSurveyIcon().setCountMessages(countMessages);
     }
@@ -416,7 +418,7 @@ public class HomeMainFragment
         super.onPause();
         try {
             RealmHelper.updateMenuItems(profileResponse.getCorreo(), homeMenuRecyclerViewAdapter.getCustomMenu());
-            ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
+//            ((HomeActivity) Objects.requireNonNull(getActivity())).hideProgress();
             reloadDashboard = true;
         } catch (Exception ignore) {
         }
@@ -431,7 +433,7 @@ public class HomeMainFragment
         rcvMenu.setLayoutManager(gridLayoutManager);
         homeMenuRecyclerViewAdapter = new HomeMenuRecyclerViewAdapter(
                 getContext(),
-                MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications),
+                getItemsMenu(),
                 gridLayoutManager.getSpanCount()
         );
         homeMenuRecyclerViewAdapter.setOnItemClick(this);
@@ -477,8 +479,14 @@ public class HomeMainFragment
     }
 
     private void updateDashboard() {
-        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications));
+        homeMenuRecyclerViewAdapter.setCustomMenuUpdate(getItemsMenu());
         homeMenuRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private List<HomeMenuItem> getItemsMenu() {
+        synchronized (this) {
+            return MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications);
+        }
     }
 
 }
