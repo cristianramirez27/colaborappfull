@@ -62,8 +62,14 @@ public class MoneyTextWatcher implements TextWatcher {
             editText.setSelection(prefix.length());
             return;
         }*/
-        if (str.length()> 2 &&str.substring(0,1).equals(prefix) && str.lastIndexOf(".") == str.length()-3)
+        int position = str.lastIndexOf(".");
+        if (str.length()> 2 &&str.substring(0,1).equals(prefix) && position > 1&& position <= str.length()-3){
+            if (position == str.length() -3)
+                return;
+           str = str.substring(0,(position+3));
+            editText.setText(str);
             return;
+        }
 
         if (str.equals(prefix)) {
             str = str.replace(prefix, "");
