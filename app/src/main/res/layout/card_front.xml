@@ -183,7 +183,6 @@
                     android:id="@+id/txtAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxHeight="80dp"
                     android:layout_marginTop="4dp"
                     android:scrollbars="vertical"
                     android:gravity="left"
