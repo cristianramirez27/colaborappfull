@@ -27,7 +27,7 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
     public class Response {
         private Float imp_margencredito = 0f;
         private Float imp_ahorroadicional = 0f;
-        private Float imp_total;
+        private Float imp_total = 0f;
         private String des_proceso;
         private String des_cambiar;
         private String des_mensaje;

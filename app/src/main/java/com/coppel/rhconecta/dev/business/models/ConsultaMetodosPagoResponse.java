@@ -32,7 +32,7 @@ public class ConsultaMetodosPagoResponse extends WithDrawSavingBaseResponse {
     public class PaymentWay{
         private int clv_retiro;
         private String nom_retiro;
-        private Float imp_disponible;
+        private float imp_disponible;
 
         private boolean isSelected;
 
@@ -52,11 +52,11 @@ public class ConsultaMetodosPagoResponse extends WithDrawSavingBaseResponse {
             this.nom_retiro = nom_retiro;
         }
 
-        public Float getImp_disponible() {
+        public float getImp_disponible() {
             return imp_disponible;
         }
 
-        public void setImp_disponible(Float imp_disponible) {
+        public void setImp_disponible(float imp_disponible) {
             this.imp_disponible = imp_disponible;
         }
 
