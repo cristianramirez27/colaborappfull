@@ -189,7 +189,8 @@ public class VisionaryDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 break;
             case COMPLETED:
-                setVisionaryViews(viewModel.getVisionary());
+                if (viewModel.getVisionary() != null)
+                    setVisionaryViews(viewModel.getVisionary());
                 break;
         }
     }
