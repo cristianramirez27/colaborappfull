@@ -362,6 +362,7 @@
     <string name="title_eliminate">Eliminar</string>
     <string name="botton_refuse">Rechazar</string>
     <string name="botton_accept">Aceptar</string>
+    <string name="botton_accept_2">Autorizar</string>
     <string name="label_more_information">Más información</string>
     <string name="label_less_information">Menos información</string>
 

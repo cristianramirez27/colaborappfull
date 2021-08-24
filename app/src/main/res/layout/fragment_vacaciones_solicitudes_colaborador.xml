@@ -201,7 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_green_rounded"
-                android:text="@string/botton_accept"
+                android:text="@string/botton_accept_2"
                 android:textAllCaps="false"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"

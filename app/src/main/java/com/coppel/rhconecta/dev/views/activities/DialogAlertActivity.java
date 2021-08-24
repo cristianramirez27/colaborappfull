@@ -123,6 +123,8 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError != null) {
+            if (coppelServicesError.getType() == ServicesRequestType.BENEFIT_CODE)
+                return;
             showWarningDialog(coppelServicesError.getMessage());
         } else {
             showWarningDialog(getString(R.string.str_error_conexion));

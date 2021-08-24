@@ -614,6 +614,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     //TODO Validar
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
+        datePickerDialog.setThemeHolday(true);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
         datePickerDialog.setCustomTitle(getString(R.string.title_calendar_periods));
         datePickerDialog.setTextButtonCalendar(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_config());

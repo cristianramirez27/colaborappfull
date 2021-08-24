@@ -79,9 +79,13 @@ public class ColaboratorHolidayRecyclerAdapter extends RecyclerView.Adapter<Cola
             }
         });
 
-        if(showMarker){
+        if (showMarker) {
             viewHolder.markerSplice.setVisibility(View.VISIBLE);
-            viewHolder.markerSplice.setBackgroundResource(currentItem.isHasSplice() ? R.drawable.backgroud_circle_melon : R.drawable.backgroud_circle_green);
+            if (currentItem.isHasSplice()) {
+                viewHolder.markerSplice.setBackgroundResource(R.drawable.backgroud_circle_melon);
+            } else {
+                viewHolder.markerSplice.setVisibility(View.GONE);
+            }
         }
         if (currentItem.getNom_estatus() != null && !currentItem.getNom_estatus().isEmpty()) {
             viewHolder.status.setVisibility(View.VISIBLE);

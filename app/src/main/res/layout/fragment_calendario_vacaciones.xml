@@ -134,6 +134,7 @@
                             android:id="@+id/layoutProposedDays"
                             android:orientation="horizontal"
                             android:paddingLeft="8dp"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -162,6 +163,7 @@
                             android:id="@+id/layoutSplice"
                             android:orientation="horizontal"
                             android:paddingLeft="8dp"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 

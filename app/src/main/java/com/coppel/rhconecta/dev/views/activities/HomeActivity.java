@@ -57,6 +57,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
+import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -276,6 +277,15 @@ public class HomeActivity
             case LOADING:
                 break;
             case FAILURE:
+                getAnalyticsTimeManager().clear();
+                if (homeActivityViewModel.getFailure() instanceof ServerFailure) {
+                    ServerFailure result = (ServerFailure) homeActivityViewModel.getFailure();
+                    if (result.getSessionInvalid()) {
+                        EXPIRED_SESSION = true;
+                        showWarningDialog(getString(R.string.expired_session));
+                    }
+                }
+                break;
             case COMPLETED:
                 getAnalyticsTimeManager().clear();
                 break;

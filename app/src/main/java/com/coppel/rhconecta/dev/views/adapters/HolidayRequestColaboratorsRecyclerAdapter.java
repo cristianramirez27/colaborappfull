@@ -62,7 +62,7 @@ public class HolidayRequestColaboratorsRecyclerAdapter extends RecyclerView.Adap
         HolidayPeriod data = dataItems.get(i);
         data.setShowMarker(showMarker);
         viewHolder.requestColaborator.setDetailData(data,false);
-        if(data.getIdu_marca() == 1)
+        if (data.getIdu_marca() == 1 && OnRequestSelectedClickListener != null)
             OnRequestSelectedClickListener.showLabelSplice(true);
 
         viewHolder.requestColaborator.setOnClickListener(new View.OnClickListener() {

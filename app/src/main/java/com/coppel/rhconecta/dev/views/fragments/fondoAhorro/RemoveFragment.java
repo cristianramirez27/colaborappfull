@@ -261,13 +261,13 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private void guardarRetiro(){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ?  Double.parseDouble(edtRetiro.getQuantity()) : 0;
+        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ?  AppUtilities.toDouble(edtRetiro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
         /*if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
             margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroProceso.getQuantity()) : 0;
         }*/
 
-        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  Double.parseDouble(edtRetiroAhorro.getQuantity()) : 0;
+        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
         /*if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
             ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorroProceso.getQuantity()) : 0;
@@ -448,7 +448,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 boolean isEnable = false;
-                if(edtRetiro.getQuantity().length() >0 || edtRetiroAhorro.getQuantity().length() >0 )
+                String value = edtRetiro.getQuantity();
+                String value2 = edtRetiroAhorro.getQuantity();
+                if((value.length() >0 && AppUtilities.isNumeric(value)) || (value2.length() >0 && AppUtilities.isNumeric(value2)) )
                     isEnable = true;
 
                 setEnableButton(isEnable);

@@ -232,7 +232,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 int visibility = isExpandable ? View.VISIBLE : View.GONE;
                 scrollview.setVisibility(visibility);
                 btnAdvertising.setVisibility(visibility);
-                if (infoCompany.getOpc_desc_app() == 1) {
+                if (infoCompany != null && infoCompany.getOpc_desc_app() == 1) {
                     btnCode.setVisibility(visibility);
                     if (!isExpandable && isCodeView) {
                         isCodeView = false;
