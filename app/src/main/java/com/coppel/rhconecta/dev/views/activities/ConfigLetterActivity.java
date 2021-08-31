@@ -116,6 +116,10 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
         return previewDataVO;
     }
 
+    public ViewPager getViewPager() {
+        return viewPager;
+    }
+
     public String getTitleLetter(){
 
         switch (typeLetter){

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersGenerateRequest;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
@@ -75,6 +77,42 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
     private boolean hasStamp;
 
     private com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation ILettersNavigation;
+    private OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            // Handle the back button event
+            int value = parent.getViewPager().getCurrentItem();
+            if (value == 0) {
+                parent.finish();
+            } else {
+                List<Integer> index = new ArrayList<>();
+                CoppelServicesLettersGenerateRequest.Data optional = parent.getPreviewDataVO().getDataOptional();
+                if (optional.getJobScheduleData() == null || optional.getScheduleData() == null
+                        || optional.getSectionScheduleData() == null) {
+                    index.add(12);
+                }
+                if (optional.getLetterHolidayData() == null) {
+                    index.add(15);
+                }
+
+                if (optional.getChildrenData() == null) {
+                    index.add(16);
+                }
+                if (fieldLetterRecyclerAdapter != null && !index.isEmpty()) {
+                    for (LetterConfigResponse.Datos datos : fieldLetterRecyclerAdapter.getFieldsLetter()) {
+                        for (Integer integer : index) {
+                            if (datos.getIdu_datoscartas() == integer) {
+                                datos.setSelected(false);
+                            }
+                        }
+                    }
+                    fieldLetterRecyclerAdapter.notifyDataSetChanged();
+                }
+                parent.getViewPager().setCurrentItem(0);
+            }
+
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
@@ -122,6 +160,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         typeLetter = getArguments().getInt(BUNDLE_LETTER);
         letterConfigResponse = (LetterConfigResponse) getArguments().getSerializable(BUNDLE_RESPONSE_CONFIG_LETTER);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -177,8 +216,23 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
             if (position > 0)
                 disable.remove(position);
         }else {
-            if (position > 0)
+            if (position > 0){
                 disable.put(position, true);
+                CoppelServicesLettersGenerateRequest.Data optional = parent.getPreviewDataVO().getDataOptional();
+                switch (position) {
+                    case 1 :
+                        optional.setChildrenData(null);
+                        break;
+                    case 2 :
+                        optional.setJobScheduleData(null);
+                        optional.setScheduleData(null);
+                        optional.setSectionScheduleData(null);
+                        break;
+                    case 3 :
+                        optional.setLetterHolidayData(null);
+                        break;
+                }
+            }
         }
     }
 
@@ -279,6 +333,7 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
                 PreviewDataVO previewDataVO = new PreviewDataVO();
                 previewDataVO.setDataLetter(letterPreviewResponse.getData());
                 previewDataVO.setFieldsLetter(fieldsLetter);
+                previewDataVO.setDataOptional(parent.getPreviewDataVO().getDataOptional());
                 previewDataVO.setHasStamp(hasStamp);
                 ILettersNavigation.showFragmentAtPosition((typeLetter ==TYPE_KINDERGARTEN)? 4 : 1,previewDataVO);
                 break;
@@ -399,4 +454,8 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
                 parent.getPreviewDataVO().getDataOptional(),stampLetter,token);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
