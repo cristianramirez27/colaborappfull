@@ -216,7 +216,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/center"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
@@ -239,7 +239,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/position"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvCenterValue" />
 
@@ -263,7 +263,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/enterprise"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvPositionValue" />
 
@@ -287,7 +287,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/erh"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvEnterpriseValue" />
 
@@ -311,7 +311,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/manager"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvErhValue" />
 
@@ -335,7 +335,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/admission_date"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view5" />
 
@@ -359,7 +359,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/seniority_date"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvAdmissionDateValue" />
 
@@ -394,7 +394,7 @@
             android:text="@string/rfc"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -419,7 +419,7 @@
             android:text="@string/curp"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvRfcValue" />
 
@@ -444,7 +444,7 @@
             android:text="@string/nss"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvCurpValue" />
 
@@ -478,24 +478,22 @@
             android:layout_marginTop="8dp"
             android:text="@string/email"
             android:textColor="@color/colorTextGray"
-            style="@style/TextBold14Coppel"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
         <TextView
-            android:id="@+id/txvEmailValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="4dp"
-            android:maxLines="1"
-            android:textColor="@android:color/black"
-            style="@style/TextBook17Coppel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline31"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline27"
-            app:layout_constraintTop_toBottomOf="@+id/txvEmail" />
+                android:id="@+id/txvEmailValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                style="@style/TextBook17Coppel"
+                app:layout_constraintEnd_toStartOf="@+id/guideline31"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline27"
+                app:layout_constraintTop_toBottomOf="@+id/txvEmail"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline23"
