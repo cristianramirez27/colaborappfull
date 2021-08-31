@@ -173,7 +173,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
         btnAdvertising.setOnClickListener(this);
         btnCode.setOnClickListener(this);
-        txtAddress.setMovementMethod(new ScrollingMovementMethod());
+//        txtAddress.setMovementMethod(new ScrollingMovementMethod());
 
         scrollview.setOnTouchListener(new View.OnTouchListener() {
 
