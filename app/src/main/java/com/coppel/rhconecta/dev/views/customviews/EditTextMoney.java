@@ -107,7 +107,7 @@ public class EditTextMoney extends ConstraintLayout {
         edtQuantity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         InputFilter[] filterArray = new InputFilter[1];
-        filterArray[0] = new InputFilter.LengthFilter(12);
+        filterArray[0] = new InputFilter.LengthFilter(15);
         edtQuantity.setFilters(filterArray);
 
         edtQuantity.addTextChangedListener(new MoneyTextWatcher(edtQuantity, true));

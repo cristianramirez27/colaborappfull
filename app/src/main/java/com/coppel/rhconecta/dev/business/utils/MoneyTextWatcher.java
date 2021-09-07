@@ -67,7 +67,10 @@ public class MoneyTextWatcher implements TextWatcher {
             if (position == str.length() -3)
                 return;
            str = str.substring(0,(position+3));
+            editText.removeTextChangedListener(this); // Remove listener
             editText.setText(str);
+            handleSelection();
+            editText.addTextChangedListener(this); // Add back the listener
             return;
         }
 
