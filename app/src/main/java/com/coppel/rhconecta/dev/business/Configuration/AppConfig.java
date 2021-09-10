@@ -77,9 +77,29 @@ public class AppConfig {
     public final static String BLOCK_QR = "BLOCK_QR";
     public final static String BLOCK_COVID_SURVEY = "BLOCK_COVID_SURVEY";
     public final static String MESSAGE_FOR_BLOCK = "MESSAGE_FOR_BLOCK";
+    public final static String BLOCK_COCREA = "BLOCK_COCREA";
     public final static String BLOCK_WHEATHER = "BLOCK_WHEATER";
     public final static String YES = "YES";
     public final static String NO = "NO";
+
+    public final static String BLOCK_MESSAGE_PROFILE = "BLOCK_MESSAGE_PROFILE";
+    public final static String BLOCK_MESSAGE_SAVINGS = "BLOCK_MESSAGE_SAVINGS";
+    public final static String BLOCK_MESSAGE_PAYSHEET = "BLOCK_MESSAGE_PAYSHEET";
+    public final static String BLOCK_MESSAGE_CARTASCONFIG = "BLOCK_MESSAGE_CARTASCONFIG";
+    public final static String BLOCK_MESSAGE_BENEFICIOS = "BLOCK_MESSAGE_BENEFICIOS";
+    public final static String BLOCK_MESSAGE_TRAVEL_EXPENSES = "BLOCK_MESSAGE_TRAVEL_EXPENSES";
+    public final static String BLOCK_MESSAGE_HOLIDAYS = "BLOCK_MESSAGE_HOLIDAYS";
+    public final static String BLOCK_MESSAGE_VISIONARIOS = "BLOCK_MESSAGE_VISIONARIOS";
+    public final static String BLOCK_MESSAGE_COMUNICADOS = "BLOCK_MESSAGE_COMUNICADOS";
+    public final static String BLOCK_MESSAGE_ENCUESTAS = "BLOCK_MESSAGE_ENCUESTAS";
+    public final static String BLOCK_MESSAGE_COLLAGE = "BLOCK_MESSAGE_COLLAGE";
+    public final static String BLOCK_MESSAGE_QR = "BLOCK_MESSAGE_QR";
+    public final static String BLOCK_MESSAGE_STAYHOME = "BLOCK_MESSAGE_STAYHOME";
+    public final static String BLOCK_MESSAGE_COVID_SURVEY = "BLOCK_MESSAGE_COVID_SURVEY";
+
+    public final static String TITLE_COCREA = "TITLE_COCREA";
+    public final static String ENDPOINT_COCREA = "URL_COCREA";
+    public final static String ENDPOINT_COCREA_STORE = "URL_COCREA_STORE";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
 
@@ -117,6 +137,9 @@ public class AppConfig {
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
 
+        String url_coCrea = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA);
+        String url_coCreaSite = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA_STORE);
+
         String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
         String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
         String holidayBonus = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAY_BONUS);
@@ -152,6 +175,9 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFIT_CODE,benefitCode);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COCREA, url_coCrea);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COCREA_STORE, url_coCreaSite);
+
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
         //VISIONARIOS
@@ -174,9 +200,40 @@ public class AppConfig {
         String block_message = mFirebaseRemoteConfig.getString(MESSAGE_FOR_BLOCK);
         String block_collage = mFirebaseRemoteConfig.getString(BLOCK_COLLAGE);
         String block_qr = mFirebaseRemoteConfig.getString(BLOCK_QR);
+        String block_coCrea = mFirebaseRemoteConfig.getString(BLOCK_COCREA);
+        String block_title_coCrea = mFirebaseRemoteConfig.getString(TITLE_COCREA);
         String block_wheather = mFirebaseRemoteConfig.getString(BLOCK_WHEATHER);
         String block_covid_survey = mFirebaseRemoteConfig.getString(BLOCK_COVID_SURVEY);
         String block_title_wheather = mFirebaseRemoteConfig.getString(TITLE_WHEATHER);
+        String block_message_profile = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_PROFILE);
+        String block_message_savings = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_SAVINGS);
+        String block_message_paysheet = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_PAYSHEET);
+        String block_message_letter_config = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_CARTASCONFIG);
+        String block_message_benefits = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_BENEFICIOS);
+        String block_message_travel_expenses = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_TRAVEL_EXPENSES);
+        String block_message_holidays = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_HOLIDAYS);
+        String block_message_visionarios = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_VISIONARIOS);
+        String block_message_comunicados = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_COMUNICADOS);
+        String block_message_survey = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_ENCUESTAS);
+        String block_message_collage = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_COLLAGE);
+        String block_message_qr = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_QR);
+        String block_message_stayhome = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_STAYHOME);
+        String block_message_covid = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_COVID_SURVEY);
+
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_SAVINGS, block_message_savings);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PAYSHEET, block_message_paysheet);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_CARTASCONFIG, block_message_letter_config);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_BENEFICIOS, block_message_benefits);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_TRAVEL_EXPENSES, block_message_travel_expenses);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_HOLIDAYS, block_message_holidays);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_VISIONARIOS, block_message_visionarios);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_COMUNICADOS, block_message_comunicados);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_ENCUESTAS, block_message_survey);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_COLLAGE, block_message_collage);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_QR, block_message_qr);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_STAYHOME, block_message_stayhome);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_COVID_SURVEY, block_message_covid);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS, block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET, block_paysheet);
@@ -193,6 +250,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COLLAGE, block_collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_QR, block_qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY, block_covid_survey);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), TITLE_COCREA, block_title_coCrea);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_COCREA, block_coCrea);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), TITLE_WHEATHER, block_title_wheather);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_WHEATHER, block_wheather);
 

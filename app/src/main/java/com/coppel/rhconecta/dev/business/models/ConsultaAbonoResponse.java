@@ -25,22 +25,22 @@ public class ConsultaAbonoResponse extends WithDrawSavingBaseResponse {
     }
 
     public class Response {
-        private int imp_cuentacorriente;
+        private float imp_cuentacorriente;
         private int clv_retirocuentacorriente;
-        private int imp_ahorroadiciona;
+        private float imp_ahorroadicional;
         private int clv_retiroahorroadicional;
-        private int imp_fondotrabajador;
+        private float imp_fondotrabajador;
         private int clv_retirofondotrabajador;
         private String des_proceso;
         private String des_cambiar;
         private String des_mensaje;
         private String des_abonoProceso;
 
-        public int getImp_cuentacorriente() {
+        public float getImp_cuentacorriente() {
             return imp_cuentacorriente;
         }
 
-        public void setImp_cuentacorriente(int imp_cuentacorriente) {
+        public void setImp_cuentacorriente(float imp_cuentacorriente) {
             this.imp_cuentacorriente = imp_cuentacorriente;
         }
 
@@ -52,12 +52,12 @@ public class ConsultaAbonoResponse extends WithDrawSavingBaseResponse {
             this.clv_retirocuentacorriente = clv_retirocuentacorriente;
         }
 
-        public int getImp_ahorroadicional() {
-            return imp_ahorroadiciona;
+        public float getImp_ahorroadicional() {
+            return imp_ahorroadicional;
         }
 
-        public void setImp_ahorroadicional(int imp_ahorroadicional) {
-            this.imp_ahorroadiciona = imp_ahorroadicional;
+        public void setImp_ahorroadicional(float imp_ahorroadicional) {
+            this.imp_ahorroadicional = imp_ahorroadicional;
         }
 
         public int getClv_retiroahorroadicional() {
@@ -68,11 +68,11 @@ public class ConsultaAbonoResponse extends WithDrawSavingBaseResponse {
             this.clv_retiroahorroadicional = clv_retiroahorroadicional;
         }
 
-        public int getImp_fondotrabajador() {
+        public float getImp_fondotrabajador() {
             return imp_fondotrabajador;
         }
 
-        public void setImp_fondotrabajador(int imp_fondotrabajador) {
+        public void setImp_fondotrabajador(float imp_fondotrabajador) {
             this.imp_fondotrabajador = imp_fondotrabajador;
         }
 

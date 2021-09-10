@@ -340,11 +340,11 @@ public interface IServicesRetrofitMethods  <T>{
 
     @Headers({"Content-Type: application/json"})
     @POST
-    Call<JsonObject> getBenefitCode(@Url String url,@Header("Authorization") String token, @Body BenefitCodeRequest benefitCodeRequest);
+    Call<JsonObject> getBenefitCode(@Url String url, @Header("Authorization") String token, @Body BenefitCodeRequest benefitCodeRequest);
 
     @Headers({"Content-Type: application/json"})
     @POST
-    Call<JsonObject> getInfoCompany(@Url String url,@Header("Authorization") String token, @Body BenefitCodeRequest infoCompanyRequest);
+    Call<JsonObject> getInfoCompany(@Url String url, @Header("Authorization") String token, @Body BenefitCodeRequest infoCompanyRequest);
 
     @Headers({"Content-Type: application/json"})
     @POST

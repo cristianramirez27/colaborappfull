@@ -37,11 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/authorize_request"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"/>
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -61,11 +60,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/active_controls"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
 
         <TextView
             android:id="@+id/title"

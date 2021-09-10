@@ -38,7 +38,7 @@
                     android:id="@+id/tv_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_book"
+                    style="@style/TextBold14Coppel"
                     tools:text="Opcion 1" />
 
             </LinearLayout>

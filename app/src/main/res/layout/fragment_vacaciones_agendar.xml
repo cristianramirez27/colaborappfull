@@ -50,10 +50,9 @@
                     android:id="@+id/tituloSolicitudes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_dates_selected"
-                    android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="22sp" />
+                    style="@style/TextMedium22Coppel"
+                    android:textColor="@color/colorSecondBlueCoppel"/>
 
                 <TextView
                     android:layout_below="@+id/tituloSolicitudes"
@@ -120,12 +119,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_blue_rounded"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/btn_schedule_more"
                         android:textAllCaps="false"
                         android:layout_marginRight="10dp"
                         android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        style="@style/ButtonCoppel" />
 
                     <Button
                         android:id="@+id/btnSendRequest"
@@ -133,12 +131,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_green_rounded"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/btn_request_all"
                         android:textAllCaps="false"
                         android:layout_marginLeft="10dp"
                         android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        style="@style/ButtonCoppel" />
 
                 </LinearLayout>
 

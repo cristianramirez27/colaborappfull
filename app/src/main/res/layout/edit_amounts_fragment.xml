@@ -22,10 +22,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:visibility="visible"
+            style="@style/TextBold20Coppel"
             android:text="Importes"
-            android:textSize="16sp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
@@ -50,10 +49,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="Colaborador"
                 android:textColor="@color/colorTextGray"
-                android:textSize="11sp"
+                style="@style/TextBook14Coppel"
                 android:gravity="center"/>
 
             <TextView
@@ -61,10 +59,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="Gerente"
+                style="@style/TextBook14Coppel"
                 android:textColor="@color/colorTextGray"
-                android:textSize="11sp"
                 android:gravity="center"/>
 
         </LinearLayout>
@@ -106,9 +103,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.1"
-                        android:fontFamily="@font/lineto_circular_pro_bold"
                         android:textColor="@color/colorBackgroundCoppelNegro"
-                        android:textSize="14sp"
+                        style="@style/TextBook14Coppel"
                         android:text="Totales"
                         android:gravity="left"/>
 
@@ -117,9 +113,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lineto_circular_pro_book"
+                        style="@style/TextBook14Coppel"
                         android:textColor="@color/colorTextGray"
-                        android:textSize="13sp"
                         android:lines="1"
                         android:gravity="center"/>
 
@@ -128,10 +123,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/lineto_circular_pro_bold"
                         android:textColor="@color/colorBackgroundCoppelNegro"
-                        android:textSize="15sp"
                         android:lines="1"
+                        style="@style/TextBook14Coppel"
                         android:gravity="center"/>
 
                 </LinearLayout>
@@ -160,24 +154,22 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/background_blue_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/cancel"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:textSize="16sp" />
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
             <Button
                 android:id="@+id/btnActionRight"
                 android:layout_weight="1"
+                style="@style/ButtonCoppel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_blue_rounded"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/accept"
                 android:textAllCaps="false"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/colorBackgroundCoppelBlanco"
-                android:textSize="16sp" />
+                android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
         </LinearLayout>
 

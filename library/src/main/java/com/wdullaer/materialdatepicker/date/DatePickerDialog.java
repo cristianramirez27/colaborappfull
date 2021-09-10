@@ -50,11 +50,7 @@ import com.wdullaer.materialdatepicker.TypefaceHelper;
 import com.wdullaer.materialdatepicker.Utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Dialog allowing users to select a date.
@@ -169,6 +165,11 @@ public class DatePickerDialog extends DialogFragment implements
     private String mYearPickerDescription;
     private String mSelectYear;
 
+    private boolean enableNewStyle = false;
+    private SimpleDateFormat dayFormater = new SimpleDateFormat("EEEE");
+    private SimpleDateFormat monthFormater = new SimpleDateFormat("MMM");
+    private SimpleDateFormat numberDayFormater = new SimpleDateFormat("dd");
+
     /**
      * The callback used to indicate the user is done filling in the date.
      */
@@ -238,6 +239,10 @@ public class DatePickerDialog extends DialogFragment implements
         return ret;
     }
 
+    public void enableNewStyle(boolean enable){
+        enableNewStyle = enable;
+    }
+
     public void initialize(OnDateSetListener callBack, Calendar initialSelection) {
         mCallBack = callBack;
         mCalendar = Utils.trimToMidnight((Calendar) initialSelection.clone());
@@ -272,7 +277,7 @@ public class DatePickerDialog extends DialogFragment implements
         if (Build.VERSION.SDK_INT < 18) {
             VERSION_2_FORMAT = new SimpleDateFormat(activity.getResources().getString(R.string.mdtp_date_v2_daymonthyear), mLocale);
         } else {
-            VERSION_2_FORMAT = new SimpleDateFormat(DateFormat.getBestDateTimePattern(mLocale, "EEEMMMdd"), mLocale);
+            VERSION_2_FORMAT = new SimpleDateFormat(DateFormat.getBestDateTimePattern(mLocale, "EEEE MMMM dd"), mLocale);
         }
         VERSION_2_FORMAT.setTimeZone(getTimeZone());
     }
@@ -395,7 +400,7 @@ public class DatePickerDialog extends DialogFragment implements
         titleCustomCalendar.setText(titleCustom);
 
         final Activity activity = getActivity();
-        mDayPickerView = new DayPickerGroup(activity, this);
+        mDayPickerView = new DayPickerGroup(activity, this, enableNewStyle);
         mYearPickerView = new YearPickerView(activity, this);
 
         // if theme mode has not been set by java code, check if it is specified in Style.xml
@@ -453,6 +458,12 @@ public class DatePickerDialog extends DialogFragment implements
         //if (mCancelString != null) cancelButton.setText(mCancelString);
         //else cancelButton.setText(mCancelResid);
         cancelButton.setVisibility(isCancelable() ? View.VISIBLE : View.GONE);
+
+        if (enableNewStyle) {
+            okButton.setBackground(getContext().getDrawable(R.drawable.background_green_rounded));
+            cancelButton.setBackground(getContext().getDrawable(R.drawable.background_red_rounder));
+            titleCustomCalendar.setTextColor(Color.parseColor("#fedd31"));
+        }
 
         // If an accent color has not been set manually, get it from the context
         if (mAccentColor == -1) {
@@ -599,6 +610,21 @@ public class DatePickerDialog extends DialogFragment implements
         }
     }
 
+    private String generateTitle() {
+        StringBuilder st = new StringBuilder();
+        Date date = mCalendar.getTime();
+        String temp = dayFormater.format(date);
+        st.append(temp.substring(0,1).toUpperCase());
+        st.append(temp.substring(1))
+                .append(". ");
+            temp =monthFormater.format(date);
+        st.append(temp.substring(0,1).toUpperCase())
+        .append(temp.substring(1))
+        .append(" ")
+        .append(numberDayFormater.format(date));
+     return st.toString();
+    }
+
     private void updateDisplay(boolean announce) {
         mYearView.setText(YEAR_FORMAT.format(mCalendar.getTime()));
 
@@ -622,7 +648,7 @@ public class DatePickerDialog extends DialogFragment implements
         }
 
         if (mVersion == Version.VERSION_2) {
-            mSelectedDayTextView.setText(VERSION_2_FORMAT.format(mCalendar.getTime()));
+            mSelectedDayTextView.setText(generateTitle());
             if (mTitle != null)
                 mDatePickerHeaderView.setText(mTitle.toUpperCase(mLocale));
             else

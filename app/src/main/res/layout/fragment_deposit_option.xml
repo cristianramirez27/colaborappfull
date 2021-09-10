@@ -39,10 +39,9 @@
                    android:id="@+id/txvTitle"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:fontFamily="@font/lineto_circular_pro_book"
                    android:text="@string/payment_way"
+                   style="@style/TextBook12Coppel"
                    android:textColor="@color/colorSavingHeaderText"
-                   android:textSize="14sp"
                    android:paddingTop="8dp"
                    android:paddingBottom="8dp" />
 
@@ -94,15 +93,14 @@
                    android:id="@+id/totalImporte"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:fontFamily="@font/lineto_circular_pro_bold"
                    android:gravity="center"
                    android:maxLines="1"
                    android:layout_marginTop="30dp"
                    android:layout_marginBottom="14dp"
                    android:textAllCaps="true"
+                   style="@style/TextBold16Coppel"
                    android:text="@string/totalRemove"
-                   android:textColor="@color/colorPrimaryCoppelAzul"
-                   android:textSize="14sp" />
+                   android:textColor="@color/colorPrimaryCoppelAzul"/>
 
            </LinearLayout>
 

@@ -460,7 +460,9 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
 
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
+        datePickerDialog.setThemeHolday(true);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
+        datePickerDialog.setTextButtonCalendar(holidaysPeriodsResponse.getData().getResponse().getDes_config());
         datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
 

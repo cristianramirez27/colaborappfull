@@ -45,10 +45,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:gravity="center"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    style="@style/TextBold20Coppel"
                     android:text="@string/title_control_aditional_days"
-                    android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="22sp" />
+                    android:textColor="@color/colorSecondBlueCoppel"/>
 
                 <LinearLayout
                     android:id="@+id/layoutPendingDays"
@@ -62,10 +61,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        style="@style/TextBook14Coppel"
                         android:text="@string/title_add_aditional_days_pending"
-                        android:textColor="@color/colorTextCoppelNegro"
-                        android:textSize="14sp" />
+                        android:textColor="@color/colorTextCoppelNegro"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -115,10 +113,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:fontFamily="@font/lineto_circular_pro_medium"
                         android:text="@string/title_add_aditional_days"
                         android:textColor="@color/colorTextCoppelNegro"
-                        android:textSize="14sp" />
+                        style="@style/TextBook14Coppel"/>
 
                     <LinearLayout
                         android:layout_marginTop="10dp"
@@ -208,25 +205,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_blue_rounded"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/cancel"
                         android:textAllCaps="false"
                         android:layout_marginRight="10dp"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        style="@style/ButtonCoppel"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
                     <Button
                         android:id="@+id/btnNextControl"
                         android:layout_weight="1"
+                        style="@style/ButtonCoppel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_blue_rounded"
-                        android:fontFamily="@font/lineto_circular_pro_book"
                         android:text="@string/btn_title_next"
                         android:textAllCaps="false"
                         android:layout_marginLeft="10dp"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"
-                        android:textSize="16sp" />
+                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
                 </LinearLayout>
 

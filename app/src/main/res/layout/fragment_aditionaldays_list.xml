@@ -62,9 +62,9 @@
                         android:imeOptions="actionSearch"
                         android:inputType="textVisiblePassword"
                         android:lines="1"
+                        style="@style/TextBook14Coppel"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"
-                        android:textSize="14sp" />
+                        android:textColorHint="@color/colorTextBlueCoppel"/>
 
                 </RelativeLayout>
 
@@ -84,9 +84,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
+                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="14sp" />
+                    android:textColor="@color/colorTextCoppelNegro"/>
 
                 <TextView
                     android:id="@+id/centro"
@@ -95,8 +95,8 @@
                     android:layout_below="@+id/tituloCentro"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:textColor="@color/colorPrimaryCoppelAzul"
-                    android:textSize="14sp" />
+                    style="@style/TextBook14Coppel"
+                    android:textColor="@color/colorPrimaryCoppelAzul"/>
 
                 <ImageView
                     android:layout_width="30dp"
@@ -111,11 +111,10 @@
                 android:id="@+id/tituloControles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_medium"
                 android:text="@string/center_colaborators"
                 android:layout_marginTop="14dp"
-                android:textColor="@color/colorBackgroundCoppelNegro"
-                android:textSize="18sp" />
+                style="@style/TextMedium18Coppel"
+                android:textColor="@color/colorBackgroundCoppelNegro"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSolicitudes"

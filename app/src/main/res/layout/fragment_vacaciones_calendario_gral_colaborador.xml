@@ -266,13 +266,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/btn_schedule_holidays"
             android:textAllCaps="false"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
     </LinearLayout>
 

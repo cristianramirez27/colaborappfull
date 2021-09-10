@@ -44,9 +44,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/half_vertical_margin"
-                        android:fontFamily="@font/lineto_circular_pro_bold"
                         android:textColor="@android:color/white"
-                        android:textSize="26sp"
+                        style="@style/TextBold26Coppel"
                         tools:text="@tools:sample/full_names" />
 
                     <LinearLayout
@@ -58,6 +57,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/TextBook14Coppel"
                             android:fontFamily="@font/lineto_circular_pro_book"
                             android:text="@string/collaborator"
                             android:textColor="@android:color/white" />
@@ -68,7 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lineto_circular_pro_book"
+                            style="@style/TextBook14Coppel"
                             android:textColor="@color/colorYellowCoppel"
                             tools:text="97658912" />
 
@@ -99,10 +99,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="@dimen/lateral_margin"
-                                android:fontFamily="@font/lineto_circular_pro_book"
+                                style="@style/TextBook16Coppel"
                                 android:text="@string/user_profile_label"
-                                android:textColor="@android:color/black"
-                                android:textSize="16sp" />
+                                android:textColor="@android:color/black"/>
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -132,10 +131,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="@dimen/lateral_margin"
-                                android:fontFamily="@font/lineto_circular_pro_book"
                                 android:text="@string/fingerprint_label"
                                 android:textColor="@android:color/black"
-                                android:textSize="16sp" />
+                                style="@style/TextBook16Coppel" />
 
                             <ImageView
                                 android:layout_width="wrap_content"

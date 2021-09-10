@@ -99,6 +99,8 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     TextView fechaRechazo;
     @BindView(R.id.motivoRechazo)
     TextView motivoRechazo;
+    @BindView(R.id.monthName)
+    TextView monthName;
 
     @BindView(R.id.txtDate)
     TextView txtDate;
@@ -192,8 +194,10 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         collapsibleCalendar.setExpandIconVisible(false);
         collapsibleCalendar.setMultipleDays(true);
         collapsibleCalendar.setEnable(false);
+        collapsibleCalendar.setTitleMonthVisible(false);
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
     private void observacionesStateChange(ExpandableSimpleTitle expandable, LinearLayout layoutToExpand) {

@@ -40,6 +40,16 @@ public class LetterConfigResponse extends CoppelGeneralParameterResponse impleme
         private String errorCode;
         private String userMessage;
 
+        public String getMensajeSello() {
+            return mensajeSello;
+        }
+
+        public void setMensajeSello(String mensajeSello) {
+            this.mensajeSello = mensajeSello;
+        }
+
+        private String mensajeSello;
+
         public String getClave() {
             return Clave;
         }

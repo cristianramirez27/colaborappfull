@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCompany;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -48,8 +49,8 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
         setContentView(R.layout.activity_alert_container);
         initViews();
         this.dialogFragmentWarning = new DialogFragmentWarning();
-        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company)
-            IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
+        Serializable temp = IntentExtension.getSerializableExtra(getIntent(), KEY_COMPANY);
+        BenefitsCompaniesResponse.Company company = (BenefitsCompaniesResponse.Company) temp;
         coppelServicesPresenter = new CoppelServicesPresenter(this, DialogAlertActivity.this);
         showCompanyDialog(company);
     }
@@ -122,6 +123,8 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError != null) {
+            if (coppelServicesError.getType() == ServicesRequestType.BENEFIT_CODE)
+                return;
             showWarningDialog(coppelServicesError.getMessage());
         } else {
             showWarningDialog(getString(R.string.str_error_conexion));

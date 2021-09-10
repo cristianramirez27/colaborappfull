@@ -481,6 +481,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
+        datePickerDialog.setTextButtonCalendar(holidaysPeriodsResponse.getData().getResponse().getDes_config());
         datePickerDialog.setCustomTitle(holidaysPeriodsResponse.getData().getResponse().getDes_marca() != null ?
                 holidaysPeriodsResponse.getData().getResponse().getDes_marca() : "");
         //TODO Validar que esta suma sea correcta

@@ -201,12 +201,12 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.validateDeviceId(validateDeviceIdRequest);
     }
 
-    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token){
+    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token) {
         view.showProgress();
         servicesInteractor.getBenefitCode(benefitCodeRequest, token);
     }
 
-    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token){
+    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token) {
         view.showProgress();
         servicesInteractor.getInfoCompany(infoCompanyRequest, token);
     }

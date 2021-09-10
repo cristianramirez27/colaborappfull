@@ -62,4 +62,9 @@
     <color name="mdtp_done_text_color_dark_normal">#ffffff</color>
     <color name="mdtp_done_text_color_dark_disabled">#888888</color>
     <color name="mdtp_done_disabled_dark">#bfbfbf</color>
+    <color name="colorCoppelAmarillo">#fddd2e</color>
+    <color name="colorTitle">#fedd31</color>
+    <color name="colorButtonHolidayAccept">#6CC424</color>
+    <color name="colorButtonHolidayCancel">#EB5655</color>
+<!--    <color name="main_color_blue">#0065b2</color>-->
 </resources>

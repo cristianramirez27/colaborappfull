@@ -35,10 +35,10 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp">
 
-                <com.coppel.rhconecta.dev.views.customviews.RequestHolidaysColaboratorView
-                    android:id="@+id/headerColaborator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte
+                        android:id="@+id/headerHoliday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
             </RelativeLayout>
 
@@ -73,10 +73,10 @@
                         android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lineto_circular_pro_medium"
                         android:text="@string/title_calendar_days_proposed"
                         android:textColor="@color/colorSecundaryCoppelVerde"
-                        android:textSize="13sp" />
+                        style="@style/TextBook12Coppel"
+                        />
 
                 </RelativeLayout>
 
@@ -85,6 +85,7 @@
                     android:id="@+id/layoutSplice"
                     android:orientation="horizontal"
                     android:paddingLeft="8dp"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -101,11 +102,10 @@
                         android:id="@+id/textSplice"
                         android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
+                        style="@style/TextBook12Coppel"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lineto_circular_pro_medium"
                         android:text="@string/title_splice"
-                        android:textColor="@color/colorMelon"
-                        android:textSize="13sp" />
+                        android:textColor="@color/colorMelon"/>
 
                 </RelativeLayout>
 
@@ -117,16 +117,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_centerVertical="true"
-                        android:id="@+id/monthName"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/lineto_circular_pro_medium"
-                        android:text="Octubre 2019"
-                        android:textColor="@color/colorTextCoppelNegro"
-                        android:textSize="18sp" />
+                            android:layout_centerVertical="true"
+                            android:id="@+id/monthName"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Octubre 2019"
+                            style="@style/TextBold14Coppel"
+                            android:textColor="@color/colorTextCoppelNegro"/>
 
                     <RelativeLayout
                         android:layout_alignParentRight="true"

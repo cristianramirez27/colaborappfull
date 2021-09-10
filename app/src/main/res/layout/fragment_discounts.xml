@@ -20,24 +20,22 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_medium"
             android:text="Educación"
             android:padding="4dp"
-            android:textColor="@color/colorSecondBlueCoppel"
-            android:textSize="22sp" />
+            style="@style/TextBold20Coppel"
+            android:textColor="@color/colorSecondBlueCoppel"/>
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
-            android:fontFamily="@font/lineto_circular_pro_medium"
             android:text="Obtén descuentos en las mejores escuelas de Culiacán"
             android:padding="4dp"
             android:maxLines="2"
             android:layout_centerVertical="true"
             android:textColor="@color/colorTextGrayDark"
-            android:textSize="14sp" />
+            style="@style/TextBook14Coppel"/>
 
     </RelativeLayout>
 

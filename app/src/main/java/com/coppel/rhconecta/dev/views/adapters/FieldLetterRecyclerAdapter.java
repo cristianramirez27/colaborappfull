@@ -21,11 +21,20 @@ import butterknife.ButterKnife;
 public class FieldLetterRecyclerAdapter extends RecyclerView.Adapter<FieldLetterRecyclerAdapter.ViewHolder> {
 
     private Context context;
+    private OnClickItemListerner onClickItemListerner;
+
+    public interface OnClickItemListerner {
+        void showFragmentAtPosition(int position, boolean enabled);
+    }
 
     private List<LetterConfigResponse.Datos> fieldsLetter;
     public FieldLetterRecyclerAdapter(Context context, List<LetterConfigResponse.Datos> fieldsLetter) {
         this.fieldsLetter = fieldsLetter;
         this.context = context;
+    }
+
+    public void setOnClickItemListerner(OnClickItemListerner onClickItemListerner) {
+        this.onClickItemListerner = onClickItemListerner;
     }
 
     @NonNull
@@ -43,18 +52,40 @@ public class FieldLetterRecyclerAdapter extends RecyclerView.Adapter<FieldLetter
         viewHolder.txvName.setText(currentItem.getNom_datoscartas());
         viewHolder.checkboxElement.setChecked(currentItem.isSelected() ? true : false);
         viewHolder.checkboxElement.setEnabled(currentItem.getOpc_estatus() == 1 ? true : false);
+        viewHolder.ctlContainer.setBackgroundResource(currentItem.getOpc_estatus() == 1 ? R.color.mdtp_white : R.color.disable);
 
         viewHolder.checkboxElement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int position ;
+                switch (currentItem.getIdu_datoscartas()) {
+                    case 16:
+                        position = 1;
+                        break;
+                    case 15:
+                        position = 3;
+                        break;
+                    case 12:
+                        position = 2;
+                        break;
+                    default:
+                        position = 0;
+                        break;
+                }
 
                 if (currentItem.isSelected()) {
                     currentItem.setSelected(false);
                     viewHolder.checkboxElement.setChecked(false);
+                    if (onClickItemListerner != null){
+                        onClickItemListerner.showFragmentAtPosition(position, false);
+                    }
 
                 } else {
                     currentItem.setSelected(true);
                     viewHolder.checkboxElement.setChecked(true);
+                    if (onClickItemListerner != null){
+                        onClickItemListerner.showFragmentAtPosition(position, true);
+                    }
 
                 }
             }

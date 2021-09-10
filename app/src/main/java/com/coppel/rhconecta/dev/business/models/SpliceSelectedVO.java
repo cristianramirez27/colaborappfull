@@ -10,6 +10,7 @@ public class SpliceSelectedVO implements Serializable {
     private List<HolidayPeriod> periodos;
     private Day daySelected;
     private boolean addSpliceMarks;
+    private boolean enableAction = true;
 
     private List<Day>  listDaySelectedCurrent;
     private boolean showDetail = false;
@@ -58,5 +59,13 @@ public class SpliceSelectedVO implements Serializable {
 
     public void setShowDetail(boolean showDetail) {
         this.showDetail = showDetail;
+    }
+
+    public void setEnableAction(boolean enableAction) {
+        this.enableAction = enableAction;
+    }
+
+    public boolean isEnableAction() {
+        return enableAction;
     }
 }

@@ -7,10 +7,11 @@
     </string>
     <string name="go_to_coppel">Ir a coppel.com</string>
     <string name="employee_number">N. de empleado</string>
-    <string name="password">Contraseña</string>
+    <string name="password">Contraseña colaborador digital</string>
     <string name="login">Ingresar</string>
     <string name="forgot_my_password">Olvidé mi contraseña</string>
-    <string name="sign_in">¿Aún no te registras? Crea tu cuenta</string>
+    <string name="sign_in"> Crea tu cuenta</string>
+    <string name="not_yet_sign_in">¿Aún no te registras?</string>
     <string name="title_home">Inicio</string>
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
@@ -22,12 +23,13 @@
     <string name="enterprise">Empresa</string>
     <string name="erh">ERH</string>
     <string name="manager">Gerente</string>
+    <string name="manager_vacation">Acceder  como gerente</string>
     <string name="admission_date">Fecha de ingreso</string>
     <string name="seniority_date">Fecha de antigüedad</string>
     <string name="rfc">RFC</string>
     <string name="curp">CURP</string>
     <string name="nss">NSS</string>
-    <string name="mail">Correo</string>
+    <string name="mail">Correo colaborador digital</string>
     <string name="email">Correo electrónico</string>
     <string name="collaborator">Colaborador:</string>
     <string name="notices">Comunicados</string>
@@ -178,8 +180,10 @@
     <string name="max_letters_print">Ya se excedió el número de impresiones.\nPonte en contacto con tu Encargada Local de Personal</string>
 
     <string name="title_stamp_letter">Sellar</string>
+    <string name="title_config_letter">¡Atención!</string>
 
     <string name="question_stamp_letter">¿Necesitas tu carta sellada?</string>
+    <string name="question_config_letter">¿Necesitas que tu carta esté sellada?</string>
 
     <string name="yes">Sí</string>
 
@@ -193,6 +197,7 @@
     <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
 
     <string name="start_day">Día inicial</string>
+    <string name="start_day_hint">Días laborables </string>
 
     <string name="end_day">Día final</string>
     <string name="start_hour">Entrada</string>
@@ -217,12 +222,12 @@
     <string name="join_us">Sé parte de nuestro equipo</string>
 
 
-    <string name="hint_search">Introduce una búsqueda</string>
+    <string name="hint_search">Busca una categoría</string>
 
     <string name="are_you_in_culiacan">¿No estás en Culiacán?</string>
 
     <string name="are_you_in_">¿No estás en</string>
-    <string name="change_city"><u>Cambia de ciudad</u></string>
+    <string name="change_city">Cambia de ciudad</string>
     <string name="discount_sample">30%\nde descuento</string>
     <string name="file_work_record">Laboral</string>
 
@@ -259,8 +264,9 @@
     <string name="paymentway_select">Selecciona un método de pago</string>
     <string name="confirm">Confirmar</string>
     <string name="colaborator">Colaborador</string>
+    <string name="colaborator_vacation">Acceder como colaborador</string>
 
-    <string name="select_rol_expenses">Selecciona el rol con el que deseas acceder</string>
+    <string name="select_rol_expenses">Selecciona el rol con el que deseas acceder.</string>
     <string name="authorize_request">Autorizar solicitudes</string>
     <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
 
@@ -354,6 +360,11 @@
     <string name="title_total_request_days">Total días solicitados</string>
     <string name="title_days_to_schedule">Días por agendar</string>
     <string name="title_eliminate">Eliminar</string>
+    <string name="botton_refuse">Rechazar</string>
+    <string name="botton_accept">Aceptar</string>
+    <string name="botton_accept_2">Autorizar</string>
+    <string name="label_more_information">Más información</string>
+    <string name="label_less_information">Menos información</string>
 
 
     <string name="msg_holiday_request_deleted">Solicitud eliminada\ncorrectamente</string>
@@ -394,6 +405,7 @@
     <string name="title_holidays_colaborator_calendar_gral">Vacaciones del colaborador</string>
     <string name="title_holidays_colaborator_calendar">Vacaciones colaborador</string>
     <string name="title_calendar_periods">Marca los días o medios días en el calendario sin días de descanso</string>
+    <string name="title_calendar_periods_2">Marca los días en el calendario sin días de descanso</string>
     <string name="title_collage">Universidad\nCoppel</string>
 
     <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
@@ -438,6 +450,7 @@
     <string name="poll_activity_failure_title">Alerta</string>
     <string name="poll_activity_failure_action">Aceptar</string>
     <string name="collaborator_at_home">Videos</string>
+    <string name="title_cocrea">CoCrea</string>
     <string name="title_wheather">Clima organizacional</string>
     <string name="collaborator_at_home_title">Videos</string>
     <string name="visionary_at_home_details_activity_title">Videos</string>
@@ -483,4 +496,6 @@
         <item>IMSS</item>
         <item>ISR</item>
     </string-array>
+    <string name="label_dialog_city">Selecciona la ciudad</string>
+    <string name="label_title_code">Tu código es</string>
 </resources>

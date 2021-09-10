@@ -23,12 +23,12 @@ import android.content.Context;
  */
 public class SimpleMonthAdapter extends MonthAdapter {
 
-    public SimpleMonthAdapter(DatePickerController controller) {
-        super(controller);
+    public SimpleMonthAdapter(DatePickerController controller, boolean enableTheme) {
+        super(controller, enableTheme);
     }
 
     @Override
-    public MonthView createMonthView(Context context) {
-        return new SimpleMonthView(context, null, mController);
+    public MonthView createMonthView(Context context, boolean enableTheme) {
+        return new SimpleMonthView(context, null, mController, enableTheme);
     }
 }

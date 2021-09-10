@@ -25,6 +25,8 @@ import io.realm.RealmList;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
@@ -41,6 +43,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
@@ -50,6 +53,10 @@ public class MenuUtilities {
      *
      */
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications) {
+
+        String title_cocrea = AppUtilities.getStringFromSharedPreferences(context, TITLE_COCREA);
+        if (title_cocrea.isEmpty())
+            title_cocrea = context.getString(R.string.title_cocrea);
 
         String title_wheather = AppUtilities.getStringFromSharedPreferences(context, TITLE_WHEATHER);
         if (title_wheather.isEmpty())
@@ -69,6 +76,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),
+                new HomeMenuItem(title_cocrea, OPTION_COCREA),
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER)
         ));
 
@@ -191,6 +199,7 @@ public class MenuUtilities {
         boolean blockStayHome = AppUtilities.getStringFromSharedPreferences(context, BLOCK_STAYHOME).equals(YES);
         boolean blockQr = AppUtilities.getStringFromSharedPreferences(context, BLOCK_QR).equals(YES);
         boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
+        boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         for (HomeMenuItem item : homeMenuItems) {
@@ -199,6 +208,8 @@ public class MenuUtilities {
             if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
                 continue;
             if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
+                continue;
+            if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea)
                 continue;
             if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
                 continue;
@@ -316,6 +327,9 @@ public class MenuUtilities {
             case AppConstants.OPTION_COVID_SURVEY:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_covid_survey);
                 break;
+            case AppConstants.OPTION_COCREA:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_cocrea);
+                break;
             case AppConstants.OPTION_WHEATHER:
                 icon = AppCompatResources.getDrawable(context, R.drawable.clima);
                 break;
@@ -370,8 +384,8 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getRolUserMenu(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.manager), AppConstants.OPTION_MENU_GTE));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator), AppConstants.OPTION_MENU_COLABORATOR));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
 
         return menuItems;
     }

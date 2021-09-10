@@ -3955,7 +3955,7 @@ public class ServicesInteractor {
         }
     }
 
-    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token){
+    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token) {
         this.token = token;
         int type = ServicesRequestType.BENEFIT_CODE;
 
@@ -3993,7 +3993,7 @@ public class ServicesInteractor {
         });
     }
 
-    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token){
+    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token) {
         this.token = token;
         int type = ServicesRequestType.BENEFIT_COMPANY;
 
@@ -4026,6 +4026,7 @@ public class ServicesInteractor {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });

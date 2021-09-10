@@ -43,8 +43,9 @@
         android:layout_marginBottom="4dp"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
+        android:textStyle="bold"
         android:background="@android:color/transparent"
-        android:textColor="@color/mdtp_date_picker_selector"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/mdtp_datepicker_year_selection_text_size"
         tools:text="2015" />
 
@@ -64,9 +65,10 @@
             android:layout_gravity="center_vertical"
             android:duplicateParentState="true"
             android:gravity="left"
+            android:textStyle="bold"
             android:includeFontPadding="false"
             android:background="@android:color/transparent"
-            android:textColor="@color/mdtp_date_picker_selector"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/mdtp_datepicker_selection_text_size"
             tools:text="Fri, May 15"/>
     </com.wdullaer.materialdatepicker.AccessibleLinearLayout>

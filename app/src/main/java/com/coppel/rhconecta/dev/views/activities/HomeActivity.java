@@ -55,6 +55,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
+import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -102,6 +103,19 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CO
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COMUNICADOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_BENEFICIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CARTASCONFIG;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COLLAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_QR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
@@ -111,6 +125,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
@@ -133,12 +148,14 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
-/** */
+/* */
 public class HomeActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, View.OnClickListener, ListView.OnItemClickListener,
@@ -198,8 +215,9 @@ public class HomeActivity
     @Inject
     public HomeActivityViewModel homeActivityViewModel;
 
-
-    /** */
+    /**
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,7 +267,18 @@ public class HomeActivity
         observeViewModel();
     }
 
-    /** */
+    /**
+     *
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkoutAnalyticsTime();
+    }
+
+    /**
+     *
+     */
     public void checkoutAnalyticsTime() {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         if (atm.existsFlow()) {
@@ -259,25 +288,40 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void observeViewModel() {
         homeActivityViewModel.getSendTimeByAnalyticsFlowStatus()
                 .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
     }
 
-    /** */
+    /**
+     *
+     */
     private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
         switch (processStatus) {
             case LOADING:
                 break;
             case FAILURE:
+                getAnalyticsTimeManager().clear();
+                if (homeActivityViewModel.getFailure() instanceof ServerFailure) {
+                    ServerFailure result = (ServerFailure) homeActivityViewModel.getFailure();
+                    if (result.getSessionInvalid()) {
+                        EXPIRED_SESSION = true;
+                        showWarningDialog(getString(R.string.expired_session));
+                    }
+                }
+                break;
             case COMPLETED:
                 getAnalyticsTimeManager().clear();
                 break;
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void navigateToDestination(NotificationDestination notificationDestination) {
         checkoutAnalyticsTime();
 
@@ -309,29 +353,36 @@ public class HomeActivity
         }
     }
 
-
-    /** */
+    /**
+     *
+     */
     @Override
     protected void onResume() {
         super.onResume();
         AppUtilities.setProfileImage(this, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         actionBarDrawerToggle.syncState();
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item))
@@ -339,7 +390,9 @@ public class HomeActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /** */
+    /**
+     *
+     */
     public void hideOptionToolbar() {
         if (isOpenMenuToolbar) {
             isOpenMenuToolbar = false;
@@ -349,7 +402,9 @@ public class HomeActivity
             onBackPressed();
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onBackPressed() {
         if (hideLoader)
@@ -371,14 +426,18 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.close();
     }
 
-    /** */
+    /**
+     *
+     */
     private void initNavigationComponents() {
         ctlProfile.setOnClickListener(this);
         setSupportActionBar(tbActionBar);
@@ -400,7 +459,9 @@ public class HomeActivity
         dlHomeContainer.addDrawerListener(actionBarDrawerToggle);
     }
 
-    /** */
+    /**
+     *
+     */
     private void initMenu() {
         String name = profileResponse.getNombreColaborador().split(" ")[0];
         name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
@@ -411,7 +472,9 @@ public class HomeActivity
         lvOptions.setOnItemClickListener(this);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000)
@@ -422,7 +485,9 @@ public class HomeActivity
         navigationMenu(option.getTAG(), accessOption);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -444,13 +509,17 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void pictureChanged() {
         AppUtilities.setProfileImage(this, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
     }
 
-    /** */
+    /**
+     *
+     */
     public void replaceFragment(Fragment fragment, String tag) {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -459,7 +528,9 @@ public class HomeActivity
         dlHomeContainer.closeDrawers();
     }
 
-    /** */
+    /**
+     *
+     */
     public void navigationMenu(String tag, AccessOption accessOption) {
         checkoutAnalyticsTime();
 
@@ -472,13 +543,13 @@ public class HomeActivity
                     break;
                 case OPTION_NOTICE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COMUNICADOS);
                     } else
                         navigateToReleases(accessOption);
                     break;
                 case OPTION_PAYROLL_VOUCHER:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_PAYSHEET);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.PAYROLL_VOUCHER);
                         replaceFragment(new PayrollVoucherMenuFragment(), PayrollVoucherMenuFragment.TAG);
@@ -486,7 +557,7 @@ public class HomeActivity
                     break;
                 case OPTION_BENEFITS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_BENEFICIOS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_BENEFICIOS);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.BENEFITS);
                         replaceFragment(new BenefitsFragment(), BenefitsFragment.TAG);
@@ -494,7 +565,7 @@ public class HomeActivity
                     break;
                 case OPTION_SAVING_FUND:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_SAVINGS).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_SAVINGS);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.SAVING_FUND);
                         replaceFragment(new LoanSavingFundFragment(), LoanSavingFundFragment.TAG);
@@ -509,19 +580,19 @@ public class HomeActivity
                     break;
                 case OPTION_VISIONARIES:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_VISIONARIOS).equals(YES))
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_VISIONARIOS);
                     else
                         navigateToVisionaries(accessOption);
                     break;
                 case OPTION_COLLABORATOR_AT_HOME:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_STAYHOME).equals(YES))
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_STAYHOME);
                     else
                         navigateToCollaboratorAtHome(accessOption);
                     break;
                 case OPTION_LETTERS:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CARTASCONFIG).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_CARTASCONFIG);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.LETTERS);
                         replaceFragment(new EmploymentLettersMenuFragment(), EmploymentLettersMenuFragment.TAG);
@@ -529,7 +600,7 @@ public class HomeActivity
                     break;
                 case OPTION_EXPENSES:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_TRAVEL_EXPENSES).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_TRAVEL_EXPENSES);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.TRAVEL_EXPENSES);
                         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
@@ -557,7 +628,7 @@ public class HomeActivity
                     break;
                 case OPTION_QR_CODE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_QR).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_QR);
                     } else {
                         Intent intentQr = new IntentBuilder(new Intent(this, QrCodeActivity.class))
                                 .putStringExtra("numEmp", profileResponse.getColaborador())
@@ -568,7 +639,7 @@ public class HomeActivity
                     break;
                 case OPTION_COVID_SURVEY:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COVID_SURVEY);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
                         getExternalUrl(COVID_SURVEY);
@@ -576,11 +647,19 @@ public class HomeActivity
                     break;
                 case OPTION_COLLAGE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)) {
-                        showBlockDialog();
+                        showBlockDialog(BLOCK_MESSAGE_COLLAGE);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         getCollageURL();
                     }
+                case OPTION_COCREA:
+                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    if (urlCoCrea.isEmpty())
+                        urlCoCrea = URL_DEFAULT_COCREA;
+
+                    Intent intentCoCrea = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCoCrea));
+                    startActivity(intentCoCrea);
+                    break;
                 case OPTION_POLL:
                     break;
                 case OPTION_WHEATHER:
@@ -597,10 +676,12 @@ public class HomeActivity
         forceHideProgress();
     }
 
-    /** */
+    /**
+     *
+     */
     private void executeOptionHolidays() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS).equals(YES)) {
-            showBlockDialog();
+            showBlockDialog(BLOCK_MESSAGE_HOLIDAYS);
         } else {
             initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.HOLIDAYS);
             if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
@@ -615,7 +696,7 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /* */
     private void navigateToReleases(AccessOption accessOption) {
         Intent intentReleases = new IntentBuilder(new Intent(this, ReleasesActivity.class))
                 .putSerializableExtra(ReleasesActivity.ACCESS_OPTION, accessOption)
@@ -624,7 +705,7 @@ public class HomeActivity
         startActivity(intentReleases);
     }
 
-    /** */
+    /* */
     private void navigateToVisionaries(AccessOption accessOption) {
         Intent intentVisionaries = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.VISIONARIES)
@@ -634,7 +715,7 @@ public class HomeActivity
         startActivity(intentVisionaries);
     }
 
-    /** */
+    /* */
     private void navigateToCollaboratorAtHome(AccessOption accessOption) {
         Intent collaboratorAtHome = new IntentBuilder(new Intent(this, VisionariesActivity.class))
                 .putSerializableExtra(VisionariesActivity.TYPE, VisionaryType.COLLABORATOR_AT_HOME)
@@ -660,13 +741,17 @@ public class HomeActivity
         atm.start(analyticsFlow);
     }
 
-    /** */
+    /**
+     *
+     */
     private void getExternalUrl(int option) {
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         coppelServicesPresenter.getExternalUrl(profileResponse.getColaborador(), option, token);
     }
 
-    /** */
+    /**
+     *
+     */
     private void openCovidSurvey(String url) {
         Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -679,22 +764,30 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     public void setToolbarTitle(String title) {
         titleToolbar.setText(title);
     }
 
-    /** */
+    /**
+     *
+     */
     public LoginResponse.Response getLoginResponse() {
         return loginResponse;
     }
 
-    /** */
+    /**
+     *
+     */
     public ProfileResponse.Response getProfileResponse() {
         return profileResponse;
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onLeftOptionClick() {
         dialogFragmentWarning.close();
@@ -702,7 +795,9 @@ public class HomeActivity
             requestLogout = false;
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
@@ -725,7 +820,9 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void initFirebase() {
         FirebaseMessaging.getInstance().subscribeToTopic("general")
                 .addOnCompleteListener(task -> {
@@ -734,7 +831,9 @@ public class HomeActivity
                 });
     }
 
-    /** */
+    /**
+     *
+     */
     private void getData() {
         InternalDatabase idb = new InternalDatabase(this);
 
@@ -770,13 +869,17 @@ public class HomeActivity
         fragmentTransaction.add(R.id.flFragmentContainer, currentHomeFragment, HomeMainFragment.TAG).commit();
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public SurveyInboxView getSurveyIcon() {
         return surveyInboxView;
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -785,7 +888,9 @@ public class HomeActivity
             myFragment.onActivityResult(requestCode, resultCode, data);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showResponse(ServicesResponse response) {
         switch (response.getType()) {
@@ -831,7 +936,9 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void openCollage(String urlString) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -844,7 +951,9 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError.getMessage() != null) {
@@ -866,14 +975,18 @@ public class HomeActivity
         }
     }
 
-    /** */
-    private void showBlockDialog() {
+    /**
+     *
+     */
+    private void showBlockDialog(String key) {
         String message = AppUtilities
-                .getStringFromSharedPreferences(getApplicationContext(), MESSAGE_FOR_BLOCK);
+                .getStringFromSharedPreferences(getApplicationContext(), key);
         showWarningDialog(message);
     }
 
-    /** */
+    /**
+     *
+     */
     private void showWarningDialog(String message) {
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
@@ -881,7 +994,9 @@ public class HomeActivity
         dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showProgress() {
         if (hideLoader) {
@@ -895,7 +1010,9 @@ public class HomeActivity
 
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void hideProgress() {
         if (dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
@@ -905,7 +1022,9 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     public void forceHideProgress() {
         if (dialogFragmentLoader != null && dialogFragmentLoader.isVisible()) {
             dialogFragmentLoader.dismissAllowingStateLoss();
@@ -914,7 +1033,9 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void getRolType(int type) {
         String numEmployer = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
@@ -930,17 +1051,21 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public boolean validateSurveyAccess() {
         if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_ENCUESTAS).equals(YES)) {
-            showBlockDialog();
+            showBlockDialog(BLOCK_MESSAGE_ENCUESTAS);
             return false;
         }
         return true;
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -949,7 +1074,9 @@ public class HomeActivity
             f.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    /** */
+    /**
+     *
+     */
     private void getCollageURL() {
         String token = AppUtilities
                 .getStringFromSharedPreferences(
@@ -959,7 +1086,9 @@ public class HomeActivity
         coppelServicesPresenter.getCollege(profileResponse.getColaborador(), 19, token);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showTitle(boolean show) {
         tbActionBar.setTitle(show ? titleActivity : "");
@@ -969,13 +1098,17 @@ public class HomeActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void changeIconToolbar(int icon) {
         tbActionBar.setNavigationIcon(icon);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showEliminatedOption(boolean show, String name) {
         eliminateOption.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -983,17 +1116,23 @@ public class HomeActivity
         surveyInboxView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showAuthorizeOption(boolean show) { /* USELESS IMPLEMENTATION */ }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void setActionEliminatedOption(Command action) {
         eliminateOption.setOnClickListener(action::execute);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void setActionAuthorizeOption(Command action) { /* USELESS IMPLEMENTATION */ }
 

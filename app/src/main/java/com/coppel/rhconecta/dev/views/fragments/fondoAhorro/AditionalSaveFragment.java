@@ -48,6 +48,8 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import java.util.Locale;
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_AHORRO;
@@ -264,16 +266,14 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                     consultaAhorroAdicionalResponse = (ConsultaAhorroAdicionalResponse) response.getResponse();
                     txvTitle.setText(consultaAhorroAdicionalResponse.getData().getResponse().getDes_titulo());
                     txtCurrentAmount.setText(consultaAhorroAdicionalResponse.getData().getResponse().getDes_actual());
-                    txtValueCurrentAmount.setText(String.format("$%d",consultaAhorroAdicionalResponse.getData().getResponse().getImp_cuotaahorro()));
+                    txtValueCurrentAmount.setText(String.format("$%.2f",consultaAhorroAdicionalResponse.getData().getResponse().getImp_cuotaahorro()));
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     if(consultaAhorroAdicionalResponse.getData().getResponse().getImp_cuotaproceso() > 0) {
                         edtAhorroActualCambiar.setVisibility(VISIBLE);
                         edtAhorroActualProceso.setVisibility(VISIBLE);
                         edtAhorroActualProceso.setInformativeMode(consultaAhorroAdicionalResponse.getData().getResponse().getDes_proceso(),"");
-                        edtAhorroActualProceso.setInformativeQuantity(String.format("$%d",consultaAhorroAdicionalResponse.getData().getResponse().getImp_cuotaproceso()));
-                        edtAhorroActualProceso.setSizeQuantity(30);
+                        edtAhorroActualProceso.setInformativeQuantity(String.format("$%.2f",consultaAhorroAdicionalResponse.getData().getResponse().getImp_cuotaproceso()));
                         edtAhorroActualCambiar.setInformativeMode(consultaAhorroAdicionalResponse.getData().getResponse().getDes_ahorro(),"");
-                        edtAhorroActualCambiar.setSizeQuantity(22);
                         edtAhorroActualCambiar.setHint("Ingresa otra cantidad");
                         edtAhorroActualCambiar.setEnableQuantity(true);
                         btnAdd.setText("Cambiar");
@@ -281,7 +281,6 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                     }else {
                         edtAhorroActualProceso.setVisibility(VISIBLE);
                         edtAhorroActualProceso.setInformativeMode(consultaAhorroAdicionalResponse.getData().getResponse().getDes_ahorro(), "");
-                        edtAhorroActualCambiar.setSizeQuantity(22);
                         edtAhorroActualProceso.setHint("Ingresa una cantidad");
                         edtAhorroActualProceso.setEnableQuantity(true);
                         edtAhorroActualCambiar.setVisibility(View.GONE);
@@ -465,7 +464,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                 setEnableButton(false);
                 showAlertDialog(getString(R.string.attention), "",
                         getString(R.string.max_saving),
-                        TextUtilities.getNumberInCurrencyFormaNoDecimal(Double.parseDouble(String.valueOf(consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()))),
+                        String.format(Locale.getDefault(),"$%.2f", consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()),
                         "Aceptar",0,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
                             @Override
                             public void onAccept() {

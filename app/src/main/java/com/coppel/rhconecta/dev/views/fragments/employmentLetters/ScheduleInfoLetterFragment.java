@@ -351,12 +351,20 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
             double hoursLunch = 0.0;
             if(!lunchTime.equals("0") && !lunchTime.equals("Horario corrido")){
                 String []timeLunchPart = lunchTime.split(":");
-
-                hoursLunch += Integer.parseInt(timeLunchPart[0]);
-
-                if(timeLunchPart[1].equals("30")){
-                    hoursLunch+= 0.5;
+               int temp;
+                try {
+                    temp =Integer.parseInt(timeLunchPart[0]);
+                }catch (Exception e){
+                    temp = 0;
                 }
+
+                hoursLunch += temp;
+
+                try {
+                    if(timeLunchPart[1].equals("30")){
+                        hoursLunch+= 0.5;
+                    }
+                }catch (Exception e ){}
 
             }
 
@@ -367,7 +375,7 @@ public class ScheduleInfoLetterFragment extends Fragment implements View.OnClick
                // btnNext.setVisibility(View.INVISIBLE);
             }else {
 
-                ILettersNavigation.showFragmentAtPosition(3,getData());
+                ILettersNavigation.showFragmentAtPosition(0,getData());
                // btnNext.setVisibility(View.VISIBLE);
             }
         }

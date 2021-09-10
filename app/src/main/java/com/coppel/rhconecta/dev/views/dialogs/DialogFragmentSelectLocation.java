@@ -46,6 +46,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     private  BenefitsStatesResponse.States stateSelected;
 
     private long mLastClickTime = 0;
+    private boolean cityEnable;
 
     public static DialogFragmentSelectLocation getInstance(){
         DialogFragmentSelectLocation dialogFragmentCompany = new DialogFragmentSelectLocation();
@@ -118,8 +119,8 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
 
                 stateError.setVisibility(View.INVISIBLE);
                 cityError.setVisibility(View.INVISIBLE);*/
-                if(state.getText().toString().isEmpty()
-                   || city.getText().toString().isEmpty()){
+                if (state.getText().toString().isEmpty()
+                        || !cityEnable) {
                     return;
                 }else {
                     onSelectLocationsButtonsClickListener.onSelectLocation();
@@ -144,6 +145,8 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
         this.stateSelected =stateSelected;
         state.setText(stateSelected.getNombre());
 
+        city.setText(R.string.label_dialog_city);
+        cityEnable = false;
         viewCity.setEnabled(true);
         viewCity.setAlpha(1f);
     }
@@ -152,6 +155,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
     public void setCity(BenefitsCitiesResponse.City citySelected){
         //this.stateSelected =stateSelected;
         city.setText(citySelected.getNombre());
+        cityEnable = true;
     }
 
     public interface OnSelectLocationsButtonsClickListener {

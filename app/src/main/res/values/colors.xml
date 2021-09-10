@@ -14,20 +14,24 @@
     <color name="colorBackgroundDialogs">#98000000</color>
     <color name="colorBackgroundFragments">#f6f7f9</color>
     <color name="colorTextGray">#969696</color>
+    <color name="colorTextGrayScheduler">#999999</color>
     <color name="colorTextGrayDark">#5f6062</color>
-    <color name="colorBackgroundGray">#e6e8ef</color>
+    <color name="colorBackgroundGray">#33a3a3a3</color>
     <color name="colorSavingHeaderText">#5f6062</color>
     <color name="colorRed">#b00020</color>
     <color name="colorOrange">#fd7700</color>
     <color name="colorBackgroundFavorites">#f2f1f1</color>
     <color name="colorMelon">#ff8256</color>
+    <color name="colorLabelCreateAccount">#199dd5</color>
 
 
+    <color name="blueBottonCoppel">#0065b2</color>
     <color name="colorBordeGrisToolbar">#4C002028</color>
     <color name="colorBordeTransparentToolbar">#00FFFFFF</color>
 
 
     <color name="colorGrisDeshabilitado">#c3c0c4</color>
+    <color name="disable">#e4e4e4</color>
 
     <color name="transparentIndicatorSelected">#80FFFFFF</color>
     <color name="transparentIndicator">#B3FFFFFF</color>
@@ -49,7 +53,9 @@
     <color name="colorTextCoppelNegro">#4F4F4F</color>
     <color name="colorBackgroundCoppelGris2">#E0E0E0</color>
     <color name="colorBackgroundCoppelNegro">#000000</color>
-    <color name="colorBackgroundDivider">#f1f2f6</color>
+    <color name="colorBackgroundCoppelNegro2">#1e1f1f</color>
+    <color name="colorBackgroundDivider">#d4d4d4</color>
+    <color name="colorScheduler">#199dd5</color>
 
 
     <color name="colorBackgroundDialogDateTime">#0a9dd5</color>
@@ -57,6 +63,8 @@
     <color name="transparent">#00FFFFFF</color>
 
     <color name="colorTextBlueCoppel">#0065b2</color>
+    <color name="colorTextCode">#00599c</color>
+    <color name="colorBackgroundCode">#f8f8f8</color>
 
     <color name="black_transparency_seven">#85000000</color>
 
@@ -69,6 +77,10 @@
     <color name="background_calendar_splice">#ededed</color>
     <color name="gray_checkbox_disable">#61000000</color>
     <color name="holder_unselected_text_color">#5f6062</color>
+    <color name="dark_holiday">#000000</color>
+
+    <color name="text_color_header_gte">#333333</color>
+
     <color name="show_code_color">#4ec5fc</color>
 
 </resources>

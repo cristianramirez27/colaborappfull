@@ -25,35 +25,35 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
     }
 
     public class Response {
-        private int imp_margencredito;
-        private int imp_ahorroadicional;
-        private int imp_total;
+        private Float imp_margencredito = 0f;
+        private Float imp_ahorroadicional = 0f;
+        private Float imp_total = 0f;
         private String des_proceso;
         private String des_cambiar;
         private String des_mensaje;
 
 
-        public int getImp_margencredito() {
+        public Float getImp_margencredito() {
             return imp_margencredito;
         }
 
-        public void setImp_margencredito(int imp_margencredito) {
+        public void setImp_margencredito(Float imp_margencredito) {
             this.imp_margencredito = imp_margencredito;
         }
 
-        public int getImp_ahorroadicional() {
+        public Float getImp_ahorroadicional() {
             return imp_ahorroadicional;
         }
 
-        public void setImp_ahorroadicional(int imp_ahorroadicional) {
+        public void setImp_ahorroadicional(Float imp_ahorroadicional) {
             this.imp_ahorroadicional = imp_ahorroadicional;
         }
 
-        public int getImp_total() {
+        public Float getImp_total() {
             return imp_total;
         }
 
-        public void setImp_total(int imp_total) {
+        public void setImp_total(Float imp_total) {
             this.imp_total = imp_total;
         }
 

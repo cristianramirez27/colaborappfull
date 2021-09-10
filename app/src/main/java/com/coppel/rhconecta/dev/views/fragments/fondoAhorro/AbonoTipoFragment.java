@@ -191,7 +191,7 @@ private IButtonControl IButtonControl;
 
                 String str = payment.getText().toString();
 
-                if(!(str.toString().compareToIgnoreCase(getString(R.string.paymentway_select)) == 0) && edtAbonoActual.getQuantity().length() > 0){
+                if(!(str.compareToIgnoreCase(getString(R.string.paymentway_select)) == 0) && edtAbonoActual.getQuantity().length() > 0){
 
                     IButtonControl.enableButton(true);
 
@@ -211,7 +211,7 @@ private IButtonControl IButtonControl;
             edtAbonoProceso.setVisibility(VISIBLE);
             edtAbonoProceso.setInformativeMode(
                     datosAbonoOpcion.getDes_proceso(), "");
-            edtAbonoProceso.setInformativeQuantity(String.format("$%d",datosAbonoOpcion.getImporte()));
+            edtAbonoProceso.setInformativeQuantity(String.format("$%.2f",datosAbonoOpcion.getImporte()));
             edtAbonoActual.setInformativeMode(datosAbonoOpcion.getDes_cambiar(),"");
             edtAbonoActual.setHint("Ingresa otra cantidad");
             edtAbonoActual.setEnableQuantity(true);
@@ -221,7 +221,7 @@ private IButtonControl IButtonControl;
             edtAbonoActual.setHint("Ingresa una cantidad");
             edtAbonoActual.setEnableQuantity(true);
             edtAbonoProceso.setVisibility(View.GONE);
-            edtAbonoActual.setTextWatcherMoney();
+            edtAbonoActual.setTextWatcherMoneyDecimal();
         }
     }
     private void setFocusChangeListener(EditTextMoney editTextMoney){
@@ -235,10 +235,10 @@ private IButtonControl IButtonControl;
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(count > 0 && !(payment.getText().toString().compareToIgnoreCase(getString(R.string.paymentway_select))==0) )
-                    IButtonControl.enableButton(true  );
+                if (count > 0 && AppUtilities.isNumeric(s.toString().replace("$", "")) && !(payment.getText().toString().compareToIgnoreCase(getString(R.string.paymentway_select)) == 0))
+                    IButtonControl.enableButton(true);
                 else
-                    IButtonControl.enableButton(false  );
+                    IButtonControl.enableButton(false);
             }
 
             @Override
@@ -253,7 +253,7 @@ private IButtonControl IButtonControl;
             public void onFocusChange(View v, boolean hasFocus) {
 
                 if(hasFocus){
-                    editTextMoney.setTextWatcherMoney();
+                    editTextMoney.setTextWatcherMoneyDecimal();
                     DeviceManager.showKeyBoard(getActivity());
                 }
 
@@ -434,8 +434,8 @@ private IButtonControl IButtonControl;
     @Override
     public void calculate() {
         String content = edtAbonoActual.getQuantity();
-        Double importe = !content.isEmpty() ? Double.parseDouble(content) : 0.0;
-        totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(importe)));
+        Double importe = !content.isEmpty() ? AppUtilities.toDouble(content) : 0.0;
+        totalImporte.setText(String.format("%s$%.2f",getString(R.string.totalRemove),importe));
     }
 
     public DatosAbonoOpcion getDatosAbonoOpcion() {
@@ -461,6 +461,6 @@ private IButtonControl IButtonControl;
     }
 
     public double getAmount(){
-        return !edtAbonoActual.getQuantity().isEmpty() ?  Double.parseDouble(edtAbonoActual.getQuantity()) : 0.0;
+        return !edtAbonoActual.getQuantity().isEmpty() ? AppUtilities.toDouble(edtAbonoActual.getQuantity()) : 0.0;
     }
 }

@@ -4,18 +4,17 @@ package com.coppel.rhconecta.dev.views.fragments.holidays;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
@@ -26,6 +25,7 @@ import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.adapters.IconsMenuHolidayRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
@@ -42,7 +42,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_HO
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MENU_GTE;
 
 /**
- *
+ * A simple {@link Fragment} subclass.
  */
 public class HolidaysRolMenuFragment extends Fragment implements IServicesContract.View, IconsMenuRecyclerAdapter.OnItemClick {
 
@@ -51,7 +51,7 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
     @BindView(R.id.rcvOptions)
     RecyclerView rcvOptions;
     private List<HomeMenuItem> menuItems;
-    private IconsMenuRecyclerAdapter iconsMenuRecyclerAdapter;
+    private IconsMenuHolidayRecyclerAdapter iconsMenuHolidayRecyclerAdapter;
 
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -81,12 +81,12 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
         /**Se inicia menu con iconos**/
         rcvOptions.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        rcvOptions.setLayoutManager(gridLayoutManager);
+        rcvOptions.setLayoutManager(new LinearLayoutManager(getContext()));
         menuItems = new ArrayList<>();
         menuItems.addAll(MenuUtilities.getRolUserMenu(parent));
-        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
-        iconsMenuRecyclerAdapter.setOnItemClick(this);
-        rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
+        iconsMenuHolidayRecyclerAdapter = new IconsMenuHolidayRecyclerAdapter(parent, menuItems);
+        iconsMenuHolidayRecyclerAdapter.setOnItemClick(this);
+        rcvOptions.setAdapter(iconsMenuHolidayRecyclerAdapter);
 
         if (getActivity() instanceof HomeActivity) {
             ((HomeActivity) getActivity()).forceHideProgress();
@@ -153,5 +153,4 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
     public void hideProgress() {
         if (dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
-
 }

@@ -217,9 +217,9 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         //scrollView.setFillViewport (true);
         fragmentList = new ArrayList<>();
 
-        int impCorriente;
-        int impAhorro;
-        int impFondoTrabajador;
+        Float impCorriente;
+        Float impAhorro;
+        Float impFondoTrabajador;
 
         ConsultaAbonoResponse.Response data = response.getData().getResponse();
 
@@ -340,13 +340,13 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         AbonoTipoFragment fragmentCurrent = (AbonoTipoFragment) mainViewPagerAdapter.getItem(viewpager.getCurrentItem());
 
         if (fragmentCurrent.getClv_Abonar() == 1) {
-            withDrawSavingRequestData.setImp_cuentacorriente((int) fragmentCurrent.getAmount());
+            withDrawSavingRequestData.setImp_cuentacorriente(fragmentCurrent.getAmount());
             withDrawSavingRequestData.setIdu_traspaso(2);//2- Para cuenta corriente
         } else if (fragmentCurrent.getClv_Abonar() == 2) {
-            withDrawSavingRequestData.setImp_ahorroadicional((int) fragmentCurrent.getAmount());
+            withDrawSavingRequestData.setImp_ahorroadicional(fragmentCurrent.getAmount());
             withDrawSavingRequestData.setIdu_traspaso(1);//1- Para ahorro adicional
         } else if (fragmentCurrent.getClv_Abonar() == 3) {
-            withDrawSavingRequestData.setImp_fondoempleado((int) fragmentCurrent.getAmount());
+            withDrawSavingRequestData.setImp_fondoempleado(fragmentCurrent.getAmount());
             withDrawSavingRequestData.setIdu_traspaso(3);//1- Para ahorro adicional
         }
 

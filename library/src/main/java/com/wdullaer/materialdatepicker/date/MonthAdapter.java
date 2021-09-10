@@ -39,6 +39,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     private CalendarDay mSelectedDay;
 
     protected static final int MONTHS_IN_YEAR = 12;
+    private boolean enableTheme = false;
 
     /**
      * A convenience class to represent a specific date.
@@ -112,8 +113,9 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         }
     }
 
-    public MonthAdapter(DatePickerController controller) {
+    public MonthAdapter(DatePickerController controller, boolean enableTheme) {
         mController = controller;
+        this.enableTheme = enableTheme;
         init();
         setSelectedDay(mController.getSelectedDay());
         setHasStableIds(true);
@@ -145,7 +147,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     @NonNull
     public MonthViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        MonthView v = createMonthView(parent.getContext());
+        MonthView v = createMonthView(parent.getContext(), enableTheme);
         // Set up the new view
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         v.setLayoutParams(params);
@@ -172,7 +174,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         return endMonth - startMonth + 1;
     }
 
-    public abstract MonthView createMonthView(Context context);
+    public abstract MonthView createMonthView(Context context, boolean enableTheme);
 
     @Override
     public void onDayClick(MonthView view, CalendarDay day) {

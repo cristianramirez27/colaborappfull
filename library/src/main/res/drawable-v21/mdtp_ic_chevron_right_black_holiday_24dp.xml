@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+                android:width="24dp"
+                android:height="24dp"
+                android:shape="oval">
+            <solid android:color="@color/colorCoppelAmarillo" />
+            <stroke android:width="3dp"
+                    android:color="@color/colorCoppelAmarillo" />
+        </shape>
+    </item>
+    <item>
+        <vector
+                android:width="24dp"
+                android:height="24dp"
+                android:viewportWidth="24.0"
+                android:viewportHeight="24.0">
+            <path
+                    android:fillColor="#000000"
+                    android:pathData="M10,6L8.59,7.41 13.17,12l-4.58,4.59L10,18l6,-6z"/>
+        </vector>
+    </item>
+</layer-list>

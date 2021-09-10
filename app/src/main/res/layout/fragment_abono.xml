@@ -58,21 +58,19 @@
                                 android:gravity="center">
 
                                 <TextView
-                                    android:id="@+id/txvLoanMargin"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
-                                    android:gravity="center"
-                                    android:text="@string/current_account"
-                                    android:textColor="@color/colorSavingHeaderText"
-                                    android:textSize="13sp"
-                                    app:layout_constraintEnd_toStartOf="@+id/guideline74"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    tools:ignore="SmallSp" />
-
+                                        android:id="@+id/txvLoanMargin"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:text="@string/current_account"
+                                        android:textColor="@color/colorSavingHeaderText"
+                                        style="@style/TextBook12Coppel"
+                                        app:layout_constraintEnd_toStartOf="@+id/guideline74"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        tools:ignore="SmallSp"/>
                                 <TextView
                                     android:id="@+id/txvLoanValueCurrentAcount"
                                     android:layout_width="match_parent"
@@ -81,12 +79,11 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="4dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_medium"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="$0.00"
                                     android:textColor="@android:color/black"
-                                    android:textSize="14sp"
+                                    style="@style/TextBold12Coppel"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline74"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/txvLoanMargin" />
@@ -109,11 +106,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="center"
+                                    style="@style/TextBook12Coppel"
                                     android:text="@string/additional_saving_title"
                                     android:textColor="@color/colorSavingHeaderText"
-                                    android:textSize="13sp"
                                     tools:ignore="SmallSp" />
 
                                 <TextView
@@ -124,12 +120,11 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="4dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_medium"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="$0.00"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="14sp"/>
+                                    style="@style/TextBold12Coppel"
+                                    android:textColor="@android:color/black"/>
 
                             </LinearLayout>
 
@@ -149,11 +144,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="center"
                                     android:text="@string/employe_fund"
                                     android:textColor="@color/colorSavingHeaderText"
-                                    android:textSize="13sp"
+                                    style="@style/TextBook12Coppel"
                                     tools:ignore="SmallSp" />
 
                                 <TextView
@@ -164,12 +158,11 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="4dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_medium"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="$0.00"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="14sp"/>
+                                    style="@style/TextBold12Coppel"
+                                    android:textColor="@android:color/black"/>
 
                             </LinearLayout>
 
@@ -196,11 +189,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="center"
                                     android:text="@string/loan_margin"
                                     android:textColor="@color/colorSavingHeaderText"
-                                    android:textSize="13sp"
+                                    style="@style/TextBook12Coppel"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline74"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -214,12 +206,11 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="4dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_medium"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="$0.00"
                                     android:textColor="@android:color/black"
-                                    android:textSize="14sp"
+                                    style="@style/TextBold12Coppel"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline74"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/txvLoanMargin" />
@@ -242,11 +233,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="center"
                                     android:text="@string/enterprise_fund"
                                     android:textColor="@color/colorSavingHeaderText"
-                                    android:textSize="13sp"
+                                    style="@style/TextBook12Coppel"
                                     tools:ignore="SmallSp" />
 
                                 <TextView
@@ -257,12 +247,11 @@
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="4dp"
                                     android:ellipsize="end"
-                                    android:fontFamily="@font/lineto_circular_pro_medium"
                                     android:gravity="center"
                                     android:maxLines="1"
                                     android:text="$0.00"
-                                    android:textColor="@android:color/black"
-                                    android:textSize="14sp"/>
+                                    style="@style/TextBold12Coppel"
+                                    android:textColor="@android:color/black"/>
 
                             </LinearLayout>
 
@@ -294,13 +283,12 @@
                             android:id="@+id/removeFrom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lineto_circular_pro_medium"
                             android:gravity="center"
                             android:maxLines="1"
                             android:layout_marginBottom="10dp"
                             android:text="@string/addTo"
-                            android:textColor="@color/colorPrimaryCoppelAzul"
-                            android:textSize="14sp" />
+                            style="@style/TextBook14Coppel"
+                            android:textColor="@color/colorPrimaryCoppelAzul"/>
 
                         <androidx.cardview.widget.CardView
                             android:orientation="horizontal"
@@ -364,11 +352,11 @@
                             android:layout_marginLeft="40dp"
                             android:layout_alignParentBottom="true"
                             android:background="@drawable/background_blue_rounded"
-                            android:fontFamily="@font/lineto_circular_pro_book"
                             android:text="@string/btnDoDeposit"
                             android:textAllCaps="false"
+                            style="@style/ButtonCoppel"
                             android:textColor="@android:color/white"
-                            android:textSize="16sp"/>
+                            />
 
                     </LinearLayout>
 

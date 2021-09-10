@@ -129,17 +129,19 @@ public abstract class MonthView extends View {
     protected int mHighlightedDayTextColor;
     protected int mDisabledDayTextColor;
     protected int mMonthTitleColor;
+    private boolean enableThemeHoliday = false;
 
     private SimpleDateFormat weekDayLabelFormatter;
 
     public MonthView(Context context) {
-        this(context, null, null);
+        this(context, null, null,false);
     }
 
-    public MonthView(Context context, AttributeSet attr, DatePickerController controller) {
+    public MonthView(Context context, AttributeSet attr, DatePickerController controller, boolean enableThemeHoliday) {
         super(context, attr);
         mController = controller;
         Resources res = context.getResources();
+        this.enableThemeHoliday = enableThemeHoliday;
 
         mDayLabelCalendar = Calendar.getInstance(mController.getTimeZone(), mController.getLocale());
         mCalendar = Calendar.getInstance(mController.getTimeZone(), mController.getLocale());
@@ -163,6 +165,13 @@ public abstract class MonthView extends View {
         mTodayNumberColor = ContextCompat.getColor(context, R.color.main_color_blue);
         mMonthTitleColor = ContextCompat.getColor(context, R.color.mdtp_white);
 
+        if ( enableThemeHoliday ) {
+            mDayTextColor = ContextCompat.getColor(context, android.R.color.black);
+            mDisabledDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled);
+            mMonthDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled);
+            mHighlightedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_highlighted_dark_theme);
+            mTodayNumberColor = ContextCompat.getColor(context, R.color.main_color_blue);
+            }
         mStringBuilder = new StringBuilder(50);
 
         MINI_DAY_NUMBER_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_day_number_size);
@@ -273,8 +282,8 @@ public abstract class MonthView extends View {
 
         mMonthDayLabelPaint = new Paint();
         mMonthDayLabelPaint.setAntiAlias(true);
-        mMonthDayLabelPaint.setTextSize(MONTH_DAY_LABEL_TEXT_SIZE);
-        mMonthDayLabelPaint.setColor(Color.parseColor("#9b9b9b"));
+        mMonthDayLabelPaint.setTextSize(enableThemeHoliday ? 28 : MONTH_DAY_LABEL_TEXT_SIZE);
+        mMonthDayLabelPaint.setColor(enableThemeHoliday ? Color.parseColor("#000000") : Color.parseColor("#9b9b9b"));
         mMonthTitlePaint.setTypeface(Typeface.create(mDayOfWeekTypeface, Typeface.BOLD));
         mMonthDayLabelPaint.setStyle(Style.FILL);
         mMonthDayLabelPaint.setTextAlign(Align.CENTER);
@@ -432,7 +441,7 @@ public abstract class MonthView extends View {
         String [] monthNameParts = formatter.format(mCalendar.getTime()).split(" ");
         monthNameParts[0] = monthNameParts[0].substring(0, 1).toUpperCase() + monthNameParts[0].substring(1).toLowerCase();
 
-        return String.format("%s %s",monthNameParts[0],monthNameParts[2]);
+        return String.format("%s %s", monthNameParts[0], (monthNameParts.length == 3) ? monthNameParts[2] : monthNameParts[1]);
     }
 
     protected void drawMonthTitle(Canvas canvas) {

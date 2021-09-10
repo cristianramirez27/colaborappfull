@@ -15,6 +15,7 @@ public class CalendarProposedData implements Serializable {
 
     private int num_mes;
     private int num_anio;
+    private boolean showLabel;
 
     public CalendarProposedData(HolidayPeriod period) {
         this.period = period;
@@ -39,6 +40,13 @@ public class CalendarProposedData implements Serializable {
         this.holidaysPeriodsResponse = holidaysPeriodsResponse;
     }
 
+    public boolean isShowLabel() {
+        return showLabel;
+    }
+
+    public void setShowLabel(boolean showLabel) {
+        this.showLabel = showLabel;
+    }
 
     public HolidayPeriod getPeriod() {
         return period;

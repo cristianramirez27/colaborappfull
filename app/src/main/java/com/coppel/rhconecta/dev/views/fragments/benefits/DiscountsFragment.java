@@ -8,6 +8,7 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,7 +99,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
         parent.setToolbarTitle(getString(R.string.benefits));
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         rcvDiscounts.setHasFixedSize(true);
-        rcvDiscounts.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvDiscounts.setLayoutManager(new GridLayoutManager(getContext(),2));
         discounts = new ArrayList<>();
         discountsRecyclerAdapter = new DiscountsRecyclerAdapter(getContext(), discounts);
         discountsRecyclerAdapter.setOnBenefitsDiscountsClickListener(this);

@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/iconoFlechaAbajo"
+            style="@style/TextBold16Coppel"
             android:layout_marginLeft="20dp"
             android:text="MES PASADO" />
 
@@ -85,7 +86,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorSecundaryCoppelGris"
-                android:textSize="12sp"
+                style="@style/TextBook12Coppel"
                 app:layout_constraintStart_toStartOf="@id/labelTitulo"
                 app:layout_constraintTop_toBottomOf="@id/labelTitulo"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +104,7 @@
                 android:text="@string/visionaries_updated_label"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
-                android:textSize="11sp"
+                style="@style/TextBook10Coppel"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/labelTitulo"

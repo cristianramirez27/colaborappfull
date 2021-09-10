@@ -98,14 +98,14 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                     assert body != null;
                     SendTimeByAnalyticsFlowResponse.Response responseInstance = body.data.response;
                     if (responseInstance.wasFailed())
-                        callback.onResult(getSendTimeByAnalyticsFlowResponse(responseInstance.userMessage));
+                        callback.onResult(getSendTimeByAnalyticsFlowResponse(new ServerFailure(responseInstance.userMessage, responseInstance.errorCode == -6)));
                     else {
                         Either<Failure, UseCase.None> result =
                                 new Either<Failure, UseCase.None>().new Right(UseCase.None.getInstance());
                         callback.onResult(result);
                     }
                 } catch (Exception exception) {
-                    callback.onResult(getSendTimeByAnalyticsFlowResponse(exception.getMessage()));
+                    callback.onResult(getSendTimeByAnalyticsFlowResponse(new ServerFailure(exception.getMessage())));
                 }
             }
 
@@ -117,14 +117,13 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                     @NonNull Call<SendTimeByAnalyticsFlowResponse> call,
                     @NonNull Throwable t
             ) {
-                callback.onResult(getSendTimeByAnalyticsFlowResponse(t.getMessage()));
+                callback.onResult(getSendTimeByAnalyticsFlowResponse(new ServerFailure(t.getMessage())));
             }
 
             /**
              *
              */
-            private Either<Failure, UseCase.None> getSendTimeByAnalyticsFlowResponse(String message) {
-                ServerFailure failure = new ServerFailure(message);
+            private Either<Failure, UseCase.None> getSendTimeByAnalyticsFlowResponse(ServerFailure failure) {
                 return new Either<Failure, UseCase.None>().new Left(failure);
             }
 

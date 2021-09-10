@@ -56,23 +56,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_medium"
             android:text="@string/forgot_field"
+            style="@style/TextBook14Coppel"
             android:textColor="@color/colorTextCoppelNegro"
             android:layout_alignParentRight="true"
-            android:padding="8dp"
-            android:textSize="12sp"/>
+            android:padding="8dp"/>
 
         <TextView
             android:id="@+id/editLetter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_medium"
+            style="@style/TextBook14Coppel"
             android:text="@string/edit_letter"
             android:padding="8dp"
             android:textColor="@color/colorPrimaryCoppelAzul"
-            android:layout_alignParentRight="true"
-            android:textSize="12sp" />
+            android:layout_alignParentRight="true"/>
 
     </LinearLayout>
 
@@ -89,26 +87,24 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/sendToMail"
             android:textAllCaps="false"
             android:layout_marginRight="15dp"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            style="@style/ButtonCoppel"
             android:layout_alignParentBottom="true" />
 
         <Button
             android:layout_weight="1"
+            style="@style/ButtonCoppel"
             android:id="@+id/btnDownload"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/download"
             android:textAllCaps="false"
             android:layout_marginLeft="15dp"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
             android:layout_alignParentBottom="true" />
 
     </LinearLayout>

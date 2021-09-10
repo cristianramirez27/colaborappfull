@@ -13,12 +13,11 @@
         android:id="@+id/titleLetters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_medium"
         android:text="@string/customize_letter"
         android:paddingRight="20dp"
+        style="@style/TextBold20Coppel"
         android:paddingLeft="20dp"
-        android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="22sp" />
+        android:textColor="@color/colorSecondBlueCoppel"/>
 
     <androidx.cardview.widget.CardView
         android:layout_below="@+id/titleLetters"
@@ -43,13 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/background_blue_rounded"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:layout_marginLeft="45dp"
+        style="@style/ButtonCoppel"
         android:layout_marginRight="45dp"
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -130,7 +130,9 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
         rcvSolicitudes.setLayoutManager(new LinearLayoutManager(getContext()));
         colaboratorsPeriodsHolidays = new ArrayList<>();
         holidayRequestRecyclerAdapter = new HolidayRequestColaboratorsRecyclerAdapter(colaboratorsPeriodsHolidays,true);
-        holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
+        if (spliceSelectedVO.isEnableAction()){
+            holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
+        }
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
         initializeCalendar();
 
@@ -193,6 +195,10 @@ public class HolidaySpliceCalendarListFragment extends Fragment implements  View
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showLabelSplice(boolean enable) {
     }
 
     @Override

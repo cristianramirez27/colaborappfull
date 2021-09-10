@@ -30,6 +30,7 @@
     <color name="mdtp_numbers_text_color">#ff212121</color>
 
     <color name="main_color_blue">#0065b2</color>
+    <color name="background_color_blue">#06177A</color>
     <color name="main_text_disable">#c3c0c4</color>
 
 
@@ -69,4 +70,10 @@
     <color name="mdtp_done_text_color_dark_normal">#ffffff</color>
     <color name="mdtp_done_text_color_dark_disabled">#888888</color>
     <color name="mdtp_done_disabled_dark">#bfbfbf</color>
+
+    <color name="colorCoppelAmarillo">#fddd2e</color>
+    <color name="colorButtonHolidayAccept">#6CC424</color>
+    <color name="colorButtonHolidayCancel">#EB5655</color>
+    <color name="colorTextConfig">#35A8D9</color>
+    <color name="black">#000000</color>
 </resources>

@@ -62,6 +62,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
 
     private OnPageListener pageListener;
     private DatePickerController mController;
+    private boolean enableTheme = false;
 
     public interface OnPageListener {
         /**
@@ -81,6 +82,13 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
 
     public DayPickerView(Context context, DatePickerController controller) {
         super(context);
+        init(context, controller.getScrollOrientation());
+        setController(controller);
+    }
+
+    public DayPickerView(Context context, DatePickerController controller, boolean enableTheme) {
+        super(context);
+        this.enableTheme =enableTheme;
         init(context, controller.getScrollOrientation());
         setController(controller);
     }
@@ -148,7 +156,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
      */
     protected void refreshAdapter() {
         if (mAdapter == null) {
-            mAdapter = createMonthAdapter(mController);
+            mAdapter = createMonthAdapter(mController, enableTheme);
         } else {
             mAdapter.setSelectedDay(mSelectedDay);
             if (pageListener != null) pageListener.onPageChanged(getMostVisiblePosition());
@@ -157,7 +165,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
         setAdapter(mAdapter);
     }
 
-    public abstract MonthAdapter createMonthAdapter(DatePickerController controller);
+    public abstract MonthAdapter createMonthAdapter(DatePickerController controller, boolean enableTheme);
 
     public void setOnPageListener(@Nullable OnPageListener pageListener) {
         this.pageListener = pageListener;

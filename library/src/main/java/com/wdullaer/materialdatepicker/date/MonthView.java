@@ -18,12 +18,9 @@ package com.wdullaer.materialdatepicker.date;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -129,13 +126,16 @@ public abstract class MonthView extends View {
 
     private SimpleDateFormat weekDayLabelFormatter;
 
+    private boolean enableTheme = false;
+
     public MonthView(Context context) {
-        this(context, null, null);
+        this(context, null, null, false);
     }
 
-    public MonthView(Context context, AttributeSet attr, DatePickerController controller) {
+    public MonthView(Context context, AttributeSet attr, DatePickerController controller, boolean enableTheme) {
         super(context, attr);
         mController = controller;
+        this.enableTheme = enableTheme;
         Resources res = context.getResources();
 
         mDayLabelCalendar = Calendar.getInstance(mController.getTimeZone(), mController.getLocale());
@@ -159,6 +159,14 @@ public abstract class MonthView extends View {
         mSelectedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_white);
         mTodayNumberColor = mController.getAccentColor();
         mMonthTitleColor = ContextCompat.getColor(context, R.color.mdtp_white);
+
+        if ( enableTheme ) {
+            mDayTextColor = ContextCompat.getColor(context, android.R.color.black);
+            mDisabledDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled);
+            mMonthDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_disabled);
+            mHighlightedDayTextColor = ContextCompat.getColor(context, R.color.mdtp_date_picker_text_highlighted_dark_theme);
+            mTodayNumberColor = Color.parseColor("#0065b2");
+        }
 
         mStringBuilder = new StringBuilder(50);
 
@@ -259,7 +267,7 @@ public abstract class MonthView extends View {
         mMonthDayLabelPaint = new Paint();
         mMonthDayLabelPaint.setAntiAlias(true);
         mMonthDayLabelPaint.setTextSize(MONTH_DAY_LABEL_TEXT_SIZE);
-        mMonthDayLabelPaint.setColor(mMonthDayTextColor);
+        mMonthDayLabelPaint.setColor(enableTheme ? Color.parseColor("#000000") :mMonthDayTextColor);
         mMonthTitlePaint.setTypeface(Typeface.create(mDayOfWeekTypeface, Typeface.BOLD));
         mMonthDayLabelPaint.setStyle(Style.FILL);
         mMonthDayLabelPaint.setTextAlign(Align.CENTER);

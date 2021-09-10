@@ -34,6 +34,100 @@
         <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+    <style name="AlertDialogCopper" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMinor">75%</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="TextBook10Coppel">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook13Coppel">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook14Coppel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook17Coppel">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBold12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold14Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold18Coppel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold26Coppel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold20Coppel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextMedium14Coppel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium15Coppel">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium22Coppel">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium20Coppel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium26Coppel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium18Coppel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="ButtonCoppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
 
 
     <!-- Visionarios -->
@@ -80,7 +174,7 @@
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/gray_checkbox_disable</item>
-        <item name="colorControlActivated">@color/red_text</item>
+        <item name="colorControlActivated">#6dc310</item>
     </style>
 
 
@@ -99,6 +193,14 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
+    </style>
+    <style name="TextViewPrimaVacacional20Medium" parent="TextViewPrimaVacacional">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextViewPrimaVacacional14Book" parent="TextViewPrimaVacacional">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
     </style>
 
 </resources>

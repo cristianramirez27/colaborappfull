@@ -1,12 +1,14 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.coppel.rhconecta.dev.R;
@@ -42,17 +44,31 @@ public class RequestHolidaysColaboratorView extends RelativeLayout {
     RelativeLayout layoutTotalDays;
     @BindView(R.id.markerSpliceLeft)
     View markerSpliceLeft;
+    @BindView(R.id.container_main)
+    RelativeLayout relativeLayout;
+    private @ColorRes int black ;
 
-
+    public void setThemeHoliday() {
+        layoutInicial.setPadding(0,8,0,8);
+        layoutFinal.setPadding(0,8,0,8);
+        relativeLayout.setPadding(0,30,0,10);
+        nameColaborator.setPadding(0,16,0,4);
+        fechaInicio.setTextColor(black);
+        fechaFin.setTextColor(black);
+        fechaFin.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        fechaInicio.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+    }
 
 
     public RequestHolidaysColaboratorView(Context context) {
         super(context);
+        black = context.getColor(R.color.dark_holiday);
         initViews();
     }
 
     public RequestHolidaysColaboratorView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        black = context.getColor(R.color.dark_holiday);
         initViews();
     }
 

@@ -13,12 +13,11 @@
         android:id="@+id/titleLetters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_medium"
         android:text="@string/choose_schedule"
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
-        android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="20sp" />
+        style="@style/TextBold20Coppel"
+        android:textColor="@color/colorSecondBlueCoppel"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -40,8 +39,7 @@
                 android:id="@+id/scrollContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_above="@+id/containerMessage">
+                android:layout_alignParentTop="true">
 
                 <LinearLayout
                     android:id="@+id/schedulelayout"
@@ -61,40 +59,41 @@
                         android:paddingTop="6dp">
 
                         <RelativeLayout
-                            android:id="@+id/startDayLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_bottom_line"
-                            android:clickable="true">
+                                android:id="@+id/startDayLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/background_bottom_line"
+                                android:clickable="true">
 
                             <TextView
-                                android:id="@+id/startDayLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgVideoPreview"
-                                android:gravity="center"
-                                android:text="@string/start_day"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                    android:id="@+id/startDayLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/imgVideoPreview"
+                                    android:gravity="center"
+                                    android:text="@string/start_day"
+                                    style="@style/TextMedium12Coppel"
+                                    android:textColor="@color/colorScheduler"/>
 
                             <TextView
-                                android:id="@+id/startDay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/startDayLabel"
-                                android:layout_marginTop="6dp"
-                                android:gravity="center"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                    android:id="@+id/startDay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/startDayLabel"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center"
+                                    android:hint="@string/start_day_hint"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"/>
 
                             <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    app:srcCompat="@drawable/ic_down_arrow_blue"/>
 
                         </RelativeLayout>
 
@@ -114,8 +113,8 @@
                                 android:layout_below="@+id/imgVideoPreview"
                                 android:gravity="center"
                                 android:text="@string/end_day"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
 
                             <TextView
                                 android:id="@+id/endDay"
@@ -124,8 +123,9 @@
                                 android:layout_below="@+id/endDayLabel"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                style="@style/TextBook14Coppel"
+                                android:hint="@string/start_day_hint"
+                                android:textColor="@color/colorTextCoppelNegro"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -160,19 +160,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imgVideoPreview"
                                 android:gravity="center"
+                                style="@style/TextMedium12Coppel"
                                 android:text="@string/start_hour"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                android:textColor="@color/colorScheduler"/>
 
                             <TextView
-                                android:id="@+id/starHour"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/startHourLabel"
-                                android:layout_marginTop="6dp"
-                                android:gravity="center"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                    android:id="@+id/starHour"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/startHourLabel"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center"
+                                    style="@style/TextBook14Coppel"
+                                    android:hint="@string/start_hour"
+                                    android:textColor="@color/colorTextCoppelNegro"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -208,7 +209,8 @@
                                     android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
                                     android:text="@string/am"
-                                    android:textColor="@color/colorTextGray"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
                                     android:theme="@style/MyRaidoButton" />
 
                                 <RadioButton
@@ -220,7 +222,8 @@
                                     android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
                                     android:text="@string/pm"
-                                    android:textColor="@color/colorTextGray"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
                                     android:theme="@style/MyRaidoButton" />
 
                             </RadioGroup>
@@ -252,8 +255,8 @@
                                 android:layout_below="@+id/imgVideoPreview"
                                 android:gravity="center"
                                 android:text="@string/end_hour"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
 
                             <TextView
                                 android:id="@+id/endHour"
@@ -262,8 +265,9 @@
                                 android:layout_below="@+id/endHourLabel"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                android:hint="@string/end_hour"
+                                style="@style/TextBook14Coppel"
+                                android:textColor="@color/colorTextCoppelNegro"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -299,7 +303,8 @@
                                     android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
                                     android:text="@string/am"
-                                    android:textColor="@color/colorTextGray"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
                                     android:theme="@style/MyRaidoButton" />
 
                                 <RadioButton
@@ -311,7 +316,8 @@
                                     android:gravity="right|center_vertical"
                                     android:layoutDirection="rtl"
                                     android:text="@string/pm"
-                                    android:textColor="@color/colorTextGray"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
                                     android:theme="@style/MyRaidoButton" />
 
                             </RadioGroup>
@@ -341,9 +347,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imgVideoPreview"
                                 android:gravity="center"
+                                style="@style/TextMedium12Coppel"
                                 android:text="@string/eating_time"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                android:textColor="@color/colorScheduler"/>
 
                             <TextView
                                 android:id="@+id/eatingTime"
@@ -352,8 +358,9 @@
                                 android:layout_below="@+id/eatingTimeLabel"
                                 android:layout_marginTop="6dp"
                                 android:gravity="center"
-                                android:textColor="@color/colorTextCoppelNegro"
-                                android:textSize="14sp" />
+                                style="@style/TextBook14Coppel"
+                                android:hint="@string/eating_time"
+                                android:textColor="@color/colorTextCoppelNegro"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -365,34 +372,33 @@
                         </RelativeLayout>
 
                     </LinearLayout>
+                    <RelativeLayout
+                        android:id="@+id/containerMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="4dp"
+                        android:background="@drawable/background_gray_rounder"
+                        android:padding="18dp">
+
+                    <TextView
+                            android:id="@+id/labelEncabezado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            style="@style/TextBook12Coppel"
+                            android:text="@string/check_data_msg"
+                            android:textColor="@color/colorTextGrayScheduler"/>
+
+                </RelativeLayout>
 
                 </LinearLayout>
 
             </ScrollView>
 
-            <RelativeLayout
-                android:id="@+id/containerMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/background_gray_rounder"
-                android:padding="18dp">
 
-                <TextView
-                    android:id="@+id/labelEncabezado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgVideoPreview"
-                    android:gravity="center"
-                    android:text="@string/check_data_msg"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="14sp" />
-
-            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -403,13 +409,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/background_blue_rounded"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        style="@style/ButtonCoppel"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

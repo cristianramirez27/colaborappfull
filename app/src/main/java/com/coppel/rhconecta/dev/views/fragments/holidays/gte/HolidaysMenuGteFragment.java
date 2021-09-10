@@ -87,7 +87,7 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
         rcvOptions.setLayoutManager(gridLayoutManager);
         menuItems = new ArrayList<>();
         menuItems.addAll(MenuUtilities.getHolidaysManagerMenu(parent));
-        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(parent, menuItems, gridLayoutManager.getSpanCount());
+        iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(250,parent, menuItems,true);
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 

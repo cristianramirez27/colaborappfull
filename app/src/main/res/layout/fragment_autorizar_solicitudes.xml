@@ -62,9 +62,9 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:lines="1"
+                        style="@style/TextBook14Coppel"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"
-                        android:textSize="14sp" />
+                        android:textColorHint="@color/colorTextBlueCoppel"/>
 
                 </RelativeLayout>
 
@@ -84,9 +84,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
+                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
                     android:textColor="@color/colorTextCoppelNegro"
-                    android:textSize="14sp" />
+                    />
 
                 <TextView
                     android:id="@+id/centro"
@@ -119,10 +120,9 @@
                     android:id="@+id/tituloSolicitudes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/title_request_complements"
-                    android:textColor="@color/colorSecondBlueCoppel"
-                    android:textSize="18sp" />
+                    style="@style/TextMedium18Coppel"
+                    android:textColor="@color/colorSecondBlueCoppel"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"

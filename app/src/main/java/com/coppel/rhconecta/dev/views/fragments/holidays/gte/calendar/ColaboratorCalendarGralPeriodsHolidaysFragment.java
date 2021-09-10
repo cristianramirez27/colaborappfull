@@ -340,7 +340,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             }
         });
         String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
-        formatMonthNameFormat(monthNameCalendar,monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
     private void changeMonth(boolean isNext){
@@ -350,7 +350,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             collapsibleCalendar.prevMonth();
         }
 
-        formatMonthNameFormat(collapsibleCalendar.getMonthCurrentTitle(),monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         setVisibilityNextMonth();
         setVisibilityLasttMonth();
@@ -530,6 +530,9 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     }
 
     @Override
+    public void showLabelSplice(boolean enable) { }
+
+    @Override
     public void onClick(View view) {
 
         if (SystemClock.elapsedRealtime() - mLastClickTime < 1200){
@@ -611,8 +614,10 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     //TODO Validar
     private void openCalendar(){
         DatePickerHolidayDialog datePickerDialog = DateTimeUtil.getMaterialDatePicker(dateSetListenerStart);
+        datePickerDialog.setThemeHolday(true);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorDaySelect));
-        datePickerDialog.setCustomTitle(getString(R.string.title_calendar_periods));
+        datePickerDialog.setCustomTitle(getString(R.string.title_calendar_periods_2));
+        datePickerDialog.setTextButtonCalendar(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_config());
 
         double holidayDaysTotal =  this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_adicionales() +
                 this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_decision()
@@ -932,7 +937,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         collapsibleCalendar.select(listDaySelected);
 
         String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
-        formatMonthNameFormat(monthNameCalendar,monthName);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
     private void setColaboratorMarkInCalendar(HolidayPeriod period){
@@ -985,7 +990,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             collapsibleCalendar.select(listDaySelected);
 
             String monthNameCalendar = collapsibleCalendar.getMonthCurrentTitle();
-            formatMonthNameFormat(monthNameCalendar, monthName);
+            monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         }catch (Exception e){
             e.printStackTrace();

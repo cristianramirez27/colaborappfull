@@ -1,43 +1,37 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
 import com.coppel.rhconecta.dev.business.models.BenefitsCompaniesResponse;
-import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
 import com.coppel.rhconecta.dev.business.models.InfoCompanyResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
-//import com.coppel.rhconecta.dev.views.activities.SplashScreenActivity;
-import com.coppel.rhconecta.dev.views.customviews.ZoomableImageView;
+import com.coppel.rhconecta.dev.views.customviews.TicketView;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.github.chrisbanes.photoview.PhotoView;
@@ -52,12 +46,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     public static final String TAG = DialogFragmentCompany.class.getSimpleName();
     public static final String KEY_COMPANY = "KEY_COMPANY";
-    @BindView(R.id.icClose)
-    ImageView icClose;
-    @BindView(R.id.icClosePublicity)
-    ImageView icClosePublicity;
-    @BindView(R.id.icCloseCode)
-    ImageView icCloseCode;
 
     @BindView(R.id.scrollview)
     ScrollView scrollview;
@@ -66,13 +54,15 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     ImageView image;
     @BindView(R.id.imageFull)
     PhotoView imageFull;
-    @BindView(R.id.viewCover)
-    View viewCover;
 
     @BindView(R.id.txtDiscountQuantity)
     TextView txtDiscountQuantity;
     @BindView(R.id.txtDiscount)
     TextView txtDiscount;
+    @BindView(R.id.percent_benefit)
+    TextView txtPercent;
+    @BindView(R.id.text_label)
+    TextView txtLabelPercent;
     @BindView(R.id.txtDescription)
     TextView txtDescription;
     @BindView(R.id.txtNote)
@@ -81,16 +71,18 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     TextView txtAddress;
     @BindView(R.id.txtPhone)
     TextView txtPhone;
-    @BindView(R.id.code)
-    TextView code;
-
+    @BindView(R.id.textView4)
+    TextView moreInfo;
     @BindView(R.id.btnAdvertising)
     Button btnAdvertising;
     @BindView(R.id.btnCode)
     Button btnCode;
-    @BindView(R.id.btnBackCompany)
-    Button btnBackCompany;
-
+    @BindView(R.id.ticketView)
+    TicketView ticketView;
+    @BindView(R.id.textViewCode)
+    TextView textViewCode;
+    @BindView(R.id.textView5)
+    TextView titleCode;
 
     private OnBenefitsAdvertisingClickListener onBenefitsAdvertisingClickListener;
 
@@ -99,17 +91,18 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     private AnimatorSet mSetRightOut;
     private AnimatorSet mSetLeftIn;
+    private ObjectAnimator ticketAnimation = null;
     private boolean mIsBackVisible = false;
+    private boolean isExpandable = false;
     @BindView(R.id.card_front)
     View mCardFrontLayout;
     @BindView(R.id.card_back)
     View mCardBackLayout;
-    @BindView(R.id.card_code_benefit)
-    View mCardCodeBenefit;
 
     private long mLastClickTime = 0;
     private CoppelServicesPresenter coppelServicesPresenter;
     private InfoCompanyResponse infoCompany;
+    private boolean isCodeView = false;
 
     public static DialogFragmentCompany getInstance(BenefitsCompaniesResponse.Company company){
         DialogFragmentCompany dialogFragmentCompany = new DialogFragmentCompany();
@@ -136,6 +129,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     /*    if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawableResource(R.color.colorBackgroundDialogs);
         }*/
+        getDialog().setCancelable(true);
+        getDialog().setCanceledOnTouchOutside(true);
         return view;
     }
 
@@ -156,7 +151,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             discountQuantity = discount.substring(0,discount.indexOf("%")+1);
             discount = discount.substring(discount.indexOf("%")+1,discount.length());
             txtDiscountQuantity.setText(discountQuantity);
-            txtDiscount.setText(discount);
+            txtLabelPercent.setText(discount);
+            txtDiscount.setText(discountQuantity);
+            txtPercent.setText(discountQuantity);
         }else {
             txtDiscountQuantity.setText(discount);
             txtDiscount.setVisibility(View.GONE);
@@ -174,22 +171,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         }
 
         btnAdvertising.setOnClickListener(this);
-        icClosePublicity.setOnClickListener(this);
         btnCode.setOnClickListener(this);
-        btnBackCompany.setOnClickListener(this);
-        btnBackCompany.setClickable(false);
-        icCloseCode.setOnClickListener(this);
-        code.setOnClickListener(this);
-
-        icClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                close();
-                onBenefitsAdvertisingClickListener.closeCategoryDialog();
-            }
-        });
-
-        txtAddress.setMovementMethod(new ScrollingMovementMethod());
+//        txtAddress.setMovementMethod(new ScrollingMovementMethod());
 
         scrollview.setOnTouchListener(new View.OnTouchListener() {
 
@@ -212,7 +195,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 return false;
             }
         });
-
+        moreInfo.setOnClickListener(this);
         getInfoCompany();
     }
 
@@ -224,10 +207,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_iset_alert);
-        return dialog;
+        return new Dialog(getActivity(), R.style.AlertDialogCopper);
     }
 
     @Override
@@ -246,19 +226,23 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
                 btnAdvertising.setEnabled(false);
                 onBenefitsAdvertisingClickListener.onCategoryClick(company);
                 break;
+            case R.id.textView4:
+                isExpandable = !isExpandable;
+                int visibility = isExpandable ? View.VISIBLE : View.GONE;
+                scrollview.setVisibility(visibility);
+                btnAdvertising.setVisibility(visibility);
+                if (infoCompany != null && infoCompany.getOpc_desc_app() == 1) {
+                    btnCode.setVisibility(visibility);
+                    if (!isExpandable && isCodeView) {
+                        isCodeView = false;
+                        showViewCode();
+                        showViewTicket();
+                    }
+                }
+                moreInfo.setText(isExpandable ? R.string.label_less_information : R.string.label_more_information);
+                break;
             case R.id.btnCode:
                 getCodeBenefit();
-                break;
-            case R.id.btnBackCompany:
-                flipCodeCard();
-                break;
-            case R.id.code:
-                copyBenefitCode();
-                break;
-            case R.id.icClosePublicity:
-            case R.id.icCloseCode:
-                close();
-                getActivity().finish();
                 break;
         }
     }
@@ -317,26 +301,23 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         float scale = getResources().getDisplayMetrics().density * distance;
         mCardFrontLayout.setCameraDistance(scale);
         mCardBackLayout.setCameraDistance(scale);
-        mCardCodeBenefit.setCameraDistance(scale);
     }
 
     private void loadAnimations() {
         mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.out_animation);
         mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.in_animation);
+    }
 
-        mSetLeftIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (mIsBackVisible){
-                    scrollview.setVisibility(View.GONE);
-                }
-            }
-        });
+    private void loadAnimationsTickets() {
+        if (ticketAnimation == null) {
+            ticketAnimation = ObjectAnimator.ofFloat(ticketView, "rotationX", 0.0f, 180f);
+            ticketAnimation.setDuration(1000);
+            ticketAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        }
     }
 
 
     public void flipCard() {
-        mCardCodeBenefit.setVisibility(View.GONE);
         mCardBackLayout.setVisibility(View.VISIBLE);
         if (!mIsBackVisible) {
             mSetRightOut.setTarget(mCardFrontLayout);
@@ -344,6 +325,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             mSetRightOut.start();
             mSetLeftIn.start();
             mIsBackVisible = true;
+            mCardBackLayout.setVisibility(View.VISIBLE);
         } else {
             mSetRightOut.setTarget(mCardBackLayout);
             mSetLeftIn.setTarget(mCardFrontLayout);
@@ -353,11 +335,11 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         }
     }
 
-    public void setCoppelServicesPresenter(CoppelServicesPresenter coppelServicesPresenter){
+    public void setCoppelServicesPresenter(CoppelServicesPresenter coppelServicesPresenter) {
         this.coppelServicesPresenter = coppelServicesPresenter;
     }
 
-    public void getCodeBenefit(){
+    public void getCodeBenefit() {
         String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         BenefitCodeRequest benefitCodeRequest = new BenefitCodeRequest();
@@ -368,7 +350,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         this.coppelServicesPresenter.getBenefitCode(benefitCodeRequest, token);
     }
 
-    public void getInfoCompany(){
+    public void getInfoCompany() {
         String numEmpleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         BenefitCodeRequest infoCompanyRequest = new BenefitCodeRequest();
@@ -379,57 +361,37 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         this.coppelServicesPresenter.getInfoCompany(infoCompanyRequest, token);
     }
 
-    public void setCodeView(String newCode){
-        code.setText(newCode);
+    public void setCodeView(String newCode) {
+        textViewCode.setText(newCode);
         flipCodeCard();
     }
 
-    public void setInfoCompany(InfoCompanyResponse infoCompanyResponse){
+    public void setInfoCompany(InfoCompanyResponse infoCompanyResponse) {
         this.infoCompany = infoCompanyResponse;
-        if (infoCompany.getOpc_desc_app() == 1) {
-            ((LinearLayout.LayoutParams) btnAdvertising.getLayoutParams()).weight = 1;
-            btnCode.setVisibility(View.VISIBLE);
-        }
     }
 
-    public void flipCodeCard(){
-        loadAnimations();
-        mCardBackLayout.setVisibility(View.GONE);
-        mCardCodeBenefit.setVisibility(View.VISIBLE);
-
-        if (!mIsBackVisible) {
-            mSetRightOut.setTarget(mCardFrontLayout);
-            mSetLeftIn.setTarget(mCardCodeBenefit);
-            mSetRightOut.start();
-            mSetLeftIn.start();
-            mIsBackVisible = true;
-            btnAdvertising.setClickable(false);
-            btnCode.setClickable(false);
-            //scrollview.setVisibility(View.GONE);
-            code.setClickable(true);
-            btnBackCompany.setClickable(true);
-        } else {
-            mSetRightOut.setTarget(mCardCodeBenefit);
-            mSetLeftIn.setTarget(mCardFrontLayout);
-            mSetRightOut.start();
-            mSetLeftIn.start();
-            mIsBackVisible = false;
-            btnBackCompany.setClickable(false);
-            code.setClickable(false);
-            //scrollview.setVisibility(View.VISIBLE);
-            btnAdvertising.setClickable(true);
-            btnCode.setClickable(true);
-        }
+    public void flipCodeCard() {
+        loadAnimationsTickets();
+        isCodeView = !isCodeView;
+        showViewTicket();
+        ticketAnimation.start();
+        ticketView.setBackgroundBeforeDivider(requireContext().getDrawable(android.R.color.white));
+        btnCode.setVisibility(View.GONE);
+        new Handler().postDelayed(this::showViewCode, 1300);
     }
 
-    private void copyBenefitCode() {
-        Context context = getApplicationContext();
-        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        android.content.ClipData clip = android.content.ClipData.newPlainText("Código Copiado", code.getText());
-        clipboard.setPrimaryClip(clip);
-        Toast toast= Toast.makeText(context, R.string.str_copied_code, Toast.LENGTH_SHORT);
-        //toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-        toast.show();
+    private void showViewCode() {
+        int visibility = isCodeView ? View.VISIBLE : View.GONE;
+        textViewCode.setVisibility(visibility);
+        titleCode.setVisibility(visibility);
+    }
+
+    private void showViewTicket() {
+        int visibility = isCodeView ? View.GONE : View.VISIBLE;
+        image.setVisibility(visibility);
+        txtLabelPercent.setVisibility(visibility);
+        txtPercent.setVisibility(visibility);
+        ticketView.setBackgroundBeforeDivider(requireContext().getDrawable(R.color.colorPrimaryCoppelAzul));
     }
 
     @Override

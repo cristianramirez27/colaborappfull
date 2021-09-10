@@ -19,6 +19,7 @@ public class DayPickerGroup extends ViewGroup
     private ImageButton nextButton;
     private DayPickerView dayPickerView;
     private DatePickerController controller;
+    private boolean enableThemeHoliday  = false;
 
     public DayPickerGroup(Context context) {
         super(context);
@@ -28,6 +29,12 @@ public class DayPickerGroup extends ViewGroup
     public DayPickerGroup(Context context, @NonNull DatePickerController controller) {
         super(context);
         this.controller = controller;
+        init();
+    }
+    public DayPickerGroup(Context context, @NonNull DatePickerController controller, boolean  enableTheme) {
+        super(context);
+        this.controller = controller;
+        enableThemeHoliday = enableTheme;
         init();
     }
 
@@ -42,11 +49,11 @@ public class DayPickerGroup extends ViewGroup
     }
 
     private void init() {
-        dayPickerView = new SimpleDayPickerView(getContext(), controller);
+        dayPickerView = new SimpleDayPickerView(getContext(), controller, enableThemeHoliday);
         addView(dayPickerView);
 
         final LayoutInflater inflater = LayoutInflater.from(getContext());
-        final ViewGroup content = (ViewGroup) inflater.inflate(R.layout.mdtp_daypicker_group_library, this, false);
+        final ViewGroup content = (ViewGroup) inflater.inflate(enableThemeHoliday ? R.layout.mdtp_daypicker_group_holiday_library : R.layout.mdtp_daypicker_group_library, this, false);
 
         // Transfer all children from the content to this
         while (content.getChildCount() > 0) {

@@ -5,9 +5,10 @@ public class BenefitCodeRequest {
     private int numEmpleado;
     private int numEmpresa;
 
-    public BenefitCodeRequest(){}
+    public BenefitCodeRequest() {
+    }
 
-    public BenefitCodeRequest(int opc, int numEmpleado, int numEmpresa){
+    public BenefitCodeRequest(int opc, int numEmpleado, int numEmpresa) {
         this.opc = opc;
         this.numEmpleado = numEmpleado;
         this.numEmpresa = numEmpresa;

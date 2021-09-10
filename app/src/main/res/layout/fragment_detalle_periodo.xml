@@ -108,11 +108,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
                                     android:layout_gravity="bottom|center_horizontal"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="left|center_vertical"
                                     android:text="@string/title_date_start"
+                                    style="@style/TextBook12Coppel"
                                     android:textColor="@color/colorTextGrayDark"
-                                    android:textSize="13sp"
                                     android:visibility="visible" />
 
                                 <TextView
@@ -121,11 +120,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerHorizontal="true"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="left|center_vertical"
                                     android:text="Miércoles, 15-08-2019"
                                     android:textColor="@color/colorTextGrayDark"
-                                    android:textSize="13sp"
+                                    style="@style/TextMedium12Coppel"
                                     android:visibility="visible" />
                             </RelativeLayout>
 
@@ -142,13 +140,12 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_gravity="bottom|center_horizontal"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="left|center_vertical"
                                     android:maxLines="2"
                                     android:minHeight="20dp"
                                     android:text="@string/title_date_end"
                                     android:textColor="@color/colorTextGrayDark"
-                                    android:textSize="13sp"
+                                    style="@style/TextBook12Coppel"
                                     android:visibility="visible" />
 
                                 <TextView
@@ -158,11 +155,10 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_gravity="bottom|center_horizontal"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:gravity="left|center_vertical"
                                     android:text="Miércoles, 15-08-2019"
                                     android:textColor="@color/colorTextGrayDark"
-                                    android:textSize="13sp"
+                                    style="@style/TextMedium12Coppel"
                                     android:visibility="visible" />
 
                             </RelativeLayout>
@@ -180,10 +176,9 @@
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_gravity="bottom|center_horizontal"
-                                    android:fontFamily="@font/lineto_circular_pro_book"
                                     android:text="@string/title_holidays_days"
                                     android:textColor="@color/colorBackgroundCoppelNegro"
-                                    android:textSize="13sp"
+                                    style="@style/TextBook12Coppel"
                                     android:visibility="visible" />
 
                                 <TextView
@@ -193,11 +188,10 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerHorizontal="true"
                                     android:layout_gravity="bottom|center_horizontal"
-                                    android:fontFamily="@font/lineto_circular_pro_bold"
                                     android:gravity="left|center_vertical"
                                     android:text="3 días"
+                                    style="@style/TextMedium12Coppel"
                                     android:textColor="@color/colorBackgroundCoppelNegro"
-                                    android:textSize="13sp"
                                     android:visibility="visible" />
 
                             </RelativeLayout>
@@ -256,21 +250,31 @@
                 android:orientation="vertical"
                 android:background="@color/transparent"
                 android:visibility="visible">
+                <TextView
+                        android:id="@+id/monthName"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Octubre 2019"
+                        style="@style/TextBold14Coppel"
+                        android:textColor="@color/colorTextCoppelNegro"/>
 
                 <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-                    android:id="@+id/collapsibleCalendarView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:primaryColor="@color/transparent"
-                    app:textColor="@color/colorPrimaryCoppelAzul"
-                    app:selectedItem_textColor="@android:color/white"
-                    app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
-                    app:todayItem_background="@drawable/circle_white_stroke_background"
-                    app:selectedItem_background="@drawable/circle_green_solid_background"
-                    app:buttonLeft_drawableTintColor="@android:color/white"
-                    app:buttonRight_drawableTintColor="@android:color/white"
-                    app:expandIconColor="@android:color/white"
-                    app:eventColor="@android:color/white"/>
+                        android:id="@+id/collapsibleCalendarView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:primaryColor="@color/transparent"
+                        app:textColor="@color/colorPrimaryCoppelAzul"
+                        app:selectedItem_textColor="@android:color/white"
+                        app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
+                        app:todayItem_background="@drawable/circle_white_stroke_background"
+                        app:selectedItem_background="@drawable/circle_green_solid_background"
+                        app:buttonLeft_drawableTintColor="@android:color/white"
+                        app:buttonRight_drawableTintColor="@android:color/white"
+                        app:expandIconColor="@android:color/white"
+                        app:eventColor="@android:color/white" android:layout_marginTop="0dp"
+                        android:layout_below="@+id/monthName" android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="0dp"/>
 
             </RelativeLayout>
 
@@ -292,12 +296,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_blue_rounded"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:text="@string/btn_canceled_period"
             android:textAllCaps="false"
             android:layout_marginRight="10dp"
             android:textColor="@color/colorBackgroundCoppelBlanco"
-            android:textSize="16sp" />
+            style="@style/ButtonCoppel" />
 
     </LinearLayout>
 

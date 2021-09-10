@@ -137,7 +137,7 @@ public class ChildInfoLetterFragment extends Fragment implements View.OnClickLis
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 if(childInfoLetterRecyclerAdapter.hasFielsdSelected()){
-                    ILettersNavigation.showFragmentAtPosition(2,getData());
+                    ILettersNavigation.showFragmentAtPosition(0,getData());
 
                 }else {
                     Toast.makeText(getActivity(),"Debes seleccionar al menos un nombre",Toast.LENGTH_SHORT).show();
