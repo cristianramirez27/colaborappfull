@@ -16,6 +16,7 @@
     <color name="colorTextGray">#969696</color>
     <color name="colorTextGrayScheduler">#999999</color>
     <color name="colorTextGrayDark">#5f6062</color>
+    <color name="colorTextGrayCompany">#666666</color>
     <color name="colorBackgroundGray">#33a3a3a3</color>
     <color name="colorSavingHeaderText">#5f6062</color>
     <color name="colorRed">#b00020</color>

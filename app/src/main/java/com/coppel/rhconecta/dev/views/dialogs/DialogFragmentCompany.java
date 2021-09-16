@@ -57,6 +57,8 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     @BindView(R.id.txtDiscountQuantity)
     TextView txtDiscountQuantity;
+    @BindView(R.id.company)
+    TextView companyView;
     @BindView(R.id.txtDiscount)
     TextView txtDiscount;
     @BindView(R.id.percent_benefit)
@@ -146,6 +148,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         String note = "<html><body><p align=\"justify\">" +String.format("%s\n%s",company.getNota(),requiriments) + "</p></body></html>";
         String address = "<html><body><p align=\"justify\">" +company.getDomicilio() + "</p></body></html>";
         String phone = "<html><body><p align=\"justify\">" +company.getTelefono() + "</p></body></html>";
+        companyView.setText(company.getEmpresa());
 
         if(discount.contains("%")){
             discountQuantity = discount.substring(0,discount.indexOf("%")+1);

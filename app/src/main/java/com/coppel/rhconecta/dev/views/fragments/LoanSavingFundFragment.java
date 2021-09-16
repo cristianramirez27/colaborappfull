@@ -36,6 +36,13 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_WITHDRAW;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_PAY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_ADDITIONALS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_WITHDRAW_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_PAY_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_ADDITIONALS_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment.REQUEST_SAVING;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
@@ -88,6 +95,8 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
 
 
     private boolean firstTime = true;
+    private final String[] key_block = {BLOCK_FUND_WITHDRAW, BLOCK_FUND_PAY, BLOCK_FUND_ADDITIONALS};
+    private final String[] msg_block = {BLOCK_FUND_WITHDRAW_MESSAGE, BLOCK_FUND_PAY_MESSAGE, BLOCK_FUND_ADDITIONALS_MESSAGE};
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -242,14 +251,18 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         AppUtilities.closeApp(parent);
     }
 
-
     @Override
     public void openOption(int optionSelected) {
-        Intent intentFondo = new IntentBuilder(new Intent(getActivity(), FondoAhorroActivity.class))
-                .putIntExtra(BUNDLE_TYPE_SAVING_OPTION, optionSelected)
-                .putSerializableExtra(BUNDLE_SAVINFOUND, loanSavingFundResponse)
-                .build();
-        startActivityForResult(intentFondo,REQUEST_SAVING);
+        int key = optionSelected - 1;
+        if (AppUtilities.getStringFromSharedPreferences(requireContext(), key_block[key]).equals(YES)) {
+            AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), msg_block[key]), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+        } else {
+            Intent intentFondo = new IntentBuilder(new Intent(getActivity(), FondoAhorroActivity.class))
+                    .putIntExtra(BUNDLE_TYPE_SAVING_OPTION, optionSelected)
+                    .putSerializableExtra(BUNDLE_SAVINFOUND, loanSavingFundResponse)
+                    .build();
+            startActivityForResult(intentFondo, REQUEST_SAVING);
+        }
     }
 
 

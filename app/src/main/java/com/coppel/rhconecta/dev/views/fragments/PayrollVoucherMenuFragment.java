@@ -41,6 +41,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_PAYROLL;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_PAYROLL_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_FUND;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_FUND_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_GAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_GAS_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_PTU;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_PTU_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_ALLOWANCE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_ALLOWANCE_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_BONUS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VOUCHER_BONUS_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_ALIMONY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_BONUS;
 import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.CONSTANCE_TYPE_GAS;
@@ -76,6 +89,8 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
     ImageView imgvRefresh;
 
     private ISurveyNotification ISurveyNotification;
+    private final String[] key_block = {BLOCK_VOUCHER_PAYROLL, BLOCK_VOUCHER_FUND, BLOCK_VOUCHER_GAS, BLOCK_VOUCHER_PTU, BLOCK_VOUCHER_ALLOWANCE, BLOCK_VOUCHER_BONUS};
+    private final String[] msg_block = {BLOCK_VOUCHER_PAYROLL_MESSAGE, BLOCK_VOUCHER_FUND_MESSAGE, BLOCK_VOUCHER_GAS_MESSAGE, BLOCK_VOUCHER_PTU_MESSAGE, BLOCK_VOUCHER_ALLOWANCE_MESSAGE, BLOCK_VOUCHER_BONUS_MESSAGE};
 
     @Override
     public void onAttach(Context context) {
@@ -143,7 +158,12 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
                 typeSelected =  CONSTANCE_TYPE_ALIMONY;
                 break;
         }
-        getVoucherSelected(typeSelected);
+        int key = typeSelected - 1;
+        if (AppUtilities.getStringFromSharedPreferences(requireContext(), key_block[key]).equals(YES)) {
+            AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), msg_block[key]), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+        } else {
+            getVoucherSelected(typeSelected);
+        }
     }
 
     @Override

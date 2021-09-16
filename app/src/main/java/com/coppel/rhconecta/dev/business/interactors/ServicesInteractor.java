@@ -1878,7 +1878,7 @@ public class ServicesInteractor {
             }
 
         } else {
-            servicesError.setMessage(context.getString(R.string.error_voucher));
+            servicesError.setMessage(context.getString(R.string.error_generic_service));
             iServiceListener.onError(servicesError);
         }
     }

@@ -21,6 +21,7 @@ import com.coppel.rhconecta.dev.business.utils.OnEventListener;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 
 import java.util.ArrayList;
@@ -29,6 +30,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_MANAGER_AUTHORIZE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_MANAGER_AUTHORIZE_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_MANAGER_CONTROLS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_MANAGER_CONTROLS_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUESTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_CONTROLS;
@@ -96,10 +102,18 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
         switch (tag) {
 
             case OPTION_AUTHORIZE_REQUESTS:
-                OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST,null);
+                if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_TRAVEL_MANAGER_AUTHORIZE).equals(YES)) {
+                    AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_TRAVEL_MANAGER_AUTHORIZE_MESSAGE), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+                } else {
+                    OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST, null);
+                }
                 break;
             case OPTION_CONTROLS_LIQ:
-                OnEventListener.onEvent(OPTION_CONSULT_CONTROLS,null);
+                if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_TRAVEL_MANAGER_CONTROLS).equals(YES)) {
+                    AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_TRAVEL_MANAGER_CONTROLS_MESSAGE), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+                } else {
+                    OnEventListener.onEvent(OPTION_CONSULT_CONTROLS, null);
+                }
                 break;
         }
     }

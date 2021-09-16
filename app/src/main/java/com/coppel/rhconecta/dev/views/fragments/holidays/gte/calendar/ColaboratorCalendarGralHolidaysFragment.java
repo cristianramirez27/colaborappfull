@@ -121,6 +121,11 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
     @BindView(R.id.layoutOptions)
     RelativeLayout layoutOptions;
 
+    @BindView(R.id.textSplice)
+    TextView textSplice;
+    @BindView(R.id.markerSplice)
+    View markerSplice;
+
 
     private boolean showCalendar= false;
     private boolean finishModule = false;
@@ -535,6 +540,13 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                     holidayPeriodList.clear();
                     for(HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                         holidayPeriodList.add(period);
+                    }
+                    for (HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()) {
+                        if (period.getIdu_marca() == 1) {
+                            textSplice.setVisibility(VISIBLE);
+                            markerSplice.setVisibility(VISIBLE);
+                            break;
+                        }
                     }
 
                     if(holidayPeriodList.size() > 0){

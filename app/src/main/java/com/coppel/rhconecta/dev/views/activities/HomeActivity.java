@@ -116,6 +116,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ME
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
@@ -123,6 +124,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SA
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
@@ -492,10 +494,14 @@ public class HomeActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ctlProfile:
-                Intent intent = new IntentBuilder(new Intent(this, ProfileActionsActivity.class))
-                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
-                        .build();
-                startActivity(intent);
+                if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PROFILE).equals(YES)) {
+                    showBlockDialog(BLOCK_MESSAGE_PROFILE);
+                } else {
+                    Intent intent = new IntentBuilder(new Intent(this, ProfileActionsActivity.class))
+                            .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                            .build();
+                    startActivity(intent);
+                }
                 break;
             case R.id.ctlLogout:
                 dlHomeContainer.closeDrawers();
@@ -652,6 +658,7 @@ public class HomeActivity
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         getCollageURL();
                     }
+                    break;
                 case OPTION_COCREA:
                     String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
                     if (urlCoCrea.isEmpty())

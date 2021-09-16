@@ -141,7 +141,6 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     private DialogFragmentDeletePeriods dialogFragmentDeletePeriods;
 
     private VacacionesActivity vacacionesActivity;
-    private static boolean showLayoutSplice = false;
 
     private long mLastClickTime = 0;
     @Override
@@ -207,7 +206,6 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         ICalendarView.enableCalendarOption(false);
         btnRefuse.setOnClickListener(this);
         btnAceppt.setOnClickListener(this);
-        layoutSplice.setVisibility(showLayoutSplice? VISIBLE: GONE);
         IScheduleOptions.setActionEliminatedOption(new Command() {
             @Override
             public void execute(Object... params) {
@@ -234,7 +232,6 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     public void showLabelSplice(boolean show) {
         if (show){
             layoutSplice.setVisibility(VISIBLE);
-            showLayoutSplice = show;
         }
     }
 
@@ -411,6 +408,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
                     periods = new HashMap<>();
                    // if(holidaysPeriodsResponse.getData().getResponse().getPeriodos().size() > 0){
                         holidayPeriodList.clear();
+                        layoutSplice.setVisibility(GONE);
                         for (HolidayPeriod period : holidaysPeriodsResponse.getData().getResponse().getPeriodos()){
                             holidayPeriodList.add(period);
                         }

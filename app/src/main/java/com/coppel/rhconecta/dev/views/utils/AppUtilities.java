@@ -22,12 +22,14 @@ import android.widget.ImageView;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 
+import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesExtension;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -337,5 +339,22 @@ public class AppUtilities {
         } catch (Exception e) {
             return 0.0;
         }
+    }
+
+    public static void showBlockDialog(String message, String title, String rightOptionText, FragmentManager fragmentManager) {
+        DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
+        dialogFragmentWarning.setSinlgeOptionData(title, message, rightOptionText);
+        dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
+            @Override
+            public void onLeftOptionClick() {
+                dialogFragmentWarning.close();
+            }
+
+            @Override
+            public void onRightOptionClick() {
+                dialogFragmentWarning.close();
+            }
+        });
+        dialogFragmentWarning.show(fragmentManager, DialogFragmentWarning.TAG);
     }
 }

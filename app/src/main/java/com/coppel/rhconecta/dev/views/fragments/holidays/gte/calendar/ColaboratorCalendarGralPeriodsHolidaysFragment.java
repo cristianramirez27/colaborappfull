@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
@@ -158,6 +159,8 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     Button btnEdit;
     @BindView(R.id.monthName)
     TextView monthName;
+    @BindView(R.id.layoutSplice)
+    RelativeLayout layoutSplice;
 
 
     private Day maxDayToCalendar;
@@ -427,6 +430,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         }*/
         holidayRequestRecyclerAdapter.notifyDataSetChanged();
         if(holidayPeriod.getIdu_marca() == 1){
+            layoutSplice.setVisibility(VISIBLE);
             //Agregamos los empalmes
                 for(MarkHoliday markHoliday : holidayPeriod.getVer_marca()){
                     HolidayPeriod hperiodMark = new HolidayPeriod();
@@ -438,6 +442,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
                 }
 
         }else {
+            layoutSplice.setVisibility(GONE);
             iconCalendar.callOnClick();
             iconList.setEnabled(false);
         }

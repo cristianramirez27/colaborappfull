@@ -101,21 +101,21 @@
                             <View
                                 android:id="@+id/markerSplice"
                                 android:layout_centerVertical="true"
+                                android:visibility="gone"
                                 android:background="@drawable/backgroud_circle_melon"
                                 android:layout_width="8dp"
                                 android:layout_height="8dp" />
-
                             <TextView
-                                android:layout_centerVertical="true"
-                                android:layout_toRightOf="@+id/markerSplice"
-                                android:id="@+id/textSplice"
-                                android:layout_marginLeft="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lineto_circular_pro_medium"
-                                android:text="@string/title_splice_colaborators"
-                                android:textColor="@color/colorMelon"
-                                android:textSize="13sp" />
+                                    android:id="@+id/textSplice"
+                                    android:layout_toRightOf="@+id/markerSplice"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lineto_circular_pro_medium"
+                                    android:text="@string/title_splice_colaborators"
+                                    android:visibility="gone"
+                                    android:textColor="@color/colorMelon"
+                                    android:textSize="13sp"/>
 
                         </RelativeLayout>
 

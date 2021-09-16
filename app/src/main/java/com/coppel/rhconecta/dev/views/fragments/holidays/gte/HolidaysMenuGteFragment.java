@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.aditionaldays.HolidayAditionalDayListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.calendar.HolidayCalendarListFragment;
 import com.coppel.rhconecta.dev.views.fragments.holidays.gte.holidaysrequest.HolidayRequestListFragment;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 
 import java.util.ArrayList;
@@ -36,6 +37,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_REQUEST;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_REQUEST_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_CALENDAR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_CALENDAR_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_ADDITIONAL;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS_MANAGER_ADDITIONAL_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ADITIONAL_DAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALENDAR_GRAL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAY_REQUESTS;
@@ -106,18 +114,26 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
         switch (tag) {
 
             case OPTION_HOLIDAY_REQUESTS:
-                parent.replaceFragment(new HolidayRequestListFragment(), HolidayRequestListFragment.TAG);
-
+                if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_REQUEST).equals(YES)) {
+                    AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_REQUEST_MESSAGE), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+                } else {
+                    parent.replaceFragment(new HolidayRequestListFragment(), HolidayRequestListFragment.TAG);
+                }
                 break;
             case OPTION_CALENDAR_GRAL:
-                parent.replaceFragment(new HolidayCalendarListFragment(), HolidayCalendarListFragment.TAG);
-
+                if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_CALENDAR).equals(YES)) {
+                    AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_CALENDAR_MESSAGE), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+                } else {
+                    parent.replaceFragment(new HolidayCalendarListFragment(), HolidayCalendarListFragment.TAG);
+                }
                 break;
 
             case OPTION_ADITIONAL_DAYS:
-
-                parent.replaceFragment(new HolidayAditionalDayListFragment(), HolidayRequestListFragment.TAG);
-
+                if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL).equals(YES)) {
+                    AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL_MESSAGE), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+                } else {
+                    parent.replaceFragment(new HolidayAditionalDayListFragment(), HolidayRequestListFragment.TAG);
+                }
                 break;
         }
     }

@@ -47,7 +47,20 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_PROOF;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_PROOF_MEESAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_VISA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_VISA_MEESAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_CREDIT;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_CREDIT_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_IMSS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_IMSS_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_INFONAVIT;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_INFONAVIT_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_KINDER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LETTER_KINDER_MESSAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.CLAVE_LETTER_MAX;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -93,6 +106,8 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     private DialogFragmentWarning dialogFragmentWarning;
 
     private LetterConfigResponse letterConfigResponse;
+    private final String[] key_block = {BLOCK_LETTER_PROOF, BLOCK_LETTER_VISA, BLOCK_LETTER_CREDIT, BLOCK_LETTER_IMSS, BLOCK_LETTER_INFONAVIT, BLOCK_LETTER_KINDER};
+    private final String[] msg_block = {BLOCK_LETTER_PROOF_MEESAGE, BLOCK_LETTER_VISA_MEESAGE, BLOCK_LETTER_CREDIT_MESSAGE, BLOCK_LETTER_IMSS_MESSAGE, BLOCK_LETTER_INFONAVIT_MESSAGE, BLOCK_LETTER_KINDER_MESSAGE};
 
     @Override
     public void onAttach(Context context) {
@@ -151,32 +166,41 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-
+        int key = -1;
         switch (tag) {
 
             case AppConstants.OPTION_WORK_RECORD:
                 typeLetter = TYPE_WORK_RECORD;
+                key = 0;
                 break;
             case AppConstants.OPTION_VISA_PASSPORT:
                 typeLetter = TYPE_VISA_PASSPORT;
+                key = 1;
                 break;
             case AppConstants.OPTION_BANK_CREDIT:
                 typeLetter = TYPE_BANK_CREDIT;
+                key = 2;
                 break;
             case AppConstants.OPTION_IMSS:
                 typeLetter = TYPE_IMSS;
+                key = 3;
                 break;
             case AppConstants.OPTION_INFONAVIT:
                 typeLetter = TYPE_INFONAVIT;
+                key = 4;
                 break;
             case AppConstants.OPTION_KINDERGARTEN:
                 typeLetter = TYPE_KINDERGARTEN;
+                key = 5;
                 break;
         }
 
         /*Se invoca el servicio para ver el detalle de cada carta laboral*/
-
-        requestDetailLetter(typeLetter);
+        if (AppUtilities.getStringFromSharedPreferences(requireContext(), key_block[key]).equals(YES)) {
+            AppUtilities.showBlockDialog(AppUtilities.getStringFromSharedPreferences(requireContext(), msg_block[key]), getString(R.string.attention), getString(R.string.accept), getChildFragmentManager());
+        } else {
+            requestDetailLetter(typeLetter);
+        }
        /* if(!hasAvailablePrints(typeLetter)){
             showAlertPrints();
             return;
