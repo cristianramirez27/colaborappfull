@@ -483,7 +483,7 @@ public class HomeMainFragment
 
     private List<HomeMenuItem> getItemsMenu() {
         synchronized (this) {
-            return MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications);
+            return MenuUtilities.getHomeMenuItems(parent, profileResponse.getCorreo(), false, notifications, false);
         }
     }
 

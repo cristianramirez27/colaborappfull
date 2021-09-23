@@ -52,7 +52,7 @@ public class MenuUtilities {
     /**
      *
      */
-    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications) {
+    public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications, boolean enableCoCrea) {
 
         String title_cocrea = AppUtilities.getStringFromSharedPreferences(context, TITLE_COCREA);
         if (title_cocrea.isEmpty())
@@ -76,9 +76,12 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),
-                new HomeMenuItem(title_cocrea, OPTION_COCREA),
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER)
         ));
+
+        if (enableCoCrea) {
+            listMenuDefault.add(new HomeMenuItem(title_cocrea, OPTION_COCREA));
+        }
 
 
         HashMap<String, HomeMenuItem> mapNames = new HashMap<>();
@@ -209,7 +212,7 @@ public class MenuUtilities {
                 continue;
             if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
                 continue;
-            if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea)
+            if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
                 continue;
             if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
                 continue;

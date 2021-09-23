@@ -469,7 +469,7 @@ public class HomeActivity
         name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
         txvProfileName.setText(getString(R.string.hello) + ", " + name);
         txvCollaboratorNumber.setText(profileResponse.getColaborador());
-        HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true, notifications));
+        HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true, notifications, true));
         lvOptions.setAdapter(homeSlideMenuArrayAdapter);
         lvOptions.setOnItemClickListener(this);
     }
