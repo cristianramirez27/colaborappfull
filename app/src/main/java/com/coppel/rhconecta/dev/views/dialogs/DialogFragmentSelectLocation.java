@@ -101,8 +101,7 @@ public class DialogFragmentSelectLocation extends DialogFragment implements View
 
         switch (view.getId()) {
             case R.id.btnLeftOption:
-
-
+                onSelectLocationsButtonsClickListener.closeSelectLocationDialog();
                 close();
                 break;
             case R.id.btnRightOption:

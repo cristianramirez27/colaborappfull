@@ -134,6 +134,8 @@ public class BenefitsFragment
 
     private static String stateSelected = "";
     private static String citySelected = "";
+    private static String stateSelectedPrevious = "";
+    private static String citySelectedPrevious = "";
     private static String citySelectedName = "";
 
     private boolean closeBenefits;
@@ -234,6 +236,8 @@ public class BenefitsFragment
                     stateSelected = "2";
                 if (citySelected == null || (citySelected != null && citySelected.equals("0")))
                     citySelected = "104";
+                stateSelectedPrevious = stateSelected;
+                citySelectedPrevious = citySelected;
             }
 
             requestCategories(stateSelected, citySelected);
@@ -298,6 +302,8 @@ public class BenefitsFragment
                             txtCity.setText(String.format("%s %s?", getString(R.string.are_you_in_),
                                     TextUtilities.capitalizeText(getActivity(), benefitsCategoriesResponse.getData().getResponse().getDatosCiudad().getNombre_ciudad())));
                         }
+                        stateSelectedPrevious = stateSelected;
+                        citySelectedPrevious = citySelected;
                         categories.clear();
                         for (BenefitsCategoriesResponse.Category category : ((BenefitsCategoriesResponse) response.getResponse()).getData().getResponse().getCategorias()) {
                             categories.add(category);
@@ -520,6 +526,8 @@ public class BenefitsFragment
 
     @Override
     public void closeSelectLocationDialog() {
+        stateSelected = stateSelectedPrevious;
+        citySelected = citySelectedPrevious;
         dialogFragmentSelectLocation.close();
     }
 
