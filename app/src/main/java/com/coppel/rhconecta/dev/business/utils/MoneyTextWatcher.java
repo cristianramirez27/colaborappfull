@@ -80,7 +80,7 @@ public class MoneyTextWatcher implements TextWatcher {
             editText.setText(str);
             return;
         }
-        if( supportDecimal && str.lastIndexOf(".") == str.length()-1  ){
+        if (supportDecimal && str.lastIndexOf(".") == str.length() - 1 || (str.lastIndexOf(".") == str.length() - 2 && str.charAt(str.length() - 1) == '0')) {
             return;
         }
         // cleanString this the string which not contain prefix and ,
