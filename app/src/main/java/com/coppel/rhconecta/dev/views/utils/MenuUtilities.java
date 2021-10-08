@@ -55,11 +55,11 @@ public class MenuUtilities {
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications, boolean enableCoCrea) {
 
         String title_cocrea = AppUtilities.getStringFromSharedPreferences(context, TITLE_COCREA);
-        if (title_cocrea.isEmpty())
+        if (title_cocrea == null || title_cocrea.isEmpty())
             title_cocrea = context.getString(R.string.title_cocrea);
 
         String title_wheather = AppUtilities.getStringFromSharedPreferences(context, TITLE_WHEATHER);
-        if (title_wheather.isEmpty())
+        if (title_wheather == null || title_wheather.isEmpty())
             title_wheather = context.getString(R.string.title_wheather);
 
         /*Setamos el menu por default*/

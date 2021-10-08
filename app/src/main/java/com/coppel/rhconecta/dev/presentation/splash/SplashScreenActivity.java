@@ -74,9 +74,10 @@ public class SplashScreenActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        DaggerAnalyticsComponent.create().injectSplash(this);
         setupFirebaseInstanceId();
         setupViews();
-        initValues();
+        init();
         observeViewModel();
         checkAndSendAnalyticsIfExists();
     }
@@ -99,8 +100,6 @@ public class SplashScreenActivity
 
     /** */
     private void initValues() {
-        DaggerAnalyticsComponent.create().injectSplash(this);
-
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
 
@@ -112,13 +111,11 @@ public class SplashScreenActivity
             }
         }
 
-        if (notificationType == null)
-            init();
-        else {
+        if (notificationType != null) {
             notificationDestination = notificationType.getNotificationDestination();
             setupGoto();
-            startApp();
         }
+            startApp();
 
     }
 
@@ -334,7 +331,7 @@ public class SplashScreenActivity
     /** */
     private void setEndpoints() {
         setEndpointConfig(mFirebaseRemoteConfig);
-        startApp();
+        initValues();
     }
 
     /** */
