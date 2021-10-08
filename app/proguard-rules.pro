@@ -26,6 +26,7 @@
 
 # Required classes
 -keepattributes LineNumberTable,SourceFile
+-keep public class * extends java.lang.Exception
 
 -keep public class com.coppel.rhconecta.dev.business.models.** { *; }
 -keep public class com.coppel.rhconecta.dev.business.Enums.** { *; }
@@ -97,3 +98,6 @@
     public static *** w(...);
     public static *** e(...);
 }
+
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
