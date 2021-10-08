@@ -9,8 +9,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "2.8.4"
-        versionCode 87
+        versionName "2.9.1"
+        versionCode 91
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
