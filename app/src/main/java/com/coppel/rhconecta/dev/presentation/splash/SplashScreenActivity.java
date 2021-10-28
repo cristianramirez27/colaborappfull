@@ -203,9 +203,10 @@ public class SplashScreenActivity
         if (loginResponse.getData().getResponse().getErrorCode() == -10) {
             showMessageUser(loginResponse.getData().getResponse().getUserMessage());
         } else {
+            String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
             coppelServicesPresenter.requestProfile(
                     loginResponse.getData().getResponse().getCliente(),
-                    loginResponse.getData().getResponse().getEmail(),
+                    email,
                     loginResponse.getData().getResponse().getToken()
             );
         }
