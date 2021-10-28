@@ -118,7 +118,7 @@ private IButtonControl IButtonControl;
         View view = inflater.inflate(R.layout.fragment_deposit_option, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+        coppelServicesPresenter = new CoppelServicesPresenter(this, requireContext());
 
         totalImporte.setText(String.format("%s%s",getString(R.string.totalRemove),TextUtilities.getNumberInCurrencyFormaNoDecimal(0)));
 
@@ -235,7 +235,7 @@ private IButtonControl IButtonControl;
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (count > 0 && AppUtilities.isNumeric(s.toString().replace("$", "")) && !(payment.getText().toString().compareToIgnoreCase(getString(R.string.paymentway_select)) == 0))
+                if (count > 0 && AppUtilities.isNumeric(s.toString().replace("$", "").replace(",","")) && !(payment.getText().toString().compareToIgnoreCase(getString(R.string.paymentway_select)) == 0))
                     IButtonControl.enableButton(true);
                 else
                     IButtonControl.enableButton(false);
