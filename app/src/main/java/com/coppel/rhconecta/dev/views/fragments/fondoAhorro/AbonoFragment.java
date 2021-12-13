@@ -224,7 +224,7 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
         ConsultaAbonoResponse.Response data = response.getData().getResponse();
 
         impCorriente = data.getImp_cuentacorriente();
-        impAhorro = data.getImp_ahorroadicional();
+        impAhorro = data.getImp_ahorroadiciona();
         impFondoTrabajador = data.getImp_fondotrabajador();
 
         AbonoTipoFragment AbonarCorrienteFragment = AbonoTipoFragment.getInstance(
