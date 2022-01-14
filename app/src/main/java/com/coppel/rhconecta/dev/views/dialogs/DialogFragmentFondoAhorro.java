@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.dialogs;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -34,6 +35,7 @@ public class DialogFragmentFondoAhorro extends DialogFragment implements View.On
     private String folio= "";
     private String date= "";
     private String time= "";
+    private boolean enable;
 
 
     @Override
@@ -54,20 +56,37 @@ public class DialogFragmentFondoAhorro extends DialogFragment implements View.On
 
         btnActionAccept.setOnClickListener(this);
         txvAction.setText(title);
-        txvFolio.setText(String.format("Folio: %s",folio));
-        txvFecha.setText(String.format("Fecha: %s",date));
-        txvHora.setText(String.format("Hora: %s",time));
+        txvFolio.setText(folio);
+        txvFecha.setText(date);
+        txvHora.setText(time);
+
+        txvFecha.setVisibility(date.isEmpty() ? View.GONE : View.VISIBLE);
+        if (enable) {
+            txvAction.setTextSize(18f);
+            txvFecha.setTextSize(14f);
+            txvHora.setTextSize(14f);
+            txvFecha.setGravity(Gravity.LEFT);
+            txvHora.setGravity(Gravity.LEFT);
+        }
 
 
         return view;
     }
 
     public void initView(String title,String folio,String date,String time) {
-
+        enable = false;
         this.title = title;
-        this.folio = folio;
-        this.date = date;
-        this.time = time;
+        this.folio = String.format("Folio: %s",folio);
+        this.date = String.format("Fecha: %s",date);
+        this.time = String.format("Hora: %s",time);
+    }
+
+    public void initView(String title, String folioCredito, String folioAdicional) {
+        this.title = title;
+        this.folio = "";
+        date = folioCredito;
+        time = folioAdicional;
+        enable = true;
     }
 
     public void close() {

@@ -27,6 +27,9 @@ public class GuardarRetiroResponse extends WithDrawSavingBaseResponse {
     public class Response {
         private int clv_clave;
         private String clv_folio;
+        private String clv_folioahorro;
+        private String formapago;
+        private String formapagoahorro;
         private String des_mensaje;
         private String fec_captura;
         private String hrs_captura;
@@ -70,6 +73,30 @@ public class GuardarRetiroResponse extends WithDrawSavingBaseResponse {
 
         public void setHrs_captura(String hrs_captura) {
             this.hrs_captura = hrs_captura;
+        }
+
+        public String getClv_folioahorro() {
+            return clv_folioahorro;
+        }
+
+        public void setClv_folioahorro(String clv_folioahorro) {
+            this.clv_folioahorro = clv_folioahorro;
+        }
+
+        public String getFormapago() {
+            return formapago;
+        }
+
+        public void setFormapago(String formapago) {
+            this.formapago = formapago;
+        }
+
+        public String getFormapagoahorro() {
+            return formapagoahorro;
+        }
+
+        public void setFormapagoahorro(String formapagoahorro) {
+            this.formapagoahorro = formapagoahorro;
         }
     }
 }

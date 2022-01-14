@@ -68,6 +68,8 @@ public class SplashScreenActivity
     private NotificationDestination notificationDestination;
     /* */
     private String goTosection = "";
+    /* */
+    private boolean EXPIRED_SESSION = false;
 
     /** */
     @Override
@@ -172,16 +174,27 @@ public class SplashScreenActivity
     /** */
     private void startApp() {
         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
-            coppelServicesPresenter = new CoppelServicesPresenter(this, this);
-            String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
-            String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
-            coppelServicesPresenter.requestLogin(email, password, true);
+            initHome();
         } else {
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                 finish();
             }, 1000);
         }
+    }
+
+    private void initHome() {
+        coppelServicesPresenter = new CoppelServicesPresenter(this, this);
+
+        String strLoginResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE);
+        loginResponse = new Gson().fromJson(strLoginResponse, LoginResponse.class);
+
+        String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+        coppelServicesPresenter.requestProfile(
+                loginResponse.getData().getResponse().getCliente(),
+                email,
+                loginResponse.getData().getResponse().getToken()
+        );
     }
 
     @Override
@@ -214,9 +227,6 @@ public class SplashScreenActivity
 
     /** */
     private void manageProfileResponse(ProfileResponse profileResponse) {
-        LoginResponse.Response loginInternalResponse = loginResponse.getData().getResponse();
-        saveLoginInternalResponse(loginInternalResponse);
-
         ProfileResponse.Response profileInternalResponse = profileResponse.getData().getResponse()[0];
         saveProfileInternalResponse(profileInternalResponse);
 
@@ -279,6 +289,10 @@ public class SplashScreenActivity
             finish();
             return;
         }
+
+        if (coppelServicesError.getType() == ServicesRequestType.INVALID_TOKEN) {
+            EXPIRED_SESSION = true;
+        }
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
         dialogFragmentWarning.setOnOptionClick(this);
@@ -301,8 +315,14 @@ public class SplashScreenActivity
     @Override
     public void onRightOptionClick() {
         dialogFragmentWarning.close();
-        finish();
 
+        if (EXPIRED_SESSION) {
+            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, false);
+            EXPIRED_SESSION = false;
+        }
+
+        finish();
     }
 
     /** */

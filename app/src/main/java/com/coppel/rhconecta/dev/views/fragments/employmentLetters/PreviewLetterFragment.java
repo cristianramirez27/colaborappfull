@@ -223,7 +223,7 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
         switch (v.getId()){
             case R.id.editLetter:
-                ILettersNavigation.showFragmentAtPosition(0,null);
+                ILettersNavigation.showFragmentAtPosition(0,previewDataVO);
                 break;
             case R.id.btnSend:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){

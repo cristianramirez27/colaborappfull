@@ -12,6 +12,7 @@ import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDeta
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
 import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
@@ -182,6 +183,11 @@ public class CoppelServicesPresenter implements IServiceListener {
     public void validateCode(ValidateCodeRequest validateCodeRequest){
         view.showProgress();
         servicesInteractor.validateCode(validateCodeRequest);
+    }
+
+    public void getTokenSSO(TokenSSORequest data, String token){
+        view.showProgress();
+        servicesInteractor.getTokenSSO(data,token);
     }
 
     @Override

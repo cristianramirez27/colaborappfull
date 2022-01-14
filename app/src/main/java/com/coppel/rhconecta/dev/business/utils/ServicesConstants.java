@@ -27,6 +27,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VALIDARFIRMA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WITHDRAWSAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN_APPS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
 
 public class ServicesConstants {
@@ -74,7 +75,7 @@ public class ServicesConstants {
     public static String GET_ENDPOINT_BENEFIT_CODE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_BENEFIT_CODE);
     public static  String GET_ENDPOINT_QR = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_QR);
     public static  String GET_ENDPOINT_SECTION_TIME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_SECTION_TIME);
-
+    public static  String GET_ENDPOINT_LOGIN_APPS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_LOGIN_APPS);
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
 
 

@@ -11,6 +11,7 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
     public static final String SHARED_PREFERENCES_TOKEN = "TOKEN";
+    public static final String SHARED_PREFERENCES_LAST_SSO_LOGIN = "LAST_LOGIN";
 
     public static final String SHARED_PREFERENCES_TOKEN_USER = "TOKEN_USER";
     public static final String SHARED_PREFERENCES_NUM_COLABORADOR = "NUM_COLABORADOR";

@@ -1,14 +1,16 @@
 package com.coppel.rhconecta.dev.views.fragments.fondoAhorro;
 
+import static android.view.View.VISIBLE;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
+import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
+import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -20,6 +22,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ICalculatetotal;
@@ -44,24 +52,17 @@ import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import java.math.BigDecimal;
 import java.util.Locale;
 
-import static android.view.View.VISIBLE;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
-import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
-import static com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument.NO_REFUSE_REMOVE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RemoveFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener,ICalculatetotal {
 
     public static final String TAG = RemoveFragment.class.getSimpleName();
+    private static final float INIT_TOTAL_VALUE = 0;
     private FondoAhorroActivity parent;
     private DialogFragmentLoader dialogFragmentLoader;
     private CoppelServicesPresenter coppelServicesPresenter;
@@ -114,6 +115,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     private DialogFragmentFondoAhorro dialogFragmentFondoAhorro;
 
     private RetiroResponse retiroResponse;
+    private boolean online;
 
     @Override
     public void onAttach(Context context) {
@@ -244,7 +246,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 }
 
                 mLastClickTime = SystemClock.elapsedRealtime();
-                guardarRetiro();
+                validateWithdrawal();
                 break;
 
             case R.id.imgvRefresh:
@@ -258,24 +260,46 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         }
     }
 
-    private void guardarRetiro(){
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ?  AppUtilities.toDouble(edtRetiro.getQuantity()) : 0;
+    private void validateWithdrawal() {
+        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ? AppUtilities.toDouble(edtRetiro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
-        /*if(margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE){
-            margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroProceso.getQuantity()) : 0;
-        }*/
+        if (margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE) {
+            margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroProceso.getQuantity()) : 0;
+        }
 
-        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ?  AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) : 0;
+        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ? AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) : 0;
         //Revisamos si hay que reenviar el valor anterior
-        /*if(ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE){
-            ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ?  Integer.parseInt(edtRetiroAhorroProceso.getQuantity()) : 0;
-        }*/
+        if (ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE) {
+            ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroAhorroProceso.getQuantity()) : 0;
+        }
+
+        checkBalance(ahorroAdicional, margenCredito);
+    }
+
+    private void checkBalance(Double ahorroAdicional, Double margenCredito) {
+        if (ahorroAdicional > getBalanceAhorroAdicional() || margenCredito > getBalanceMargenCredito()) {
+            showAlertDialog("No cuenta con saldo disponible");
+        } else {
+            requestWithdrawal(ahorroAdicional, margenCredito);
+        }
+    }
+
+    private void requestWithdrawal(Double ahorroAdicional, Double margenCredito) {
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
-                GUARDAR_RETIRO,3,numEmployer,margenCredito,ahorroAdicional);
+                GUARDAR_RETIRO, 3, numEmployer, margenCredito, ahorroAdicional);
 
-        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData, token);
+    }
+
+    private Double getBalanceAhorroAdicional() {
+        return Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()));
+    }
+
+    private Double getBalanceMargenCredito() {
+        return Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()));
     }
 
     @Override
@@ -286,6 +310,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             case ServicesRequestType.WITHDRAWSAVING:
                 if(response.getResponse() instanceof  RetiroResponse){
                     retiroResponse = (RetiroResponse)response.getResponse();
+                    online = retiroResponse.getData().getResponse().getOpc_retiroenlinea() == 1;
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     if(retiroResponse.getData().getResponse().getDes_mensaje() != null &&
                             !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty()){
@@ -293,11 +318,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     }
                     configurationUI(retiroResponse);
                 }else if(response.getResponse() instanceof GuardarRetiroResponse){
-                    if (((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getClv_folio().isEmpty() ||
-                            ((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getClv_folio().equals("0")) {
-                        showAlertDialog( ((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getDes_mensaje());
-                    }else {
-                        showAlertDialog( (GuardarRetiroResponse) response.getResponse());
+                    if (((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getClv_clave() == 0) {
+                        showAlertDialog(((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getDes_mensaje());
+                    } else {
+                        showAlertDialog((GuardarRetiroResponse) response.getResponse());
                     }
                 }
                 break;
@@ -305,19 +329,33 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     }
 
     private void showAlertDialog(String msg) {
-        dialogFragmentGetDocument = new DialogFragmentGetDocument();
-        dialogFragmentGetDocument.setType(NO_REFUSE_REMOVE, parent);
-        dialogFragmentGetDocument.setContentText(msg);
-        dialogFragmentGetDocument.setOnButtonClickListener(this);
-        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+        if (dialogFragmentGetDocument == null) {
+            dialogFragmentGetDocument = new DialogFragmentGetDocument();
+            dialogFragmentGetDocument.setType(NO_REFUSE_REMOVE, parent);
+            dialogFragmentGetDocument.setContentText(msg);
+            dialogFragmentGetDocument.setOnButtonClickListener(this);
+            dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
+        }
     }
 
     private void showAlertDialog(GuardarRetiroResponse response) {
         dialogFragmentFondoAhorro = new DialogFragmentFondoAhorro();
-        dialogFragmentFondoAhorro.initView(response.getData().getResponse().getDes_mensaje(),
-                response.getData().getResponse().getClv_folio(),
-                response.getData().getResponse().getFec_captura(),
-                response.getData().getResponse().getHrs_captura());
+        if (online) {
+            GuardarRetiroResponse.Response data = response.getData().getResponse();
+            String folioCredito = "";
+            String folioAdicional = "";
+            if (data.getFormapago() != null && !data.getFormapago().isEmpty() && data.getClv_folio() != null && !data.getClv_folio().isEmpty())
+                folioCredito = data.getFormapago() + "\n" + data.getClv_folio();
+            if (data.getFormapagoahorro() != null && !data.getFormapagoahorro().isEmpty() && data.getClv_folioahorro() != null && !data.getClv_folioahorro().isEmpty())
+                folioAdicional = data.getFormapagoahorro() + "\n" + data.getClv_folioahorro();
+
+            dialogFragmentFondoAhorro.initView(response.getData().getResponse().getDes_mensaje(), folioCredito, folioAdicional);
+        } else {
+            dialogFragmentFondoAhorro.initView(response.getData().getResponse().getDes_mensaje(),
+                    response.getData().getResponse().getClv_folio(),
+                    response.getData().getResponse().getFec_captura(),
+                    response.getData().getResponse().getHrs_captura());
+        }
         dialogFragmentFondoAhorro.setOnOptionClick(new DialogFragmentFondoAhorro.OnOptionClick() {
             @Override
             public void onAccept() {
@@ -336,19 +374,19 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     @Override
     public void onAccept() {
         dialogFragmentGetDocument.close();
+        dialogFragmentGetDocument = null;
     }
 
-    private void configurationUI(RetiroResponse retiroResponse ){
-
-        if(retiroResponse.getData().getResponse().getImp_margencredito() > 0){
+    private void configurationUI(RetiroResponse retiroResponse) {
+        if (retiroResponse.getData().getResponse().getImp_margencredito() > 0) {
+            String information = getInformation(retiroResponse.getData().getResponse().getDes_proceso());
             edtRetiroProceso.setVisibility(VISIBLE);
-            edtRetiroProceso.setInformativeMode(
-                    retiroResponse.getData().getResponse().getDes_proceso(), "");
-            edtRetiroProceso.setInformativeQuantity(String.format(Locale.getDefault(),"$%.2f",retiroResponse.getData().getResponse().getImp_margencredito()));
-            edtRetiro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
+            edtRetiroProceso.setInformativeMode(information, "");
+            edtRetiroProceso.setInformativeQuantity(String.format(Locale.getDefault(), "$%.2f", retiroResponse.getData().getResponse().getImp_margencredito()));
+            edtRetiro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(), "");
             edtRetiro.setHint("Ingresa otra cantidad");
             edtRetiro.setEnableQuantity(true);
-        }else {
+        } else {
             edtRetiro.setInformativeMode(getString(R.string.want_remove), "");
             edtRetiro.setHint("Ingresa una cantidad");
             edtRetiro.setEnableQuantity(true);
@@ -356,43 +394,43 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiro.setTextWatcherMoneyDecimal();
         }
 
-        if(retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0){
-            edtRetiroAhorroProceso.setInformativeMode(
-                    retiroResponse.getData().getResponse().getDes_proceso(), "");
+        if (retiroResponse.getData().getResponse().getImp_ahorroadicional() > 0) {
+            String information = getInformation(retiroResponse.getData().getResponse().getDes_proceso());
+            edtRetiroAhorroProceso.setInformativeMode(information, "");
             edtRetiroAhorroProceso.setInformativeQuantity(String.format(Locale.getDefault(), "$%.2f", retiroResponse.getData().getResponse().getImp_ahorroadicional()));
-            edtRetiroAhorro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(),"");
+            edtRetiroAhorro.setInformativeMode(retiroResponse.getData().getResponse().getDes_cambiar(), "");
             edtRetiroAhorro.setHint("Ingresa otra cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
-        }else {
+        } else {
             edtRetiroAhorro.setInformativeMode(getString(R.string.want_remove), "");
             edtRetiroAhorro.setHint("Ingresa una cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
             edtRetiroAhorroProceso.setVisibility(View.GONE);
             edtRetiroAhorro.setTextWatcherMoneyDecimal();
         }
+        totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), INIT_TOTAL_VALUE));
+    }
 
-        totalImporte.setText(String.format("%s $%.2f",getString(R.string.totalRemove),retiroResponse.getData().getResponse().getImp_total()));
-
+    private String getInformation(String information) {
+        return information != null && !information.isEmpty() ? information : getString(R.string.withdrawal_in_process);
     }
 
     @Override
     public void showError(ServicesError coppelServicesError) {
-
-            if(coppelServicesError.getMessage() != null ){
-                switch (coppelServicesError.getType()) {
-                    case ServicesRequestType.WITHDRAWSAVING:
-                        ctlConnectionError.setVisibility(VISIBLE);
-                        layoutMain.setVisibility(View.GONE);
-                        break;
-                    case ServicesRequestType.INVALID_TOKEN:
-                        EXPIRED_SESSION = true;
-                        showWarningDialog(getString(R.string.expired_session));
-                        break;
-                }
-
+        if (coppelServicesError.getMessage() != null && !coppelServicesError.getMessage().isEmpty()) {
+            switch (coppelServicesError.getType()) {
+                case ServicesRequestType.WITHDRAWSAVING:
+                    showAlertDialog(coppelServicesError.getMessage());
+                    break;
+                case ServicesRequestType.INVALID_TOKEN:
+                    EXPIRED_SESSION = true;
+                    showWarningDialog(getString(R.string.expired_session));
+                    break;
             }
-
-
+        } else {
+            layoutMain.setVisibility(View.GONE);
+            ctlConnectionError.setVisibility(VISIBLE);
+        }
         hideProgress();
     }
 
@@ -482,42 +520,30 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     @Override
     public void calculate() {
+        BigDecimal margin;
+        BigDecimal ahorro;
+
         String contentMargin = edtRetiro.getQuantity();
-        String contentAhorro= edtRetiroAhorro.getQuantity();
-        float margin;
-        float ahorro;
-        try{
-            margin = !contentMargin.isEmpty() ? Float.parseFloat(contentMargin) : 0f;
-        }catch (Exception e){
-            margin = 0f;
-        }
+        String contentAhorro = edtRetiroAhorro.getQuantity();
 
+        contentMargin = !contentMargin.isEmpty() ? contentMargin : "0";
+        margin = new BigDecimal(contentMargin);
+        contentAhorro = !contentAhorro.isEmpty() ? contentAhorro : "0";
+        ahorro = new BigDecimal(contentAhorro);
 
+        BigDecimal total = margin.add(ahorro);
+        totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), total));
 
-        try{
-            ahorro = !contentAhorro.isEmpty() ? Float.parseFloat(contentAhorro) : 0f;
-        }catch (Exception e){
-            ahorro = 0f;
-        }
-
-
-        float total = margin + ahorro;
-        totalImporte.setText(String.format("%s $%.2f",getString(R.string.totalRemove), total));
-
-
-        if((int) Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())) < margin ||
-                (int)Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional())) < ahorro) {
-
+        if ((int) Double.parseDouble(
+                TextUtilities.insertDecimalPoint(
+                        parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()
+                )) < margin.doubleValue()
+                || (int) Double.parseDouble(
+                TextUtilities.insertDecimalPoint(
+                        parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()
+                )) < ahorro.doubleValue()) {
             setEnableButton(false);
-
             showAlertDialog("No cuenta con saldo disponible");
-
-            return;
-
         }
-
-
-
-
     }
 }

@@ -3746,11 +3746,14 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
-        if(errorCode == -10 ||errorCode == -11 || errorCode == -33 || errorCode == -99 ){
+        if (errorCode == -10 || errorCode == -11 || errorCode == -33 || errorCode == -99 ) {
             message = userMessage;
-        }else{
+        } else {
             message = context.getString(R.string.error_generic_service);
+        }
 
+        if (errorCode == -6) {
+            message = context.getString(R.string.error_invalid_token);
         }
 
         return message;
@@ -4027,6 +4030,44 @@ public class ServicesInteractor {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 t.printStackTrace();
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getTokenSSO(TokenSSORequest tokenSSORequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS;
+
+        iServicesRetrofitMethods.getTokenSSO(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                tokenSSORequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            TokenSSOResponse.class
+                    );
+
+                    if (tokenSSOResponse.getToken_user() != null) {
+                        ServicesResponse<TokenSSOResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(tokenSSOResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
