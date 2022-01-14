@@ -31,6 +31,7 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
         private String des_proceso;
         private String des_cambiar;
         private String des_mensaje;
+        private int opc_retiroenlinea = 0;
 
 
         public Float getImp_margencredito() {
@@ -79,6 +80,14 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
 
         public void setDes_mensaje(String des_mensaje) {
             this.des_mensaje = des_mensaje;
+        }
+
+        public int getOpc_retiroenlinea() {
+            return opc_retiroenlinea;
+        }
+
+        public void setOpc_retiroenlinea(int opc_retiroenlinea) {
+            this.opc_retiroenlinea = opc_retiroenlinea;
         }
     }
 }

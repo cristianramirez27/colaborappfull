@@ -61,6 +61,7 @@ import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
 import com.coppel.rhconecta.dev.business.models.LetterGenerateResponse;
 import com.coppel.rhconecta.dev.business.models.LetterPreviewResponse;
 import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
+import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.HolidayBonusRequestData;
@@ -349,5 +350,9 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getHolidayBonus(@Url String url,@Header("Authorization") String token, @Body HolidayBonusRequestData holidayBonusRequestData);
+
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getTokenSSO(@Url String url,@Header("Authorization") String token, @Body TokenSSORequest tokenSSORequest);
 
 }

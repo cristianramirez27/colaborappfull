@@ -27,6 +27,7 @@ public class ServicesRequestType {
 
     public static final int COLLAGE = 19;
     public static final int COVID_SURVEY = 39;
+    public static final int LOGIN_APPS = 40;
 
 
     public static final int PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL = 14;

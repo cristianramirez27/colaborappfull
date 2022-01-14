@@ -47,6 +47,8 @@ import com.coppel.rhconecta.dev.business.models.HolidayRolCheckResponse;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
+import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
+import com.coppel.rhconecta.dev.business.models.TokenSSOResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
@@ -90,6 +92,7 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -133,6 +136,7 @@ import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAG
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
@@ -156,6 +160,10 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /* */
 public class HomeActivity
@@ -212,6 +220,7 @@ public class HomeActivity
     private boolean EXPIRED_SESSION;
     private String goTosection = "";
     private CoppelServicesPresenter coppelServicesPresenter;
+    private int externalOption;
 
     /* */
     @Inject
@@ -648,7 +657,8 @@ public class HomeActivity
                         showBlockDialog(BLOCK_MESSAGE_COVID_SURVEY);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
-                        getExternalUrl(COVID_SURVEY);
+                        externalOption = COVID_SURVEY;
+                        ValidateAcces();
                     }
                     break;
                 case OPTION_COLLAGE:
@@ -656,7 +666,8 @@ public class HomeActivity
                         showBlockDialog(BLOCK_MESSAGE_COLLAGE);
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
-                        getCollageURL();
+                        externalOption = COLLAGE;
+                        ValidateAcces();
                     }
                     break;
                 case OPTION_COCREA:
@@ -751,15 +762,43 @@ public class HomeActivity
     /**
      *
      */
-    private void getExternalUrl(int option) {
+    private void ValidateAcces() {
+        if (!validateLoginSSO()) {
+            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+            String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+            String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
+            String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+            TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado);
+            coppelServicesPresenter.getTokenSSO(tokenSSORequest, token);
+        } else {
+            getExternalUrl();
+        }
+    }
+
+    private boolean validateLoginSSO() {
+        String strLastLogin = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN);
+        Date lastLogin = new Gson().fromJson(strLastLogin, Date.class);
+        Date currentTime = Calendar.getInstance().getTime();
+        long timeLapse = currentTime.getTime() - lastLogin.getTime();
+        long totalHours = TimeUnit.MILLISECONDS.toHours(timeLapse);
+
+        // Se valida si pasaron mas de 6 hrs desde el anterior loggeo de SSO.
+        if (totalHours <= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void getExternalUrl() {
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getExternalUrl(profileResponse.getColaborador(), option, token);
+        coppelServicesPresenter.getExternalUrl(profileResponse.getColaborador(), externalOption, token);
     }
 
     /**
      *
      */
-    private void openCovidSurvey(String url) {
+    private void openExternalUrl(String url) {
         Intent intentExternalUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intentExternalUrl.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentExternalUrl.setPackage("com.android.chrome");
@@ -925,11 +964,11 @@ public class HomeActivity
                 }
                 break;
             case COLLAGE:
-                if (response.getResponse() instanceof CollageResponse) {
-                    CollageResponse collageResponse = (CollageResponse) response.getResponse();
+                if (response.getResponse() instanceof ExternalUrlResponse) {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
                     String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
-                    String url = String.format("%s%s", collageResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
-                    openCollage(url);
+                    String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
+                    openExternalUrl(url);
                 }
                 break;
             case COVID_SURVEY:
@@ -937,7 +976,20 @@ public class HomeActivity
                     ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
                     String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
                     String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
-                    openCovidSurvey(url);
+                    openExternalUrl(url);
+                }
+                break;
+            case LOGIN_APPS:
+                if (response.getResponse() instanceof TokenSSOResponse) {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) response.getResponse();
+                    /* Almacenamos el nuevo token */
+                    String newToken = tokenSSOResponse.getToken_user();
+                    AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, newToken);
+                    /* Almacenamos la fecha en la que se obtuvo */
+                    Date currentTime = Calendar.getInstance().getTime();
+                    AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN, new Gson().toJson(currentTime));
+
+                    getExternalUrl();
                 }
                 break;
         }

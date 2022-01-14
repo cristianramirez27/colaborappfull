@@ -52,7 +52,7 @@ public class AppConfig {
     public final static String ENDPOINT_QR = "ENDPOINT_QR";
     public final static String ENDPOINT_BENEFIT_CODE = "ENDPOINT_BENEFIT_CODE";
     public final static String ENDPOINT_SECTION_TIME = "ENDPOINT_SECTION_TIME";
-
+    public final static String ENDPOINT_LOGIN_APPS = "ENDPOINT_LOGIN_APPS";
     public final static String ENDPOINT_ADDITIONALS = "ENDPOINT__ADDITIONALS";
 
     //VISIONARIOS
@@ -162,6 +162,7 @@ public class AppConfig {
         String savings = mFirebaseRemoteConfig.getString(ENDPOINT_SAVINGS);
         String qr = mFirebaseRemoteConfig.getString(ENDPOINT_QR);
         String benefitCode = mFirebaseRemoteConfig.getString(ENDPOINT_BENEFIT_CODE);
+        String loginApps = mFirebaseRemoteConfig.getString(ENDPOINT_LOGIN_APPS);
         String sectionTime = mFirebaseRemoteConfig.getString(ENDPOINT_SECTION_TIME);
         String profile = mFirebaseRemoteConfig.getString(ENDPOINT_PROFILE);
         String home = mFirebaseRemoteConfig.getString(ENDPOINT_HOME);
@@ -213,6 +214,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAY_BONUS, holidayBonus);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFIT_CODE,benefitCode);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LOGIN_APPS,loginApps);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_SECTION_TIME, sectionTime);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COLLAGE, collage);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_COCREA, url_coCrea);
