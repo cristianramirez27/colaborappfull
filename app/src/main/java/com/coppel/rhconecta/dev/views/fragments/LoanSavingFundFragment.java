@@ -60,6 +60,8 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
     private CoppelServicesPresenter coppelServicesPresenter;
     private DialogFragmentLoader dialogFragmentLoader;
     private LoanSavingFundResponse loanSavingFundResponse;
+    DialogFragmentWarning dialogFragmentWarning;
+    private int requestorFlowError = -1;
     @BindView(R.id.ctlHeader)
     ConstraintLayout ctlHeader;
     @BindView(R.id.txvLoanMargin)
@@ -193,18 +195,29 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
 
     @Override
     public void showError(ServicesError coppelServicesError) {
-        switch (coppelServicesError.getType()) {
+        requestorFlowError = coppelServicesError.getType();
+        switch (requestorFlowError) {
             case ServicesRequestType.INVALID_TOKEN:
-                DialogFragmentWarning dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.expired_session), getString(R.string.accept));
-                dialogFragmentWarning.setOnOptionClick(this);
-                dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                showWarningDialog(getString(R.string.attention), getString(R.string.expired_session));
+                break;
+            case ServicesRequestType.TIME_OUT_REQUEST:
+                showWarningDialog(getString(R.string.attention), coppelServicesError.getMessage());
                 break;
             default:
                 ctlConnectionError.setVisibility(View.VISIBLE);
                 ctlHeader.setVisibility(View.GONE);
                 flChildFragmentContainer.setVisibility(View.GONE);
                 break;
+        }
+    }
+
+    private void showWarningDialog(String title, String message) {
+        if (dialogFragmentWarning == null) {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(title, message, getString(R.string.accept));
+            dialogFragmentWarning.setSinlgeOptionData(title, message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
         }
     }
 
@@ -248,7 +261,11 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
 
     @Override
     public void onRightOptionClick() {
-        AppUtilities.closeApp(parent);
+        if (requestorFlowError == ServicesRequestType.INVALID_TOKEN) {
+            AppUtilities.closeApp(parent);
+        } else {
+            dialogFragmentWarning.close();
+        }
     }
 
     @Override

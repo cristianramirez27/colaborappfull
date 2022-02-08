@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.business.utils;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.TIME_OUT;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -22,8 +24,8 @@ public class ServicesRetrofitManager {
      *
      */
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-            .readTimeout(120, TimeUnit.SECONDS)
-            .connectTimeout(120, TimeUnit.SECONDS)
+            .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+            .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             /* Enabled body http interceptor in DEBUG mode */
             .addInterceptor(bodyInterceptor)
             .build();

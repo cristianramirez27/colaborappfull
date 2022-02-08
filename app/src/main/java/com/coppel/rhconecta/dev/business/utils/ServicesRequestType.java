@@ -59,5 +59,6 @@ public class ServicesRequestType {
 
     public static final int BENEFIT_CODE = 31;
     public static final int BENEFIT_COMPANY = 32;
+    public static final int TIME_OUT_REQUEST = 33;
 
 }

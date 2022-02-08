@@ -28,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.net.SocketTimeoutException;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -979,15 +980,24 @@ public class ServicesInteractor {
                     } else {
                         sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
                     }
-
                 } catch (Exception e) {
-                    sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                    if (response.body() == null) {
+                        ServicesError servicesError = new ServicesError();
+                        servicesError.setType(ServicesRequestType.TIME_OUT_REQUEST);
+                        iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_login), servicesError));
+                    } else {
+                        sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND));
+                ServicesError error = servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND);
+                if (t instanceof SocketTimeoutException) {
+                    error.setType(ServicesRequestType.TIME_OUT_REQUEST);
+                }
+                iServiceListener.onError(error);
             }
         });
     }
@@ -3767,8 +3777,6 @@ public class ServicesInteractor {
             return type;
         }
     }
-
-
 
     public void validateCode(ValidateCodeRequest validateCodeRequest) {
         //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";

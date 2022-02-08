@@ -30,6 +30,9 @@ public class ServicesUtilities {
             case 404: //Not Found
                 servicesError.setMessage(context.getString(R.string.error_not_found));
                 break;
+            case 408: //Timeout
+                servicesError.setMessage(context.getString(R.string.error_generic_service));
+                break;
             case 500: //Internal Server Error
                 servicesError.setMessage(context.getString(R.string.server_error));
                 break;

@@ -108,4 +108,5 @@ public class ServicesConstants {
     public static final int SHIPPING_OPTION_GET = 0;
     public static final int SHIPPING_OPTION_DOWNLOAD_PDF = 1;
     public static final int SHIPPING_OPTION_SEND_EMAIL = 2;
+    public static final int TIME_OUT = 60;
 }
