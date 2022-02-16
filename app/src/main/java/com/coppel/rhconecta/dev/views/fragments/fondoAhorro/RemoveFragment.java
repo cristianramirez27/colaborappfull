@@ -259,7 +259,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 break;
         }
     }
-//TODO bug 45 is fixed
+
     private void validateWithdrawal() {
         Double margenCredito = AppUtilities.toDouble(edtRetiro.getQuantity());
         //Revisamos si hay que reenviar el valor anterior
