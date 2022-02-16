@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.presentation.profile_actions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.coppel.rhconecta.dev.R
@@ -18,6 +17,7 @@ import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment
 import com.coppel.rhconecta.dev.presentation.profile_actions.fingerprint.FingerprintActivity
 import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity
 import com.coppel.rhconecta.dev.views.utils.AppConstants
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /** */
@@ -66,8 +66,14 @@ class ProfileActionsActivity : AppCompatActivity() {
                     showProgressBar()
                 ProcessStatus.FAILURE ->
                     manageHaveFingerprintFailure(profileActionsViewModel.failure!!)
-                ProcessStatus.COMPLETED ->
-                    manageHaveFingerprintDone(profileActionsViewModel.haveFingerprints)
+                ProcessStatus.COMPLETED -> {
+                    val sections = MenuUtilities.getSubSection()
+                    if (sections != null && sections.isNotEmpty())
+                        manageHaveFingerprintDone(MenuUtilities.findSubItem(sections, MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
+                                ?: -1, 1))
+                    else
+                        manageHaveFingerprintDone(profileActionsViewModel.haveFingerprints)
+                }
             }
         }
     }

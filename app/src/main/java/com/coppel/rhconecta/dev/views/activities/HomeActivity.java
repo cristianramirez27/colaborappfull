@@ -69,6 +69,7 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.resources.db.models.MainSection;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
@@ -163,6 +164,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /* */
@@ -503,6 +505,10 @@ public class HomeActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ctlProfile:
+                List<MainSection> sections = MenuUtilities.getMainSection();
+                if (sections != null && !sections.isEmpty() && !MenuUtilities.findItem(sections, 8)) {
+                    return;
+                }
                 if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PROFILE).equals(YES)) {
                     showBlockDialog(BLOCK_MESSAGE_PROFILE);
                 } else {

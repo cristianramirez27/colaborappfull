@@ -83,7 +83,7 @@ public class HolidaysRolMenuFragment extends Fragment implements IServicesContra
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcvOptions.setLayoutManager(new LinearLayoutManager(getContext()));
         menuItems = new ArrayList<>();
-        menuItems.addAll(MenuUtilities.getRolUserMenu(parent));
+        menuItems.addAll(MenuUtilities.getRolUserMenuHoliday(parent));
         iconsMenuHolidayRecyclerAdapter = new IconsMenuHolidayRecyclerAdapter(parent, menuItems);
         iconsMenuHolidayRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuHolidayRecyclerAdapter);

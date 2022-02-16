@@ -18,6 +18,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.business.utils.ShareUtil;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
@@ -229,6 +230,8 @@ public class SplashScreenActivity
     private void manageProfileResponse(ProfileResponse profileResponse) {
         ProfileResponse.Response profileInternalResponse = profileResponse.getData().getResponse()[0];
         saveProfileInternalResponse(profileInternalResponse);
+        saveBoolean(AppConstants.SHARED_PREFERENCES_FILIAL, profileInternalResponse.getEsFilial() == 1);
+        ShareUtil.toSaveMainSection(profileInternalResponse.getSeccionesApp());
 
         Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
                 .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)

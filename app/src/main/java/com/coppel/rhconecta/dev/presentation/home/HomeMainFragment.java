@@ -44,6 +44,7 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
+import com.coppel.rhconecta.dev.resources.db.models.MainSection;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.HomeMenuRecyclerViewAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
@@ -126,6 +127,10 @@ public class HomeMainFragment
      *
      */
     private void onSurveyIconClickListener(View view) {
+        List<MainSection> sections = MenuUtilities.getMainSection();
+        if (sections != null && !sections.isEmpty() && !MenuUtilities.findItem(sections, 19)) {
+            return;
+        }
         // Verifica que la opcion de encuestas este disponible
         if (AppUtilities.getStringFromSharedPreferences(requireContext(), BLOCK_ENCUESTAS).equals(YES)) {
             showBlockOptionWarningDialog(BLOCK_MESSAGE_ENCUESTAS);

@@ -9,6 +9,7 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_NAME = "COPPEL_PREFERENCES";
     public static final String SHARED_PREFERENCES_IS_LOGGED_IN = "IS_LOGGED_IN";
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
+    public static final String SHARED_PREFERENCES_FILIAL = "FILIAL";
     public static final String SHARED_PREFERENCES_PASS = "PASSWORD";
     public static final String SHARED_PREFERENCES_TOKEN = "TOKEN";
     public static final String SHARED_PREFERENCES_LAST_SSO_LOGIN = "LAST_LOGIN";
@@ -31,6 +32,7 @@ public class AppConstants {
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
     public static final String CONTENT_TYPE_PDF = "application/pdf";
 
+    public static final String OPTION_PROFILE = "PROFILE";
     public static final String OPTION_HOME = "HOME";
     public static final String OPTION_NOTICE = "NOTICE";
     public static final String OPTION_PAYROLL_VOUCHER = "PAYROLL_VOUCHER";
@@ -40,8 +42,12 @@ public class AppConstants {
     public static final String OPTION_COLLABORATOR_AT_HOME = "COLLABORATOR_AT_HOME";
     public static final String OPTION_LETTERS = "LETTERS";
     public static final String OPTION_EXPENSES = "EXPENSE";
+    public static final String OPTION_EXPENSES_GTE = "EXPENSE_GTE";
+    public static final String OPTION_EXPENSES_COL = "EXPENSE_COL";
     public static final String OPTION_POLL = "POLL";
     public static final String OPTION_HOLIDAYS = "HOLIDAYS";
+    public static final String OPTION_HOLIDAYS_COL = "HOLIDAYS_COL";
+    public static final String OPTION_HOLIDAYS_GTE = "HOLIDAYS_GTE";
     public static final String OPTION_QR_CODE = "QR_CODE";
     public static final String OPTION_COLLAGE = "COLLAGE";
     public static final String OPTION_COVID_SURVEY = "COVID_SURVEY";

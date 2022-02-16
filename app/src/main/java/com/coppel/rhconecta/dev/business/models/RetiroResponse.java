@@ -31,8 +31,16 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
         private String des_proceso;
         private String des_cambiar;
         private String des_mensaje;
+        private int opc_filiales = -1;
         private int opc_retiroenlinea = 0;
 
+        public int getOpc_filiales() {
+            return opc_filiales;
+        }
+
+        public void setOpc_filiales(int opc_filiales) {
+            this.opc_filiales = opc_filiales;
+        }
 
         public Float getImp_margencredito() {
             return imp_margencredito;

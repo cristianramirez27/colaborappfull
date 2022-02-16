@@ -29,6 +29,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.business.utils.ShareUtil;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import com.coppel.rhconecta.dev.views.customviews.EditTextPassword;
@@ -179,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
                         .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
                         .build();
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FILIAL, profileResponse.getData().getResponse()[0].getEsFilial() == 1);
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, cedtEmail.getText());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);
@@ -198,7 +200,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 /*Almacenamos si es Gerente*/
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profileResponse.getData().getResponse()[0].getEsGte() == 1 ? true : false);
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE,  profileResponse.getData().getResponse()[0].getEsSuplente() == 1 ? true : false);
-
+                ShareUtil.toSaveMainSection(profileResponse.getData().getResponse()[0].getSeccionesApp());
 
                 cedtEmail.setText("");
                 cedtPassword.setText("");

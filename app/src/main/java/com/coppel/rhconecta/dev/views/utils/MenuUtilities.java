@@ -12,6 +12,8 @@ import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
+import com.coppel.rhconecta.dev.resources.db.models.MainSection;
+import com.coppel.rhconecta.dev.resources.db.models.SectionDb;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +43,9 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS_COL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS_GTE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
@@ -48,6 +53,69 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 
 public class MenuUtilities {
+    static Map<String, Integer> sectionsMap = null;
+    static Map<String, Integer> subSectionsMap = null;
+
+    public static List<MainSection> getMainSection() {
+        return RealmHelper.getListSection();
+    }
+
+    public static List<SectionDb> getSubSection() {
+        return RealmHelper.getListSubSection();
+    }
+
+    public static Map<String, Integer> getSectionsMap() {
+        if (sectionsMap == null) {
+            sectionsMap = new HashMap<>();
+            sectionsMap.put(AppConstants.OPTION_VISIONARIES, 1);
+            sectionsMap.put(AppConstants.OPTION_NOTICE, 2);
+            sectionsMap.put(AppConstants.OPTION_BENEFITS, 3);
+            sectionsMap.put(OPTION_COCREA, 4);
+            sectionsMap.put(OPTION_COVID_SURVEY, 5);
+            sectionsMap.put(OPTION_WHEATHER, 6);
+            sectionsMap.put(OPTION_COLLAGE, 7);
+            sectionsMap.put(AppConstants.OPTION_PROFILE, 8);
+            sectionsMap.put(OPTION_SAVING_FUND, 9);
+            sectionsMap.put(AppConstants.OPTION_LETTERS, 10);
+            sectionsMap.put(AppConstants.OPTION_EXPENSES, 11);
+            sectionsMap.put(AppConstants.OPTION_EXPENSES_COL, 12);
+            sectionsMap.put(AppConstants.OPTION_EXPENSES_GTE, 13);
+            sectionsMap.put(OPTION_HOLIDAYS, 14);
+            sectionsMap.put(OPTION_HOLIDAYS_COL, 15);
+            sectionsMap.put(OPTION_HOLIDAYS_GTE, 16);
+            sectionsMap.put(AppConstants.OPTION_PAYROLL_VOUCHER, 17);
+            sectionsMap.put(AppConstants.OPTION_COLLABORATOR_AT_HOME, 18);
+            sectionsMap.put(OPTION_QR_CODE, 20);
+        }
+        return sectionsMap;
+    }
+
+    public static Map<String, Integer> getSubSectionsMap() {
+        if (subSectionsMap == null) {
+            subSectionsMap = new HashMap<>();
+            subSectionsMap.put(AppConstants.OPTION_REMOVE, 2);
+            subSectionsMap.put(AppConstants.OPTION_PAY, 3);
+            subSectionsMap.put(AppConstants.OPTION_ADITIONAL_SAVED, 4);
+            subSectionsMap.put(AppConstants.OPTION_WORK_RECORD, 5);
+            subSectionsMap.put(AppConstants.OPTION_VISA_PASSPORT, 6);
+            subSectionsMap.put(AppConstants.OPTION_BANK_CREDIT, 7);
+            subSectionsMap.put(AppConstants.OPTION_INFONAVIT, 8);
+            subSectionsMap.put(AppConstants.OPTION_IMSS, 9);
+            subSectionsMap.put(AppConstants.OPTION_KINDERGARTEN, 10);
+            subSectionsMap.put(AppConstants.OPTION_AUTHORIZE_REQUESTS, 11);
+            subSectionsMap.put(AppConstants.OPTION_CONTROLS_LIQ, 12);
+            subSectionsMap.put(AppConstants.OPTION_HOLIDAY_REQUESTS, 13);
+            subSectionsMap.put(AppConstants.OPTION_CALENDAR_GRAL, 14);
+            subSectionsMap.put(AppConstants.OPTION_ADITIONAL_DAYS, 15);
+            subSectionsMap.put(AppConstants.OPTION_PAYROLL_VOUCHER, 16);
+            subSectionsMap.put(AppConstants.OPTION_BONUS, 17);
+            subSectionsMap.put(AppConstants.OPTION_GAS, 18);
+            subSectionsMap.put(AppConstants.OPTION_PTU, 19);
+            subSectionsMap.put(AppConstants.OPTION_ALIMONY, 20);
+            subSectionsMap.put(AppConstants.OPTION_SAVING_FUND, 21);
+        }
+        return subSectionsMap;
+    }
 
     /**
      *
@@ -62,25 +130,28 @@ public class MenuUtilities {
         if (title_wheather == null || title_wheather.isEmpty())
             title_wheather = context.getString(R.string.title_wheather);
 
+        Map<String, Integer> sections = getSectionsMap();
         /*Setamos el menu por default*/
         ArrayList<HomeMenuItem> listMenuDefault = new ArrayList<>(Arrays.asList(
-                new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE, notifications[0]),
-                new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),
-                new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS),
-                new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),
-                new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),
-                new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),
-                new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),
-                new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),
-                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES, notifications[1]),
-                new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),
-                new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),
-                new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),
-                new HomeMenuItem(title_wheather, OPTION_WHEATHER)
+                new HomeMenuItem(context.getString(R.string.notices), AppConstants.OPTION_NOTICE, notifications[0]), //2
+                new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),//17
+                new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS), //3
+                new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),//9
+                new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),//10
+                new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),//11
+                new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),//14
+                new HomeMenuItem(context.getString(R.string.title_collage), OPTION_COLLAGE),//7
+                new HomeMenuItem(context.getString(R.string.visionaries), AppConstants.OPTION_VISIONARIES, notifications[1]), //1
+                new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),//18
+                new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
+                new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
+                new HomeMenuItem(title_wheather, OPTION_WHEATHER)//6
         ));
 
+        List<MainSection> mainSections = RealmHelper.getListSection();
+
         if (enableCoCrea) {
-            listMenuDefault.add(new HomeMenuItem(title_cocrea, OPTION_COCREA));
+            listMenuDefault.add(new HomeMenuItem(title_cocrea, OPTION_COCREA)); //4
         }
 
 
@@ -192,9 +263,6 @@ public class MenuUtilities {
             realm.commitTransaction();
             homeMenuItems.addAll(menus);
         } else {
-            if (isSlide) {
-                homeMenuItems.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
-            }
             homeMenuItems.addAll(listMenuDefault);
         }
 
@@ -205,18 +273,30 @@ public class MenuUtilities {
         boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
-        for (HomeMenuItem item : homeMenuItems) {
-            if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
-                continue;
-            if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
-                continue;
-            if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
-                continue;
-            if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
-                continue;
-            if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
-                continue;
-            response.add(item);
+        if (isSlide) {
+            response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
+        }
+        if (mainSections != null && !mainSections.isEmpty()) {
+            Integer index = null;
+            for (HomeMenuItem item : homeMenuItems) {
+                index = sections.get(item.getTAG());
+                if (index != null && findItem(mainSections, index))
+                    response.add(item);
+            }
+        } else {
+            for (HomeMenuItem item : homeMenuItems) {
+                if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
+                    continue;
+                if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
+                    continue;
+                if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
+                    continue;
+                if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
+                    continue;
+                if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
+                    continue;
+                response.add(item);
+            }
         }
         return response;
     }
@@ -342,6 +422,7 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getPayrollMenu(Context context, VoucherResponseV2.Response voucherResponse) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
+        List<HomeMenuItem> resultMenuItems = new ArrayList<>();
         for (VoucherResponseV2.OpcionNomina opcionNomina : voucherResponse.getOpciones_nomina()) {
             if (!opcionNomina.getSfechanomina().equals("0")) {
                 switch (opcionNomina.itipocomprobante) {
@@ -369,54 +450,118 @@ public class MenuUtilities {
                 }
             }
         }
+        List<MainSection> sectionList = getMainSection();
+        if (sectionList != null && !sectionList.isEmpty()) {
+            List<SectionDb> subSections = getSubSection();
+            for (HomeMenuItem item : menuItems) {
+                if (findSubItem(subSections, getSectionsMap().get(AppConstants.OPTION_PAYROLL_VOUCHER), getSubSectionsMap().get(item.getTAG())))
+                    resultMenuItems.add(item);
+            }
+            menuItems = resultMenuItems;
+        }
+
 
         return menuItems;
     }
 
     public static List<HomeMenuItem> getEmploymentLettersMenu(Context context) {
-        List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.work_record), AppConstants.OPTION_WORK_RECORD));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.visa_passport), AppConstants.OPTION_VISA_PASSPORT));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.bank_credit), AppConstants.OPTION_BANK_CREDIT));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.imss), AppConstants.OPTION_IMSS));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.infonavit), AppConstants.OPTION_INFONAVIT));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.kindergarten), AppConstants.OPTION_KINDERGARTEN));
+        List<HomeMenuItem> menuItems;
+        int[] idRes = {R.string.work_record, R.string.visa_passport, R.string.bank_credit, R.string.imss, R.string.infonavit, R.string.kindergarten};
+        String[] options = {AppConstants.OPTION_WORK_RECORD, AppConstants.OPTION_VISA_PASSPORT, AppConstants.OPTION_BANK_CREDIT, AppConstants.OPTION_IMSS, AppConstants.OPTION_INFONAVIT, AppConstants.OPTION_KINDERGARTEN};
+        menuItems = buildOptionSubSection(OPTION_LETTERS, options, idRes, context);
 
         return menuItems;
     }
 
     public static List<HomeMenuItem> getRolUserMenu(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
+        List<MainSection> sectionList = getMainSection();
+        if (sectionList != null && !sectionList.isEmpty()) {
+            if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_EXPENSES_COL)))
+                menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
+            if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_EXPENSES_GTE)))
+                menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+        } else {
+            menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+            menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
+        }
+        return menuItems;
+    }
 
+    public static List<HomeMenuItem> getRolUserMenuHoliday(Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        List<MainSection> sectionList = getMainSection();
+        if (sectionList != null && !sectionList.isEmpty()) {
+            if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_HOLIDAYS_COL)))
+                menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
+            if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_HOLIDAYS_GTE)))
+                menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+        } else {
+            menuItems.add(new HomeMenuItem(context.getString(R.string.manager_vacation), AppConstants.OPTION_MENU_GTE));
+            menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
+        }
         return menuItems;
     }
 
     public static List<HomeMenuItem> getExpensesManagerMenu(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.authorize_request_icon), AppConstants.OPTION_AUTHORIZE_REQUESTS));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.active_controls), AppConstants.OPTION_CONTROLS_LIQ));
+        int[] idRes = {R.string.authorize_request_icon, R.string.active_controls};
+        String[] opt = {AppConstants.OPTION_AUTHORIZE_REQUESTS, AppConstants.OPTION_CONTROLS_LIQ};
+        buildOptionSubSection(AppConstants.OPTION_EXPENSES_GTE, opt, idRes, context);
 
         return menuItems;
     }
 
     public static List<HomeMenuItem> getHolidaysManagerMenu(Context context) {
-        List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_request_holidays), AppConstants.OPTION_HOLIDAY_REQUESTS));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_calendar_holidays), AppConstants.OPTION_CALENDAR_GRAL));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.btn_aditional_days), AppConstants.OPTION_ADITIONAL_DAYS));
+        List<HomeMenuItem> menuItems;
+        int[] idRes = {R.string.btn_request_holidays, R.string.btn_calendar_holidays, R.string.btn_aditional_days};
+        String[] options = {AppConstants.OPTION_HOLIDAY_REQUESTS, AppConstants.OPTION_CALENDAR_GRAL, AppConstants.OPTION_ADITIONAL_DAYS};
+        menuItems = buildOptionSubSection(OPTION_HOLIDAYS_GTE, options, idRes, context);
 
         return menuItems;
     }
 
-
     public static List<HomeMenuItem> getSavingFoundMenu(Context context) {
-        List<HomeMenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new HomeMenuItem(context.getString(R.string.remove), AppConstants.OPTION_REMOVE));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.add), AppConstants.OPTION_PAY));
-        menuItems.add(new HomeMenuItem(context.getString(R.string.additional_saving_double_line), AppConstants.OPTION_ADITIONAL_SAVED));
-
+        List<HomeMenuItem> menuItems;
+        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line};
+        String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED};
+        menuItems = buildOptionSubSection(OPTION_SAVING_FUND, options, idRes, context);
         return menuItems;
+    }
+
+    private static List<HomeMenuItem> buildOptionSubSection(String mainSection, String[] options, int[] idRes, Context context) {
+        List<HomeMenuItem> menuItems = new ArrayList<>();
+        List<SectionDb> subSections = getSubSection();
+        List<MainSection> sectionList = getMainSection();
+
+        if (sectionList != null && !sectionList.isEmpty()) {
+            int idParent = getSectionsMap().get(mainSection);
+            for (int i = 0; i < options.length; i++) {
+                String opt = options[i];
+                if (findSubItem(subSections, idParent, getSubSectionsMap().get(opt)))
+                    menuItems.add(new HomeMenuItem(context.getString(idRes[i]), opt));
+            }
+        } else {
+            for (int i = 0; i < options.length; i++) {
+                menuItems.add(new HomeMenuItem(context.getString(idRes[i]), options[i]));
+            }
+        }
+        return menuItems;
+    }
+
+    public static boolean findItem(List<MainSection> list, int id) {
+        for (MainSection m : list) {
+            if (m.getId() == id)
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean findSubItem(List<SectionDb> list, int idParent, int id) {
+        for (SectionDb m : list) {
+            if (m.getId() == id && m.getParentId() == idParent)
+                return true;
+        }
+        return false;
     }
 }

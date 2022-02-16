@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.business.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ProfileResponse extends CoppelGeneralParameterResponse implements Serializable {
     private Data data;
@@ -59,6 +60,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse implements S
         private String apellidom;
         private String apellidop;
         private int TipoNomina;
+        private int EsFilial;
         private String correo;
         private String fechanacimiento;
         private String fotoperfil;
@@ -66,6 +68,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse implements S
         private String sexo;
         private String errorCode;
         private String userMessage;
+        private List<Section> seccionesApp;
 
         public String getAntiguedad() {
             return Antiguedad;
@@ -377,6 +380,22 @@ public class ProfileResponse extends CoppelGeneralParameterResponse implements S
 
         public void setSuplente(int suplente) {
             Suplente = suplente;
+        }
+
+        public List<Section> getSeccionesApp() {
+            return seccionesApp;
+        }
+
+        public void setSeccionesApp(List<Section> seccionesApp) {
+            this.seccionesApp = seccionesApp;
+        }
+
+        public int getEsFilial() {
+            return EsFilial;
+        }
+
+        public void setEsFilial(int esFilial) {
+            EsFilial = esFilial;
         }
     }
 }

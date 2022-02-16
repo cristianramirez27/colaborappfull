@@ -46,7 +46,9 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentFondoAhorro;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -312,8 +314,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     retiroResponse = (RetiroResponse)response.getResponse();
                     online = retiroResponse.getData().getResponse().getOpc_retiroenlinea() == 1;
                     /**Se muestra mensaje si hay contenido que mostrar*/
-                    if(retiroResponse.getData().getResponse().getDes_mensaje() != null &&
-                            !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty()){
+                    boolean validateMessage = retiroResponse.getData().getResponse().getDes_mensaje() != null &&
+                            !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty();
+                    boolean filial = AppUtilities.getBooleanFromSharedPreferences(getContext(), AppConstants.SHARED_PREFERENCES_FILIAL);
+                    if ((filial && retiroResponse.getData().getResponse().getOpc_filiales() == 1 && validateMessage) || (!filial && validateMessage)) {
                         showWarningDialog(retiroResponse.getData().getResponse().getDes_mensaje());
                     }
                     configurationUI(retiroResponse);
@@ -463,6 +467,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         }
         WARNING_PERMISSIONS = false;
         dialogFragmentWarning.close();
+        boolean filial = AppUtilities.getBooleanFromSharedPreferences(getContext(), AppConstants.SHARED_PREFERENCES_FILIAL);
+        if (filial && retiroResponse.getData().getResponse().getOpc_filiales() == 1) {
+            requireActivity().onBackPressed();
+        }
 
     }
 
