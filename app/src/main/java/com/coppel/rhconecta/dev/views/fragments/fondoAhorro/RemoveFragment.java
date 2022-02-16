@@ -259,17 +259,17 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 break;
         }
     }
-
+//TODO bug 45 is fixed
     private void validateWithdrawal() {
-        Double margenCredito = !edtRetiro.getQuantity().isEmpty() ? AppUtilities.toDouble(edtRetiro.getQuantity()) : 0;
+        Double margenCredito = AppUtilities.toDouble(edtRetiro.getQuantity());
         //Revisamos si hay que reenviar el valor anterior
-        if (margenCredito == 0 && edtRetiroProceso.getVisibility() == VISIBLE) {
+        if (edtRetiro.getQuantity().isEmpty() && edtRetiroProceso.getVisibility() == VISIBLE) {
             margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroProceso.getQuantity()) : 0;
         }
 
-        Double ahorroAdicional = !edtRetiroAhorro.getQuantity().isEmpty() ? AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) : 0;
+        Double ahorroAdicional =  AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) ;
         //Revisamos si hay que reenviar el valor anterior
-        if (ahorroAdicional == 0 && edtRetiroAhorroProceso.getVisibility() == VISIBLE) {
+        if (edtRetiroAhorro.getQuantity().isEmpty() && edtRetiroAhorroProceso.getVisibility() == VISIBLE) {
             ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroAhorroProceso.getQuantity()) : 0;
         }
 
@@ -278,7 +278,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     private void checkBalance(Double ahorroAdicional, Double margenCredito) {
         if (ahorroAdicional > getBalanceAhorroAdicional() || margenCredito > getBalanceMargenCredito()) {
-            showAlertDialog("No cuenta con saldo disponible");
+            showAlertDialog(getString(R.string.insufficient_balance));
         } else {
             requestWithdrawal(ahorroAdicional, margenCredito);
         }
