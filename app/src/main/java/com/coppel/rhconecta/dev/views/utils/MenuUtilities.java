@@ -51,6 +51,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_INTERAL_VACANCY;
 
 public class MenuUtilities {
     static Map<String, Integer> sectionsMap = null;
@@ -86,6 +87,7 @@ public class MenuUtilities {
             sectionsMap.put(AppConstants.OPTION_PAYROLL_VOUCHER, 17);
             sectionsMap.put(AppConstants.OPTION_COLLABORATOR_AT_HOME, 18);
             sectionsMap.put(OPTION_QR_CODE, 20);
+            sectionsMap.put(OPTION_INTERAL_VACANCY, 21);
         }
         return sectionsMap;
     }
@@ -113,6 +115,7 @@ public class MenuUtilities {
             subSectionsMap.put(AppConstants.OPTION_PTU, 19);
             subSectionsMap.put(AppConstants.OPTION_ALIMONY, 20);
             subSectionsMap.put(AppConstants.OPTION_SAVING_FUND, 21);
+            subSectionsMap.put(AppConstants.OPTION_MYS_MOVEMENTS, 22);
         }
         return subSectionsMap;
     }
@@ -523,8 +526,8 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getSavingFoundMenu(Context context) {
         List<HomeMenuItem> menuItems;
-        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line};
-        String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED};
+        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line};//string para movimientos
+        String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED};//AppConstants.OPTION_MYS_MOVEMENTS
         menuItems = buildOptionSubSection(OPTION_SAVING_FUND, options, idRes, context);
         return menuItems;
     }

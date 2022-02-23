@@ -38,6 +38,7 @@ public class AppConstants {
     public static final String OPTION_PAYROLL_VOUCHER = "PAYROLL_VOUCHER";
     public static final String OPTION_BENEFITS = "BENEFIT";
     public static final String OPTION_SAVING_FUND = "SAVING_FUND";
+    public static final String OPTION_MYS_MOVEMENTS = "MYS_MOVEMENTS";
     public static final String OPTION_VISIONARIES = "VISIONARIES";
     public static final String OPTION_COLLABORATOR_AT_HOME = "COLLABORATOR_AT_HOME";
     public static final String OPTION_LETTERS = "LETTERS";
@@ -49,6 +50,7 @@ public class AppConstants {
     public static final String OPTION_HOLIDAYS_COL = "HOLIDAYS_COL";
     public static final String OPTION_HOLIDAYS_GTE = "HOLIDAYS_GTE";
     public static final String OPTION_QR_CODE = "QR_CODE";
+    public static final String OPTION_INTERAL_VACANCY = "INTERAL_VACANCY";
     public static final String OPTION_COLLAGE = "COLLAGE";
     public static final String OPTION_COVID_SURVEY = "COVID_SURVEY";
     public static final String OPTION_COCREA = "COCREA";
