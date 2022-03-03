@@ -53,6 +53,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
 import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
+import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -129,7 +130,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ST
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
@@ -138,6 +139,7 @@ import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.VACANCIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
@@ -154,6 +156,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_V
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
@@ -694,6 +697,11 @@ public class HomeActivity
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
                     break;
+                case OPTION_VACANTES:
+                    String urlCoppel = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES);
+                    externalOption = VACANCIES;
+                    getExternalUrl(urlCoppel);
+                    break;
             }
         } else
             showError(new ServicesError(getString(R.string.network_error)));
@@ -796,9 +804,19 @@ public class HomeActivity
         }
     }
 
+    private void getExternalUrl(String endPointCoppel) {
+        String endPoint = ServicesConstants.GET_ENDPOINT_COLLAGES;
+        if (endPointCoppel!=null && endPointCoppel.length() > 0){
+            endPoint = ServicesConstants.GET_ENDPOINT_VACANCIES;
+        }
+
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.getExternalUrl(endPoint, profileResponse.getColaborador(), externalOption, token);
+    }
+
     private void getExternalUrl() {
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.getExternalUrl(profileResponse.getColaborador(), externalOption, token);
+        coppelServicesPresenter.getExternalUrl(ServicesConstants.GET_ENDPOINT_COLLAGES, profileResponse.getColaborador(), externalOption, token);
     }
 
     /**
@@ -996,6 +1014,18 @@ public class HomeActivity
                     AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN, new Gson().toJson(currentTime));
 
                     getExternalUrl();
+                }
+                break;
+
+            case VACANCIES:
+                ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
+                if (!externalUrlResponse.getData().getResponse().isEmpty()) {
+                    String externalURL = externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio();
+
+                    if (externalURL != null && externalURL.length() > 0) {
+                        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(externalURL));
+                        startActivity(webIntent);
+                    }
                 }
                 break;
         }

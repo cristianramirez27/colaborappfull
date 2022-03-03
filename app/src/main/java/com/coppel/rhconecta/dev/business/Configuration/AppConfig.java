@@ -99,6 +99,9 @@ public class AppConfig {
     public final static String BLOCK_HOLIDAYS_MANAGER_REQUEST = "BLOCK_HOLIDAYS_MANAGER_REQUEST";
     public final static String BLOCK_HOLIDAYS_MANAGER_CALENDAR = "BLOCK_HOLIDAYS_MANAGER_CALENDAR";
     public final static String BLOCK_HOLIDAYS_MANAGER_ADDITIONAL = "BLOCK_HOLIDAYS_MANAGER_ADDITIONAL";
+    public final static String ENDPOINT_VACANCIES = "ENDPOINT_VACANT";
+    public final static String BLOCK_VACANCIES = "BLOCK_VACANT";
+    public final static String BLOCK_VACANCIES_MESSAGE = "BLOCK_VACANT_MESSAGE";
     public final static String BLOCK_MY_MOVEMENTS = "BLOCK_MY_MOVEMENTS";
     public final static String BLOCK_MYMOVEMENTS_MESSAGE = "BLOCK_MYMOVEMENTS";
 
@@ -182,6 +185,7 @@ public class AppConfig {
         String myMovementsEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_MYMOVEMENTS);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
+        String vacanciesEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_VACANCIES);
 
         String url_coCrea = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA);
         String url_coCreaSite = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA_STORE);
@@ -227,6 +231,7 @@ public class AppConfig {
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES, vacanciesEndPoint);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_MYMOVEMENTS, myMovementsEndPoint);
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
@@ -307,6 +312,8 @@ public class AppConfig {
         String block_holidays_request_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_REQUEST_MESSAGE);
         String block_holidays_calendar_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_CALENDAR_MESSAGE);
         String block_holidays_additonal_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_ADDITIONAL_MESSAGE);
+        String block_vacancies = mFirebaseRemoteConfig.getString(BLOCK_VACANCIES);
+        String block_vacancies_message = mFirebaseRemoteConfig.getString(BLOCK_VACANCIES_MESSAGE);
         String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
         String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
 
@@ -344,6 +351,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_REQUEST_MESSAGE, block_holidays_request_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_CALENDAR_MESSAGE, block_holidays_calendar_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL_MESSAGE, block_holidays_additonal_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VACANCIES_MESSAGE, block_vacancies_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_VACANCIES, block_vacancies);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SAVINGS, block_saving);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_PAYSHEET, block_paysheet);

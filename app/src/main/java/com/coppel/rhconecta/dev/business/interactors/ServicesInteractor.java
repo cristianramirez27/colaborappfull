@@ -3900,10 +3900,18 @@ public class ServicesInteractor {
     }
 
 
-    public void getExternalUrl(String num_empleado,int option, String token) {
+    /**
+     *
+     * @param endPointCoppel RemoteFirebase url to get any external url
+     * @param num_empleado
+     * @param option Key used in the service to classify the request,
+     *               is also used in front to classify the response
+     * @param token
+     */
+    public void getExternalUrl(String endPointCoppel, String num_empleado, int option, String token) {
         this.token = token;
         iServicesRetrofitMethods.getExternalURL(
-            ServicesConstants.GET_ENDPOINT_COLLAGES,
+            endPointCoppel,
             token,
             new ExternalUrlRequest(num_empleado, option)
         ).enqueue(new Callback<JsonObject>() {

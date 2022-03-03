@@ -175,9 +175,17 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getCollage(num_empleado, option,token);
     }
 
-    public void getExternalUrl(String num_empleado,int option, String token){
+    /**
+     *
+     * @param endPointCoppel remoteFirebase url to get any external url
+     * @param num_empleado
+     * @param option Key used in the service to classify the request,
+     *               is also used in front to classify the response
+     * @param token
+     */
+    public void getExternalUrl(String endPointCoppel,String num_empleado, int option, String token){
         view.showProgress();
-        servicesInteractor.getExternalUrl(num_empleado, option,token);
+        servicesInteractor.getExternalUrl(endPointCoppel, num_empleado, option, token);
     }
 
     public void validateCode(ValidateCodeRequest validateCodeRequest){

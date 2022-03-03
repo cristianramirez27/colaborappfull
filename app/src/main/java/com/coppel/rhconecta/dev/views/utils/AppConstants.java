@@ -52,6 +52,7 @@ public class AppConstants {
     public static final String OPTION_INTERAL_VACANCY = "INTERAL_VACANCY";
     public static final String OPTION_COLLAGE = "COLLAGE";
     public static final String OPTION_COVID_SURVEY = "COVID_SURVEY";
+    public static final String OPTION_VACANTES = "OPTION_VACANTES";
     public static final String OPTION_COCREA = "COCREA";
     public static final String URL_DEFAULT_COCREA  = "https://cocrea.coppel.com:58443/#/login";
 

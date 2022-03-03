@@ -50,6 +50,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_INTERAL_VACANCY;
@@ -149,7 +150,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.collaborator_at_home), AppConstants.OPTION_COLLABORATOR_AT_HOME, notifications[2]),//18
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
-                new HomeMenuItem(title_wheather, OPTION_WHEATHER)//6
+                new HomeMenuItem(title_wheather, OPTION_WHEATHER),//6
+                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES)
         ));
 
         List<MainSection> mainSections = RealmHelper.getListSection();
@@ -425,6 +427,9 @@ public class MenuUtilities {
                 break;
             case OPTION_MY_MOVEMENTS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_movements);
+                break;
+            case OPTION_VACANTES:
+                icon = AppCompatResources.getDrawable(context, R.drawable.vacantes);
                 break;
         }
         return icon;
