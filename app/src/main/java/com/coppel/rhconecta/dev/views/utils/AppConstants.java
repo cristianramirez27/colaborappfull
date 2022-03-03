@@ -87,6 +87,7 @@ public class AppConstants {
     public static final String OPTION_CONTROLS_LIQ = "CONTROLS_LIQ";
     public static final String OPTION_REMOVE = "REMOVE";
     public static final String OPTION_ADITIONAL_SAVED = "ADITIONAL_SAVED";
+    public static final String MY_MOVEMENTS = "MY_MOVEMENTS";
     public static final String OPTION_PAY = "PAY";
 
 

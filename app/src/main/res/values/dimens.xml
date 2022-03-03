@@ -12,8 +12,6 @@
     <dimen name="back_icon_toolbar">38dp</dimen>
     <dimen name="poll_icon_toolbar">38dp</dimen>
 
-
-
     <dimen name="margin_doble">25dp</dimen>
     <dimen name="margin_regular">30dp</dimen>
     <dimen name="margin_big">24dp</dimen>
@@ -37,6 +35,13 @@
 
     <integer name="anim_length">3000</integer>
     <integer name="anim_length_half">1500</integer>
+
+<!--    Mi movements-->
+    <dimen name="item_movements_height">70dp</dimen>
+    <dimen name="traslation_z">50dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="separation_component">5dp</dimen>
+
 
 </resources>
 

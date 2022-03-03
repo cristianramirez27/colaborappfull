@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.business.Configuration;
 
+import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
+
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,8 +10,6 @@ import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-
-import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 
 
 /**
@@ -99,6 +99,9 @@ public class AppConfig {
     public final static String BLOCK_HOLIDAYS_MANAGER_REQUEST = "BLOCK_HOLIDAYS_MANAGER_REQUEST";
     public final static String BLOCK_HOLIDAYS_MANAGER_CALENDAR = "BLOCK_HOLIDAYS_MANAGER_CALENDAR";
     public final static String BLOCK_HOLIDAYS_MANAGER_ADDITIONAL = "BLOCK_HOLIDAYS_MANAGER_ADDITIONAL";
+    public final static String BLOCK_MY_MOVEMENTS = "BLOCK_MY_MOVEMENTS";
+    public final static String BLOCK_MYMOVEMENTS_MESSAGE = "BLOCK_MYMOVEMENTS";
+
     public final static String YES = "YES";
     public final static String NO = "NO";
 
@@ -145,6 +148,7 @@ public class AppConfig {
 
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
+    public final static String ENDPOINT_MYMOVEMENTS = "ENDPOINT_MYMOVEMENTS";
 
     /**
      * Se almacenan los endpoints
@@ -175,6 +179,7 @@ public class AppConfig {
         String main_login = mFirebaseRemoteConfig.getString(URL_MAIN_LOGIN);
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
         String url_wheather = mFirebaseRemoteConfig.getString(ENDPOINT_WHEATHER);
+        String myMovementsEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_MYMOVEMENTS);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
 
@@ -222,6 +227,7 @@ public class AppConfig {
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_ADDITIONALS, huellasAdicionales);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_MYMOVEMENTS, myMovementsEndPoint);
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
@@ -301,6 +307,8 @@ public class AppConfig {
         String block_holidays_request_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_REQUEST_MESSAGE);
         String block_holidays_calendar_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_CALENDAR_MESSAGE);
         String block_holidays_additonal_message = mFirebaseRemoteConfig.getString(BLOCK_HOLIDAYS_MANAGER_ADDITIONAL_MESSAGE);
+        String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
+        String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_SAVINGS, block_message_savings);
@@ -376,6 +384,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_REQUEST, block_holidays_request);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_CALENDAR, block_holidays_calendar);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL, block_holidays_additonal);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MY_MOVEMENTS, block_my_movements);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MYMOVEMENTS_MESSAGE, block_my_movements_message);
 
     }
 

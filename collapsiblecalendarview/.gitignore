@@ -1,1 +1,8 @@
 /build
+.idea/
+
+#Mac
+.DS_Store
+
+# Windows thumbnail db
+Thumbs.db

@@ -38,6 +38,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
@@ -266,6 +267,9 @@ public class MenuUtilities {
             realm.commitTransaction();
             homeMenuItems.addAll(menus);
         } else {
+            if (isSlide) {
+                homeMenuItems.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
+            }
             homeMenuItems.addAll(listMenuDefault);
         }
 
@@ -418,6 +422,9 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_WHEATHER:
                 icon = AppCompatResources.getDrawable(context, R.drawable.clima);
+                break;
+            case MY_MOVEMENTS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_movements);
                 break;
         }
         return icon;

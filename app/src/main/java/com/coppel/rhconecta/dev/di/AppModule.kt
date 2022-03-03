@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.di
 
 import com.coppel.rhconecta.dev.CoppelApp
+import com.coppel.rhconecta.dev.di.movements.movementsModule
 import com.coppel.rhconecta.dev.di.profile_actions.fingerprintModule
 import com.coppel.rhconecta.dev.di.profile_actions.profileActionsModule
 import org.koin.android.ext.android.startKoin
@@ -11,8 +12,9 @@ import org.koin.dsl.module.Module
  */
 fun CoppelApp.initKoin() {
     val modules: List<Module> = listOf(
-            fingerprintModule,
-            profileActionsModule,
+        fingerprintModule,
+        profileActionsModule,
+        movementsModule
     )
     startKoin(applicationContext, modules)
 }

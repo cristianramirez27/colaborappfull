@@ -103,6 +103,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txvForgotPassword.setOnClickListener(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+//        cedtEmail.setText("CGV121@coppel.com");
+        cedtEmail.setText("fcazarezv@coppel.com");
+        cedtPassword.setText("As123456");
+
+
         //VISIONARIOS
         initRemoteConfig();
     }

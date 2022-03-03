@@ -16,6 +16,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ADDITIONALS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_MYMOVEMENTS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PASSWORD_RECOVER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PAYSHEET;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PREVIEW;
@@ -77,6 +78,7 @@ public class ServicesConstants {
     public static  String GET_ENDPOINT_SECTION_TIME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_SECTION_TIME);
     public static  String GET_ENDPOINT_LOGIN_APPS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_LOGIN_APPS);
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
+    public static  String GET_MY_MOVEMENTS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_MYMOVEMENTS);
 
 
 
