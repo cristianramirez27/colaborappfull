@@ -38,7 +38,6 @@ public class AppConstants {
     public static final String OPTION_PAYROLL_VOUCHER = "PAYROLL_VOUCHER";
     public static final String OPTION_BENEFITS = "BENEFIT";
     public static final String OPTION_SAVING_FUND = "SAVING_FUND";
-    public static final String OPTION_MYS_MOVEMENTS = "MYS_MOVEMENTS";
     public static final String OPTION_VISIONARIES = "VISIONARIES";
     public static final String OPTION_COLLABORATOR_AT_HOME = "COLLABORATOR_AT_HOME";
     public static final String OPTION_LETTERS = "LETTERS";
@@ -87,7 +86,7 @@ public class AppConstants {
     public static final String OPTION_CONTROLS_LIQ = "CONTROLS_LIQ";
     public static final String OPTION_REMOVE = "REMOVE";
     public static final String OPTION_ADITIONAL_SAVED = "ADITIONAL_SAVED";
-    public static final String MY_MOVEMENTS = "MY_MOVEMENTS";
+    public static final String OPTION_MY_MOVEMENTS = "MY_MOVEMENTS";
     public static final String OPTION_PAY = "PAY";
 
 

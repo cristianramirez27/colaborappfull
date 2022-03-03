@@ -38,7 +38,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.MY_MOVEMENTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
@@ -116,7 +116,7 @@ public class MenuUtilities {
             subSectionsMap.put(AppConstants.OPTION_PTU, 19);
             subSectionsMap.put(AppConstants.OPTION_ALIMONY, 20);
             subSectionsMap.put(AppConstants.OPTION_SAVING_FUND, 21);
-            subSectionsMap.put(AppConstants.OPTION_MYS_MOVEMENTS, 22);
+            subSectionsMap.put(AppConstants.OPTION_MY_MOVEMENTS, 22);
         }
         return subSectionsMap;
     }
@@ -423,7 +423,7 @@ public class MenuUtilities {
             case AppConstants.OPTION_WHEATHER:
                 icon = AppCompatResources.getDrawable(context, R.drawable.clima);
                 break;
-            case MY_MOVEMENTS:
+            case OPTION_MY_MOVEMENTS:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_movements);
                 break;
         }
@@ -532,8 +532,8 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getSavingFoundMenu(Context context) {
         List<HomeMenuItem> menuItems;
-        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line};//string para movimientos
-        String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED};//AppConstants.OPTION_MYS_MOVEMENTS
+        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line,R.string.movements};
+        String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED, AppConstants.OPTION_MY_MOVEMENTS};
         menuItems = buildOptionSubSection(OPTION_SAVING_FUND, options, idRes, context);
         return menuItems;
     }

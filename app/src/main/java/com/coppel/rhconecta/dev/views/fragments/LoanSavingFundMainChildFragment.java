@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.MY_MOVEMENTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ADITIONAL_SAVED;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAY;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REMOVE;
@@ -116,7 +116,7 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
                 optionSelected = 3;
                 break;
 
-            case MY_MOVEMENTS:
+            case OPTION_MY_MOVEMENTS:
                 optionSelected = 4;
                 break;
         }
