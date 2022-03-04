@@ -36,14 +36,14 @@ class MovementsDataSourceImpl(
                     request
                 )
             }.let {
-                val code = it.data.response.code
+                val code = it?.data?.response?.code.orEmpty()
                 val dataList: List<Movement> = if (code == NO_MOVEMENTS_GENERATED) {
                     emptyList()
                 } else {
-                    it.data.response.toMovementsDomainList()
+                    it?.data?.response?.toMovementsDomainList().orEmpty()
                 }
 
-                val message = it.data.response.descriptionMessage
+                val message = it?.data?.response?.descriptionMessage.orEmpty()
                 val response = GetMovementsResponse(code, dataList, message)
 
                 Either<Failure, GetMovementsResponse>().Right(response)
