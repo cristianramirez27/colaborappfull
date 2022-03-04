@@ -128,7 +128,7 @@ public class HomeMainFragment
      */
     private void onSurveyIconClickListener(View view) {
         List<MainSection> sections = MenuUtilities.getMainSection();
-        if (sections != null && !sections.isEmpty() && !MenuUtilities.findItem(sections, 19)) {
+        if (MenuUtilities.isFilial(getContext()) && !MenuUtilities.findItem(sections, 19)) {
             return;
         }
         // Verifica que la opcion de encuestas este disponible

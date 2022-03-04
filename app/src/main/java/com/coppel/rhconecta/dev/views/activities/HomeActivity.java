@@ -506,7 +506,7 @@ public class HomeActivity
         switch (view.getId()) {
             case R.id.ctlProfile:
                 List<MainSection> sections = MenuUtilities.getMainSection();
-                if (sections != null && !sections.isEmpty() && !MenuUtilities.findItem(sections, 8)) {
+                if (MenuUtilities.isFilial(this) && !MenuUtilities.findItem(sections, 8)) {
                     return;
                 }
                 if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_PROFILE).equals(YES)) {

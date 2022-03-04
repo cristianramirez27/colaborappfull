@@ -17,6 +17,7 @@ import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment
 import com.coppel.rhconecta.dev.presentation.profile_actions.fingerprint.FingerprintActivity
 import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity
 import com.coppel.rhconecta.dev.views.utils.AppConstants
+import com.coppel.rhconecta.dev.views.utils.AppUtilities
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -68,9 +69,9 @@ class ProfileActionsActivity : AppCompatActivity() {
                     manageHaveFingerprintFailure(profileActionsViewModel.failure!!)
                 ProcessStatus.COMPLETED -> {
                     val sections = MenuUtilities.getSubSection()
-                    if (sections != null && sections.isNotEmpty())
+                    if (sections != null && sections.isNotEmpty() && AppUtilities.getBooleanFromSharedPreferences(this, AppConstants.SHARED_PREFERENCES_FILIAL))
                         manageHaveFingerprintDone(MenuUtilities.findSubItem(sections, MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
-                                ?: -1, 1))
+                                ?: -1, 1) && profileActionsViewModel.haveFingerprints)
                     else
                         manageHaveFingerprintDone(profileActionsViewModel.haveFingerprints)
                 }

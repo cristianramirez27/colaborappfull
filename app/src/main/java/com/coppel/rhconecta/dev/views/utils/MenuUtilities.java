@@ -279,7 +279,7 @@ public class MenuUtilities {
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
         }
-        if (mainSections != null && !mainSections.isEmpty()) {
+        if (MenuUtilities.isFilial(context)) {
             Integer index = null;
             for (HomeMenuItem item : homeMenuItems) {
                 index = sections.get(item.getTAG());
@@ -453,8 +453,7 @@ public class MenuUtilities {
                 }
             }
         }
-        List<MainSection> sectionList = getMainSection();
-        if (sectionList != null && !sectionList.isEmpty()) {
+        if (MenuUtilities.isFilial(context)) {
             List<SectionDb> subSections = getSubSection();
             for (HomeMenuItem item : menuItems) {
                 if (findSubItem(subSections, getSectionsMap().get(AppConstants.OPTION_PAYROLL_VOUCHER), getSubSectionsMap().get(item.getTAG())))
@@ -479,7 +478,7 @@ public class MenuUtilities {
     public static List<HomeMenuItem> getRolUserMenu(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
         List<MainSection> sectionList = getMainSection();
-        if (sectionList != null && !sectionList.isEmpty()) {
+        if (MenuUtilities.isFilial(context)) {
             if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_EXPENSES_COL)))
                 menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
             if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_EXPENSES_GTE)))
@@ -494,7 +493,7 @@ public class MenuUtilities {
     public static List<HomeMenuItem> getRolUserMenuHoliday(Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
         List<MainSection> sectionList = getMainSection();
-        if (sectionList != null && !sectionList.isEmpty()) {
+        if (MenuUtilities.isFilial(context)) {
             if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_HOLIDAYS_COL)))
                 menuItems.add(new HomeMenuItem(context.getString(R.string.colaborator_vacation), AppConstants.OPTION_MENU_COLABORATOR));
             if (findItem(sectionList, getSectionsMap().get(AppConstants.OPTION_HOLIDAYS_GTE)))
@@ -535,9 +534,8 @@ public class MenuUtilities {
     private static List<HomeMenuItem> buildOptionSubSection(String mainSection, String[] options, int[] idRes, Context context) {
         List<HomeMenuItem> menuItems = new ArrayList<>();
         List<SectionDb> subSections = getSubSection();
-        List<MainSection> sectionList = getMainSection();
 
-        if (sectionList != null && !sectionList.isEmpty()) {
+        if (MenuUtilities.isFilial(context)) {
             int idParent = getSectionsMap().get(mainSection);
             for (int i = 0; i < options.length; i++) {
                 String opt = options[i];
@@ -566,5 +564,9 @@ public class MenuUtilities {
                 return true;
         }
         return false;
+    }
+
+    public static boolean isFilial(Context context) {
+        return AppUtilities.getBooleanFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_FILIAL);
     }
 }
