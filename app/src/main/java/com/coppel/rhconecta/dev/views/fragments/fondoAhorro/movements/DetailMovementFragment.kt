@@ -59,14 +59,6 @@ class DetailMovementFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     companion object {
         val TAG = DetailMovementFragment::class.java.simpleName
         private const val MI_MOVEMENT_ITEM_KEY = "MI_MOVEMENT_ITEM_KEY"

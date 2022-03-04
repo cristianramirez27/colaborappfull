@@ -166,19 +166,10 @@ class MovementsFragment : Fragment(), DialogFragmentGetDocument.OnButtonClickLis
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
     /**
      * DialogFragmentGetDocument callback, used to showWarningDialog
      */
     override fun onSend(email: String?) {
-        TODO("Not yet implemented")
     }
 
     override fun onAccept() {
