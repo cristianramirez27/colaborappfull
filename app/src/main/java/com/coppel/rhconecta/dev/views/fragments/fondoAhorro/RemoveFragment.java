@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.views.fragments.fondoAhorro;
 
+import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.CONSULTA_RETIRO;
 import static com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType.GUARDAR_RETIRO;
@@ -9,6 +10,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 
 import android.Manifest;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
@@ -111,6 +113,9 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     TextView totalImporte;
     @BindView(R.id.btnRemove)
     Button btnRemove;
+
+    @BindView(R.id.tvBloqueoAhorro)
+    TextView tvBloqueoAhorro;
     private boolean EXPIRED_SESSION;
 
     private DialogFragmentGetDocument dialogFragmentGetDocument;
@@ -306,7 +311,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     @Override
     public void showResponse(ServicesResponse response) {
-        ctlConnectionError.setVisibility(View.GONE);
+        ctlConnectionError.setVisibility(GONE);
         layoutMain.setVisibility(VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
@@ -382,6 +387,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     }
 
     private void configurationUI(RetiroResponse retiroResponse) {
+        RetiroResponse.Response response = retiroResponse.getData().getResponse();
         if (retiroResponse.getData().getResponse().getImp_margencredito() > 0) {
             String information = getInformation(retiroResponse.getData().getResponse().getDes_proceso());
             edtRetiroProceso.setVisibility(VISIBLE);
@@ -394,7 +400,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiro.setInformativeMode(getString(R.string.want_remove), "");
             edtRetiro.setHint("Ingresa una cantidad");
             edtRetiro.setEnableQuantity(true);
-            edtRetiroProceso.setVisibility(View.GONE);
+            edtRetiroProceso.setVisibility(GONE);
             edtRetiro.setTextWatcherMoneyDecimal();
         }
 
@@ -409,9 +415,22 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             edtRetiroAhorro.setInformativeMode(getString(R.string.want_remove), "");
             edtRetiroAhorro.setHint("Ingresa una cantidad");
             edtRetiroAhorro.setEnableQuantity(true);
-            edtRetiroAhorroProceso.setVisibility(View.GONE);
+            edtRetiroAhorroProceso.setVisibility(GONE);
             edtRetiroAhorro.setTextWatcherMoneyDecimal();
         }
+
+        if (response.getDes_bloqueoAhorro() != null && !response.getDes_bloqueoAhorro().isEmpty()) {
+            edtRetiroAhorro.setEnableQuantity(false);
+
+            tvBloqueoAhorro.setVisibility(VISIBLE);
+            tvBloqueoAhorro.setText(response.getDes_bloqueoAhorro());
+            if (response.getDes_colorletra() != null && !response.getDes_colorletra().isEmpty()) {
+                tvBloqueoAhorro.setTextColor(Color.parseColor(response.getDes_colorletra()));
+            }
+        }else {
+            tvBloqueoAhorro.setVisibility(GONE);
+        }
+
         totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), INIT_TOTAL_VALUE));
     }
 
@@ -432,7 +451,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     break;
             }
         } else {
-            layoutMain.setVisibility(View.GONE);
+            layoutMain.setVisibility(GONE);
             ctlConnectionError.setVisibility(VISIBLE);
         }
         hideProgress();

@@ -231,6 +231,17 @@
                             android:layout_marginBottom="14dp"
                             android:visibility="visible"/>
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBloqueoAhorro"
+                            style="@style/TextBook12Coppel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="14dp"
+                            android:gravity="fill_horizontal"
+                            android:visibility="gone"
+                            tools:text="@string/sivings_withdrawal_blocking_message" />
+
                         <com.coppel.rhconecta.dev.views.customviews.EditTextMoney
                             android:id="@+id/edtRetiroAhorro"
                             android:layout_width="match_parent"

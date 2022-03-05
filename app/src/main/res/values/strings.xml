@@ -501,10 +501,12 @@
     <string name="label_title_code">Tu código es</string>
     <string name="withdrawal_in_process">Retiro en proceso</string>
     <string name="insufficient_balance">No cuenta con saldo disponible</string>
+<<<<<<< HEAD
 
     <string name="movements">Mis Movimientos</string>
     <string name="last_movements">Tus últimos movimientos</string>
     <string name="folio">Folio:</string>
     <string name="date_movement">Fecha de movimiento:</string>
     <string name="detail_movement_title">Detalle del Movimiento</string>
+    <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
 </resources>

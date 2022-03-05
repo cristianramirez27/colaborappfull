@@ -33,6 +33,8 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
         private String des_mensaje;
         private int opc_filiales = -1;
         private int opc_retiroenlinea = 0;
+        private String des_bloqueoAhorro;
+        private String des_colorletra;
 
         public int getOpc_filiales() {
             return opc_filiales;
@@ -96,6 +98,22 @@ public class RetiroResponse extends WithDrawSavingBaseResponse {
 
         public void setOpc_retiroenlinea(int opc_retiroenlinea) {
             this.opc_retiroenlinea = opc_retiroenlinea;
+        }
+
+        public String getDes_bloqueoAhorro() {
+            return des_bloqueoAhorro;
+        }
+
+        public void setDes_bloqueoAhorro(String des_bloqueoAhorro) {
+            this.des_bloqueoAhorro = des_bloqueoAhorro;
+        }
+
+        public String getDes_colorletra() {
+            return des_colorletra;
+        }
+
+        public void setDes_colorletra(String des_colorletra) {
+            this.des_colorletra = des_colorletra;
         }
     }
 }
