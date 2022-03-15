@@ -321,8 +321,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     boolean validateMessage = retiroResponse.getData().getResponse().getDes_mensaje() != null &&
                             !retiroResponse.getData().getResponse().getDes_mensaje().isEmpty();
-                    boolean filial = AppUtilities.getBooleanFromSharedPreferences(getContext(), AppConstants.SHARED_PREFERENCES_FILIAL);
-                    if ((filial && retiroResponse.getData().getResponse().getOpc_filiales() == 1 && validateMessage) || (!filial && validateMessage)) {
+                    if (validateMessage) {
                         showWarningDialog(retiroResponse.getData().getResponse().getDes_mensaje());
                     }
                     configurationUI(retiroResponse);
