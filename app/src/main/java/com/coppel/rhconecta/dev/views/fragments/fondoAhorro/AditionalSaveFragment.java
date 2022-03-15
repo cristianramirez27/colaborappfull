@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -41,9 +42,6 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
-
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,10 +99,41 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
     @BindView(R.id.btnAdd)
     Button btnAdd;
     private boolean EXPIRED_SESSION;
+    private boolean enableDialog = false;
 
     private DialogFragmentAhorroAdicional dialogFragmentAhorroAdicional;
+    private DialogFragmentAhorroAdicional dialogMaxAmount = new DialogFragmentAhorroAdicional();
 
     private  int amountSave = 0;
+
+    private DialogFragmentAhorroAdicional.OnOptionClick onOptionClick = new DialogFragmentAhorroAdicional.OnOptionClick() {
+        @Override
+        public void onAccept() {
+            enableDialog = false;
+            dialogMaxAmount.close();
+        }
+
+        @Override
+        public void onCancel() {
+        }
+    };
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().isEmpty()) {
+                calculate();
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
 
     @Override
@@ -130,13 +159,24 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
         btnAdd.setOnClickListener(this);
         txvAditionalSaveValue.setText(TextUtilities.getNumberInCurrencyFormat(Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()))));
         setFocusChangeListener(edtAhorroActualProceso);
-        setFocusChangeListener(edtAhorroActualCambiar);
+        edtAhorroActualCambiar.getEdtQuantity().addTextChangedListener(textWatcher);
+        edtAhorroActualCambiar.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(hasFocus){
+                    edtAhorroActualCambiar.setTextWatcherMoney();
+                    DeviceManager.showKeyBoard(getActivity());
+                }
+
+            }
+        });
         setEnableButton(false);
         imgvRefresh.setOnClickListener(this);
 
         loadContent();
 
-        KeyboardVisibilityEvent.setEventListener(
+/*        KeyboardVisibilityEvent.setEventListener(
                 getActivity(),
                 new KeyboardVisibilityEventListener() {
                     @Override
@@ -145,7 +185,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
                         if(!isOpen)
                             calculate();
                     }
-                });
+                });*/
 
         return view;
     }
@@ -328,6 +368,19 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
         dialogFragmentAhorroAdicional.show(parent.getSupportFragmentManager(), DialogFragmentAhorroAdicional.TAG);
     }
 
+    private void showAlertDialogMaxAmount(String title,String subtitle,String msg,String amount,String btnAccept,int icon,boolean cancelBtn,DialogFragmentAhorroAdicional.OnOptionClick onOptionClick) {
+        dialogMaxAmount.setTxvTitle(title);
+        dialogMaxAmount.setTxvSubtitle(subtitle);
+        dialogMaxAmount.setTxvMessage(msg);
+        dialogMaxAmount.setTxtAmount(amount);
+        dialogMaxAmount.setiResIcon(icon);
+        dialogMaxAmount.setBtnTitle(btnAccept);
+        dialogMaxAmount.setOnOptionClick(onOptionClick);
+        dialogMaxAmount.setVisibleCancelButton(cancelBtn ? VISIBLE : GONE);
+        dialogMaxAmount.show(parent.getSupportFragmentManager(), "DialogFragmentAhorroAdicionalMaxAmount");
+        enableDialog = true;
+    }
+
 
 
 
@@ -416,15 +469,17 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if(!s.toString().isEmpty()){
+                    calculate();
+                }
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.toString().isEmpty()){
+                /*if(s.toString().isEmpty()){
                    calculate();
-                }
+                }*/
             }
         });
 
@@ -458,23 +513,20 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
             content = edtAhorroActualProceso.getQuantity();
         }
 
-        if(!content.isEmpty()){
-
+        if(!content.isEmpty() && Double.parseDouble(content) > 0.0){
             if(Double.parseDouble(content) > consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()){
                 setEnableButton(false);
-                showAlertDialog(getString(R.string.attention), "",
-                        getString(R.string.max_saving),
-                        String.format(Locale.getDefault(),"$%.2f", consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()),
-                        "Aceptar",0,false, new DialogFragmentAhorroAdicional.OnOptionClick() {
-                            @Override
-                            public void onAccept() {
-                                dialogFragmentAhorroAdicional.close();
-                            }
-
-                            @Override
-                            public void onCancel() {
-                            }
-                        });
+                if (!enableDialog) {
+                    showAlertDialogMaxAmount(getString(R.string.attention),
+                            "",
+                            getString(R.string.max_saving),
+                            String.format(Locale.getDefault(),
+                                    "$%.2f", consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()),
+                            "Aceptar",
+                            0,
+                            false,
+                            onOptionClick);
+                }
             }else {
                 setEnableButton(true);
             }
