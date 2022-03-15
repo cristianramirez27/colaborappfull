@@ -561,11 +561,11 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         BigDecimal total = margin.add(ahorro);
         totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), total));
 
-        if ((int) Double.parseDouble(
+        if (Double.parseDouble(
                 TextUtilities.insertDecimalPoint(
                         parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()
                 )) < margin.doubleValue()
-                || (int) Double.parseDouble(
+                || Double.parseDouble(
                 TextUtilities.insertDecimalPoint(
                         parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()
                 )) < ahorro.doubleValue()) {
