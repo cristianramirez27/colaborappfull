@@ -363,7 +363,7 @@ public class AbonoFragment extends Fragment implements View.OnClickListener, ISe
 
 
             showAlertDialogPayment(fragmentCurrent.getPaymentSelected().getNom_retiro(),
-                    TextUtilities.getNumberInCurrencyFormaNoDecimal(fragmentCurrent.getAmount()),
+                    String.format("$%.2f",fragmentCurrent.getAmount()),
                     new DialogFragmentAbono.OnOptionClick() {
                         @Override
                         public void onAccept() {
