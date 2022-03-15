@@ -102,8 +102,8 @@ public class AppConfig {
     public final static String ENDPOINT_VACANCIES = "ENDPOINT_VACANT";
     public final static String BLOCK_VACANCIES = "BLOCK_VACANT";
     public final static String BLOCK_VACANCIES_MESSAGE = "BLOCK_VACANT_MESSAGE";
-    public final static String BLOCK_MY_MOVEMENTS = "BLOCK_MY_MOVEMENTS";
-    public final static String BLOCK_MYMOVEMENTS_MESSAGE = "BLOCK_MYMOVEMENTS";
+    public final static String BLOCK_MY_MOVEMENTS = "BLOCK_MYMOVEMENTS";
+    public final static String BLOCK_MYMOVEMENTS_MESSAGE = "BLOCK_MYMOVEMENTS_MESSAGE";
 
     public final static String YES = "YES";
     public final static String NO = "NO";

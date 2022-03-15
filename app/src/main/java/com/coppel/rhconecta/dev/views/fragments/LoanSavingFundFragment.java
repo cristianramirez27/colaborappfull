@@ -7,6 +7,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FU
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_PAY_MESSAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_WITHDRAW;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_WITHDRAW_MESSAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MYMOVEMENTS_MESSAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment.REQUEST_SAVING;
@@ -100,7 +101,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
 
     private boolean firstTime = true;
     private final String[] key_block = {BLOCK_FUND_WITHDRAW, BLOCK_FUND_PAY, BLOCK_FUND_ADDITIONALS, BLOCK_MY_MOVEMENTS};
-    private final String[] msg_block = {BLOCK_FUND_WITHDRAW_MESSAGE, BLOCK_FUND_PAY_MESSAGE, BLOCK_FUND_ADDITIONALS_MESSAGE};
+    private final String[] msg_block = {BLOCK_FUND_WITHDRAW_MESSAGE, BLOCK_FUND_PAY_MESSAGE, BLOCK_FUND_ADDITIONALS_MESSAGE, BLOCK_MYMOVEMENTS_MESSAGE};
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,

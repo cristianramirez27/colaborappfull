@@ -1,35 +1,46 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_ADDITIONALS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_PAY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_FUND_WITHDRAW;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MY_MOVEMENTS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ADITIONAL_SAVED;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAY;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REMOVE;
+
 import android.os.Bundle;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISelectedOption;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.business.utils.DeviceManager;
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.adapters.IconsMenuRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ADITIONAL_SAVED;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAY;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REMOVE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,7 +95,9 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         rcvOptions.setLayoutManager(gridLayoutManager);
         menuItems = new ArrayList<>();
-        menuItems.addAll(MenuUtilities.getSavingFoundMenu(getActivity()));
+        List<HomeMenuItem> menu = MenuUtilities.getSavingFoundMenu(getActivity());
+        List<HomeMenuItem> filteredMenu = isEnabledInFirebaseFilter(menu);
+        menuItems.addAll(filteredMenu);
         iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(getActivity(), menuItems, gridLayoutManager.getSpanCount());
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
@@ -93,6 +106,25 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
         return view;
     }
 
+    private List<HomeMenuItem> isEnabledInFirebaseFilter(List<HomeMenuItem> menu){
+        Map<String, String> map = new HashMap<>();
+        map.put(OPTION_REMOVE, BLOCK_FUND_WITHDRAW);
+        map.put(OPTION_PAY,BLOCK_FUND_PAY);
+        map.put(OPTION_ADITIONAL_SAVED,BLOCK_FUND_ADDITIONALS);
+        map.put(OPTION_MY_MOVEMENTS,BLOCK_MY_MOVEMENTS);
+
+        List<HomeMenuItem> menuToFiltered = new ArrayList<>();;
+        for (HomeMenuItem name: menu) {
+            if (isEnabled(map.get(name.getTAG()))){
+                menuToFiltered.add(name);
+            }
+        }
+        return menuToFiltered;
+    }
+
+    private boolean isEnabled(String key) {
+        return !AppUtilities.getStringFromSharedPreferences(getContext(), key).equals(YES);
+    }
 
     @Override
     public void onItemClick(String tag) {
@@ -121,7 +153,18 @@ public class LoanSavingFundMainChildFragment extends Fragment implements View.On
                 break;
         }
 
-        ISelectedOption.openOption(optionSelected);
+        if (DeviceManager.isOnline(getContext()) || !tag.equals(OPTION_MY_MOVEMENTS)) {
+            ISelectedOption.openOption(optionSelected);
+        } else {
+            SingleActionDialog dialog = new SingleActionDialog(
+                    getContext(),
+                    getString(R.string.connection_error),
+                    getString(R.string.press_to_refresh),
+                    getString(R.string.accept),
+                    null
+            );
+            dialog.show();
+        }
     }
 
     @Override
