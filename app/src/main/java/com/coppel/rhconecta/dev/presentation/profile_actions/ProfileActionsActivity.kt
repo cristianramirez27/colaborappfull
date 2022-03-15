@@ -69,7 +69,7 @@ class ProfileActionsActivity : AppCompatActivity() {
                     manageHaveFingerprintFailure(profileActionsViewModel.failure!!)
                 ProcessStatus.COMPLETED -> {
                     val sections = MenuUtilities.getSubSection()
-                    if (sections != null && sections.isNotEmpty() && AppUtilities.getBooleanFromSharedPreferences(this, AppConstants.SHARED_PREFERENCES_FILIAL))
+                    if (AppUtilities.getBooleanFromSharedPreferences(this, AppConstants.SHARED_PREFERENCES_FILIAL))
                         manageHaveFingerprintDone(MenuUtilities.findSubItem(sections, MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
                                 ?: -1, 1) && profileActionsViewModel.haveFingerprints)
                     else
