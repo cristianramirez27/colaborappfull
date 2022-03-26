@@ -21,6 +21,11 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+
+            Properties localProperties = getLocalProperties()
+            buildConfigField("String", "DEBUG_USR", localProperties['DEBUG_USR'] ?: "\"\"")
+            buildConfigField("String", "DEBUG_PS", localProperties['DEBUG_PS'] ?: "\"\"")
+
         }
         release {
             // Disable the debuggable option
@@ -33,6 +38,9 @@ android {
             // R8 configuration files
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
+
+            buildConfigField("String", "DEBUG_USR", "\"\"")
+            buildConfigField("String", "DEBUG_PS", "\"\"")
         }
     }
     
@@ -153,6 +161,14 @@ dependencies {
 
 realm {
     syncEnabled = true
+}
+
+def getLocalProperties(){
+    Properties properties = new Properties()
+    if (file('../local.properties').exists()){
+        properties.load(new FileInputStream(file('../local.properties')))
+    }
+    return properties
 }
 
 apply plugin: 'com.google.gms.google-services'

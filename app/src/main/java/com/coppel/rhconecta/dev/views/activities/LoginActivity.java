@@ -103,6 +103,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txvForgotPassword.setOnClickListener(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
+        if (BuildConfig.DEBUG) {
+            cedtEmail.setText(BuildConfig.DEBUG_USR);
+            cedtPassword.setText(BuildConfig.DEBUG_PS);
+        }
+
         //VISIONARIOS
         initRemoteConfig();
     }
