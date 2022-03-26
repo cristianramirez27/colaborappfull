@@ -84,3 +84,6 @@ Thumbs.db
 
 # Windows thumbnail db
 Thumbs.db
+
+/*/release/
+/*/debug/
