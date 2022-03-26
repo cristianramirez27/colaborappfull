@@ -197,7 +197,6 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         collapsibleCalendar.setTitleMonthVisible(false);
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSingle(getResources().getDrawable(R.drawable.circle_green_solid_background));
         collapsibleCalendar.setmSelectedItemBackgroundDrawableSplice(getResources().getDrawable(R.drawable.circle_melon_solid_background));
-        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
     }
 
     private void observacionesStateChange(ExpandableSimpleTitle expandable, LinearLayout layoutToExpand) {
@@ -317,6 +316,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
 
         CalendarAdapter adapter = new CalendarAdapter(getActivity(), calendar);
         collapsibleCalendar.setAdapter(adapter);
+        monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         List<Day> listDaySelected = new ArrayList<>();
 
