@@ -269,9 +269,6 @@ public class MenuUtilities {
             realm.commitTransaction();
             homeMenuItems.addAll(menus);
         } else {
-            if (isSlide) {
-                homeMenuItems.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
-            }
             homeMenuItems.addAll(listMenuDefault);
         }
 
