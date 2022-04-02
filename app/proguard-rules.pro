@@ -101,3 +101,7 @@
 
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# Movements
+-keep public class com.coppel.rhconecta.dev.framework.movements.* { public *; }
+-dontwarn com.coppel.rhconecta.dev.framework.movements.**
