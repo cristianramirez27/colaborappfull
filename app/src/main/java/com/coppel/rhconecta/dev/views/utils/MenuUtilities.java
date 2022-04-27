@@ -518,7 +518,7 @@ public class MenuUtilities {
         List<HomeMenuItem> menuItems = new ArrayList<>();
         int[] idRes = {R.string.authorize_request_icon, R.string.active_controls};
         String[] opt = {AppConstants.OPTION_AUTHORIZE_REQUESTS, AppConstants.OPTION_CONTROLS_LIQ};
-        buildOptionSubSection(AppConstants.OPTION_EXPENSES_GTE, opt, idRes, context);
+        menuItems = buildOptionSubSection(AppConstants.OPTION_EXPENSES_GTE, opt, idRes, context);
 
         return menuItems;
     }
