@@ -359,4 +359,8 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> getCoCre(@Url String url,@Header("Authorization") String token, @Body CoCreaRequest coCreaRequest);
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getTokenBASS(@Url String url,@Header("Authorization") String token, @Body TokenSSORequest tokenSSORequest);
+
 }

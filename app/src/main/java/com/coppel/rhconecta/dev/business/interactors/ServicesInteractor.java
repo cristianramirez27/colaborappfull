@@ -56,6 +56,7 @@ public class ServicesInteractor {
     private String token;
     private FirebaseCrashlytics  crashlytics = FirebaseCrashlytics.getInstance();
     private FirebaseAnalytics analytics = null;
+
     public ServicesInteractor(Context context) {
         analytics = FirebaseAnalytics.getInstance(context);
         crashlytics.setUserId(getStringFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR));
@@ -91,6 +92,7 @@ public class ServicesInteractor {
      *
      */
     private void getLogin(String email, String password, final boolean executeInBackground) {
+        crashlytics.log(email);
         final int type = ServicesRequestType.LOGIN;
         Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Login");
         rastreo.start();
@@ -101,7 +103,6 @@ public class ServicesInteractor {
                 try {
                     LoginResponse loginResponse = (LoginResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoginResponse.class);
                     if (loginResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
-                        crashlytics.setUserId("uuid");
                         crashlytics.setUserId(loginResponse.getData().getResponse().getCliente());
                         getLoginResponse(loginResponse, response.code(), type);
                     } else {
@@ -203,7 +204,6 @@ public class ServicesInteractor {
         Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Perfil");
         rastreo.start();
         iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail,option)).enqueue(new Callback<JsonObject>() {
-
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 rastreo.stop();
@@ -219,13 +219,13 @@ public class ServicesInteractor {
                         getProfileResponse(profileResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
-                        crashlytics.log(ServicesConstants.GET_PROFILE);
+                        crashlytics.log("Ruta:"+ServicesConstants.GET_PROFILE+", numero_de_empleado:"+employeeNumber+", email:"+employeeEmail+", opcion:"+option );
                         crashlytics.recordException(new Exception(response.body().toString()));
 
                     }
 
                 } catch (Exception e) {
-                    crashlytics.log(ServicesConstants.GET_PROFILE);
+                    crashlytics.log("Ruta:"+ServicesConstants.GET_PROFILE+", numero_de_empleado:"+employeeNumber+", email:"+employeeEmail+", opcion:"+option );
                     crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
@@ -234,7 +234,7 @@ public class ServicesInteractor {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 rastreo.stop();
-                crashlytics.log( ServicesConstants.GET_PROFILE);
+                crashlytics.log("Ruta:"+ServicesConstants.GET_PROFILE+", numero_de_empleado:"+employeeNumber+", email:"+employeeEmail+", opcion:"+option );
                 crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
@@ -4475,13 +4475,56 @@ public class ServicesInteractor {
                         servicesResponse.setType(type);
                         iServiceListener.onResponse(servicesResponse);
                     } else {
-                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
                         crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(type, response);
                     }
 
                 } catch (Exception e) {
-                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+    public void getTokenBass(TokenSSORequest tokenSSORequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS_BASS;
+
+        iServicesRetrofitMethods.getTokenBASS(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                tokenSSORequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            TokenSSOResponse.class
+                    );
+
+                    if (tokenSSOResponse.getToken_user() != null) {
+                        ServicesResponse<TokenSSOResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(tokenSSOResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
                     crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }

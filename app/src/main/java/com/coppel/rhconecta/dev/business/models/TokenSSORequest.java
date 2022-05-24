@@ -4,13 +4,14 @@ public class TokenSSORequest {
     private String email;
     private String password;
     private String num_empleado;
-
+    private Integer opcion;
     public TokenSSORequest(){}
 
-    public TokenSSORequest(String email, String password, String num_empleado){
+    public TokenSSORequest(String email, String password, String num_empleado,Integer opcion){
         this.email = email;
         this.password = password;
         this.num_empleado = num_empleado;
+        this.opcion = opcion;
     }
 
     public String getEmail() {
@@ -35,5 +36,12 @@ public class TokenSSORequest {
 
     public void setNum_empleado(String num_empleado) {
         this.num_empleado = num_empleado;
+    }
+    public Integer getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(Integer opcion) {
+        this.opcion = opcion;
     }
 }
