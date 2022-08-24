@@ -151,6 +151,7 @@
 
     <!-- Recover Password -->
     <string name="error_profile">No se pudo obtener la información de perfil.</string>
+    <string name="error_google_play">No se pudo obtener la información.</string>
 
     <!-- Profile -->
     <string name="logout">Cerrar sesión</string>

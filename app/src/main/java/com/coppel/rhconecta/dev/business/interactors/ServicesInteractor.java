@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.interactors;
 
 import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.CoppelApp;
@@ -22,6 +24,10 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -37,6 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 public class ServicesInteractor {
 
@@ -47,8 +54,11 @@ public class ServicesInteractor {
     private ServicesGeneralValidations servicesGeneralValidations;
     private ServicesUtilities servicesUtilities;
     private String token;
-
+    private FirebaseCrashlytics  crashlytics = FirebaseCrashlytics.getInstance();
+    private FirebaseAnalytics analytics = null;
     public ServicesInteractor(Context context) {
+        analytics = FirebaseAnalytics.getInstance(context);
+        crashlytics.setUserId(getStringFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR));
         this.context = context;
         servicesUtilities = new ServicesUtilities();
         retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
@@ -82,23 +92,36 @@ public class ServicesInteractor {
      */
     private void getLogin(String email, String password, final boolean executeInBackground) {
         final int type = ServicesRequestType.LOGIN;
+        Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Login");
+        rastreo.start();
         iServicesRetrofitMethods.getLogin(ServicesConstants.GET_LOGIN,buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                rastreo.stop();
                 try {
                     LoginResponse loginResponse = (LoginResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoginResponse.class);
                     if (loginResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        crashlytics.setUserId("uuid");
+                        crashlytics.setUserId(loginResponse.getData().getResponse().getCliente());
                         getLoginResponse(loginResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response,executeInBackground);
+                        crashlytics.log(ServicesConstants.GET_LOGIN);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_LOGIN);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response,executeInBackground);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                rastreo.stop();
+                crashlytics.log( ServicesConstants.GET_LOGIN);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -177,25 +200,42 @@ public class ServicesInteractor {
      */
     private void getProfile(String employeeNumber, String employeeEmail,int option) {
         final int type = ServicesRequestType.PROFILE;
+        Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Perfil");
+        rastreo.start();
         iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail,option)).enqueue(new Callback<JsonObject>() {
+
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
+                rastreo.stop();
                 try {
                     ProfileResponse profileResponse = (ProfileResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ProfileResponse.class);
                     if (profileResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                        analytics.setUserProperty("CENTRO",profileResponse.getData().getResponse()[0].getCentro());
+                        analytics.setUserProperty("NOM_EMPRESA",profileResponse.getData().getResponse()[0].getNombreEmpresa());
+                        analytics.setUserProperty("ES_FILIAL", (String.valueOf( profileResponse.getData().getResponse()[0].getEsFilial() ) ));
+                        analytics.setUserProperty("PUESTO", ( profileResponse.getData().getResponse()[0].getNombrePuesto()));
+
                         getProfileResponse(profileResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.GET_PROFILE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_PROFILE);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                rastreo.stop();
+                crashlytics.log( ServicesConstants.GET_PROFILE);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -285,18 +325,25 @@ public class ServicesInteractor {
                 try {
                     LogoutResponse logoutResponse = (LogoutResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LogoutResponse.class);
                     if (logoutResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        crashlytics.setUserId("");
                         getLogoutResponse(logoutResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.WS_LOGOUT);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.WS_LOGOUT);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.WS_LOGOUT);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -375,15 +422,21 @@ public class ServicesInteractor {
                         getPayrollVoucherResponse(voucherResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.GET_VOUCHER);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_VOUCHER);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -404,15 +457,21 @@ public class ServicesInteractor {
                         getPayrollVoucherResponse(voucherResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.GET_VOUCHER);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_VOUCHER);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -522,9 +581,13 @@ public class ServicesInteractor {
                             if (voucherRosterResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherRosterDetailResponse(voucherRosterResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 1");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 1");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -540,9 +603,13 @@ public class ServicesInteractor {
                             if (voucherSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherSavingFundDetailResponse(voucherSavingFundResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 2");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 2");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -558,9 +625,13 @@ public class ServicesInteractor {
                             if (voucherGasResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherGasDetailResponse(voucherGasResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 3");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 3");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -576,9 +647,13 @@ public class ServicesInteractor {
                             if (voucherPTUResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherPTUDetailResponse(voucherPTUResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 4");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 4");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -594,9 +669,13 @@ public class ServicesInteractor {
                             if (voucherAlimonyResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherAlimonyDetailResponse(voucherAlimonyResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 5");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 5");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -612,9 +691,13 @@ public class ServicesInteractor {
                             if (voucherBonusResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherBonusDetailResponse(voucherBonusResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER+" typeConstancy == 6");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER+" tpeConstancy == 6");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -627,6 +710,8 @@ public class ServicesInteractor {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.PAYROLL_VOUCHER_DETAIL));
             }
         });
@@ -858,9 +943,13 @@ public class ServicesInteractor {
                 setPayrollVoucherToEmailResponse(voucherSendMailResponse, response.code(), servicesRequestType);
             } else {
                 sendGenericError(servicesRequestType, response);
+                crashlytics.log("public void getSendDetail");
+                crashlytics.recordException(new Exception(response.body().toString()));
             }
 
         } catch (Exception e) {
+            crashlytics.log("public void getSendDetail");
+            crashlytics.recordException(e);
             sendGenericError(servicesRequestType, response);
         }
     }
@@ -907,10 +996,14 @@ public class ServicesInteractor {
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherDownloadResponse.class);
                 setPayrollVoucherDownloadResponse(voucherDownloadResponse, response.code(), servicesRequestType);
             } else {
+                crashlytics.log("public void getDownloadVoucher");
+                crashlytics.recordException(new Exception(response.body().toString()));
                 sendGenericError(servicesRequestType, response);
             }
 
         } catch (Exception e) {
+            crashlytics.log("public void getDownloadVoucher");
+            crashlytics.recordException(e);
             sendGenericError(servicesRequestType, response);
         }
     }
@@ -978,9 +1071,13 @@ public class ServicesInteractor {
                     if (loanSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getLoanSavingFundResponse(loanSavingFundResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_LOANSAVINGFUND);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_LOANSAVINGFUND);
+                    crashlytics.recordException(e);
                     if (response.body() == null) {
                         ServicesError servicesError = new ServicesError();
                         servicesError.setType(ServicesRequestType.TIME_OUT_REQUEST);
@@ -993,6 +1090,8 @@ public class ServicesInteractor {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_LOANSAVINGFUND);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 ServicesError error = servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND);
                 if (t instanceof SocketTimeoutException) {
                     error.setType(ServicesRequestType.TIME_OUT_REQUEST);
@@ -1083,16 +1182,22 @@ public class ServicesInteractor {
                         getRecoveryPasswordResponse(recoveryPasswordResponse, response.code(), type);
 
                     } else {
+                        crashlytics.log(ServicesConstants.GET_RECOVERY_PASSWORD);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(type, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_RECOVERY_PASSWORD);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_RECOVERY_PASSWORD);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.RECOVERY_PASSWORD));
             }
         });
@@ -1622,14 +1727,21 @@ public class ServicesInteractor {
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
+
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1647,16 +1759,22 @@ public class ServicesInteractor {
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1674,16 +1792,22 @@ public class ServicesInteractor {
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1707,16 +1831,23 @@ public class ServicesInteractor {
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
+
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1735,16 +1866,21 @@ public class ServicesInteractor {
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
-
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1754,30 +1890,31 @@ public class ServicesInteractor {
         iServicesRetrofitMethods.getBenefitsDiscounts(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsDiscountsRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
                 try {
-
                     BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
                     //getBenefitsResponse(benefitsRequestData.getBenefits_type());
-
                     if(benefitsBaseResponse == null){
                         BenefitsEmptyResponse benefitsEmptyResponse =  (BenefitsEmptyResponse) servicesUtilities.parseToObjectClass(response.body().toString(),BenefitsEmptyResponse.class);
-
-
                         getBenefitsResponse(benefitsEmptyResponse, response.code());
                     }else if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1788,24 +1925,27 @@ public class ServicesInteractor {
         iServicesRetrofitMethods.getBenefitsCompany(ServicesConstants.GET_BENEFITS,token,(CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
                 try {
-
-                    BenefitsBaseResponse benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
                     //getBenefitsResponse(benefitsRequestData.getBenefits_type());
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
-
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -1817,10 +1957,8 @@ public class ServicesInteractor {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 try {
-
                     BenefitsBaseResponse benefitsBaseResponse ;
                     JsonElement json = new JsonParser().parse(response.body().toString());
-
                     JsonArray listCategories = json.getAsJsonObject().getAsJsonObject("data")
                             .getAsJsonObject("response").getAsJsonArray("Categorias");
 
@@ -1828,22 +1966,25 @@ public class ServicesInteractor {
                         benefitsBaseResponse =   new Gson().fromJson(json.getAsJsonObject().toString(), BenefitsSearchEmptyResponse.class);
                     }else {
                         benefitsBaseResponse =   (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
-
                     }
-
                     if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getBenefitsResponse(benefitsBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.BENEFITS, response);
                     }
-
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.BENEFITS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
             }
         });
@@ -2011,19 +2152,19 @@ public class ServicesInteractor {
                 getConsultaRetiro(fondoAhorroData,token);
                 break;
             case GUARDAR_RETIRO:
-               getGuardarRetiro(fondoAhorroData,token);
+                getGuardarRetiro(fondoAhorroData,token);
                 break;
             case CONSULTA_ABONO:
                 getConsultaAbono(fondoAhorroData,token);
                 break;
             case GUARDAR_ABONO:
-               getGuardarAbono(fondoAhorroData,token);
+                getGuardarAbono(fondoAhorroData,token);
                 break;
             case CONSULTA_AHORRO:
                 getConsultaAhorroAdicional(fondoAhorroData,token);
                 break;
             case GUARDAR_AHORRO:
-               getGuardarAhorro(fondoAhorroData,token);
+                getGuardarAhorro(fondoAhorroData,token);
                 break;
 
             case CONSULTA_METODOS_PAGO:
@@ -2043,16 +2184,22 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2069,16 +2216,23 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2095,16 +2249,22 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2120,16 +2280,22 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2146,16 +2312,22 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2172,16 +2344,22 @@ public class ServicesInteractor {
                     if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2198,15 +2376,21 @@ public class ServicesInteractor {
                         getSavingResponse(withDrawSavingBaseResponse, response.code());
                     } else {
                         sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
             }
         });
@@ -2388,16 +2572,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2413,16 +2603,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2438,16 +2634,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2463,16 +2665,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2491,16 +2699,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2518,16 +2732,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2546,16 +2766,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2575,15 +2801,21 @@ public class ServicesInteractor {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2602,16 +2834,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2630,15 +2868,21 @@ public class ServicesInteractor {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2657,16 +2901,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2684,16 +2934,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2739,7 +2995,7 @@ public class ServicesInteractor {
 
             case CONSULTAR_MESES_GTE:
                 clazz = RequestsLiquiGteListExpensesResponse.class;
-                        break;
+                break;
 
             case AUTORIZAR_SOLICITUD:
                 clazz = AuthorizedResponse.class;
@@ -2857,7 +3113,7 @@ public class ServicesInteractor {
         }
 
         String re = JsonManager.madeJsonFromObject(coppelServicesBaseExpensesTravelRequest).toString();
-          return coppelServicesBaseExpensesTravelRequest;
+        return coppelServicesBaseExpensesTravelRequest;
     }
 
 
@@ -2899,7 +3155,7 @@ public class ServicesInteractor {
 
             case GET_PERIODS_COLABORATORS:
                 getColaboratorsPeriodsHoliday(holidayRequestData,token);
-            break;
+                break;
 
             case VALIDATION_ADITIONAL_DAYS:
                 getValidationAditionaDays(holidayRequestData,token);
@@ -2914,7 +3170,7 @@ public class ServicesInteractor {
                 break;
 
             case GET_CALENDAR_DAYS_PROPOSED:
-               getPeriodsOtherColaboratorsDays(holidayRequestData,token);
+                getPeriodsOtherColaboratorsDays(holidayRequestData,token);
                 break;
 
             case SCHEDULE_GTE_HOLIDAY_REQUEST:
@@ -2956,15 +3212,21 @@ public class ServicesInteractor {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
                         sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -2980,16 +3242,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3006,16 +3274,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3031,16 +3305,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3056,16 +3336,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3081,16 +3367,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3106,16 +3398,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3131,15 +3429,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3155,15 +3459,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3179,15 +3489,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3204,15 +3520,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3230,15 +3552,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3255,16 +3583,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3281,16 +3615,21 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
-
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3306,16 +3645,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3331,16 +3676,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3356,16 +3707,22 @@ public class ServicesInteractor {
                     if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(expensesTravelBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3381,16 +3738,22 @@ public class ServicesInteractor {
                     if (holidaysBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getHolidayResponse(holidaysBaseResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.HOLIDAYS, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
                     sendGenericError(ServicesRequestType.HOLIDAYS, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
             }
         });
@@ -3577,7 +3940,7 @@ public class ServicesInteractor {
 
             case SEND_ADITIONAL_DAYS:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesSendAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(),holidaysRequestData.getOpcion(),
-                    String.valueOf(holidaysRequestData.getNum_gerente()),holidaysRequestData.getNum_adicionales(),holidaysRequestData.getIdu_motivo(),holidaysRequestData.getDes_otromotivo());
+                        String.valueOf(holidaysRequestData.getNum_gerente()),holidaysRequestData.getNum_adicionales(),holidaysRequestData.getIdu_motivo(),holidaysRequestData.getDes_otromotivo());
                 break;
             case GET_CALENDAR_DAYS_PROPOSED:
                 coppelServicesBaseHolidaysRequest = new CoppelServicesGetPeriodsHolidaysColaboratorsRequest(holidaysRequestData.getOpcion(),String.valueOf(holidaysRequestData.getNum_gerente()),
@@ -3660,16 +4023,22 @@ public class ServicesInteractor {
                     if (collageResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getCollageResponse(collageResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_COLLAGES);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.COLLAGE, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_COLLAGES);
+                    crashlytics.recordException(e);
                     sendGenericError(ServicesRequestType.COLLAGE, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_COLLAGES);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
@@ -3748,6 +4117,8 @@ public class ServicesInteractor {
             servicesError.setType(sendTypeTokenResponse(generalErrorResponse.getData().getResponse().getErrorCode(), type));
             iServiceListener.onError(servicesError);
         } catch (Exception e) {
+            crashlytics.log("public void sendGenericError");
+            crashlytics.recordException(e);
             servicesError.setMessage(context.getString(R.string.error_generic_service));
             iServiceListener.onError(servicesError);
         }
@@ -3786,8 +4157,8 @@ public class ServicesInteractor {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
                     QrCodeResponse validateCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
-                        response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
-                        QrCodeResponse.class
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
                     );
 
                     if(validateCodeResponse.getEstado() != 0){
@@ -3800,12 +4171,16 @@ public class ServicesInteractor {
                         qrCodeResponseHandler(null, 2, 1);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
                     qrCodeResponseHandler(null, 2, 1);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 qrCodeResponseHandler(null, 2, 1);
             }
         });
@@ -3827,8 +4202,8 @@ public class ServicesInteractor {
                 try {
 
                     QrCodeResponse authCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
-                        response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
-                        QrCodeResponse.class
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
                     );
 
                     if(authCodeResponse.getEstado() != 0){
@@ -3837,12 +4212,16 @@ public class ServicesInteractor {
                         qrCodeResponseHandler(null, 2, 1);
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
                     qrCodeResponseHandler(null, 2, 1);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 qrCodeResponseHandler(null, 2, 1);
             }
         });
@@ -3888,12 +4267,16 @@ public class ServicesInteractor {
                         }
                     }
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
                     qrCodeResponseHandler(null, 2, 2);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 qrCodeResponseHandler(null, 2, 2);
             }
         });
@@ -3911,9 +4294,9 @@ public class ServicesInteractor {
     public void getExternalUrl(String endPointCoppel, String num_empleado, int option, String token) {
         this.token = token;
         iServicesRetrofitMethods.getExternalURL(
-            endPointCoppel,
-            token,
-            new ExternalUrlRequest(num_empleado, option)
+                endPointCoppel,
+                token,
+                new ExternalUrlRequest(num_empleado, option)
         ).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -3926,12 +4309,16 @@ public class ServicesInteractor {
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(endPointCoppel);
+                    crashlytics.recordException(e);
                     sendGenericError(option, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( endPointCoppel);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, option));
             }
         });
@@ -3944,9 +4331,9 @@ public class ServicesInteractor {
             getExternalUrlSuccess(response, option);
         } else {
             iServiceListener.onError(
-                servicesUtilities.getErrorByStatusCode(
-                    context, code, context.getString(R.string.error_generic_service), servicesError
-                )
+                    servicesUtilities.getErrorByStatusCode(
+                            context, code, context.getString(R.string.error_generic_service), servicesError
+                    )
             );
         }
     }
@@ -3964,6 +4351,8 @@ public class ServicesInteractor {
                 servicesResponse.setType(option);
                 iServiceListener.onResponse(servicesResponse);
             } else {
+
+
                 servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
                 iServiceListener.onError(servicesError);
             }
@@ -3997,16 +4386,22 @@ public class ServicesInteractor {
                         servicesResponse.setType(type);
                         iServiceListener.onResponse(servicesResponse);
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(type, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -4035,16 +4430,22 @@ public class ServicesInteractor {
                         servicesResponse.setType(type);
                         iServiceListener.onResponse(servicesResponse);
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(type, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 t.printStackTrace();
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
@@ -4074,6 +4475,50 @@ public class ServicesInteractor {
                         servicesResponse.setType(type);
                         iServiceListener.onResponse(servicesResponse);
                     } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getTokenSSO(CoCreaRequest coCreaRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS;
+
+        iServicesRetrofitMethods.getCoCre(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                coCreaRequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    CoCreaResponse coCreaResponse = (CoCreaResponse) servicesUtilities.parseToObjectClass(
+                            response.body().toString(),
+                            CoCreaResponse.class
+                    );
+
+                    if (coCreaResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        ServicesResponse<CoCreaResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(coCreaResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
                         sendGenericError(type, response);
                     }
 
@@ -4085,6 +4530,45 @@ public class ServicesInteractor {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getGooglePlayUrl(String num_empleado, int option, String token) {
+        iServicesRetrofitMethods.getCollageURL(ServicesConstants.GET_ENDPOINT_COLLAGES, token,
+                (CoppelServicesCollageUrlRequest) builCollageRequest(num_empleado, option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ExternalUrlResponse.class);
+                    if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        ServicesError servicesError = new ServicesError();
+                        servicesError.setType(ServicesRequestType.GOOGLE_PLAY_URL);
+                        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+                            if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                ServicesResponse<ExternalUrlResponse> servicesResponse = new ServicesResponse<>();
+                                servicesResponse.setResponse(externalUrlResponse);
+                                servicesResponse.setType(ServicesRequestType.GOOGLE_PLAY_URL);
+                                iServiceListener.onResponse(servicesResponse);
+                            } else {
+                                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                                iServiceListener.onError(servicesError);
+                            }
+                        } else {
+                            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_google_play), servicesError));
+                        }
+                    } else {
+                        sendGenericError(ServicesRequestType.COLLAGE, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.COLLAGE, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
             }
         });
     }

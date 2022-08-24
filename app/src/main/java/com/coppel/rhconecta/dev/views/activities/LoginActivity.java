@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -51,6 +52,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpo
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick, EditTextPassword.OnEditorActionListener {
@@ -300,11 +302,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                //.setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(TimeUnit.HOURS.toSeconds(12))
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                fetchEndpoints();
+            }
+        });
 
-        fetchEndpoints();
     }
 
 
@@ -317,9 +324,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // After config data is successfully fetched, it must be activated before newly fetched
                             // values are returned.
-                            mFirebaseRemoteConfig.activateFetched();
+                            mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Boolean>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Boolean> task) {
+                                    if (task.isSuccessful()) {
+                                        setEndpoints();
+                                    }
+                                }
+                            });
                         }
-                        setEndpoints();
                     }
                 });
         // [END fetch_config_with_callback]

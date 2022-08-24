@@ -15,6 +15,8 @@ import com.coppel.rhconecta.dev.domain.home.HomeRepository;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +67,8 @@ public class HomeRepositoryImpl implements HomeRepository {
                 context,
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
+        FirebaseCrashlytics.getInstance().setUserId(getStringFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR));
+        FirebaseAnalytics.getInstance(context).setUserId(getStringFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR));
         GetMainInformationRequest request = new GetMainInformationRequest(employeeNum, clvOption);
 
         apiService.getMainInformation(

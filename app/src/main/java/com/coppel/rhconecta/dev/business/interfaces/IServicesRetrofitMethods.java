@@ -65,6 +65,7 @@ import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.HolidayBonusRequestData;
+import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -355,4 +356,7 @@ public interface IServicesRetrofitMethods  <T>{
     @POST
     Call<JsonObject> getTokenSSO(@Url String url,@Header("Authorization") String token, @Body TokenSSORequest tokenSSORequest);
 
+    @Headers({"Content-Type: application/json"})
+    @POST
+    Call<JsonObject> getCoCre(@Url String url,@Header("Authorization") String token, @Body CoCreaRequest coCreaRequest);
 }

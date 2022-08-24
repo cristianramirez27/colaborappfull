@@ -19,6 +19,7 @@ import com.coppel.rhconecta.dev.domain.visionary.VisionaryRepository;
 import com.coppel.rhconecta.dev.domain.visionary.entity.Visionary;
 import com.coppel.rhconecta.dev.domain.visionary.entity.VisionaryPreview;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,11 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         apiService = retrofit.create(VisionaryApiService.class);
         basicUserInformationFacade = new BasicUserInformationFacade(CoppelApp.getContext());
     }
-
+    private void saveToCrashLitics(String Url , String eMessage){
+        FirebaseCrashlytics.getInstance().log(Url);
+        Exception e = new Exception(eMessage);
+        FirebaseCrashlytics.getInstance().recordException(e);
+    }
     /**
      *
      */
@@ -76,9 +81,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     /**
      *
      */
-    private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionariesPreviewsResponse(
-            UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback
-    ) {
+    private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionariesPreviewsResponse( UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback) {
         return new Callback<GetVisionariesPreviewsResponse>() {
             @Override
             public void onResponse(Call<GetVisionariesPreviewsResponse> call, Response<GetVisionariesPreviewsResponse> response) {
@@ -93,6 +96,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                             new Either<Failure, List<VisionaryPreview>>().new Right(visionariesPreviews);
                     callback.onResult(result);
                 } catch (Exception exception) {
+                    saveToCrashLitics("getCallbackGetVisionariesPreviewsResponse", exception.getMessage());
                     callback.onResult(getServerFailure());
                 }
 
@@ -100,6 +104,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
             @Override
             public void onFailure(Call<GetVisionariesPreviewsResponse> call, Throwable t) {
+                saveToCrashLitics("getCallbackGetVisionariesPreviewsResponse", t.getMessage());
                 callback.onResult(getServerFailure());
             }
 
@@ -152,6 +157,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     Either<Failure, VisionaryPreview> result = new Either<Failure, VisionaryPreview>().new Right(visionaryPreview);
                     callback.onResult(result);
                 } catch (Exception exception) {
+                    saveToCrashLitics("getCallbackGetVisionaryPreviewResponse", exception.getMessage());
                     callback.onResult(getServerFailure());
                 }
 
@@ -159,6 +165,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
             @Override
             public void onFailure(Call<GetVisionariesPreviewsResponse> call, Throwable t) {
+                saveToCrashLitics("getCallbackGetVisionaryPreviewResponse", t.getMessage());
                 callback.onResult(getServerFailure());
             }
 
@@ -213,12 +220,14 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     Either<Failure, Visionary> result = new Either<Failure, Visionary>().new Right(visionary);
                     callback.onResult(result);
                 } catch (Exception exception) {
+                    saveToCrashLitics("getCallbackGetVisionaryByIdResponse", exception.getMessage());
                     callback.onResult(getServerFailure());
                 }
             }
 
             @Override
             public void onFailure(Call<GetVisionaryByIdResponse> call, Throwable t) {
+                saveToCrashLitics("getCallbackGetVisionaryByIdResponse", t.getMessage());
                 callback.onResult(getServerFailure());
 
             }
@@ -281,12 +290,14 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                             new Either<Failure, Visionary.RateStatus>().new Right(status);
                     callback.onResult(result);
                 } catch (Exception exception) {
+                    saveToCrashLitics("getCallbackUpdateVisionaryStatusByIdResponse", exception.getMessage());
                     callback.onResult(getServerFailure());
                 }
             }
 
             @Override
             public void onFailure(Call<UpdateVisionaryStatusByIdResponse> call, Throwable t) {
+                saveToCrashLitics("getCallbackUpdateVisionaryStatusByIdResponse", t.getMessage());
                 callback.onResult(getServerFailure());
             }
 
@@ -339,12 +350,14 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
                     Either<Failure, Unit> result = new Either<Failure, Unit>().new Right(Unit.INSTANCE);
                     callback.onResult(result);
                 } catch (Exception exception) {
+                    saveToCrashLitics("getCallbackUpdateVisionaryStatusByIdResponse", exception.getMessage());
                     callback.onResult(getServerFailure());
                 }
             }
 
             @Override
             public void onFailure(Call<UpdateVisionaryStatusByIdResponse> call, Throwable t) {
+                saveToCrashLitics("getCallbackUpdateVisionaryStatusByIdResponse", t.getMessage());
                 callback.onResult(getServerFailure());
             }
 

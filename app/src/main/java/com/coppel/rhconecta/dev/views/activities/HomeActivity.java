@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -49,6 +50,8 @@ import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.TokenSSOResponse;
+import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
+import com.coppel.rhconecta.dev.business.models.CoCreaResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
@@ -164,6 +167,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_PASS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -680,12 +685,21 @@ public class HomeActivity
                     }
                     break;
                 case OPTION_COCREA:
-                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
-                    if (urlCoCrea.isEmpty())
-                        urlCoCrea = URL_DEFAULT_COCREA;
-
-                    Intent intentCoCrea = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCoCrea));
-                    startActivity(intentCoCrea);
+                    String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
+                    hideLoader = true;
+                    try {
+                        getPackageManager().getPackageInfo("com.coppel.cocrea", PackageManager.GET_ACTIVITIES);
+                        CoCreaRequest coCreaRequest = new CoCreaRequest(3,
+                                AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_EMAIL),
+                                AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_PASS),
+                                "rhconecta",
+                                AppConfig.getVersionApp(),
+                                1
+                        );
+                        coppelServicesPresenter.getCoCrea(coCreaRequest, token);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        coppelServicesPresenter.getPlayGoogleUrl(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR), 54, token);
+                    }
                     break;
                 case OPTION_POLL:
                     break;
@@ -968,6 +982,17 @@ public class HomeActivity
                 hideProgress();
                 AppUtilities.closeApp(this);
                 break;
+            case ServicesRequestType.GOOGLE_PLAY_URL:
+                if (response.getResponse() instanceof ExternalUrlResponse) {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
+
+                    Intent play = new Intent();
+                    play.setAction(Intent.ACTION_VIEW);
+                    play.setData(Uri.parse(externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio()));
+                    play.setPackage("com.android.vending");
+                    startActivity(play);
+                }
+                break;
             case EXPENSESTRAVEL:
                 if (response.getResponse() instanceof RolExpensesResponse) {
                     if (((RolExpensesResponse) response.getResponse()).getData().getResponse().getClv_estatus() == 1) {
@@ -1014,6 +1039,23 @@ public class HomeActivity
                     AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN, new Gson().toJson(currentTime));
 
                     getExternalUrl();
+                }
+
+                if (response.getResponse() instanceof CoCreaResponse) {
+                    CoCreaResponse coCreaResponse = (CoCreaResponse) response.getResponse();
+                    String data = coCreaResponse.getData().getResponse().getAuthCode();
+                    if (data != null && !data.isEmpty()) {
+                        try {
+                            Intent sendIntent = new Intent();
+                            sendIntent.setAction("com.coppel.cocrea.action.COCREA");
+                            sendIntent.putExtra(Intent.EXTRA_TEXT, data);
+                            sendIntent.setType("text/plain");
+                            startActivity(sendIntent);
+                        } catch (Exception e) {
+                            String msg = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.ENDPOINT_COCREA_STORE);
+                            showWarningDialog(msg);
+                        }
+                    }
                 }
                 break;
 

@@ -10,8 +10,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "2.11.0"
-        versionCode 101
+        versionName "2.12.0"
+        versionCode 102
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -127,6 +127,13 @@ dependencies {
     implementation "com.google.firebase:firebase-database:${rootProject.ext.firebaseDatabaseVersion}"
     implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
     implementation "com.google.firebase:firebase-config:${rootProject.ext.firebaseConfigVersion}"
+    implementation "com.google.firebase:firebase-iid:21.1.0"
+    //crashlitycs
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
+    implementation 'com.google.firebase:firebase-perf:19.0.3'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
     // PageIndicator
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
 
@@ -173,3 +180,5 @@ def getLocalProperties(){
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'

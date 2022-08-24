@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
@@ -31,10 +33,14 @@ import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -332,24 +338,39 @@ public class SplashScreenActivity
     private void init() {
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(TimeUnit.HOURS.toSeconds(12))
+                 //.setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        fetchEndpoints();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                fetchEndpoints();
+            }
+        });
+
     }
 
     /** */
     private void fetchEndpoints() {
         long cacheExpiration = 0;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnCompleteListener(
-                        SplashScreenActivity.this,
-                        task -> {
-                            if (task.isSuccessful())
-                                mFirebaseRemoteConfig.activateFetched();
-                            setEndpoints();
+                .addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // After config data is successfully fetched, it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Boolean>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Boolean> task) {
+                                    if (task.isSuccessful()) {
+                                        setEndpoints();
+                                    }
+                                }
+                            });
                         }
-                );
+                    }
+                });
     }
 
     /** */

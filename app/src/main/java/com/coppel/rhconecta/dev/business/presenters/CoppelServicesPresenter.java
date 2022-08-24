@@ -16,6 +16,7 @@ import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.WithDrawSavingRequestData;
+import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 
@@ -170,9 +171,19 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getHolidays(holidayRequestData,token);
     }
 
+    public void getCoCrea(CoCreaRequest coCreaRequest, String token) {
+        view.showProgress();
+        servicesInteractor.getTokenSSO(coCreaRequest, token);
+    }
+
     public void getCollege(String num_empleado,int option, String token){
         view.showProgress();
         servicesInteractor.getCollage(num_empleado, option,token);
+    }
+
+    public void getPlayGoogleUrl(String num_empleado, int option, String token) {
+        view.showProgress();
+        servicesInteractor.getGooglePlayUrl(num_empleado, option, token);
     }
 
     /**

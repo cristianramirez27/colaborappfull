@@ -18,6 +18,7 @@ import com.coppel.rhconecta.dev.domain.release.ReleaseRepository;
 import com.coppel.rhconecta.dev.domain.release.entity.Release;
 import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,11 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
         apiService = retrofit.create(ReleaseApiService.class);
         context = CoppelApp.getContext();
     }
-
+    private void saveToCrashLitics(String Url , String eMessage){
+        FirebaseCrashlytics.getInstance().log(Url);
+        Exception e = new Exception(eMessage);
+        FirebaseCrashlytics.getInstance().recordException(e);
+    }
     /**
      *
      */
@@ -92,6 +97,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
             @Override
             public void onFailure(Call<GetReleasesPreviewsResponse> call, Throwable t) {
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS , t.getMessage());
                 Failure failure = new ServerFailure();
                 Either<Failure, List<ReleasePreview>> result = new Either<Failure, List<ReleasePreview>>().new Left(failure);
                 callback.onResult(result);
@@ -141,6 +147,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
             @Override
             public void onFailure(Call<GetReleaseByIdResponse> call, Throwable t) {
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS , t.getMessage());
                 Failure failure = new ServerFailure();
                 Either<Failure, Release> result = new Either<Failure, Release>().new Left(failure);
                 callback.onResult(result);
