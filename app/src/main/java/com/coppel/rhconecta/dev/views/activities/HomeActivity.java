@@ -1,14 +1,17 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,11 +27,15 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.coppel.rhconecta.dev.BuildConfig;
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
@@ -40,7 +47,7 @@ import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
-import com.coppel.rhconecta.dev.business.models.CollageResponse;
+import com.coppel.rhconecta.dev.business.interfaces.IZendeskHandle;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.ExternalUrlResponse;
 import com.coppel.rhconecta.dev.business.models.HolidayRequestData;
@@ -52,6 +59,7 @@ import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.TokenSSOResponse;
 import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
 import com.coppel.rhconecta.dev.business.models.CoCreaResponse;
+import com.coppel.rhconecta.dev.business.models.ZendeskResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
@@ -61,6 +69,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
+import com.coppel.rhconecta.dev.di.home.DaggerHomeComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
@@ -77,6 +86,7 @@ import com.coppel.rhconecta.dev.resources.db.models.MainSection;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EmploymentLettersMenuFragment;
@@ -98,12 +108,32 @@ import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.zendesk.service.ErrorResponse;
+import com.zendesk.service.ZendeskCallback;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import zendesk.answerbot.AnswerBot;
+import zendesk.answerbot.AnswerBotEngine;
+import zendesk.chat.Account;
+import zendesk.chat.AccountStatus;
+import zendesk.chat.Chat;
+import zendesk.chat.ChatConfiguration;
+import zendesk.chat.ChatEngine;
+import zendesk.chat.ChatLog;
+import zendesk.chat.ChatProvidersConfiguration;
+import zendesk.chat.ObservationScope;
+import zendesk.chat.Observer;
+import zendesk.chat.PushNotificationsProvider;
+import zendesk.chat.VisitorInfo;
+import zendesk.core.Zendesk;
+import zendesk.messaging.Engine;
+import zendesk.messaging.MessagingActivity;
+import zendesk.support.Support;
+import zendesk.support.SupportEngine;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
@@ -135,7 +165,6 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
@@ -162,14 +191,19 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_PASS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_EXPECTED_MILLIS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_OUT_SERVICE_MESSAGE;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.saveStringInSharedPreferences;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -180,7 +214,7 @@ public class HomeActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, View.OnClickListener, ListView.OnItemClickListener,
         ProfileFragment.OnPictureChangedListener, DialogFragmentWarning.OnOptionClick,
-        ISurveyNotification, IScheduleOptions {
+        ISurveyNotification, IScheduleOptions, IZendeskHandle {
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentManager fragmentManager;
@@ -210,6 +244,8 @@ public class HomeActivity
     ConstraintLayout ctlLogout;
     @BindView(R.id.surveyInbox)
     SurveyInboxView surveyInboxView;
+    @BindView(R.id.zendeskInbox)
+    ZendeskInboxView zendeskInboxView;
 
     private boolean requestLogout = false;
     private boolean hideLoader = false;
@@ -236,6 +272,8 @@ public class HomeActivity
     @Inject
     public HomeActivityViewModel homeActivityViewModel;
 
+    ObservationScope observationScope;
+
     /**
      *
      */
@@ -245,6 +283,7 @@ public class HomeActivity
         notifications = new int[]{0, 0, 0};
         setContentView(R.layout.activity_home);
         DaggerAnalyticsComponent.create().inject(this);
+//        DaggerHomeComponent.create().injectActivity(this);
 
         ButterKnife.bind(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -286,6 +325,42 @@ public class HomeActivity
         }
 
         observeViewModel();
+
+        zendeskInboxView.setOnClickListener(view -> {
+            //init comment product code for init chat out service
+                    /*String saveDataExpectedMillis = getStringFromSharedPreferences(this, ZENDESK_EXPECTED_MILLIS);
+
+                    if (saveDataExpectedMillis != null && !saveDataExpectedMillis.isEmpty()) {
+
+                        Long expectedMillis = Long.parseLong(saveDataExpectedMillis);
+                        Date currentDate = new Date();
+                        Long currentMillis = currentDate.getTime();
+
+                        if (currentMillis > expectedMillis) {
+                            verifyAvailableZendesk();
+                        } else {
+                            handlePreChat();
+                        }
+                    } else {
+                        verifyAvailableZendesk();
+                    }*/
+            //end comment product code for init chat out service
+            verifyAvailableZendesk();
+                }
+        );
+
+        initZendeskInstance();
+    }
+
+    private void verifyAvailableZendesk() {
+        /*String employNumber = AppUtilities.getStringFromSharedPreferences(
+                getApplicationContext(),
+                SHARED_PREFERENCES_NUM_COLABORADOR
+        );
+        String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
+        serviceZendesk(employNumber, token);*/
+
+        homeActivityViewModel.getHelpDeskServiceAvailability();
     }
 
     /**
@@ -820,7 +895,7 @@ public class HomeActivity
 
     private void getExternalUrl(String endPointCoppel) {
         String endPoint = ServicesConstants.GET_ENDPOINT_COLLAGES;
-        if (endPointCoppel!=null && endPointCoppel.length() > 0){
+        if (endPointCoppel != null && endPointCoppel.length() > 0) {
             endPoint = ServicesConstants.GET_ENDPOINT_VACANCIES;
         }
 
@@ -1070,6 +1145,50 @@ public class HomeActivity
                     }
                 }
                 break;
+            case ServicesRequestType.ZENDESK:
+                Log.v("DEBUG-ServiceResponse->", new Gson().toJson(response));
+            /*    ZendeskResponse zendeskResponse = (ZendeskResponse) response.getResponse();
+
+//                Mensaje de servicio de chat de mesa de ayuda - ""
+                String mensaje = zendeskResponse.getData().getResponse()[0].getDes_msj();
+
+                //Fecha en que se volverá a consumir el servicio - 2022-09-01
+                String fecha = zendeskResponse.getData().getResponse()[0].getFecha();
+
+                //Fecha con la hora de inicio o fin del mensaje - 2022-09-01 19:00:00
+                String fechaHora = zendeskResponse.getData().getResponse()[0].getFechaHora();
+
+                //Tiempo faltante para volver a consumir el servicio - 00:44:52
+                String horas = zendeskResponse.getData().getResponse()[0].getHoras();
+
+                Log.v("DEBUG-ServiceResponse->", new Gson().toJson(zendeskResponse));
+
+
+                handleAvailabilityZendesk(horas, mensaje);*/
+                break;
+        }
+    }
+
+    private void handleAvailabilityZendesk(String horas, String mensaje) {
+        String[] date = horas.split(":");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, Integer.parseInt(date[0]));
+        calendar.add(Calendar.MINUTE, Integer.parseInt(date[1]));
+        calendar.add(Calendar.SECOND, Integer.parseInt(date[2]));
+
+        Date expectedDate = calendar.getTime();
+        Long millisExpected = expectedDate.getTime();
+
+        Date currentDate = new Date();
+        Long currentMillis = currentDate.getTime();
+
+        saveStringInSharedPreferences(this, ZENDESK_EXPECTED_MILLIS, String.valueOf(millisExpected));
+        saveStringInSharedPreferences(this, ZENDESK_OUT_SERVICE_MESSAGE, mensaje);
+        if (currentMillis > millisExpected) {
+            handlePreChat();
+        } else if (!mensaje.isEmpty()) {
+            showWarningDialog(mensaje);
         }
     }
 
@@ -1272,5 +1391,247 @@ public class HomeActivity
      */
     @Override
     public void setActionAuthorizeOption(Command action) { /* USELESS IMPLEMENTATION */ }
+
+
+    private void initZendeskInstance() {
+        Zendesk.INSTANCE.init(
+                this,
+                "https://mesadeservicio.coppel.com/",
+                "06847b00212e7d7b2f9ea69c112c419833085e6f501dcb3e",
+                "mobile_sdk_client_7f9c479e7ec3964c697a"
+        );
+        Support.INSTANCE.init(Zendesk.INSTANCE);
+        AnswerBot.INSTANCE.init(Zendesk.INSTANCE, Support.INSTANCE);
+        Chat.INSTANCE.init(
+                this,
+                "FLDK1SpI6rKFFSCI9IyanuCN0lmq0d9k",
+                "06847b00212e7d7b2f9ea69c112c419833085e6f501dcb3e"
+        );
+
+        /**
+         * Notifications zendesk
+         */
+        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        if (pushProvider != null) {
+            pushProvider.registerPushToken(tokenFirebase);
+        }
+
+
+        observationScope = new ObservationScope();
+        configZendeskPush();
+        configureUserData();
+        monitorChatEvent();
+        monitorAvailableAgents();
+
+    }
+
+    private void configureUserData() {
+        VisitorInfo visitorInfo = VisitorInfo.builder()
+                .withName(profileResponse.getNombre())
+                .withEmail(profileResponse.getCorreo())
+                .withPhoneNumber("55")
+                .build();
+        ChatProvidersConfiguration chatProvidersConfiguration = ChatProvidersConfiguration.builder()
+                .withVisitorInfo(visitorInfo)
+                .withDepartment("ColaborAPP")
+                .build();
+
+        String employNumber = AppUtilities.getStringFromSharedPreferences(
+                this,
+                SHARED_PREFERENCES_NUM_COLABORADOR
+        );
+
+        String job = profileResponse.getNombrePuesto();
+        String department = profileResponse.getCentro();
+        String deviceName = getDeviceName();
+        String versionAndroid = getAndroidVersion();
+        String versionAPP = BuildConfig.VERSION_NAME;
+
+        List<String> tags = Arrays.asList(employNumber, job, department, deviceName, versionAndroid, versionAPP);
+        Chat.INSTANCE.providers().profileProvider().addVisitorTags(tags, new ZendeskCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void result) {
+            }
+
+            @Override
+            public void onError(ErrorResponse error) {
+            }
+        });
+
+        Chat.INSTANCE.setChatProvidersConfiguration(chatProvidersConfiguration);
+    }
+
+    private void serviceZendesk(String employNumber, String token) {
+        coppelServicesPresenter.requestAvailableZendesk(employNumber, token, 58);
+    }
+
+    private String getDeviceName() {
+        return Build.MODEL + " " + Build.DEVICE + " " + Build.BRAND;
+    }
+
+    public String getAndroidVersion() {
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
+        return "Android SDK: " + sdkVersion + " (" + release + ")";
+    }
+
+    private void monitorChatEvent() {
+        Chat.INSTANCE.providers().chatProvider().observeChatState(observationScope, chatState -> {
+            //Do something with chat state
+            //Log.v("VER->Chat event", "ID:" + chatState.getChatId() + " - " + chatState.getChatComment() + " - " + chatState.getChatSessionStatus());
+            System.out.println("JSON de chetevent:");
+            System.out.println(new Gson().toJson(chatState));
+
+            if (chatState.getAgents().size() > 0)
+                zendeskChatEnable();
+            else
+                zendeskChatDisable(false);
+
+            if (!chatState.getChatLogs().isEmpty()) {
+                ChatLog chatLog = chatState.getChatLogs().get(chatState.getChatLogs().size() - 1);
+                if (chatLog instanceof ChatLog.Message && ((ChatLog.Message) chatLog).getDisplayName() != null) {
+                    Log.v("VER->ChatEvent", "mensaje: "
+                            + chatLog.getChatParticipant() + " - "
+                            + ((ChatLog.Message) chatLog).getMessage());
+
+                    Log.v("VER->ChatEvent", "cola: " + chatState.getQueuePosition());
+                }
+
+            }
+
+            switch (chatState.getChatSessionStatus()) {
+                case ENDED:
+                    zendeskChatDisable(true);
+                    break;
+            }
+        });
+    }
+
+    private void monitorAvailableAgents() {
+        Chat.INSTANCE.providers().accountProvider().getAccount(new ZendeskCallback<Account>() {
+            @Override
+            public void onSuccess(Account account) {
+                // Insert your account handling code here
+                Log.v("VER-> AvailableAgents", "Status:" + account.getStatus() + " - " + account.getDepartments());
+                System.out.println(new Gson().toJson(account));
+
+                if (account.getStatus() == AccountStatus.OFFLINE) {
+                    //Toast.makeText(HomeActivity.this, "El servicio del chat por el momento no está activo, favor de enviar correo a soportecolaborapp@coppel.com", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(ErrorResponse errorResponse) {
+                // Handle error in getting Account here
+                Log.v("VER-> AvailableAgents", "Error:" + errorResponse.getReason());
+            }
+        });
+
+        Chat.INSTANCE.providers().accountProvider().observeAccount(observationScope, new Observer<Account>() {
+
+            @Override
+            public void update(Account account) {
+                Log.v("VER->AvailableAgentsUpd", "Status:" + account.getStatus() + " - " + account.getDepartments());
+            }
+        });
+
+    }
+
+    private void monitorConnectionStatus() {
+        Chat.INSTANCE.providers().connectionProvider().observeConnectionStatus(observationScope,
+                connectionStatus -> {
+                    String status = connectionStatus.name();
+                    Log.v("VER->ConnectionStatus", "Status:" + connectionStatus.name());
+                    if (status.equals("CONNECTED")) {
+                        Log.v("VER->ConnectionStatus", "en chat - icono verde");
+                    } else if (status.equals("DISCONNECTED")) {
+                        Log.v("VER->ConnectionStatus", "si chat o minimizado - icono gris");
+                    } else if (status.equals("CONNECTING")) {
+                        Log.v("VER->ConnectionStatus", "conectando - icono gris");
+                    }
+                }
+        );
+    }
+
+    private void configZendeskPush() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_coppel_logo)
+                .setContentTitle("Chat")
+                .setContentText("New message")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, builder.build());
+    }
+
+    private void handlePreChat() {
+        String zendeskOutServiceMessage = getStringFromSharedPreferences(this, ZENDESK_OUT_SERVICE_MESSAGE);
+        if (zendeskOutServiceMessage == null || zendeskOutServiceMessage.isEmpty()) {
+            initChat();
+        } else {
+            showWarningDialog(zendeskOutServiceMessage);
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void initChat(){
+        Engine answerBotEngine = AnswerBotEngine.engine();
+        Engine supportEngine = SupportEngine.engine();
+        Engine chatEngine = ChatEngine.engine();
+
+        MessagingActivity.builder()
+                .withEngines(answerBotEngine,/* supportEngine,*/ chatEngine)
+                .show(this, configChat());
+        if (chatEngine != null) {
+            chatEngine.isConversationOngoing((engine, isConversationOngoing) -> Log.v("VER->", "ConversationOnGoingCallback: " + isConversationOngoing));
+        }
+    }
+
+    private ChatConfiguration configChat() {
+        return ChatConfiguration.builder()
+                .withAgentAvailabilityEnabled(true)
+                .withTranscriptEnabled(true)
+                .build();
+    }
+
+    private void zendeskChatEnable() {
+        zendeskInboxView.setActive(0);
+    }
+
+    private void zendeskChatDisable(boolean resetIdentity) {
+        zendeskInboxView.setDisable();
+        if (resetIdentity)
+            Chat.INSTANCE.resetIdentity();
+    }
+
+    @NonNull
+    @Override
+    public ZendeskInboxView getZendeskIcon() {
+        return zendeskInboxView;
+    }
+
+    public void checkZendeskFeature() {
+        String zendeskFeature = getStringFromSharedPreferences(this, ZENDESK_FEATURE);
+
+        if (zendeskFeature != null && zendeskFeature.equals("1")) {
+            enableZendeskFeature();
+        } else {
+            disableZendeskFeature();
+        }
+    }
+
+    private void enableZendeskFeature() {
+        zendeskInboxView.setVisibility(View.VISIBLE);
+        zendeskInboxView.setCountMessages(0);
+//        iZendeskHandle.getZendeskIcon().setOnClickListener(this::onZendeskIconClickListener);
+    }
+
+    private void disableZendeskFeature() {
+        zendeskInboxView.setVisibility(View.GONE);
+    }
 
 }

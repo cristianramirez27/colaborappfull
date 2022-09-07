@@ -1,8 +1,15 @@
-package com.coppel.rhconecta.dev.data.home;
+package com.coppel.rhconecta.dev.framework.home;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ANDROID_OS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.business.models.ZendeskResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationRequest;
@@ -17,6 +24,7 @@ import com.coppel.rhconecta.dev.domain.home.entity.Banner;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +37,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 /**
  *
@@ -158,6 +164,70 @@ public class HomeRepositoryImpl implements HomeRepository {
             }
 
         });
+    }
+
+
+
+    @Override
+    public void getHelpDeskServiceAvailability(UseCase.OnResultFunction<Either<Failure, ZendeskResponse>> callback) {
+        String employeeNumStr = getStringFromSharedPreferences(context, SHARED_PREFERENCES_NUM_COLABORADOR);
+        Long employeeNum = Long.parseLong(employeeNumStr);
+        String authHeader = getStringFromSharedPreferences(context, SHARED_PREFERENCES_TOKEN);
+        int clvOption = 58;
+        GetMainInformationRequest request = new GetMainInformationRequest(employeeNum, clvOption);
+
+        HomeRequest request2 = new HomeRequest(employeeNumStr, "", authHeader, clvOption, ANDROID_OS);
+
+        apiService.getHelpDeskServiceAvailability(
+                authHeader,
+                ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
+                request2
+        ).enqueue(new Callback<ZendeskResponse>() {
+
+            @Override
+            public void onResponse(Call<ZendeskResponse> call, Response<ZendeskResponse> response) {
+                try {
+
+//                    HelpDeskAvailability helpDeskAvailability = response.body().getData();
+                    /*GetMainInformationResponse body = response.body();
+                    assert body != null;
+                    saveStringInSharedPreferences(context, ZENDESK_FEATURE, body.data.response.clv_chatActivo);
+
+                    HashMap<Badge.Type, Badge> badges = new HashMap<>();
+                    badges.put(Badge.Type.RELEASE, body.data.response.Badges.getReleaseBadge());
+                    badges.put(Badge.Type.VISIONARY, body.data.response.Badges.getVisionaryBadge());
+                    badges.put(Badge.Type.COLLABORATOR_AT_HOME, body.data.response.Badges.getCollaboratorAtHomeBadge());
+                    badges.put(Badge.Type.POLL, body.data.response.Badges.getPollBadge());
+                    Either<Failure, Map<Badge.Type, Badge>> result =
+                            new Either<Failure, Map<Badge.Type, Badge>>().new Right(badges);
+                    callback.onResult(result);*/
+                    Log.v("DEBUG-SERVICIO", new Gson().toJson(response.body()));
+                    Either<Failure, ZendeskResponse> result =
+                            new Either<Failure,ZendeskResponse>().new Right(response.body());
+                    callback.onResult(result);
+                } catch (Exception e) {
+                    Failure failure = new ServerFailure();
+                    Either<Failure, Map<Badge.Type, Badge>> result =
+                            new Either<Failure, Map<Badge.Type, Badge>>().new Left(failure);
+
+                    Either<Failure, ZendeskResponse> result2 =
+                            new Either<Failure, ZendeskResponse>().new Left(failure);
+
+
+                    callback.onResult(result2);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ZendeskResponse> call, Throwable t) {
+                Failure failure = new ServerFailure();
+                Either<Failure, ZendeskResponse> result =
+                        new Either<Failure, ZendeskResponse>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+
     }
 
 }

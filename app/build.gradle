@@ -64,6 +64,9 @@ android {
     }
 
 }
+repositories {
+    maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
+}
 
 dependencies {
 
@@ -123,7 +126,8 @@ dependencies {
     implementation "com.otaliastudios:cameraview:${rootProject.ext.cameraViewVersion}"
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
+//    implementation "com.google.firebase:firebase-core:${rootProject.ext.firebaseCoreVersion}"
+    implementation "com.google.firebase:firebase-analytics:${rootProject.ext.firebaseAnalyticsVersion}"
     implementation "com.google.firebase:firebase-database:${rootProject.ext.firebaseDatabaseVersion}"
     implementation "com.google.firebase:firebase-messaging:${rootProject.ext.firebaseMessagingVersion}"
     implementation "com.google.firebase:firebase-config:${rootProject.ext.firebaseConfigVersion}"
@@ -164,6 +168,20 @@ dependencies {
 
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+
+    api group: 'com.zendesk', name: 'messaging', version: '5.2.5'
+    api group: 'com.zendesk', name: 'support', version: '5.0.9'
+    api group: 'com.zendesk', name: 'answerbot', version: '3.0.8'
+    api group: 'com.zendesk', name: 'chat', version: '3.3.6'
+    implementation group: 'com.zendesk', name: 'chat-providers', version: '3.3.6'
+//    api group: 'com.zendesk', module:'answerbot-providers', version: '3.0.8'
+
+}
+configurations.all {
+//    exclude group: 'com.squareup.retrofit2', module: 'retrofit'
+    resolutionStrategy {
+        force 'com.squareup.retrofit2:retrofit:2.6.0'
+    }
 }
 
 realm {

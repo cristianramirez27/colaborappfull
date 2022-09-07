@@ -46,7 +46,7 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
         viewHolder.name.setText(currentItem.getNombre());
         viewHolder.description.setText(currentItem.getDescripcion());
        // Picasso.with(getContext()).load(currentItem.getLogo()).placeholder(R.drawable.placeholder_category ).into(viewHolder.imageBenefits);
-        Picasso.with(getApplicationContext()).load(currentItem.getLogo())
+        Picasso.get().load(currentItem.getLogo())
                 .placeholder(R.drawable.placeholder_category)
                 .error(R.drawable.placeholder_category).into(viewHolder.imageBenefits);
 

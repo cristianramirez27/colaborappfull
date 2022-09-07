@@ -22,6 +22,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
+import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationRequest;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -379,6 +380,22 @@ public class ServicesInteractor {
         servicesResponse.setType(type);
         iServiceListener.onResponse(servicesResponse);
     }
+
+
+    public void zendeskResponse(ZendeskResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            ServicesResponse<ZendeskResponse> servicesResponse = new ServicesResponse<>();
+            servicesResponse.setResponse(response);
+            servicesResponse.setType(type);
+            iServiceListener.onResponse(servicesResponse);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
 
     /* *******************************************************************************************************************************************************
      ***************************************************          Payroll Voucher      ***********************************************************************
@@ -4569,6 +4586,37 @@ public class ServicesInteractor {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    public void serviceZendesk(String employeeNum, String token, int clvOption) {
+        this.token = token;
+        final int type = ServicesRequestType.ZENDESK;
+        String endPoint ="https://dev-apisp.coppel.com:9000/rhconecta/api/v3/obtenerservicios";
+//        GetMainInformationRequest request = new GetMainInformationRequest(Long.parseLong(employeeNum), clvOption);
+        iServicesRetrofitMethods.zendesk(endPoint, token, buildProfileRequest(employeeNum, "", clvOption)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    ZendeskResponse zendeskResponse = (ZendeskResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ZendeskResponse.class);
+                    if (zendeskResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        zendeskResponse(zendeskResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log( ServicesConstants.WS_LOGOUT);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
     }

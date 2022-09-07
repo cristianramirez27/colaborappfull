@@ -193,5 +193,8 @@ public class AppConstants {
     public static final int ICON_AGUINALDO = 6;
 
     public static final String BUNDLE_PAYROLL_OPTION = "PAYROLL_OPTION";
+    public static final String ZENDESK_FEATURE = "ZENDESK_FEATURE";
+    public static final String ZENDESK_EXPECTED_MILLIS = "ZENDESK_EXPECTED_MILLIS";
+    public static final String ZENDESK_OUT_SERVICE_MESSAGE = "ZENDESK_OUT_SERVICE_MESSAGE";
 
 }

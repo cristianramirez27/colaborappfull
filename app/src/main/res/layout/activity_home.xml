@@ -56,6 +56,12 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="16dp" />
 
+                        <com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView
+                            android:id="@+id/zendeskInbox"
+                            android:layout_width="47dp"
+                            android:layout_height="47dp"
+                            android:layout_centerInParent="true"
+                            android:layout_toStartOf="@+id/surveyInbox" />
 
                         <TextView
                             android:id="@+id/eliminateOption"

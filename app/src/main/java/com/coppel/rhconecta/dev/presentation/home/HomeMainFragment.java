@@ -27,6 +27,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.Enums.AccessOption;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.di.home.DaggerHomeComponent;
@@ -267,6 +268,7 @@ public class HomeMainFragment
                     setBanners(homeViewModel.getBanners());
                 break;
         }
+        ((HomeActivity) requireActivity()).checkZendeskFeature();
     }
 
     /**
@@ -400,6 +402,7 @@ public class HomeMainFragment
     public void onAttach(Context context) {
         super.onAttach(context);
         ISurveyNotification = (ISurveyNotification) context;
+//        iZendeskHandle = (IZendeskHandle) context;
     }
 
     @Override

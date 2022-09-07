@@ -3,7 +3,7 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.4.20'
+        kotlin_version = '1.6.10'
     }
     repositories {
         mavenCentral()
@@ -48,6 +48,7 @@ ext {
     lottieVersion = "2.5.5"
     cameraViewVersion = "1.5.1"
     firebaseCoreVersion = "20.1.2"
+    firebaseAnalyticsVersion = "21.1.0"
     firebaseConfigVersion = "21.0.2"
     firebaseDatabaseVersion = "20.0.4"
     firebaseMessagingVersion = "23.0.3"

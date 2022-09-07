@@ -144,6 +144,9 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <activity android:name="zendesk.messaging.MessagingActivity"
+            android:theme="@style/zendeskTheme" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

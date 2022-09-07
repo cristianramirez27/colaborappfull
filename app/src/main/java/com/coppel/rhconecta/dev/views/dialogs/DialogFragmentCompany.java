@@ -138,7 +138,7 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
 
     private void initView() {
         if(company.getRuta() != null && !company.getRuta().isEmpty())
-            Picasso.with(getApplicationContext()).load(company.getRuta())
+            Picasso.get().load(company.getRuta())
                     .placeholder(R.drawable.placeholder_discount)
                     .error(R.drawable.placeholder_discount).into(image);
 

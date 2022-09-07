@@ -18,6 +18,8 @@ public class CoppelApp extends MultiDexApplication {
     private static Context contextApp;
 
     private static CoppelApp mInstance;
+
+    private boolean test = false;
     @Override
     public void onCreate() {
         super.onCreate();
