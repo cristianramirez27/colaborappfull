@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.Date;
 
 /**
  * Created by flima on 15/05/17.
@@ -56,10 +55,9 @@ public class JsonManager {
         Object o = null;
         try {
             o = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
-//                    .registerTypeAdapter(Date.class, new TimeDeserializer())
-                    .create()
-                    .fromJson(json, type);
+                    .setDateFormat("dd-MM-yyyy HH:mm:ss")
+                    .create().
+                            fromJson(json, type);
         } catch (Exception e) {
             o = null;
         }

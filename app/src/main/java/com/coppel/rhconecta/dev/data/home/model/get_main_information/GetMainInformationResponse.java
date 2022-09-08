@@ -2,7 +2,6 @@ package com.coppel.rhconecta.dev.data.home.model.get_main_information;
 
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
 import com.coppel.rhconecta.dev.domain.home.entity.Banner;
-import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
 
 import java.util.List;
 
@@ -35,9 +34,6 @@ public class GetMainInformationResponse {
         public Badges Badges;
 
         public String clv_chatActivo;
-
-//        public HelpDeskAvailability helpDeskAvailability;
-
     }
 
     /**

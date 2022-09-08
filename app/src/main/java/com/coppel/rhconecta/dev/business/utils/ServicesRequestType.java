@@ -63,5 +63,4 @@ public class ServicesRequestType {
     public static final int BENEFIT_COMPANY = 32;
     public static final int TIME_OUT_REQUEST = 33;
 
-    public static final int ZENDESK = 34;
 }

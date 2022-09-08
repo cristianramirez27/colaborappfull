@@ -14,7 +14,7 @@ public class ZendeskResponse extends CoppelGeneralParameterResponse implements S
         this.data = data;
     }
 
-    public class Data implements Serializable{
+    public class Data implements Serializable {
 
         private Response[] response;
 
@@ -28,9 +28,24 @@ public class ZendeskResponse extends CoppelGeneralParameterResponse implements S
     }
 
     public class Response implements Serializable {
+        /**
+         * Help desk chat service message
+         */
         private String des_msj;
+        /**
+         * Date on which the service will be consumed again
+         * Format: 2022-09-01
+         */
         private String fecha;
+        /**
+         * Date with the start or end time of the message
+         * Format: 2022-09-01 19:00:00
+         */
         private String fechaHora;
+        /**
+         * Remaining time to consume the service again
+         * Format: 00:44:52
+         */
         private String horas;
 
         public Response() {

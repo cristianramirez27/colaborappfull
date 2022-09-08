@@ -10,9 +10,6 @@ import androidx.core.content.ContextCompat
 
 import com.coppel.rhconecta.dev.R
 
-/**
- * Created by flima on 03/04/2017.
- */
 class ZendeskInboxView : RelativeLayout {
     private lateinit var imgInbox: ImageView
     private lateinit var tvNotification: TextView
@@ -39,8 +36,7 @@ class ZendeskInboxView : RelativeLayout {
 
     fun setCountMessages(numberMessages: Int) {
         if (numberMessages > 0) {
-            // indicatorInbox.setText(String.format("%d",numberMessages) );
-            tvNotification.text = ""
+            tvNotification.text = String.format("%d",numberMessages)
             tvNotification.visibility = VISIBLE
         } else {
             tvNotification.text = ""

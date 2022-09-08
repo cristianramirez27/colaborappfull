@@ -1,26 +1,16 @@
 package com.coppel.rhconecta.dev.views.activities;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.business.models.ZendeskResponse;
-import com.coppel.rhconecta.dev.data.home.model.get_main_information.BaseResponse;
 import com.coppel.rhconecta.dev.domain.analytics.use_case.SendTimeByAnalyticsFlowUseCase;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
-import com.coppel.rhconecta.dev.domain.home.entity.Badge;
-import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetHelpDeskServiceAvailabilityUseCase;
-import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
-import com.google.gson.Gson;
-
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -35,12 +25,13 @@ public class HomeActivityViewModel {
 
     // Observables
     private MutableLiveData<ProcessStatus> sendTimeByAnalyticsFlowStatus = new MutableLiveData<>();
-    private MutableLiveData<ProcessStatus> loadBadgesProcessStatus = new MutableLiveData<>();
+    private MutableLiveData<ZendeskResponse.Response> helpDeskServiceData = new MutableLiveData<>();
     // Values
     private Failure failure;
 
     /* */
-    @Inject public HomeActivityViewModel() { /* Empty constructor */ }
+    @Inject
+    public HomeActivityViewModel() { /* Empty constructor */ }
 
     /**
      *
@@ -81,26 +72,42 @@ public class HomeActivityViewModel {
 
 
     /**
-     *
+     * Use case
+     * Get help desk availability
      */
     public void getHelpDeskServiceAvailability() {
         sendTimeByAnalyticsFlowStatus.postValue(ProcessStatus.LOADING);
-        /*GetHelpDeskServiceAvailabilityUseCase.Params params =
-                new GetHelpDeskServiceAvailabilityUseCase.Params(analyticsFlow, timeInSeconds);*/
         getHelpDeskServiceAvailabilityUseCase.run(UseCase.None.getInstance(), (Either<Failure, ZendeskResponse> result) ->
                 result.fold(this::onLoadHelpDeskServiceAvailabilityFailure, this::onLoadHelpDeskServiceAvailabilitySuccess)
         );
     }
 
-    /* */
+    /**
+     * Manage use case success
+     * Get help desk availability
+     *
+     * @param helpDeskAvailability
+     */
     private void onLoadHelpDeskServiceAvailabilitySuccess(ZendeskResponse helpDeskAvailability) {
-        Log.v("DEBUG-RESPONSE",new Gson().toJson(helpDeskAvailability));
-        loadBadgesProcessStatus.postValue(ProcessStatus.COMPLETED);
+        helpDeskServiceData.postValue(helpDeskAvailability.getData().getResponse()[0]);
     }
 
-    /* */
-    private void onLoadHelpDeskServiceAvailabilityFailure(Failure failure){
+    /**
+     * Manage use case error
+     * Get help desk availability
+     *
+     * @param failure
+     */
+    private void onLoadHelpDeskServiceAvailabilityFailure(Failure failure) {
         this.failure = failure;
-        loadBadgesProcessStatus.postValue(ProcessStatus.FAILURE);
+    }
+
+    /**
+     * Mutable used to observe and emit events to the view
+     *
+     * @return observer
+     */
+    public LiveData<ZendeskResponse.Response> getHelpDeskServiceAvailabilityData() {
+        return helpDeskServiceData;
     }
 }

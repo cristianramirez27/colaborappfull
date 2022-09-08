@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.presentation.home;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.home.entity.Badge;
@@ -69,10 +68,7 @@ public class HomeViewModel {
      */
     void loadBadges() {
         loadBadgesProcessStatus.postValue(ProcessStatus.LOADING);
-        getBadgesUseCase.run(UseCase.None.getInstance(), (Either<Failure, Map<Badge.Type, Badge>> result) ->
-                result.fold(this::onLoadBadgesFailure, this::onLoadBadgesRight)
-        );
-        getBadgesUseCase.run(UseCase.None.getInstance(), (Either<Failure, Map<Badge.Type, Badge>> result) ->
+        getBadgesUseCase.run(UseCase.None.getInstance(), result ->
                 result.fold(this::onLoadBadgesFailure, this::onLoadBadgesRight)
         );
     }

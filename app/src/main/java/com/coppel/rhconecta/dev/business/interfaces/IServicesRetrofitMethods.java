@@ -66,7 +66,6 @@ import com.coppel.rhconecta.dev.business.models.ValidateCodeRequest;
 import com.coppel.rhconecta.dev.business.models.ValidateDeviceIdRequest;
 import com.coppel.rhconecta.dev.business.models.HolidayBonusRequestData;
 import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
-import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationRequest;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -199,11 +198,6 @@ public interface IServicesRetrofitMethods  <T>{
     @Headers({"Content-Type: application/json"})
     @POST
     Call<JsonObject> logout(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesProfileRequest servicesRequest);
-
-    //************************** zendesk **************************
-    @Headers({"Content-Type: application/json"})
-    @POST
-    Call<JsonObject> zendesk(@Url String url,@Header("Authorization") String toke, @Body CoppelServicesProfileRequest servicesRequest);
 
 
     //************************** Gastos de Viaje **************************

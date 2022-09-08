@@ -5,13 +5,11 @@ import android.util.Log;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import zendesk.chat.Chat;
 import zendesk.chat.PushData;
@@ -33,10 +31,6 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
                         title = notification.getTitle() == null ? title : notification.getTitle();
                         body = notification.getBody() == null ? body : notification.getBody();
                     }
-                    /*CoppelNotificationManager cnm = new CoppelNotificationManager(this);
-                    NotificationType notificationType =
-                            cnm.notificationTypeFromData(remoteMessage.getData(), title, body);
-                    cnm.showNotification(notificationType);*/
 
                     //For zendesk
                     PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
@@ -49,12 +43,14 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     PushData pushData = pushProvider.processPushNotification(remoteMessage.getData());
                     Log.v("DEBUG->PUSH", new Gson().toJson(pushData));
-
                     CoppelNotificationManager cnm = new CoppelNotificationManager(this);
-                    NotificationType notificationType =
-                            cnm.notificationTypeFromData(remoteMessage.getData(), title, body);
+                    NotificationType notificationType;
+                    if (pushData != null) {
+                        notificationType = cnm.notificationTypeFromData(remoteMessage.getData(), "Help service", pushData.getMessage());
+                    } else {
+                        notificationType = cnm.notificationTypeFromData(remoteMessage.getData(), title, body);
+                    }
                     cnm.showNotification(notificationType);
-
                 }
             }
         }
@@ -94,22 +90,4 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
         super.onNewToken(token);
     }
 
-
-    private String getToken() {
-        AtomicReference<String> token = new AtomicReference<>("");
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Log.w("DEBUG", "Fetching FCM registration token failed", task.getException());
-                        return;
-                    }
-
-                    // Get new FCM registration token
-                     token.set(task.getResult());
-
-                    // Log and toast
-                    Log.d("DEBUG", token.get());
-                });
-        return token.get();
-    }
 }
