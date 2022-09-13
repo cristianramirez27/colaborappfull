@@ -1390,7 +1390,7 @@ public class HomeActivity
 
 
     private void zendeskChatEnable() {
-        zendeskInboxView.setActive(0);
+        zendeskInboxView.setActive();
     }
 
     private void zendeskChatDisable(boolean resetIdentity) {

@@ -36,7 +36,7 @@ class ZendeskInboxView : RelativeLayout {
 
     fun setCountMessages(numberMessages: Int) {
         if (numberMessages > 0) {
-            tvNotification.text = String.format("%d",numberMessages)
+            tvNotification.text = String.format("%d", numberMessages)
             tvNotification.visibility = VISIBLE
         } else {
             tvNotification.text = ""
@@ -44,7 +44,8 @@ class ZendeskInboxView : RelativeLayout {
         }
     }
 
-    fun setActive(numberMessages: Int) {
+    fun setActive() {
+        tvNotification.visibility = INVISIBLE
         imgInbox.setImageDrawable(
             ContextCompat.getDrawable(
                 context,

@@ -24,8 +24,6 @@ public class HomeViewModel {
     GetBannersUseCase getBannersUseCase;
     @Inject
     GetBadgesUseCase getBadgesUseCase;
-    @Inject
-    GetBadgesUseCase getZendeskFeatureUseCase;
     // Observables
     private MutableLiveData<ProcessStatus> loadBannersProcessStatus = new MutableLiveData<>();
     private MutableLiveData<ProcessStatus> loadBadgesProcessStatus = new MutableLiveData<>();
