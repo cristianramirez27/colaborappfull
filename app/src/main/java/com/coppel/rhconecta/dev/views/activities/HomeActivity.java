@@ -103,6 +103,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.coppel.rhconecta.dev.BuildConfig;
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
@@ -125,7 +126,6 @@ import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
 import com.coppel.rhconecta.dev.business.models.TokenSSORequest;
 import com.coppel.rhconecta.dev.business.models.TokenSSOResponse;
-import com.coppel.rhconecta.dev.business.models.ZendeskResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.Command;
 import com.coppel.rhconecta.dev.business.utils.DeviceManager;
@@ -136,6 +136,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -198,6 +199,8 @@ import zendesk.chat.ChatLog;
 import zendesk.chat.ChatProvidersConfiguration;
 import zendesk.chat.ObservationScope;
 import zendesk.chat.Observer;
+import zendesk.chat.ProfileProvider;
+import zendesk.chat.PushNotificationsProvider;
 import zendesk.chat.VisitorInfo;
 import zendesk.core.Zendesk;
 import zendesk.messaging.Engine;
@@ -326,9 +329,9 @@ public class HomeActivity
 
                     if (saveDataExpectedMillis != null && !saveDataExpectedMillis.isEmpty()) {
 
-                        Long expectedMillis = Long.parseLong(saveDataExpectedMillis);
+                        long expectedMillis = Long.parseLong(saveDataExpectedMillis);
                         Date currentDate = new Date();
-                        Long currentMillis = currentDate.getTime();
+                        long currentMillis = currentDate.getTime();
 
                         if (currentMillis > expectedMillis) {
                             verifyAvailableZendesk();
@@ -340,6 +343,7 @@ public class HomeActivity
                     }
                 }
         );
+        initZendeskInstance();
     }
 
     private void verifyAvailableZendesk() {
@@ -401,8 +405,8 @@ public class HomeActivity
         }
     }
 
-    private void getHelpDeskServiceAvailabilityData(ZendeskResponse.Response data) {
-        String message = data.getDes_msj();
+    private void getHelpDeskServiceAvailabilityData(HelpDeskAvailability data) {
+        String message = data.getMensaje();
         String hours = data.getHoras();
         handleAvailabilityZendesk(hours, message);
     }
@@ -1149,14 +1153,16 @@ public class HomeActivity
         calendar.add(Calendar.SECOND, Integer.parseInt(date[2]));
 
         Date expectedDate = calendar.getTime();
-        Long millisExpected = expectedDate.getTime();
+        long millisExpected = expectedDate.getTime();
 
         Date currentDate = new Date();
-        Long currentMillis = currentDate.getTime();
+        long currentMillis = currentDate.getTime();
 
+        String saveDataExpectedMillis = getStringFromSharedPreferences(this, ZENDESK_EXPECTED_MILLIS);
         saveStringInSharedPreferences(this, ZENDESK_EXPECTED_MILLIS, String.valueOf(millisExpected));
         saveStringInSharedPreferences(this, ZENDESK_OUT_SERVICE_MESSAGE, mensaje);
-        if (currentMillis > millisExpected) {
+
+        if (saveDataExpectedMillis == null || currentMillis > millisExpected) {
             handlePreChat();
         } else if (!mensaje.isEmpty()) {
             showWarningDialog(mensaje);
@@ -1397,7 +1403,6 @@ public class HomeActivity
         String zendeskFeature = getStringFromSharedPreferences(this, ZENDESK_FEATURE);
 
         if (zendeskFeature != null && zendeskFeature.equals("1")) {
-            initZendeskInstance();
             enableZendeskFeature();
         } else {
             disableZendeskFeature();
@@ -1432,6 +1437,15 @@ public class HomeActivity
                 BuildConfig.ZENDESK_APPLICATION
         );
 
+        /**
+         * Notifications zendesk, verificar si es necesario o en CoppelFirebaseMessagingService
+         */
+        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+        if (pushProvider != null) {
+            pushProvider.registerPushToken(tokenFirebase);
+        }
+
         observationScope = new ObservationScope();
         configureUserData();
         monitorChatEvent();
@@ -1440,15 +1454,7 @@ public class HomeActivity
     }
 
     private void configureUserData() {
-        VisitorInfo visitorInfo = VisitorInfo.builder()
-                .withName(profileResponse.getNombre())
-                .withEmail(profileResponse.getCorreo())
-                .withPhoneNumber(ZENDESK_MOCK_NUMBER)
-                .build();
-        ChatProvidersConfiguration chatProvidersConfiguration = ChatProvidersConfiguration.builder()
-                .withVisitorInfo(visitorInfo)
-                .withDepartment(ZENDESK_DEPARTMENT)
-                .build();
+        ProfileProvider profileProvider = Chat.INSTANCE.providers().profileProvider();
 
         String employNumber = AppUtilities.getStringFromSharedPreferences(
                 this,
@@ -1462,16 +1468,32 @@ public class HomeActivity
         String versionAPP = BuildConfig.VERSION_NAME;
 
         List<String> tags = Arrays.asList(employNumber, job, department, deviceName, versionAndroid, versionAPP);
-        Chat.INSTANCE.providers().profileProvider().addVisitorTags(tags, new ZendeskCallback<Void>() {
+        Log.v("DEBUG-TAGS",tags.toString());
+        profileProvider.addVisitorTags(tags, new ZendeskCallback<Void>() {
 
             @Override
             public void onSuccess(Void result) {
+                Log.v("DEBUG-TAGS","SUCCESS");
             }
 
             @Override
             public void onError(ErrorResponse error) {
+                Log.v("DEBUG-TAGS","ERROR: "+error.getReason());
             }
         });
+        profileProvider.setVisitorNote("");
+
+        VisitorInfo visitorInfo = VisitorInfo.builder()
+                .withName(profileResponse.getNombre())
+                .withEmail(profileResponse.getCorreo())
+                .withPhoneNumber(ZENDESK_MOCK_NUMBER)
+                .build();
+        ChatProvidersConfiguration chatProvidersConfiguration = ChatProvidersConfiguration.builder()
+                .withVisitorInfo(visitorInfo)
+                .withDepartment(ZENDESK_DEPARTMENT)
+                .build();
+
+        profileProvider.setVisitorInfo(visitorInfo,null);
 
         Chat.INSTANCE.setChatProvidersConfiguration(chatProvidersConfiguration);
     }

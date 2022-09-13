@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.framework
 
+import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability
+import com.coppel.rhconecta.dev.framework.home.HelpDeskAvailabilityServer
 import com.coppel.rhconecta.dev.framework.movements.Response
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.movements.model.Movement
 import com.coppel.rhconecta.dev.views.utils.TextUtilities
@@ -18,3 +20,9 @@ fun Response.toMovementsDomainList(): List<Movement> = dataList.map {
         )
     }
 }
+
+/**
+ * User for help desk service (Zendesk)
+ */
+fun List<HelpDeskAvailabilityServer>.toHelpDeskAvailabilityDomain(): HelpDeskAvailability =
+    this.first()?.let { HelpDeskAvailability(it.mensaje, it.fecha, it.fechaHora, it.horas) }

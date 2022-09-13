@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
-import com.coppel.rhconecta.dev.business.models.ZendeskResponse;
 import com.coppel.rhconecta.dev.domain.analytics.use_case.SendTimeByAnalyticsFlowUseCase;
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
+import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
 import com.coppel.rhconecta.dev.domain.home.use_case.GetHelpDeskServiceAvailabilityUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 
@@ -25,7 +25,7 @@ public class HomeActivityViewModel {
 
     // Observables
     private MutableLiveData<ProcessStatus> sendTimeByAnalyticsFlowStatus = new MutableLiveData<>();
-    private MutableLiveData<ZendeskResponse.Response> helpDeskServiceData = new MutableLiveData<>();
+    private MutableLiveData<HelpDeskAvailability> helpDeskServiceData = new MutableLiveData<>();
     // Values
     private Failure failure;
 
@@ -77,7 +77,7 @@ public class HomeActivityViewModel {
      */
     public void getHelpDeskServiceAvailability() {
         sendTimeByAnalyticsFlowStatus.postValue(ProcessStatus.LOADING);
-        getHelpDeskServiceAvailabilityUseCase.run(UseCase.None.getInstance(), (Either<Failure, ZendeskResponse> result) ->
+        getHelpDeskServiceAvailabilityUseCase.run(UseCase.None.getInstance(), (Either<Failure, HelpDeskAvailability> result) ->
                 result.fold(this::onLoadHelpDeskServiceAvailabilityFailure, this::onLoadHelpDeskServiceAvailabilitySuccess)
         );
     }
@@ -88,8 +88,10 @@ public class HomeActivityViewModel {
      *
      * @param helpDeskAvailability
      */
-    private void onLoadHelpDeskServiceAvailabilitySuccess(ZendeskResponse helpDeskAvailability) {
-        helpDeskServiceData.postValue(helpDeskAvailability.getData().getResponse()[0]);
+    private void onLoadHelpDeskServiceAvailabilitySuccess(HelpDeskAvailability helpDeskAvailability) {
+        if (helpDeskAvailability != null) {
+            helpDeskServiceData.postValue(helpDeskAvailability);
+        }
     }
 
     /**
@@ -107,7 +109,7 @@ public class HomeActivityViewModel {
      *
      * @return observer
      */
-    public LiveData<ZendeskResponse.Response> getHelpDeskServiceAvailabilityData() {
+    public LiveData<HelpDeskAvailability> getHelpDeskServiceAvailabilityData() {
         return helpDeskServiceData;
     }
 }
