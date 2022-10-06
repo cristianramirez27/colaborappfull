@@ -2,12 +2,14 @@ package com.coppel.rhconecta.dev;
 
 import android.content.Context;
 import android.content.res.Configuration;
+
 import androidx.multidex.MultiDexApplication;
 
 import com.coppel.rhconecta.dev.business.utils.Foreground;
 import com.coppel.rhconecta.dev.di.AppModuleKt;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+import com.coppel.rhconecta.dev.views.utils.ZendeskUtil;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.crashes.Crashes;
 
@@ -19,26 +21,26 @@ public class CoppelApp extends MultiDexApplication {
 
     private static CoppelApp mInstance;
 
-    private boolean test = false;
+    private static ZendeskUtil zendesk;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        contextApp = this;
+        mInstance = this;
         Realm.init(this);
         Foreground.init(this);
         initAppCenter();
         AppModuleKt.initKoin(this);
         Realm.setDefaultConfiguration(RealmHelper.configurateRealm(this));
         TextUtilities.adjustFontScale(getApplicationContext(), getResources().getConfiguration());
-        contextApp = this;
-        mInstance = this;
-
     }
 
     /**
      *
      */
     private void initAppCenter() {
-        AppCenter.start(this, getString(R.string.app_center_id), Crashes.class);
+        AppCenter.start(this, BuildConfig.APP_CENTER_ID, Crashes.class);
     }
 
     @Override
@@ -51,7 +53,7 @@ public class CoppelApp extends MultiDexApplication {
         TextUtilities.adjustFontScale(getApplicationContext(), configuration);
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return contextApp;
     }
 
@@ -60,6 +62,11 @@ public class CoppelApp extends MultiDexApplication {
     }
 
 
+    public static ZendeskUtil getZendesk() {
+        return zendesk;
+    }
 
-
+    public static void setZendesk(ZendeskUtil zendesk) {
+        CoppelApp.zendesk = zendesk;
+    }
 }

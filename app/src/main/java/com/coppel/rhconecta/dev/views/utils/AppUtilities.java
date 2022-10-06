@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider;
 
 import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesExtension;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
@@ -356,5 +357,30 @@ public class AppUtilities {
             }
         });
         dialogFragmentWarning.show(fragmentManager, DialogFragmentWarning.TAG);
+    }
+
+    public static String getDeviceName() {
+        StringBuilder str = new StringBuilder();
+        str.append(Build.BRAND);
+        str.append(" ");
+        str.append(Build.MODEL);
+        str.append(" ");
+        str.append(Build.DEVICE);
+
+
+        return str.toString();
+    }
+
+    public static String getAndroidVersion() {
+        StringBuilder str = new StringBuilder();
+        str.append("Android ");
+        str.append(Build.VERSION.RELEASE);
+        str.append(" SDK ");
+        str.append(Build.VERSION.SDK_INT);
+        return str.toString();
+    }
+
+    public static String getVersionApp() {
+      return BuildConfig.VERSION_NAME;
     }
 }

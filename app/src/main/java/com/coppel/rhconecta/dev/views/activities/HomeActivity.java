@@ -62,26 +62,19 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENC
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_PASS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_DEPARTMENT;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_EXPECTED_MILLIS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_MOCK_NUMBER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_OUT_SERVICE_MESSAGE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
-import static com.coppel.rhconecta.dev.views.utils.AppUtilities.saveStringInSharedPreferences;
 
-import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -102,8 +95,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.coppel.rhconecta.dev.BuildConfig;
-import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
@@ -136,7 +127,6 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
-import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -164,9 +154,12 @@ import com.coppel.rhconecta.dev.views.fragments.holidays.HolidaysRolMenuFragment
 import com.coppel.rhconecta.dev.views.fragments.holidays.colaborator.ColaboratorHolidaysFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
 import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesRolMenuFragment;
+import com.coppel.rhconecta.dev.views.modelview.HelpDeskDataRequired;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
+import com.coppel.rhconecta.dev.views.utils.ZendeskUtil;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
@@ -174,10 +167,7 @@ import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
-import com.zendesk.service.ErrorResponse;
-import com.zendesk.service.ZendeskCallback;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -188,32 +178,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import zendesk.answerbot.AnswerBot;
-import zendesk.answerbot.AnswerBotEngine;
-import zendesk.chat.Account;
-import zendesk.chat.AccountStatus;
-import zendesk.chat.Chat;
-import zendesk.chat.ChatConfiguration;
-import zendesk.chat.ChatEngine;
-import zendesk.chat.ChatLog;
-import zendesk.chat.ChatProvidersConfiguration;
-import zendesk.chat.ObservationScope;
-import zendesk.chat.Observer;
-import zendesk.chat.ProfileProvider;
-import zendesk.chat.PushNotificationsProvider;
-import zendesk.chat.VisitorInfo;
-import zendesk.core.Zendesk;
-import zendesk.messaging.Engine;
-import zendesk.messaging.MessagingActivity;
-import zendesk.support.Support;
-import zendesk.support.SupportEngine;
 
 /* */
 public class HomeActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, View.OnClickListener, ListView.OnItemClickListener,
         ProfileFragment.OnPictureChangedListener, DialogFragmentWarning.OnOptionClick,
-        ISurveyNotification, IScheduleOptions {
+        ISurveyNotification, IScheduleOptions, ZendeskStatusCallBack {
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FragmentManager fragmentManager;
@@ -225,8 +196,8 @@ public class HomeActivity
     private int[] notifications;
     @BindView(R.id.dlHomeContainer)
     DrawerLayout dlHomeContainer;
-    @BindView(R.id.tbActionBar)
-    Toolbar tbActionBar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.ctlProfile)
     ConstraintLayout ctlProfile;
     @BindView(R.id.clContent)
@@ -244,7 +215,7 @@ public class HomeActivity
     @BindView(R.id.surveyInbox)
     SurveyInboxView surveyInboxView;
     @BindView(R.id.zendeskInbox)
-    ZendeskInboxView zendeskInboxView;
+    ZendeskInboxView zendeskInbox;
 
     private boolean requestLogout = false;
     private boolean hideLoader = false;
@@ -271,7 +242,12 @@ public class HomeActivity
     @Inject
     public HomeActivityViewModel homeActivityViewModel;
 
-    ObservationScope observationScope;
+
+    @Inject
+    public ZendeskViewModel baseViewModel;
+
+    @Inject
+    public ZendeskUtil zendeskUtil;
 
     /**
      *
@@ -324,30 +300,15 @@ public class HomeActivity
 
         observeViewModel();
 
-        zendeskInboxView.setOnClickListener(view -> {
-                    String saveDataExpectedMillis = getStringFromSharedPreferences(this, ZENDESK_EXPECTED_MILLIS);
-
-                    if (saveDataExpectedMillis != null && !saveDataExpectedMillis.isEmpty()) {
-
-                        long expectedMillis = Long.parseLong(saveDataExpectedMillis);
-                        Date currentDate = new Date();
-                        long currentMillis = currentDate.getTime();
-
-                        if (currentMillis > expectedMillis) {
-                            verifyAvailableZendesk();
-                        } else {
-                            handlePreChat();
-                        }
-                    } else {
-                        verifyAvailableZendesk();
-                    }
-                }
-        );
-        initZendeskInstance();
+        zendeskInbox.setOnClickListener(view -> zendeskUtil.clickFeature());
     }
 
-    private void verifyAvailableZendesk() {
-        homeActivityViewModel.getHelpDeskServiceAvailability();
+    /**
+     * Request at service for the availability of the help desk (Zendesk)
+     */
+    @Deprecated
+    private void requestDataForZendesk() {
+        homeActivityViewModel.getPersonalDataForHelpDesk();
     }
 
     /**
@@ -378,8 +339,8 @@ public class HomeActivity
         homeActivityViewModel.getSendTimeByAnalyticsFlowStatus()
                 .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
 
-        homeActivityViewModel.getHelpDeskServiceAvailabilityData()
-                .observe(this, this::getHelpDeskServiceAvailabilityData);
+        homeActivityViewModel.getLoadPersonalDataSuccess()
+                .observe(this, this::getLoadPersonalDataSuccess);
     }
 
     /**
@@ -405,10 +366,13 @@ public class HomeActivity
         }
     }
 
-    private void getHelpDeskServiceAvailabilityData(HelpDeskAvailability data) {
-        String message = data.getMensaje();
-        String hours = data.getHoras();
-        handleAvailabilityZendesk(hours, message);
+    /**
+     * Requests user information, necessary to start zendesk
+     * @param data
+     */
+    private void getLoadPersonalDataSuccess(HelpDeskDataRequired data) {
+        zendeskUtil.setData(data);
+        zendeskUtil.setCallBackAndRefreshStatus(this);
     }
 
     /**
@@ -452,6 +416,12 @@ public class HomeActivity
     protected void onResume() {
         super.onResume();
         AppUtilities.setProfileImage(this, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        zendeskUtil.stopMonitorChatStatus();
     }
 
     /**
@@ -532,7 +502,7 @@ public class HomeActivity
      */
     private void initNavigationComponents() {
         ctlProfile.setOnClickListener(this);
-        setSupportActionBar(tbActionBar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -600,11 +570,17 @@ public class HomeActivity
             case R.id.ctlLogout:
                 dlHomeContainer.closeDrawers();
                 dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setTwoOptionsData(getString(R.string.logout), getString(R.string.logout_sure),
-                        getString(R.string.back), getString(R.string.get_out));
+
+                if (zendeskUtil.getLocalOnLineChatFlag()) {
+                    dialogFragmentWarning.setSinlgeOptionData(getString(R.string.alert), getString(R.string.logout_with_chat_active), getString(R.string.accept));
+                    requestLogout = false;
+                } else {
+                    dialogFragmentWarning.setTwoOptionsData(getString(R.string.logout), getString(R.string.logout_sure), getString(R.string.back), getString(R.string.get_out));
+                    requestLogout = true;
+                }
+
                 dialogFragmentWarning.setOnOptionClick(this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                requestLogout = true;
                 break;
         }
     }
@@ -1144,31 +1120,6 @@ public class HomeActivity
         }
     }
 
-    private void handleAvailabilityZendesk(String horas, String mensaje) {
-        String[] date = horas.split(":");
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR, Integer.parseInt(date[0]));
-        calendar.add(Calendar.MINUTE, Integer.parseInt(date[1]));
-        calendar.add(Calendar.SECOND, Integer.parseInt(date[2]));
-
-        Date expectedDate = calendar.getTime();
-        long millisExpected = expectedDate.getTime();
-
-        Date currentDate = new Date();
-        long currentMillis = currentDate.getTime();
-
-        String saveDataExpectedMillis = getStringFromSharedPreferences(this, ZENDESK_EXPECTED_MILLIS);
-        saveStringInSharedPreferences(this, ZENDESK_EXPECTED_MILLIS, String.valueOf(millisExpected));
-        saveStringInSharedPreferences(this, ZENDESK_OUT_SERVICE_MESSAGE, mensaje);
-
-        if (saveDataExpectedMillis == null || currentMillis > millisExpected) {
-            handlePreChat();
-        } else if (!mensaje.isEmpty()) {
-            showWarningDialog(mensaje);
-        }
-    }
-
     /**
      *
      */
@@ -1220,7 +1171,7 @@ public class HomeActivity
     /**
      *
      */
-    private void showWarningDialog(String message) {
+    public void showWarningDialog(String message) {
         dialogFragmentWarning = new DialogFragmentWarning();
         dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
         dialogFragmentWarning.setOnOptionClick(this);
@@ -1324,7 +1275,7 @@ public class HomeActivity
      */
     @Override
     public void showTitle(boolean show) {
-        tbActionBar.setTitle(show ? titleActivity : "");
+        toolbar.setTitle(show ? titleActivity : "");
         changeIconToolbar(show ? R.drawable.ic_left_arrow_black : R.drawable.ic_close_black);
         if (!show) {
             isOpenMenuToolbar = true;
@@ -1336,7 +1287,7 @@ public class HomeActivity
      */
     @Override
     public void changeIconToolbar(int icon) {
-        tbActionBar.setNavigationIcon(icon);
+        toolbar.setNavigationIcon(icon);
     }
 
     /**
@@ -1369,232 +1320,63 @@ public class HomeActivity
     @Override
     public void setActionAuthorizeOption(Command action) { /* USELESS IMPLEMENTATION */ }
 
-    private String getDeviceName() {
-        return Build.MODEL + " " + Build.DEVICE + " " + Build.BRAND;
-    }
-
-    public String getAndroidVersion() {
-        String release = Build.VERSION.RELEASE;
-        int sdkVersion = Build.VERSION.SDK_INT;
-        return "Android SDK: " + sdkVersion + " (" + release + ")";
-    }
-
-    private void handlePreChat() {
-        String zendeskOutServiceMessage = getStringFromSharedPreferences(this, ZENDESK_OUT_SERVICE_MESSAGE);
-        if (zendeskOutServiceMessage == null || zendeskOutServiceMessage.isEmpty()) {
-            initChat();
-        } else {
-            showWarningDialog(zendeskOutServiceMessage);
-        }
-    }
-
-
-    private void zendeskChatEnable() {
-        zendeskInboxView.setActive();
-    }
-
-    private void zendeskChatDisable(boolean resetIdentity) {
-        zendeskInboxView.setDisable();
-        if (resetIdentity)
-            Chat.INSTANCE.resetIdentity();
-    }
-
+    /**
+     * Check zendesk feature availability
+     */
     public void checkZendeskFeature() {
         String zendeskFeature = getStringFromSharedPreferences(this, ZENDESK_FEATURE);
-
-        if (zendeskFeature != null && zendeskFeature.equals("1")) {
-            enableZendeskFeature();
-        } else {
-            disableZendeskFeature();
+        if (zendeskFeature != null && zendeskFeature.equals(ZENDESK_FEATURE_ACTIVE_VALUE)) {
+            initializeZendesk();
         }
-    }
-
-    private void enableZendeskFeature() {
-        zendeskInboxView.setVisibility(View.VISIBLE);
-        zendeskInboxView.setCountMessages(0);
-    }
-
-    private void disableZendeskFeature() {
-        zendeskInboxView.setVisibility(View.GONE);
     }
 
     /**
-     * Methods zendesk
+     * Initialize zendesk instance
      */
-
-    private void initZendeskInstance() {
-        Zendesk.INSTANCE.init(
-                this,
-                BuildConfig.ZENDESK_URL,
-                BuildConfig.ZENDESK_APPLICATION,
-                BuildConfig.ZENDESK_CLIENT
-        );
-        Support.INSTANCE.init(Zendesk.INSTANCE);
-        AnswerBot.INSTANCE.init(Zendesk.INSTANCE, Support.INSTANCE);
-        Chat.INSTANCE.init(
-                this,
-                BuildConfig.ZENDESK_ACCOUNT,
-                BuildConfig.ZENDESK_APPLICATION
-        );
-
-        /**
-         * Notifications zendesk, verificar si es necesario o en CoppelFirebaseMessagingService
-         */
-        PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
-        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
-        if (pushProvider != null) {
-            pushProvider.registerPushToken(tokenFirebase);
-        }
-
-        observationScope = new ObservationScope();
-        configureUserData();
-        monitorChatEvent();
-        monitorAvailableAgents();
-
+    private void initializeZendesk() {
+            zendeskUtil.initialize(this, baseViewModel);
+            zendeskUtil.setCallBack(this);
+            zendeskUtil.setFeatureIsEnable(true);
+            zendeskUtil.startMonitorChatStatus(0.30F);
+            requestDataForZendesk();
     }
 
-    private void configureUserData() {
-        ProfileProvider profileProvider = Chat.INSTANCE.providers().profileProvider();
 
-        String employNumber = AppUtilities.getStringFromSharedPreferences(
-                this,
-                SHARED_PREFERENCES_NUM_COLABORADOR
-        );
-
-        String job = profileResponse.getNombrePuesto();
-        String department = profileResponse.getCentro();
-        String deviceName = getDeviceName();
-        String versionAndroid = getAndroidVersion();
-        String versionAPP = BuildConfig.VERSION_NAME;
-
-        List<String> tags = Arrays.asList(employNumber, job, department, deviceName, versionAndroid, versionAPP);
-        Log.v("DEBUG-TAGS",tags.toString());
-        profileProvider.addVisitorTags(tags, new ZendeskCallback<Void>() {
-
-            @Override
-            public void onSuccess(Void result) {
-                Log.v("DEBUG-TAGS","SUCCESS");
-            }
-
-            @Override
-            public void onError(ErrorResponse error) {
-                Log.v("DEBUG-TAGS","ERROR: "+error.getReason());
-            }
-        });
-        profileProvider.setVisitorNote("");
-
-        VisitorInfo visitorInfo = VisitorInfo.builder()
-                .withName(profileResponse.getNombre())
-                .withEmail(profileResponse.getCorreo())
-                .withPhoneNumber(ZENDESK_MOCK_NUMBER)
-                .build();
-        ChatProvidersConfiguration chatProvidersConfiguration = ChatProvidersConfiguration.builder()
-                .withVisitorInfo(visitorInfo)
-                .withDepartment(ZENDESK_DEPARTMENT)
-                .build();
-
-        profileProvider.setVisitorInfo(visitorInfo,null);
-
-        Chat.INSTANCE.setChatProvidersConfiguration(chatProvidersConfiguration);
+    /**
+     * Callbacks zendesk
+     */
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
     }
 
-    @SuppressLint("RestrictedApi")
-    private void initChat(){
-        Engine answerBotEngine = AnswerBotEngine.engine();
-        Engine supportEngine = SupportEngine.engine();
-        Engine chatEngine = ChatEngine.engine();
-
-        MessagingActivity.builder()
-                .withEngines(answerBotEngine,/* supportEngine,*/ chatEngine)
-                .show(this, configChat());
-        if (chatEngine != null) {
-            chatEngine.isConversationOngoing((engine, isConversationOngoing) -> Log.v("VER->", "ConversationOnGoingCallback: " + isConversationOngoing));
-        }
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
     }
 
-    private ChatConfiguration configChat() {
-        return ChatConfiguration.builder()
-                .withAgentAvailabilityEnabled(true)
-                .withTranscriptEnabled(true)
-                .build();
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
     }
 
-    private void monitorChatEvent() {
-        Chat.INSTANCE.providers().chatProvider().observeChatState(observationScope, chatState -> {
-            //Do something with chat state
-            //Log.v("VER->Chat event", "ID:" + chatState.getChatId() + " - " + chatState.getChatComment() + " - " + chatState.getChatSessionStatus());
-            System.out.println("JSON de chetevent:");
-            System.out.println(new Gson().toJson(chatState));
-
-            if (chatState.getAgents().size() > 0)
-                zendeskChatEnable();
-            else
-                zendeskChatDisable(false);
-
-            if (!chatState.getChatLogs().isEmpty()) {
-                ChatLog chatLog = chatState.getChatLogs().get(chatState.getChatLogs().size() - 1);
-                if (chatLog instanceof ChatLog.Message && ((ChatLog.Message) chatLog).getDisplayName() != null) {
-                    Log.v("VER->ChatEvent", "mensaje: "
-                            + chatLog.getChatParticipant() + " - "
-                            + ((ChatLog.Message) chatLog).getMessage());
-
-                    Log.v("VER->ChatEvent", "cola: " + chatState.getQueuePosition());
-                }
-
-            }
-
-            switch (chatState.getChatSessionStatus()) {
-                case ENDED:
-                    zendeskChatDisable(true);
-                    break;
-            }
-        });
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
     }
 
-    private void monitorAvailableAgents() {
-        Chat.INSTANCE.providers().accountProvider().getAccount(new ZendeskCallback<Account>() {
-            @Override
-            public void onSuccess(Account account) {
-                // Insert your account handling code here
-                Log.v("VER-> AvailableAgents", "Status:" + account.getStatus() + " - " + account.getDepartments());
-                System.out.println(new Gson().toJson(account));
-
-                if (account.getStatus() == AccountStatus.OFFLINE) {
-                    //Toast.makeText(HomeActivity.this, "El servicio del chat por el momento no está activo, favor de enviar correo a soportecolaborapp@coppel.com", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(ErrorResponse errorResponse) {
-                // Handle error in getting Account here
-                Log.v("VER-> AvailableAgents", "Error:" + errorResponse.getReason());
-            }
-        });
-
-        Chat.INSTANCE.providers().accountProvider().observeAccount(observationScope, new Observer<Account>() {
-
-            @Override
-            public void update(Account account) {
-                Log.v("VER->AvailableAgentsUpd", "Status:" + account.getStatus() + " - " + account.getDepartments());
-            }
-        });
-
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
     }
 
-    private void monitorConnectionStatus() {
-        Chat.INSTANCE.providers().connectionProvider().observeConnectionStatus(observationScope,
-                connectionStatus -> {
-                    String status = connectionStatus.name();
-                    Log.v("VER->ConnectionStatus", "Status:" + connectionStatus.name());
-                    if (status.equals("CONNECTED")) {
-                        Log.v("VER->ConnectionStatus", "en chat - icono verde");
-                    } else if (status.equals("DISCONNECTED")) {
-                        Log.v("VER->ConnectionStatus", "si chat o minimizado - icono gris");
-                    } else if (status.equals("CONNECTING")) {
-                        Log.v("VER->ConnectionStatus", "conectando - icono gris");
-                    }
-                }
-        );
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
     }
 
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
+    }
 }

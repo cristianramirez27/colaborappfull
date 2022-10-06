@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev.system.notification;
 
+import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -30,7 +31,15 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     CoppelNotificationManager cnm = new CoppelNotificationManager(this);
 
-                    //For zendesk
+                    /**
+                     * Implementation for push zendesk
+                     */
+                    Chat.INSTANCE.init(
+                            this,
+                            BuildConfig.ZENDESK_ACCOUNT,
+                            BuildConfig.ZENDESK_APPLICATION
+                    );
+
                     PushNotificationsProvider pushProvider = Chat.INSTANCE.providers().pushNotificationsProvider();
                     PushData pushData = null;
                     String tokenFirebase = AppUtilities.getStringFromSharedPreferences(
@@ -45,7 +54,13 @@ public class CoppelFirebaseMessagingService extends FirebaseMessagingService {
 
                     NotificationType notificationType;
                     if (pushData != null) {
-                        notificationType = cnm.notificationTypeFromData(remoteMessage.getData(), "Help service", pushData.getMessage());
+                        String message = pushData.getMessage();
+                        String author = pushData.getAuthor();
+                        notificationType = cnm.notificationTypeFromData(remoteMessage.getData(), author, message);
+                        AppUtilities.saveBooleanInSharedPreferences(
+                                CoppelApp.getContext(),
+                                AppConstants.ZENDESK_NOTIFICATION, true
+                        );
                     } else {
                         notificationType = cnm.notificationTypeFromData(remoteMessage.getData(), title, body);
                     }

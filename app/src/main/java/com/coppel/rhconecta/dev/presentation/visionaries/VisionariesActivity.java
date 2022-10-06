@@ -2,7 +2,6 @@ package com.coppel.rhconecta.dev.presentation.visionaries;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment.ToolbarFragmentCommunication;
 import com.coppel.rhconecta.dev.presentation.visionaries.adapter.VisionaryPreviewAdapter;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 
@@ -26,7 +26,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /* */
-public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
+public class VisionariesActivity extends AnalyticsTimeAppCompatActivity implements ToolbarFragmentCommunication {
 
     /* */
     @Inject
@@ -135,7 +135,7 @@ public class VisionariesActivity extends AnalyticsTimeAppCompatActivity {
         assert pollToolbarFragment != null;
         int titleResource = visionaryType == VisionaryType.VISIONARIES ?
                 R.string.visionaries_title : R.string.collaborator_at_home_title;
-        pollToolbarFragment.toolbar.setTitle(titleResource);
+        pollToolbarFragment.tvTitleToolbar.setText(titleResource);
         setSupportActionBar(pollToolbarFragment.toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

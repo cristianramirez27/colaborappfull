@@ -48,6 +48,7 @@ android {
             it.buildConfigField("String", "ZENDESK_APPLICATION", localProperties['ZENDESK_APPLICATION'] ?: "\"\"")
             it.buildConfigField("String", "ZENDESK_CLIENT", localProperties['ZENDESK_CLIENT'] ?: "\"\"")
             it.buildConfigField("String", "ZENDESK_ACCOUNT", localProperties['ZENDESK_ACCOUNT'] ?: "\"\"")
+            it.buildConfigField("String", "APP_CENTER_ID", localProperties['APP_CENTER_ID'] ?: "\"\"")
         }
     }
     
@@ -148,6 +149,7 @@ dependencies {
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
 
     // App Center
+    implementation "com.microsoft.appcenter:appcenter-analytics:4.1.0"
     implementation "com.microsoft.appcenter:appcenter-crashes:4.1.0"
 
     // Testing

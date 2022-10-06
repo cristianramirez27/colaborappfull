@@ -1,26 +1,5 @@
 package com.coppel.rhconecta.dev.views.activities;
 
-import android.os.Bundle;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
-import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
-import com.coppel.rhconecta.dev.views.adapters.PagerAdapter;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ChildInfoLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ConfigFieldLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.HolidaysLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.PreviewLetterFragment;
-import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ScheduleInfoLetterFragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_RESPONSE_CONFIG_LETTER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_BANK_CREDIT;
@@ -30,10 +9,41 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_KINDERGARTE
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_VISA_PASSPORT;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.TYPE_WORK_RECORD;
 
-public class ConfigLetterActivity extends AppCompatActivity implements ILettersNavigation {
+import android.os.Bundle;
+import android.view.View;
 
-    @BindView(R.id.tbActionBar)
-    Toolbar tbActionBar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
+import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.business.interfaces.ILettersNavigation;
+import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
+import com.coppel.rhconecta.dev.business.models.PreviewDataVO;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
+import com.coppel.rhconecta.dev.views.adapters.PagerAdapter;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
+import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ChildInfoLetterFragment;
+import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ConfigFieldLetterFragment;
+import com.coppel.rhconecta.dev.views.fragments.employmentLetters.HolidaysLetterFragment;
+import com.coppel.rhconecta.dev.views.fragments.employmentLetters.PreviewLetterFragment;
+import com.coppel.rhconecta.dev.views.fragments.employmentLetters.ScheduleInfoLetterFragment;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class ConfigLetterActivity extends AnalyticsTimeAppCompatActivity implements ILettersNavigation, ZendeskStatusCallBack {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.titleToolbar)
+    AppCompatTextView tvTitleToolbar;
+    @BindView(R.id.zendeskInbox)
+    ZendeskInboxView zendeskInbox;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     private  int typeLetter;
@@ -45,17 +55,26 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_letter);
         ButterKnife.bind(this);
-        typeLetter = IntentExtension.getIntExtra(getIntent(), BUNDLE_LETTER);
-        letterConfigResponse = (LetterConfigResponse)
-                IntentExtension.getSerializableExtra(getIntent(), BUNDLE_RESPONSE_CONFIG_LETTER);
-        setSupportActionBar(tbActionBar);
+
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
+        typeLetter = IntentExtension.getIntExtra(getIntent(), BUNDLE_LETTER);
+        letterConfigResponse = (LetterConfigResponse)
+                IntentExtension.getSerializableExtra(getIntent(), BUNDLE_RESPONSE_CONFIG_LETTER);
+
+        zendeskInbox.setOnClickListener(view -> clickZendesk());
         initPaging(typeLetter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCallBackAndRefreshStatus(this);
     }
 
     private void initPaging(int typeLetter) {
@@ -108,7 +127,7 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
     }
 
     public void setToolbarTitle(String title) {
-        tbActionBar.setTitle(title);
+        tvTitleToolbar.setText(title);
     }
 
 
@@ -139,4 +158,43 @@ public class ConfigLetterActivity extends AppCompatActivity implements ILettersN
                     default: return "";
         }
     }
+
+    /**
+     * Callbacks zendesk
+     */
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
+    }
+
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
+    }
+
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
+    }
+
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
+    }
+
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
+    }
+
 }

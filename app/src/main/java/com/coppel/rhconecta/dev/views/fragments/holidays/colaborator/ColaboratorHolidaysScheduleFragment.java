@@ -235,9 +235,10 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         }
 
         holidayRequestRecyclerAdapter.notifyDataSetChanged();
-
+        IScheduleOptions.showAuthorizeOption(false);
+        IScheduleOptions.showEliminatedOption(false, "");
+        IScheduleOptions.showTitle(true);
         totalSolicitados.setTextsSize(14,18);
-
 
         String totalDaysAsString = String.valueOf(totalDays);
         if(totalDays % 1 == 0){

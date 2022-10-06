@@ -1,30 +1,5 @@
 package com.coppel.rhconecta.dev.views.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
-import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
-import com.coppel.rhconecta.dev.business.utils.OnEventListener;
-import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
-import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_DATA_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_AUTHORIZE_REQUEST;
@@ -33,10 +8,44 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONSULT_C
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_DETAIL_REQUETS_CONTROLS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
-public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implements OnEventListener {
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
-    @BindView(R.id.tbActionBar)
-    Toolbar tbActionBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
+import com.coppel.rhconecta.dev.business.models.DetailExpenseTravelData;
+import com.coppel.rhconecta.dev.business.utils.OnEventListener;
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.AuthorizeRequestAndComplementsFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ColaboratorControlFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.ControlsLiquidationsFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.MyRequestAndControlsFragment;
+import com.coppel.rhconecta.dev.views.fragments.travelExpenses.TravelExpensesManagerFragment;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implements OnEventListener, ZendeskStatusCallBack {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.titleToolbar)
+    AppCompatTextView tvTitleToolbar;
+    @BindView(R.id.zendeskInbox)
+    ZendeskInboxView zendeskInbox;
+
     private FragmentManager childFragmentManager;
     private FragmentTransaction fragmentTransaction;
     private String TAG_FRAGMENT;
@@ -50,7 +59,7 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gastos);
         ButterKnife.bind(this);
-        setSupportActionBar(tbActionBar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -66,10 +75,18 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT,data);
+
+        zendeskInbox.setOnClickListener(view -> clickZendesk());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCallBackAndRefreshStatus(this);
     }
 
     public void setToolbarTitle(String title) {
-        tbActionBar.setTitle(title);
+        tvTitleToolbar.setText(title);
     }
 
     @Override
@@ -145,4 +162,43 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
             }
         }
     }
+
+    /**
+     * Callbacks zendesk
+     */
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
+    }
+
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
+    }
+
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
+    }
+
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
+    }
+
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
+    }
+
 }

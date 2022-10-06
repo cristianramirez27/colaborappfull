@@ -3,9 +3,9 @@ package com.coppel.rhconecta.dev.presentation.profile_actions
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.coppel.rhconecta.dev.R
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity
 import com.coppel.rhconecta.dev.business.models.ProfileResponse
 import com.coppel.rhconecta.dev.databinding.ActivityProfileActionsBinding
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment.ToolbarFragmentCommunication
 import com.coppel.rhconecta.dev.presentation.profile_actions.fingerprint.FingerprintActivity
 import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity
 import com.coppel.rhconecta.dev.views.utils.AppConstants
@@ -22,7 +23,8 @@ import com.coppel.rhconecta.dev.views.utils.MenuUtilities
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /** */
-class ProfileActionsActivity : AppCompatActivity() {
+class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
+    ToolbarFragmentCommunication {
 
     /* */
     private val binding: ActivityProfileActionsBinding
@@ -33,6 +35,8 @@ class ProfileActionsActivity : AppCompatActivity() {
 
     /* */
     private lateinit var profileResponse: ProfileResponse.Response
+
+    lateinit var pollToolbarFragment: PollToolbarFragment
 
 
     /** */
@@ -111,12 +115,12 @@ class ProfileActionsActivity : AppCompatActivity() {
 
     /** */
     private fun setupToolbar() {
-        val pollToolbarFragment: PollToolbarFragment = supportFragmentManager
-                .findFragmentById(R.id.toolbar_fragment) as PollToolbarFragment
-        pollToolbarFragment.toolbar.setTitle(R.string.profile_actions_activity_title)
+        pollToolbarFragment =
+            supportFragmentManager.findFragmentById(R.id.toolbar_fragment) as PollToolbarFragment
         setSupportActionBar(pollToolbarFragment.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
+        pollToolbarFragment.tvTitleToolbar.setText(R.string.profile_actions_activity_title)
     }
 
     /** */

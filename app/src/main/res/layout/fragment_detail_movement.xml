@@ -16,7 +16,7 @@
         android:orientation="vertical"
         tools:context=".views.fragments.fondoAhorro.movements.MovementsFragment">
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/lateral_margin"
@@ -141,6 +141,6 @@
                     app:layout_constraintGuide_percent="0.5" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        </androidx.cardview.widget.CardView>
     </FrameLayout>
 </layout>

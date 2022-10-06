@@ -26,14 +26,6 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
 
-        <com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView
-            android:id="@+id/zendeskInbox"
-            android:layout_width="47dp"
-            android:layout_height="47dp"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="4dp"
-            android:layout_toStartOf="@+id/surveyInbox" />
-
     </RelativeLayout>
 
     <View

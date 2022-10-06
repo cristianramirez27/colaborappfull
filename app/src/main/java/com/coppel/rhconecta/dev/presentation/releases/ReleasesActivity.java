@@ -20,6 +20,7 @@ import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment;
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment.ToolbarFragmentCommunication;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
 import com.coppel.rhconecta.dev.presentation.releases.adapter.ReleasePreviewAdapter;
 
@@ -30,7 +31,7 @@ import javax.inject.Inject;
 /**
  *
  */
-public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
+public class ReleasesActivity extends AnalyticsTimeAppCompatActivity implements ToolbarFragmentCommunication {
 
     /* */
     @Inject
@@ -88,7 +89,7 @@ public class ReleasesActivity extends AnalyticsTimeAppCompatActivity {
         PollToolbarFragment pollToolbarFragment = (PollToolbarFragment)
                 getSupportFragmentManager().findFragmentById(R.id.pollToolbarFragment);
         assert pollToolbarFragment != null;
-        pollToolbarFragment.toolbar.setTitle(R.string.releases_activity_title);
+        pollToolbarFragment.tvTitleToolbar.setText(R.string.releases_activity_title);
         setSupportActionBar(pollToolbarFragment.toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

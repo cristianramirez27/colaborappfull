@@ -1,9 +1,13 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,8 +66,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.*;
 
 /* */
 public class HomeMainFragment
@@ -267,7 +268,6 @@ public class HomeMainFragment
                     setBanners(homeViewModel.getBanners());
                 break;
         }
-        ((HomeActivity) requireActivity()).checkZendeskFeature();
     }
 
     /**
@@ -299,8 +299,10 @@ public class HomeMainFragment
                 }
                 break;
             case COMPLETED:
-                if (homeViewModel.getBadges() != null)
+                if (homeViewModel.getBadges() != null) {
+                    ((HomeActivity) requireActivity()).checkZendeskFeature();
                     setBadges(homeViewModel.getBadges());
+                }
                 break;
         }
     }

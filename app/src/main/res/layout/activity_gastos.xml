@@ -1,50 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootView"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <include
+        android:id="@+id/app_bar_main"
+        layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appBar"
-        android:animateLayoutChanges="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tbActionBar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                app:contentInsetStartWithNavigation="0dp"
-                app:title="@string/title_home"
-                style="@style/TextMedium18Coppel" />
-
-        </RelativeLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+        android:layout_height="wrap_content" />
 
     <FrameLayout
-        android:layout_below="@+id/appBar"
         android:id="@+id/contentFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_main" />
 
     <View
         android:id="@+id/bordeAmarillo"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_below="@+id/appBar"
+        android:layout_below="@+id/app_bar_main"
         android:background="@drawable/bg_gradient_grey" />
 
 </RelativeLayout>

@@ -34,7 +34,7 @@ class ZendeskInboxView : RelativeLayout {
         tvNotification = findViewById(R.id.tvNotification)
     }
 
-    fun setCountMessages(numberMessages: Int) {
+    fun setCountMessages(numberMessages: Int = 0) {
         if (numberMessages > 0) {
             tvNotification.text = String.format("%d", numberMessages)
             tvNotification.visibility = VISIBLE
@@ -42,6 +42,16 @@ class ZendeskInboxView : RelativeLayout {
             tvNotification.text = ""
             tvNotification.visibility = INVISIBLE
         }
+    }
+
+    fun setNotification() {
+        tvNotification.text = ""
+        tvNotification.visibility = VISIBLE
+    }
+
+    fun removeNotification() {
+        tvNotification.visibility = INVISIBLE
+
     }
 
     fun setActive() {

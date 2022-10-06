@@ -8,9 +8,10 @@ import com.coppel.rhconecta.dev.domain.analytics.use_case.SendTimeByAnalyticsFlo
 import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
-import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability;
-import com.coppel.rhconecta.dev.domain.home.use_case.GetHelpDeskServiceAvailabilityUseCase;
+import com.coppel.rhconecta.dev.domain.home.use_case.GetPersonalDataHelpDeskUseCase;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.views.modelview.HelpDeskDataRequired;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import javax.inject.Inject;
 
@@ -21,11 +22,11 @@ public class HomeActivityViewModel {
     @Inject
     public SendTimeByAnalyticsFlowUseCase sendTimeByAnalyticsFlowUseCase;
     @Inject
-    public GetHelpDeskServiceAvailabilityUseCase getHelpDeskServiceAvailabilityUseCase;
+    public GetPersonalDataHelpDeskUseCase getPersonalDataHelpDeskUseCase;
 
     // Observables
     private MutableLiveData<ProcessStatus> sendTimeByAnalyticsFlowStatus = new MutableLiveData<>();
-    private MutableLiveData<HelpDeskAvailability> helpDeskServiceData = new MutableLiveData<>();
+    private MutableLiveData<HelpDeskDataRequired> helpDeskDataRequiredObserver = new MutableLiveData<>();
     // Values
     private Failure failure;
 
@@ -70,46 +71,39 @@ public class HomeActivityViewModel {
         return failure;
     }
 
-
     /**
      * Use case
      * Get help desk availability
      */
-    public void getHelpDeskServiceAvailability() {
+    public void getPersonalDataForHelpDesk() {
         sendTimeByAnalyticsFlowStatus.postValue(ProcessStatus.LOADING);
-        getHelpDeskServiceAvailabilityUseCase.run(UseCase.None.getInstance(), (Either<Failure, HelpDeskAvailability> result) ->
-                result.fold(this::onLoadHelpDeskServiceAvailabilityFailure, this::onLoadHelpDeskServiceAvailabilitySuccess)
+        getPersonalDataHelpDeskUseCase.run(UseCase.None.getInstance(), (Either<Failure, HelpDeskDataRequired> result) ->
+                result.fold(this::onLoadPersonalDataFailure, this::onLoadPersonalDataSuccess)
         );
     }
 
-    /**
-     * Manage use case success
-     * Get help desk availability
-     *
-     * @param helpDeskAvailability
-     */
-    private void onLoadHelpDeskServiceAvailabilitySuccess(HelpDeskAvailability helpDeskAvailability) {
-        if (helpDeskAvailability != null) {
-            helpDeskServiceData.postValue(helpDeskAvailability);
+    private void onLoadPersonalDataSuccess(HelpDeskDataRequired helpDeskDataRequired) {
+        if (helpDeskDataRequired != null) {
+            HelpDeskDataRequired data = new HelpDeskDataRequired(
+                    helpDeskDataRequired.getEmployName(),
+                    helpDeskDataRequired.getEmail(),
+                    helpDeskDataRequired.getEmployNumber(),
+                    helpDeskDataRequired.getJobName(),
+                    helpDeskDataRequired.getDepartment(),
+                    AppUtilities.getDeviceName(),
+                    AppUtilities.getAndroidVersion(),
+                    AppUtilities.getVersionApp());
+
+            helpDeskDataRequiredObserver.postValue(data);
+
         }
     }
 
-    /**
-     * Manage use case error
-     * Get help desk availability
-     *
-     * @param failure
-     */
-    private void onLoadHelpDeskServiceAvailabilityFailure(Failure failure) {
+    private void onLoadPersonalDataFailure(Failure failure) {
         this.failure = failure;
     }
 
-    /**
-     * Mutable used to observe and emit events to the view
-     *
-     * @return observer
-     */
-    public LiveData<HelpDeskAvailability> getHelpDeskServiceAvailabilityData() {
-        return helpDeskServiceData;
+    public LiveData<HelpDeskDataRequired> getLoadPersonalDataSuccess() {
+        return helpDeskDataRequiredObserver;
     }
 }

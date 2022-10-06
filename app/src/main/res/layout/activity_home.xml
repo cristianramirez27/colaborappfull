@@ -8,7 +8,6 @@
     android:background="@android:color/white"
     tools:context=".views.activities.HomeActivity"
     tools:openDrawer="left">
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/clContent"
         android:layout_width="match_parent"
@@ -18,94 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
-                android:id="@+id/layoutToolbar"
+            <include
+                android:id="@+id/app_bar_main"
+                layout="@layout/app_bar_main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tbActionBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:title="@string/title_home"
-                    app:titleTextAppearance="@style/Toolbar.TitleText">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/titleToolbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/surveyInbox"
-                            android:text="@string/title_home"
-                            android:textColor="#333333"
-                            style="@style/TextMedium18Coppel"/>
-
-
-                        <com.coppel.rhconecta.dev.views.customviews.SurveyInboxView
-                            android:id="@+id/surveyInbox"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="16dp" />
-
-                        <com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView
-                            android:id="@+id/zendeskInbox"
-                            android:layout_width="47dp"
-                            android:layout_height="47dp"
-                            android:layout_centerInParent="true"
-                            android:layout_toStartOf="@+id/surveyInbox" />
-
-                        <TextView
-                            android:id="@+id/eliminateOption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="6dp"
-                            android:fontFamily="@font/lineto_circular_pro_medium"
-                            android:padding="6dp"
-                            android:text="@string/title_eliminate"
-                            android:textColor="@color/red_text"
-                            android:textSize="14sp"
-                            android:visibility="gone" />
-
-                    </RelativeLayout>
-
-
-                </androidx.appcompat.widget.Toolbar>
-
-
-            </RelativeLayout>
-
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/flFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/layoutToolbar"
+                android:layout_below="@+id/app_bar_main"
                 app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior" />
 
-
-            <View
-                android:id="@+id/bordeAmarillo"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_below="@+id/layoutToolbar"
-                android:background="@drawable/bg_gradient_grey" />
-
         </RelativeLayout>
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nvMenu"
         android:layout_width="match_parent"
@@ -113,7 +39,6 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         android:visibility="visible">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -242,8 +167,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ctlProfile" />
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ctlLogout"
                 android:layout_width="match_parent"
@@ -260,7 +183,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/guideline41"
                     app:layout_constraintStart_toStartOf="@+id/guideline39"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
@@ -297,9 +219,6 @@
                     app:layout_constraintGuide_percent="0.95" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.navigation.NavigationView>
-
 </androidx.drawerlayout.widget.DrawerLayout>

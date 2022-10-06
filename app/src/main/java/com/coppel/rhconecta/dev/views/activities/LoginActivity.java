@@ -1,16 +1,11 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +14,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
@@ -45,14 +46,12 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IServicesContract.View,
         DialogFragmentWarning.OnOptionClick, EditTextPassword.OnEditorActionListener {
@@ -187,27 +186,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
                         .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
                         .build();
-                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FILIAL, profileResponse.getData().getResponse()[0].getEsFilial() == 1);
+
+                ProfileResponse.Response profile = profileResponse.getData().getResponse()[0];
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(),AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profile));
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FILIAL, profile.getEsFilial() == 1);
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, cedtEmail.getText());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, loginResponse.getData().getResponse().getToken());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, loginResponse.getData().getResponse().getToken_user());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE, new Gson().toJson(loginResponse));
-                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileResponse.getData().getResponse()[0].getColaborador());
-                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profileResponse.getData().getResponse()[0].getEstado()));
-                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profileResponse.getData().getResponse()[0].getCiudad()));
-                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profileResponse.getData().getResponse()[0].getGte()));
-                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE, String.valueOf(profileResponse.getData().getResponse()[0].getSuplente()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profile.getColaborador());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profile.getEstado()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profile.getCiudad()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profile.getGte()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE, String.valueOf(profile.getSuplente()));
 
                 /* Almacenamos la fecha en la que se inicio sesion */
                 Date currentTime = Calendar.getInstance().getTime();
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN, new Gson().toJson(currentTime));
 
                 /*Almacenamos si es Gerente*/
-                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profileResponse.getData().getResponse()[0].getEsGte() == 1 ? true : false);
-                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE,  profileResponse.getData().getResponse()[0].getEsSuplente() == 1 ? true : false);
-                ShareUtil.toSaveMainSection(profileResponse.getData().getResponse()[0].getSeccionesApp());
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profile.getEsGte() == 1);
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE, profile.getEsSuplente() == 1);
+                ShareUtil.toSaveMainSection(profile.getSeccionesApp());
 
                 cedtEmail.setText("");
                 cedtPassword.setText("");

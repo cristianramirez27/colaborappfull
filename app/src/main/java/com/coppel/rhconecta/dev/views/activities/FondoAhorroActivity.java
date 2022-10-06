@@ -4,10 +4,11 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUN
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -15,22 +16,29 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.TransitionInflater;
 
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AbonoFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.AditionalSaveFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.RemoveFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.movements.DetailMovementFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.movements.MovementsFragment;
 import com.coppel.rhconecta.dev.views.fragments.fondoAhorro.movements.model.Movement;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FondoAhorroActivity extends AppCompatActivity implements MovementsFragment.OnMovementsFragmentListener {
+public class FondoAhorroActivity extends AnalyticsTimeAppCompatActivity implements MovementsFragment.OnMovementsFragmentListener, ZendeskStatusCallBack {
 
-    @BindView(R.id.tbActionBar)
-    Toolbar tbActionBar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.titleToolbar)
+    AppCompatTextView tvTitleToolbar;
+    @BindView(R.id.zendeskInbox)
+    ZendeskInboxView zendeskInbox;
 
     private FragmentManager childFragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -42,7 +50,7 @@ public class FondoAhorroActivity extends AppCompatActivity implements MovementsF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fondo);
         ButterKnife.bind(this);
-        setSupportActionBar(tbActionBar);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -68,10 +76,18 @@ public class FondoAhorroActivity extends AppCompatActivity implements MovementsF
         }
 
         fragmentTransaction.add(R.id.contentFragment, fragmentSelected, RemoveFragment.TAG).commit();
+
+        zendeskInbox.setOnClickListener(view -> clickZendesk());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCallBackAndRefreshStatus(this);
     }
 
     public void setToolbarTitle(String title) {
-        tbActionBar.setTitle(title);
+        tvTitleToolbar.setText(title);
     }
 
 
@@ -93,5 +109,43 @@ public class FondoAhorroActivity extends AppCompatActivity implements MovementsF
     private void addFadeTransition(Fragment fragment) {
         fragment.setEnterTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
         fragment.setExitTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.fade));
+    }
+
+    /**
+     * Callbacks zendesk
+     */
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
+    }
+
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
+    }
+
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
+    }
+
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
+    }
+
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
     }
 }

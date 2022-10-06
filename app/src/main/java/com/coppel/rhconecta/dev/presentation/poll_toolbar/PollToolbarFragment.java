@@ -1,44 +1,52 @@
 package com.coppel.rhconecta.dev.presentation.poll_toolbar;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.di.poll.DaggerPollToolbarComponent;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 
 import javax.inject.Inject;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.MESSAGE_FOR_BLOCK;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
 /**
  *
  *
  */
-public class PollToolbarFragment extends Fragment implements DialogFragmentWarning.OnOptionClick {
+public class PollToolbarFragment extends Fragment implements DialogFragmentWarning.OnOptionClick, ZendeskStatusCallBack {
 
     @Inject
     public PollToolbarViewModel viewModel;
     /* */
     public Toolbar toolbar;
+    public AppCompatTextView tvTitleToolbar;
     private SurveyInboxView surveyInboxView;
+    private ZendeskInboxView zendeskInbox;
     /* */
     private DialogFragmentWarning dialogFragmentWarning;
+
+    ToolbarFragmentCommunication parentCommunication;
 
     /**
      *
@@ -69,6 +77,9 @@ public class PollToolbarFragment extends Fragment implements DialogFragmentWarni
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DaggerPollToolbarComponent.create().inject(this);
+        if (getActivity() instanceof ToolbarFragmentCommunication) {
+            parentCommunication = (ToolbarFragmentCommunication) getContext();
+        }
         initViews();
         observeViewModel();
     }
@@ -83,16 +94,28 @@ public class PollToolbarFragment extends Fragment implements DialogFragmentWarni
         execute();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        CoppelApp.getZendesk().setCallBackAndRefreshStatus(this);
+    }
+
     /**
      *
      *
      */
     private void initViews(){
         assert getView() != null;
-        toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-        surveyInboxView = (SurveyInboxView) getView().findViewById(R.id.surveyInboxView);
+        toolbar = getView().findViewById(R.id.toolbar);
+        surveyInboxView = getView().findViewById(R.id.surveyInbox);
+        surveyInboxView.setVisibility(View.VISIBLE);
         surveyInboxView.setOnClickListener(this::onSurveyInboxViewClickListener);
         surveyInboxView.setCountMessages(0);
+
+        tvTitleToolbar = getView().findViewById(R.id.titleToolbar);
+
+        zendeskInbox = getView().findViewById(R.id.zendeskInbox);
+        zendeskInbox.setOnClickListener(this::onZendeskInboxViewClickListener);
     }
 
     /**
@@ -100,7 +123,7 @@ public class PollToolbarFragment extends Fragment implements DialogFragmentWarni
      *
      */
     private void observeViewModel(){
-        viewModel.getGetAvailablePollCountProcessStatus().observe(this, this::getAvailablePollCountObserver);
+        viewModel.getGetAvailablePollCountProcessStatus().observe(getViewLifecycleOwner(), this::getAvailablePollCountObserver);
     }
 
     /**
@@ -183,4 +206,50 @@ public class PollToolbarFragment extends Fragment implements DialogFragmentWarni
         dialogFragmentWarning.close();
     }
 
+    private void onZendeskInboxViewClickListener(View v){
+        parentCommunication.clickZendesk();
+    }
+
+    /**
+     * Zendesk methods
+     */
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
+    }
+
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
+    }
+
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
+    }
+
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
+    }
+
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
+    }
+
+
+    public interface ToolbarFragmentCommunication {
+        void clickZendesk();
+    }
 }

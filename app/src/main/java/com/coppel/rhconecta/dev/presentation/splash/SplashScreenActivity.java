@@ -277,7 +277,7 @@ public class SplashScreenActivity
         saveBoolean(AppConstants.SHARED_PREFERENCES_IS_SUPLENTE, profileInternalResponse.getEsSuplente() == 1);
         saveString(AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profileInternalResponse.getGte()));
         saveString(AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE, String.valueOf(profileInternalResponse.getSuplente()));
-        saveString(AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profileResponse));
+        saveString(AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profileResponse.getData().getResponse()[0]));
     }
 
     /** */

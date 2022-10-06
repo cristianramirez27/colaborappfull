@@ -24,16 +24,16 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignEnd="@+id/imgChat"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="0dp"
             android:layout_marginRight="0dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
             android:background="@drawable/ic_punto_rojo"
+            android:fontFamily="@font/lineto_circular_pro_bold"
             android:gravity="center"
-            android:visibility="visible"
-            android:textSize="8sp" />
+            android:textColor="@color/colorBackgroundCoppelBlanco"
+            android:textSize="8sp"
+            android:visibility="visible" />
 
     </RelativeLayout>
 

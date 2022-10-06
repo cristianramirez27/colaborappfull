@@ -510,4 +510,7 @@
     <string name="date_movement">Fecha de movimiento:</string>
     <string name="detail_movement_title">Detalle del Movimiento</string>
     <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
+
+<!--    Zendesk-->
+    <string name="logout_with_chat_active">Tienes un chat activo en Mesa de Ayuda, finaliza la conversación para cerrar tú sesión.</string>
 </resources>

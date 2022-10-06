@@ -21,22 +21,38 @@ data class HomeRequest(
     @SerializedName(KEY_CORREO) val correo: String,
     @SerializedName(KEY_TOKEN) val token: String,
     @SerializedName(KEY_OPTION_HOME) val option: Int,
-    @SerializedName(KEY_SO_DEVICE) val deviceVersion: Int = ANDROID_OS
+    @SerializedName(KEY_SO_DEVICE) val deviceVersion: Int = ANDROID_OS,
 ) : Serializable
 
 /**
  * Response object server
  */
 class HelpDeskAvailabilityServer : Serializable {
+    /**
+     * Help desk chat service message
+     */
     @SerializedName(KEY_MESSAGE)
     lateinit var mensaje: String
 
+    /**
+     * Date on which the service will be consumed again
+     * Format: 2022-09-01
+     */
     @SerializedName(KEY_FECHA_HELP_DESK)
     lateinit var fecha: String
 
+    /**
+     * Date with the start or end time of the message
+     * Format: 2022-09-01 19:00:00
+     */
     @SerializedName(KEY_FECHA_HORA)
     lateinit var fechaHora: String
 
+    /**
+     * Remaining time to consume the service again
+     * Format: 00:44:52
+     */
     @SerializedName(KEY_HORAS)
     lateinit var horas: String
+
 }

@@ -1,10 +1,6 @@
 package com.coppel.rhconecta.dev.presentation.poll;
 
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -12,6 +8,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
@@ -21,9 +22,10 @@ import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.poll.entity.Poll;
 import com.coppel.rhconecta.dev.domain.poll.entity.Question;
 import com.coppel.rhconecta.dev.domain.poll.failure.NotPollAvailableFailure;
-import com.coppel.rhconecta.dev.domain.poll.use_case.GetPollUseCase;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
+import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 import com.coppel.rhconecta.dev.visionarios.utils.DialogCustom;
 
 import java.util.List;
@@ -34,7 +36,7 @@ import javax.inject.Inject;
  *
  *
  */
-public class PollActivity extends AnalyticsTimeAppCompatActivity {
+public class PollActivity extends AnalyticsTimeAppCompatActivity  implements ZendeskStatusCallBack {
 
     /* */
     @Inject
@@ -47,6 +49,11 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
     private RadioGroup rgAnswers;
     private Button btnNext;
     private Button btnFinish;
+
+    Toolbar toolbar;
+    AppCompatTextView tvTitleToolbar;
+    ZendeskInboxView zendeskInbox;
+
     // Aux values
     private int totalQuestions;
     private Question.Answer selectedAnswer;
@@ -66,6 +73,12 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
         execute();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCallBackAndRefreshStatus(this);
+    }
+
     /**
      *
      */
@@ -78,7 +91,6 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
      *
      */
     private void initViews(){
-        initToolbar();
         pbLoader = (ProgressBar) findViewById(R.id.pbLoader);
         pbPollProgress = (ProgressBar) findViewById(R.id.pbPollProgress);
         tvPollProgress = (TextView) findViewById(R.id.tvPollProgress);
@@ -87,10 +99,18 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
         rgAnswers = (RadioGroup) findViewById(R.id.rgAnswers);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnFinish = (Button) findViewById(R.id.btnFinish);
+
+        toolbar = findViewById(R.id.toolbar);
+        tvTitleToolbar = findViewById(R.id.titleToolbar);
+        zendeskInbox = findViewById(R.id.zendeskInbox);
+
+        initToolbar();
+
         // On click listeners
         btnNext.setOnClickListener(this::onAnswerQuestionButtonClickListener);
         btnFinish.setOnClickListener(this::onAnswerQuestionButtonClickListener);
         rgAnswers.setOnCheckedChangeListener(this::onRadioGroupCheckedListener);
+        zendeskInbox.setOnClickListener(view -> clickZendesk());
     }
 
     /**
@@ -117,8 +137,8 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
      *
      */
     private void initToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarPoll);
         setSupportActionBar(toolbar);
+        tvTitleToolbar.setText(R.string.poll_activity_title);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -264,4 +284,39 @@ public class PollActivity extends AnalyticsTimeAppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
+
+    @Override
+    public void enableZendeskFeature() {
+        zendeskInbox.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void disableZendeskFeature() {
+        zendeskInbox.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void zendeskChatOnLine() {
+        zendeskInbox.setActive();
+    }
+
+    @Override
+    public void zendeskChatOutLine() {
+        zendeskInbox.setDisable();
+    }
+
+    @Override
+    public void zendeskSetNotification() {
+        zendeskInbox.setNotification();
+    }
+
+    @Override
+    public void zendeskRemoveNotification() {
+        zendeskInbox.removeNotification();
+    }
+
+    @Override
+    public void zendeskErrorMessage(@NonNull String message) {
+        showWarningDialog(message);
+    }
 }
