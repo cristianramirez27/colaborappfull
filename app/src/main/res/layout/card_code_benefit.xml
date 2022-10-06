@@ -68,7 +68,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBackCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/height_btns"

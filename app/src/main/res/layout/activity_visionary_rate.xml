@@ -59,7 +59,7 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/view_holder_rate_option" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_action"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/big_button_height"

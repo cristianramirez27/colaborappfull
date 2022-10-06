@@ -42,7 +42,7 @@
         android:visibility="gone"
         android:orientation="vertical">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRequest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAditionals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:textColor="@color/disable_text_color"
             android:textSize="12sp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCalendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

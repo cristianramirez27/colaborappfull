@@ -93,7 +93,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_below="@+id/layoutContent"
             android:id="@+id/btnActionAccept"
             android:layout_width="wrap_content"

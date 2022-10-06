@@ -4,7 +4,7 @@
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
             android:text="@string/dilog_button_cancel_prima_vacacional"
             android:layout_width="138dp"
             android:layout_height="50dp" android:id="@+id/button"
@@ -14,7 +14,7 @@
             android:layout_marginBottom="24dp" android:textAllCaps="false" android:background="@color/transparent"
             style="@style/ButtonCoppel"
             android:textColor="@color/colorPrimaryBlueCoppel"/>
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
             android:text="@string/dilog_button_accept_prima_vacacional"
             android:layout_width="138dp"
             android:layout_height="50dp" android:id="@+id/button2"

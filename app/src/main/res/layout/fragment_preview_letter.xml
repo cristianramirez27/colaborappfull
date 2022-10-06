@@ -81,7 +81,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSend"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -94,7 +94,7 @@
             style="@style/ButtonCoppel"
             android:layout_alignParentBottom="true" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_weight="1"
             style="@style/ButtonCoppel"
             android:id="@+id/btnDownload"

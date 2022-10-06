@@ -40,7 +40,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline52"
             app:layout_constraintTop_toBottomOf="@+id/txvTitle" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLeftOption"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -57,7 +57,7 @@
             app:layout_constraintStart_toStartOf="@+id/guideline52"
             app:layout_constraintTop_toTopOf="@+id/guideline54" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRightOption"
             android:layout_width="0dp"
             android:layout_height="0dp"

@@ -87,7 +87,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_height="wrap_content">
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnActionLeft"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
@@ -99,7 +99,7 @@
                         style="@style/ButtonCoppel"
                         android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnActionRight"
                         android:layout_weight="1"
                         android:layout_width="match_parent"

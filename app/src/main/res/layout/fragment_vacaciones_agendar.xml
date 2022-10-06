@@ -48,11 +48,11 @@
 
                 <TextView
                     android:id="@+id/tituloSolicitudes"
+                    style="@style/TextMedium22Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_dates_selected"
-                    style="@style/TextMedium22Coppel"
-                    android:textColor="@color/colorSecondBlueCoppel"/>
+                    android:textColor="@color/colorSecondBlueCoppel" />
 
                 <TextView
                     android:layout_below="@+id/tituloSolicitudes"
@@ -113,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSchedule"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
@@ -125,7 +125,7 @@
                         android:textColor="@color/colorBackgroundCoppelBlanco"
                         style="@style/ButtonCoppel" />
 
-                    <Button
+                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSendRequest"
                         android:layout_weight="1"
                         android:layout_width="match_parent"

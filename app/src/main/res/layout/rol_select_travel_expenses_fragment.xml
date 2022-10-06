@@ -34,7 +34,7 @@
             android:overScrollMode="never"
             android:scrollbars="none" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnColaborator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             style="@style/ButtonCoppel"
             android:textColor="@android:color/white"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnManager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

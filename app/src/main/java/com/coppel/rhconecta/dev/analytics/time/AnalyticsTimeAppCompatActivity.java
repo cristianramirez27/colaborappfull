@@ -84,12 +84,7 @@ public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
     }
 
     /**
-     * ZENDESK
-     */
-    /**
      * HomeActivity also implements zendesk, but it starts the events individually
-     *
-     * @return
      */
     private boolean isInstanceWithZendeskImplementation() {
         return this instanceof PollActivity

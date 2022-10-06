@@ -63,7 +63,7 @@
 
         </RelativeLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnActionAccept"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSendAccept"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

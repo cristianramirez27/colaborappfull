@@ -39,7 +39,7 @@
                 <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte
                     android:id="@+id/headerHoliday"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:visibility="gone"
                     android:layout_height="wrap_content">
-                    
+
                     <ImageView
                         android:id="@+id/iconCalendar"
                         android:layout_centerVertical="true"
@@ -164,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSchedule"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -178,14 +178,17 @@
                 android:textColor="@color/colorBackgroundCoppelBlanco"/>
 
         </LinearLayout>
-    <LinearLayout
+
+        <LinearLayout
             android:id="@+id/layout_confirm"
             android:orientation="horizontal"
             android:paddingTop="10dp"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <Button android:id="@+id/buttonRefuse"
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonRefuse"
                 android:layout_weight=".5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -195,8 +198,10 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 style="@style/ButtonCoppel"
-                android:textColor="@color/colorBackgroundCoppelBlanco"/>
-        <Button android:id="@+id/buttonAccept"
+                android:textColor="@color/colorBackgroundCoppelBlanco" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAccept"
                 android:layout_weight=".5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -206,10 +211,9 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 style="@style/ButtonCoppel"
-                android:textColor="@color/colorBackgroundCoppelBlanco"
-        />
+                android:textColor="@color/colorBackgroundCoppelBlanco" />
 
-    </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

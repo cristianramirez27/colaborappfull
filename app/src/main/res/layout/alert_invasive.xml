@@ -66,7 +66,7 @@
             android:paddingTop="@dimen/generic_padig"
             android:layout_gravity="center_horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnOne"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_btns"
@@ -75,7 +75,7 @@
                 android:gravity="center"
                 android:layout_marginBottom="@dimen/margin_medium"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnTwo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_btns"
@@ -83,7 +83,7 @@
                 android:layout_marginLeft="@dimen/margin_big"
                 android:layout_marginBottom="@dimen/margin_medium"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnThree"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_btns"

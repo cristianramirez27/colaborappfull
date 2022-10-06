@@ -66,7 +66,7 @@
                     android:layout_above="@+id/btnLogIn"
                     android:layout_centerHorizontal="true"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnLogIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

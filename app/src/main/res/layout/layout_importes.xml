@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:textColor="@color/colorBackgroundCoppelNegro" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnEdit"
             android:layout_width="wrap_content"
             android:layout_height="38dp"

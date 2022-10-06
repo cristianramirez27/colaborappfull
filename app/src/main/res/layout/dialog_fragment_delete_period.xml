@@ -80,7 +80,7 @@
             android:paddingTop="20dp"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnActionCancel"
                 android:layout_weight="1"
                 android:visibility="visible"
@@ -93,7 +93,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorSecondBlueCoppel"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnActionAccept"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"

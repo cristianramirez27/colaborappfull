@@ -265,7 +265,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_below="@id/content_element"
                     android:id="@+id/btnRemove"
                     android:layout_width="match_parent"
