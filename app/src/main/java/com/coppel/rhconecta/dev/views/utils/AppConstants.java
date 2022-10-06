@@ -196,7 +196,6 @@ public class AppConstants {
     public static final String ZENDESK_FEATURE = "ZENDESK_FEATURE";
     public static final String ZENDESK_FEATURE_ACTIVE_VALUE = "1";
     public static final String ZENDESK_DEPARTMENT = "ColaborAPP";
-    public static final String ZENDESK_MOCK_NUMBER = "55";
     public static final String ZENDESK_EXPECTED_MILLIS = "ZENDESK_EXPECTED_MILLIS";
     public static final String ZENDESK_OUT_SERVICE_MESSAGE = "ZENDESK_OUT_SERVICE_MESSAGE";
     public static final String ZENDESK_NOTIFICATION = "ZENDESK_NOTIFICATION";

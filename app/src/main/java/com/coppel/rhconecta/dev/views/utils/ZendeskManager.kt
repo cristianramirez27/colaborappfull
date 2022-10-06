@@ -169,7 +169,6 @@ class ZendeskManager @Inject constructor(val context: Context) : ActionsModelCal
         val visitorInfo = VisitorInfo.builder()
             .withName(userData)
             .withEmail(data.email)
-            .withPhoneNumber(AppConstants.ZENDESK_MOCK_NUMBER)
             .build()
         val chatProvidersConfiguration = ChatProvidersConfiguration.builder()
             .withVisitorInfo(visitorInfo)
