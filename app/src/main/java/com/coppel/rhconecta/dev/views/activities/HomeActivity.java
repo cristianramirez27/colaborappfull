@@ -159,7 +159,7 @@ import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
-import com.coppel.rhconecta.dev.views.utils.ZendeskUtil;
+import com.coppel.rhconecta.dev.views.utils.ZendeskManager;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
@@ -247,7 +247,7 @@ public class HomeActivity
     public ZendeskViewModel baseViewModel;
 
     @Inject
-    public ZendeskUtil zendeskUtil;
+    public ZendeskManager zendeskUtil;
 
     /**
      *

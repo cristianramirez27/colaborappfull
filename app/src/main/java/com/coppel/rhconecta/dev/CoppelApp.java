@@ -9,7 +9,7 @@ import com.coppel.rhconecta.dev.business.utils.Foreground;
 import com.coppel.rhconecta.dev.di.AppModuleKt;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
-import com.coppel.rhconecta.dev.views.utils.ZendeskUtil;
+import com.coppel.rhconecta.dev.views.utils.ZendeskManager;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.crashes.Crashes;
 
@@ -21,7 +21,7 @@ public class CoppelApp extends MultiDexApplication {
 
     private static CoppelApp mInstance;
 
-    private static ZendeskUtil zendesk;
+    private static ZendeskManager zendesk;
 
     @Override
     public void onCreate() {
@@ -62,11 +62,11 @@ public class CoppelApp extends MultiDexApplication {
     }
 
 
-    public static ZendeskUtil getZendesk() {
+    public static ZendeskManager getZendesk() {
         return zendesk;
     }
 
-    public static void setZendesk(ZendeskUtil zendesk) {
+    public static void setZendesk(ZendeskManager zendesk) {
         CoppelApp.zendesk = zendesk;
     }
 }

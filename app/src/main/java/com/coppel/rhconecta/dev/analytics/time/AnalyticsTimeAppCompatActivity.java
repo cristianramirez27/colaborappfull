@@ -122,8 +122,4 @@ public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
     public void setCallBackAndRefreshStatus(ZendeskStatusCallBack callback) {
         CoppelApp.getZendesk().setCallBackAndRefreshStatus(callback);
     }
-
-    public void setCallBack(ZendeskStatusCallBack callback) {
-        CoppelApp.getZendesk().setCallBack(callback);
-    }
 }

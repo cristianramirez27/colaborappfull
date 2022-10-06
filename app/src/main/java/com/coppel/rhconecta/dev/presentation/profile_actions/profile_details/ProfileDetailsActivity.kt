@@ -9,7 +9,6 @@ import com.coppel.rhconecta.dev.databinding.ActivityProfileDetailsBinding
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension
 import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack
-import com.coppel.rhconecta.dev.views.utils.ZendeskUtil
 
 /** */
 class ProfileDetailsActivity : AnalyticsTimeAppCompatActivity(), ZendeskStatusCallBack {

@@ -7,7 +7,7 @@ import com.coppel.rhconecta.dev.data.home.HomeLocalRepository;
 import com.coppel.rhconecta.dev.data.home.HomeRepository;
 import com.coppel.rhconecta.dev.framework.home.HomeLocalRepositoryImpl;
 import com.coppel.rhconecta.dev.framework.home.HomeRepositoryImpl;
-import com.coppel.rhconecta.dev.views.utils.ZendeskUtil;
+import com.coppel.rhconecta.dev.views.utils.ZendeskManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -26,8 +26,8 @@ public class HomeModule {
     }
 
     @Provides
-    ZendeskUtil provideZendeskUtil(Context context) {
-        return new ZendeskUtil(context);
+    ZendeskManager provideZendeskUtil(Context context) {
+        return new ZendeskManager(context);
     }
 
     @Provides
