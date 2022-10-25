@@ -685,6 +685,8 @@ public class HomeActivity
                     }
                     break;
                 case OPTION_COCREA:
+                    /*
+                    new feature coCrea
                     String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
                     hideLoader = true;
                     try {
@@ -699,7 +701,13 @@ public class HomeActivity
                         coppelServicesPresenter.getCoCrea(coCreaRequest, token);
                     } catch (PackageManager.NameNotFoundException e) {
                         coppelServicesPresenter.getPlayGoogleUrl(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR), 54, token);
-                    }
+                    }*/
+                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    if (urlCoCrea.isEmpty())
+                        urlCoCrea = URL_DEFAULT_COCREA;
+
+                    Intent intentCoCrea = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCoCrea));
+                    startActivity(intentCoCrea);
                     break;
                 case OPTION_POLL:
                     break;
