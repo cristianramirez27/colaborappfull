@@ -147,7 +147,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
     private TextView titleCustomCalendar;
     private String titleCustom;
-    private String titleButtonCalendar = "test first";
+    private String titleButtonCalendar = null;
 
     private int mCurrentView = UNINITIALIZED;
 
@@ -207,7 +207,7 @@ public class DatePickerHolidayDialog extends DialogFragment implements
     private HashMap<String, DaySelectedHoliday> daysSelectedMap = new HashMap<>();
     Map<Long, DaySelectedHoliday> datesSorted;
     private DaysConfigRecyclerAdapter daysConfigRecyclerAdapter;
-    private boolean showHalfDaysOption = true;
+    private boolean showHalfDaysOption = false;
     private double num_total_vacaciones;
     private double num_diasagendados;
     private double limite_dias;
@@ -558,7 +558,6 @@ public class DatePickerHolidayDialog extends DialogFragment implements
         configDaysBtn = view.findViewById(R.id.configDays);
         if (titleButtonCalendar != null && !titleButtonCalendar.isEmpty()){
             configDaysBtn.setText(titleButtonCalendar);
-            showHalfDaysOption = true;
         }
         if (isThemeHoliday) {
             okButton.setBackground(getContext().getDrawable(R.drawable.background_green_rounded));
@@ -571,23 +570,28 @@ public class DatePickerHolidayDialog extends DialogFragment implements
 
         configDaysBtn.setEnabled(showHalfDaysOption);
         configDaysBtn.setVisibility(showHalfDaysOption ? View.VISIBLE : View.INVISIBLE);
-        configDaysBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(daysSelectedMap != null && daysSelectedMap.size() > 0){
-                    setConfigData();
+        if(showHalfDaysOption){
+            configDaysBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(daysSelectedMap != null && daysSelectedMap.size() > 0){
+                        setConfigData();
 
-                    List<DaySelectedHoliday> daySelectedHolidaysSource = new ArrayList<>();
-                    for(DaySelectedHoliday daySelectedHoliday :daySelectedHolidayList){
-                        daySelectedHolidaysSource.add(new DaySelectedHoliday(daySelectedHoliday));
+                        List<DaySelectedHoliday> daySelectedHolidaysSource = new ArrayList<>();
+                        for(DaySelectedHoliday daySelectedHoliday :daySelectedHolidayList){
+                            daySelectedHolidaysSource.add(new DaySelectedHoliday(daySelectedHoliday));
+                        }
+
+                        daysConfigRecyclerAdapter.setDaySelectedHolidayListInitial(daySelectedHolidaysSource);
+                        changeView();
                     }
 
-                    daysConfigRecyclerAdapter.setDaySelectedHolidayListInitial(daySelectedHolidaysSource);
-                    changeView();
                 }
+            });
+        } else {
+            configDaysBtn.setOnClickListener(null);
+        }
 
-            }
-        });
 
         Button okButtonBack = view.findViewById(R.id.mdtp_ok_back);
         okButtonBack.setOnClickListener(new OnClickListener() {
@@ -609,6 +613,8 @@ public class DatePickerHolidayDialog extends DialogFragment implements
                 changeView();
             }
         });
+        okButtonBack.setEnabled(showHalfDaysOption);
+        cancelButtonBack.setEnabled(showHalfDaysOption);
 
 
         // If an accent color has not been set manually, get it from the context

@@ -633,7 +633,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         datePickerDialog.setNum_total_vacaciones(holidayDaysTotal);
         double limitDay = this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_totalvacaciones() - this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getNum_diasagendados();
         datePickerDialog.setLimite_dias(holidayDaysTotal/*limitDay*/);
-        datePickerDialog.setShowHalfDaysOption(true);
+        datePickerDialog.setShowHalfDaysOption(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getClv_mediodia() == 1);
 
         datePickerDialog.setDes_mensaje(this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje()!= null &&
                 !this.calendarProposedData.getHolidaysPeriodsResponse().getData().getResponse().getDes_mensaje().isEmpty() ?
