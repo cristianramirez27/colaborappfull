@@ -42,9 +42,9 @@ public class CoppelServicesPresenter implements IServiceListener {
         this.view = view;
     }
 
-    public void requestLogin(String email, String password,boolean executeInBackground) {
+    public void requestLogin(String email, String password,boolean executeInBackground,String reCatchaToken) {
         view.showProgress();
-        servicesInteractor.getLoginValidation(email, password,executeInBackground);
+        servicesInteractor.getLoginValidation(email, password,executeInBackground,reCatchaToken);
     }
 
     public void requestProfile(String employeeNumber, String employeeEmail, String token) {

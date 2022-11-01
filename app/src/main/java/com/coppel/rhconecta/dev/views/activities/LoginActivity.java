@@ -39,7 +39,15 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EnrollmentFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.recaptcha.Recaptcha;
+import com.google.android.gms.recaptcha.RecaptchaAction;
+import com.google.android.gms.recaptcha.RecaptchaActionType;
+import com.google.android.gms.recaptcha.RecaptchaHandle;
+import com.google.android.gms.recaptcha.RecaptchaResultData;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -87,10 +95,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     private  boolean finishApp = false;
-
+    private RecaptchaHandle handle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.initRecapcha();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -114,10 +123,77 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initRemoteConfig();
     }
 
+    private void initRecapcha(){
+        Log.i("CAPCHA", "initRecapcha  ");
+        Recaptcha.getClient(this)
+                .init(AppConstants.KEY_CAPTCHA)
+                .addOnSuccessListener(
+                        this,
+                        new OnSuccessListener<RecaptchaHandle>() {
+                            @Override
+                            public void onSuccess(RecaptchaHandle handle) {
+                                // Handle success ...
+                                Log.i("CAPCHA", "Handle success ... ");
+                                LoginActivity.this.handle = handle;
+                            }
+                        })
+                .addOnFailureListener(
+                        this,
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CAPCHA", e.getMessage());
+                                if (e instanceof ApiException) {
+                                    ApiException apiException = (ApiException) e;
+                                    // Status apiErrorStatus = apiException.getStatusCode();
+                                    // Handle api errors ...
+                                } else {
+                                    // Handle other failures ...
+                                }
+                            }
+                        });
+    }
     private void login() {
-        if (validateFields(cedtEmail.getText(), cedtPassword.getText())) {
-            coppelServicesPresenter.requestLogin(cedtEmail.getText(), cedtPassword.getText(),false);
-        }
+        this.callCapcha(new View(this));
+
+        //this.onDestroyCap();
+    }
+    public void callCapcha(View v) {
+        // Step 2: call execute() when there is an action to protect.
+        Recaptcha.getClient(this)
+                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType(RecaptchaActionType.LOGIN)))
+                .addOnSuccessListener(
+                        this,
+                        new OnSuccessListener<RecaptchaResultData>() {
+                            @Override
+                            public void onSuccess(RecaptchaResultData response) {
+                                String token = response.getTokenResult();
+                                // Handle success ...
+                                if (!token.isEmpty()) {
+                                    Log.i("CAPCHA", "reCAPTCHA response token: " + token);
+                                    // Validate the response token by following the instructions
+                                    if (validateFields(cedtEmail.getText(), cedtPassword.getText())) {
+                                        coppelServicesPresenter.requestLogin(cedtEmail.getText(), cedtPassword.getText(),false,token);
+                                    }
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        this,
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CAPCHA", e.getMessage());
+                                showMessageUser("Servicio no Disponible!.");
+                                if (e instanceof ApiException) {
+                                    ApiException apiException = (ApiException) e;
+                                    //Status apiErrorStatus = apiException.getStatusCode();
+                                    // Handle api errors ...
+                                } else {
+                                    // Handle other failures ...
+                                }
+                            }
+                        });
     }
 
     private boolean validateFields(String email, String password) {

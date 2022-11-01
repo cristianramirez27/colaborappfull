@@ -80,8 +80,8 @@ public class ServicesInteractor {
      * Update 2 Noviembre 2018
      * @param executeInBackground flag to indicate if login is execute in background
      */
-    public void getLoginValidation(String email, String password,boolean executeInBackground) {
-        getLogin(email, password,executeInBackground);
+    public void getLoginValidation(String email, String password,boolean executeInBackground,String reCatchaTocken) {
+        getLogin(email, password,executeInBackground, reCatchaTocken);
     }
 
     /**
@@ -91,12 +91,12 @@ public class ServicesInteractor {
      * @param password User password
      *
      */
-    private void getLogin(String email, String password, final boolean executeInBackground) {
+    private void getLogin(String email, String password, final boolean executeInBackground,String reCatchaTocken) {
         crashlytics.log(email);
         final int type = ServicesRequestType.LOGIN;
         Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Login");
         rastreo.start();
-        iServicesRetrofitMethods.getLogin(ServicesConstants.GET_LOGIN,buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getLogin(ServicesConstants.GET_LOGIN,buildLoginRequest(email, password,reCatchaTocken)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 rastreo.stop();
@@ -166,14 +166,14 @@ public class ServicesInteractor {
      * @param password User password
      * @return CoppelServicesLoginRequest Request model
      */
-    public CoppelServicesLoginRequest buildLoginRequest(String email, String password) {
+    public CoppelServicesLoginRequest buildLoginRequest(String email, String password,String reCatchaTocken) {
         CoppelServicesLoginRequest coppelServicesLoginRequest = new CoppelServicesLoginRequest();
 
         coppelServicesLoginRequest.setEmail(email);
         coppelServicesLoginRequest.setPassword(password);
         coppelServicesLoginRequest.setApp("rhconecta");
         coppelServicesLoginRequest.setVersion(getVersionApp());
-
+        coppelServicesLoginRequest.setTokenCatcha(reCatchaTocken);
         return coppelServicesLoginRequest;
     }
 

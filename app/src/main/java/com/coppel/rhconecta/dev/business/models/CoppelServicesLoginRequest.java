@@ -6,6 +6,7 @@ public class CoppelServicesLoginRequest {
     private String password;
     private String app;
     private String version;
+    private String recaptchaToken;
     private Integer so_dispositivo = 1;//se establece 1 para Android
 
     public String getEmail() {
@@ -38,6 +39,14 @@ public class CoppelServicesLoginRequest {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public void setTokenCatcha(String recaptchaToken) {
+        this.recaptchaToken = recaptchaToken;
+    }
+
+    public String getrecaptchaToken() {
+        return recaptchaToken;
     }
 
     public Integer getSo_dispositivo() {

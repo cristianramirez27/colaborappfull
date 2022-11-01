@@ -134,6 +134,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:20.1.2'
     implementation 'com.google.firebase:firebase-perf:19.0.3'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    // recapcha
+    implementation 'com.google.android.gms:play-services-recaptcha:17.0.1'
+
     // PageIndicator
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
 
