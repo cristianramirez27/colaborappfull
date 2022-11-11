@@ -314,7 +314,13 @@ public class ConfigFieldLetterFragment extends Fragment implements View.OnClickL
             case ServicesRequestType.LETTERSCONFIG:
                // letterConfigResponse = (LetterConfigResponse) response.getResponse();
                 for(LetterConfigResponse.Datos datos : letterConfigResponse.getData().getResponse().getDatosCarta()){
-                    datos.setSelected(datos.getIdu_defaultdatoscarta() == 1);
+                    if(datos.getIdu_datoscartas() == 16 || datos.getIdu_datoscartas() == 15 || datos.getIdu_datoscartas() == 12){
+                        datos.setSelected(false);
+                        datos.setOpc_estatus(1);
+                    }else {
+                        datos.setSelected(datos.getIdu_defaultdatoscarta() == 1);
+                    }
+
                     fieldsLetter.add(datos);
                 }
 
