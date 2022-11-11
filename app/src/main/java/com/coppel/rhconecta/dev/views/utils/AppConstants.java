@@ -5,7 +5,7 @@ import com.coppel.rhconecta.dev.BuildConfig;
 public class AppConstants {
 
     public static final String URL_COPPEL = "https://www.coppel.com/";
-    public static final String KEY_CAPTCHA = "6Le-nawdAAAAAOkON4HOmfxi98YE0a-WqcKq3cy2";
+    public static final String KEY_CAPTCHA = "6LcFBIEeAAAAAIErJdh21emYGMCGHyyIP1Z-xaOi";
     public static final String SHARED_PREFERENCES_NAME = "COPPEL_PREFERENCES";
     public static final String SHARED_PREFERENCES_IS_LOGGED_IN = "IS_LOGGED_IN";
     public static final String SHARED_PREFERENCES_EMAIL = "EMAIL";
