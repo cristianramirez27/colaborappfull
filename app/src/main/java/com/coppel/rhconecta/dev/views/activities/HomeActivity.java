@@ -851,7 +851,7 @@ public class HomeActivity
     private void ValidateAccesSSO() {
         // Step 2: call execute() when there is an action to protect.
         Recaptcha.getClient(this)
-            .execute(this.handle, new RecaptchaAction(new RecaptchaActionType(RecaptchaActionType.LOGIN)))
+            .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
             .addOnSuccessListener(
                     this,
                     new OnSuccessListener<RecaptchaResultData>() {
@@ -895,7 +895,7 @@ public class HomeActivity
     }
     private void ValidateAccesBass() {
         Recaptcha.getClient(this)
-                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType(RecaptchaActionType.LOGIN)))
+                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
                 .addOnSuccessListener(
                         this,
                         new OnSuccessListener<RecaptchaResultData>() {

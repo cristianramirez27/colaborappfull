@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void callCapcha(View v) {
         // Step 2: call execute() when there is an action to protect.
         Recaptcha.getClient(this)
-                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType(RecaptchaActionType.LOGIN)))
+                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
                 .addOnSuccessListener(
                         this,
                         new OnSuccessListener<RecaptchaResultData>() {
