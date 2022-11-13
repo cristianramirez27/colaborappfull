@@ -6,6 +6,7 @@ public class TokenSSORequest {
     private String num_empleado;
     private Integer opcion;
     private String recaptchaToken;
+    private Integer so_dispositivo = 1;//se establece 1 para Android
     public TokenSSORequest(){}
 
     public TokenSSORequest(String email, String password, String num_empleado,Integer opcion,String _recaptchaToken){
@@ -54,5 +55,13 @@ public class TokenSSORequest {
 
     public void setOpcion(Integer opcion) {
         this.opcion = opcion;
+    }
+
+    public Integer getSo_dispositivo() {
+        return so_dispositivo;
+    }
+
+    public void setSo_dispositivo(Integer so_dispositivo) {
+        this.so_dispositivo = so_dispositivo;
     }
 }
