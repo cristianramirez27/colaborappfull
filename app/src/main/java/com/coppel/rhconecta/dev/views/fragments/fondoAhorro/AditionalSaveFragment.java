@@ -469,10 +469,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.toString().isEmpty()){
                     calculate();
-                }
-
             }
 
             @Override
@@ -513,7 +510,7 @@ public class AditionalSaveFragment extends Fragment implements View.OnClickListe
             content = edtAhorroActualProceso.getQuantity();
         }
 
-        if(!content.isEmpty() && Double.parseDouble(content) > 0.0){
+        if(!content.isEmpty() && Double.parseDouble(content) >= 0.0){
             if(Double.parseDouble(content) > consultaAhorroAdicionalResponse.getData().getResponse().getImp_maximo()){
                 setEnableButton(false);
                 if (!enableDialog) {

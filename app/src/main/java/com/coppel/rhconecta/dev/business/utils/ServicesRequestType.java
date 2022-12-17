@@ -28,6 +28,7 @@ public class ServicesRequestType {
     public static final int COLLAGE = 19;
     public static final int COVID_SURVEY = 39;
     public static final int LOGIN_APPS = 40;
+    public static final int LOGIN_APPS_BASS = 41;
     public static final int VACANCIES = 53;
     public static final int GOOGLE_PLAY_URL = 54;
 

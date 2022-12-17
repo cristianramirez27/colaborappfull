@@ -10,8 +10,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "2.12.0"
-        versionCode 102
+        versionName "2.11.4"
+        versionCode 109
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -145,6 +145,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:20.1.2'
     implementation 'com.google.firebase:firebase-perf:19.0.3'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    // recapcha
+    implementation 'com.google.android.gms:play-services-recaptcha:17.0.1'
+
     // PageIndicator
     implementation 'com.github.vivchar:ViewPagerIndicator:1.1.0'
 

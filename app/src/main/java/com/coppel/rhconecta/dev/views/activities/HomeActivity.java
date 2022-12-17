@@ -36,6 +36,7 @@ import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS_BASS;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.VACANCIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
@@ -57,16 +58,19 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_PASS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -75,6 +79,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -165,6 +170,15 @@ import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
 import com.coppel.rhconecta.dev.visionarios.inicio.objects.Usuario;
 import com.coppel.rhconecta.dev.visionarios.utils.Config;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.recaptcha.Recaptcha;
+import com.google.android.gms.recaptcha.RecaptchaAction;
+import com.google.android.gms.recaptcha.RecaptchaActionType;
+import com.google.android.gms.recaptcha.RecaptchaHandle;
+import com.google.android.gms.recaptcha.RecaptchaResultData;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
@@ -238,6 +252,7 @@ public class HomeActivity
     private CoppelServicesPresenter coppelServicesPresenter;
     private int externalOption;
 
+    private RecaptchaHandle handle;
     /* */
     @Inject
     public HomeActivityViewModel homeActivityViewModel;
@@ -258,7 +273,7 @@ public class HomeActivity
         notifications = new int[]{0, 0, 0};
         setContentView(R.layout.activity_home);
         DaggerAnalyticsComponent.create().inject(this);
-
+        this.initRecapcha();
         ButterKnife.bind(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         getWindow().setBackgroundDrawable(null);
@@ -310,7 +325,36 @@ public class HomeActivity
     private void requestDataForZendesk() {
         homeActivityViewModel.getPersonalDataForHelpDesk();
     }
-
+    private void initRecapcha(){
+        Log.i("CAPCHA", "initRecapcha  ");
+        Recaptcha.getClient(this)
+                .init(AppConstants.KEY_CAPTCHA)
+                .addOnSuccessListener(
+                        this,
+                        new OnSuccessListener<RecaptchaHandle>() {
+                            @Override
+                            public void onSuccess(RecaptchaHandle handle) {
+                                // Handle success ...
+                                Log.i("CAPCHA", "andle success ... ");
+                                HomeActivity.this.handle = handle;
+                            }
+                        })
+                .addOnFailureListener(
+                        this,
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CAPCHA", e.getMessage());
+                                if (e instanceof ApiException) {
+                                    ApiException apiException = (ApiException) e;
+                                    // Status apiErrorStatus = apiException.getStatusCode();
+                                    // Handle api errors ...
+                                } else {
+                                    // Handle other failures ...
+                                }
+                            }
+                        });
+    }
     /**
      *
      */
@@ -719,7 +763,7 @@ public class HomeActivity
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
                         externalOption = COVID_SURVEY;
-                        ValidateAcces();
+                        ValidateAccesSSO();
                     }
                     break;
                 case OPTION_COLLAGE:
@@ -728,10 +772,12 @@ public class HomeActivity
                     } else {
                         initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         externalOption = COLLAGE;
-                        ValidateAcces();
+                        ValidateAccesBass();
                     }
                     break;
                 case OPTION_COCREA:
+                    /*
+                    new feature coCrea
                     String token = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN);
                     hideLoader = true;
                     try {
@@ -746,7 +792,13 @@ public class HomeActivity
                         coppelServicesPresenter.getCoCrea(coCreaRequest, token);
                     } catch (PackageManager.NameNotFoundException e) {
                         coppelServicesPresenter.getPlayGoogleUrl(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR), 54, token);
-                    }
+                    }*/
+                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    if (urlCoCrea.isEmpty())
+                        urlCoCrea = URL_DEFAULT_COCREA;
+
+                    Intent intentCoCrea = new Intent(Intent.ACTION_VIEW, Uri.parse(urlCoCrea));
+                    startActivity(intentCoCrea);
                     break;
                 case OPTION_POLL:
                     break;
@@ -837,19 +889,133 @@ public class HomeActivity
     /**
      *
      */
-    private void ValidateAcces() {
-        if (!validateLoginSSO()) {
-            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-            String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
-            String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
-            String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
-            TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado);
-            coppelServicesPresenter.getTokenSSO(tokenSSORequest, token);
-        } else {
-            getExternalUrl();
-        }
-    }
 
+
+    private void ValidateAccesSSO() {
+        // Step 2: call execute() when there is an action to protect.
+        Recaptcha.getClient(this)
+            .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
+            .addOnSuccessListener(
+                    this,
+                    new OnSuccessListener<RecaptchaResultData>() {
+                        @Override
+                        public void onSuccess(RecaptchaResultData response) {
+                            String tokenCatpcha = response.getTokenResult();
+                            // Handle success ...
+                            if (!tokenCatpcha.isEmpty()) {
+                                Log.i("CAPCHA", "reCAPTCHA response token: " + tokenCatpcha);
+                                if (!validateLoginSSO()) {
+                                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                                    String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+                                    String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
+                                    String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+                                    TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 1,tokenCatpcha);
+                                    coppelServicesPresenter.getTokenSSO(tokenSSORequest, token);
+                                } else {
+                                    getExternalUrl();
+                                }
+                            }else{
+                                showMessageUser("Servicio de ReCaptcha no disponible!..");
+                            }
+                        }
+                    })
+                .addOnFailureListener(
+                    this,
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.i("CAPCHA", e.getMessage());
+                            showMessageUser("Servicio de ReCaptcha no disponible!.");
+                            if (e instanceof ApiException) {
+                                ApiException apiException = (ApiException) e;
+                                //Status apiErrorStatus = apiException.getStatusCode();
+                                // Handle api errors ...
+                            } else {
+                                // Handle other failures ...
+                            }
+                        }
+                    });
+    }
+    private void ValidateAccesBass() {
+        Recaptcha.getClient(this)
+                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
+                .addOnSuccessListener(
+                        this,
+                        new OnSuccessListener<RecaptchaResultData>() {
+                            @Override
+                            public void onSuccess(RecaptchaResultData response) {
+                                String tokenCatpcha = response.getTokenResult();
+                                // Handle success ...
+                                if (!tokenCatpcha.isEmpty()) {
+                                    Log.i("CAPCHA", "reCAPTCHA response token: " + tokenCatpcha);
+                                    if (!validateLoginBASS()) {
+                                        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                                        String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+                                        String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
+                                        String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+                                        TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 4,tokenCatpcha);
+                                        coppelServicesPresenter.getTokenBASS(tokenSSORequest, token);
+                                    } else {
+                                        getExternalUrl();
+                                    }
+                                }else{
+                                    showMessageUser("Servicio de ReCaptcha no disponible!..");
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        this,
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CAPCHA", e.getMessage());
+                                showMessageUser("Servicio de ReCaptcha no disponible!.");
+                                if (e instanceof ApiException) {
+                                    ApiException apiException = (ApiException) e;
+                                    //Status apiErrorStatus = apiException.getStatusCode();
+                                    // Handle api errors ...
+                                } else {
+                                    // Handle other failures ...
+                                }
+                            }
+                        });
+
+    }
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                dialogFragmentLoader.close();
+            }
+        }, 1500);
+    }
+    private boolean validateLoginBASS() {
+        try{
+            String strLastLogin = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_BASS_LOGIN);
+            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_BASS);
+            if (strLastLogin == null || token == null){
+                return false;
+            }else{
+                Date lastLogin = new Gson().fromJson(strLastLogin, Date.class);
+                Date currentTime = Calendar.getInstance().getTime();
+                long timeLapse = currentTime.getTime() - lastLogin.getTime();
+                long totalHours = TimeUnit.MILLISECONDS.toHours(timeLapse);
+                // Se valida si pasaron mas de 1 hrs desde el anterior loggeo de SSO.
+                if (totalHours <= 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }catch (Exception e){
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return false;
+    }
     private boolean validateLoginSSO() {
         String strLastLogin = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN);
         Date lastLogin = new Gson().fromJson(strLastLogin, Date.class);
@@ -890,6 +1056,8 @@ public class HomeActivity
         try {
             startActivity(intentExternalUrl);
         } catch (ActivityNotFoundException ex) {
+            FirebaseCrashlytics.getInstance().log(url);
+            FirebaseCrashlytics.getInstance().recordException(ex);
             intentExternalUrl.setPackage(null);
             startActivity(intentExternalUrl);
         }
@@ -1062,7 +1230,7 @@ public class HomeActivity
             case COLLAGE:
                 if (response.getResponse() instanceof ExternalUrlResponse) {
                     ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
-                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER);
+                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_BASS);
                     String url = String.format("%s%s", externalUrlResponse.getData().getResponse().get(0).getClv_urlservicio(), token);
                     openExternalUrl(url);
                 }
@@ -1105,7 +1273,19 @@ public class HomeActivity
                     }
                 }
                 break;
+            case LOGIN_APPS_BASS:
+                if (response.getResponse() instanceof TokenSSOResponse) {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) response.getResponse();
+                    /* Almacenamos el nuevo token */
+                    String newToken = tokenSSOResponse.getToken_user();
+                    AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_BASS, newToken);
+                    /* Almacenamos la fecha en la que se obtuvo */
+                    Date currentTime = Calendar.getInstance().getTime();
+                    AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_BASS_LOGIN, new Gson().toJson(currentTime));
 
+                    getExternalUrl();
+                }
+                break;
             case VACANCIES:
                 ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) response.getResponse();
                 if (!externalUrlResponse.getData().getResponse().isEmpty()) {
@@ -1130,6 +1310,7 @@ public class HomeActivity
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
+            FirebaseCrashlytics.getInstance().recordException(ex);
             intent.setPackage(null);
             startActivity(intent);
         }
