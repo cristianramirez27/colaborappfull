@@ -5,6 +5,9 @@ import com.coppel.rhconecta.dev.domain.common.Either
 import com.coppel.rhconecta.dev.domain.common.UseCase
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
 import com.coppel.rhconecta.dev.domain.home.entity.LocalDataHelpDeskAvailability
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetLocalDataHelpDeskAvailabilityUseCase @Inject constructor() :
@@ -16,10 +19,11 @@ class GetLocalDataHelpDeskAvailabilityUseCase @Inject constructor() :
     @Inject
     lateinit var homeLocalRepository: HomeLocalRepository
 
-    override fun run(
-        params: None,
-        callback: OnResultFunction<Either<Failure, LocalDataHelpDeskAvailability>>,
-    ) {
-        homeLocalRepository.getDataHelpDeskAvailability(callback)
+    override fun execute(params: None): Either<Failure, LocalDataHelpDeskAvailability> {
+        lateinit var value: Either<Failure, LocalDataHelpDeskAvailability>
+        CoroutineScope(Dispatchers.IO).launch {
+            value = homeLocalRepository.getDataHelpDeskAvailability()
+        }
+        return value
     }
 }

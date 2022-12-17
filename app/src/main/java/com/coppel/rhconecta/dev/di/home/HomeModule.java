@@ -21,8 +21,8 @@ public class HomeModule {
     }
 
     @Provides
-    HomeLocalRepository provideHomeLocalRepository() {
-        return new HomeLocalRepositoryImpl();
+    HomeLocalRepository provideHomeLocalRepository(Context context) {
+        return new HomeLocalRepositoryImpl(context);
     }
 
     @Provides

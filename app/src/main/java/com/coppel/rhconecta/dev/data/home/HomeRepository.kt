@@ -15,18 +15,18 @@ interface HomeRepository {
      *
      */
     fun getBanners(
-        callback: OnResultFunction<Either<Failure, List<Banner>>>
+        callback: OnResultFunction<Either<Failure, List<Banner>>>,
     )
 
     /**
      *
      */
     fun getBadges(
-        callback: OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>>
+        callback: OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>>,
     )
 
     /**
      * Gets data for help desk availability.
      */
-    fun getHelpDeskServiceAvailability(callback: OnResultFunction<Either<Failure, HelpDeskAvailability>>)
+    suspend fun getHelpDeskServiceAvailability(): Either<Failure, HelpDeskAvailability>
 }

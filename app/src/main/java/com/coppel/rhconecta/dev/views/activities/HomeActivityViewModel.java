@@ -77,9 +77,7 @@ public class HomeActivityViewModel {
      */
     public void getPersonalDataForHelpDesk() {
         sendTimeByAnalyticsFlowStatus.postValue(ProcessStatus.LOADING);
-        getPersonalDataHelpDeskUseCase.run(UseCase.None.getInstance(), (Either<Failure, HelpDeskDataRequired> result) ->
-                result.fold(this::onLoadPersonalDataFailure, this::onLoadPersonalDataSuccess)
-        );
+        getPersonalDataHelpDeskUseCase.execute(UseCase.None.getInstance()).fold(this::onLoadPersonalDataFailure, this::onLoadPersonalDataSuccess);
     }
 
     private void onLoadPersonalDataSuccess(HelpDeskDataRequired helpDeskDataRequired) {

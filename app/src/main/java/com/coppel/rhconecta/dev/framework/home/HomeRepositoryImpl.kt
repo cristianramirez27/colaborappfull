@@ -21,6 +21,8 @@ import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.AppUtilities
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,7 +48,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
      *
      */
     override fun getBanners(
-        callback: OnResultFunction<Either<Failure, List<Banner>>>
+        callback: OnResultFunction<Either<Failure, List<Banner>>>,
     ) {
         val employeeNum = AppUtilities.getStringFromSharedPreferences(
             context,
@@ -77,7 +79,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         ).enqueue(object : Callback<GetMainInformationResponse?> {
             override fun onResponse(
                 call: Call<GetMainInformationResponse?>,
-                response: Response<GetMainInformationResponse?>
+                response: Response<GetMainInformationResponse?>,
             ) {
                 try {
                     val body = response.body()
@@ -108,7 +110,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
      *
      */
     override fun getBadges(
-        callback: OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>>
+        callback: OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>>,
     ) {
         val employeeNum = AppUtilities.getStringFromSharedPreferences(
             context,
@@ -127,7 +129,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         ).enqueue(object : Callback<GetMainInformationResponse?> {
             override fun onResponse(
                 call: Call<GetMainInformationResponse?>,
-                response: Response<GetMainInformationResponse?>
+                response: Response<GetMainInformationResponse?>,
             ) {
                 try {
                     val body = response.body()!!
@@ -162,7 +164,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         })
     }
 
-    override fun getHelpDeskServiceAvailability(callback: OnResultFunction<Either<Failure, HelpDeskAvailability>>) {
+    override suspend fun getHelpDeskServiceAvailability(): Either<Failure, HelpDeskAvailability> {
         val employeeNumStr = AppUtilities.getStringFromSharedPreferences(
             context,
             AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
@@ -173,37 +175,37 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         )
         val clvOption = 58
         val request = HomeRequest(employeeNumStr, "", authHeader, clvOption, AppConfig.ANDROID_OS)
-        apiService.getHelpDeskServiceAvailability(
-            authHeader,
-            ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
-            request
-        ).enqueue(object : Callback<DataResponse<List<HelpDeskAvailabilityServer>>> {
-            override fun onResponse(
-                call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
-                response: Response<DataResponse<List<HelpDeskAvailabilityServer>>>
-            ) {
-                try {
-                    val response = response.body()!!.data.response.toHelpDeskAvailabilityDomain()
-                    val result: Either<Failure, HelpDeskAvailability> =
-                        Either<Failure, HelpDeskAvailability>().Right(response)
-                    callback.onResult(result)
-                } catch (e: Exception) {
-                    val failure: Failure = ServerFailure()
-                    val result: Either<Failure, HelpDeskAvailability> =
-                        Either<Failure, HelpDeskAvailability>().Left(failure)
-                    callback.onResult(result)
-                }
-            }
 
-            override fun onFailure(
-                call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
-                t: Throwable
-            ) {
-                val failure: Failure = ServerFailure()
-                val result: Either<Failure, HelpDeskAvailability> =
-                    Either<Failure, HelpDeskAvailability>().Left(failure)
-                callback.onResult(result)
-            }
-        })
+        return withContext(Dispatchers.IO) {
+            lateinit var result: Either<Failure, HelpDeskAvailability>
+
+            apiService.getHelpDeskServiceAvailability(
+                authHeader,
+                ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
+                request
+            ).enqueue(object : Callback<DataResponse<List<HelpDeskAvailabilityServer>>> {
+                override fun onResponse(
+                    call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
+                    response: Response<DataResponse<List<HelpDeskAvailabilityServer>>>,
+                ) {
+
+                    result = try {
+                        val response =
+                            response.body()!!.data.response.toHelpDeskAvailabilityDomain()
+                        Either<Failure, HelpDeskAvailability>().Right(response)
+                    } catch (e: Exception) {
+                        Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
+                    t: Throwable,
+                ) {
+                    result = Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
+                }
+            })
+            result
+        }
     }
 }

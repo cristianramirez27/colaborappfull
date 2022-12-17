@@ -5,6 +5,9 @@ import com.coppel.rhconecta.dev.domain.common.Either
 import com.coppel.rhconecta.dev.domain.common.UseCase
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
 import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GetHelpDeskServiceAvailabilityUseCase @Inject constructor() :
@@ -16,10 +19,11 @@ class GetHelpDeskServiceAvailabilityUseCase @Inject constructor() :
     @Inject
     lateinit var homeRepository: HomeRepository
 
-    override fun run(
-        params: None,
-        callback: OnResultFunction<Either<Failure, HelpDeskAvailability>>
-    ) {
-        homeRepository.getHelpDeskServiceAvailability(callback)
+    override fun execute(params: None): Either<Failure, HelpDeskAvailability> {
+        lateinit var value: Either<Failure, HelpDeskAvailability>
+        CoroutineScope(Dispatchers.IO).launch {
+            value = homeRepository.getHelpDeskServiceAvailability()
+        }
+        return value
     }
 }

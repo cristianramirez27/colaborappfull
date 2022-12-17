@@ -13,14 +13,17 @@ import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 public abstract class UseCase<Type, Params> {
 
     /**
-     *
      * @param params
      * @return
      */
-    public abstract void run(Params params, OnResultFunction<Either<Failure, Type>> callback);
+    public void run(Params params, OnResultFunction<Either<Failure, Type>> callback) {
+    }
+
+    public Either<Failure, Type> execute(Params params) {
+        return null;
+    }
 
     /**
-     *
      *
      */
     public static class None {
@@ -29,11 +32,10 @@ public abstract class UseCase<Type, Params> {
         private static None instance;
 
         /**
-         *
          * @return
          */
         public static None getInstance() {
-            if(instance == null)
+            if (instance == null)
                 instance = new None();
             return instance;
         }
@@ -41,13 +43,11 @@ public abstract class UseCase<Type, Params> {
     }
 
     /**
-     *
      * @param <Type>
      */
     public interface OnResultFunction<Type> {
 
         /**
-         *
          * @param result
          */
         void onResult(Type result);
