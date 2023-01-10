@@ -19,11 +19,12 @@ class GetPersonalDataHelpDeskUseCase @Inject constructor() :
     @Inject
     lateinit var homeLocalRepository: HomeLocalRepository
 
-    override fun execute(params: None): Either<Failure, HelpDeskDataRequired> {
-        lateinit var value: Either<Failure, HelpDeskDataRequired>
+    override fun run(
+        params: None,
+        callback: OnResultFunction<Either<Failure, HelpDeskDataRequired>>
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
-            value = homeLocalRepository.getPersonalInfo()
+            callback.onResult(homeLocalRepository.getPersonalInfo())
         }
-        return value
     }
 }

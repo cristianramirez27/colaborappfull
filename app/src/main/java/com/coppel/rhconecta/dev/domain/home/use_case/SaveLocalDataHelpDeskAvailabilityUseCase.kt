@@ -19,11 +19,12 @@ class SaveLocalDataHelpDeskAvailabilityUseCase @Inject constructor() :
     @Inject
     lateinit var homeLocalRepository: HomeLocalRepository
 
-    override fun execute(params: LocalDataHelpDeskAvailability): Either<Failure, Boolean> {
-        lateinit var value: Either<Failure, Boolean>
+    override fun run(
+        params: LocalDataHelpDeskAvailability,
+        callback: OnResultFunction<Either<Failure, Boolean>>,
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
-            value = homeLocalRepository.saveDataHelpDeskAvailability(params)
+            callback.onResult(homeLocalRepository.saveDataHelpDeskAvailability(params))
         }
-        return value
     }
 }

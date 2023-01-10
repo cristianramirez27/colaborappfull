@@ -19,11 +19,12 @@ class GetHelpDeskServiceAvailabilityUseCase @Inject constructor() :
     @Inject
     lateinit var homeRepository: HomeRepository
 
-    override fun execute(params: None): Either<Failure, HelpDeskAvailability> {
-        lateinit var value: Either<Failure, HelpDeskAvailability>
+    override fun run(
+        params: None,
+        callback: OnResultFunction<Either<Failure, HelpDeskAvailability>>,
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
-            value = homeRepository.getHelpDeskServiceAvailability()
+            callback.onResult(homeRepository.getHelpDeskServiceAvailability())
         }
-        return value
     }
 }

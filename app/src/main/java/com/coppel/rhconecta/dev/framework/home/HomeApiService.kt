@@ -4,6 +4,7 @@ import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInfo
 import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationResponse
 import com.coppel.rhconecta.dev.framework.DataResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface HomeApiService {
@@ -15,7 +16,7 @@ interface HomeApiService {
     fun getMainInformation(
         @Header("Authorization") authHeader: String,
         @Url url: String,
-        @Body request: GetMainInformationRequest
+        @Body request: GetMainInformationRequest,
     ): Call<GetMainInformationResponse>
 
     /**
@@ -23,9 +24,9 @@ interface HomeApiService {
      */
     @Headers("Content-Type: application/json")
     @POST
-    fun getHelpDeskServiceAvailability(
+    suspend fun getHelpDeskServiceAvailability(
         @Header("Authorization") authHeader: String,
         @Url url: String,
-        @Body request: HomeRequest
-    ): Call<DataResponse<List<HelpDeskAvailabilityServer>>>
+        @Body request: HomeRequest,
+    ): Response<DataResponse<List<HelpDeskAvailabilityServer>>>
 }

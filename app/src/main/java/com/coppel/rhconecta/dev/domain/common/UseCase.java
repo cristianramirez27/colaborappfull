@@ -7,6 +7,7 @@ import com.coppel.rhconecta.dev.domain.common.failure.Failure;
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).
  * This abstraction represents an execution unit for different use cases (this means than any use
  * case in the application should implement this contract).
+ *
  * @param <Type>
  * @param <Params>
  */
@@ -17,10 +18,6 @@ public abstract class UseCase<Type, Params> {
      * @return
      */
     public void run(Params params, OnResultFunction<Either<Failure, Type>> callback) {
-    }
-
-    public Either<Failure, Type> execute(Params params) {
-        return null;
     }
 
     /**

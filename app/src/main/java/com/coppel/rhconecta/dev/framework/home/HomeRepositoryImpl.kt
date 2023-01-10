@@ -5,6 +5,7 @@ import com.coppel.rhconecta.dev.CoppelApp
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager
+import com.coppel.rhconecta.dev.data.common.getOnFailureResponse
 import com.coppel.rhconecta.dev.data.home.HomeRepository
 import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationRequest
 import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationResponse
@@ -15,7 +16,8 @@ import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure
 import com.coppel.rhconecta.dev.domain.home.entity.Badge
 import com.coppel.rhconecta.dev.domain.home.entity.Banner
 import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability
-import com.coppel.rhconecta.dev.framework.DataResponse
+import com.coppel.rhconecta.dev.domain.movements.GetMovementsFailure
+import com.coppel.rhconecta.dev.framework.retrofitApiCall
 import com.coppel.rhconecta.dev.framework.toHelpDeskAvailabilityDomain
 import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.AppUtilities
@@ -177,35 +179,27 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         val request = HomeRequest(employeeNumStr, "", authHeader, clvOption, AppConfig.ANDROID_OS)
 
         return withContext(Dispatchers.IO) {
-            lateinit var result: Either<Failure, HelpDeskAvailability>
-
-            apiService.getHelpDeskServiceAvailability(
-                authHeader,
-                ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
-                request
-            ).enqueue(object : Callback<DataResponse<List<HelpDeskAvailabilityServer>>> {
-                override fun onResponse(
-                    call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
-                    response: Response<DataResponse<List<HelpDeskAvailabilityServer>>>,
-                ) {
-
-                    result = try {
+            try {
+                retrofitApiCall {
+                    apiService.getHelpDeskServiceAvailability(
+                        authHeader,
+                        ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
+                        request
+                    )
+                }.let {
+                    try {
                         val response =
-                            response.body()!!.data.response.toHelpDeskAvailabilityDomain()
+                            it?.data?.response?.toHelpDeskAvailabilityDomain()
                         Either<Failure, HelpDeskAvailability>().Right(response)
                     } catch (e: Exception) {
                         Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
                     }
                 }
-
-                override fun onFailure(
-                    call: Call<DataResponse<List<HelpDeskAvailabilityServer>>>,
-                    t: Throwable,
-                ) {
-                    result = Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
-                }
-            })
-            result
+            } catch (e: Exception) {
+                val error = e.getOnFailureResponse()
+                val failure: Failure = GetMovementsFailure(error.name)
+                Either<Failure, HelpDeskAvailability>().Left(failure)
+            }
         }
     }
 }
