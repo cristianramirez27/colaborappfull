@@ -224,7 +224,8 @@ public class VisionaryDetailActivity extends AppCompatActivity {
         if (visionary.getVideo() != null) {
             String[] split = visionary.getVideo().split("/");
             String vimeoId = split[split.length - 1];
-            extractVideoStream(vimeoId);
+            //extractVideoStream(vimeoId);
+            videoStream = visionary.getVideo();
         }
         // Fill views
         tvTitle.setText(visionary.getTitle());
