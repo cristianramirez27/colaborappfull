@@ -105,3 +105,15 @@
 # Movements
 -keep public class com.coppel.rhconecta.dev.framework.movements.* { public *; }
 -dontwarn com.coppel.rhconecta.dev.framework.movements.**
+
+#HelpDesk
+-keep public class com.coppel.rhconecta.dev.domain.home.entity.* { *; }
+-dontwarn com.coppel.rhconecta.dev.domain.home.entity.**
+
+-keep public class com.coppel.rhconecta.dev.framework.** { *; }
+-dontwarn com.coppel.rhconecta.dev.framework.**
+
+-keep public class com.coppel.rhconecta.dev.views.modelview.* { *; }
+-dontwarn com.coppel.rhconecta.dev.views.modelview.**
+
+

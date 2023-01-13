@@ -10,8 +10,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "2.11.4"
-        versionCode 109
+        versionName "2.11.5"
+        versionCode 111
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -22,7 +22,6 @@ android {
             debuggable true
             minifyEnabled false
 
-            Properties localProperties = getLocalProperties()
             buildConfigField("String", "DEBUG_USR", localProperties['DEBUG_USR'] ?: "\"\"")
             buildConfigField("String", "DEBUG_PS", localProperties['DEBUG_PS'] ?: "\"\"")
 
@@ -44,6 +43,7 @@ android {
         }
 
         buildTypes.each {
+            Properties localProperties = getLocalProperties()
             it.buildConfigField("String", "ZENDESK_URL", localProperties['ZENDESK_URL'] ?: "\"\"")
             it.buildConfigField("String", "ZENDESK_APPLICATION", localProperties['ZENDESK_APPLICATION'] ?: "\"\"")
             it.buildConfigField("String", "ZENDESK_CLIENT", localProperties['ZENDESK_CLIENT'] ?: "\"\"")
