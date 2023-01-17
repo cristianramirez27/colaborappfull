@@ -53,7 +53,7 @@ public class ServicesConstants {
     public static  String GET_LOGIN = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_LOGIN);
     public static  String GET_PROFILE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PROFILE);
     public static  String GET_HOME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_HOME);
-    public static  String GET_HELP_DESK_SERVICE_AVAILABILITY = "https://dev-apisp.coppel.com:9000/rhconecta/api/v3/obtenerservicios";
+    public static  String GET_HELP_DESK_SERVICE_AVAILABILITY = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_COLLAGE);
     public static  String GET_COMUNICADOS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_COMUNICADOS);
     public static  String GET_VISIONARIOS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_VISIONARIOS);
     public static  String GET_VISIONARIOS_STAY_HOME = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_STAYHOME);
