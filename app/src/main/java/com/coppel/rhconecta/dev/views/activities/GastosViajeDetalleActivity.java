@@ -31,7 +31,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_REFUSE_RE
 
 public class GastosViajeDetalleActivity extends AppCompatActivity  {
 
-    @BindView(R.id.tbActionBar)
+    @BindView(R.id.toolbar)
     Toolbar tbActionBar;
     private FragmentManager childFragmentManager;
     private FragmentTransaction fragmentTransaction;
