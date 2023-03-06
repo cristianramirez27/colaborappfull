@@ -40,6 +40,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -84,9 +85,10 @@ public class SplashScreenActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         DaggerAnalyticsComponent.create().injectSplash(this);
+        validateRoot();
         setupFirebaseInstanceId();
         setupViews();
-        init();
+        //init();
         observeViewModel();
         checkAndSendAnalyticsIfExists();
     }
@@ -388,6 +390,28 @@ public class SplashScreenActivity
             dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
 
         }, 1500);
+    }
+
+    private static boolean checkRootMethod() {
+        String[] paths = {"/system/app/Superuser.apk", "/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
+                "/system/bin/failsafe/su", "/data/local/su", "/su/bin/su"};
+        for (String path : paths) {
+            if (new File(path).exists()) return true;
+        }
+        return false;
+    }
+
+    private void validateRoot(){
+        new Handler().postDelayed(() -> {
+            if (checkRootMethod()) {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.root_message), getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+            }else{
+                init();
+            }
+        },1500);
     }
 
 }
