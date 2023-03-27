@@ -279,7 +279,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
             case PICK_IMAGE:
                 if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
                     try {
-                        Bitmap selectedImage = CameraUtilities.saveTemporalImage(MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData()));
+
+                        Bitmap selectedImage =  MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData());
+                        //Bitmap selectedImage = CameraUtilities.saveTemporalImage(MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData())); DEVUELVE EL BITMAP EN NULL
+
                         if (RealmHelper.updateProfileImage(profileResponse.getCorreo(), selectedImage)) {
                             AppUtilities.setProfileImage(parent, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
                         } else {

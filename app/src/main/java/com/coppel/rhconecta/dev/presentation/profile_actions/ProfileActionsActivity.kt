@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.presentation.profile_actions
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import com.coppel.rhconecta.dev.R
@@ -17,6 +18,7 @@ import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment
 import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment.ToolbarFragmentCommunication
 import com.coppel.rhconecta.dev.presentation.profile_actions.fingerprint.FingerprintActivity
 import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity
+import com.coppel.rhconecta.dev.resources.db.RealmHelper
 import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.AppUtilities
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities
@@ -46,6 +48,11 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
         initValues()
         setupViews()
         execute()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setProfileImage()
     }
 
     /** */
@@ -125,11 +132,8 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
 
     /** */
     private fun setupUserInformation() {
+        setProfileImage()
         binding.apply {
-            Glide.with(root)
-                    .load(profileResponse.fotoperfil)
-                    .circleCrop()
-                    .into(ivUserImage)
             tvUserName.text = profileResponse.nombre
             tvUserNumber.text = profileResponse.colaborador
         }
@@ -155,6 +159,22 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     private fun onFingerprintsClickListener(view: View) {
         val intent = Intent(this, FingerprintActivity::class.java)
         startActivity(intent)
+    }
+
+    /** */
+    private fun setProfileImage(){
+        val userPreferences = RealmHelper.getUserPreferences(profileResponse.correo)
+        AppUtilities.setProfileImage(this, profileResponse.correo, profileResponse.fotoperfil, binding.ivUserImage)
+
+       // Log.i("prueba","foto perfil: " + profileResponse.fotoperfil)
+
+        //Log.i("prueba","userPreferences.image: " + userPreferences.image)
+        /*binding.apply {
+            Glide.with(root)
+                    .load(userPreferences.image)
+                    .circleCrop()
+                    .into(ivUserImage)
+        }*/
     }
 
     /** */

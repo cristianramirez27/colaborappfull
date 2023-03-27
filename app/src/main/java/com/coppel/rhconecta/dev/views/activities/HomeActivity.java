@@ -144,6 +144,7 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.MainSection;
+import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
@@ -325,7 +326,8 @@ public class HomeActivity
     private void requestDataForZendesk() {
         homeActivityViewModel.getPersonalDataForHelpDesk();
     }
-    private void initRecapcha(){
+
+    private void initRecapcha() {
         Log.i("CAPCHA", "initRecapcha  ");
         Recaptcha.getClient(this)
                 .init(AppConstants.KEY_CAPTCHA)
@@ -355,6 +357,7 @@ public class HomeActivity
                             }
                         });
     }
+
     /**
      *
      */
@@ -412,6 +415,7 @@ public class HomeActivity
 
     /**
      * Requests user information, necessary to start zendesk
+     *
      * @param data
      */
     private void getLoadPersonalDataSuccess(HelpDeskDataRequired data) {
@@ -522,6 +526,7 @@ public class HomeActivity
         }
         int backStackEntryCount = fragmentManager.getBackStackEntryCount();
         if (backStackEntryCount == 1) {
+
             finish();
         } else if (backStackEntryCount == 2) {
             setToolbarTitle(getString(R.string.title_home));
@@ -660,6 +665,8 @@ public class HomeActivity
                     fragmentManager.popBackStack(HomeMainFragment.TAG, 0);
                     dlHomeContainer.closeDrawers();
                     getAnalyticsTimeManager().clear();
+                    setToolbarTitle(getString(R.string.title_home));
+                    actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
                     break;
                 case OPTION_NOTICE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COMUNICADOS).equals(YES)) {
@@ -894,48 +901,49 @@ public class HomeActivity
     private void ValidateAccesSSO() {
         // Step 2: call execute() when there is an action to protect.
         Recaptcha.getClient(this)
-            .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
-            .addOnSuccessListener(
-                    this,
-                    new OnSuccessListener<RecaptchaResultData>() {
-                        @Override
-                        public void onSuccess(RecaptchaResultData response) {
-                            String tokenCatpcha = response.getTokenResult();
-                            // Handle success ...
-                            if (!tokenCatpcha.isEmpty()) {
-                                Log.i("CAPCHA", "reCAPTCHA response token: " + tokenCatpcha);
-                                if (!validateLoginSSO()) {
-                                    String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-                                    String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
-                                    String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
-                                    String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
-                                    TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 1,tokenCatpcha);
-                                    coppelServicesPresenter.getTokenSSO(tokenSSORequest, token);
+                .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
+                .addOnSuccessListener(
+                        this,
+                        new OnSuccessListener<RecaptchaResultData>() {
+                            @Override
+                            public void onSuccess(RecaptchaResultData response) {
+                                String tokenCatpcha = response.getTokenResult();
+                                // Handle success ...
+                                if (!tokenCatpcha.isEmpty()) {
+                                    Log.i("CAPCHA", "reCAPTCHA response token: " + tokenCatpcha);
+                                    if (!validateLoginSSO()) {
+                                        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+                                        String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+                                        String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
+                                        String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+                                        TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 1, tokenCatpcha);
+                                        coppelServicesPresenter.getTokenSSO(tokenSSORequest, token);
+                                    } else {
+                                        getExternalUrl();
+                                    }
                                 } else {
-                                    getExternalUrl();
+                                    showMessageUser("Servicio de ReCaptcha no disponible!..");
                                 }
-                            }else{
-                                showMessageUser("Servicio de ReCaptcha no disponible!..");
                             }
-                        }
-                    })
+                        })
                 .addOnFailureListener(
-                    this,
-                    new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.i("CAPCHA", e.getMessage());
-                            showMessageUser("Servicio de ReCaptcha no disponible!.");
-                            if (e instanceof ApiException) {
-                                ApiException apiException = (ApiException) e;
-                                //Status apiErrorStatus = apiException.getStatusCode();
-                                // Handle api errors ...
-                            } else {
-                                // Handle other failures ...
+                        this,
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CAPCHA", e.getMessage());
+                                showMessageUser("Servicio de ReCaptcha no disponible!.");
+                                if (e instanceof ApiException) {
+                                    ApiException apiException = (ApiException) e;
+                                    //Status apiErrorStatus = apiException.getStatusCode();
+                                    // Handle api errors ...
+                                } else {
+                                    // Handle other failures ...
+                                }
                             }
-                        }
-                    });
+                        });
     }
+
     private void ValidateAccesBass() {
         Recaptcha.getClient(this)
                 .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))
@@ -953,12 +961,12 @@ public class HomeActivity
                                         String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
                                         String password = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS);
                                         String num_empleado = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
-                                        TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 4,tokenCatpcha);
+                                        TokenSSORequest tokenSSORequest = new TokenSSORequest(email, password, num_empleado, 4, tokenCatpcha);
                                         coppelServicesPresenter.getTokenBASS(tokenSSORequest, token);
                                     } else {
                                         getExternalUrl();
                                     }
-                                }else{
+                                } else {
                                     showMessageUser("Servicio de ReCaptcha no disponible!..");
                                 }
                             }
@@ -981,7 +989,8 @@ public class HomeActivity
                         });
 
     }
-    private void showMessageUser(String msg){
+
+    private void showMessageUser(String msg) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -993,13 +1002,14 @@ public class HomeActivity
             }
         }, 1500);
     }
+
     private boolean validateLoginBASS() {
-        try{
+        try {
             String strLastLogin = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_BASS_LOGIN);
             String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_BASS);
-            if (strLastLogin == null || token == null){
+            if (strLastLogin == null || token == null) {
                 return false;
-            }else{
+            } else {
                 Date lastLogin = new Gson().fromJson(strLastLogin, Date.class);
                 Date currentTime = Calendar.getInstance().getTime();
                 long timeLapse = currentTime.getTime() - lastLogin.getTime();
@@ -1011,11 +1021,12 @@ public class HomeActivity
                     return false;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         return false;
     }
+
     private boolean validateLoginSSO() {
         String strLastLogin = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN);
         Date lastLogin = new Gson().fromJson(strLastLogin, Date.class);
@@ -1515,11 +1526,11 @@ public class HomeActivity
      * Initialize zendesk instance
      */
     private void initializeZendesk() {
-            zendeskUtil.initialize(this, baseViewModel);
-            zendeskUtil.setCallBack(this);
-            zendeskUtil.setFeatureIsEnable(true);
-            zendeskUtil.startMonitorChatStatus(0.30F);
-            requestDataForZendesk();
+        zendeskUtil.initialize(this, baseViewModel);
+        zendeskUtil.setCallBack(this);
+        zendeskUtil.setFeatureIsEnable(true);
+        zendeskUtil.startMonitorChatStatus(0.30F);
+        requestDataForZendesk();
     }
 
 

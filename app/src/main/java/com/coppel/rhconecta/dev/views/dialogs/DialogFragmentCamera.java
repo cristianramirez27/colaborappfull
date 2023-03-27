@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,7 +145,7 @@ public class DialogFragmentCamera extends DialogFragment implements View.OnClick
     @Override
     public void onBitmapReady(Bitmap bitmap) {
         if (onCaptureListener != null) {
-            bitmap = CameraUtilities.saveTemporalImage(bitmap);
+            //bitmap = CameraUtilities.saveTemporalImage(bitmap); DEVUELVE EL BITMAP EN NULL
             onCaptureListener.onPictureTaken(bitmap);
         }
     }

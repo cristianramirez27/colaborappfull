@@ -21,8 +21,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
-
 import androidx.fragment.app.FragmentManager;
+
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
@@ -381,6 +381,6 @@ public class AppUtilities {
     }
 
     public static String getVersionApp() {
-      return BuildConfig.VERSION_NAME;
+        return BuildConfig.VERSION_NAME;
     }
 }
