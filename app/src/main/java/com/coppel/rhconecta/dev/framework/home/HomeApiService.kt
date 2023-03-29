@@ -5,7 +5,11 @@ import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInfo
 import com.coppel.rhconecta.dev.framework.DataResponse
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Headers
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Url
 
 interface HomeApiService {
     /**

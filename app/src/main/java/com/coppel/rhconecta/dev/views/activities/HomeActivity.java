@@ -28,6 +28,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SA
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
@@ -58,21 +59,16 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FU
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_EMAIL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_PASS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -111,7 +107,6 @@ import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
 import com.coppel.rhconecta.dev.business.interfaces.IScheduleOptions;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.interfaces.ISurveyNotification;
-import com.coppel.rhconecta.dev.business.models.CoCreaRequest;
 import com.coppel.rhconecta.dev.business.models.CoCreaResponse;
 import com.coppel.rhconecta.dev.business.models.ExpensesTravelRequestData;
 import com.coppel.rhconecta.dev.business.models.ExternalUrlResponse;
@@ -144,7 +139,6 @@ import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.MainSection;
-import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.views.adapters.HomeSlideMenuArrayAdapter;
 import com.coppel.rhconecta.dev.views.customviews.SurveyInboxView;
@@ -164,8 +158,8 @@ import com.coppel.rhconecta.dev.views.modelview.HelpDeskDataRequired;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
-import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 import com.coppel.rhconecta.dev.views.utils.ZendeskManager;
+import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 import com.coppel.rhconecta.dev.visionarios.databases.InternalDatabase;
 import com.coppel.rhconecta.dev.visionarios.databases.TableConfig;
 import com.coppel.rhconecta.dev.visionarios.databases.TableUsuario;
@@ -322,7 +316,6 @@ public class HomeActivity
     /**
      * Request at service for the availability of the help desk (Zendesk)
      */
-    @Deprecated
     private void requestDataForZendesk() {
         homeActivityViewModel.getPersonalDataForHelpDesk();
     }

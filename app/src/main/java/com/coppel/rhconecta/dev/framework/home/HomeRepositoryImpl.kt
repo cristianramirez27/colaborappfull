@@ -1,10 +1,8 @@
 package com.coppel.rhconecta.dev.framework.home
 
 import android.content.Context
-import com.coppel.rhconecta.dev.CoppelApp
 import com.coppel.rhconecta.dev.business.Configuration.AppConfig
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants
-import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager
 import com.coppel.rhconecta.dev.data.common.getOnFailureResponse
 import com.coppel.rhconecta.dev.data.home.HomeRepository
 import com.coppel.rhconecta.dev.data.home.model.get_main_information.GetMainInformationRequest
@@ -23,57 +21,29 @@ import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.AppUtilities
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class HomeRepositoryImpl @Inject constructor() : HomeRepository {
-    /* */
-    private val apiService: HomeApiService
-
-    /* */
-    private val context: Context
-
-    /**
-     *
-     */
-    init {
-        val retrofit = ServicesRetrofitManager.getInstance().retrofitAPI
-        apiService = retrofit.create(HomeApiService::class.java)
-        context = CoppelApp.getContext()
-    }
+class HomeRepositoryImpl @Inject constructor(
+    private val context: Context,
+    private val apiService: HomeApiService,
+    private val firebaseCrashlytics: FirebaseCrashlytics,
+    private val firebaseAnalytics: FirebaseAnalytics,
+) : HomeRepository {
 
     /**
      *
      */
     override fun getBanners(
+        employeeNum: String,
+        authHeader: String,
         callback: OnResultFunction<Either<Failure, List<Banner>>>,
     ) {
-        val employeeNum = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ).toLong()
-        val clvOption = 1
-        val authHeader = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_TOKEN
-        )
-        FirebaseCrashlytics.getInstance().setUserId(
-            AppUtilities.getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-            )
-        )
-        FirebaseAnalytics.getInstance(context).setUserId(
-            AppUtilities.getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-            )
-        )
-        val request = GetMainInformationRequest(employeeNum, clvOption)
+        firebaseCrashlytics.setUserId(employeeNum)
+        firebaseAnalytics.setUserId(employeeNum)
+        val request = GetMainInformationRequest(employeeNum.toLong(), OPTION_BADGES)
         apiService.getMainInformation(
             authHeader,
             ServicesConstants.GET_HOME,
@@ -112,22 +82,14 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
      *
      */
     override fun getBadges(
+        employeeNum: String,
+        authHeader: String,
         callback: OnResultFunction<Either<Failure, Map<Badge.Type, Badge>>>,
     ) {
-        val employeeNum = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ).toLong()
-        val clvOption = 1
-        val authHeader = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_TOKEN
-        )
-        val request = GetMainInformationRequest(employeeNum, clvOption)
         apiService.getMainInformation(
             authHeader,
             ServicesConstants.GET_HOME,
-            request
+            GetMainInformationRequest(employeeNum.toLong(), OPTION_BADGES)
         ).enqueue(object : Callback<GetMainInformationResponse?> {
             override fun onResponse(
                 call: Call<GetMainInformationResponse?>,
@@ -166,40 +128,35 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         })
     }
 
-    override suspend fun getHelpDeskServiceAvailability(): Either<Failure, HelpDeskAvailability> {
-        val employeeNumStr = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        )
-        val authHeader = AppUtilities.getStringFromSharedPreferences(
-            context,
-            AppConstants.SHARED_PREFERENCES_TOKEN
-        )
-        val clvOption = 58
-        val request = HomeRequest(employeeNumStr, "", authHeader, clvOption, AppConfig.ANDROID_OS)
-
-        return withContext(Dispatchers.IO) {
-            try {
-                retrofitApiCall {
-                    apiService.getHelpDeskServiceAvailability(
-                        authHeader,
-                        ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
-                        request
-                    )
-                }.let {
-                    try {
-                        val response =
-                            it?.data?.response?.toHelpDeskAvailabilityDomain()
-                        Either<Failure, HelpDeskAvailability>().Right(response)
-                    } catch (e: Exception) {
-                        Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
-                    }
+    override suspend fun getHelpDeskServiceAvailability(
+        employeeNum: String,
+        authHeader: String,
+    ): Either<Failure, HelpDeskAvailability> {
+        return try {
+            retrofitApiCall {
+                apiService.getHelpDeskServiceAvailability(
+                    authHeader,
+                    ServicesConstants.GET_HELP_DESK_SERVICE_AVAILABILITY,
+                    HomeRequest(employeeNum, "", authHeader, OPTION_ZENDESK, AppConfig.ANDROID_OS)
+                )
+            }.let {
+                try {
+                    val response =
+                        it?.data?.response?.toHelpDeskAvailabilityDomain()
+                    Either<Failure, HelpDeskAvailability>().Right(response)
+                } catch (e: Exception) {
+                    Either<Failure, HelpDeskAvailability>().Left(ServerFailure())
                 }
-            } catch (e: Exception) {
-                val error = e.getOnFailureResponse()
-                val failure: Failure = GetMovementsFailure(error.name)
-                Either<Failure, HelpDeskAvailability>().Left(failure)
             }
+        } catch (e: Exception) {
+            val error = e.getOnFailureResponse()
+            val failure: Failure = GetMovementsFailure(error.name)
+            Either<Failure, HelpDeskAvailability>().Left(failure)
         }
+    }
+
+    companion object {
+        const val OPTION_ZENDESK = 58
+        const val OPTION_BADGES = 1
     }
 }
