@@ -21,6 +21,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ME
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
@@ -28,6 +29,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SA
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
@@ -65,8 +67,10 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCR
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALCULATOR;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -83,6 +87,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -136,6 +144,7 @@ import com.coppel.rhconecta.dev.presentation.profile_actions.ProfileActionsActiv
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
+import com.coppel.rhconecta.dev.presentation.calculator.CalculatorActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.MainSection;
@@ -258,6 +267,18 @@ public class HomeActivity
 
     @Inject
     public ZendeskManager zendeskUtil;
+    private ActivityResultLauncher<Intent> register = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(),new ActivityResultCallback<ActivityResult>(){
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String go = data.getStringExtra("goto");
+                if (go != null){
+                    navigationMenu(go, null);
+                }
+            }
+        }
+    });
 
     /**
      *
@@ -814,6 +835,14 @@ public class HomeActivity
                     String urlCoppel = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES);
                     externalOption = VACANCIES;
                     getExternalUrl(urlCoppel);
+                    break;
+                case OPTION_CALCULATOR:
+                    if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR).equals(YES)) {
+                        showBlockDialog(BLOCK_MESSAGE_CALCULATOR);
+                    } else {
+                        Intent intentCalculator = new Intent(this, CalculatorActivity.class);
+                        register.launch(intentCalculator);
+                    }
                     break;
             }
         } else

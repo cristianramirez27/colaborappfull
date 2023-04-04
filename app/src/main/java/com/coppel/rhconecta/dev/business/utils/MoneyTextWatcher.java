@@ -4,19 +4,23 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import kotlin.text.Regex;
 
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MoneyTextWatcher implements TextWatcher {
     private final WeakReference<EditText> editTextWeakReference;
-    private static String prefix = "$";
+    private String prefix = "$";
     private static final int MAX_LENGTH = 20;
     private String previousCleanString;
     private boolean supportDecimal = false;
+    private Pattern regex = Pattern.compile("\\d+");
 
     public MoneyTextWatcher(EditText editText) {
         editTextWeakReference = new WeakReference<EditText>(editText);
@@ -25,6 +29,9 @@ public class MoneyTextWatcher implements TextWatcher {
     public MoneyTextWatcher(EditText editText, boolean supportDecimal) {
         editTextWeakReference = new WeakReference<EditText>(editText);
         this.supportDecimal = supportDecimal;
+    }
+    public void setPrefix(String value){
+        prefix = value;
     }
 
     private void setFocus(){
@@ -63,7 +70,7 @@ public class MoneyTextWatcher implements TextWatcher {
             return;
         }*/
         int position = str.lastIndexOf(".");
-        if (str.length()> 2 &&str.substring(0,1).equals(prefix) && position > 1&& position <= str.length()-3){
+        if (supportDecimal && str.length()> 2 &&str.substring(0,1).equals(prefix) && position > 1&& position <= str.length()-3){
             if (position == str.length() -3)
                 return;
            str = str.substring(0,(position+3));
@@ -74,7 +81,7 @@ public class MoneyTextWatcher implements TextWatcher {
             return;
         }
 
-        if (str.equals(prefix)) {
+        if (str.equals(prefix) && !prefix.isEmpty()) {
             str = str.replace(prefix, "");
             previousCleanString ="";
             editText.setText(str);
@@ -83,16 +90,25 @@ public class MoneyTextWatcher implements TextWatcher {
         if (supportDecimal && str.lastIndexOf(".") == str.length() - 1 || (str.lastIndexOf(".") == str.length() - 2 && str.charAt(str.length() - 1) == '0')) {
             return;
         }
+
+//        cleanString = value.toString();
         // cleanString this the string which not contain prefix and ,
-        String cleanString = str.replace(prefix, "").replaceAll("[,]", "");
+        //String cleanString = str.replace(prefix, "").replaceAll("[,]", "");
         // for prevent afterTextChanged recursive call
-        if (cleanString.equals(previousCleanString) || cleanString.isEmpty() ) {
+        if (str.equals(previousCleanString) ) {
             return;
         }
-        previousCleanString = cleanString;
+        StringBuilder value = new StringBuilder();
+        Matcher matcher = regex.matcher(str);
+        while(matcher.find()){
+            value.append(matcher.group());
+        }
+        String cleanString = value.toString();
+//        previousCleanString = cleanString;
 
         String formattedString;
-        formattedString = supportDecimal ? formatIntegerDecimal(cleanString) : formatInteger(cleanString);
+        formattedString =  cleanString.isEmpty() ? cleanString : supportDecimal ? formatIntegerDecimal(cleanString) : formatInteger(cleanString);
+        previousCleanString = formattedString;
 
         editText.removeTextChangedListener(this); // Remove listener
         editText.setText(formattedString);

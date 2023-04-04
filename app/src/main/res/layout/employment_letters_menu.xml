@@ -32,12 +32,12 @@
         />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvOptions"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/IndicationLetters"
-            android:overScrollMode="never"
-            android:scrollbars="none" />
+                android:id="@+id/rcvOptions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/IndicationLetters"
+                android:overScrollMode="never"
+                android:scrollbars="none"/>
 
     </RelativeLayout>
 

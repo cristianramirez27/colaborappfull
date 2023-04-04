@@ -42,6 +42,62 @@
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="separation_component">5dp</dimen>
 
+<!--    Calculator-->
+    <dimen name="title_top_calculator">92dp</dimen>
+    <dimen name="title_sides_calculator">46dp</dimen>
+    <dimen name="title_privacy_calculator">38dp</dimen>
+    <dimen name="title_dialog_privacy_top_calculator">20dp</dimen>
+    <dimen name="image_dialog_help_top_calculator">20dp</dimen>
+    <dimen name="foot_dialog_help_top_calculator">20dp</dimen>
+    <dimen name="foot_dialog_help_sides_calculator">37dp</dimen>
+    <dimen name="subtitle_dialog_help_top_calculator">20dp</dimen>
+    <dimen name="subtitle_dialog_help_sides_calculator">37dp</dimen>
+    <dimen name="title_dialog_privacy_sides_calculator">24dp</dimen>
+    <dimen name="text_dialog_privacy_top_calculator">18dp</dimen>
+    <dimen name="text_dialog_privacy_sides_calculator">24dp</dimen>
+    <dimen name="text_privacy_top_calculator">30dp</dimen>
+    <dimen name="text_privacy_sides_calculator">24dp</dimen>
+    <dimen name="subtitle_sides_calculator">36dp</dimen>
+    <dimen name="image_top_calculator">30dp</dimen>
+    <dimen name="image_sides_calculator">88dp</dimen>
+    <dimen name="checkbox_top_calculator">20dp</dimen>
+    <dimen name="checkbox_sides_calculator">49dp</dimen>
+    <dimen name="button_sides_calculator">55dp</dimen>
+    <dimen name="button_sides_dialog_calculator">32dp</dimen>
+    <dimen name="button_bottom_dialog_calculator">30dp</dimen>
+    <dimen name="separation_separator_top_calculator">37dp</dimen>
+    <dimen name="separation_separator_sides_calculator">40dp</dimen>
+    <dimen name="separation_title_calculator">92dp</dimen>
+    <dimen name="title_dashboard_top_calculator">16dp</dimen>
+    <dimen name="title_dashboard_sides_calculator">64dp</dimen>
+    <dimen name="section_information_dashboard_top_calculator">20dp</dimen>
+    <dimen name="section_information_month_top_calculator">24dp</dimen>
+    <dimen name="section_information_text_dashboard_top_calculator">16dp</dimen>
+    <dimen name="section_information_text_dashboard_sides_calculator">24dp</dimen>
+    <dimen name="section_information_dashboard_sides_calculator">24dp</dimen>
+    <dimen name="text_dashboard_top_information">16dp</dimen>
+    <dimen name="text_dashboard_sides_information">16dp</dimen>
+    <dimen name="edith_dashboard_top_information">4dp</dimen>
+    <dimen name="cardView_dashboard_top_information">16dp</dimen>
+    <dimen name="cardView_dashboard_sides_information">10dp</dimen>
+    <dimen name="textView_dashboard_top_information">10dp</dimen>
+    <dimen name="textView_dashboard_sides_information">40dp</dimen>
+    <dimen name="button_dashboard_top_information">32dp</dimen>
+    <dimen name="button_dashboard_sides_information">55dp</dimen>
+    <dimen name="button_dashboard_bottom_information">64dp</dimen>
+    <dimen name="buttons_bottom_sheet_sides_calculator">24dp</dimen>
+    <dimen name="buttons_bottom_sheet_top_calculator">16dp</dimen>
+    <dimen name="text_information_salary_sides_calculator">21dp</dimen>
+    <dimen name="text_optional_information_sides_calculator">21dp</dimen>
+    <dimen name="container_information_salary_sides_calculator">16dp</dimen>
+
+    <dimen name="title_dialog_score_calculator_sides">24dp</dimen>
+    <dimen name="question_dialog_score_calculator_sides">24dp</dimen>
+    <dimen name="question_dialog_score_calculator_top">18dp</dimen>
+    <dimen name="item_dialog_score_calculator_top">30dp</dimen>
+    <dimen name="button_dialog_score_calculator_top">32dp</dimen>
+    <dimen name="comment_dialog_score_calculator_top">4dp</dimen>
+
 
 </resources>
 

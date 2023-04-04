@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_calculator" android:id="@+id/scroll_view">
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:background="@color/background_calculator">
+
+        <include layout="@layout/head_fragment_calculator"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"/>
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/cardView5"
+                app:cardCornerRadius="8dp"
+                android:layout_marginTop="@dimen/cardView_dashboard_top_information"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/section_information_dashboard_sides_calculator"
+                android:layout_marginEnd="@dimen/section_information_dashboard_sides_calculator"
+                android:id="@+id/cardView6">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_info"
+                        android:id="@+id/imageView12"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView52"
+                        app:layout_constraintTop_toTopOf="@+id/textView52"
+                        app:layout_constraintStart_toEndOf="@+id/textView52"/>
+                <TextView
+                        android:text="@string/title_dashboard_calculation_card2"
+                        android:layout_width="wrap_content"
+                        style="@style/TextMedium13CoppelCalculator"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingLeft="8dp"
+                        android:layout_height="65dp" android:id="@+id/textView52"
+                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView12" android:layout_marginStart="10dp"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorGrayCalculator"
+                        app:layout_constraintTop_toBottomOf="@+id/textView52"
+                        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                            android:text="0%"
+                            android:background="@drawable/background_white_rounded_calculator"
+                            android:layout_width="wrap_content"
+                            style="@style/TextBook14Coppel"
+                            android:textColor="@color/colorBlackCalculator"
+                            android:layout_height="wrap_content" android:id="@+id/textView53"
+                            android:layout_marginStart="@dimen/cardView_dashboard_sides_information"
+                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                            android:paddingTop="@dimen/textView_dashboard_top_information"
+                            android:paddingBottom="@dimen/textView_dashboard_top_information"
+                            android:paddingLeft="60dp" android:paddingRight="60dp"/>
+                    <TextView
+                            android:text="$ 0 MXN"
+                            android:layout_width="wrap_content"
+                            style="@style/TextMedium16CoppelCalculator"
+                            android:layout_height="wrap_content" android:id="@+id/textView54"
+                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="@+id/textView55"
+                            android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                            app:layout_constraintStart_toStartOf="@+id/textView55"/>
+                    <TextView
+                            android:text="@string/label_dashboard_calculation_card2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/textView55"
+                            app:layout_constraintTop_toBottomOf="@+id/textView54"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            style="@style/TextBook12Coppel"
+                            android:textColor="@color/colorBlackCalculator"
+                            android:layout_marginEnd="@dimen/cardView_dashboard_sides_information"/>
+                    <TextView
+                            android:text="@string/foot_dashboard_calculation_card2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content" android:id="@+id/textView56"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            style="@style/TextBook12CoppelCalculator"
+                            app:layout_constraintTop_toBottomOf="@+id/textView55"
+                            android:layout_marginBottom="@dimen/section_information_dashboard_top_calculator"
+                            android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                            android:layout_marginStart="@dimen/cardView_dashboard_sides_information"
+                            android:layout_marginEnd="@dimen/cardView_dashboard_sides_information"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                android:layout_marginStart="@dimen/section_information_dashboard_sides_calculator"
+                android:layout_marginEnd="@dimen/section_information_dashboard_sides_calculator"
+                app:layout_constraintTop_toBottomOf="@+id/section_label" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="32dp" android:id="@+id/cardView5">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:text="@string/text_dashboard_calculation_title"
+                        style="@style/TextMedium13CoppelCalculator"
+                        android:layout_width="wrap_content"
+                        android:background="@android:color/white"
+                        android:layout_height="wrap_content" android:id="@+id/textView48"
+                        android:paddingRight="8dp" android:paddingBottom="16dp" android:paddingTop="16dp"
+                        android:paddingLeft="8dp"
+                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_info"
+                        android:id="@+id/imageView11"
+                        app:layout_constraintStart_toEndOf="@+id/textView48" app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView48"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/textView48"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:background="@color/colorGrayCalculator"
+                        app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+                    <TextView
+                            android:text="TextView"
+                            android:layout_width="0dp"
+                            style="@style/TextBook16Coppel"
+                            android:textColor="@color/colorBlackCalculator"
+                            android:layout_height="wrap_content" android:id="@+id/textView49"
+                            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                            android:layout_marginStart="10dp"/>
+                    <com.google.android.material.slider.Slider
+                            android:valueFrom="60"
+                            android:valueTo="65"
+                            android:stepSize="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/seekBar"
+                            app:haloRadius="0dp"
+                            app:thumbColor="@color/colorTextCode"
+                            app:trackColorInactive="@android:color/white"
+                            app:trackColorActive="@color/colorTextCode"
+                            app:tickColorInactive="@color/colorTextCode"
+                            app:tickColorActive="@android:color/white"
+                            app:labelStyle="@style/Widget.App.Tooltip"
+                            app:labelBehavior="visible"
+                            app:trackHeight="8dp"
+                            app:layout_constraintTop_toBottomOf="@+id/textView49"
+                            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="@dimen/section_information_text_dashboard_sides_calculator"
+                            android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"/>
+                    <TextView
+                            android:text="@string/text_dashboard_calculation_end_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/textView51"
+                            app:layout_constraintTop_toBottomOf="@+id/seekBar" app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"
+                            style="@style/TextMedium16CoppelCalculator"
+                            android:layout_marginBottom="@dimen/section_information_dashboard_top_calculator"/>
+                    <TextView
+                            android:text="@string/text_dashboard_calculation_start_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView50"
+                            style="@style/TextMedium16CoppelCalculator"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/seekBar"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="@dimen/section_information_text_dashboard_sides_calculator"
+                            android:layout_marginBottom="@dimen/section_information_dashboard_top_calculator"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+        <Button
+                android:text="@string/text_dashboard_calculation_button"
+                android:layout_width="0dp"
+                style="@style/ButtonCoppelCalculator"
+                android:layout_height="wrap_content" android:id="@+id/button8"
+                app:layout_constraintTop_toBottomOf="@+id/cardView6"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/button_dashboard_top_information"
+                android:layout_marginEnd="@dimen/button_dashboard_sides_information"
+                android:layout_marginStart="@dimen/button_dashboard_sides_information"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="64dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

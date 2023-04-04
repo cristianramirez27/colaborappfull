@@ -119,6 +119,7 @@ public class AppConfig {
     public final static String BLOCK_MESSAGE_COMUNICADOS = "BLOCK_MESSAGE_COMUNICADOS";
     public final static String BLOCK_MESSAGE_ENCUESTAS = "BLOCK_MESSAGE_ENCUESTAS";
     public final static String BLOCK_MESSAGE_COLLAGE = "BLOCK_MESSAGE_COLLAGE";
+    public final static String BLOCK_MESSAGE_CALCULATOR = "BLOCK_MESSAGE_CALCULATOR";
     public final static String BLOCK_MESSAGE_QR = "BLOCK_MESSAGE_QR";
     public final static String BLOCK_MESSAGE_STAYHOME = "BLOCK_MESSAGE_STAYHOME";
     public final static String BLOCK_MESSAGE_COVID_SURVEY = "BLOCK_MESSAGE_COVID_SURVEY";
@@ -148,6 +149,7 @@ public class AppConfig {
     public final static String ENDPOINT_COCREA_STORE = "URL_COCREA_STORE";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
+    public final static String BLOCK_CALCULATOR = "BLOCK_CALCULATOR";
 
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
@@ -316,6 +318,8 @@ public class AppConfig {
         String block_vacancies_message = mFirebaseRemoteConfig.getString(BLOCK_VACANCIES_MESSAGE);
         String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
         String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
+        String block_calculator = mFirebaseRemoteConfig.getString(BLOCK_CALCULATOR);
+        String block_calculator_message = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_CALCULATOR);
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_SAVINGS, block_message_savings);
@@ -395,6 +399,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL, block_holidays_additonal);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MY_MOVEMENTS, block_my_movements);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MYMOVEMENTS_MESSAGE, block_my_movements_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR, block_calculator);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_CALCULATOR, block_calculator_message);
 
     }
 

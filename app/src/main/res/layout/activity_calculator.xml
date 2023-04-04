@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.calculator.CalculatorActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:id="@+id/appBarLayout">
+        <androidx.appcompat.widget.Toolbar android:layout_width="match_parent" android:layout_height="wrap_content"
+                                           android:minHeight="?actionBarSize"
+                                           android:id="@+id/toolbar">
+            <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                               android:layout_height="match_parent">
+                <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center|start"
+                        android:paddingStart="10dp"
+                        style="@style/TextMedium18CoppelCalculator"
+                        android:text="@string/title_calculator" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <FrameLayout android:layout_width="match_parent"
+                 android:background="@color/background_calculator"
+                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                 android:layout_height="match_parent" android:id="@+id/content"/>
+    <androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_gravity="bottom"
+                                                  android:background="@android:color/white"
+                                                  android:orientation="vertical" android:paddingTop="8dp"
+                                                  android:paddingBottom="8dp" android:id="@+id/container_help">
+
+        <TextView
+                android:id="@+id/textView33"
+                android:text="@string/title_dashboard_help"
+                style="@style/TextBold14CoppelBlack"
+                android:textColor="@color/colorTextCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+        />
+        <TextView
+                android:text="@string/text_dashboard_help"
+                style="@style/TextBold14CoppelBlack"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView34"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

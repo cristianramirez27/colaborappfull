@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:layout_constraintTop_toBottomOf="@+id/section_label"
+        android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="8dp"
+        android:layout_marginStart="@dimen/section_information_dashboard_sides_calculator"
+        android:layout_marginEnd="@dimen/section_information_dashboard_sides_calculator"
+        app:layout_constraintEnd_toEndOf="parent" android:id="@+id/cardView"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
+                                                  android:orientation="vertical"
+                                                  android:layout_height="wrap_content">
+
+        <TextView
+                android:text="@string/text_dashboard_calculator"
+                style="@style/TextMedium14CoppelCalculator"
+                android:elevation="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView17"
+                android:paddingTop="@dimen/section_information_text_dashboard_top_calculator"
+                android:paddingBottom="@dimen/section_information_text_dashboard_top_calculator"
+                android:paddingLeft="20dp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:background="#efefef"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/text_age_information_calculator"
+                    style="@style/TextBook14CoppelCalculator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView19"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/section_information_text_dashboard_sides_calculator"/>
+            <TextView
+                    android:text="@string/text_years_information_calculator"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" android:id="@+id/textView18"
+                    style="@style/TextBook14CoppelCalculator"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19"
+                    android:layout_marginTop="@dimen/section_information_text_dashboard_top_calculator"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/section_information_text_dashboard_sides_calculator"
+                    app:layout_constraintEnd_toStartOf="@+id/textView22" android:layout_marginEnd="8dp"/>
+            <TextView
+                    android:text="@string/text_salary_information_calculator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView20"
+                    style="@style/TextBook14CoppelCalculator"
+                    app:layout_constraintTop_toBottomOf="@+id/textView18"
+                    android:layout_marginTop="@dimen/section_information_text_dashboard_top_calculator"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="@dimen/section_information_text_dashboard_sides_calculator"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/section_information_text_dashboard_top_calculator"/>
+            <TextView
+                    android:text="40 años"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView21"
+                    style="@style/TextBook14CoppelCalculator"
+                    android:layout_marginTop="@dimen/section_information_dashboard_top_calculator"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"/>
+            <TextView
+                    android:text="10 años 11 meses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView22"
+                    android:layout_marginTop="@dimen/section_information_text_dashboard_top_calculator"
+                    style="@style/TextBook14CoppelCalculator"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"/>
+            <TextView
+                    android:text="$22,000.00 MXN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView23"
+                    style="@style/TextBook14CoppelCalculator"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/section_information_text_dashboard_top_calculator"
+                    android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/section_information_text_dashboard_top_calculator"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>
