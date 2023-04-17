@@ -94,7 +94,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="@dimen/section_information_text_dashboard_sides_calculator"/>
                 <TextView
-                        android:text="$22,000.00 MXN"
+                        android:text="$22,000 MXN"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/textView23"
                         style="@style/TextBook14CoppelCalculator"
