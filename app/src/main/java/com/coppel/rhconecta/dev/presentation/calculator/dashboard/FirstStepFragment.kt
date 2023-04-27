@@ -38,8 +38,8 @@ class FirstStepFragment : Fragment() {
         listTemp.add(Header("Caja de Ahorro", R.drawable.ic_info, R.string.text_dashboard_info_help2))
         listTemp.add(Item("Aportaciones ordinarias", "$1000,000  MXN"))
         listTemp.add(Item("Aportaciones addicionales", "$50,000  MXN"))
-        listTemp.add(Item("AER I", "$200  MXN", R.drawable.ic_info, R.string.text_dashboard_info_help3))
-        listTemp.add(Item("AER II", "$200  MXN", R.drawable.ic_info, R.string.text_dashboard_info_help4))
+        listTemp.add(Item("AER", "$200  MXN", R.drawable.ic_info, R.string.text_complete_dashboard_info_help3))
+        listTemp.add(Item("AER 60", "$200  MXN", R.drawable.ic_info, R.string.text_complete_dashboard_info_help4))
 
     }
 
