@@ -159,6 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //this.onDestroyCap();
     }
     public void callCapcha(View v) {
+        this.initRecapcha();
         // Step 2: call execute() when there is an action to protect.
         Recaptcha.getClient(this)
                 .execute(this.handle, new RecaptchaAction(new RecaptchaActionType("createAccount")))

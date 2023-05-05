@@ -61,6 +61,10 @@ public class AppConstants {
     public static final String OPTION_WHEATHER = "WHEATHER";
     public static final String URL_DEFAULT_WHEATHER = "https://www.haydata.com/MiExperienciaCoppel";
 
+    public static final String OPTION_LINEA_DE_DENUNCIA = "LINEA_DE_DENUNCIA";
+    public static final String URL_DEFAULT_LINEA_DE_DENUNCIA = "https://coppel.amitaisystem.com";
+
+
     public static final String OPTION_NOTIFICATION_EXPENSES_AUTHORIZE = "_NOTIFICATION_EXPENSES_AUTHORIZE";
 
     public static final String OPTION_BONUS = "BONUS";

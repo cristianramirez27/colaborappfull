@@ -152,6 +152,9 @@ public class AppConfig {
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
     public final static String ENDPOINT_MYMOVEMENTS = "ENDPOINT_MYMOVEMENTS";
+    public final static String ENDPOINT_LINEA_DE_DENUNCIA= "URL_LINEA_DE_DENUNCIA";
+    public final static String BLOCK_LINEA_DE_DENUNCIA = "BLOCK_LINEA_DE_DENUNCIA";
+
 
     /**
      * Se almacenan los endpoints
@@ -195,6 +198,8 @@ public class AppConfig {
         String holidayBonus = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAY_BONUS);
         String collage = mFirebaseRemoteConfig.getString(ENDPOINT_COLLAGE);
 
+        String url_lineaDenuncia = mFirebaseRemoteConfig.getString(ENDPOINT_LINEA_DE_DENUNCIA);
+
 
         //VISIONARIOS
         String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
@@ -237,6 +242,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
 
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LINEA_DE_DENUNCIA, url_lineaDenuncia);
 
         /*Bloquear modulos*/
         String block_saving = mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
@@ -316,6 +322,8 @@ public class AppConfig {
         String block_vacancies_message = mFirebaseRemoteConfig.getString(BLOCK_VACANCIES_MESSAGE);
         String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
         String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
+        String block_lineaDenuncia = mFirebaseRemoteConfig.getString(BLOCK_LINEA_DE_DENUNCIA);
+
 
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_SAVINGS, block_message_savings);
@@ -395,6 +403,7 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL, block_holidays_additonal);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MY_MOVEMENTS, block_my_movements);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MYMOVEMENTS_MESSAGE, block_my_movements_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_LINEA_DE_DENUNCIA, block_lineaDenuncia);
 
     }
 

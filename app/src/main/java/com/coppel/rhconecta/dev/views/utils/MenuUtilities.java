@@ -25,6 +25,7 @@ import io.realm.Realm;
 import io.realm.RealmList;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LINEA_DE_DENUNCIA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
@@ -38,6 +39,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LINEA_DE_DENUNCIA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
@@ -151,7 +153,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER),//6
-                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES)
+                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES),
+                new HomeMenuItem(context.getString(R.string.title_linea_denuncia), OPTION_LINEA_DE_DENUNCIA) //NUEVA
         ));
 
         List<MainSection> mainSections = RealmHelper.getListSection();
@@ -278,6 +281,7 @@ public class MenuUtilities {
         boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
         boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
+        boolean blocklineaDenuncia = AppUtilities.getStringFromSharedPreferences(context, BLOCK_LINEA_DE_DENUNCIA).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
@@ -300,6 +304,8 @@ public class MenuUtilities {
                 if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
                     continue;
                 if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
+                    continue;
+                if (item.getTAG().equals(OPTION_LINEA_DE_DENUNCIA) && blocklineaDenuncia)
                     continue;
                 response.add(item);
             }
@@ -427,6 +433,9 @@ public class MenuUtilities {
                 break;
             case OPTION_VACANTES:
                 icon = AppCompatResources.getDrawable(context, R.drawable.vacantes);
+                break;
+            case OPTION_LINEA_DE_DENUNCIA:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_linea_denuncia);
                 break;
         }
         return icon;
