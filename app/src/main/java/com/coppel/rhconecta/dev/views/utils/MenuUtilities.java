@@ -144,6 +144,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),//17
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS), //3
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),//9
+                new HomeMenuItem(context.getString(R.string.title_linea_denuncia), OPTION_LINEA_DE_DENUNCIA) ,//NUEVA
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),//10
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),//11
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),//14
@@ -153,8 +154,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER),//6
-                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES),
-                new HomeMenuItem(context.getString(R.string.title_linea_denuncia), OPTION_LINEA_DE_DENUNCIA) //NUEVA
+                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES)
+
         ));
 
         List<MainSection> mainSections = RealmHelper.getListSection();
