@@ -83,5 +83,6 @@
     <color name="text_color_header_gte">#333333</color>
 
     <color name="show_code_color">#4ec5fc</color>
+    <color name="background_rooms">#2b599c</color>
 
 </resources>

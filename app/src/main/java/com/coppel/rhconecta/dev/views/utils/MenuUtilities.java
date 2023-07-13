@@ -27,6 +27,7 @@ import io.realm.RealmList;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ROOMS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_WHEATHER;
@@ -50,6 +51,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ROOMS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
@@ -158,6 +160,9 @@ public class MenuUtilities {
 
         if (enableCoCrea) {
             listMenuDefault.add(new HomeMenuItem(title_cocrea, OPTION_COCREA)); //4
+        }
+        if(!isSlide){
+            listMenuDefault.add(new HomeMenuItem(context.getString(R.string.title_rooms),OPTION_ROOMS));
         }
 
 
@@ -278,6 +283,8 @@ public class MenuUtilities {
         boolean blockCovidSurvey = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COVID_SURVEY).equals(YES);
         boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
+        boolean blockRooms = AppUtilities.getStringFromSharedPreferences(context, BLOCK_ROOMS).equals(YES);
+
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
@@ -300,6 +307,8 @@ public class MenuUtilities {
                 if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
                     continue;
                 if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
+                    continue;
+                if (item.getTAG().equals(OPTION_ROOMS) && blockRooms && !isSlide)
                     continue;
                 response.add(item);
             }
@@ -418,6 +427,9 @@ public class MenuUtilities {
                 break;
             case AppConstants.OPTION_COCREA:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_cocrea);
+                break;
+            case OPTION_ROOMS:
+                icon = AppCompatResources.getDrawable(context, R.drawable.salas);
                 break;
             case AppConstants.OPTION_WHEATHER:
                 icon = AppCompatResources.getDrawable(context, R.drawable.clima);

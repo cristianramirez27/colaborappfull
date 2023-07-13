@@ -65,6 +65,8 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCR
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_ROOMS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN_USER;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 import android.content.ActivityNotFoundException;
@@ -814,6 +816,11 @@ public class HomeActivity
                     String urlCoppel = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES);
                     externalOption = VACANCIES;
                     getExternalUrl(urlCoppel);
+                    break;
+                case OPTION_ROOMS:
+                    String tokenUser = AppUtilities.getStringFromSharedPreferences(this, SHARED_PREFERENCES_TOKEN_USER);
+                    String urlRooms = String.format("%s%s","https://aplicaciones-dev.coppel.io/salasEficientes/dist/#/login?tokenColaborapp=",tokenUser);
+                    openExternalUrl(urlRooms);
                     break;
             }
         } else

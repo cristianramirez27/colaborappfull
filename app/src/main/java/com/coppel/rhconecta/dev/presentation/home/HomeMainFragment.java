@@ -3,7 +3,11 @@ package com.coppel.rhconecta.dev.presentation.home;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_RESERVATIONS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN_USER;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,13 +18,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -43,6 +51,8 @@ import com.coppel.rhconecta.dev.presentation.home.adapter.BannerViewPagerAdapter
 import com.coppel.rhconecta.dev.presentation.home.fragment.BannerFragment;
 import com.coppel.rhconecta.dev.presentation.poll.PollActivity;
 import com.coppel.rhconecta.dev.presentation.release_detail.ReleaseDetailActivity;
+import com.coppel.rhconecta.dev.presentation.room.ReaderQrFragment;
+import com.coppel.rhconecta.dev.presentation.room.dialog.DialogInputRoom;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
 import com.coppel.rhconecta.dev.presentation.visionary_detail.VisionaryDetailActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
@@ -57,10 +67,9 @@ import com.coppel.rhconecta.dev.views.utils.HomeMenuItemTouchHelperCallback;
 import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.github.vivchar.viewpagerindicator.ViewPagerIndicator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.inject.Inject;
 
@@ -86,12 +95,18 @@ public class HomeMainFragment
     RecyclerView rcvMenu;
     @BindView(R.id.txvFavorites)
     TextView txvFavorites;
+    @BindView(R.id.room_container)
+    ConstraintLayout room;
+    @BindView(R.id.room_check)
+    ConstraintLayout roomCheck;
     private long mLastClickTime = 0;
     private boolean reloadDashboard;
     private ISurveyNotification ISurveyNotification;
     private DialogFragmentWarning dialogFragmentWarning;
     @Inject
     public HomeViewModel homeViewModel;
+    @Inject
+    public RoomsViewModel roomsViewModel;
     private ViewPager viewPagerBanners;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -101,6 +116,36 @@ public class HomeMainFragment
     };
 
     private IntentFilter filter = new IntentFilter(AppConstants.INTENT_NOTIFICATION_ACTON);
+    private float deltaX = 0f;
+    private float oldX = 0f;
+    private float positionX = 0f;
+    private boolean isFirst = false;
+    private static String TAG_DIALOG_ROOM = "TAG_DIALOG_ROOM";
+    private DialogFragmentWarning dialog = null;
+    private DateFormat date = new SimpleDateFormat("z",Locale.getDefault());
+    private Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault());
+    private ReaderQrFragment dialogQrRoom = ReaderQrFragment.Companion.newInstance();
+    private DialogInputRoom dialogInputRoom = new DialogInputRoom();
+    private DialogFragmentWarning.OnOptionClick onOptionClick = new DialogFragmentWarning.OnOptionClick (){
+
+        @Override
+        public void onLeftOptionClick() {
+            dialog.close();
+            dialogQrRoom.show(requireActivity().getSupportFragmentManager(),ReaderQrFragment.class.getSimpleName());
+        }
+
+        @Override
+        public void onRightOptionClick() {
+            dialog.close();
+            System.out.printf("dialog Inputs");
+            dialogInputRoom.show(requireActivity().getSupportFragmentManager(),DialogInputRoom.class.getSimpleName());
+        }
+    };
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      *
@@ -195,8 +240,21 @@ public class HomeMainFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DaggerHomeComponent.create().inject(this);
+        dialog = new DialogFragmentWarning();
+        dialog.setTwoOptionsData(
+                getString(R.string.title_dialog_rooms),
+                getString(R.string.msg_dialog_rooms),
+                getString(R.string.option_qr_dialog_rooms),
+                getString(R.string.option_input_dialog_rooms)
+        );
+        dialog.setOnOptionClick(onOptionClick);
         initViews();
         observeViewModel();
+        String tokenUser = AppUtilities.getStringFromSharedPreferences(requireContext(), SHARED_PREFERENCES_TOKEN_USER);
+        String url = AppUtilities.getStringFromSharedPreferences(requireContext(), URL_RESERVATIONS);
+        String main = AppUtilities.getStringFromSharedPreferences(requireContext(), URL_MAIN);
+        Log.e("Main","url is -> "+main);
+        roomsViewModel.init(url,tokenUser, date.format(calendar.getTime()));
     }
 
     /**
@@ -216,6 +274,45 @@ public class HomeMainFragment
      */
     private void initViews() {
         initBannersViews();
+        room.setOnTouchListener((v, event) -> {
+            int cardWidth = room.getWidth();
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            float metrics = (float) displayMetrics.widthPixels;
+            float start = (float) ((displayMetrics.widthPixels/2) - (cardWidth/2));
+
+            switch (event.getAction()){
+                case MotionEvent.ACTION_UP:
+                    isFirst = false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    float newX = event.getRawX();
+                    if(!isFirst){
+                        if (positionX >= 0f)
+                            positionX = start;
+                        oldX = newX;
+                        isFirst =  true;
+                        return true;
+                    }
+                    deltaX = newX - oldX;
+                    oldX = newX;
+
+                    if (deltaX != 0.0f && (newX - cardWidth) < start) {
+                        positionX += deltaX;
+                        Log.d("Aprox","X "+positionX);
+                        float min = Math.min(start, positionX);
+                        Log.d("Values", start + " --- $" + newX + "-- [ " + oldX + "-- " + deltaX + " ]-- $" + metrics + "  ---- {" + (newX - cardWidth ) + "} ---> " + min);
+                        room.animate().x(min).setDuration(0).start();
+                    }
+                    break;
+            }
+            return true;
+        });
+        roomCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               dialog.show(requireActivity().getSupportFragmentManager(),TAG_DIALOG_ROOM);
+            }
+        });
     }
 
     /**

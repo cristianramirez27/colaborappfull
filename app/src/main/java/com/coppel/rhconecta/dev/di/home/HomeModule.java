@@ -9,6 +9,7 @@ import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.home.HomeLocalRepository;
 import com.coppel.rhconecta.dev.data.home.HomeRepository;
+import com.coppel.rhconecta.dev.data.rooms.RoomsApiService;
 import com.coppel.rhconecta.dev.framework.home.HomeApiService;
 import com.coppel.rhconecta.dev.framework.home.HomeLocalRepositoryImpl;
 import com.coppel.rhconecta.dev.framework.home.HomeRepositoryImpl;
@@ -88,5 +89,10 @@ public class HomeModule {
     @Provides
     Retrofit provideRetrofit() {
         return ServicesRetrofitManager.getInstance().getRetrofitAPI();
+    }
+
+    @Provides
+    RoomsApiService providerRoomsApiService()  {
+        return ServicesRetrofitManager.getInstance().getRetrofitAPI().create(RoomsApiService.class);
     }
 }

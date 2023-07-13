@@ -454,6 +454,13 @@
     <string name="collaborator_at_home">Videos</string>
     <string name="title_cocrea">CoCrea</string>
     <string name="title_wheather">Clima organizacional</string>
+    <string name="title_rooms">Salas Eficientes</string>
+    <string name="title_dialog_rooms">Ingresar código</string>
+    <string name="msg_dialog_rooms">Elige la forma para ingresar tu código, capturando el QR o escribe los dígitos del mismo.</string>
+    <string name="option_qr_dialog_rooms">QR</string>
+    <string name="option_input_dialog_rooms">Escribir</string>
+    <string name="title_input_room">Escribe el código</string>
+    <string name="msg_input_room"></string>
     <string name="collaborator_at_home_title">Videos</string>
     <string name="visionary_at_home_details_activity_title">Videos</string>
     <string name="qrCode">Lectura de QR</string>

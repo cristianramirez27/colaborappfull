@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                                                   android:background="@drawable/background_blue_light_rounded"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content">
+
+    <TextView
+            android:text="@string/title_input_room"
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/white"
+            style="@style/TextBold20Coppel"
+            android:layout_height="wrap_content" android:id="@+id/title_dialog"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="32dp"/>
+    <TextView
+            android:text="@string/msg_input_room"
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/white"
+            style="@style/TextBook14Coppel"
+            android:visibility="gone"
+            android:layout_height="wrap_content" android:id="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/title_dialog"
+            android:layout_marginTop="24dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/white"
+            android:id="@+id/edith_code_room"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            android:layout_marginTop="32dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:backgroundTint="@android:color/white"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"/>
+    <Button
+            android:text="@string/botton_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button_room_ok"
+            app:layout_constraintTop_toBottomOf="@+id/edith_code_room"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="32dp"
+            style="@style/ButtonCoppel"
+            android:background="@drawable/background_white_rounded"
+            android:textAllCaps="false"
+            android:textColor="@color/colorSecondBlueCoppel"
+            android:layout_marginBottom="32dp" android:layout_marginStart="24dp" android:layout_marginEnd="24dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
