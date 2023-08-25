@@ -149,6 +149,7 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 100:
                 getDeviceId();

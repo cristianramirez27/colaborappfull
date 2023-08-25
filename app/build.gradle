@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
+
 android {
 
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionName "2.11.8"
         versionCode 118
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
