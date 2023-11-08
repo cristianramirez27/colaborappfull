@@ -20,6 +20,7 @@ import com.coppel.rhconecta.dev.views.activities.VacacionesActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
@@ -120,6 +121,24 @@ public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
     }
 
     public void setCallBackAndRefreshStatus(ZendeskStatusCallBack callback) {
-        CoppelApp.getZendesk().setCallBackAndRefreshStatus(callback);
+        try {
+            CoppelApp.getZendesk().setCallBackAndRefreshStatus(callback);
+        }catch (Exception exception){
+            saveToCrashLitics("setCallBackAndRefreshStatus",exception);
+        }
     }
+
+    private void saveToCrashLitics(String someInfo , Exception e){
+        /*
+            try {
+
+        }catch (Exception exception){
+            saveToCrashLitics("***",exception);
+        }
+
+        */
+        FirebaseCrashlytics.getInstance().log(someInfo);
+        FirebaseCrashlytics.getInstance().recordException(e);
+    }
+
 }

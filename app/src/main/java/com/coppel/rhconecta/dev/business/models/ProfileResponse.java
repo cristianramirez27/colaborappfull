@@ -70,6 +70,16 @@ public class ProfileResponse extends CoppelGeneralParameterResponse implements S
         private String userMessage;
         private List<Section> seccionesApp;
 
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        private String token;
+
         public String getAntiguedad() {
             return Antiguedad;
         }

@@ -50,17 +50,17 @@ class ZendeskViewModel @Inject constructor() {
      */
     private fun getLocalDataHelpDeskAvailability() {
         getLocalDataHelpDeskAvailabilityUseCase.run(
-            UseCase.None.getInstance()
+                UseCase.None.getInstance()
         ) { result: Either<Failure, LocalDataHelpDeskAvailability> ->
             result.fold(
-                { failure: Failure ->
-                    onLoadGenericFailure(
-                        failure
-                    )
-                }
+                    { failure: Failure ->
+                        onLoadGenericFailure(
+                                failure
+                        )
+                    }
             ) { result: LocalDataHelpDeskAvailability ->
                 onLoadLocalDataHelpDeskSuccess(
-                    result
+                        result
                 )
             }
         }
@@ -97,17 +97,17 @@ class ZendeskViewModel @Inject constructor() {
      */
     private fun downloadExpirationDateHelpDeskService() {
         getHelpDeskServiceAvailabilityUseCase.run(
-            UseCase.None.getInstance()
+                UseCase.None.getInstance()
         ) { result: Either<Failure, HelpDeskAvailability> ->
             result.fold(
-                { failure: Failure ->
-                    onLoadGenericFailure(
-                        failure
-                    )
-                }
+                    { failure: Failure ->
+                        onLoadGenericFailure(
+                                failure
+                        )
+                    }
             ) { result: HelpDeskAvailability ->
                 onLoadDownloadExpirationSuccess(
-                    result
+                        result
                 )
             }
         }
@@ -127,15 +127,15 @@ class ZendeskViewModel @Inject constructor() {
         val millisExpected = expectedDate.time.toString()
         val errorMessage = helpDeskAvailability.mensaje
         val localDataHelpDeskAvailability =
-            LocalDataHelpDeskAvailability(errorMessage, millisExpected)
+                LocalDataHelpDeskAvailability(errorMessage, millisExpected)
         saveLocalDataHelpDeskAvailabilityUseCase.run(localDataHelpDeskAvailability) { result ->
             result.fold({ failure: Failure ->
                 onLoadGenericFailure(
-                    failure
+                        failure
                 )
             }) {
                 onLoadSaveLocalDataHelpDesk(
-                    errorMessage
+                        errorMessage
                 )
             }
         }

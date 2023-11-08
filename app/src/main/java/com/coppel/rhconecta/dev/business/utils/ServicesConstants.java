@@ -5,29 +5,36 @@ import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BENEFIT_CODE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_BONUS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_CARTASGENERAR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COMUNICADOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_EXPENSES_TRAVEL;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_GAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOLIDAY_BONUS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_HOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ADDITIONALS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_MYMOVEMENTS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_NOMINA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PASSWORD_RECOVER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PENSION;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PREVIEW;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_PROFILE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_SAVING_FUND;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_SECTION_TIME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_UTILITIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VALIDARFIRMA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VOUCHERS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WITHDRAWSAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LOGIN_APPS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
@@ -83,6 +90,14 @@ public class ServicesConstants {
     // AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_BENEFICIOS,beneficios);
     public static  String GET_MY_MOVEMENTS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_MYMOVEMENTS);
 
+    //Comprobantes
+    public static  String GET_PAYROLL_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_NOMINA);
+    public static  String GET_SAVING_FUND_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_SAVING_FUND);
+    public static  String GET_GAS_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_GAS);
+    public static  String GET_PENSION_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_PENSION);
+    public static  String GET_UTILITIES_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_UTILITIES);
+    public static  String GET_BONUS_VOUCHER = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_BONUS);
+    public static  String GET_VOUCHERS = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), ENDPOINT_VOUCHERS);
 
 
 

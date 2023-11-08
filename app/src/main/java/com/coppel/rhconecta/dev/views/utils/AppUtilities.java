@@ -30,7 +30,9 @@ import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesE
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,6 +106,23 @@ public class AppUtilities {
     /**
      *
      */
+    public static void saveJsonObjectInSharedPreferences(
+            Context context,
+            String key,
+            String value
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferencesExtension.putJsonObject(sharedPreferences, key, value);
+    }
+
+    public static JsonObject getJsonObjectFromSharedPreferences(
+            Context context,
+            String key
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return SharedPreferencesExtension.getJsonObject(sharedPreferences, key);
+    }
+
     public static void deleteSharedPreferences(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -132,7 +151,8 @@ public class AppUtilities {
      */
     public static void closeApp(Activity activity) {
         deleteSharedPreferencesWithoutFirebase(activity.getApplicationContext());
-        activity.startActivity(new Intent(activity, LoginActivity.class));
+        //activity.startActivity(new Intent(activity, LoginActivity.class));
+        activity.startActivity(new Intent(activity, LoginMicrosoftActivity.class));
         activity.finish();
     }
 

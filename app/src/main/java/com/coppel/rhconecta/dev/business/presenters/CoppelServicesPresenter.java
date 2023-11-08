@@ -52,6 +52,11 @@ public class CoppelServicesPresenter implements IServiceListener {
         servicesInteractor.getProfileValidation(employeeNumber, employeeEmail, token);
     }
 
+    public void requestProfileLogin(String employeeNumber, String employeeEmail, String token) {
+        view.showProgress();
+        servicesInteractor.getProfileValidationLogin(employeeNumber, employeeEmail, token);
+    }
+
     public void requestLogOut(String employeeNumber, String employeeEmail, String token) {
         view.showProgress();
         servicesInteractor.getLogoutValidation(employeeNumber, employeeEmail, token);

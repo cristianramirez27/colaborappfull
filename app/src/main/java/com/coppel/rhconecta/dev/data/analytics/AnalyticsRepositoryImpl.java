@@ -16,6 +16,7 @@ import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import javax.inject.Inject;
 
@@ -59,7 +60,13 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             long timeInSecondsByFlow,
             UseCase.OnResultFunction<Either<Failure, UseCase.None>> callback
     ) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        long employeeNum = 00000000;
+        try {
+            employeeNum = basicUserInformationFacade.getEmployeeNum();
+        }catch (Exception e){
+            saveToCrashLitics("sendTimeByAnalyticsFlow",e);
+        }
+
 
         SendTimeByAnalyticsFlowRequest request = new SendTimeByAnalyticsFlowRequest(
                 employeeNum,
@@ -75,6 +82,19 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                     .sendTimeByAnalyticsFlow(authHeader, url, request)
                     .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
         }
+    }
+
+    private void saveToCrashLitics(String someInfo , Exception e){
+        /*
+            try {
+
+        }catch (Exception exception){
+            saveToCrashLitics("***",exception);
+        }
+
+        */
+        FirebaseCrashlytics.getInstance().log(someInfo);
+        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     /**

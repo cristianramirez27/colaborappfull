@@ -9,6 +9,8 @@
     <string name="employee_number">N. de empleado</string>
     <string name="password">Contraseña colaborador digital</string>
     <string name="login">Ingresar</string>
+    <string name="login_microsoft">Iniciar Sesión</string>
+    <string name="login_microsoft_text">Inicia sesión de forma segura</string>
     <string name="forgot_my_password">Olvidé mi contraseña</string>
     <string name="sign_in"> Crea tu cuenta</string>
     <string name="not_yet_sign_in">¿Aún no te registras?</string>
@@ -511,11 +513,12 @@
     <string name="detail_movement_title">Detalle del Movimiento</string>
     <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
 
-<!--    Zendesk-->
+    <!--    Zendesk-->
     <string name="logout_with_chat_active">Tienes un chat activo en Mesa de Ayuda, finaliza la conversación para cerrar tú sesión.</string>
 
     <!-- Root Validate-->
     <string name="root_message">Eres usuario Root no puedes acceder a la app</string>
 
+    <!-- Login Microsoft-->
 
 </resources>

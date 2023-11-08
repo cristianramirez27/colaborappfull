@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class TableUsuario {
 
-    private InternalDatabase db;
+    /*private InternalDatabase db;
     private String TABLA_NOMBRE = "usuario";
     private boolean resetOnStart = false; // SI ES TRUE ELIMINA LA TABLA PARA GENERARLA NUEVAMENTE
 
@@ -190,6 +190,6 @@ public class TableUsuario {
 
             this.update(obj);
         }
-    }
+    }*/
 
 }

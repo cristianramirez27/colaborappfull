@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -109,6 +110,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.microsoft.identity.client.IPublicClientApplication;
+import com.microsoft.identity.client.ISingleAccountPublicClientApplication;
+import com.microsoft.identity.client.PublicClientApplication;
+import com.microsoft.identity.client.exception.MsalException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -119,8 +125,10 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 
+import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
@@ -151,6 +159,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINEA_DE_DENUNCIA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
@@ -262,6 +271,11 @@ public class HomeActivity
     @Inject
     public ZendeskManager zendeskUtil;
 
+    //azure
+    private ISingleAccountPublicClientApplication mSingleAccountApp;
+
+    JsonObject links;
+
     /**
      *
      */
@@ -287,7 +301,7 @@ public class HomeActivity
         String bundleGotoSection = IntentExtension
                 .getStringExtra(getIntent(), AppConstants.BUNDLE_GOTO_SECTION);
 
-        if (bundle != null && bundleLoginResponse != null && bundleProfileResponse != null) {
+        if (bundle != null && /*bundleLoginResponse!= null &&*/  bundleProfileResponse != null) {
             realm = Realm.getDefaultInstance();
             loginResponse = bundleLoginResponse.getData().getResponse();
             profileResponse = bundleProfileResponse.getData().getResponse()[0];
@@ -314,6 +328,28 @@ public class HomeActivity
         observeViewModel();
 
         zendeskInbox.setOnClickListener(view -> zendeskUtil.clickFeature());
+
+        PublicClientApplication.createSingleAccountPublicClientApplication(getContext(),
+                R.raw.auth_config_single_account,
+                new IPublicClientApplication.ISingleAccountApplicationCreatedListener() {
+                    @Override
+                    public void onCreated(ISingleAccountPublicClientApplication application) {
+
+                        //mSingleAccountApp.signIn(this, null, getScopes(), getAuthInteractiveCallback());
+                        mSingleAccountApp = application;
+                        Log.i("prueba", "onCreated: " + mSingleAccountApp);
+                        Toast.makeText(HomeActivity.this, "onCreated: " + mSingleAccountApp, Toast.LENGTH_SHORT).show();
+                        //loadAccount();
+                    }
+
+                    @Override
+                    public void onError(MsalException exception) {
+                        Toast.makeText(HomeActivity.this, "onError " + exception, Toast.LENGTH_SHORT).show();
+                        Log.i("prueba", "exception:  " + exception);
+                    }
+                });
+        links = AppUtilities.getJsonObjectFromSharedPreferences(this, ENDPOINT_LINKS);
+
     }
 
     /**
@@ -571,13 +607,25 @@ public class HomeActivity
      *
      */
     private void initMenu() {
-        String name = profileResponse.getNombreColaborador().split(" ")[0];
-        name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-        txvProfileName.setText(getString(R.string.hello) + ", " + name);
-        txvCollaboratorNumber.setText(profileResponse.getColaborador());
-        HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true, notifications, true));
-        lvOptions.setAdapter(homeSlideMenuArrayAdapter);
-        lvOptions.setOnItemClickListener(this);
+        Boolean fail = false;
+        try {
+            String name = profileResponse.getNombreColaborador().split(" ")[0];
+            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+            txvProfileName.setText(getString(R.string.hello) + ", " + name);
+            txvCollaboratorNumber.setText(profileResponse.getColaborador());
+            HomeSlideMenuArrayAdapter homeSlideMenuArrayAdapter = new HomeSlideMenuArrayAdapter(this, R.layout.item_slider_home_menu, MenuUtilities.getHomeMenuItems(this, profileResponse.getCorreo(), true, notifications, true));
+            lvOptions.setAdapter(homeSlideMenuArrayAdapter);
+            lvOptions.setOnItemClickListener(this);
+        } catch (Exception e) {
+            fail = true;
+            saveToCrashLitics("initMenu", e);
+
+        } finally {
+            if (fail) {
+                AppUtilities.closeApp(this);
+            }
+        }
+
     }
 
     /**
@@ -765,18 +813,25 @@ public class HomeActivity
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COVID_SURVEY).equals(YES)) {
                         showBlockDialog(BLOCK_MESSAGE_COVID_SURVEY);
                     } else {
-                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
+                        /*initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COVID_SURVEY);
                         externalOption = COVID_SURVEY;
-                        ValidateAccesSSO();
+                        ValidateAccesSSO();*/
+                        String url = links.get("url_cuestionario_covid").getAsString();
+                        Intent intentNew = new Intent(Intent.ACTION_VIEW, Uri.parse(url + loginResponse.getToken()));
+                        startActivity(intentNew);
                     }
                     break;
                 case OPTION_COLLAGE:
                     if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_COLLAGE).equals(YES)) {
                         showBlockDialog(BLOCK_MESSAGE_COLLAGE);
                     } else {
-                        initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
+                        /*initAnalyticsTimeManagerByAnalyticsFlow(AnalyticsFlow.COLLAGE);
                         externalOption = COLLAGE;
-                        ValidateAccesBass();
+                        ValidateAccesBass();*/
+                        String url = links.get("url_universidad").getAsString();
+                        Intent intentNew = new Intent(Intent.ACTION_VIEW, Uri.parse(url + loginResponse.getToken()));
+                        startActivity(intentNew);
+
                     }
                     break;
                 case OPTION_COCREA:
@@ -797,7 +852,8 @@ public class HomeActivity
                     } catch (PackageManager.NameNotFoundException e) {
                         coppelServicesPresenter.getPlayGoogleUrl(AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR), 54, token);
                     }*/
-                    String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    //String urlCoCrea = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_COCREA);
+                    String urlCoCrea = links.get("url_cocrea_app").getAsString();
                     if (urlCoCrea.isEmpty())
                         urlCoCrea = URL_DEFAULT_COCREA;
 
@@ -807,7 +863,8 @@ public class HomeActivity
                 case OPTION_POLL:
                     break;
                 case OPTION_WHEATHER:
-                    String url = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER);
+                    //String url = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER);
+                    String url = links.get("url_cima_organizacional").getAsString();
                     if (url.isEmpty())
                         url = URL_DEFAULT_WHEATHER;
 
@@ -815,14 +872,14 @@ public class HomeActivity
                     startActivity(intent);
                     break;
                 case OPTION_VACANTES:
-                    String urlCoppel = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES);
+                    //String urlCoppel = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES);
+                    String urlCoppel = links.get("url_vacantes_internas").getAsString();
                     externalOption = VACANCIES;
                     getExternalUrl(urlCoppel);
                     break;
                 case OPTION_LINEA_DE_DENUNCIA:
-                    String urlNew = AppUtilities.getStringFromSharedPreferences(getApplicationContext(),ENDPOINT_LINEA_DE_DENUNCIA);
-                    if(urlNew.isEmpty()){
-                        Log.i("prueba","entra al url emptyy");
+                    String urlNew = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_LINEA_DE_DENUNCIA);
+                    if (urlNew.isEmpty()) {
                         urlNew = URL_DEFAULT_LINEA_DE_DENUNCIA;
                     }
 
@@ -1001,13 +1058,44 @@ public class HomeActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogFragmentWarning = new DialogFragmentWarning();
-                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
-                dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
-                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
-                dialogFragmentLoader.close();
+                try {
+                    FragmentManager fragmentActivityManager = getSupportFragmentManager();
+                    if (fragmentActivityManager == null) {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(HomeActivity.this);
+                        dialogFragmentWarning.show(fragmentActivityManager, DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    } else {
+                        showDialogAlt(msg);
+                    }
+                } catch (Exception exception) {
+                    saveToCrashLitics("showMessageUser", exception);
+                }
+
             }
         }, 1500);
+    }
+
+    private void showDialogAlt(String message) {
+        new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.attention))
+                .setContentText(message)
+                .setConfirmText(getString(R.string.accept))
+                .show();
+    }
+
+    private void saveToCrashLitics(String someInfo, Exception e) {
+        /*
+            try {
+
+        }catch (Exception exception){
+            saveToCrashLitics("***",exception);
+        }
+
+        */
+        FirebaseCrashlytics.getInstance().log(someInfo);
+        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     private boolean validateLoginBASS() {
@@ -1117,10 +1205,13 @@ public class HomeActivity
      */
     @Override
     public void onRightOptionClick() {
+
         if (EXPIRED_SESSION) {
+            logOutMicrosoft();
             AppUtilities.closeApp(this);
         } else {
             if (requestLogout) {
+                logOutMicrosoft();
                 requestLogout = false;
                 String token = AppUtilities
                         .getStringFromSharedPreferences(
@@ -1133,8 +1224,25 @@ public class HomeActivity
                         token
                 );
             }
+            AppUtilities.closeApp(this);
             dialogFragmentWarning.close();
         }
+    }
+
+    private void logOutMicrosoft() {
+        mSingleAccountApp.signOut(new ISingleAccountPublicClientApplication.SignOutCallback() {
+            @Override
+            public void onSignOut() {
+                Toast.makeText(getContext(), "Signed Out.", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onError(@NonNull MsalException exception) {
+                Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     /**
@@ -1152,7 +1260,7 @@ public class HomeActivity
      *
      */
     private void getData() {
-        InternalDatabase idb = new InternalDatabase(this);
+        /*InternalDatabase idb = new InternalDatabase(this);
 
         TableConfig tableConfig = new TableConfig(idb, false);
         Config config = new Config(1, AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConfig.VISIONARIOS_URL));
@@ -1177,7 +1285,7 @@ public class HomeActivity
                 profileResponse.getNombreRegion());
 
         tableUsuario.insertIfNotExist(usuario);
-        tableUsuario.closeDB();
+        tableUsuario.closeDB();*/
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

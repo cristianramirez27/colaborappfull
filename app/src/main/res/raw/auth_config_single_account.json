@@ -1,0 +1,13 @@
+{
+  "client_id" : "cf0329c2-18ca-4323-bdc7-08201aa76947",
+  "authorization_user_agent" : "DEFAULT",
+  "redirect_uri": "msauth://com.coppel.rhconecta/nI6DUPGl5HMCRRes2H%2FFqVCXSvU%3D",
+  "account_mode" : "SINGLE",
+  "broker_redirect_uri_registered": true,
+  "authorities" : [
+    {
+      "type": "AAD",
+      "authority_url": "https://login.microsoftonline.com/76d81621-b9a9-4786-bb8f-a2efa839eee2"
+    }
+  ]
+}

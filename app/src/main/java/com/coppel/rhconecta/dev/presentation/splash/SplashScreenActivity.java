@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
@@ -17,6 +16,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.CustomCallBack;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -30,6 +30,7 @@ import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
@@ -84,8 +85,7 @@ public class SplashScreenActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        DaggerAnalyticsComponent.create().injectSplash(this);
-        validateRoot();
+        DaggerAnalyticsComponent.create().injectSplash(this);validateRoot();
         setupFirebaseInstanceId();
         setupViews();
         //init();
@@ -186,7 +186,8 @@ public class SplashScreenActivity
             initHome();
         } else {
             new Handler().postDelayed(() -> {
-                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
+                //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                 finish();
             }, 1000);
         }
@@ -203,6 +204,17 @@ public class SplashScreenActivity
                 loginResponse.getData().getResponse().getCliente(),
                 email,
                 loginResponse.getData().getResponse().getToken()
+        );
+        String strProfileResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
+        profileResponse = new Gson().fromJson(strProfileResponse, ProfileResponse.class);
+
+        String email2 = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+        String employee = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.requestProfile(
+                employee,
+                email2,
+                token
         );
     }
 
@@ -304,10 +316,15 @@ public class SplashScreenActivity
         if (coppelServicesError.getType() == ServicesRequestType.INVALID_TOKEN) {
             EXPIRED_SESSION = true;
         }
-        dialogFragmentWarning = new DialogFragmentWarning();
-        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-        dialogFragmentWarning.setOnOptionClick(this);
-        dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        try {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),coppelServicesError.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /** */
@@ -328,7 +345,8 @@ public class SplashScreenActivity
         dialogFragmentWarning.close();
 
         if (EXPIRED_SESSION) {
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
             AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, false);
             EXPIRED_SESSION = false;
         }
@@ -343,13 +361,7 @@ public class SplashScreenActivity
                 .setMinimumFetchIntervalInSeconds(TimeUnit.HOURS.toSeconds(12))
                  //.setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                fetchEndpoints();
-            }
-        });
-
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(SplashScreenActivity.this, task -> fetchEndpoints());
     }
 
     /** */
@@ -377,8 +389,18 @@ public class SplashScreenActivity
 
     /** */
     private void setEndpoints() {
-        setEndpointConfig(mFirebaseRemoteConfig);
-        initValues();
+        setEndpointConfig(mFirebaseRemoteConfig, new CustomCallBack() {
+
+            @Override
+            public void onComplete(String result) {
+                initValues();
+            }
+            @Override
+            public void onFail(String result) {
+                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                fetchEndpoints();
+            }
+        });
     }
 
     /** */

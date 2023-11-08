@@ -39,6 +39,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -288,10 +289,23 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
     }
 
     private void showWarningDialog(String message) {
-        dialogFragmentWarning = new DialogFragmentWarning();
-        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
-        dialogFragmentWarning.setOnOptionClick(this);
-        dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        if (parent.getSupportFragmentManager() != null){
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        }else{
+            showDialogAlt(message);
+        }
+    }
+
+    private  void showDialogAlt(String message){
+        new MaterialAlertDialogBuilder(this.getContext())
+                .setTitle("Aviso!")
+                .setPositiveButton("Aceptar",(dialog, which) -> {
+                    // Respond to positive button press
+                })
+                .setMessage(message).show();
     }
 
     private void showGetVoucherDialog(int type) {
