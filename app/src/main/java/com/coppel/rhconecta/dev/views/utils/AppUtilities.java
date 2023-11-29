@@ -38,8 +38,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ZENDESK_CONFIG;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
 /**
@@ -402,5 +406,19 @@ public class AppUtilities {
 
     public static String getVersionApp() {
         return BuildConfig.VERSION_NAME;
+    }
+
+    public static JsonObject getZendeskConfiguration(Context context){
+
+        JsonObject zendeskConfiguration = AppUtilities.getJsonObjectFromSharedPreferences(context, ENDPOINT_ZENDESK_CONFIG);
+
+        Calendar calendar = Calendar.getInstance();
+        // Obtiene el nombre del día
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+
+        zendeskConfiguration = zendeskConfiguration.getAsJsonObject("dia_"+dayOfWeek);
+
+        return zendeskConfiguration;
     }
 }

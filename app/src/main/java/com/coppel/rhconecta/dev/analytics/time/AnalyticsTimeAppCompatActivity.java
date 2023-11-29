@@ -117,7 +117,8 @@ public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
     }
 
     public void clickZendesk() {
-        CoppelApp.getZendesk().clickFeature();
+
+        CoppelApp.getZendesk().clickFeature(AppUtilities.getZendeskConfiguration(this));
     }
 
     public void setCallBackAndRefreshStatus(ZendeskStatusCallBack callback) {

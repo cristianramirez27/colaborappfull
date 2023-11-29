@@ -192,11 +192,11 @@ public class ServicesInteractor {
      */
     public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        getProfile(employeeNumber, employeeEmail,2);
+        getProfile(employeeNumber, employeeEmail,1);
     }
     public void getProfileValidationLogin(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        getProfile(employeeNumber, employeeEmail,1);
+        getProfile(employeeNumber, employeeEmail,3);
     }
 
     /**

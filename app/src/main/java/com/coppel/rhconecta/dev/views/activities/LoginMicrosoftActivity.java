@@ -72,13 +72,9 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
     private boolean finishApp = false;
     private IServicesContract.View view;
 
-
-
     TextView txvJoin;
 
-
     String[] scopes = {"user.read"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +97,13 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                         //mSingleAccountApp.signIn(this, null, getScopes(), getAuthInteractiveCallback());
                         mSingleAccountApp = application;
                         Log.i("prueba", "onCreated: " + mSingleAccountApp);
-                        Toast.makeText(LoginMicrosoftActivity.this, "onCreated: " + mSingleAccountApp, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(LoginMicrosoftActivity.this, "onCreated: " + mSingleAccountApp, Toast.LENGTH_SHORT).show();
                         loadAccount();
                     }
 
                     @Override
                     public void onError(MsalException exception) {
-                        Toast.makeText(LoginMicrosoftActivity.this, "onError " + exception, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginMicrosoftActivity.this, "onError " + exception, Toast.LENGTH_SHORT).show();
                         Log.i("prueba", "exception:  " + exception);
                     }
                 });
@@ -213,13 +209,12 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
             public void onError(MsalException exception) {
                 dialogFragmentLoader.close();
                 /* Failed to acquireToken */
-                Toast.makeText(LoginMicrosoftActivity.this, "Authentication failed: " + exception.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginMicrosoftActivity.this, "Authentication failed: " + exception.toString(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Authentication failed: " + exception.toString());
                 mSingleAccountApp.signOut(new ISingleAccountPublicClientApplication.SignOutCallback() {
                     @Override
                     public void onSignOut() {
-                        Toast.makeText(getContext(), "Signed Out.", Toast.LENGTH_SHORT)
-                                .show();
+                        //Toast.makeText(getContext(), "Signed Out.", Toast.LENGTH_SHORT).show();
                         if (mSingleAccountApp == null) {
                             Log.i("prueba", "onClick");
                             return;
@@ -230,8 +225,7 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
 
                     @Override
                     public void onError(@NonNull MsalException exception) {
-                        Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_SHORT)
-                                .show();
+                        //Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 //displayError(exception);
@@ -346,8 +340,8 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
 
     @Override
     public void showProgress() {
-        dialogFragmentLoader = new DialogFragmentLoader();
-        dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
+        //dialogFragmentLoader = new DialogFragmentLoader();
+        //dialogFragmentLoader.show(getSupportFragmentManager(), DialogFragmentLoader.TAG);
     }
 
     @Override
@@ -413,7 +407,8 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
     @Override
     public void onRightOptionClick() {
         dialogFragmentWarning.close();
-
+        //dialogFragmentLoader.dismissAllowingStateLoss();
+        //dialogFragmentLoader.close();
         if (finishApp) {
             finishApp = false;
             finish();

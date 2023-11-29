@@ -10,6 +10,7 @@ import com.coppel.rhconecta.dev.views.activities.ActionsModelCallback
 import com.coppel.rhconecta.dev.views.activities.ZendeskViewModel
 import com.coppel.rhconecta.dev.views.modelview.HelpDeskDataRequired
 import com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_CHAT_BOOT_NAME
+import com.google.gson.JsonObject
 import zendesk.answerbot.AnswerBotEngine
 import zendesk.chat.*
 import zendesk.core.Zendesk
@@ -118,8 +119,8 @@ class ZendeskManager @Inject constructor(val context: Context) : ActionsModelCal
     /**
      * This method is activated by the user and triggers the processes and validations prior to launching the chat
      */
-    fun clickFeature() {
-        zendeskViewModel.clickChatZendesk()
+    fun clickFeature(configuration : JsonObject) {
+        zendeskViewModel.clickChatZendesk(configuration)
     }
 
     /**

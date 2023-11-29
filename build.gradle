@@ -49,7 +49,7 @@ ext {
     cameraViewVersion = "1.5.1"
     firebaseCoreVersion = "20.1.2"
     firebaseAnalyticsVersion = "21.1.0"
-    firebaseConfigVersion = "21.0.2"
+    firebaseConfigVersion = "21.3.0"
     firebaseDatabaseVersion = "20.0.4"
     firebaseMessagingVersion = "23.0.3"
     daggerVersion = "2.25.2"

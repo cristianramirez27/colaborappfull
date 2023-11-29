@@ -116,9 +116,12 @@ import com.microsoft.identity.client.ISingleAccountPublicClientApplication;
 import com.microsoft.identity.client.PublicClientApplication;
 import com.microsoft.identity.client.exception.MsalException;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -162,6 +165,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ZENDESK_CONFIG;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
@@ -275,6 +279,7 @@ public class HomeActivity
     private ISingleAccountPublicClientApplication mSingleAccountApp;
 
     JsonObject links;
+    JsonObject zendeskConfiguration;
 
     /**
      *
@@ -327,7 +332,6 @@ public class HomeActivity
 
         observeViewModel();
 
-        zendeskInbox.setOnClickListener(view -> zendeskUtil.clickFeature());
 
         PublicClientApplication.createSingleAccountPublicClientApplication(getContext(),
                 R.raw.auth_config_single_account,
@@ -349,6 +353,20 @@ public class HomeActivity
                     }
                 });
         links = AppUtilities.getJsonObjectFromSharedPreferences(this, ENDPOINT_LINKS);
+        /*zendeskConfiguration = AppUtilities.getJsonObjectFromSharedPreferences(this, ENDPOINT_ZENDESK_CONFIG);
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        Calendar calendar = Calendar.getInstance();
+        // Obtiene el nombre del día
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+
+        Log.i("prueba","currentDate: " +dayName);
+        Log.i("prueba","dayOfWeek: " +dayOfWeek);
+        Log.i("prueba","currentTime: " +currentTime);
+        Log.i("prueba","zendeskConfiguration: " +zendeskConfiguration.getAsJsonObject("dia_"+dayOfWeek));*/
+
+        zendeskInbox.setOnClickListener(view -> zendeskUtil.clickFeature(AppUtilities.getZendeskConfiguration(this)));
 
     }
 

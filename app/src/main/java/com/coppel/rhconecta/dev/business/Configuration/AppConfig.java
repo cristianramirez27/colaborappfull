@@ -5,6 +5,7 @@ import static io.realm.internal.SyncObjectServerFacade.getApplicationContext;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
@@ -154,7 +155,7 @@ public class AppConfig {
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
     public final static String ENDPOINT_MYMOVEMENTS = "ENDPOINT_MYMOVEMENTS";
-    public final static String ENDPOINT_LINEA_DE_DENUNCIA= "URL_LINEA_DE_DENUNCIA";
+    public final static String ENDPOINT_LINEA_DE_DENUNCIA = "URL_LINEA_DE_DENUNCIA";
     public final static String BLOCK_LINEA_DE_DENUNCIA = "BLOCK_LINEA_DE_DENUNCIA";
 
     //comprobantes
@@ -167,6 +168,8 @@ public class AppConfig {
     public final static String ENDPOINT_VOUCHERS = "ENDPOINT_VOUCHERS";
     //
     public final static String ENDPOINT_LINKS = "links_externos";
+    public final static String ENDPOINT_ZENDESK_CONFIG = "ZENDEX_HORARIO_CONFIG";
+    public final static String ENDPOINT_GENERAL_CONFIGURATION = "configuracion_general";
 
 
     /**
@@ -225,6 +228,12 @@ public class AppConfig {
             //LINK EXTERNOS
             String linksExternos = mFirebaseRemoteConfig.getString(ENDPOINT_LINKS);
 
+            //ZENDESK CONFIGURACION
+            String zendeskConfiguration = mFirebaseRemoteConfig.getString(ENDPOINT_ZENDESK_CONFIG);
+
+            //GENERAL CONFIGURATION
+            String generalConfiguration = mFirebaseRemoteConfig.getString(ENDPOINT_GENERAL_CONFIGURATION);
+
             //VISIONARIOS
             String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
             String aplicacion_key = mFirebaseRemoteConfig.getString(APLICACION_KEY);
@@ -280,6 +289,11 @@ public class AppConfig {
             //LINKS Externos
             AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), ENDPOINT_LINKS, linksExternos);
 
+            //Horarios Zendesk
+            AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), ENDPOINT_ZENDESK_CONFIG, zendeskConfiguration);
+
+            //General configuration
+            AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), ENDPOINT_GENERAL_CONFIGURATION, generalConfiguration);
 
             /*Bloquear modulos*/
             String block_saving = mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
@@ -444,6 +458,20 @@ public class AppConfig {
             callBack.onComplete("Ok");
         } catch (Exception e) {
             callBack.onFail(e.getMessage());
+        }
+    }
+
+    public static void updateEndpoints(FirebaseRemoteConfig mFirebaseRemoteConfig, String key) {
+        String value = mFirebaseRemoteConfig.getString(key);
+
+        if (value.startsWith("{") && value.endsWith("}")) {
+            // El valor es un JSON.
+            Log.i("updateEndpoints","El valor es un JSON.");
+            AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), key, value);
+        } else {
+            // El valor no es un JSON.
+            Log.i("updateEndpoints","El valor no es un JSON.");
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), key, value);
         }
     }
 
