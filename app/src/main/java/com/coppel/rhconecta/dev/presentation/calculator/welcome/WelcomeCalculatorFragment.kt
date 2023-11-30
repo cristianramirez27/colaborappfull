@@ -1,7 +1,6 @@
 package com.coppel.rhconecta.dev.presentation.calculator.welcome
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ class WelcomeCalculatorFragment : Fragment() {
         fun newInstance() = WelcomeCalculatorFragment()
     }
 
-    private lateinit var viewModel: WelcomeCalculatorViewModel
     private lateinit var dialog: InformationDialog
     private lateinit var calculatorFragmentCommunication: CalculatorFragmentCommunication
 
@@ -45,7 +43,6 @@ class WelcomeCalculatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[WelcomeCalculatorViewModel::class.java]
         calculatorFragmentCommunication.showFooter(false)
         val textWarning = view.findViewById<TextView>(R.id.textView8)
         textWarning.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorBlueLight))

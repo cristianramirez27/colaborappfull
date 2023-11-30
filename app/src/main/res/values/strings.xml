@@ -536,10 +536,14 @@
     <!--    Information Dialog Calculator-->
     <string name="title_information_dialog_calculator">Necesitarás tener a la mano la siguiente información</string>
     <string name="text_information_dialog_calculator"> <![CDATA[  <font color=#00599c>1.-</font> Semanas cotizadas en el IMSS.]]></string>
-    <string name="text2_information_dialog_calculator"> <![CDATA[ Si no cuentas con tu reporte puedes obtenerlo <a href="https://serviciosdigitales.imss.gob.mx/semanascotizadas-web/usuarios/IngresoAsegurado">aqui</a>, ingresando los siguientes datos.<br><br>
-        [Nombre persona], tus datos son:<br>
-        - CURP: <font color=#00599c><b>CESM8908MDF02RS</b></font><br>
-        - NSS: <font color=#00599c> <b>CESM8908RCC64</b></font> ]]></string>
+    <string name="text2_information_dialog_calculator"> <![CDATA[ Si no cuentas con tu reporte puedes obtenerlo <a href="https://serviciosdigitales.imss.gob.mx/semanascotizadas-web/usuarios/IngresoAsegurado">aquí</a>, ingresando los siguientes datos.<br><br>
+        %s, tus datos son:<br>
+        - CURP: <font color=#00599c><b>%s</b></font><br>
+        - NSS: <font color=#00599c> <b>%s</b></font> ]]></string>
+    <string name="text_information_dialog_calculator_2"> <![CDATA[ Si no cuentas con tu reporte puedes obtenerlo <a href="https://serviciosdigitales.imss.gob.mx/semanascotizadas-web/usuarios/IngresoAsegurado">aquí</a>, ingresando los siguientes datos.<br><br>
+        %s, tus datos son:<br>
+        - CURP: <font color=#00599c>%s</font><br>
+        - NSS: <font color=#00599c>%s</font> ]]></string>
     <string name="text3_information_dialog_calculator"><![CDATA[  <font color=#00599c>2.-</font> El estado de cuenta de tu Afore.]]></string>
     <string name="text4_information_dialog_calculator">Lo recibes trimestralmente en tu correo electrónico o en tu domicilio.</string>
     <string name="button_information_dialog_calculator">Entendido</string>
@@ -597,6 +601,9 @@
     <string name="text_dashboard_calculation_button">Calcular</string>
     <string name="title_dashboard_calculation_dialog">Información importante</string>
     <string name="text_dashboard_calculation_dialog">Los resultados que se mostrarán son únicamente proyecciones considerando la situación actual, el resultado final puede variar al momento del retiro.</string>
+    <string name="link_dashboard_calculation_dialog"><a href="">Conoce más al respecto</a></string>
+    <string name="title_more_calculation_dialog">Más información</string>
+    <string name="text_more_calculation_dialog">Los resultados que se mostrarán en la aplicación denominada “ColaborApp” (la “Herramienta”) son únicamente estimaciones realizadas conforme a los datos proporcionados por el colaborador que se encuentre activo como empleado (el “Colaborador”) en la empresa con quien tenga celebrado un Contrato Individual de Trabajo, entidad que reconoce como único y exclusivo patrón (en lo particular y de acuerdo al caso concreto de cada Colaborador, la “Empresa”) y los saldos con los que cuente el Colaborador en su Fondo de Ahorro, Caja de Ahorro, semanas cotizadas en el IMSS y saldos de su cuenta individual de Afore.\n\nEn esta Herramienta se utilizan los saldos a la fecha de corte del Fondo de Ahorro y Caja de Ahorro (Aportaciones Adicionales, AER 10, AER 2-25 y AER 60, según corresponda y de acuerdo al caso concreto de cada Colaborador). No obstante, dichos saldos son y serán considerados solo como una referencia del historial de ahorro de cada Colaborador, pero no deberán ser considerados como elementos para un reclamo futuro de saldos en la Caja de Ahorro ni en el Fondo de Ahorro, pues los mismos son saldos proyectados con la información de cada Colaborador; por lo que la información que se mencione en esta Herramienta no genera obligaciones de pago ni vinculación alguna para la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro. Si el Colaborador necesita conocer el saldo de su ahorro actual y correcto, deberá consultar su Estado de Cuenta.\n\nAsí mismo la proyección de los saldos futuros de Fondo y Caja de Ahorro no compromete en nada a la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro, dado que es simplemente una proyección de saldos, tomando como base el historial de ahorro de cada Colaborador y el ahorro adicional que decida realizar en el futuro, por lo que dicha proyección podrá sufrir variaciones considerando, entre otros factores, los préstamos que solicite, compras de productos realizados y del resultado de las inversiones que se realicen de los saldos ahorrados.\n\nLa finalidad de esta Herramienta no es proporcionar ningún tipo de asesoramiento para su ahorro ni en materia legal, fiscal, u de otra clase; pues su función únicamente es comunicar y fomentar la cultura del ahorro para el retiro de cada Colaborador. La Herramienta solo funciona como una calculadora financiera que realiza proyecciones o especulaciones, pero no genera ni asegura una ganancia futura por sí sola al caso concreto. Por lo que, los contenidos de esta herramienta tienen únicamente finalidad informativa y bajo ninguna circunstancia deben usarse ni considerarse como una proyección cierta y en dinero.\n\nAl uso de la presente Herramienta, cada Colaborador expresamente reconoce que ha leído, entendido, acepta y reconoce que la función de la Herramienta es única y exclusivamente informativa, por lo tanto, no es ni deberá interpretarse como un beneficio, derecho adquirido o cantidad cierta y en dinero, derivado de su naturaleza especulativa.\n\nEn consecuencia, cada Colaborador que use la Herramienta entiende que las cantidades aquí señaladas no son información vinculante y libera a la Empresa de cualquier responsabilidad en este sentido, no reservándome acción o derecho alguno que ejercer en su contra en materia laboral, de seguridad social, fiscal ni alguna otra que ejercer en contra de dicha persona ni en contra de sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro.\n\nEl colaborador puede utilizar esta herramienta para modelar el requerimiento de ahorro voluntario y asi generar la meta para obtener la mejor combinación de ahorro total en el momento de retiro. Tener un buen saldo al retiro permite tomar decisión sobre su pensión.\n\nSe recomienda su uso al menos una vez al año para valorar el avance de ahorro y los ajustes que se deban hacer a las metas planteadas.</string>
 
     <string name="text_bottom_sheet_accept_button">Aplicar</string>
     <string name="text_bottom_sheet_cancel_button">Cancelar</string>
@@ -617,7 +624,7 @@
     <string name="title_information_optional_item">¿Quieres incrementar tu ingreso al retiro?</string>
     <string name="title_information_optional_item2">¿Quieres empezar a ahorrar?</string>
     <string name="content_information_optional_item">¡Puedes hacer ahorro adicional!\nVe cuanto aumenta tu ingreso.</string>
-    <string name="content_information_optional_item2">Recuerda que entre antes lo\nhagas tú ahorro crecerá más.</string>
+    <string name="content_information_optional_item2">Recuerda que cuanto antes lo\nhagas, tu ahorro crecerá más.</string>
 
     <string name="title_complete_dashboard">¡Tu cálculo está listo!</string>
 
@@ -631,4 +638,25 @@
     <string name="question_comment2_dialog_score">¿Qué cambiarías de la calculadora?</string>
     <string name="text_hit_dialog_score">Escríbenos un comentario</string>
     <string name="button_dialog_score">Enviar</string>
+
+    <string-array name="headers_calculator_complete">
+        <item>Fondo de Ahorro</item>
+        <item>Caja de Ahorro</item>
+        <item>Beneficio al retiro</item>
+    </string-array>
+    <string-array name="subtitles_headers_calculator_complete">
+        <item>Capital</item>
+        <item>Intereses</item>
+    </string-array>
+    <string-array name="information_items_calculator_complete">
+        <item>Edad:</item>
+        <item>Antigüedad en la empresa:</item>
+        <item>Semanas cotizadas IMSS:</item>
+    </string-array>
+    <string-array name="savings_bank_items_calculator_complete">
+        <item>Aportaciones ordinarias</item>
+        <item>Aportaciones adicionales</item>
+        <item>AER</item>
+        <item>AER 60</item>
+    </string-array>
 </resources>

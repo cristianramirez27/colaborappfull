@@ -154,6 +154,11 @@ public class AppConfig {
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
     public final static String ENDPOINT_MYMOVEMENTS = "ENDPOINT_MYMOVEMENTS";
+    public final static String ENDPOINT_CALCULATOR = "ENDPOINT_CALCULATOR";
+    public final static String ENDPOINT_CALCULATOR_WEEKS = "ENDPOINT_CALCULATOR_WEEKS";
+    public final static String ENDPOINT_CALCULATOR_STEP = "ENDPOINT_CALCULATOR_STEP";
+    public final static String ENDPOINT_CALCULATOR_RATING = "ENDPOINT_CALCULATOR_RATING";
+    public final static String ENDPOINT_CALCULATOR_ESTIMATE = "ENDPOINT_CALCULATOR_ESTIMATE";
 
     /**
      * Se almacenan los endpoints
@@ -185,6 +190,11 @@ public class AppConfig {
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
         String url_wheather = mFirebaseRemoteConfig.getString(ENDPOINT_WHEATHER);
         String myMovementsEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_MYMOVEMENTS);
+        String calculator_endpoint = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR);
+        String calculator_endpoint_week = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_WEEKS);
+        String calculator_endpoint_step = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_STEP);
+        String calculator_endpoint_rating = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_RATING);
+        String calculator_endpoint_estimate = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_ESTIMATE);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
         String vacanciesEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_VACANCIES);
@@ -235,6 +245,11 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES, vacanciesEndPoint);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_MYMOVEMENTS, myMovementsEndPoint);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR, calculator_endpoint);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_WEEKS, calculator_endpoint_week);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_STEP, calculator_endpoint_step);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_RATING, calculator_endpoint_rating);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_ESTIMATE, calculator_endpoint_estimate);
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);

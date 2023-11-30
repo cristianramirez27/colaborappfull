@@ -190,7 +190,7 @@ public class ServicesInteractor {
      */
     public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        getProfile(employeeNumber, employeeEmail,1);
+        getProfile(employeeNumber, employeeEmail,2);
     }
 
     /**
@@ -283,6 +283,7 @@ public class ServicesInteractor {
         CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
         coppelServicesProfileRequest.setNum_empleado(employeeNumber);
         coppelServicesProfileRequest.setCorreo(employeeEmail);
+        coppelServicesProfileRequest.setVersion(getVersionApp());
         //Se agrega parámetro de opcion 09/04/2019
         coppelServicesProfileRequest.setOpcion(option);
         String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);

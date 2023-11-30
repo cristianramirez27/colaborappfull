@@ -8,6 +8,8 @@
         android:layout_marginEnd="@dimen/section_information_dashboard_sides_calculator"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
+                                                       android:layout_marginTop="21dp"
+                                                       android:layout_marginBottom="21dp"
                                                        android:layout_height="wrap_content">
 
 
@@ -17,7 +19,6 @@
                 android:background="@drawable/background_gray_rounded"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
-                android:layout_marginTop="@dimen/text_information_salary_sides_calculator"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/constraintLayout4">
 
@@ -76,9 +77,8 @@
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="@dimen/text_information_salary_sides_calculator"
                 android:background="@drawable/background_gray_rounded"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" android:id="@+id/container2">
 
             <TextView
                     android:text="TextView"

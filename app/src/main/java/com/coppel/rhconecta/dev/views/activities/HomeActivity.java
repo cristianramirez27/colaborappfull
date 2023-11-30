@@ -841,6 +841,7 @@ public class HomeActivity
                         showBlockDialog(BLOCK_MESSAGE_CALCULATOR);
                     } else {
                         Intent intentCalculator = new Intent(this, CalculatorActivity.class);
+                        IntentExtension.putSerializableExtra(intentCalculator,AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse);
                         register.launch(intentCalculator);
                     }
                     break;

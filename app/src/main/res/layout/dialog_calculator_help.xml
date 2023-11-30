@@ -51,15 +51,23 @@
             android:layout_width="0dp"
             android:layout_marginStart="@dimen/button_dashboard_sides_information"
             android:layout_marginEnd="@dimen/button_dashboard_sides_information"
-            android:layout_marginTop="@dimen/image_dialog_help_top_calculator"
+            android:layout_marginTop="30dp"
             android:layout_height="wrap_content" android:id="@+id/button9"
             android:layout_marginBottom="@dimen/foot_dialog_help_top_calculator"
-            app:layout_constraintTop_toBottomOf="@+id/textView46" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/link" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_close" android:id="@+id/imageView10"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="8dp" android:layout_marginTop="16dp"/>
+    <TextView
+            android:text="@string/link_dashboard_calculation_dialog"
+            android:visibility="gone"
+            style="@style/TextMedium12Coppel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/link"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView46" android:layout_marginTop="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
