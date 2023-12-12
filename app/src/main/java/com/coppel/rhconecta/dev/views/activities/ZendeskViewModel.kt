@@ -1,18 +1,24 @@
 package com.coppel.rhconecta.dev.views.activities
 
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.coppel.rhconecta.dev.domain.common.Either
 import com.coppel.rhconecta.dev.domain.common.UseCase
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
 import com.coppel.rhconecta.dev.domain.home.entity.HelpDeskAvailability
+import com.coppel.rhconecta.dev.domain.home.entity.HomeParams
 import com.coppel.rhconecta.dev.domain.home.entity.LocalDataHelpDeskAvailability
 import com.coppel.rhconecta.dev.domain.home.use_case.GetHelpDeskServiceAvailabilityUseCase
 import com.coppel.rhconecta.dev.domain.home.use_case.GetLocalDataHelpDeskAvailabilityUseCase
 import com.coppel.rhconecta.dev.domain.home.use_case.SaveLocalDataHelpDeskAvailabilityUseCase
+import com.coppel.rhconecta.dev.views.utils.AppConstants
+import com.coppel.rhconecta.dev.views.utils.AppUtilities
 import java.util.*
 import javax.inject.Inject
 
-class ZendeskViewModel @Inject constructor() {
+class ZendeskViewModel @Inject constructor(private val sharedPreferences: SharedPreferences) :
+    ViewModel() {
 
 
     @Inject
@@ -96,8 +102,9 @@ class ZendeskViewModel @Inject constructor() {
      * Request at service the waiting time to check help desk availability (zendesk)
      */
     private fun downloadExpirationDateHelpDeskService() {
+        val params = HomeParams(getEmployeeNumber(), getAuthHeader(), 58)
         getHelpDeskServiceAvailabilityUseCase.run(
-            UseCase.None.getInstance()
+            params
         ) { result: Either<Failure, HelpDeskAvailability> ->
             result.fold(
                 { failure: Failure ->
@@ -111,6 +118,20 @@ class ZendeskViewModel @Inject constructor() {
                 )
             }
         }
+    }
+
+    private fun getEmployeeNumber(): String {
+        return AppUtilities.getStringFromSharedPreferences(
+            sharedPreferences,
+            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        )
+    }
+
+    private fun getAuthHeader(): String {
+        return AppUtilities.getStringFromSharedPreferences(
+            sharedPreferences,
+            AppConstants.SHARED_PREFERENCES_TOKEN
+        )
     }
 
     private fun onLoadDownloadExpirationSuccess(result: HelpDeskAvailability) {

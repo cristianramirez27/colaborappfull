@@ -5,12 +5,12 @@ import com.coppel.rhconecta.dev.domain.common.Either
 import com.coppel.rhconecta.dev.domain.common.UseCase
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
 import com.coppel.rhconecta.dev.domain.home.entity.LocalDataHelpDeskAvailability
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GetLocalDataHelpDeskAvailabilityUseCase @Inject constructor() :
+class GetLocalDataHelpDeskAvailabilityUseCase @Inject constructor(private val dispatcher: CoroutineDispatcher) :
     UseCase<LocalDataHelpDeskAvailability, UseCase.None>() {
 
     /**
@@ -23,7 +23,7 @@ class GetLocalDataHelpDeskAvailabilityUseCase @Inject constructor() :
         params: None,
         callback: OnResultFunction<Either<Failure, LocalDataHelpDeskAvailability>>,
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(dispatcher).launch {
             callback.onResult(homeLocalRepository.getDataHelpDeskAvailability())
         }
     }

@@ -13,8 +13,6 @@ import com.coppel.rhconecta.dev.views.utils.AppConstants
 import com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences
 import com.coppel.rhconecta.dev.views.utils.AppUtilities.saveStringInSharedPreferences
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class HomeLocalRepositoryImpl @Inject constructor(val context: Context) : HomeLocalRepository {
@@ -22,37 +20,31 @@ class HomeLocalRepositoryImpl @Inject constructor(val context: Context) : HomeLo
     override suspend fun getPersonalInfo(): Either<Failure, HelpDeskDataRequired> {
         var objectData: ProfileResponse.Response? = null
 
-        return withContext(Dispatchers.IO) {
-            val data = getStringFromSharedPreferences(
-                context,
-                AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE
-            )
+        val data = getStringFromSharedPreferences(
+            context,
+            AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE
+        )
 
-            if (data != null && data.isNotEmpty())
-                objectData = Gson().fromJson(data, ProfileResponse.Response::class.java)
+        if (data != null && data.isNotEmpty())
+            objectData = Gson().fromJson(data, ProfileResponse.Response::class.java)
 
-            val result: Either<Failure, HelpDeskDataRequired> =
-                objectData?.let {
-                    Either<Failure, HelpDeskDataRequired>().Right(objectData?.toHelpDeskDataRequired())
-                } ?: Either<Failure, HelpDeskDataRequired>().Left(ServerFailure())
-            result
-        }
+        return objectData?.let {
+            Either<Failure, HelpDeskDataRequired>().Right(objectData.toHelpDeskDataRequired())
+        } ?: Either<Failure, HelpDeskDataRequired>().Left(ServerFailure())
     }
 
     override suspend fun saveDataHelpDeskAvailability(data: LocalDataHelpDeskAvailability): Either<Failure, Boolean> {
-        return withContext(Dispatchers.IO) {
-            saveStringInSharedPreferences(
-                context,
-                AppConstants.ZENDESK_EXPECTED_MILLIS,
-                data.expiredDateInMillis
-            )
-            saveStringInSharedPreferences(
-                context,
-                AppConstants.ZENDESK_OUT_SERVICE_MESSAGE,
-                data.errorMessage
-            )
-            Either<Failure, Boolean>().Right(true)
-        }
+        saveStringInSharedPreferences(
+            context,
+            AppConstants.ZENDESK_EXPECTED_MILLIS,
+            data.expiredDateInMillis
+        )
+        saveStringInSharedPreferences(
+            context,
+            AppConstants.ZENDESK_OUT_SERVICE_MESSAGE,
+            data.errorMessage
+        )
+        return Either<Failure, Boolean>().Right(true)
     }
 
     override suspend fun getDataHelpDeskAvailability(): Either<Failure, LocalDataHelpDeskAvailability> {
@@ -66,13 +58,11 @@ class HomeLocalRepositoryImpl @Inject constructor(val context: Context) : HomeLo
             AppConstants.ZENDESK_OUT_SERVICE_MESSAGE,
         )
 
-        return withContext(Dispatchers.IO) {
-            Either<Failure, LocalDataHelpDeskAvailability>().Right(
-                LocalDataHelpDeskAvailability(
-                    errorMessage = messageError,
-                    expiredDateInMillis = millisExpirationDate,
-                )
+        return Either<Failure, LocalDataHelpDeskAvailability>().Right(
+            LocalDataHelpDeskAvailability(
+                errorMessage = messageError,
+                expiredDateInMillis = millisExpirationDate,
             )
-        }
+        )
     }
 }

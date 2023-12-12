@@ -9,6 +9,7 @@ public class CoppelServicesProfileRequest {
     private String id_firebase;
     private int opcion;
     private int so_dispositivo = ANDROID_OS;
+    private String version;
 
     public String getNum_empleado() {
         return num_empleado;
@@ -49,5 +50,13 @@ public class CoppelServicesProfileRequest {
 
     public void setSo_dispositivo(int so_dispositivo) {
         this.so_dispositivo = so_dispositivo;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

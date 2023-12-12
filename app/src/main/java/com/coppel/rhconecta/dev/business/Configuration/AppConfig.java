@@ -119,6 +119,7 @@ public class AppConfig {
     public final static String BLOCK_MESSAGE_COMUNICADOS = "BLOCK_MESSAGE_COMUNICADOS";
     public final static String BLOCK_MESSAGE_ENCUESTAS = "BLOCK_MESSAGE_ENCUESTAS";
     public final static String BLOCK_MESSAGE_COLLAGE = "BLOCK_MESSAGE_COLLAGE";
+    public final static String BLOCK_MESSAGE_CALCULATOR = "BLOCK_MESSAGE_CALCULATOR";
     public final static String BLOCK_MESSAGE_QR = "BLOCK_MESSAGE_QR";
     public final static String BLOCK_MESSAGE_STAYHOME = "BLOCK_MESSAGE_STAYHOME";
     public final static String BLOCK_MESSAGE_COVID_SURVEY = "BLOCK_MESSAGE_COVID_SURVEY";
@@ -148,6 +149,7 @@ public class AppConfig {
     public final static String ENDPOINT_COCREA_STORE = "URL_COCREA_STORE";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
+    public final static String BLOCK_CALCULATOR = "BLOCK_CALCULATOR";
 
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
@@ -155,6 +157,11 @@ public class AppConfig {
     public final static String ENDPOINT_LINEA_DE_DENUNCIA= "URL_LINEA_DE_DENUNCIA";
     public final static String BLOCK_LINEA_DE_DENUNCIA = "BLOCK_LINEA_DE_DENUNCIA";
 
+    public final static String ENDPOINT_CALCULATOR = "ENDPOINT_CALCULATOR";
+    public final static String ENDPOINT_CALCULATOR_WEEKS = "ENDPOINT_CALCULATOR_WEEKS";
+    public final static String ENDPOINT_CALCULATOR_STEP = "ENDPOINT_CALCULATOR_STEP";
+    public final static String ENDPOINT_CALCULATOR_RATING = "ENDPOINT_CALCULATOR_RATING";
+    public final static String ENDPOINT_CALCULATOR_ESTIMATE = "ENDPOINT_CALCULATOR_ESTIMATE";
 
     /**
      * Se almacenan los endpoints
@@ -186,6 +193,11 @@ public class AppConfig {
         String url_main = mFirebaseRemoteConfig.getString(URL_MAIN);
         String url_wheather = mFirebaseRemoteConfig.getString(ENDPOINT_WHEATHER);
         String myMovementsEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_MYMOVEMENTS);
+        String calculator_endpoint = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR);
+        String calculator_endpoint_week = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_WEEKS);
+        String calculator_endpoint_step = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_STEP);
+        String calculator_endpoint_rating = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_RATING);
+        String calculator_endpoint_estimate = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_ESTIMATE);
 
         String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
         String vacanciesEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_VACANCIES);
@@ -238,6 +250,11 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_WHEATHER, url_wheather);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_VACANCIES, vacanciesEndPoint);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_MYMOVEMENTS, myMovementsEndPoint);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR, calculator_endpoint);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_WEEKS, calculator_endpoint_week);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_STEP, calculator_endpoint_step);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_RATING, calculator_endpoint_rating);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_ESTIMATE, calculator_endpoint_estimate);
         //VISIONARIOS
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
@@ -322,6 +339,8 @@ public class AppConfig {
         String block_vacancies_message = mFirebaseRemoteConfig.getString(BLOCK_VACANCIES_MESSAGE);
         String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
         String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
+        String block_calculator = mFirebaseRemoteConfig.getString(BLOCK_CALCULATOR);
+        String block_calculator_message = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_CALCULATOR);
         String block_lineaDenuncia = mFirebaseRemoteConfig.getString(BLOCK_LINEA_DE_DENUNCIA);
 
 
@@ -403,6 +422,8 @@ public class AppConfig {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HOLIDAYS_MANAGER_ADDITIONAL, block_holidays_additonal);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MY_MOVEMENTS, block_my_movements);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MYMOVEMENTS_MESSAGE, block_my_movements_message);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR, block_calculator);
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_CALCULATOR, block_calculator_message);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_LINEA_DE_DENUNCIA, block_lineaDenuncia);
 
     }

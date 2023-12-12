@@ -1,5 +1,79 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_BENEFICIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CALCULATOR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CARTASCONFIG;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COLLAGE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COMUNICADOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PROFILE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_QR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINEA_DE_DENUNCIA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS_BASS;
+import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.VACANCIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALCULATOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LINEA_DE_DENUNCIA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_LINEA_DE_DENUNCIA;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,6 +90,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -60,6 +138,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.presentation.calculator.CalculatorActivity;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -120,76 +199,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_BENEFICIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CARTASCONFIG;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COLLAGE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COMUNICADOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COVID_SURVEY;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PAYSHEET;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_PROFILE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_QR;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_SAVINGS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_VISIONARIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PAYSHEET;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_PROFILE;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_COCREA;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINEA_DE_DENUNCIA;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_VACANCIES;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_WHEATHER;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COLLAGE;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.COVID_SURVEY;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.EXPENSESTRAVEL;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.HOLIDAYS;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_APPS_BASS;
-import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.VACANCIES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COVID_SURVEY;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOME;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LINEA_DE_DENUNCIA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_PAYROLL_VOUCHER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_POLL;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_COCREA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_LINEA_DE_DENUNCIA;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.URL_DEFAULT_WHEATHER;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.ZENDESK_FEATURE_ACTIVE_VALUE;
-import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 /* */
 public class HomeActivity
@@ -261,6 +270,18 @@ public class HomeActivity
 
     @Inject
     public ZendeskManager zendeskUtil;
+    private ActivityResultLauncher<Intent> register = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String go = data.getStringExtra("goto");
+                if (go != null) {
+                    navigationMenu(go, null);
+                }
+            }
+        }
+    });
 
     /**
      *
@@ -319,7 +340,6 @@ public class HomeActivity
     /**
      * Request at service for the availability of the help desk (Zendesk)
      */
-    @Deprecated
     private void requestDataForZendesk() {
         homeActivityViewModel.getPersonalDataForHelpDesk();
     }
@@ -819,14 +839,20 @@ public class HomeActivity
                     externalOption = VACANCIES;
                     getExternalUrl(urlCoppel);
                     break;
+                case OPTION_CALCULATOR:
+                    if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR).equals(YES)) {
+                        showBlockDialog(BLOCK_MESSAGE_CALCULATOR);
+                    } else {
+                        Intent intentCalculator = new Intent(this, CalculatorActivity.class);
+                        IntentExtension.putSerializableExtra(intentCalculator, AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse);
+                        register.launch(intentCalculator);
+                    }
+                    break;
                 case OPTION_LINEA_DE_DENUNCIA:
-                    String urlNew = AppUtilities.getStringFromSharedPreferences(getApplicationContext(),ENDPOINT_LINEA_DE_DENUNCIA);
-                    if(urlNew.isEmpty()){
-                        Log.i("prueba","entra al url emptyy");
+                    String urlNew = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), ENDPOINT_LINEA_DE_DENUNCIA);
+                    if (urlNew.isEmpty()) {
                         urlNew = URL_DEFAULT_LINEA_DE_DENUNCIA;
                     }
-
-
                     Intent intentNew = new Intent(Intent.ACTION_VIEW, Uri.parse(urlNew));
                     startActivity(intentNew);
             }

@@ -21,13 +21,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 
-
 public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     /**
      *

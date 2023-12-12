@@ -458,7 +458,8 @@ public class HomeMainFragment
 
     @Override
     public Context getContext() {
-        return parent.getBaseContext();
+        requireActivity().getBaseContext();
+        return requireActivity().getBaseContext();
     }
 
     public boolean isOnline() {
