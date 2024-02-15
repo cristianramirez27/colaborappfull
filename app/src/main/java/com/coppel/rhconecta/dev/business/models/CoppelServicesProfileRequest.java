@@ -11,6 +11,16 @@ public class CoppelServicesProfileRequest {
     private int so_dispositivo = ANDROID_OS;
     private String version;
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    private String version;
+
     public String getNum_empleado() {
         return num_empleado;
     }

@@ -32,13 +32,21 @@ import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesE
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ZENDESK_CONFIG;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
 /**
  *
@@ -115,6 +123,23 @@ public class AppUtilities {
     /**
      *
      */
+    public static void saveJsonObjectInSharedPreferences(
+            Context context,
+            String key,
+            String value
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferencesExtension.putJsonObject(sharedPreferences, key, value);
+    }
+
+    public static JsonObject getJsonObjectFromSharedPreferences(
+            Context context,
+            String key
+    ) {
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return SharedPreferencesExtension.getJsonObject(sharedPreferences, key);
+    }
+
     public static void deleteSharedPreferences(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -143,7 +168,8 @@ public class AppUtilities {
      */
     public static void closeApp(Activity activity) {
         deleteSharedPreferencesWithoutFirebase(activity.getApplicationContext());
-        activity.startActivity(new Intent(activity, LoginActivity.class));
+        //activity.startActivity(new Intent(activity, LoginActivity.class));
+        activity.startActivity(new Intent(activity, LoginMicrosoftActivity.class));
         activity.finish();
     }
 
@@ -393,5 +419,19 @@ public class AppUtilities {
 
     public static String getVersionApp() {
         return BuildConfig.VERSION_NAME;
+    }
+
+    public static JsonObject getZendeskConfiguration(Context context){
+
+        JsonObject zendeskConfiguration = AppUtilities.getJsonObjectFromSharedPreferences(context, ENDPOINT_ZENDESK_CONFIG);
+
+        Calendar calendar = Calendar.getInstance();
+        // Obtiene el nombre del día
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        String dayName = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+
+        zendeskConfiguration = zendeskConfiguration.getAsJsonObject("dia_"+dayOfWeek);
+
+        return zendeskConfiguration;
     }
 }

@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 
 import com.coppel.rhconecta.dev.system.encryption.EncryptionAES;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -213,6 +215,31 @@ public class SharedPreferencesExtension {
             // Si no es posible obtener el valor de forma String o Boolean, se retorna el valor
             // por omision.
             return null;
+        }
+    }
+
+
+    public static void putJsonObject(
+            SharedPreferences sharedPreferences,
+            String key,
+            String value
+    ){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    public static JsonObject getJsonObject(
+            SharedPreferences sharedPreferences,
+            String key
+    ){
+        String savedValue = sharedPreferences.getString(key, null);
+
+        try {
+            return (JsonObject)  new JsonParser().parse(savedValue);
+        } catch (Exception exception) {
+            putString(sharedPreferences, key, savedValue);
+            return (JsonObject)  new JsonParser().parse(savedValue);
         }
     }
 

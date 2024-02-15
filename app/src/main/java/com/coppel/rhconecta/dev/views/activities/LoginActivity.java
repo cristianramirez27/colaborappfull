@@ -29,6 +29,7 @@ import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.CustomCallBack;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -419,7 +420,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setEndpoints(){
-        setEndpointConfig(mFirebaseRemoteConfig);
+        setEndpointConfig(mFirebaseRemoteConfig, new CustomCallBack() {
+            @Override
+            public void onComplete(String result) {
+            }
+
+            @Override
+            public void onFail(String result) {
+            }
+        });
     }
 
     //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS

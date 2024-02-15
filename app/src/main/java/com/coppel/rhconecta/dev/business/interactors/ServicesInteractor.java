@@ -2,6 +2,7 @@ package com.coppel.rhconecta.dev.business.interactors;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 
@@ -112,6 +113,7 @@ public class ServicesInteractor {
 
                     }
                 } catch (Exception e) {
+                    Log.i("prueba", "CATCH GET LOGIN");
                     crashlytics.log(ServicesConstants.GET_LOGIN);
                     crashlytics.recordException(e);
                     sendGenericError(type, response,executeInBackground);
@@ -191,6 +193,10 @@ public class ServicesInteractor {
     public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
         getProfile(employeeNumber, employeeEmail,1);
+    }
+    public void getProfileValidationLogin(String employeeNumber, String employeeEmail, String token) {
+        this.token = token;
+        getProfile(employeeNumber, employeeEmail,3);
     }
 
     /**
@@ -287,6 +293,7 @@ public class ServicesInteractor {
         //Se agrega parámetro de opcion 09/04/2019
         coppelServicesProfileRequest.setOpcion(option);
         String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+
         if(tokenFirebase!= null && !tokenFirebase.isEmpty()){
             coppelServicesProfileRequest.setId_firebase(tokenFirebase);
         }
@@ -308,7 +315,8 @@ public class ServicesInteractor {
      */
     public void getLogoutValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        logOut(employeeNumber, employeeEmail,2);
+        //logOut(employeeNumber, employeeEmail,2);
+        logOut(employeeNumber, employeeEmail,3);
     }
 
     /**
@@ -413,7 +421,8 @@ public class ServicesInteractor {
     private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
 
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        //iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHERS,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -445,9 +454,36 @@ public class ServicesInteractor {
 
 
     private void getPayrollVoucher(String employeeNumber, int typePetition, int typeSelected,  final String token) {
-
+        String service = "";
+        switch (typeSelected){
+            case 1:
+                Log.i("prueba","voucher tipo1 nomina");
+                    service = ServicesConstants.GET_PAYROLL_VOUCHER;
+                break;
+            case 2:
+                Log.i("prueba","voucher tipo1 fondo");
+                service = ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                break;
+            case 3:
+                Log.i("prueba","voucher tipo1 gasolina");
+                service = ServicesConstants.GET_GAS_VOUCHER;
+                break;
+            case 4:
+                Log.i("prueba","voucher tipo1 utilidades");
+                service = ServicesConstants.GET_UTILITIES_VOUCHER;
+                break;
+            case 5:
+                Log.i("prueba","voucher tipo1 pension");
+                service = ServicesConstants.GET_PENSION_VOUCHER;
+                break;
+            case 6:
+                Log.i("prueba","voucher tipo1 aguinaldo");
+                service = ServicesConstants.GET_BONUS_VOUCHER;
+                break;
+        }
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(service,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
+        //iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -570,8 +606,35 @@ public class ServicesInteractor {
      * @param token          User token
      */
     private void getPayrollVoucherDetail(String employeeNumber, String email, final int typeConstancy, int request, final int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
-
-        iServicesRetrofitMethods.getPayrollVoucherDetail(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+        String service = "";
+        switch (typeConstancy){
+            case 1:
+                Log.i("prueba","voucher tipo1 nomina detalle");
+                service = ServicesConstants.GET_PAYROLL_VOUCHER;
+                break;
+            case 2:
+                Log.i("prueba","voucher tipo1 fondo  detalle");
+                service = ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                break;
+            case 3:
+                Log.i("prueba","voucher tipo1 gasolina detalle");
+                service = ServicesConstants.GET_GAS_VOUCHER;
+                break;
+            case 4:
+                Log.i("prueba","voucher tipo1 utilidades detalle");
+                service = ServicesConstants.GET_UTILITIES_VOUCHER;
+                break;
+            case 5:
+                Log.i("prueba","voucher tipo1 pension detalle");
+                service = ServicesConstants.GET_PENSION_VOUCHER;
+                break;
+            case 6:
+                Log.i("prueba","voucher tipo1 aguinaldo detalle");
+                service = ServicesConstants.GET_BONUS_VOUCHER;
+                break;
+        }
+        //iServicesRetrofitMethods.getPayrollVoucherDetail(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucherDetail(service,token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 

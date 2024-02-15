@@ -14,7 +14,15 @@ public class LoginResponse extends CoppelGeneralParameterResponse implements Ser
         this.data = data;
     }
 
+    public LoginResponse() {
+        this.data = new Data();
+    }
+
     public class Data implements Serializable {
+
+        public Data() {
+            this.response = new Response();
+        }
 
         private Response response;
 
@@ -26,6 +34,7 @@ public class LoginResponse extends CoppelGeneralParameterResponse implements Ser
             this.response = response;
         }
     }
+
 
     public class Response implements Serializable {
         private String app;

@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.resources.db.models.NotificationsUser;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.resources.db.models.MainSection;
 import com.coppel.rhconecta.dev.resources.db.models.SectionDb;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_WHEATHER;
@@ -131,6 +133,8 @@ public class MenuUtilities {
      *
      */
     public static List<HomeMenuItem> getHomeMenuItems(Context context, String email, boolean isSlide, int[] notifications, boolean enableCoCrea) {
+
+        JsonObject links = AppUtilities.getJsonObjectFromSharedPreferences(context, ENDPOINT_LINKS);
 
         String title_cocrea = AppUtilities.getStringFromSharedPreferences(context, TITLE_COCREA);
         if (title_cocrea == null || title_cocrea.isEmpty())

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteException;
 
 public class InternalDatabase {
 
-    private Context context;
+   /* private Context context;
     private String BD_NOMBRE = "visionarios";
     private SQLiteDatabase bd;
 
@@ -74,5 +74,5 @@ public class InternalDatabase {
 
     public void setContext(Context context) {
         this.context = context;
-    }
+    }*/
 }

@@ -1,14 +1,16 @@
 package com.coppel.rhconecta.dev.presentation.splash;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
-import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity;
@@ -17,6 +19,7 @@ import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.CustomCallBack;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
@@ -30,30 +33,42 @@ import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.activities.LoginActivity;
+import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.remoteconfig.ConfigUpdate;
+import com.google.firebase.remoteconfig.ConfigUpdateListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_GENERAL_CONFIGURATION;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.updateEndpoints;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 
-/** */
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+/**
+ *
+ */
 public class SplashScreenActivity
         extends AnalyticsTimeAppCompatActivity
         implements IServicesContract.View, DialogFragmentWarning.OnOptionClick {
@@ -79,21 +94,31 @@ public class SplashScreenActivity
     /* */
     private boolean EXPIRED_SESSION = false;
 
-    /** */
+    private JsonObject generalConfiguration;
+    Integer validateVersionCode;
+
+    /**
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         DaggerAnalyticsComponent.create().injectSplash(this);
-        validateRoot();
         setupFirebaseInstanceId();
         setupViews();
+        //validateVersionMessage();
         //init();
+        validateRoot();
         observeViewModel();
         checkAndSendAnalyticsIfExists();
+
+
     }
 
-    /** */
+    /**
+     *
+     */
     private void setupFirebaseInstanceId() {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(
                 SplashScreenActivity.this,
@@ -109,7 +134,9 @@ public class SplashScreenActivity
         );
     }
 
-    /** */
+    /**
+     *
+     */
     private void initValues() {
         NotificationType notificationType = (NotificationType) IntentExtension
                 .getSerializableExtra(getIntent(), NotificationType.NOTIFICATION_TYPE);
@@ -126,11 +153,13 @@ public class SplashScreenActivity
             notificationDestination = notificationType.getNotificationDestination();
             setupGoto();
         }
-            startApp();
+        startApp();
 
     }
 
-    /** */
+    /**
+     *
+     */
     private void checkAndSendAnalyticsIfExists() {
         AnalyticsTimeManager atm = getAnalyticsTimeManager();
         if (atm.existsFlow()) {
@@ -140,13 +169,17 @@ public class SplashScreenActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void observeViewModel() {
         splashViewModel.getSendTimeByAnalyticsFlowStatus()
                 .observe(this, this::sendTimeByAnalyticsFlowStatusObserver);
     }
 
-    /** */
+    /**
+     *
+     */
     private void sendTimeByAnalyticsFlowStatusObserver(ProcessStatus processStatus) {
         switch (processStatus) {
             case LOADING:
@@ -173,20 +206,25 @@ public class SplashScreenActivity
             goTosection = OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
     }
 
-    /** */
+    /**
+     *
+     */
     private void setupViews() {
         TextView versionTxt = (TextView) findViewById(R.id.versionTxt);
         versionTxt.setText(String.format("V. %s", getVersionApp()));
         getWindow().setBackgroundDrawable(null);
     }
 
-    /** */
+    /**
+     *
+     */
     private void startApp() {
         if (AppUtilities.getBooleanFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN)) {
             initHome();
         } else {
             new Handler().postDelayed(() -> {
-                startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
+                //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                 finish();
             }, 1000);
         }
@@ -204,6 +242,17 @@ public class SplashScreenActivity
                 email,
                 loginResponse.getData().getResponse().getToken()
         );
+        String strProfileResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
+        profileResponse = new Gson().fromJson(strProfileResponse, ProfileResponse.class);
+
+        String email2 = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+        String employee = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        coppelServicesPresenter.requestProfile(
+                employee,
+                email2,
+                token
+        );
     }
 
     @Override
@@ -220,7 +269,9 @@ public class SplashScreenActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void manageLoginResponse(LoginResponse loginResponse) {
         if (loginResponse.getData().getResponse().getErrorCode() == -10) {
             showMessageUser(loginResponse.getData().getResponse().getUserMessage());
@@ -234,7 +285,9 @@ public class SplashScreenActivity
         }
     }
 
-    /** */
+    /**
+     *
+     */
     private void manageProfileResponse(ProfileResponse profileResponse) {
         ProfileResponse.Response profileInternalResponse = profileResponse.getData().getResponse()[0];
         saveProfileInternalResponse(profileInternalResponse);
@@ -263,14 +316,18 @@ public class SplashScreenActivity
         finish();
     }
 
-    /** */
+    /**
+     *
+     */
     private void saveLoginInternalResponse(LoginResponse.Response loginInternalResponse) {
         saveString(AppConstants.SHARED_PREFERENCES_TOKEN, loginInternalResponse.getToken());
         saveString(AppConstants.SHARED_PREFERENCES_TOKEN_USER, loginInternalResponse.getToken_user());
         saveString(AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE, new Gson().toJson(loginResponse));
     }
 
-    /** */
+    /**
+     *
+     */
     private void saveProfileInternalResponse(ProfileResponse.Response profileInternalResponse) {
         saveString(AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profileInternalResponse.getColaborador());
         saveString(AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR, String.valueOf(profileInternalResponse.getEstado()));
@@ -282,17 +339,23 @@ public class SplashScreenActivity
         saveString(AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profileResponse.getData().getResponse()[0]));
     }
 
-    /** */
+    /**
+     *
+     */
     private void saveString(String key, String value) {
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), key, value);
     }
 
-    /** */
+    /**
+     *
+     */
     private void saveBoolean(String key, boolean value) {
         AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), key, value);
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError.isExecuteInBackground()) {
@@ -304,31 +367,50 @@ public class SplashScreenActivity
         if (coppelServicesError.getType() == ServicesRequestType.INVALID_TOKEN) {
             EXPIRED_SESSION = true;
         }
-        dialogFragmentWarning = new DialogFragmentWarning();
-        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
-        dialogFragmentWarning.setOnOptionClick(this);
-        dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        try {
+            dialogFragmentWarning = new DialogFragmentWarning();
+            dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+            dialogFragmentWarning.setOnOptionClick(this);
+            dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), coppelServicesError.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void showProgress() { /* USELESS IMPLEMENTATION */ }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void hideProgress() { /* USELESS IMPLEMENTATION */ }
 
-    /** */
+    /**
+     *
+     */
     @Override
-    public void onLeftOptionClick() { /* USELESS IMPLEMENTATION */ }
+    public void onLeftOptionClick() {
+        /* USELESS IMPLEMENTATION */
+        Log.i("prueba", "onLeftOptionClick");
 
-    /** */
+    }
+
+    /**
+     *
+     */
     @Override
     public void onRightOptionClick() {
+        Log.i("prueba", "onRightOptionClick");
         dialogFragmentWarning.close();
 
         if (EXPIRED_SESSION) {
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
             AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, false);
             EXPIRED_SESSION = false;
         }
@@ -336,23 +418,21 @@ public class SplashScreenActivity
         finish();
     }
 
-    /** */
+    /**
+     *
+     */
     private void init() {
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setMinimumFetchIntervalInSeconds(TimeUnit.HOURS.toSeconds(12))
-                 //.setDeveloperModeEnabled(BuildConfig.DEBUG)
+                //.setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(SplashScreenActivity.this, new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                fetchEndpoints();
-            }
-        });
-
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(SplashScreenActivity.this, task -> fetchEndpoints());
     }
 
-    /** */
+    /**
+     *
+     */
     private void fetchEndpoints() {
         long cacheExpiration = 0;
         mFirebaseRemoteConfig.fetch(cacheExpiration)
@@ -373,15 +453,56 @@ public class SplashScreenActivity
                         }
                     }
                 });
+        mFirebaseRemoteConfig.addOnConfigUpdateListener(new ConfigUpdateListener() {
+            @Override
+            public void onUpdate(@NonNull ConfigUpdate configUpdate) {
+                Log.d("TAG", "Updated keys: " + configUpdate.getUpdatedKeys());
+                Log.d("TAG", "Updated keys: " + configUpdate);
+
+                mFirebaseRemoteConfig.activate().addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        Log.d("TAG", "onComplete task: " + task);
+                        for (String key : configUpdate.getUpdatedKeys()) {
+                            updateEndpoints(mFirebaseRemoteConfig, key);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onError(@NonNull FirebaseRemoteConfigException error) {
+                Log.w("TAG", "Config update error with code: " + error.getCode(), error);
+            }
+
+        });
+
+
     }
 
-    /** */
+    /**
+     *
+     */
     private void setEndpoints() {
-        setEndpointConfig(mFirebaseRemoteConfig);
-        initValues();
+        setEndpointConfig(mFirebaseRemoteConfig, new CustomCallBack() {
+
+            @Override
+            public void onComplete(String result) {
+                validateVersionMessage();
+                //initValues();
+            }
+
+            @Override
+            public void onFail(String result) {
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                fetchEndpoints();
+            }
+        });
     }
 
-    /** */
+    /**
+     *
+     */
     private void showMessageUser(String msg) {
         new Handler().postDelayed(() -> {
             dialogFragmentWarning = new DialogFragmentWarning();
@@ -401,17 +522,120 @@ public class SplashScreenActivity
         return false;
     }
 
-    private void validateRoot(){
+    private void validateRoot() {
         new Handler().postDelayed(() -> {
             if (checkRootMethod()) {
                 dialogFragmentWarning = new DialogFragmentWarning();
                 dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), getString(R.string.root_message), getString(R.string.accept));
                 dialogFragmentWarning.setOnOptionClick(this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
-            }else{
+            } else {
                 init();
             }
-        },1500);
+        }, 1500);
+    }
+
+    private Integer validateVersion() {
+        generalConfiguration = AppUtilities.getJsonObjectFromSharedPreferences(this, ENDPOINT_GENERAL_CONFIGURATION);
+        JsonObject versionAndroid = generalConfiguration.get("AppVersion_Android").getAsJsonObject();
+        String min = versionAndroid.get("min").getAsString();
+        String max = versionAndroid.get("max").getAsString();
+        String versionApp = getVersionApp();
+
+        /*int comparisonMin = min.compareTo(versionApp);
+        int comparisonMax = max.compareTo(versionApp);
+
+        if (comparisonMin >= 0 && comparisonMax <= 0) {
+            System.out.println("La versión app es válida.");
+        } else {
+            System.out.println("La versión app no es válida.");
+        }*/
+        String[] minParts = min.split("\\.");
+        String[] maxParts = max.split("\\.");
+        String[] appParts = versionApp.split("\\.");
+
+        for (int i = 0; i < 3; i++) {
+            int minPart = Integer.parseInt(minParts[i]);
+            int maxPart = Integer.parseInt(maxParts[i]);
+            int appPart = Integer.parseInt(appParts[i]);
+
+            if (appPart < minPart) {
+                Log.i("prueba", "-1");
+                // "te obliga"
+                return -1;
+            } else if (appPart > maxPart) {
+                Log.i("prueba", "1");
+                //no te molesta
+                return 1;
+            }
+        }
+        //si es 0 te avisa que hay una actualizacion pero no es necesario actualizar
+        Log.i("prueba", "0");
+        return 0;
+    }
+
+    public void validateVersionMessage(){
+        validateVersionCode = validateVersion();
+
+        switch (validateVersionCode) {
+            case -1:
+                //obligar a actualizar
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Actualización Disponible")
+                        .setMessage("Una nueva version disponible. Actualiza la app para continuar.")
+                        .setPositiveButton("Actualizar", (dialog, which) -> {
+                            // Acción al presionar Aceptar
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                            finish();
+                        })
+                        .setCancelable(false)
+                        .show();
+                break;
+            case 0:
+                //levantar modal para avisar que hay una nueva pero no es necesario descargar aun
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setTitle("Actualización Disponible")
+                        .setMessage("Una nueva version disponible. Actualiza la app.")
+                        .setPositiveButton("Actualizar", (dialog, which) -> {
+                            // Acción al presionar Aceptar
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                            finish();
+                        })
+                        .setNegativeButton("Despues", (dialog, which) -> {
+                            dialog.dismiss();
+                            initValues();
+                        })
+                        .setCancelable(false)
+                        .show();
+                break;
+            case 1:
+                //dejar pasar normal
+                initValues();
+
+                break;
+            default:
+                System.out.println("El resultado es desconocido.");
+        }
+    }
+
+    private  void showDialogAlt(String message){
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.attention))
+                .setContentText(message)
+                .setConfirmText(getString(R.string.accept))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                    }
+                })
+                .show();
     }
 
 }

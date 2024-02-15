@@ -27,6 +27,7 @@ import com.coppel.rhconecta.dev.views.customviews.ZendeskInboxView;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import javax.inject.Inject;
 
@@ -97,7 +98,16 @@ public class PollToolbarFragment extends Fragment implements DialogFragmentWarni
     @Override
     public void onResume() {
         super.onResume();
-        CoppelApp.getZendesk().setCallBackAndRefreshStatus(this);
+        try{
+            CoppelApp.getZendesk().setCallBackAndRefreshStatus(this);
+        }catch (Exception exception){
+            saveToCrashLitics("onResume() ",exception);
+        }
+    }
+
+    private void saveToCrashLitics(String someInfo , Exception e){
+        FirebaseCrashlytics.getInstance().log(someInfo);
+        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     /**

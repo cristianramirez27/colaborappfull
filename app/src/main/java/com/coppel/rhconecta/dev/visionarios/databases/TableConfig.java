@@ -7,7 +7,7 @@ import com.coppel.rhconecta.dev.visionarios.utils.Config;
 import java.util.ArrayList;
 
 public class TableConfig {
-    private InternalDatabase db;
+    /*private InternalDatabase db;
     private String TABLA_NOMBRE = "config";
     private boolean resetOnStart = false; // SI ES TRUE ELIMINA LA TABLA PARA GENERARLA NUEVAMENTE
 
@@ -131,7 +131,7 @@ public class TableConfig {
 
             this.update(obj);
         }
-    }
+    }*/
 
 }
 

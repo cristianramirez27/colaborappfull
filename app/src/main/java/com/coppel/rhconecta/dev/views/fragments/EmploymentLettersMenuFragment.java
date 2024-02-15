@@ -145,6 +145,8 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
         super.onViewCreated(view, savedInstanceState);
         if (letterSignatureResponse == null) {
             coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
+            //coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getProfileResponse().getToken());
+
         }
     }
 
@@ -318,7 +320,8 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgvRefresh:
-                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, parent.getLoginResponse().getToken());
+                //coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, parent.getLoginResponse().getToken());
+                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, parent.getProfileResponse().getToken());
                 break;
         }
     }

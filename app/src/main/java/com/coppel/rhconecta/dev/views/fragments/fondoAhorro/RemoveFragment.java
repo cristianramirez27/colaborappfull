@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -129,7 +130,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         super.onAttach(context);
     }
 
-    public static RemoveFragment getInstance(){
+    public static RemoveFragment getInstance() {
         RemoveFragment fragment = new RemoveFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -170,14 +171,14 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         loadContent();
+        loadContent();
 
         //Seteamos los valores de margen de credito y ahorro adicional
         txtCreditMargin.setText("Disponible en Margen de crédito");
         String valueCreditMargin = TextUtilities.getNumberInCurrencyFormat(
                 Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito())));
 
-        if(valueCreditMargin.length() >= 12)
+        if (valueCreditMargin.length() >= 12)
             txtValueCreditMargin.setTextSize(11);
 
         txtValueCreditMargin.setText(valueCreditMargin);
@@ -219,7 +220,6 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -236,19 +236,19 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void loadContent(){
-        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
+    private void loadContent() {
+        String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_NUM_COLABORADOR);
+        String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
                 CONSULTA_RETIRO,2,numEmployer);
-        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData,token);
+        coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData, token);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnRemove:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
 
@@ -257,7 +257,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 break;
 
             case R.id.imgvRefresh:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
 
@@ -274,7 +274,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             margenCredito = !edtRetiroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroProceso.getQuantity()) : 0;
         }
 
-        Double ahorroAdicional =  AppUtilities.toDouble(edtRetiroAhorro.getQuantity()) ;
+        Double ahorroAdicional = AppUtilities.toDouble(edtRetiroAhorro.getQuantity());
         //Revisamos si hay que reenviar el valor anterior
         if (edtRetiroAhorro.getQuantity().isEmpty() && edtRetiroAhorroProceso.getVisibility() == VISIBLE) {
             ahorroAdicional = !edtRetiroAhorroProceso.getQuantity().isEmpty() ? Double.parseDouble(edtRetiroAhorroProceso.getQuantity()) : 0;
@@ -284,11 +284,21 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
     }
 
     private void checkBalance(Double ahorroAdicional, Double margenCredito) {
-        if (ahorroAdicional > getBalanceAhorroAdicional() || margenCredito > getBalanceMargenCredito()) {
+        Double balanceAhorroAdicional = getBalanceAhorroAdicional();
+        Double balanceMargenCredito = getBalanceMargenCredito();
+        if (balanceAhorroAdicional < 0) {
+            balanceAhorroAdicional = (double) 0;
+            if (balanceMargenCredito < 0) {
+                balanceMargenCredito = (double) 0;
+            }
+        }
+        if (ahorroAdicional > balanceAhorroAdicional || margenCredito > balanceMargenCredito) {
             showAlertDialog(getString(R.string.insufficient_balance));
         } else {
+            Log.d("boton", "requestWithdrawal");
             requestWithdrawal(ahorroAdicional, margenCredito);
         }
+
     }
 
     private void requestWithdrawal(Double ahorroAdicional, Double margenCredito) {
@@ -315,8 +325,8 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         layoutMain.setVisibility(VISIBLE);
         switch (response.getType()) {
             case ServicesRequestType.WITHDRAWSAVING:
-                if(response.getResponse() instanceof  RetiroResponse){
-                    retiroResponse = (RetiroResponse)response.getResponse();
+                if (response.getResponse() instanceof RetiroResponse) {
+                    retiroResponse = (RetiroResponse) response.getResponse();
                     online = retiroResponse.getData().getResponse().getOpc_retiroenlinea() == 1;
                     /**Se muestra mensaje si hay contenido que mostrar*/
                     boolean validateMessage = retiroResponse.getData().getResponse().getDes_mensaje() != null &&
@@ -325,7 +335,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                         showWarningDialog(retiroResponse.getData().getResponse().getDes_mensaje());
                     }
                     configurationUI(retiroResponse);
-                }else if(response.getResponse() instanceof GuardarRetiroResponse){
+                } else if (response.getResponse() instanceof GuardarRetiroResponse) {
                     if (((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getClv_clave() == 0) {
                         showAlertDialog(((GuardarRetiroResponse) response.getResponse()).getData().getResponse().getDes_mensaje());
                     } else {
@@ -426,7 +436,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
             if (response.getDes_colorletra() != null && !response.getDes_colorletra().isEmpty()) {
                 tvBloqueoAhorro.setTextColor(Color.parseColor(response.getDes_colorletra()));
             }
-        }else {
+        } else {
             tvBloqueoAhorro.setVisibility(GONE);
         }
 
@@ -464,7 +474,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
 
     @Override
     public void hideProgress() {
-       if(dialogFragmentLoader != null) dialogFragmentLoader.close();
+        if (dialogFragmentLoader != null) dialogFragmentLoader.close();
     }
 
 
@@ -499,8 +509,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         dialogFragmentWarning.show(parent.getSupportFragmentManager(), DialogFragmentWarning.TAG);
     }
 
-    private void setFocusChangeListener(EditTextMoney editTextMoney){
-
+    private void setFocusChangeListener(EditTextMoney editTextMoney) {
 
 
         editTextMoney.getEdtQuantity().addTextChangedListener(new TextWatcher() {
@@ -514,7 +523,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 boolean isEnable = false;
                 String value = edtRetiro.getQuantity();
                 String value2 = edtRetiroAhorro.getQuantity();
-                if((value.length() >0 && AppUtilities.isNumeric(value)) || (value2.length() >0 && AppUtilities.isNumeric(value2)) )
+                if ((value.length() > 0 && AppUtilities.isNumeric(value)) || (value2.length() > 0 && AppUtilities.isNumeric(value2)))
                     isEnable = true;
 
                 setEnableButton(isEnable);
@@ -530,7 +539,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         editTextMoney.getEdtQuantity().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     editTextMoney.setTextWatcherMoneyDecimal();
                     DeviceManager.showKeyBoard(getActivity());
                 }
@@ -539,7 +548,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         });
     }
 
-    private void setEnableButton(boolean isEnable){
+    private void setEnableButton(boolean isEnable) {
         btnRemove.setEnabled(isEnable);
         btnRemove.setBackgroundResource(isEnable ? R.drawable.background_blue_rounded : R.drawable.background_disable_rounded);
     }
@@ -560,14 +569,16 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         BigDecimal total = margin.add(ahorro);
         totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), total));
 
-        if (Double.parseDouble(
-                TextUtilities.insertDecimalPoint(
-                        parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()
-                )) < margin.doubleValue()
-                || Double.parseDouble(
-                TextUtilities.insertDecimalPoint(
-                        parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()
-                )) < ahorro.doubleValue()) {
+        double balanceMargenCredito = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()));
+        double balanceAhorroAdicional = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()));
+        if (balanceAhorroAdicional < 0) {
+            balanceAhorroAdicional = 0;
+        }
+        if (balanceMargenCredito < 0) {
+            balanceMargenCredito = 0;
+        }
+        if (balanceMargenCredito < margin.doubleValue() || balanceAhorroAdicional < ahorro.doubleValue()) {
+
             setEnableButton(false);
             showAlertDialog("No cuenta con saldo disponible");
         }
