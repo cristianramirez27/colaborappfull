@@ -20,7 +20,7 @@ public class MoneyTextWatcher implements TextWatcher {
     private static final int MAX_LENGTH = 20;
     private String previousCleanString;
     private boolean supportDecimal = false;
-    private Pattern regex = Pattern.compile("\\d+");
+    private Pattern regex = Pattern.compile("\\d+\\.?\\d*");
 
     public MoneyTextWatcher(EditText editText) {
         editTextWeakReference = new WeakReference<EditText>(editText);

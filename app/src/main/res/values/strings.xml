@@ -502,7 +502,8 @@
     <string name="label_title_code">Tu código es</string>
     <string name="withdrawal_in_process">Retiro en proceso</string>
     <string name="insufficient_balance">No cuenta con saldo disponible</string>
-    <string name="entry_home_vacantes">Vacantes Internas</string>
+    <!--<string name="entry_home_vacantes">Vacantes Internas</string>-->
+    <string name="entry_home_vacantes">Oportunidades Internas</string>
     <string name="title_linea_denuncia">Línea de denuncia</string>
     <string name="movements">Mis Movimientos</string>
     <string name="last_movements">Tus últimos movimientos</string>
