@@ -11,8 +11,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 33
-        versionName "2.11.8"
-        versionCode 118
+        versionName "2.11.9"
+        versionCode 125
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
