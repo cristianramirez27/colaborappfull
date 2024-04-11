@@ -30,6 +30,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VACANCIES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_WHEATHER;
@@ -157,8 +158,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER),//6
-                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES),
-                new HomeMenuItem(context.getString(R.string.title_calculator), OPTION_CALCULATOR)
+                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES)
+               // new HomeMenuItem(context.getString(R.string.title_calculator), OPTION_CALCULATOR)
         ));
 
         List<MainSection> mainSections = RealmHelper.getListSection();
@@ -287,6 +288,7 @@ public class MenuUtilities {
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
         boolean blockCalculator = AppUtilities.getStringFromSharedPreferences(context, BLOCK_CALCULATOR).equals(YES);
         boolean blocklineaDenuncia = AppUtilities.getStringFromSharedPreferences(context, BLOCK_LINEA_DE_DENUNCIA).equals(YES);
+        boolean blockVacancies = AppUtilities.getStringFromSharedPreferences(context, BLOCK_VACANCIES).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
@@ -313,6 +315,8 @@ public class MenuUtilities {
                 if (item.getTAG().equals(OPTION_CALCULATOR) && blockCalculator)
                     continue;
                 if (item.getTAG().equals(OPTION_LINEA_DE_DENUNCIA) && blocklineaDenuncia)
+                    continue;
+                if (item.getTAG().equals(OPTION_VACANTES) && blockVacancies)
                     continue;
                 response.add(item);
             }

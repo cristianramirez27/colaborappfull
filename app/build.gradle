@@ -11,8 +11,8 @@ android {
         applicationId "com.coppel.rhconecta.dev"
         minSdkVersion 21
         targetSdkVersion 33
-        versionName "2.11.9"
-        versionCode 125
+        versionName "2.11.8"
+        versionCode 127
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -182,7 +182,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    //implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
