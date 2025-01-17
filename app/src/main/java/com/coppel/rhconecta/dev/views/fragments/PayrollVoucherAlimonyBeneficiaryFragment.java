@@ -1,8 +1,11 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
 
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
@@ -289,9 +292,13 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     }
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+            } else {
+                requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
+            }
         } else {
             requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
         }
@@ -306,6 +313,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 email, ServicesConstants.CONSTANCE_TYPE_ALIMONY, 2,
                 shippingType, TextUtilities.dateFormatter(beneficiaryDate.sfechanomina,
                         AppConstants.DATE_FORMAT_DD_MM_YYYY_MIDDLE, AppConstants.DATE_FORMAT_YYYY_MM_DD_MIDDLE),
-                data, parent.getLoginResponse().getToken());
+                data, AppUtilities.getAuthHeader(requireContext()));
     }
+
 }

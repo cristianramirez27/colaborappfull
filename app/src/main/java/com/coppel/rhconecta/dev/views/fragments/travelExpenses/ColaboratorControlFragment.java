@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -253,7 +255,7 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             }
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
@@ -310,7 +312,12 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
             }
         });
 
-
+        requireActivity().getOnBackPressedDispatcher().addCallback(requireActivity(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        });
 
         return view;
     }
@@ -1057,8 +1064,10 @@ public class ColaboratorControlFragment extends Fragment implements  View.OnClic
         ExpensesTravelRequestData expensesTravelRequestData = new ExpensesTravelRequestData(ExpensesTravelType.AUTORIZAR_SOLICITUD, 8,numEmployer);
         expensesTravelRequestData.setClv_solicitud(detailExpenseTravelData.getClave());
         expensesTravelRequestData.setNum_gerente(Integer.parseInt(numGte));
-
-        expensesTravelRequestData.setNum_control(Integer.parseInt(requestComplementsColaborator.getCLV_CONTROL()));
+        if(requestComplementsColaborator.getCLV_CONTROL() !=  null)
+            expensesTravelRequestData.setNum_control(Integer.parseInt(requestComplementsColaborator.getCLV_CONTROL()));
+        else
+            expensesTravelRequestData.setNum_control(0);
 
 
         expensesTravelRequestData.setClv_estatus(2);

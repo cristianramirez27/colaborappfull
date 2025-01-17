@@ -29,7 +29,13 @@ class FingerprintRepositoryImpl(
                 val request = HaveFingerprintsRequest(getEmployeeNumber())
                 val url = ServicesConstants.GET_HUELLAS_ADICIONALES
                 retrofitApiCall {
-                    fingerprintApiService.haveFingerprints(authHeader, url, request)
+                    fingerprintApiService.haveFingerprints(authHeader,
+                        "2024-11-27T17:38:35.244Z",
+                        "-99.985171",
+                        "20.270460",
+                        "fs9999c7q86c33cdfd5f55",
+                        url,
+                        request)
                 }.let {
                     val haveFingerprints = it.data.response.haveFingerprints()
                     val response = HaveFingerprintsResponse(haveFingerprints)
@@ -48,7 +54,13 @@ class FingerprintRepositoryImpl(
                 val request = GetFingerprintsRequest(getEmployeeNumber())
                 val url = ServicesConstants.GET_HUELLAS_ADICIONALES
                 retrofitApiCall {
-                    fingerprintApiService.getFingerprints(authHeader, url, request)
+                    fingerprintApiService.getFingerprints(authHeader,
+                        "2024-11-27T17:38:35.244Z",
+                        "-99.985171",
+                        "20.270460",
+                        "fs9999c7q86c33cdfd5f55",
+                        url,
+                        request)
                 }.let {
                     val fingerprints = it.data.response.fingerprintsDto.map { dto ->
                         dto.toFingerprint()

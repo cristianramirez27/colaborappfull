@@ -5,7 +5,7 @@ public class CoppelServicesGetRolHolidaysRequest extends CoppelServicesBaseHolid
     public CoppelServicesGetRolHolidaysRequest() {
     }
 
-    public CoppelServicesGetRolHolidaysRequest(String num_empleado, int opcion) {
+    public CoppelServicesGetRolHolidaysRequest(int num_empleado, int opcion) {
         super(num_empleado, opcion);
     }
 

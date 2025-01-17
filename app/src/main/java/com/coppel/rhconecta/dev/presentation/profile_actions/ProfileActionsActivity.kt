@@ -1,12 +1,13 @@
 package com.coppel.rhconecta.dev.presentation.profile_actions
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import com.bumptech.glide.Glide
+import com.coppel.rhconecta.dev.CoppelApp
 import com.coppel.rhconecta.dev.R
 import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig
 import com.coppel.rhconecta.dev.business.models.ProfileResponse
 import com.coppel.rhconecta.dev.databinding.ActivityProfileActionsBinding
 import com.coppel.rhconecta.dev.domain.common.failure.Failure
@@ -25,7 +26,7 @@ import com.coppel.rhconecta.dev.views.utils.MenuUtilities
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /** */
-class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
+class ProfileActionsActivity : AnalyticsTimeAppCompatActivity(),
     ToolbarFragmentCommunication {
 
     /* */
@@ -47,7 +48,13 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
         setContentView(binding.root)
         initValues()
         setupViews()
-        execute()
+        val numgColaborator = AppUtilities.getStringFromSharedPreferences(
+            CoppelApp.getContext(),
+            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        )
+        val userAccess = MenuUtilities.userAccess(numgColaborator, this)
+        if (AppUtilities.getStringFromSharedPreferences(this, AppConfig.BLOCK_HUELLASAD) == AppConfig.NO  || userAccess)
+            execute()
     }
 
     override fun onResume() {
@@ -58,8 +65,8 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     /** */
     private fun initValues() {
         profileResponse = IntentExtension.getSerializableExtra(
-                intent,
-                AppConstants.BUNLDE_PROFILE_RESPONSE
+            intent,
+            AppConstants.BUNLDE_PROFILE_RESPONSE
         ) as ProfileResponse.Response
     }
 
@@ -76,13 +83,25 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
             when (it) {
                 ProcessStatus.LOADING, null ->
                     showProgressBar()
+
                 ProcessStatus.FAILURE ->
                     manageHaveFingerprintFailure(profileActionsViewModel.failure!!)
+
                 ProcessStatus.COMPLETED -> {
                     val sections = MenuUtilities.getSubSection()
-                    if (AppUtilities.getBooleanFromSharedPreferences(this, AppConstants.SHARED_PREFERENCES_FILIAL))
-                        manageHaveFingerprintDone(MenuUtilities.findSubItem(sections, MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
-                                ?: -1, 1) && profileActionsViewModel.haveFingerprints)
+                    if (AppUtilities.getBooleanFromSharedPreferences(
+                            this,
+                            AppConstants.SHARED_PREFERENCES_FILIAL
+                        )
+                    )
+                        manageHaveFingerprintDone(
+                            MenuUtilities.findSubItem(
+                                sections,
+                                MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
+                                    ?: -1,
+                                1
+                            ) && profileActionsViewModel.haveFingerprints
+                        )
                     else
                         manageHaveFingerprintDone(profileActionsViewModel.haveFingerprints)
                 }
@@ -104,11 +123,11 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     private fun manageHaveFingerprintFailure(failure: Failure) {
         hideProgressBar()
         SingleActionDialog(
-                this,
-                getString(R.string.profile_actions_failure_default_title),
-                getString(R.string.profile_actions_failure_default_content),
-                getString(R.string.profile_actions_failure_default_action),
-                null
+            this,
+            getString(R.string.profile_actions_failure_default_title),
+            getString(R.string.profile_actions_failure_default_content),
+            getString(R.string.profile_actions_failure_default_action),
+            null
         ).show()
     }
 
@@ -150,8 +169,8 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     /** */
     private fun onUserProfileClickListener(view: View) {
         val intent = IntentBuilder(Intent(this, ProfileDetailsActivity::class.java))
-                .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
-                .build()
+            .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+            .build()
         startActivity(intent)
     }
 
@@ -162,11 +181,16 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     }
 
     /** */
-    private fun setProfileImage(){
+    private fun setProfileImage() {
         val userPreferences = RealmHelper.getUserPreferences(profileResponse.correo)
-        AppUtilities.setProfileImage(this, profileResponse.correo, profileResponse.fotoperfil, binding.ivUserImage)
+        AppUtilities.setProfileImage(
+            this,
+            profileResponse.correo,
+            profileResponse.fotoperfil,
+            binding.ivUserImage
+        )
 
-       // Log.i("prueba","foto perfil: " + profileResponse.fotoperfil)
+        // Log.i("prueba","foto perfil: " + profileResponse.fotoperfil)
 
         //Log.i("prueba","userPreferences.image: " + userPreferences.image)
         /*binding.apply {
@@ -181,6 +205,22 @@ class ProfileActionsActivity :  AnalyticsTimeAppCompatActivity(),
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    fun userAccess(numEmp: String, context: Context?): Boolean {
+        val userAccess = AppUtilities.getStringFromSharedPreferences(context, AppConfig.USER_ACCESS)
+        //String numerosEnJson = userAccess.get("num").getAsString();
+        val numerosArray = userAccess.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+
+        var encontrado = false
+        for (numero in numerosArray) {
+            if (numero == numEmp) {
+                encontrado = true
+                break
+            }
+        }
+        return encontrado
     }
 
 }

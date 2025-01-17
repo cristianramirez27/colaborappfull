@@ -5,11 +5,11 @@ import java.util.List;
 public class CoppelServicesChangeStatusHolidaysRequest extends CoppelServicesBaseHolidaysRequest {
 
     private int idu_autorizo;
-    private String num_gerente;
+    private int num_gerente;
     private String des_comentario;
     private List<HolidayPeriodFolio> periodos;
 
-    public CoppelServicesChangeStatusHolidaysRequest(Object num_empleado, int opcion, int idu_autorizo, String num_gerente, String des_comentario, List<HolidayPeriodFolio> periodos) {
+    public CoppelServicesChangeStatusHolidaysRequest(Object num_empleado, int opcion, int idu_autorizo, int num_gerente, String des_comentario, List<HolidayPeriodFolio> periodos) {
         super(num_empleado, opcion);
         this.idu_autorizo = idu_autorizo;
         this.num_gerente = num_gerente;
@@ -17,7 +17,7 @@ public class CoppelServicesChangeStatusHolidaysRequest extends CoppelServicesBas
         this.periodos = periodos;
     }
 
-    public CoppelServicesChangeStatusHolidaysRequest(Object num_empleado, int opcion, String num_gerente, String des_comentario, List<HolidayPeriodFolio> periodos) {
+    public CoppelServicesChangeStatusHolidaysRequest(Object num_empleado, int opcion, int num_gerente, String des_comentario, List<HolidayPeriodFolio> periodos) {
         super(num_empleado, opcion);
         this.num_gerente = num_gerente;
         this.des_comentario = des_comentario;
@@ -32,11 +32,11 @@ public class CoppelServicesChangeStatusHolidaysRequest extends CoppelServicesBas
         this.idu_autorizo = idu_autorizo;
     }
 
-    public String getNum_gerente() {
+    public int getNum_gerente() {
         return num_gerente;
     }
 
-    public void setNum_gerente(String num_gerente) {
+    public void setNum_gerente(int num_gerente) {
         this.num_gerente = num_gerente;
     }
 

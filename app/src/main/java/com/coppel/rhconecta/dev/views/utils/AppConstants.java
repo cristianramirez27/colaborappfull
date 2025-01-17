@@ -21,6 +21,9 @@ public class AppConstants {
     public static final String SHARED_PREFERENCES_STATE_COLABORADOR = "STATE_COLABORADOR ";
     public static final String SHARED_PREFERENCES_CITY_COLABORADOR = "CITY_COLABORADOR";
     public static final String SHARED_PREFERENCES_FIREBASE_TOKEN = "FIREBASE_TOKEN";
+    public static final String SHARED_PREFERENCES_CENTRO = "CENTRO_COLABORADOR";
+    public static final String SHARED_PREFERENCES_REGION = "REGION_COLABORADOR";
+    public static final String SHARED_PREFERENCES_SECTION = "SECTION_COLABORADOR";
 
     public static final String SHARED_PREFERENCES_IS_GTE = "IS_GTE";
     public static final String SHARED_PREFERENCES_IS_SUPLENTE = "IS_SUPLENTE";

@@ -10,8 +10,10 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MANAGER;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -61,22 +63,32 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
         TAG_FRAGMENT = IntentExtension.getStringExtra(getIntent(), BUNDLE_OPTION_TRAVEL_EXPENSES);
         data = IntentExtension.getSerializableExtra(getIntent(), BUNDLE_OPTION_DATA_TRAVEL_EXPENSES);
-        if(getIntent().hasExtra( "AUTHORIZE")){
+        if (getIntent().hasExtra("AUTHORIZE")) {
             goToAuthorize = IntentExtension.getBooleanExtra(getIntent(), "AUTHORIZE");
         }
 
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
-        onEvent(TAG_FRAGMENT,data);
+        onEvent(TAG_FRAGMENT, data);
 
         zendeskInbox.setOnClickListener(view -> clickZendesk());
+        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (childFragmentManager.getBackStackEntryCount() == 1) {
+                    finish(); // Cierra la actividad si no hay más fragments en la pila
+                } else if (childFragmentManager.getBackStackEntryCount() > 1)  {
+                    childFragmentManager.popBackStack();
+                }
+            }
+        });
     }
 
     @Override
@@ -90,14 +102,14 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
     }
 
     @Override
-    public void onEvent(String tag,Object data) {
+    public void onEvent(String tag, Object data) {
         switch (tag) {
             case OPTION_MANAGER:
                 currentFragment = new TravelExpensesManagerFragment();
                 replaceFragment(currentFragment, TravelExpensesManagerFragment.TAG);
 
-                if(goToAuthorize){
-                    onEvent(OPTION_AUTHORIZE_REQUEST,null);
+                if (goToAuthorize) {
+                    onEvent(OPTION_AUTHORIZE_REQUEST, null);
                 }
                 break;
             case OPTION_COLABORATOR:
@@ -105,7 +117,7 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
                 replaceFragment(currentFragment, MyRequestAndControlsFragment.TAG);
                 break;
             case OPTION_DETAIL_REQUETS_CONTROLS:
-                replaceFragment(ColaboratorControlFragment.getInstance((DetailExpenseTravelData)data) , ColaboratorControlFragment.TAG);
+                replaceFragment(ColaboratorControlFragment.getInstance((DetailExpenseTravelData) data), ColaboratorControlFragment.TAG);
 
                 break;
 
@@ -113,7 +125,7 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
             case OPTION_AUTHORIZE_REQUEST:
 
                 currentFragment = AuthorizeRequestAndComplementsFragment.getInstance();
-                replaceFragment( currentFragment, AuthorizeRequestAndComplementsFragment.TAG);
+                replaceFragment(currentFragment, AuthorizeRequestAndComplementsFragment.TAG);
 
                 break;
 
@@ -128,33 +140,33 @@ public class GastosViajeActivity extends AnalyticsTimeAppCompatActivity implemen
     public void replaceFragment(Fragment fragment, String tag) {
         fragmentTransaction = childFragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(tag);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.contentFragment, fragment, tag).commit();
     }
-
 
 
     @Override
     public void onBackPressed() {
         int backStackEntryCount = childFragmentManager.getBackStackEntryCount();
-            if (backStackEntryCount == 1) {
-                finish();
-            } else if (backStackEntryCount > 1) {
-                super.onBackPressed();
-            }
+        if (backStackEntryCount == 1) {
+            finish();
+        } else if (backStackEntryCount > 1) {
+            super.onBackPressed();
+        }
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             //onEvent(OPTION_AUTHORIZE_REQUEST,null);
-            if(requestCode == 131 && (currentFragment!= null && currentFragment instanceof AuthorizeRequestAndComplementsFragment)){
-                ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
-            }else if((requestCode == 888 || resultCode == RESULT_OK)){
-                if(currentFragment != null && currentFragment instanceof  AuthorizeRequestAndComplementsFragment ){
-                    ((AuthorizeRequestAndComplementsFragment)currentFragment).getRequestExpenses();
-                }else {
+            if (requestCode == 131 && (currentFragment != null && currentFragment instanceof AuthorizeRequestAndComplementsFragment)) {
+                ((AuthorizeRequestAndComplementsFragment) currentFragment).getRequestExpenses();
+            } else if ((requestCode == 888 || resultCode == RESULT_OK)) {
+                if (currentFragment != null && currentFragment instanceof AuthorizeRequestAndComplementsFragment) {
+                    ((AuthorizeRequestAndComplementsFragment) currentFragment).getRequestExpenses();
+                } else {
                     setResult(RESULT_OK);
                     finish();
 

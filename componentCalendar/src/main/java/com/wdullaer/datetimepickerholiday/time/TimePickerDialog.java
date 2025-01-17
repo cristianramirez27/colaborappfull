@@ -671,7 +671,7 @@ public class TimePickerDialog extends DialogFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        int viewRes = mVersion == Version.VERSION_1 ? R.layout.mdtp_time_picker_dialog_library : R.layout.mdtp_time_picker_dialog_v2_library;
+        int viewRes = mVersion == Version.VERSION_1 ? com.wdullaer.materialdatepicker.R.layout.mdtp_time_picker_dialog_library : com.wdullaer.materialdatepicker.R.layout.mdtp_time_picker_dialog_v2_library;
         View view = inflater.inflate(viewRes, container,false);
         KeyboardListener keyboardListener = new KeyboardListener();
         view.findViewById(R.id.mdtp_time_picker_dialog).setOnKeyListener(keyboardListener);
@@ -1631,8 +1631,8 @@ public class TimePickerDialog extends DialogFragment implements
             char amChar;
             char pmChar;
             for (int i = 0; i < Math.max(mAmText.length(), mPmText.length()); i++) {
-                amChar = mAmText.toLowerCase(mLocale).charAt(i);
-                pmChar = mPmText.toLowerCase(mLocale).charAt(i);
+                amChar = mAmText.toLowerCase(Locale.getDefault()).charAt(i);
+                pmChar = mPmText.toLowerCase(Locale.getDefault()).charAt(i);
                 if (amChar != pmChar) {
                     KeyEvent[] events = kcm.getEvents(new char[]{amChar, pmChar});
                     // There should be 4 events: a down and up for both AM and PM.

@@ -156,6 +156,7 @@
                                 android:padding="4dp"
                                 android:enabled="false"
                                 android:text="2"
+                                android:longClickable="false"
                                 android:lines="1"
                                 android:textColor="@color/colorTextGray"
                                 android:imeOptions="actionNext"

@@ -3,16 +3,16 @@
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackgroundFragments"
-    android:layout_alignParentTop="true">
+    android:layout_alignParentTop="true"
+    android:background="@color/colorBackgroundFragments">
 
     <LinearLayout
         android:id="@+id/container_notinvasive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
         android:background="@color/transparent"
         android:orientation="vertical"
+        android:padding="8dp"
         android:visibility="visible">
 
         <TextView
@@ -27,16 +27,17 @@
         <EditText
             android:id="@+id/observationGte"
             android:layout_width="match_parent"
+            android:layout_height="120dp"
             android:layout_marginTop="8dp"
-            android:gravity="top"
-            android:padding="8dp"
-            android:textSize="13sp"
-            android:inputType="textMultiLine"
-            android:importantForAutofill="no"
-            android:focusable="true"
-            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
             android:background="@drawable/background_gray_rounded"
-            android:layout_height="120dp" />
+            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
+            android:focusable="true"
+            android:gravity="top"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:longClickable="false"
+            android:padding="8dp"
+            android:textSize="13sp" />
 
     </LinearLayout>
 

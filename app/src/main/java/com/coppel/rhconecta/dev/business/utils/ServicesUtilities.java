@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.business.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
 import com.google.gson.Gson;
@@ -54,7 +55,7 @@ public class ServicesUtilities {
     public ServicesError getOnFailureResponse(Context context, Throwable t, int requestType) {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(requestType);
-
+        Log.i("prueba","getOnFailureResponse");
         if(t instanceof UnknownHostException){
             servicesError.setMessage(context.getString(R.string.network_error));
         } else if (t instanceof IOException) {
@@ -62,6 +63,7 @@ public class ServicesUtilities {
         } else if (t instanceof IllegalStateException) {
             servicesError.setMessage(context.getString(R.string.error_serialization));
         } else {
+            Log.i("prueba","error desconocido: " + t.getMessage());
             servicesError.setMessage(context.getString(R.string.error_unknown));
         }
         return servicesError;

@@ -10,14 +10,14 @@ public class WithDrawSavingRequestData implements Serializable{
     private int opcion;
     private String num_empleado;
 
-    private Double imp_margencredito = 0.0;
-    private Double imp_ahorroadicional = 0.0;
+    private String imp_margencredito = "0.0";
+    private String imp_ahorroadicional = "0.0";
     private int imp_cuotaahorro;
 
     private int clv_abonar;
 
-    private Double imp_fondoempleado = 0.0;
-    private Double imp_cuentacorriente = 0.0;
+    private String imp_fondoempleado = "0.0";
+    private String imp_cuentacorriente = "0.0";
     private int clv_retiro;
 
     //Se agrega parametro 07/07/19
@@ -31,7 +31,7 @@ public class WithDrawSavingRequestData implements Serializable{
     }
 
 
-    public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, String num_empleado, Double imp_margencredito, Double imp_ahorroadicional) {
+    public WithDrawSavingRequestData(WithDrawSavingType withDrawSavingType, int opcion, String num_empleado, String imp_margencredito, String imp_ahorroadicional) {
         this.withDrawSavingType = withDrawSavingType;
         this.opcion = opcion;
         this.num_empleado = num_empleado;
@@ -77,19 +77,19 @@ public class WithDrawSavingRequestData implements Serializable{
     }
 
 
-    public Double getImp_margencredito() {
+    public String getImp_margencredito() {
         return imp_margencredito;
     }
 
-    public void setImp_margencredito(Double imp_margencredito) {
+    public void setImp_margencredito(String imp_margencredito) {
         this.imp_margencredito = imp_margencredito;
     }
 
-    public Double getImp_ahorroadicional() {
+    public String getImp_ahorroadicional() {
         return imp_ahorroadicional;
     }
 
-    public void setImp_ahorroadicional(Double imp_ahorroadicional) {
+    public void setImp_ahorroadicional(String imp_ahorroadicional) {
         this.imp_ahorroadicional = imp_ahorroadicional;
     }
 
@@ -109,19 +109,19 @@ public class WithDrawSavingRequestData implements Serializable{
         this.clv_abonar = clv_abonar;
     }
 
-    public Double getImp_fondoempleado() {
+    public String getImp_fondoempleado() {
         return imp_fondoempleado;
     }
 
-    public void setImp_fondoempleado(Double imp_fondoempleado) {
+    public void setImp_fondoempleado(String imp_fondoempleado) {
         this.imp_fondoempleado = imp_fondoempleado;
     }
 
-    public Double getImp_cuentacorriente() {
+    public String getImp_cuentacorriente() {
         return imp_cuentacorriente;
     }
 
-    public void setImp_cuentacorriente(Double imp_cuentacorriente) {
+    public void setImp_cuentacorriente(String imp_cuentacorriente) {
         this.imp_cuentacorriente = imp_cuentacorriente;
     }
 

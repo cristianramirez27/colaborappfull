@@ -432,9 +432,14 @@ public class PreviewLetterFragment extends Fragment implements View.OnClickListe
 
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+            } else {
+                String userEmail = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_EMAIL);
+                generateLetter(ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF,userEmail);
+            }
         } else {
             String userEmail = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_EMAIL);
             generateLetter(ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF,userEmail);

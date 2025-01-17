@@ -47,14 +47,17 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
     @Inject
     public VisionaryRepositoryImpl() {
         Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
+        //Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPILocal();
         apiService = retrofit.create(VisionaryApiService.class);
         basicUserInformationFacade = new BasicUserInformationFacade(CoppelApp.getContext());
     }
-    private void saveToCrashLitics(String Url , String eMessage){
+
+    private void saveToCrashLitics(String Url, String eMessage) {
         FirebaseCrashlytics.getInstance().log(Url);
         Exception e = new Exception(eMessage);
         FirebaseCrashlytics.getInstance().recordException(e);
     }
+
     /**
      *
      */
@@ -71,17 +74,23 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             accessOptionValue = accessOption.toInteger();
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionariesPreviewsRequest request =
-                new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
+                new GetVisionariesPreviewsRequest(String.valueOf(employeeNum), clvOption, accessOptionValue);
+        String urlVisionarios = (ServicesConstants.GET_VISIONARIOS == null || ServicesConstants.GET_VISIONARIOS.isEmpty()) ? ServicesConstants.GET_VIDEOS_LOCAL : ServicesConstants.GET_VISIONARIOS;
+        String urlStayHome = (ServicesConstants.GET_VISIONARIOS_STAY_HOME == null || ServicesConstants.GET_VISIONARIOS_STAY_HOME.isEmpty()) ? ServicesConstants.GET_STAYHOME_LOCAL : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
         String url = type == VisionaryType.VISIONARIES ?
-                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
-        apiService.getVisionariesPreviews(authHeader, url, request)
+                urlVisionarios : urlStayHome;
+        apiService.getVisionariesPreviews(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-107.3878978613683",
+                        "24.711020326878174",
+                        "fs9999c7q86c33cdfd5f55", url, request)
                 .enqueue(getCallbackGetVisionariesPreviewsResponse(callback));
     }
 
     /**
      *
      */
-    private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionariesPreviewsResponse( UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback) {
+    private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionariesPreviewsResponse(UseCase.OnResultFunction<Either<Failure, List<VisionaryPreview>>> callback) {
         return new Callback<GetVisionariesPreviewsResponse>() {
             @Override
             public void onResponse(Call<GetVisionariesPreviewsResponse> call, Response<GetVisionariesPreviewsResponse> response) {
@@ -115,7 +124,9 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         };
     }
 
-    /** */
+    /**
+     *
+     */
     @Override
     public void getVisionaryPreview(
             VisionaryType type,
@@ -130,14 +141,22 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             accessOptionValue = accessOption.toInteger();
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionariesPreviewsRequest request =
-                new GetVisionariesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
+                new GetVisionariesPreviewsRequest(String.valueOf(employeeNum), clvOption, accessOptionValue);
+        String urlVisionarios = (ServicesConstants.GET_VISIONARIOS == null || ServicesConstants.GET_VISIONARIOS.isEmpty()) ? ServicesConstants.GET_VIDEOS_LOCAL : ServicesConstants.GET_VISIONARIOS;
+        String urlStayHome = (ServicesConstants.GET_VISIONARIOS_STAY_HOME == null || ServicesConstants.GET_VISIONARIOS_STAY_HOME.isEmpty()) ? ServicesConstants.GET_STAYHOME_LOCAL : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
         String url = type == VisionaryType.VISIONARIES ?
-                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
-        apiService.getVisionariesPreviews(authHeader, url, request)
+                urlVisionarios : urlStayHome;
+        apiService.getVisionariesPreviews(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-107.3878978613683",
+                        "24.711020326878174",
+                        "fs9999c7q86c33cdfd5f55", url, request)
                 .enqueue(getCallbackGetVisionaryPreviewResponse(visionaryId, callback));
     }
 
-    /** */
+    /**
+     *
+     */
     private Callback<GetVisionariesPreviewsResponse> getCallbackGetVisionaryPreviewResponse(
             String visionaryId,
             UseCase.OnResultFunction<Either<Failure, VisionaryPreview>> callback
@@ -192,11 +211,18 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetVisionaryByIdRequest request =
-                new GetVisionaryByIdRequest(employeeNum, clvOption, visionaryIdInt);
+                new GetVisionaryByIdRequest(String.valueOf(employeeNum), clvOption, String.valueOf(visionaryIdInt));
+        String urlVisionarios = (ServicesConstants.GET_VISIONARIOS == null || ServicesConstants.GET_VISIONARIOS.isEmpty()) ? ServicesConstants.GET_VIDEOS_LOCAL : ServicesConstants.GET_VISIONARIOS;
+        String urlStayHome = (ServicesConstants.GET_VISIONARIOS_STAY_HOME == null || ServicesConstants.GET_VISIONARIOS_STAY_HOME.isEmpty()) ? ServicesConstants.GET_STAYHOME_LOCAL : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
         String url = type == VisionaryType.VISIONARIES ?
-                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+                urlVisionarios : urlStayHome;
         apiService.getVisionaryById(
                 authHeader,
+                "2024-03-25T17:38:35.244Z",
+                "-107.3878978613683",
+                "24.711020326878174",
+                "fs9999c7q86c33cdfd5f55",
                 url,
                 request
         ).enqueue(getCallbackGetVisionaryByIdResponse(callback));
@@ -250,7 +276,7 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             String rateOptionId,
             UseCase.OnResultFunction<Either<Failure, Visionary.RateStatus>> callback
     ) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        String employeeNum = String.valueOf(basicUserInformationFacade.getEmployeeNum());
         int clvOption = 3;
         int clvType = status == Visionary.RateStatus.LIKED ? 5 : 6;
         long visionaryIdInt = Long.parseLong(visionaryId);
@@ -260,17 +286,23 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
         String authHeader = basicUserInformationFacade.getAuthHeader();
 
         UpdateVisionaryStatusByIdRequest request = new UpdateVisionaryStatusByIdRequest(
-                visionaryIdInt,
+                String.valueOf(visionaryIdInt),
                 employeeNum,
                 clvOption,
                 clvType,
-                rateOptionIdAsInteger
+                String.valueOf(rateOptionIdAsInteger)
         );
 
-        String url = type == VisionaryType.VISIONARIES ?
-                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+        String urlVisionarios = (ServicesConstants.GET_VISIONARIOS == null || ServicesConstants.GET_VISIONARIOS.isEmpty()) ? ServicesConstants.GET_VIDEOS_LOCAL : ServicesConstants.GET_VISIONARIOS;
+        String urlStayHome = (ServicesConstants.GET_VISIONARIOS_STAY_HOME == null || ServicesConstants.GET_VISIONARIOS_STAY_HOME.isEmpty()) ? ServicesConstants.GET_STAYHOME_LOCAL : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
 
-        apiService.updateVisionaryStatusById(authHeader, url, request)
+        String url = type == VisionaryType.VISIONARIES ?
+                urlVisionarios : urlStayHome;
+
+        apiService.updateVisionaryStatusById(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-107.3878978613683",
+                        "24.711020326878174",
+                        "fs9999c7q86c33cdfd5f55", url, request)
                 .enqueue(getCallbackUpdateVisionaryStatusByIdResponse(status, callback));
     }
 
@@ -318,21 +350,27 @@ public class VisionaryRepositoryImpl implements VisionaryRepository {
             int clvType,
             UseCase.OnResultFunction<Either<Failure, Unit>> callback
     ) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        String employeeNum = String.valueOf(basicUserInformationFacade.getEmployeeNum());
         int clvOption = 3;
         String authHeader = basicUserInformationFacade.getAuthHeader();
+        String urlVisionarios = (ServicesConstants.GET_VISIONARIOS == null || ServicesConstants.GET_VISIONARIOS.isEmpty()) ? ServicesConstants.GET_VIDEOS_LOCAL : ServicesConstants.GET_VISIONARIOS;
+        String urlStayHome = (ServicesConstants.GET_VISIONARIOS_STAY_HOME == null || ServicesConstants.GET_VISIONARIOS_STAY_HOME.isEmpty()) ? ServicesConstants.GET_STAYHOME_LOCAL : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+
         String url = type == VisionaryType.VISIONARIES ?
-                ServicesConstants.GET_VISIONARIOS : ServicesConstants.GET_VISIONARIOS_STAY_HOME;
+                urlVisionarios : urlStayHome;
 
         UpdateVisionaryStatusByIdRequest request = new UpdateVisionaryStatusByIdRequest(
-                visionaryId,
+                String.valueOf(visionaryId),
                 employeeNum,
                 clvOption,
                 clvType,
                 null
         );
 
-        apiService.updateVisionaryStatusById(authHeader, url, request)
+        apiService.updateVisionaryStatusById(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-107.3878978613683",
+                        "24.711020326878174",
+                        "fs9999c7q86c33cdfd5f55", url, request)
                 .enqueue(getCallbackUpdateVisionaryStatusByIdResponse(callback));
     }
 

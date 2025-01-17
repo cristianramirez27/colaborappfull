@@ -173,9 +173,10 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:fontFamily="@font/lineto_circular_pro_medium"
-                        android:text="Octubre 2019"
+                        android:text=""
                         android:textColor="@color/colorTextCoppelNegro"
                         android:textSize="18sp" />
+                    <!--<android:text="Octubre 2019"-->
 
                     <ImageView
                         android:id="@+id/nextMonth"

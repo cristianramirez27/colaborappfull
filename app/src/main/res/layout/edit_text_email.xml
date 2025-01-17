@@ -17,13 +17,14 @@
 
     <EditText
         android:id="@+id/edtEmail"
+        style="@style/TextBook14Coppel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        style="@style/TextBook14Coppel"
         android:hint="@string/mail"
-        android:inputType="textEmailAddress"
         android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+        android:longClickable="false"
         android:maxLines="1"
         android:textColor="@color/colorSecondBlueCoppel"
         android:textColorHint="@color/colorSecondBlueCoppel"

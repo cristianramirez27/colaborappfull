@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
     android:fillViewport="true"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
     <RelativeLayout
@@ -27,15 +26,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewSearch"
-                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="2dp"
-                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
                 app:cardCornerRadius="1dp"
-                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+                app:cardElevation="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -47,10 +46,11 @@
                         android:layout_height="38dp"
                         android:layout_centerVertical="true"
                         android:padding="4dp"
-                        android:src="@drawable/icon_search"/>
+                        android:src="@drawable/icon_search" />
 
                     <EditText
                         android:id="@+id/edtSearch"
+                        style="@style/TextBook14Coppel"
                         android:layout_width="244dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -62,9 +62,9 @@
                         android:imeOptions="actionSearch"
                         android:inputType="textVisiblePassword"
                         android:lines="1"
-                        style="@style/TextBook14Coppel"
+                        android:longClickable="false"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"/>
+                        android:textColorHint="@color/colorTextBlueCoppel" />
 
                 </RelativeLayout>
 
@@ -80,23 +80,23 @@
 
                 <TextView
                     android:id="@+id/tituloCentro"
+                    style="@style/TextBook12Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
-                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
-                    android:textColor="@color/colorTextCoppelNegro"/>
+                    android:textColor="@color/colorTextCoppelNegro" />
 
                 <TextView
                     android:id="@+id/centro"
+                    style="@style/TextBook14Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tituloCentro"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    style="@style/TextBook14Coppel"
-                    android:textColor="@color/colorPrimaryCoppelAzul"/>
+                    android:textColor="@color/colorPrimaryCoppelAzul" />
 
                 <ImageView
                     android:layout_width="30dp"
@@ -109,12 +109,12 @@
 
             <TextView
                 android:id="@+id/tituloControles"
+                style="@style/TextMedium18Coppel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/center_colaborators"
                 android:layout_marginTop="14dp"
-                style="@style/TextMedium18Coppel"
-                android:textColor="@color/colorBackgroundCoppelNegro"/>
+                android:text="@string/center_colaborators"
+                android:textColor="@color/colorBackgroundCoppelNegro" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvSolicitudes"

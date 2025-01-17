@@ -220,7 +220,7 @@ public class CollapsibleCalendar extends UICalendar {
            // mTxtTitle.setText(sbuilder);
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

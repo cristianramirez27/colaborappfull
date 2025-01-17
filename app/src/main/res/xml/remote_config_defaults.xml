@@ -2,7 +2,7 @@
 <defaultsMap>
     <entry>
         <key>URL_MAIN</key>
-        <value>http://qa-apipos.coppel.com:9000</value>
+        <value>http://qa-apipos.com:9000</value>
     </entry>
     <entry>
         <key>ENDPOINT_BENEFICIOS</key>

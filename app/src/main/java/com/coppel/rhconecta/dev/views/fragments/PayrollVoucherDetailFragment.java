@@ -16,6 +16,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_PAYROLL_OPTION;
@@ -48,6 +49,6 @@ public abstract class PayrollVoucherDetailFragment extends Fragment {
                 TextUtilities.dateFormatter(bonusDate.sfechanomina,
                         AppConstants.DATE_FORMAT_DD_MM_YYYY_MIDDLE,
                         AppConstants.DATE_FORMAT_YYYY_MM_DD_MIDDLE),
-                new CoppelServicesPayrollVoucherDetailRequest.Datos(), parent.getLoginResponse().getToken());
+                new CoppelServicesPayrollVoucherDetailRequest.Datos(), AppUtilities.getAuthHeader(requireContext()));
     }
 }

@@ -55,7 +55,7 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         val employeeNum = AppUtilities.getStringFromSharedPreferences(
             context,
             AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ).toLong()
+        )
         val clvOption = 1
         val authHeader = AppUtilities.getStringFromSharedPreferences(
             context,
@@ -74,9 +74,15 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
             )
         )
         val request = GetMainInformationRequest(employeeNum, clvOption)
+        val url =
+            if ((ServicesConstants.GET_HOME == null || ServicesConstants.GET_HOME.isEmpty())) ServicesConstants.GET_HOME_LOCAL else ServicesConstants.GET_HOME
         apiService.getMainInformation(
             authHeader,
-            ServicesConstants.GET_HOME,
+            "2024-03-25T17:38:35.244Z",
+            "-99.985171",
+            "20.270460",
+            "fs9999c7q86c33cdfd5f55",
+            url,
             request
         ).enqueue(object : Callback<GetMainInformationResponse?> {
             override fun onResponse(
@@ -117,16 +123,22 @@ class HomeRepositoryImpl @Inject constructor() : HomeRepository {
         val employeeNum = AppUtilities.getStringFromSharedPreferences(
             context,
             AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ).toLong()
+        )
         val clvOption = 1
         val authHeader = AppUtilities.getStringFromSharedPreferences(
             context,
             AppConstants.SHARED_PREFERENCES_TOKEN
         )
+        val url =
+            if ((ServicesConstants.GET_HOME == null || ServicesConstants.GET_HOME.isEmpty())) ServicesConstants.GET_HOME_LOCAL else ServicesConstants.GET_HOME
         val request = GetMainInformationRequest(employeeNum, clvOption)
         apiService.getMainInformation(
             authHeader,
-            ServicesConstants.GET_HOME,
+            "2024-03-25T17:38:35.244Z",
+            "-99.985171",
+            "20.270460",
+            "fs9999c7q86c33cdfd5f55",
+            url,
             request
         ).enqueue(object : Callback<GetMainInformationResponse?> {
             override fun onResponse(

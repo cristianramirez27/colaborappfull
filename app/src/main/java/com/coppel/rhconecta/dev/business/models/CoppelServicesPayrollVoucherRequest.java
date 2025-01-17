@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.business.models;
 
 public class CoppelServicesPayrollVoucherRequest {
     protected String num_empleado;
-    protected int solicitud;
+    protected int opcion;
 
     public String getNum_empleado() {
         return num_empleado;
@@ -12,11 +12,11 @@ public class CoppelServicesPayrollVoucherRequest {
         this.num_empleado = num_empleado;
     }
 
-    public int getSolicitud() {
-        return solicitud;
+    public int getOpcion() {
+        return opcion;
     }
 
-    public void setSolicitud(int solicitud) {
-        this.solicitud = solicitud;
+    public void setOpcion(int opcion) {
+        this.opcion = opcion;
     }
 }

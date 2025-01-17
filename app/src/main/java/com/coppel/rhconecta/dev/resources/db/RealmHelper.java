@@ -38,7 +38,7 @@ public class RealmHelper {
             realm.insert(list);
             realm.commitTransaction();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             if (realm != null)
                 realm.close();
@@ -104,7 +104,7 @@ public class RealmHelper {
             realm.copyToRealmOrUpdate(userPreference);
             realm.commitTransaction();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             if(realm != null) {
                 realm.close();
@@ -128,7 +128,7 @@ public class RealmHelper {
             realm.commitTransaction();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         } finally {
             if(realm != null) {
@@ -142,7 +142,7 @@ public class RealmHelper {
             Realm realm = Realm.getDefaultInstance();
             return realm.where(UserPreference.class).equalTo("email", email).findFirst();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
@@ -152,7 +152,7 @@ public class RealmHelper {
             Realm realm = Realm.getDefaultInstance();
             return realm.where(NotificationsUser.class).equalTo("USER_NUMBER", user).findAll();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
@@ -170,7 +170,7 @@ public class RealmHelper {
 
             realm.commitTransaction();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

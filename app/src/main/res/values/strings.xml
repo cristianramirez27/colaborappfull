@@ -478,42 +478,44 @@
     <string name="default_notification_channel_id">Canal de notificaciones Coppel</string>
     <string name="default_notification_channel_name">Canal de notificaciones Coppel</string>
     <string name="default_notification_channel_description">Notificaciones generales Coppel</string>
-    <string name="video_decoder_failure">No se pudo recuperar el video por el siguiente motivo: %s</string>
-    <string name="default_video_decoder_failure">No se pudo recuperar el video.</string>
-    <string name="app_center_id">ed0f9a3a-2f9c-41f2-b963-017fef1b8972</string>
-    <string name="visionary_rate_title_like">¿Por qué te gustó el video?</string>
-    <string name="visionary_rate_action">Enviar</string>
-    <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
-    <string name="update_visionary_process_status_done">Gracias por tu retroalimentación</string>
-    <string name="go_to_profile_label"><u>Ver perfil</u></string>
-    <string name="user_profile_label">Mis datos</string>
-    <string name="fingerprint_label">Huellas adicionales</string>
-    <string name="profile_actions_activity_title">Perfil</string>
-    <string name="profile_details_activity_title">Mis datos</string>
-    <string name="fingerprint_title">Huellas Adicionales</string>
-    <string name="invalid_url_link">No se puede abrir este enlace</string>
-    <string name="invalid_data_loaded">No es posible mostrar información de este elemento</string>
-    <string name="alert">Alerta</string>
-    <string name="letters_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
-    <string name="voucher_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
-    <string-array name="uppercase_words">
-        <item>IMSS</item>
-        <item>ISR</item>
-    </string-array>
-    <string name="label_dialog_city">Selecciona la ciudad</string>
-    <string name="label_title_code">Tu código es</string>
-    <string name="withdrawal_in_process">Retiro en proceso</string>
-    <string name="insufficient_balance">No cuenta con saldo disponible</string>
-    <string name="entry_home_vacantes">Vacantes Internas</string>
-    <string name="title_linea_denuncia">Línea de denuncia</string>
-    <string name="movements">Mis Movimientos</string>
-    <string name="last_movements">Tus últimos movimientos</string>
-    <string name="folio">Folio:</string>
-    <string name="date_movement">Fecha de movimiento:</string>
-    <string name="detail_movement_title">Detalle del Movimiento</string>
-    <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
+    <!--<string name="default_permission_notification">Para activar las notificaciones, habilítelo en la configuración.</string>-->
+   <string name="default_permission_notification">Si no aceptaste el permiso notifiaciones, habilítalo en la configuración.</string>
+   <string name="video_decoder_failure">No se pudo recuperar el video por el siguiente motivo: %s</string>
+   <string name="default_video_decoder_failure">No se pudo recuperar el video.</string>
+   <string name="app_center_id">ed0f9a3a-2f9c-41f2-b963-017fef1b8972</string>
+   <string name="visionary_rate_title_like">¿Por qué te gustó el video?</string>
+   <string name="visionary_rate_action">Enviar</string>
+   <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
+   <string name="update_visionary_process_status_done">Gracias por tu retroalimentación</string>
+   <string name="go_to_profile_label"><u>Ver perfil</u></string>
+   <string name="user_profile_label">Mis datos</string>
+   <string name="fingerprint_label">Huellas adicionales</string>
+   <string name="profile_actions_activity_title">Perfil</string>
+   <string name="profile_details_activity_title">Mis datos</string>
+   <string name="fingerprint_title">Huellas Adicionales</string>
+   <string name="invalid_url_link">No se puede abrir este enlace</string>
+   <string name="invalid_data_loaded">No es posible mostrar información de este elemento</string>
+   <string name="alert">Alerta</string>
+   <string name="letters_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
+   <string name="voucher_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
+   <string-array name="uppercase_words">
+       <item>IMSS</item>
+       <item>ISR</item>
+   </string-array>
+   <string name="label_dialog_city">Selecciona la ciudad</string>
+   <string name="label_title_code">Tu código es</string>
+   <string name="withdrawal_in_process">Retiro en proceso</string>
+   <string name="insufficient_balance">No cuenta con saldo disponible</string>
+   <string name="entry_home_vacantes">Oportunidades Internas</string>
+   <string name="title_linea_denuncia">Línea de denuncia</string>
+   <string name="movements">Mis Movimientos</string>
+   <string name="last_movements">Tus últimos movimientos</string>
+   <string name="folio">Folio:</string>
+   <string name="date_movement">Fecha de movimiento:</string>
+   <string name="detail_movement_title">Detalle del Movimiento</string>
+   <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
 
-    <!--    Zendesk-->
+   <!--    Zendesk-->
     <string name="logout_with_chat_active">Tienes un chat activo en Mesa de Ayuda, finaliza la conversación para cerrar tú sesión.</string>
 
     <!-- Root Validate-->

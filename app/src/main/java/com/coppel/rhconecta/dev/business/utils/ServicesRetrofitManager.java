@@ -1,8 +1,11 @@
 package com.coppel.rhconecta.dev.business.utils;
 
-import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.TIME_OUT;
+import com.coppel.rhconecta.dev.BuildConfig;
+import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import java.security.cert.CertificateException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -16,6 +19,10 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.URL_MAIN;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.TIME_OUT;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.URL_BASE;
 
 /**
  *
@@ -52,18 +59,26 @@ public class ServicesRetrofitManager {
 
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
-            final TrustManager[] trustAllCerts = new TrustManager[] {
+            final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
-                        @Override public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
-                        @Override public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
-                        @Override public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[] {};
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
                         }
                     }
             };
             final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            //OkHttpClient.Builder builder = new OkHttpClient.Builder();
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier(new HostnameVerifier() {
@@ -81,9 +96,26 @@ public class ServicesRetrofitManager {
     /**
      *
      */
-    public Retrofit getRetrofitAPI(){
+    public Retrofit getRetrofitAPI() {
+        String URL_BASE = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), URL_MAIN);
+        String urlBase = (URL_BASE == null || URL_BASE.isEmpty()) ? BuildConfig.URL : URL_BASE;
+
         return new Retrofit.Builder()
-                .baseUrl(ServicesConstants.URL_BASE)
+                .baseUrl(urlBase)
+                .addConverterFactory(GsonConverterFactory.create())
+                //.client(getUnsafeOkHttpClient().build())
+                .client(okHttpClient)
+                .build();
+    }
+
+    public Retrofit getRetrofitAPILocal() {
+        /*OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new CommonHeadersInterceptor(dateRequest, token, latitude, longitude, transactionId))
+                .build();*/
+        return new Retrofit.Builder()
+                //.baseUrl("http://192.168.143.61:8080/v1/cartaslaborales/")
+                //.baseUrl(" http://192.168.131.136:8080/v1/videos/")
+                .baseUrl("http://192.168.134.250:8080/v1/beneficios/")
                 .addConverterFactory(GsonConverterFactory.create())
                 //.client(getUnsafeOkHttpClient().build())
                 .client(okHttpClient)

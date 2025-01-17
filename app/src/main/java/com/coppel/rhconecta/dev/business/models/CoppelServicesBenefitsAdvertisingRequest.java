@@ -2,18 +2,18 @@ package com.coppel.rhconecta.dev.business.models;
 
 public class CoppelServicesBenefitsAdvertisingRequest extends CoppelServicesBenefitsBaseRequest {
 
-    private int idempresa;
+    private String idempresa;
 
-    public CoppelServicesBenefitsAdvertisingRequest(int solicitud, int idempresa) {
+    public CoppelServicesBenefitsAdvertisingRequest(int solicitud, String idempresa) {
         super(solicitud);
         this.idempresa = idempresa;
     }
 
-    public int getIdempresa() {
+    public String getIdempresa() {
         return idempresa;
     }
 
-    public void setIdempresa(int idempresa) {
+    public void setIdempresa(String idempresa) {
         this.idempresa = idempresa;
     }
 }

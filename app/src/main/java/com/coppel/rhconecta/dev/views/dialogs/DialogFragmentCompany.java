@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitCodeRequest;
 import com.coppel.rhconecta.dev.business.models.BenefitsAdvertisingResponse;
@@ -137,10 +139,24 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
     }
 
     private void initView() {
-        if(company.getRuta() != null && !company.getRuta().isEmpty())
-            Picasso.get().load(company.getRuta())
+        if(company.getRuta() != null && !company.getRuta().isEmpty()) {
+            /*Picasso.get().load(company.getRuta())
                     .placeholder(R.drawable.placeholder_discount)
-                    .error(R.drawable.placeholder_discount).into(image);
+                    .error(R.drawable.placeholder_discount).into(image);*/
+
+            String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+            // Crear GlideUrl con el header
+            GlideUrl glideUrl = new GlideUrl(company.getRuta(), new LazyHeaders.Builder()
+                    .addHeader("Authorization", token)
+                    .build());
+
+            Glide.with(getApplicationContext())
+                    .load(glideUrl)
+                    .diskCacheStrategy( DiskCacheStrategy.ALL )
+                    .placeholder(R.drawable.placeholder_discount)
+                    .error(R.drawable.placeholder_discount)
+                    .into(image);
+        }
 
         String discount = company.getDescuento();
         String discountQuantity = "";
@@ -265,9 +281,22 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             imageFull.setImageResource(R.drawable.img_publicidad);
         }
 
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        // Crear GlideUrl con el header
+        String ruta = advertising.getRuta() == null ? "" : advertising.getRuta();
+        GlideUrl glideUrl = null;
+        if(advertising.getRuta() != null && !advertising.getRuta().isEmpty()) {
+            glideUrl = new GlideUrl(advertising.getRuta(), new LazyHeaders.Builder()
+                    .addHeader("Authorization", token)
+                    .build());
+        }
 
-        Glide.with(this).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad).into(imageFull);
+        Glide.with(getApplicationContext())
+                .load(glideUrl == null ? "" : glideUrl)
+                .placeholder(R.drawable.img_publicidad)
+                .into(imageFull);
 
+        //Glide.with(this).load(advertising.getRuta()).placeholder(R.drawable.img_publicidad).into(imageFull);
 
         loadAnimations();
         changeCameraDistance();
@@ -281,16 +310,6 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
             }
         }, 3200);
 
-
-
-      /*  new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                close();
-                getActivity().finish();
-            }
-        }, 5000);*/
 
     }
 
@@ -347,8 +366,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         BenefitCodeRequest benefitCodeRequest = new BenefitCodeRequest();
         benefitCodeRequest.setOpc(1);
-        benefitCodeRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
-        benefitCodeRequest.setNumEmpresa(company.getServicios());
+        benefitCodeRequest.setNumEmpleado(numEmpleado);
+        benefitCodeRequest.setIdempresa(String.valueOf(company.getServicios()));
+        benefitCodeRequest.setSolicitud(0);
 
         this.coppelServicesPresenter.getBenefitCode(benefitCodeRequest, token);
     }
@@ -358,8 +378,9 @@ public class DialogFragmentCompany extends DialogFragment implements View.OnClic
         String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         BenefitCodeRequest infoCompanyRequest = new BenefitCodeRequest();
         infoCompanyRequest.setOpc(2);
-        infoCompanyRequest.setNumEmpleado(Integer.parseInt(numEmpleado));
-        infoCompanyRequest.setNumEmpresa(company.getServicios());
+        infoCompanyRequest.setNumEmpleado(numEmpleado);
+        infoCompanyRequest.setIdempresa(String.valueOf(company.getServicios()));
+        infoCompanyRequest.setSolicitud(0);
 
         this.coppelServicesPresenter.getInfoCompany(infoCompanyRequest, token);
     }

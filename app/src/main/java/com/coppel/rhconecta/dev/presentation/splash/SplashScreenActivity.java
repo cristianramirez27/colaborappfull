@@ -1,5 +1,15 @@
 package com.coppel.rhconecta.dev.presentation.splash;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_GENERAL_CONFIGURATION;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.updateEndpoints;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +42,6 @@ import com.coppel.rhconecta.dev.system.notification.CoppelNotificationManager;
 import com.coppel.rhconecta.dev.system.notification.NotificationDestination;
 import com.coppel.rhconecta.dev.system.notification.NotificationType;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -52,17 +61,6 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_GENERAL_CONFIGURATION;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.updateEndpoints;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_GOTO_SECTION;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_EXPENSES;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTIFICATION_EXPENSES_AUTHORIZE;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -108,12 +106,10 @@ public class SplashScreenActivity
         setupFirebaseInstanceId();
         setupViews();
         //validateVersionMessage();
-        //init();
+        init();
         validateRoot();
         observeViewModel();
         checkAndSendAnalyticsIfExists();
-
-
     }
 
     /**
@@ -224,7 +220,6 @@ public class SplashScreenActivity
         } else {
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
-                //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
                 finish();
             }, 1000);
         }
@@ -237,22 +232,15 @@ public class SplashScreenActivity
         loginResponse = new Gson().fromJson(strLoginResponse, LoginResponse.class);
 
         String email = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
+        String employee = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
         coppelServicesPresenter.requestProfile(
-                loginResponse.getData().getResponse().getCliente(),
+                employee,
                 email,
-                loginResponse.getData().getResponse().getToken()
+                token
         );
         String strProfileResponse = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE);
         profileResponse = new Gson().fromJson(strProfileResponse, ProfileResponse.class);
-
-        String email2 = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL);
-        String employee = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR);
-        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
-        coppelServicesPresenter.requestProfile(
-                employee,
-                email2,
-                token
-        );
     }
 
     @Override
@@ -273,6 +261,7 @@ public class SplashScreenActivity
      *
      */
     private void manageLoginResponse(LoginResponse loginResponse) {
+        String token = AppUtilities.getStringFromSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN);
         if (loginResponse.getData().getResponse().getErrorCode() == -10) {
             showMessageUser(loginResponse.getData().getResponse().getUserMessage());
         } else {
@@ -280,7 +269,7 @@ public class SplashScreenActivity
             coppelServicesPresenter.requestProfile(
                     loginResponse.getData().getResponse().getCliente(),
                     email,
-                    loginResponse.getData().getResponse().getToken()
+                    token
             );
         }
     }
@@ -359,7 +348,8 @@ public class SplashScreenActivity
     @Override
     public void showError(ServicesError coppelServicesError) {
         if (coppelServicesError.isExecuteInBackground()) {
-            startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+            startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
             finish();
             return;
         }
@@ -409,7 +399,6 @@ public class SplashScreenActivity
         dialogFragmentWarning.close();
 
         if (EXPIRED_SESSION) {
-            //startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
             startActivity(new Intent(SplashScreenActivity.this, LoginMicrosoftActivity.class));
             AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, false);
             EXPIRED_SESSION = false;
@@ -494,7 +483,8 @@ public class SplashScreenActivity
 
             @Override
             public void onFail(String result) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.default_server_error, Toast.LENGTH_SHORT).show();
                 fetchEndpoints();
             }
         });
@@ -516,8 +506,12 @@ public class SplashScreenActivity
     private static boolean checkRootMethod() {
         String[] paths = {"/system/app/Superuser.apk", "/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
                 "/system/bin/failsafe/su", "/data/local/su", "/su/bin/su"};
-        for (String path : paths) {
-            if (new File(path).exists()) return true;
+        try {
+            for (String path : paths) {
+                if (new File(path).exists()) return true;
+            }
+        } catch (Exception e) {
+            Log.i("Exception", "Exception: " + e);
         }
         return false;
     }
@@ -530,7 +524,7 @@ public class SplashScreenActivity
                 dialogFragmentWarning.setOnOptionClick(this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
             } else {
-                init();
+                //init();
             }
         }, 1500);
     }
@@ -541,40 +535,18 @@ public class SplashScreenActivity
         String min = versionAndroid.get("min").getAsString();
         String max = versionAndroid.get("max").getAsString();
         String versionApp = getVersionApp();
-
-        /*int comparisonMin = min.compareTo(versionApp);
-        int comparisonMax = max.compareTo(versionApp);
-
-        if (comparisonMin >= 0 && comparisonMax <= 0) {
-            System.out.println("La versión app es válida.");
-        } else {
-            System.out.println("La versión app no es válida.");
-        }*/
-        String[] minParts = min.split("\\.");
-        String[] maxParts = max.split("\\.");
-        String[] appParts = versionApp.split("\\.");
-
-        for (int i = 0; i < 3; i++) {
-            int minPart = Integer.parseInt(minParts[i]);
-            int maxPart = Integer.parseInt(maxParts[i]);
-            int appPart = Integer.parseInt(appParts[i]);
-
-            if (appPart < minPart) {
-                Log.i("prueba", "-1");
-                // "te obliga"
-                return -1;
-            } else if (appPart > maxPart) {
-                Log.i("prueba", "1");
-                //no te molesta
-                return 1;
-            }
-        }
-        //si es 0 te avisa que hay una actualizacion pero no es necesario actualizar
-        Log.i("prueba", "0");
-        return 0;
+        //comparacion de versiones
+        int minr = compareVersions(versionApp, min);
+        int maxr = compareVersions(versionApp, max);
+        if (minr == -1)
+            return -1;
+        else if (maxr == -1)
+            return 0;
+        else
+            return 1;
     }
 
-    public void validateVersionMessage(){
+    public void validateVersionMessage() {
         validateVersionCode = validateVersion();
 
         switch (validateVersionCode) {
@@ -618,7 +590,7 @@ public class SplashScreenActivity
         }
     }
 
-    private  void showDialogAlt(String message){
+    private void showDialogAlt(String message) {
         new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.attention))
                 .setContentText(message)
@@ -636,6 +608,36 @@ public class SplashScreenActivity
                     }
                 })
                 .show();
+    }
+
+    public static int compareVersions(String _enApp, String _enServidor) {
+        String[] enApp = _enApp.split("\\.");
+        String[] enServidor = _enServidor.split("\\.");
+        int k = Math.min(enApp.length, enServidor.length);
+        int result = 0;
+
+        for (int i = 0; i < k; ++i) {
+            int enAppPart = Integer.parseInt(enApp[i]);
+            int enServidorPart = Integer.parseInt(enServidor[i]);
+
+            if (enAppPart > enServidorPart) {
+                result = 1;
+                break;
+            } else if (enAppPart < enServidorPart) {
+                result = -1;
+                break;
+            }
+        }
+
+        if (result == 0) {
+            if (enApp.length == enServidor.length) {
+                result = 0;
+            } else {
+                result = enApp.length < enServidor.length ? -1 : 1;
+            }
+        }
+
+        return result;
     }
 
 }

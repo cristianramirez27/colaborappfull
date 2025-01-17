@@ -14,6 +14,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ColaboratorControlsMonthResponse;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +61,7 @@ public class ExpensesTravelMonthsRequestRecyclerAdapter extends RecyclerView.Ada
         viewHolder.status.setText(CoppelApp.getContext().getString(statusData[0]));
         viewHolder.status.setTextColor(CoppelApp.getContext().getResources().getColor(statusData[1]));
         viewHolder.status.setBackgroundResource(statusData[2]);*/
-        viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase())));
+        viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase(Locale.getDefault()))));
         if(dataItems.get(i).getEstatus().length() >= 20)
             viewHolder.status.setTextSize(7);
         viewHolder.status.setTextColor(Color.parseColor(dataItems.get(i).getDes_colorletra()));

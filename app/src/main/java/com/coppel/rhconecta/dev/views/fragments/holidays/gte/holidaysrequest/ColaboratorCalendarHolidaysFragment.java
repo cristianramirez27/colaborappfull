@@ -218,7 +218,7 @@ public class ColaboratorCalendarHolidaysFragment extends Fragment implements  Vi
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_CALENDAR_DAYS_PROPOSED, 11);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
-        holidayRequestData.setNum_empconsulta(numEmployer);
+        holidayRequestData.setNum_empconsulta(Integer.parseInt(numEmployer));
 
         holidayRequestData.setFec_ini(getDateFormatToHolidaysInverse(this.periodSelected.getFec_ini(),false));
         holidayRequestData.setFec_fin(getDateFormatToHolidaysInverse(this.periodSelected.getFec_fin(),false));

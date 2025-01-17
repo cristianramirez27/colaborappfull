@@ -30,9 +30,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.GET_HOME_LOCAL;
 import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
-/** */
+/**
+ *
+ */
 public class ReleaseRepositoryImpl implements ReleaseRepository {
 
     /* */
@@ -49,11 +52,13 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
         apiService = retrofit.create(ReleaseApiService.class);
         context = CoppelApp.getContext();
     }
-    private void saveToCrashLitics(String Url , String eMessage){
+
+    private void saveToCrashLitics(String Url, String eMessage) {
         FirebaseCrashlytics.getInstance().log(Url);
         Exception e = new Exception(eMessage);
         FirebaseCrashlytics.getInstance().recordException(e);
     }
+
     /**
      *
      */
@@ -62,10 +67,10 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
             AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, List<ReleasePreview>>> callback
     ) {
-        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+        String employeeNum = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ));
+        );
         int clvOption = 1;
         Integer accessOptionValue = null;
         if (accessOption != null)
@@ -77,9 +82,14 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
         );
         GetReleasesPreviewsRequest request = new
                 GetReleasesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
+        String url = (ServicesConstants.GET_COMUNICADOS == null || ServicesConstants.GET_COMUNICADOS.isEmpty()) ? ServicesConstants.GET_COMUNICADOS_LOCAL : ServicesConstants.GET_COMUNICADOS;
         apiService.getReleasesPreviews(
                 authHeader,
-                ServicesConstants.GET_COMUNICADOS,
+                "2024-03-25T17:38:35.244Z",
+                "-99.985171",
+                "20.270460",
+                "fs9999c7q86c33cdfd5f55",
+                url,
                 request
         ).enqueue(new Callback<GetReleasesPreviewsResponse>() {
 
@@ -97,7 +107,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
             @Override
             public void onFailure(Call<GetReleasesPreviewsResponse> call, Throwable t) {
-                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS , t.getMessage());
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS, t.getMessage());
                 Failure failure = new ServerFailure();
                 Either<Failure, List<ReleasePreview>> result = new Either<Failure, List<ReleasePreview>>().new Left(failure);
                 callback.onResult(result);
@@ -115,10 +125,10 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
             AccessOption accessOption,
             UseCase.OnResultFunction<Either<Failure, Release>> callback
     ) {
-        long employeeNum = Long.parseLong(getStringFromSharedPreferences(
+        String employeeNum = getStringFromSharedPreferences(
                 context,
                 AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
-        ));
+        );
         int clvOption = 2;
         Integer accessOptionValue = null;
         if (accessOption != null)
@@ -129,11 +139,16 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
                 AppConstants.SHARED_PREFERENCES_TOKEN
         );
         GetReleaseByIdRequest request = new
-                GetReleaseByIdRequest(employeeNum, clvOption, releaseId, accessOptionValue);
+                GetReleaseByIdRequest(employeeNum, clvOption, Integer.toString(releaseId), accessOptionValue);
+        String url = (ServicesConstants.GET_COMUNICADOS == null || ServicesConstants.GET_COMUNICADOS.isEmpty()) ? ServicesConstants.GET_COMUNICADOS_LOCAL : ServicesConstants.GET_COMUNICADOS;
 
         apiService.getReleaseById(
                 authHeader,
-                ServicesConstants.GET_COMUNICADOS,
+                "2024-03-25T17:38:35.244Z",
+                "-99.985171",
+                "20.270460",
+                "fs9999c7q86c33cdfd5f55",
+                url,
                 request
         ).enqueue(new Callback<GetReleaseByIdResponse>() {
 
@@ -147,7 +162,7 @@ public class ReleaseRepositoryImpl implements ReleaseRepository {
 
             @Override
             public void onFailure(Call<GetReleaseByIdResponse> call, Throwable t) {
-                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS , t.getMessage());
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS, t.getMessage());
                 Failure failure = new ServerFailure();
                 Either<Failure, Release> result = new Either<Failure, Release>().new Left(failure);
                 callback.onResult(result);

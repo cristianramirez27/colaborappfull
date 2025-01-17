@@ -1,33 +1,37 @@
 package com.coppel.rhconecta.dev.business.models;
 
+import com.facebook.stetho.common.StringUtil;
+
 public class BenefitCodeRequest {
     private int opc;
-    private int numEmpleado;
-    private int numEmpresa;
+    private String numEmpleado;
+    private String idempresa;
+    private int solicitud;
 
     public BenefitCodeRequest() {
     }
 
-    public BenefitCodeRequest(int opc, int numEmpleado, int numEmpresa) {
+    public BenefitCodeRequest(int opc, String numEmpleado, String idempresa,int solicitud) {
         this.opc = opc;
         this.numEmpleado = numEmpleado;
-        this.numEmpresa = numEmpresa;
+        this.idempresa = idempresa;
+        this.solicitud = solicitud;
     }
 
-    public int getNumEmpleado() {
+    public String getNumEmpleado() {
         return numEmpleado;
     }
 
-    public void setNumEmpleado(int numEmpleado) {
+    public void setNumEmpleado(String numEmpleado) {
         this.numEmpleado = numEmpleado;
     }
 
-    public int getNumEmpresa() {
-        return numEmpresa;
+    public String getIdempresa() {
+        return idempresa;
     }
 
-    public void setNumEmpresa(int numEmpresa) {
-        this.numEmpresa = numEmpresa;
+    public void setIdempresa(String idempresa) {
+        this.idempresa = idempresa;
     }
 
     public int getOpc() {
@@ -37,4 +41,13 @@ public class BenefitCodeRequest {
     public void setOpc(int opc) {
         this.opc = opc;
     }
+
+    public int getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(int solicitud) {
+        this.solicitud = solicitud;
+    }
+
 }

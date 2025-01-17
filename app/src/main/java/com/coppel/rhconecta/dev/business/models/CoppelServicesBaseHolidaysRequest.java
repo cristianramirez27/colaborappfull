@@ -17,11 +17,16 @@ public abstract class CoppelServicesBaseHolidaysRequest {
         this.opcion = opcion;
     }
 
+//    public CoppelServicesBaseHolidaysRequest(int num_empleado, int opcion) {
+//        this.num_empleado = num_empleado;
+//        this.opcion = opcion;
+//    }
+
     public Object getNum_empleado() {
         return num_empleado;
     }
 
-    public void setNum_empleado(String num_empleado) {
+    public void setNum_empleado(int num_empleado) {
         this.num_empleado = num_empleado;
     }
 

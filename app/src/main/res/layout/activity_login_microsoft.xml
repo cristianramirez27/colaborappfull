@@ -29,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/join_us"
+        android:visibility="gone"
         android:textColor="@color/colorTextGrayDark"
         app:layout_constraintTop_toBottomOf="@id/btnLogInMicrosoft"
         app:layout_constraintBottom_toBottomOf="parent"

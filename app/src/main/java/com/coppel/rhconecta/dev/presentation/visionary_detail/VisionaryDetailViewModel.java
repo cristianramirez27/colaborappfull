@@ -103,8 +103,8 @@ public class VisionaryDetailViewModel {
         this.failure = failure;
         updateVisionaryStatusProcessStatus.postValue(ProcessStatus.FAILURE);
     }
-
-    /** */
+//
+//    /** */
     private void onUpdateVisionaryStatusRight(Visionary.RateStatus status) {
         Visionary updatedVisionary = visionary.cloneVisionary();
         updatedVisionary.setRateStatus(status);

@@ -17,7 +17,7 @@ public class CameraUtilities {
     private static final float maxHeight = 1024.0f;
     private static final float maxWidth = 1024.0f;
 
-    public static Bitmap saveTemporalImage(Bitmap finalBitmap) {
+    /*public static Bitmap saveTemporalImage(Bitmap finalBitmap) {
         String root = Environment.getExternalStorageDirectory().toString();
         Random generator = new Random();
         int n = 10000;
@@ -37,10 +37,10 @@ public class CameraUtilities {
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         } catch (Exception e) {
             file.delete();
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
-    }
+    }*/
 
     private static byte[] compressImage(String imagePath) {
         Bitmap scaledBitmap = null;
@@ -78,13 +78,13 @@ public class CameraUtilities {
         try {
             bmp = BitmapFactory.decodeFile(imagePath, options);
         } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
+            //exception.printStackTrace();
 
         }
         try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
+            //exception.printStackTrace();
         }
 
         float ratioX = actualWidth / (float) options.outWidth;

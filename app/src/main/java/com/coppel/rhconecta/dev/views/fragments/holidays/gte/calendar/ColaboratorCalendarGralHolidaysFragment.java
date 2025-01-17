@@ -274,7 +274,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_CALENDAR_DAYS_PROPOSED, 18);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
-        holidayRequestData.setNum_empconsulta(numEmployer);
+        holidayRequestData.setNum_empconsulta(Integer.parseInt(numEmployer));
         holidayRequestData.setNum_mes(num_mes);
         holidayRequestData.setNum_anio(num_anio);
         /*Tipo de consulta*/
@@ -480,7 +480,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //El usuario en sesion es el Gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(SCHEDULE_GTE_HOLIDAY_REQUEST, 14,this.colaboratorHoliday.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(SCHEDULE_GTE_HOLIDAY_REQUEST, 14,Integer.parseInt(this.colaboratorHoliday.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_observaciones(observations);
         List<HolidayPeriodData> periodsToSend = new ArrayList<>();
@@ -760,7 +760,7 @@ public class ColaboratorCalendarGralHolidaysFragment extends Fragment implements
                 }
             }
         }catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         Calendar  calendar = Calendar.getInstance();

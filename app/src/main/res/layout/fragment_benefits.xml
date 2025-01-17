@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
     android:background="@color/colorBackgroundFragments"
+    android:paddingTop="20dp"
     tools:context=".views.fragments.PayrollVoucherFragment">
 
     <include layout="@layout/view_connection_error" />
@@ -16,49 +16,49 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-                android:id="@+id/layoutChangeCity"
-                android:layout_width="match_parent"
+            android:id="@+id/layoutChangeCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/cardViewSearch"
+            android:layout_alignEnd="@+id/cardViewSearch"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txtCity"
+                style="@style/TextBook14Coppel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/cardViewSearch"
-                android:layout_alignEnd="@+id/cardViewSearch"
-                android:layout_marginBottom="10dp"
-                android:gravity="center">
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:text="@string/are_you_in_culiacan"
+                android:textColor="@color/colorTextGrayDark" />
 
             <TextView
-                    android:id="@+id/txtCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TextBook14Coppel"
-                    android:text="@string/are_you_in_culiacan"
-                    android:padding="4dp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/colorTextGrayDark"/>
-
-            <TextView
-                    android:id="@+id/titleChangeCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/change_city"
-                    android:padding="4dp"
-                    style="@style/TextMedium14Coppel"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/colorSecondBlueCoppel"/>
+                android:id="@+id/titleChangeCity"
+                style="@style/TextMedium14Coppel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:text="@string/change_city"
+                android:textColor="@color/colorSecondBlueCoppel" />
 
         </RelativeLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"
-            android:layout_below="@+id/layoutChangeCity"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_below="@+id/layoutChangeCity"
             android:layout_marginLeft="@dimen/margin_general"
             android:layout_marginTop="@dimen/margin_general"
             android:layout_marginRight="@dimen/margin_general"
-            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
             app:cardCornerRadius="4dp"
-            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+            app:cardElevation="8dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -70,52 +70,52 @@
                     android:layout_height="38dp"
                     android:layout_centerVertical="true"
                     android:padding="4dp"
-                    android:src="@drawable/icon_search"/>
+                    android:src="@drawable/icon_search" />
 
                 <EditText
-                    android:layout_toRightOf="@+id/iconSearch"
                     android:id="@+id/edtSearch"
-                    android:background="@null"
-                    android:hint="@string/hint_search"
-                    android:layout_width="match_parent"
-                    android:gravity="center_vertical"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:importantForAutofill="no"
-                    android:lines="1"
                     style="@style/TextBook14Coppel"
-                    android:textColorHint="#5f6062"
-                    android:textColor="#5f6062"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_height="wrap_content" />
+                    android:layout_toRightOf="@+id/iconSearch"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:hint="@string/hint_search"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:longClickable="false"
+                    android:textColor="#5f6062"
+                    android:textColorHint="#5f6062" />
 
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
         <TextView
-                android:id="@+id/errorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cardViewSearch"
-                android:fontFamily="@font/lineto_circular_pro_medium"
-                android:text="@string/error_empty_search"
-                android:padding="4dp"
-                android:visibility="invisible"
-                android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/colorRed"
-                android:textSize="11sp" />
-
+            android:id="@+id/errorMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardViewSearch"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:padding="4dp"
+            android:text="@string/error_empty_search"
+            android:textColor="@color/colorRed"
+            android:textSize="11sp"
+            android:visibility="invisible" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvBenefits"
-                android:layout_alignStart="@+id/cardViewSearch"
-                android:layout_alignEnd="@+id/cardViewSearch"
-                android:layout_below="@+id/errorMessage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:id="@+id/rcvBenefits"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/errorMessage"
+            android:layout_alignStart="@+id/cardViewSearch"
+            android:layout_alignEnd="@+id/cardViewSearch" />
 
 
     </RelativeLayout>

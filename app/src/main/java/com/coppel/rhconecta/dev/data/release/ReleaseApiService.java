@@ -22,6 +22,10 @@ public interface ReleaseApiService {
     @POST
     Call<GetReleasesPreviewsResponse> getReleasesPreviews(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetReleasesPreviewsRequest request
     );
@@ -33,6 +37,10 @@ public interface ReleaseApiService {
     @POST
     Call<GetReleaseByIdResponse> getReleaseById(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetReleaseByIdRequest request
     );

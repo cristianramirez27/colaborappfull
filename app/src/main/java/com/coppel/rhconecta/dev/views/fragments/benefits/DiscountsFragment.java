@@ -320,7 +320,7 @@ public class DiscountsFragment extends Fragment implements View.OnClickListener,
 
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         coppelServicesPresenter.getBenefits(new BenefitsRequestData(BENEFITS_COMPANY,
-                5,benefitsRequestData.getNum_estado(),benefitsRequestData.getNum_ciudad(),benefitsRequestData.getClave_servicio(),discount.getId_empresa()),token);
+                5,benefitsRequestData.getNum_estado(),benefitsRequestData.getNum_ciudad(),benefitsRequestData.getClave_servicio(),String.valueOf(discount.getId_empresa())),token);
     }
 
 

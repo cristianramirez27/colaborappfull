@@ -48,6 +48,8 @@ public class AppConfig {
     public final static String URL_COVID_SURVEY = "URL_COVID_SURVEY";
 
     public final static String ENDPOINT_EXPENSES_TRAVEL = "ENDPOINT_TRAVEL_EXPENSES";
+    public final static String ENDPOINT_TRAVEL_EXPENSES_COLABORATOR = "ENDPOINT_TRAVEL_EXPENSES_COLABORATOR";
+    public final static String ENDPOINT_TRAVEL_EXPENSES_GTE = "ENDPOINT_TRAVEL_EXPENSES_GTE";
 
     public final static String ENDPOINT_HOLIDAYS = "ENDPOINT_HOLIDAYS";
     public final static String ENDPOINT_HOLIDAY_BONUS = "ENDPOINT_HOLIDAY_BONUS";
@@ -157,6 +159,9 @@ public class AppConfig {
     public final static String ENDPOINT_MYMOVEMENTS = "ENDPOINT_MYMOVEMENTS";
     public final static String ENDPOINT_LINEA_DE_DENUNCIA = "URL_LINEA_DE_DENUNCIA";
     public final static String BLOCK_LINEA_DE_DENUNCIA = "BLOCK_LINEA_DE_DENUNCIA";
+    public final static String BLOCK_SECTION_TIME = "BLOCK_SECTION_TIME";
+    public final static String BLOCK_HUELLASAD = "BLOCK_HUELLASAD";
+
 
     //comprobantes
     public final static String ENDPOINT_NOMINA = "ENDPOINT_NOMINA";
@@ -170,7 +175,9 @@ public class AppConfig {
     public final static String ENDPOINT_LINKS = "links_externos";
     public final static String ENDPOINT_ZENDESK_CONFIG = "ZENDEX_HORARIO_CONFIG";
     public final static String ENDPOINT_GENERAL_CONFIGURATION = "configuracion_general";
-
+    public final static String ENDPOINT_AES = "AES";
+    public final static String FLAG_ICONS = "FLAG_ICONS";
+    public final static String USER_ACCESS = "USER_ACCESS";
 
     /**
      * Se almacenan los endpoints
@@ -210,6 +217,8 @@ public class AppConfig {
             String url_coCreaSite = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA_STORE);
 
             String expenses_travel = mFirebaseRemoteConfig.getString(ENDPOINT_EXPENSES_TRAVEL);
+            String expenses_travel_colaborator = mFirebaseRemoteConfig.getString(ENDPOINT_TRAVEL_EXPENSES_COLABORATOR);
+            String expenses_travel_gte = mFirebaseRemoteConfig.getString(ENDPOINT_TRAVEL_EXPENSES_GTE);
             String holidays = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAYS);
             String holidayBonus = mFirebaseRemoteConfig.getString(ENDPOINT_HOLIDAY_BONUS);
             String collage = mFirebaseRemoteConfig.getString(ENDPOINT_COLLAGE);
@@ -233,6 +242,9 @@ public class AppConfig {
 
             //GENERAL CONFIGURATION
             String generalConfiguration = mFirebaseRemoteConfig.getString(ENDPOINT_GENERAL_CONFIGURATION);
+            String aesConfiguration = mFirebaseRemoteConfig.getString(ENDPOINT_AES);
+            String flagIcons = mFirebaseRemoteConfig.getString(FLAG_ICONS);
+            String userAccess = mFirebaseRemoteConfig.getString(USER_ACCESS);
 
             //VISIONARIOS
             String visionarios_url = mFirebaseRemoteConfig.getString(VISIONARIOS_URL);
@@ -257,6 +269,8 @@ public class AppConfig {
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN_LOGIN, main_login);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), URL_MAIN, url_main);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_EXPENSES_TRAVEL, expenses_travel);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_TRAVEL_EXPENSES_COLABORATOR, expenses_travel_colaborator);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_TRAVEL_EXPENSES_GTE, expenses_travel_gte);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAYS, holidays);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_HOLIDAY_BONUS, holidayBonus);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_QR, qr);
@@ -294,6 +308,10 @@ public class AppConfig {
 
             //General configuration
             AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), ENDPOINT_GENERAL_CONFIGURATION, generalConfiguration);
+            //AES CONFIGURATION
+            AppUtilities.saveJsonObjectInSharedPreferences(getApplicationContext(), ENDPOINT_AES, aesConfiguration);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), FLAG_ICONS, flagIcons);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), USER_ACCESS, userAccess);
 
             /*Bloquear modulos*/
             String block_saving = mFirebaseRemoteConfig.getString(BLOCK_SAVINGS);
@@ -374,6 +392,8 @@ public class AppConfig {
             String block_my_movements = mFirebaseRemoteConfig.getString(BLOCK_MY_MOVEMENTS);
             String block_my_movements_message = mFirebaseRemoteConfig.getString(BLOCK_MYMOVEMENTS_MESSAGE);
             String block_lineaDenuncia = mFirebaseRemoteConfig.getString(BLOCK_LINEA_DE_DENUNCIA);
+            String block_sectionTime = mFirebaseRemoteConfig.getString(BLOCK_SECTION_TIME );
+            String block_huellasAd = mFirebaseRemoteConfig.getString(BLOCK_HUELLASAD );
 
 
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
@@ -455,6 +475,8 @@ public class AppConfig {
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MY_MOVEMENTS, block_my_movements);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MYMOVEMENTS_MESSAGE, block_my_movements_message);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_LINEA_DE_DENUNCIA, block_lineaDenuncia);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SECTION_TIME, block_sectionTime);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HUELLASAD, block_huellasAd);
             callBack.onComplete("Ok");
         } catch (Exception e) {
             callBack.onFail(e.getMessage());
@@ -513,7 +535,7 @@ public class AppConfig {
             info = manager.getPackageInfo(CoppelApp.getContext().getPackageName(), 0);
             return info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return "";
         }
     }

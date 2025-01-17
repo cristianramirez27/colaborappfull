@@ -320,9 +320,10 @@
                             android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Octubre 2019"
+                            android:text=""
                             style="@style/TextBold14Coppel"
                             android:textColor="@android:color/black"/>
+                    <!--<android:text="Octubre 2019"-->
 
                     <RelativeLayout
                         android:layout_alignParentRight="true"

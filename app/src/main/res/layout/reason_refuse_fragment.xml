@@ -47,6 +47,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="top"
                 android:padding="8dp"
+                android:longClickable="false"
                 style="@style/TextBook12Coppel"
                 android:inputType="text"
                 android:importantForAutofill="no"

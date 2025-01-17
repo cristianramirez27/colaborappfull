@@ -42,6 +42,8 @@
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="separation_component">5dp</dimen>
 
+    <dimen name="day_circle_radius">120dp</dimen>
+    <dimen name="day_circle_stroke_width">1dp</dimen>
 
 </resources>
 

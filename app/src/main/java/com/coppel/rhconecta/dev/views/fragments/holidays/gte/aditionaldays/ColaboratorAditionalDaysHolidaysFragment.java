@@ -317,7 +317,7 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
     @Override
     public void onRightOptionReasonClick(HolidayRequestData data, DialogFragment dialogFragment) {
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        data.setNum_empleado(this.colaboratorHoliday.getNum_empleado());//Agregamos el número de empleado
+        data.setNum_empleado(Integer.parseInt(this.colaboratorHoliday.getNum_empleado()));//Agregamos el número de empleado
         coppelServicesPresenter.getHolidays(data,token);
 
         dialogFragment.dismiss();
@@ -327,14 +327,14 @@ public class ColaboratorAditionalDaysHolidaysFragment extends Fragment implement
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //Este colaborador es el gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIODS_COLABORATORS, 8,numEmployer);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIODS_COLABORATORS, 8,Integer.parseInt(numEmployer));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 
     private void validateAditionalDays(String numEmployer){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(VALIDATION_ADITIONAL_DAYS, 15,numEmployer);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(VALIDATION_ADITIONAL_DAYS, 15,Integer.parseInt(numEmployer));
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 

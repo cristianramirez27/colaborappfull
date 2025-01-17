@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layoutContainer"
-    android:visibility="visible"
-    android:fillViewport="true"
     android:background="@color/colorBackgroundFragments"
+    android:fillViewport="true"
+    android:visibility="visible"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <LinearLayout
+        android:id="@+id/layoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            style="@style/ButtonCoppel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_canceled_period"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBackgroundCoppelBlanco" />
+
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutBtn"
+        android:background="@color/transparent"
         android:fillViewport="true"
-        android:paddingBottom="10dp"
-        android:background="@color/transparent">
+        android:paddingBottom="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,17 +47,51 @@
             android:background="@color/transparent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/observacionesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layoutHeader"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layoutObservaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-3dp"
+                    android:background="@color/colorBackgroundCoppelBlanco"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:id="@+id/bordeAmarillo"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/bg_gradient_grey" />
+
+                    <include layout="@layout/observaciones_periodo" />
+
+                </LinearLayout>
+
+                <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                    android:id="@+id/expObservaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="20dp" />
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/layoutHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
-                android:paddingRight="20dp"
                 android:paddingTop="20dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="10dp">
 
-                <androidx.cardview.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/cardview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,8 +129,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
                                     android:layout_centerVertical="true"
-                                    android:paddingBottom="8dp"
-                                    android:paddingRight="4dp">
+                                    android:paddingRight="4dp"
+                                    android:paddingBottom="8dp">
 
                                     <TextView
                                         android:id="@+id/estatus"
@@ -85,11 +140,11 @@
                                         android:layout_gravity="bottom|center_horizontal"
                                         android:fontFamily="@font/lineto_circular_pro_book"
                                         android:gravity="left|center_vertical"
+                                        android:paddingLeft="4dp"
+                                        android:paddingRight="4dp"
                                         android:text="Autorizado (Modificado por Gerente)"
                                         android:textColor="@color/colorBackgroundCoppelBlanco"
                                         android:textSize="13sp"
-                                        android:paddingLeft="4dp"
-                                        android:paddingRight="4dp"
                                         android:visibility="visible" />
 
                                 </LinearLayout>
@@ -104,18 +159,19 @@
                                 android:gravity="center_horizontal">
 
                                 <TextView
+                                    style="@style/TextBook12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
                                     android:layout_gravity="bottom|center_horizontal"
                                     android:gravity="left|center_vertical"
                                     android:text="@string/title_date_start"
-                                    style="@style/TextBook12Coppel"
                                     android:textColor="@color/colorTextGrayDark"
                                     android:visibility="visible" />
 
                                 <TextView
                                     android:id="@+id/fechaInicio"
+                                    style="@style/TextMedium12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
@@ -123,7 +179,6 @@
                                     android:gravity="left|center_vertical"
                                     android:text="Miércoles, 15-08-2019"
                                     android:textColor="@color/colorTextGrayDark"
-                                    style="@style/TextMedium12Coppel"
                                     android:visibility="visible" />
                             </RelativeLayout>
 
@@ -135,6 +190,7 @@
                                 android:gravity="center_horizontal">
 
                                 <TextView
+                                    style="@style/TextBook12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
@@ -145,11 +201,11 @@
                                     android:minHeight="20dp"
                                     android:text="@string/title_date_end"
                                     android:textColor="@color/colorTextGrayDark"
-                                    style="@style/TextBook12Coppel"
                                     android:visibility="visible" />
 
                                 <TextView
                                     android:id="@+id/fechaFin"
+                                    style="@style/TextMedium12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
@@ -158,7 +214,6 @@
                                     android:gravity="left|center_vertical"
                                     android:text="Miércoles, 15-08-2019"
                                     android:textColor="@color/colorTextGrayDark"
-                                    style="@style/TextMedium12Coppel"
                                     android:visibility="visible" />
 
                             </RelativeLayout>
@@ -171,6 +226,7 @@
                                 android:gravity="center_horizontal">
 
                                 <TextView
+                                    style="@style/TextBook12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentLeft="true"
@@ -178,11 +234,11 @@
                                     android:layout_gravity="bottom|center_horizontal"
                                     android:text="@string/title_holidays_days"
                                     android:textColor="@color/colorBackgroundCoppelNegro"
-                                    style="@style/TextBook12Coppel"
                                     android:visibility="visible" />
 
                                 <TextView
                                     android:id="@+id/diasVacaciones"
+                                    style="@style/TextMedium12Coppel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
@@ -190,7 +246,6 @@
                                     android:layout_gravity="bottom|center_horizontal"
                                     android:gravity="left|center_vertical"
                                     android:text="3 días"
-                                    style="@style/TextMedium12Coppel"
                                     android:textColor="@color/colorBackgroundCoppelNegro"
                                     android:visibility="visible" />
 
@@ -204,104 +259,51 @@
 
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/observacionesLayout"
-                android:layout_below="@+id/layoutHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
-                    android:id="@+id/expObservaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="20dp"/>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:id="@+id/layoutObservaciones"
-                    android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_marginTop="-3dp"
-                    android:background="@color/colorBackgroundCoppelBlanco"
-                    android:layout_height="wrap_content">
-
-                    <include layout="@layout/observaciones_periodo"/>
-
-                    <View
-                        android:id="@+id/bordeAmarillo"
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:background="@drawable/bg_gradient_grey" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <RelativeLayout
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_below="@+id/observacionesLayout"
                 android:id="@+id/layoutCalendar"
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_below="@+id/observacionesLayout"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="20dp"
                 android:background="@color/transparent"
+                android:orientation="vertical"
                 android:visibility="visible">
+
                 <TextView
-                        android:id="@+id/monthName"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Octubre 2019"
-                        style="@style/TextBold14Coppel"
-                        android:textColor="@color/colorTextCoppelNegro"/>
+                    android:id="@+id/monthName"
+                    style="@style/TextBold14Coppel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/colorTextCoppelNegro" />
+                <!--<android:text="Octubre 2019"-->
 
                 <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
-                        android:id="@+id/collapsibleCalendarView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:primaryColor="@color/transparent"
-                        app:textColor="@color/colorPrimaryCoppelAzul"
-                        app:selectedItem_textColor="@android:color/white"
-                        app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
-                        app:todayItem_background="@drawable/circle_white_stroke_background"
-                        app:selectedItem_background="@drawable/circle_green_solid_background"
-                        app:buttonLeft_drawableTintColor="@android:color/white"
-                        app:buttonRight_drawableTintColor="@android:color/white"
-                        app:expandIconColor="@android:color/white"
-                        app:eventColor="@android:color/white" android:layout_marginTop="0dp"
-                        android:layout_below="@+id/monthName" android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="0dp"/>
+                    android:id="@+id/collapsibleCalendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/monthName"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    app:buttonLeft_drawableTintColor="@android:color/white"
+                    app:buttonRight_drawableTintColor="@android:color/white"
+                    app:eventColor="@android:color/white"
+                    app:expandIconColor="@android:color/white"
+                    app:primaryColor="@color/transparent"
+                    app:selectedItem_background="@drawable/circle_green_solid_background"
+                    app:selectedItem_textColor="@android:color/white"
+                    app:textColor="@color/colorPrimaryCoppelAzul"
+                    app:todayItem_background="@drawable/circle_white_stroke_background"
+                    app:todayItem_textColor="@color/colorPrimaryCoppelAzul" />
 
             </RelativeLayout>
 
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:id="@+id/layoutBtn"
-        android:padding="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCancel"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_blue_rounded"
-            android:text="@string/btn_canceled_period"
-            android:textAllCaps="false"
-            android:layout_marginRight="10dp"
-            android:textColor="@color/colorBackgroundCoppelBlanco"
-            style="@style/ButtonCoppel" />
-
-    </LinearLayout>
 
 </RelativeLayout>

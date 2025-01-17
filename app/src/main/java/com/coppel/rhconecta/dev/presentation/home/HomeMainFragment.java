@@ -1,7 +1,10 @@
 package com.coppel.rhconecta.dev.presentation.home;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 
 import android.content.ActivityNotFoundException;
@@ -77,7 +80,7 @@ public class HomeMainFragment
     private HomeMenuRecyclerViewAdapter homeMenuRecyclerViewAdapter = null;
     private ProfileResponse.Response profileResponse;
 
-    int[] notifications = {0,0,0};
+    int[] notifications = {0, 0, 0};
     @BindView(R.id.vpBanner)
     ViewPager vpBanner;
     @BindView(R.id.tabIndicator)
@@ -96,6 +99,9 @@ public class HomeMainFragment
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            String intentAction = intent.getAction();
+            if (AppConstants.INTENT_NOTIFICATION_ACTON.equals(intentAction)) {
+            }
             updateDashboard();
         }
     };
@@ -182,7 +188,7 @@ public class HomeMainFragment
             dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), message, getString(R.string.accept));
             dialogFragmentWarning.setOnOptionClick(this);
             dialogFragmentWarning.show(
-                    Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                    requireActivity().getSupportFragmentManager(),
                     DialogFragmentWarning.TAG
             );
         } catch (Exception ignore) { /* IGNORE */ }
@@ -362,25 +368,32 @@ public class HomeMainFragment
             }
             Intent intent;
             AccessOption accessOption = AccessOption.BANNER;
-            if (banner.isRelease()) {
-                intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
-                        .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
-                        .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
-                        .build();
-                startActivity(intent);
-            }
-            if (banner.isVisionary() || banner.isVisionaryAtHome()) {
-                VisionaryType type = banner.isVisionary() ?
-                        VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
-                intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
-                        .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId())
-                        .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
-                        .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
-                        .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
-                        .build();
-                startActivity(intent);
+            boolean blockNotices = AppUtilities.getStringFromSharedPreferences(requireActivity(), BLOCK_COMUNICADOS).equals(YES);
+            boolean blockvisionaries = AppUtilities.getStringFromSharedPreferences(requireActivity(), BLOCK_VISIONARIOS).equals(YES);
+            boolean blockStayhHome = AppUtilities.getStringFromSharedPreferences(requireActivity(), BLOCK_STAYHOME).equals(YES);
+            if (!blockNotices) {
+                if (banner.isRelease()) {
+                    intent = new IntentBuilder(new Intent(getContext(), ReleaseDetailActivity.class))
+                            .putIntExtra(ReleaseDetailActivity.RELEASE_ID, Integer.parseInt(banner.getId()))
+                            .putSerializableExtra(ReleaseDetailActivity.ACCESS_OPTION, accessOption)
+                            .build();
+                    startActivity(intent);
+                }
             }
 
+            if (!blockvisionaries) {
+                if (banner.isVisionary() || banner.isVisionaryAtHome()) {
+                    VisionaryType type = banner.isVisionary() ?
+                            VisionaryType.VISIONARIES : VisionaryType.COLLABORATOR_AT_HOME;
+                    intent = new IntentBuilder(new Intent(getContext(), VisionaryDetailActivity.class))
+                            .putStringExtra(VisionaryDetailActivity.VISIONARY_ID, banner.getId())
+                            .putStringExtra(VisionaryDetailActivity.VISIONARY_IMAGE_PREVIEW, banner.getImage())
+                            .putSerializableExtra(VisionaryDetailActivity.VISIONARY_TYPE, type)
+                            .putSerializableExtra(VisionaryDetailActivity.ACCESS_OPTION, accessOption)
+                            .build();
+                    startActivity(intent);
+                }
+            }
             if (banner.isLink() && banner.getUrlLink() != null) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(banner.getUrlLink()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

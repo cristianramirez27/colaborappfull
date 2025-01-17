@@ -21,6 +21,10 @@ public interface VisionaryApiService {
     @POST
     Call<GetVisionariesPreviewsResponse> getVisionariesPreviews(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetVisionariesPreviewsRequest request
     );
@@ -30,6 +34,10 @@ public interface VisionaryApiService {
     @POST
     Call<GetVisionaryByIdResponse> getVisionaryById(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetVisionaryByIdRequest request
     );
@@ -39,6 +47,10 @@ public interface VisionaryApiService {
     @POST
     Call<UpdateVisionaryStatusByIdResponse> updateVisionaryStatusById(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body UpdateVisionaryStatusByIdRequest request
     );

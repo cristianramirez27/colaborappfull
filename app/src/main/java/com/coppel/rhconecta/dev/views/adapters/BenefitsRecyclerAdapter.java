@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -10,8 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.request.RequestOptions;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,9 +53,35 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
         viewHolder.name.setText(currentItem.getNombre());
         viewHolder.description.setText(currentItem.getDescripcion());
        // Picasso.with(getContext()).load(currentItem.getLogo()).placeholder(R.drawable.placeholder_category ).into(viewHolder.imageBenefits);
-        Picasso.get().load(currentItem.getLogo())
+        /*Picasso.get().load(currentItem.getLogo())
                 .placeholder(R.drawable.placeholder_category)
-                .error(R.drawable.placeholder_category).into(viewHolder.imageBenefits);
+                .error(R.drawable.placeholder_category).into(viewHolder.imageBenefits);*/
+
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+
+        /*String imageName = currentItem.getLogo().substring(currentItem.getLogo().lastIndexOf("/") + 1);  // Nombre con extensión
+        String resourceName = imageName.substring(0, imageName.lastIndexOf(".")); // Quita la extensión
+
+        // Obtener el ID del recurso en drawable
+        int imageResId = viewHolder.itemView.getContext().getResources().getIdentifier(
+                resourceName.toLowerCase(),
+                "drawable",
+                viewHolder.itemView.getContext().getPackageName()
+        );*/
+
+        // Crear GlideUrl con el header
+        GlideUrl glideUrl = new GlideUrl(currentItem.getLogo(), new LazyHeaders.Builder()
+                .addHeader("Authorization", authHeader)
+                .build());
+
+        Glide.with(context)
+                .load(glideUrl)
+                .placeholder(R.drawable.placeholder_category)
+                .error(R.drawable.placeholder_category)
+                .into(viewHolder.imageBenefits);
 
        // ImageLoaderUtil.loadPictureFromURLPlaceholder(context,currentItem.getLogo(),viewHolder.imageBenefits,R.drawable.placeholder_category);
         viewHolder.cardViewBenefits.setOnClickListener(new View.OnClickListener() {

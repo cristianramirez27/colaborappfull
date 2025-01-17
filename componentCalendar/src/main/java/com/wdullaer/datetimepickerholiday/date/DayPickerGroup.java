@@ -53,7 +53,7 @@ public class DayPickerGroup extends ViewGroup
         addView(dayPickerView);
 
         final LayoutInflater inflater = LayoutInflater.from(getContext());
-        final ViewGroup content = (ViewGroup) inflater.inflate(enableThemeHoliday ? R.layout.mdtp_daypicker_group_holiday_library : R.layout.mdtp_daypicker_group_library, this, false);
+        final ViewGroup content = (ViewGroup) inflater.inflate(enableThemeHoliday ? com.wdullaer.materialdatepicker.R.layout.mdtp_daypicker_group_holiday_library : com.wdullaer.materialdatepicker.R.layout.mdtp_daypicker_group_library, this, false);
 
         // Transfer all children from the content to this
         while (content.getChildCount() > 0) {

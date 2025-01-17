@@ -9,6 +9,10 @@ interface APIService {
     suspend fun getMovements(
         @Url url: String,
         @Header("Authorization") token: String,
+        @Header("X-Coppel-Date-Request") dateRequest: String,
+        @Header("X-Coppel-Latitude") latitude: String,
+        @Header("X-Coppel-Longitude") longitude: String,
+        @Header("X-Coppel-TransactionId") transactionId: String,
         @Body servicesRequest: GetMovementsRequest
     ): Response<GetMovementsAPIResponse>
 }

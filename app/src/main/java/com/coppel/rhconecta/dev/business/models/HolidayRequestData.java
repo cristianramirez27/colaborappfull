@@ -11,8 +11,8 @@ public class HolidayRequestData implements Serializable{
 
     private HolidaysType holidaysType;
     private int opcion;
-    private String num_empleado;
-    private String num_empconsulta;
+    private int num_empleado;
+    private int num_empconsulta;
     private int num_gerente;
     private int num_suplente;
     private List<HolidayPeriodData> periodos;
@@ -44,7 +44,7 @@ public class HolidayRequestData implements Serializable{
         this.opcion = opcion;
     }
 
-    public HolidayRequestData(HolidaysType holidaysType, int opcion, String num_empleado) {
+    public HolidayRequestData(HolidaysType holidaysType, int opcion, int num_empleado) {
         this.holidaysType = holidaysType;
         this.opcion = opcion;
         this.num_empleado = num_empleado;
@@ -66,11 +66,11 @@ public class HolidayRequestData implements Serializable{
         this.opcion = opcion;
     }
 
-    public String getNum_empleado() {
+    public int getNum_empleado() {
         return num_empleado;
     }
 
-    public void setNum_empleado(String num_empleado) {
+    public void setNum_empleado(int num_empleado) {
         this.num_empleado = num_empleado;
     }
 
@@ -162,11 +162,11 @@ public class HolidayRequestData implements Serializable{
         this.des_otromotivo = des_otromotivo;
     }
 
-    public String getNum_empconsulta() {
+    public int getNum_empconsulta() {
         return num_empconsulta;
     }
 
-    public void setNum_empconsulta(String num_empconsulta) {
+    public void setNum_empconsulta(int num_empconsulta) {
         this.num_empconsulta = num_empconsulta;
     }
 

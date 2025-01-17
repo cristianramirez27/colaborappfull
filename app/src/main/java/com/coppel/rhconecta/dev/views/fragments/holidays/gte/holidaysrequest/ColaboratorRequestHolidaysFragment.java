@@ -319,7 +319,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //Este colaborador es el gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(GET_PERIODS_COLABORATORS, 8,numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(GET_PERIODS_COLABORATORS, 8,Integer.parseInt(numEmployer));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
@@ -673,7 +673,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
     private void sendRequestHolidays(List<HolidayPeriod> periodsSelected,String observations){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(SCHEDULE_GTE_HOLIDAY_REQUEST, 14,this.colaboratorHoliday.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(SCHEDULE_GTE_HOLIDAY_REQUEST, 14,Integer.parseInt(this.colaboratorHoliday.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_observaciones(observations);
         List<HolidayPeriodData> periodsToSend = new ArrayList<>();
@@ -719,7 +719,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //Se toma el numero del colaborador en sesion como gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_GTE_HOLIDAY, 9,this.colaboratorHoliday.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_GTE_HOLIDAY, 9,Integer.parseInt(this.colaboratorHoliday.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_comentario(observations);
         List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();
@@ -736,7 +736,7 @@ public class ColaboratorRequestHolidaysFragment extends Fragment implements  Vie
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         //Se toma el numero del colaborador en sesion como gte
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(AUTHORIZE_HOLIDAY, 10,this.colaboratorHoliday.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(AUTHORIZE_HOLIDAY, 10,Integer.parseInt(this.colaboratorHoliday.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_comentario("");
         holidayRequestData.setIdu_autorizo(1);

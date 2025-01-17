@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments.holidays.colaborator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -184,26 +185,29 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         super.onViewCreated(view, savedInstanceState);
         getHolidayBonusGeneric(HOLIDAY_BONUS, 1, null);
         getHolidaysPeriods();
-        dialogFragmentCalendar.setAcceptAction(
-                params -> Arrays.stream(params)
-                        .findFirst()
-                        .ifPresent(selected -> getHolidayBonusGeneric(HOLIDAY_BONUS_EDITH_PERIOD, 3, selected.toString()))
-        );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dialogFragmentCalendar.setAcceptAction(
+                    params -> Arrays.stream(params)
+                            .findFirst()
+                            .ifPresent(selected -> getHolidayBonusGeneric(HOLIDAY_BONUS_EDITH_PERIOD, 3, selected.toString()))
+            );
+        }
     }
 
     private void getHolidaysPeriods(){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(CONSULTA_VACACIONES, 2,numEmployer);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(CONSULTA_VACACIONES, 2,Integer.parseInt(numEmployer));
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
 
     private void getHolidayBonusGeneric(HolidaysType holidaysType, int option, String dateSelected) {
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(holidaysType, option,numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(holidaysType, option,Integer.parseInt(numEmployer));
         if( dateSelected!=null){
-            holidayRequestData.setNum_empconsulta(dateSelected);
+            //holidayRequestData.setNum_empconsulta(Integer.parseInt(dateSelectReplace));
+            holidayRequestData.setFec_ini(dateSelected);
         }
         coppelServicesPresenter.getHolidays(holidayRequestData, token);
     }
@@ -335,11 +339,13 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                     HolidayBonusPeriodResponse.Response responseDetail = holidayBonusPeriodResponse.getData().getResponse();
                     if (responseDetail.getClv_estado() == 0) {
                         List<DatePrima> list = new ArrayList<>();
-                        responseDetail.getFechas_primas().forEach(periodDate -> {
-                            List<DateCalendar> items = periodDate.toMapDateCalendarList();
-                            if (!items.isEmpty())
-                                list.add(new DatePrima(periodDate.getNom_mes(), periodDate.getDes_periodo(), items));
-                        });
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            responseDetail.getFechas_primas().forEach(periodDate -> {
+                                List<DateCalendar> items = periodDate.toMapDateCalendarList();
+                                if (!items.isEmpty())
+                                    list.add(new DatePrima(periodDate.getNom_mes(), periodDate.getDes_periodo(), items));
+                            });
+                        }
                         dialogFragmentCalendar.setDateHolidayBonus(list);
                         dialogFragmentCalendar.show(getChildFragmentManager(), DialogFragmentCalendar.TAG);
                     } else {
@@ -558,7 +564,7 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
         String numSuplente = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_SUPLENTE);
 
-        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_HOLIDAYS, 5,numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_HOLIDAYS, 5,Integer.parseInt(numEmployer));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setNum_suplente(Integer.parseInt(numSuplente));
         List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();

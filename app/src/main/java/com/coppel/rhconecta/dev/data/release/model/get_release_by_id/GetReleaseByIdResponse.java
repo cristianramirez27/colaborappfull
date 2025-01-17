@@ -27,12 +27,14 @@ public class GetReleaseByIdResponse {
      */
     public static class ReleaseServer {
 
-        public int idu_avisos;
+        public String idu_avisos;
         public String des_encabezado;
         public String des_titulo;
         public String des_contenido;
         public String img_avisoPreview;
         public String img_coppel;
+        public String url_pdf;
+
 
 
         /**
@@ -45,13 +47,15 @@ public class GetReleaseByIdResponse {
          * @param img_avisoPreview
          * @param img_coppel
          */
-        public ReleaseServer(int idu_avisos, String des_encabezado, String des_titulo, String des_contenido, String img_avisoPreview, String img_coppel) {
+        public ReleaseServer(String idu_avisos, String des_encabezado, String des_titulo, String des_contenido, String img_avisoPreview, String img_coppel, String url_pd) {
             this.idu_avisos = idu_avisos;
             this.des_encabezado = des_encabezado;
             this.des_titulo = des_titulo;
             this.des_contenido = des_contenido;
             this.img_avisoPreview = img_avisoPreview;
             this.img_coppel = img_coppel;
+            this.url_pdf = url_pdf;
+
         }
 
         /**
@@ -66,7 +70,8 @@ public class GetReleaseByIdResponse {
                     img_coppel,
                     des_titulo,
                     des_contenido,
-                    img_avisoPreview
+                    img_avisoPreview,
+                    url_pdf
             );
         }
 

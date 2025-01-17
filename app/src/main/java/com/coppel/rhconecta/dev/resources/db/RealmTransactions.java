@@ -46,7 +46,7 @@ public class RealmTransactions {
             });*/
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
@@ -61,7 +61,7 @@ public class RealmTransactions {
             action.execute();
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

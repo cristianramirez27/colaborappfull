@@ -998,7 +998,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
             monthName.setText(collapsibleCalendar.getMonthCurrentTitle());
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -1104,7 +1104,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     private void cancelPeriod(List<HolidayPeriod> holidayPeriodSchedule,String observations){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_GTE_HOLIDAY, 9,this.holidayPeriod.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_GTE_HOLIDAY, 9,Integer.parseInt(this.holidayPeriod.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_comentario(observations);
         List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();
@@ -1121,7 +1121,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
     private void editPeriod(List<HolidayPeriod> holidayPeriodSchedule,String observations){
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(EDIT_PERIOD_HOLIDAY, 12,this.holidayPeriod.getNum_empleado());
+        HolidayRequestData holidayRequestData = new HolidayRequestData(EDIT_PERIOD_HOLIDAY, 12,Integer.parseInt(this.holidayPeriod.getNum_empleado()));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setDes_observaciones(observations);
         List<HolidayPeriodData> periodsToEdit = new ArrayList<>();
@@ -1152,7 +1152,7 @@ public class ColaboratorCalendarGralPeriodsHolidaysFragment extends Fragment imp
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         HolidayRequestData holidayRequestData = new HolidayRequestData(GET_CALENDAR_DAYS_PROPOSED, 18);
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
-        holidayRequestData.setNum_empconsulta(numEmployer);
+        holidayRequestData.setNum_empconsulta(Integer.parseInt(numEmployer));
         holidayRequestData.setNum_mes(num_mes);
         holidayRequestData.setNum_anio(num_anio);
         /*Tipo de consulta*/

@@ -15,6 +15,10 @@ interface HomeApiService {
     @POST
     fun getMainInformation(
         @Header("Authorization") authHeader: String,
+        @Header("X-Coppel-Date-Request") dateRequest: String ,
+        @Header("X-Coppel-Latitude") latitude: String,
+        @Header("X-Coppel-Longitude") longitude: String ,
+        @Header("X-Coppel-TransactionId")transactionId:  String,
         @Url url: String,
         @Body request: GetMainInformationRequest,
     ): Call<GetMainInformationResponse>

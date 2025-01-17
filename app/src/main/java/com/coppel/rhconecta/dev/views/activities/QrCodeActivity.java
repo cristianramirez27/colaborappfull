@@ -82,15 +82,15 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
         }
     }
 
-    public void getDeviceId(){
+    public int getDeviceId(){
         if (ActivityCompat.checkSelfPermission(this, READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             showWarningDialog(getString(R.string.str_error_permisos));
-            return;
+            return 0;
         }
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
             tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-            this.deviceId = tMgr.getDeviceId();
+            //this.deviceId = tMgr.getDeviceId();
         } else {
             this.deviceId = Settings.Secure.getString(
                     getApplicationContext().getContentResolver(),
@@ -108,6 +108,7 @@ public class QrCodeActivity extends AppCompatActivity implements IServicesContra
         } else {
             showWarningDialog(getString(R.string.str_error_unknown_device));
         }
+        return 0;
     }
 
     public void validateDeviceId(){

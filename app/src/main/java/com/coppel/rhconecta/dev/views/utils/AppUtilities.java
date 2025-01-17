@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
@@ -138,16 +139,21 @@ public class AppUtilities {
      *
      */
     public static void deleteSharedPreferencesWithoutFirebase(Context context) {
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        for (String key : sharedPreferences.getAll().keySet()) {
-            if (!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN)) {
-                editor.remove(key).commit();
+        try{
+            SharedPreferences sharedPreferences = getSharedPreferences(context);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            for (String key : sharedPreferences.getAll().keySet()) {
+                if (!key.equals(SHARED_PREFERENCES_FIREBASE_TOKEN)) {
+                    editor.remove(key).commit();
+                }
             }
+            // editor.clear();
+            // editor.apply();
+            editor.apply();
+        } catch (Exception e) {
+            Log.i("Exception","Exception: " + e);
         }
-        // editor.clear();
-        // editor.apply();
-        editor.apply();
+
     }
 
     /**
@@ -283,7 +289,7 @@ public class AppUtilities {
             os.close();
             return pdf;
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
             return null;
         }
     }
@@ -316,7 +322,7 @@ public class AppUtilities {
             outputStream.close();
             return new File(directoryPath, fileName);
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            //ioe.printStackTrace();
             return null;
         }
     }
@@ -345,7 +351,7 @@ public class AppUtilities {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             context.startActivity(intent);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -420,5 +426,12 @@ public class AppUtilities {
         zendeskConfiguration = zendeskConfiguration.getAsJsonObject("dia_"+dayOfWeek);
 
         return zendeskConfiguration;
+    }
+
+    public static String getAuthHeader(Context context){
+        return getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
     }
 }

@@ -144,8 +144,8 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (letterSignatureResponse == null) {
-            coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
-            //coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getProfileResponse().getToken());
+            //coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
+            coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN));
 
         }
     }
@@ -321,7 +321,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
         switch (view.getId()) {
             case R.id.imgvRefresh:
                 //coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, parent.getLoginResponse().getToken());
-                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, parent.getProfileResponse().getToken());
+                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST, AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN));
                 break;
         }
     }
@@ -377,7 +377,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
 
         if(requestCode == REQUEST_LETTER && resultCode == RESULT_OK){
             if (coppelServicesPresenter != null) {
-                coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), parent.getLoginResponse().getToken());
+                coppelServicesPresenter.requestLettersValidationSignature(parent.getProfileResponse().getColaborador(), AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN));
             }
         }
     }

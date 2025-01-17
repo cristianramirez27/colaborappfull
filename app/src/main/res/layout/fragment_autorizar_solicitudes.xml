@@ -15,9 +15,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="20dp"
+        android:background="@color/transparent"
         android:paddingTop="20dp"
-        android:background="@color/transparent">
+        android:paddingBottom="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,15 +27,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewSearch"
-                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="2dp"
-                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
                 app:cardCornerRadius="1dp"
-                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+                app:cardElevation="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -47,10 +47,11 @@
                         android:layout_height="38dp"
                         android:layout_centerVertical="true"
                         android:padding="4dp"
-                        android:src="@drawable/icon_search"/>
+                        android:src="@drawable/icon_search" />
 
                     <EditText
                         android:id="@+id/edtSearch"
+                        style="@style/TextBook14Coppel"
                         android:layout_width="244dp"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -62,9 +63,9 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:lines="1"
-                        style="@style/TextBook14Coppel"
+                        android:longClickable="false"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"/>
+                        android:textColorHint="@color/colorTextBlueCoppel" />
 
                 </RelativeLayout>
 
@@ -80,14 +81,13 @@
 
                 <TextView
                     android:id="@+id/tituloCentro"
+                    style="@style/TextBook12Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
-                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
-                    android:textColor="@color/colorTextCoppelNegro"
-                    />
+                    android:textColor="@color/colorTextCoppelNegro" />
 
                 <TextView
                     android:id="@+id/centro"
@@ -111,33 +111,33 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="20dp"
                 android:background="@color/transparent"
+                android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
                     android:id="@+id/tituloSolicitudes"
+                    style="@style/TextMedium18Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_request_complements"
-                    style="@style/TextMedium18Coppel"
-                    android:textColor="@color/colorSecondBlueCoppel"/>
+                    android:textColor="@color/colorSecondBlueCoppel" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginTop="20dp"
                         android:id="@+id/txtNoRequest"
-                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:fontFamily="@font/lineto_circular_pro_medium"
                         android:text="@string/empty_request_complements"
                         android:textColor="@color/colorTextGrayDark"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/layoutSolicitudes"
@@ -150,7 +150,7 @@
                         <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
                             android:id="@+id/titulosSolicitudes"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rcvSolicitudes"

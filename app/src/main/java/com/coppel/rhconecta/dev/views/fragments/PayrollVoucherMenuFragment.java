@@ -66,6 +66,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,7 +112,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         if (voucherResponse == null) {
             menuItems = new ArrayList<>();
-            coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST_V2, parent.getLoginResponse().getToken());
+            coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST_V2, getAuthHeader());
         }
         rcvOptions.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
@@ -278,7 +279,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgvRefresh:
-                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST_V2, parent.getLoginResponse().getToken());
+                coppelServicesPresenter.requestPayrollVoucher(parent.getProfileResponse().getColaborador(), ServicesConstants.PETITION_PAYROLL_VOUCHER_LIST_V2, getAuthHeader());
                 break;
         }
     }
@@ -296,7 +297,14 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
 
     private void getVoucherSelected(int typeVoucher){
         coppelServicesPresenter.requestPayrollVoucherSelected(parent.getProfileResponse().getColaborador(),
-                ServicesConstants.PETITION_PAYROLL_VOUCHER_SELECTED,typeVoucher, parent.getLoginResponse().getToken());
+                //ServicesConstants.PETITION_PAYROLL_VOUCHER_SELECTED,typeVoucher, parent.getLoginResponse().getToken());
+                ServicesConstants.PETITION_PAYROLL_VOUCHER_SELECTED,typeVoucher, getAuthHeader());
+    }
 
+    public String getAuthHeader(){
+        return getStringFromSharedPreferences(
+                requireContext(),
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
     }
 }

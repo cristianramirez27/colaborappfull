@@ -19,7 +19,7 @@ public class JsonManager {
         try {
             deepJson.put(key, json);
         } catch (JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return deepJson;
     }
@@ -30,7 +30,7 @@ public class JsonManager {
         try {
             deepJson.put(key, jsonArray);
         } catch (JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return deepJson;
     }
@@ -44,7 +44,7 @@ public class JsonManager {
         try {
             jsonObject = new JSONObject(tmp);
         } catch (JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return jsonObject;

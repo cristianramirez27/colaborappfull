@@ -1631,8 +1631,8 @@ public class TimePickerDialog extends DialogFragment implements
             char amChar;
             char pmChar;
             for (int i = 0; i < Math.max(mAmText.length(), mPmText.length()); i++) {
-                amChar = mAmText.toLowerCase(mLocale).charAt(i);
-                pmChar = mPmText.toLowerCase(mLocale).charAt(i);
+                amChar = mAmText.toLowerCase(Locale.getDefault()).charAt(i);
+                pmChar = mPmText.toLowerCase(Locale.getDefault()).charAt(i);
                 if (amChar != pmChar) {
                     KeyEvent[] events = kcm.getEvents(new char[]{amChar, pmChar});
                     // There should be 4 events: a down and up for both AM and PM.

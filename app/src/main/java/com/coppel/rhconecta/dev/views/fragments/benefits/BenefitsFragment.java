@@ -64,13 +64,13 @@ import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.internal.IOException;
 
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CATEGORIES;
 import static com.coppel.rhconecta.dev.business.Enums.BenefitsType.BENEFITS_CITY;
@@ -143,6 +143,7 @@ public class BenefitsFragment
     private List<BenefitsCategoriesResponse.Category> categories;
     private List<BenefitsStatesResponse.States> statesAvailables;
     private List<BenefitsCitiesResponse.City> citiesAvailables;
+    private Geocoder geocoder;
 
     @Override
     public void onAttach(Context context) {
@@ -183,6 +184,7 @@ public class BenefitsFragment
         });
 
         imgvRefresh.setOnClickListener(this);
+        geocoder = new Geocoder(requireContext(), Locale.getDefault());
         return view;
     }
 
@@ -377,7 +379,8 @@ public class BenefitsFragment
             dialogFragmentWarning.setOnOptionClick(new DialogFragmentWarning.OnOptionClick() {
 
                 @Override
-                public void onLeftOptionClick() { }
+                public void onLeftOptionClick() {
+                }
 
                 @Override
                 public void onRightOptionClick() {
@@ -619,13 +622,36 @@ public class BenefitsFragment
 
         Location location = MyLocation.find_Location(getActivity());
         if (location != null) {
-            String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+            /*String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
             benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES, 8);
             benefitsRequestData.setLatitud(String.valueOf(location.getLatitude()));
             benefitsRequestData.setLongitud(String.valueOf(location.getLongitude()));
-            coppelServicesPresenter.getBenefits(benefitsRequestData, token);
+            coppelServicesPresenter.getBenefits(benefitsRequestData, token);*/
 
-
+            List<Address> addresses;
+            try {
+                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 10);
+                String city = null;
+                String state = null;
+                assert addresses != null;
+                for (Address add : addresses) {
+                    if (add.getAdminArea() != null && state == null) {
+                        state = add.getAdminArea();
+                    }
+                    if (add.getSubAdminArea() != null && city == null) {
+                        city = add.getSubAdminArea();
+                    }
+                }
+                String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
+                benefitsRequestData = new BenefitsRequestData(BENEFITS_CATEGORIES, 8);
+                //benefitsRequestData.setLatitud(String.valueOf(location.getLatitude()));
+                benefitsRequestData.setLatitud(city);
+                //benefitsRequestData.setLongitud(String.valueOf(location.getLongitude()));
+                benefitsRequestData.setLongitud(state);
+                coppelServicesPresenter.getBenefits(benefitsRequestData, token);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
                /* getCityName(location, new OnGeocoderFinishedListener() {
                     @Override
                     public void onFinished(List<Address> results) {

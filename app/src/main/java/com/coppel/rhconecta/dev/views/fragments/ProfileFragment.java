@@ -289,7 +289,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
                             showErrorSavingImageDialog();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         showErrorSavingImageDialog();
                     }
                 }
@@ -302,11 +302,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case CAMERA_PERMISSIONS_REQUEST_CODE:
-                if (AppUtilities.validatePermissions(permissions.length, grantResults)) {
+                //if (AppUtilities.validatePermissions(permissions.length, grantResults)) {
                     openCamera();
-                } else {
-                    showErrorPermissionDialog();
-                }
+                //} else {
+                  //  showErrorPermissionDialog();
+                //}
                 break;
             case STORAGE_PERMISSIONS_REQUEST_CODE:
                 if (AppUtilities.validatePermissions(permissions.length, grantResults)) {

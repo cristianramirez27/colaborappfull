@@ -247,6 +247,7 @@ class ZendeskManager @Inject constructor(val context: Context) : ActionsModelCal
                 zendeskChatCallback.zendeskChatOutLine()
             }
             ZendeskStatus.WITH_NOTIFICATION -> {}
+            ZendeskStatus.DEFAULT -> TODO()
         }
         launchNotificationIfExist()
     }

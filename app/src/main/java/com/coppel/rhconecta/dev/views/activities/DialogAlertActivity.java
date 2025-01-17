@@ -88,7 +88,7 @@ public class DialogAlertActivity extends AppCompatActivity implements IServicesC
     private void requestAdvertising(BenefitsCompaniesResponse.Company company){
         String token = AppUtilities.getStringFromSharedPreferences(this,SHARED_PREFERENCES_TOKEN);
         BenefitsRequestData requestData = new BenefitsRequestData(BENEFITS_ADVERTISING,7);
-        requestData.setIdempresa(company.getServicios());
+        requestData.setIdempresa(String.valueOf(company.getServicios()));
         coppelServicesPresenter.getBenefits(requestData, token);
     }
 

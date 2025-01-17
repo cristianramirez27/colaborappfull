@@ -5,7 +5,7 @@ public class CoppelServicesValidateAditionalDaysHolidaysRequest extends CoppelSe
     public CoppelServicesValidateAditionalDaysHolidaysRequest() {
     }
 
-    public CoppelServicesValidateAditionalDaysHolidaysRequest(String num_empleado, int opcion) {
+    public CoppelServicesValidateAditionalDaysHolidaysRequest(int num_empleado, int opcion) {
         super(num_empleado, opcion);
     }
 

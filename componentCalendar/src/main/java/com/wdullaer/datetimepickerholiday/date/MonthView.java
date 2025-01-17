@@ -626,7 +626,7 @@ public abstract class MonthView extends View {
 
             // Catalan labels should be two digits in lowercase
             if (locale.getLanguage().equals("ca"))
-                dayLabel = dayName.toLowerCase().substring(0, 2);
+                dayLabel = dayName.toLowerCase(Locale.US).substring(0, 2);
 
             // Correct single character label in Spanish is X
             if (locale.getLanguage().equals("es") && day.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY)

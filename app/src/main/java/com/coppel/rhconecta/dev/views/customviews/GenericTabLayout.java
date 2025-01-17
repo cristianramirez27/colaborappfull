@@ -57,7 +57,7 @@ public class GenericTabLayout<T extends IEnumTab> extends TabLayout implements T
             this.layout = configurationParams.getResourceId(R.styleable.GenericTabLayout_tabLayout, R.layout.tab_main_menu);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             configurationParams.recycle();
         }

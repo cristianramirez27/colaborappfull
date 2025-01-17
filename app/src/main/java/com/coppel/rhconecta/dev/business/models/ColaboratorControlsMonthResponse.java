@@ -46,7 +46,7 @@ public class ColaboratorControlsMonthResponse extends ExpensesTravelBaseResponse
         private String control;
         private int estado;
         private int clv_estatus;
-        private String estatus;
+        private String estatus = "";
         private String fec_regreso;
         private String fec_salida;
         private String itinerario;

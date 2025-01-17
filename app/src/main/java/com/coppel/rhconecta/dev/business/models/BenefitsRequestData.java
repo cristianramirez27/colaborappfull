@@ -11,7 +11,7 @@ public class BenefitsRequestData implements Serializable {
     private String num_estado;
     private String num_ciudad;
     private String clave_servicio;
-    private int idempresa;
+    private String idempresa;
     private String des_busqueda;
 
     private String latitud;
@@ -43,7 +43,7 @@ public class BenefitsRequestData implements Serializable {
         this.clave_servicio = clave_servicio;
     }
 
-    public BenefitsRequestData(BenefitsType benefits_type,int solicitud, String num_estado, String num_ciudad, String clave_servicio, int idempresa) {
+    public BenefitsRequestData(BenefitsType benefits_type,int solicitud, String num_estado, String num_ciudad, String clave_servicio, String idempresa) {
         this.benefits_type = benefits_type;
         this.solicitud = solicitud;
         this.num_estado = num_estado;
@@ -85,11 +85,11 @@ public class BenefitsRequestData implements Serializable {
         this.clave_servicio = clave_servicio;
     }
 
-    public int getIdempresa() {
+    public String getIdempresa() {
         return idempresa;
     }
 
-    public void setIdempresa(int idempresa) {
+    public void setIdempresa(String idempresa) {
         this.idempresa = idempresa;
     }
 

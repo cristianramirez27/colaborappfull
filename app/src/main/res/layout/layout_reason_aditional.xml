@@ -3,114 +3,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="center"
+    android:background="@android:color/transparent"
     android:gravity="center"
-    android:background="@android:color/transparent">
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2.5"/>
+        android:layout_weight="2.5" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/background_dialog_white_rounded"
-        android:layout_marginRight="20dp"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_dialog_white_rounded">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="6dp"
             android:layout_margin="2dp"
-            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="8dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
                 android:paddingTop="12dp"
-                android:paddingBottom="10dp"
-                android:orientation="vertical">
+                android:paddingRight="12dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/title"
+                    style="@style/TextBold20Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    style="@style/TextBold20Coppel"
                     android:text="@string/title_reason_aditional_days"
-                    android:textColor="@color/colorSecondBlueCoppel"/>
+                    android:textColor="@color/colorSecondBlueCoppel" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_below="@+id/title"
                     android:id="@+id/rcvFields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/reason"
+                    android:layout_below="@+id/title"
+                    android:fadeScrollbars="true"
                     android:paddingBottom="10dp"
                     android:scrollbarFadeDuration="1"
-                    android:fadeScrollbars="true"
-                    android:scrollbars="vertical"
-                    android:layout_above="@+id/reason"
-                    android:scrollbarSize="0.5dp"/>
+                    android:scrollbarSize="0.5dp"
+                    android:scrollbars="vertical" />
 
                 <EditText
                     android:id="@+id/reason"
                     android:layout_width="match_parent"
+                    android:layout_height="96dp"
                     android:layout_above="@+id/layoutBtns"
                     android:layout_marginTop="8dp"
-                    android:gravity="top"
-                    android:padding="8dp"
-                    android:textSize="13sp"
-                    android:inputType="text"
-                    android:importantForAutofill="no"
-                    android:maxLength="200"
-                    android:imeOptions="actionNext"
-                    android:digits="abcdefghijklmnñopqrstuvwxyzáéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
                     android:background="@drawable/background_gray_rounded"
-                    android:layout_height="96dp" />
+                    android:digits="abcdefghijklmnñopqrstuvwxyzáéíóúABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
+                    android:gravity="top"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:longClickable="false"
+                    android:maxLength="200"
+                    android:padding="8dp"
+                    android:textSize="13sp" />
 
                 <LinearLayout
                     android:id="@+id/layoutBtns"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:orientation="horizontal"
                     android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
                     android:paddingTop="12dp"
-                    android:paddingBottom="10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_height="wrap_content">
+                    android:paddingRight="12dp"
+                    android:paddingBottom="10dp">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnActionLeft"
-                        android:layout_weight="1"
+                        style="@style/ButtonCoppel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:background="@drawable/background_blue_rounded"
                         android:text="@string/cancel"
                         android:textAllCaps="false"
-                        android:layout_marginRight="10dp"
-                        style="@style/ButtonCoppel"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
+                        android:textColor="@color/colorBackgroundCoppelBlanco" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnActionRight"
-                        android:layout_weight="1"
+                        style="@style/ButtonCoppel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         android:background="@drawable/backgroud_rounder_grey"
-                        style="@style/ButtonCoppel"
+                        android:enabled="false"
                         android:text="@string/btn_title_authorize"
                         android:textAllCaps="false"
-                        android:layout_marginLeft="10dp"
-                        android:enabled="false"
-                        android:textColor="@color/colorBackgroundCoppelBlanco"/>
+                        android:textColor="@color/colorBackgroundCoppelBlanco" />
 
                 </LinearLayout>
 
@@ -123,6 +124,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2.5"/>
+        android:layout_weight="2.5" />
 
 </LinearLayout>

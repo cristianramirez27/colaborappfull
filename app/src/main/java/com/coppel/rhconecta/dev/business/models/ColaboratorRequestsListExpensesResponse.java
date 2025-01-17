@@ -64,7 +64,7 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private String control;
         private int estado;
         private int clv_estatus;
-        private String estatus;
+        private String estatus = "";
         private String fec_regreso;
         private String fec_salida;
         private String des_color;
@@ -198,7 +198,7 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private int clv_estatus;
         private int clv_solicitud;
         private String des_motivo;
-        private String estatus;
+        private String estatus = "";
         private String des_color;
         private String des_colorletra;
         private String fecha;
@@ -219,11 +219,13 @@ public class ColaboratorRequestsListExpensesResponse extends ExpensesTravelBaseR
         private int tipo;
         private String des_solicitud;
         private String itinerario;
-        private String empalme;
+        private String empalme = "";
         private String nom_estatus;
 
         private int tipoSolicitud;
 
+        public RequestComplementsColaborator() {
+        }
 
         public String getDes_colorletra() {
             return des_colorletra;

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
     android:fillViewport="true"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.LoanSavingFundMainChildFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -27,15 +26,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewSearch"
-                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="2dp"
-                android:layout_marginLeft="2dp"
-                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
                 app:cardCornerRadius="1dp"
-                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+                app:cardElevation="8dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -47,7 +46,7 @@
                         android:layout_height="38dp"
                         android:layout_centerVertical="true"
                         android:padding="4dp"
-                        android:src="@drawable/icon_search"/>
+                        android:src="@drawable/icon_search" />
 
                     <EditText
                         android:id="@+id/edtSearch"
@@ -60,11 +59,12 @@
                         android:gravity="center_vertical"
                         android:hint="@string/hint_search_name_colaborator"
                         android:imeOptions="actionSearch"
-                        android:inputType="text"
                         android:importantForAutofill="no"
+                        android:inputType="text"
                         android:lines="1"
+                        android:longClickable="false"
                         android:textColor="@color/colorTextBlueCoppel"
-                        android:textColorHint="@color/colorTextBlueCoppel"/>
+                        android:textColorHint="@color/colorTextBlueCoppel" />
 
                 </RelativeLayout>
 
@@ -80,13 +80,13 @@
 
                 <TextView
                     android:id="@+id/tituloCentro"
+                    style="@style/TextBook12Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
-                    style="@style/TextBook12Coppel"
                     android:text="@string/select_center"
-                    android:textColor="@color/colorTextCoppelNegro"/>
+                    android:textColor="@color/colorTextCoppelNegro" />
 
                 <TextView
                     android:id="@+id/centro"
@@ -117,13 +117,13 @@
 
                 <TextView
                     android:id="@+id/tituloEstatus"
+                    style="@style/TextBook12Coppel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgVideoPreview"
                     android:gravity="center"
-                    style="@style/TextBook12Coppel"
                     android:text="@string/select_status"
-                    android:textColor="@color/colorTextCoppelNegro"/>
+                    android:textColor="@color/colorTextCoppelNegro" />
 
                 <TextView
                     android:id="@+id/estatus"
@@ -164,16 +164,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/txtNoControls"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lineto_circular_pro_medium"
-                    android:text="@string/empty_controls"
-                    android:textColor="@color/colorTextGrayDark"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/txtNoControls"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="@string/empty_controls"
+                        android:textColor="@color/colorTextGrayDark"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/layoutControles"
@@ -214,15 +214,15 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:layout_marginTop="20dp"
                     android:id="@+id/txtNoMeses"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/lineto_circular_pro_medium"
                     android:text="@string/empty_months"
                     android:textColor="@color/colorTextGrayDark"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/layoutMeses"

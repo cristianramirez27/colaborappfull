@@ -28,6 +28,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.GET_HOME_LOCAL;
+
 /**
  *
  */
@@ -51,7 +53,7 @@ public class PollRepositoryImpl implements PollRepository {
      */
     @Override
     public void getPoll(UseCase.OnResultFunction<Either<Failure, Poll>> callback) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        String employeeNum = basicUserInformationFacade.getEmployeeNum().toString();
         int clvOption = 1;
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetPollRequest request = new GetPollRequest(employeeNum, clvOption);
@@ -73,14 +75,14 @@ public class PollRepositoryImpl implements PollRepository {
                     GetPollResponse body = response.body();
                     assert body != null;
                     GetPollResponse.Response responseInstance = body.data.response;
-                    if(responseInstance.wasFailed())
+                    if (responseInstance.wasFailed())
                         callback.onResult(getNotPollAvailableFailure(responseInstance.mensaje));
                     else {
                         Poll poll = responseInstance.toPoll();
                         Either<Failure, Poll> result = new Either<Failure, Poll>().new Right(poll);
                         callback.onResult(result);
                     }
-                } catch (Exception exception){
+                } catch (Exception exception) {
                     callback.onResult(getNotPollAvailableFailure(exception.getMessage()));
                 }
             }
@@ -106,7 +108,7 @@ public class PollRepositoryImpl implements PollRepository {
         int clvOption = 2;
         String authHeader = basicUserInformationFacade.getAuthHeader();
         ArrayList<SendPollRequest.AnswerServer> answersServer = new ArrayList<>();
-        for(Question question : poll.getQuestions())
+        for (Question question : poll.getQuestions())
             answersServer.add(SendPollRequest.AnswerServer.fromQuestion(question));
         SendPollRequest request = new SendPollRequest(employeeNum, answersServer, clvOption);
         apiService
@@ -127,7 +129,7 @@ public class PollRepositoryImpl implements PollRepository {
                 SendPollResponse body = response.body();
                 assert body != null;
                 Either<Failure, UseCase.None> result;
-                if(body.meta.isSuccess())
+                if (body.meta.isSuccess())
                     result = new Either<Failure, UseCase.None>()
                             .new Right(UseCase.None.getInstance());
                 else {
@@ -152,13 +154,18 @@ public class PollRepositoryImpl implements PollRepository {
      */
     @Override
     public void getAvailablePollCount(UseCase.OnResultFunction<Either<Failure, Integer>> callback) {
-        long employeeNum = basicUserInformationFacade.getEmployeeNum();
+        String employeeNum = basicUserInformationFacade.getEmployeeNum().toString();
         int clvOption = 1;
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetAvailablePollCountRequest request = new GetAvailablePollCountRequest(employeeNum, clvOption);
+        String url = (ServicesConstants.GET_HOME == null || ServicesConstants.GET_HOME.isEmpty()) ? GET_HOME_LOCAL : ServicesConstants.GET_HOME;
         apiService.getAvailablePollCount(
                 authHeader,
-                ServicesConstants.GET_HOME,
+                "2024-03-25T17:38:35.244Z",
+                "-99.985171",
+                "20.270460",
+                "fs9999c7q86c33cdfd5f55",
+                url,
                 request
         ).enqueue(getAvailablePollCountResponseCallback(callback));
     }
@@ -178,7 +185,7 @@ public class PollRepositoryImpl implements PollRepository {
                     int availablePollCount = body.data.response.Badges.opc_encuesta;
                     Either<Failure, Integer> result = new Either<Failure, Integer>().new Right(availablePollCount);
                     callback.onResult(result);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Failure failure = new ServerFailure();
                     Either<Failure, Integer> result = new Either<Failure, Integer>().new Left(failure);
                     callback.onResult(result);

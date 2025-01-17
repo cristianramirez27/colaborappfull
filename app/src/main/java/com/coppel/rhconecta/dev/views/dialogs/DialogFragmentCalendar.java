@@ -129,7 +129,8 @@ public class DialogFragmentCalendar extends DialogFragment implements View.OnCli
     }
 
     private void showDialogDescriptionPeriod(DatePrima datePrima) {
-        if (datePrima.getDescriptionPeriod() !=null){
+        //if (datePrima.getDescriptionPeriod() !=null){
+        if (!datePrima.getDescriptionPeriod().isEmpty()){
             dialogFragmentGetDocument.setContentText(datePrima.getDescriptionPeriod());
             dialogFragmentGetDocument.show(getActivity().getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
         }

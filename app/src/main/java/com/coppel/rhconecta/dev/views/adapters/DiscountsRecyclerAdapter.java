@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.views.adapters;
 
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -13,8 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsDiscountsResponse;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 
 import java.util.List;
 
@@ -50,7 +55,18 @@ public class DiscountsRecyclerAdapter extends RecyclerView.Adapter<DiscountsRecy
         //viewHolder.checkboxElement.setEnabled(currentItem.getOpc_estatus() == 1 ? true : false);
         if(currentItem.getRuta() != null && !currentItem.getRuta().isEmpty()){
 
-            Glide.with(getApplicationContext()).load(currentItem.getRuta())
+            String authHeader = getStringFromSharedPreferences(
+                    context,
+                    AppConstants.SHARED_PREFERENCES_TOKEN
+            );
+
+            // Crear GlideUrl con el header
+            GlideUrl glideUrl = new GlideUrl(currentItem.getRuta(), new LazyHeaders.Builder()
+                    .addHeader("Authorization", authHeader)
+                    .build());
+
+            Glide.with(getApplicationContext())
+                    .load(glideUrl)
                     .diskCacheStrategy( DiskCacheStrategy.ALL )
                     .placeholder(R.drawable.placeholder_discount)
                     .into(viewHolder.imageBenefits);

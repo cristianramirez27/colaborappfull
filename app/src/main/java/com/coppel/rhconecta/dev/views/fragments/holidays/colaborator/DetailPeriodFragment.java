@@ -466,7 +466,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
     private void getDetailPeriod(){
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIOD_DETAIL, 4,numEmployer);
+        HolidayRequestData  holidayRequestData = new HolidayRequestData(GET_PERIOD_DETAIL, 4,Integer.parseInt(numEmployer));
         holidayRequestData.setIdu_folio(holidayPeriod.getIdu_folio());
         coppelServicesPresenter.getHolidays(holidayRequestData,token);
     }
@@ -513,7 +513,7 @@ public class DetailPeriodFragment extends Fragment implements  View.OnClickListe
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
         String numSuplente = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_SUPLENTE);
 
-        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_HOLIDAYS, 5,numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(CANCEL_HOLIDAYS, 5,Integer.parseInt(numEmployer));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setNum_suplente(Integer.parseInt(numSuplente));
         List<HolidayPeriodFolio> periodsToCancel = new ArrayList<>();

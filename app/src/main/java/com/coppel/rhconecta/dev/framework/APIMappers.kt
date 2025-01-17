@@ -24,5 +24,5 @@ fun Response.toMovementsDomainList(): List<Movement> = dataList.map {
 /**
  * User for help desk service (Zendesk)
  */
-fun List<HelpDeskAvailabilityServer>.toHelpDeskAvailabilityDomain(): HelpDeskAvailability =
+fun List<HelpDeskAvailabilityServer>.toHelpDeskAvailabilityDomain(): HelpDeskAvailability? =
     this.first()?.let { HelpDeskAvailability(it.mensaje, it.fecha, it.fechaHora, it.horas) }

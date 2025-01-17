@@ -1,5 +1,10 @@
 package com.coppel.rhconecta.dev.data.analytics;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SECTION_TIME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VACANCIES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.NO;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+
 import androidx.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.CoppelApp;
@@ -16,6 +21,7 @@ import com.coppel.rhconecta.dev.domain.common.Either;
 import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import javax.inject.Inject;
@@ -75,13 +81,16 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
         );
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
-        AnalyticsApiService apiService = getAnalyticsApiService();
-        if (apiService != null) {
-            apiService
-                    .sendTimeByAnalyticsFlow(authHeader, url, request)
-                    .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+        if(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)){
+            String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
+            AnalyticsApiService apiService = getAnalyticsApiService();
+            if (apiService != null) {
+                apiService
+                        .sendTimeByAnalyticsFlow(authHeader, url, request)
+                        .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+            }
         }
+
     }
 
     private void saveToCrashLitics(String someInfo , Exception e){
@@ -162,21 +171,22 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                 new SendVisitSectionRequest(employeeNum, clvSistema, clvAcceso);
         String authHeader = basicUserInformationFacade.getAuthHeader();
         String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
+        if(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)){
+            AnalyticsApiService apiService = getAnalyticsApiService();
+            if (apiService != null) {
+                try {
+                    apiService.sendVisitSection(authHeader, url, request)
+                            .enqueue(new Callback<SendVisitSectionResponse>() {
+                                @Override
+                                public void onResponse(Call<SendVisitSectionResponse> call, Response<SendVisitSectionResponse> response) {
+                                }
 
-        AnalyticsApiService apiService = getAnalyticsApiService();
-        if (apiService != null) {
-            try {
-                apiService.sendVisitSection(authHeader, url, request)
-                        .enqueue(new Callback<SendVisitSectionResponse>() {
-                            @Override
-                            public void onResponse(Call<SendVisitSectionResponse> call, Response<SendVisitSectionResponse> response) {
-                            }
-
-                            @Override
-                            public void onFailure(Call<SendVisitSectionResponse> call, Throwable t) {
-                            }
-                        });
-            } catch (Exception ignore) {
+                                @Override
+                                public void onFailure(Call<SendVisitSectionResponse> call, Throwable t) {
+                                }
+                            });
+                } catch (Exception ignore) {
+                }
             }
         }
     }

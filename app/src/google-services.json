@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "486430510957",
+    "project_id": "cpl-corp-cappfb-dev-16072024",
+    "storage_bucket": "cpl-corp-cappfb-dev-16072024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486430510957:android:ab139f8ab49a367fda9464",
+        "android_client_info": {
+          "package_name": "com.coppel.rhconecta.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuuwDhuft8qziksZ7rJNOnY2-1R9XOL7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

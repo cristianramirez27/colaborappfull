@@ -11,7 +11,7 @@ public class AditionalTraveller implements Serializable {
         private String nom_centro;
         private int num_puesto;
         private String nom_puesto;
-        private String empalme;
+        private String empalme = "";
 
     public int getTotal_viajeros() {
         return total_viajeros;

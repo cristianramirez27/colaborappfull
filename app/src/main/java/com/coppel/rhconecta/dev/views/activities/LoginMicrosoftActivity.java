@@ -2,22 +2,26 @@ package com.coppel.rhconecta.dev.views.activities;
 
 import static com.coppel.rhconecta.dev.CoppelApp.getContext;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNLDE_PROFILE_RESPONSE;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
@@ -43,14 +47,14 @@ import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IAuthenticationResult;
 import com.microsoft.identity.client.IPublicClientApplication;
 import com.microsoft.identity.client.ISingleAccountPublicClientApplication;
+import com.microsoft.identity.client.Prompt;
 import com.microsoft.identity.client.PublicClientApplication;
+import com.microsoft.identity.client.SignInParameters;
 import com.microsoft.identity.client.exception.MsalClientException;
 import com.microsoft.identity.client.exception.MsalException;
 import com.microsoft.identity.client.exception.MsalServiceException;
 
-
-import org.json.JSONObject;
-
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -62,31 +66,33 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
     private ISingleAccountPublicClientApplication mSingleAccountApp;
     private IAccount mAccount;
     private Button btnLogIn;
-    private Button btnLogOut;
-    //private ImageView btnLogIn;
     private CoppelServicesPresenter coppelServicesPresenter;
     private DialogFragmentLoader dialogFragmentLoader;
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private DialogFragmentWarning dialogFragmentWarning;
     private boolean finishApp = false;
-    private IServicesContract.View view;
 
-    TextView txvJoin;
-
-    String[] scopes = {"user.read"};
+    //Inicializa el lanzador de permisos
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // El permiso fue concedido, puedes enviar notificaciones
+                } else {
+                    // El permiso fue denegado, maneja este caso
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_microsoft);
         btnLogIn = findViewById(R.id.btnLogInMicrosoft);
-        txvJoin = findViewById(R.id.txvJoin);
         //View includedLayout = findViewById(R.id.iLogin);
         //includedLayout.setElevation(30f);
 
         coppelServicesPresenter = new CoppelServicesPresenter(this, this);
-
+        //Toast.makeText(this, "Inicio", Toast.LENGTH_SHORT).show();
         initializeUI();
         PublicClientApplication.createSingleAccountPublicClientApplication(getContext(),
                 R.raw.auth_config_single_account,
@@ -97,62 +103,53 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                         //mSingleAccountApp.signIn(this, null, getScopes(), getAuthInteractiveCallback());
                         mSingleAccountApp = application;
                         Log.i("prueba", "onCreated: " + mSingleAccountApp);
-                      //  Toast.makeText(LoginMicrosoftActivity.this, "onCreated: " + mSingleAccountApp, Toast.LENGTH_SHORT).show();
                         loadAccount();
                     }
 
                     @Override
                     public void onError(MsalException exception) {
-                        //Toast.makeText(LoginMicrosoftActivity.this, "onError " + exception, Toast.LENGTH_SHORT).show();
                         Log.i("prueba", "exception:  " + exception);
                     }
                 });
 
-        txvJoin.setOnClickListener(v -> coppelServicesPresenter.requestRecoveryPassword(24));
         initRemoteConfig();
+        requestNotificationPermission();
 
     }
 
     private void initializeUI() {
 
-        //btnLogIn = view.findViewById(R.id.btnLogIn);
-        Log.i("prueba", "CLICK CLICK");
+        btnLogIn = findViewById(R.id.btnLogInMicrosoft);
         final String defaultGraphResourceUrl = MSGraphRequestWrapper.MS_GRAPH_ROOT_ENDPOINT + "v1.0/me";
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.i("prueba", "CLick btn login");
-                if (mSingleAccountApp == null) {
-                    Log.i("prueba", "onClick");
-                    return;
-                }
-
-                mSingleAccountApp.signIn(LoginMicrosoftActivity.this, null, getScopes(), getAuthInteractiveCallback());
+        btnLogIn.setOnClickListener(v -> {
+            if (mSingleAccountApp == null) {
+                Log.i("prueba", "mSingleAccountApp = null");
+                return;
             }
+
+            //mSingleAccountApp.signIn(LoginMicrosoftActivity.this, null, getScopes(), getAuthInteractiveCallback());
+            // Crea un nuevo objeto SignInParameters
+            SignInParameters.SignInParametersBuilder builder = SignInParameters.builder();
+
+            // Set the activity, login hint, and scopes
+            builder.withActivity(LoginMicrosoftActivity.this)
+                    .withLoginHint(null) // Optional login hint
+                    .withScopes(Arrays.asList(getScopes())); // Define your list of scopes
+
+            // Optionally set the prompt and authentication callback
+            builder.withPrompt(Prompt.LOGIN);
+            builder.withCallback(getAuthInteractiveCallback());
+            // Finally build the parameters object
+            SignInParameters parameters = builder.build();
+
+            // Use the parameters with your sign-in call
+            mSingleAccountApp.signIn(parameters);
         });
-
-        /*btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("prueba", "CLICK cerrar sesion");
-                mSingleAccountApp.signOut(new ISingleAccountPublicClientApplication.SignOutCallback() {
-                    @Override
-                    public void onSignOut() {
-                        Toast.makeText(getContext(), "Signed Out.", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void onError(@NonNull MsalException exception) {
-                        Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
-            }
-        });*/
     }
 
     private String[] getScopes() {
-        return "user.read".toLowerCase().split(" ");
+        return new String[]{"api://cf0329c2-18ca-4323-bdc7-08201aa76947/qaapicolaborapp"};
+        //return new String[]{"api://ff21d906-4f4e-4cfd-b8aa-32cfa8be5307/apicolaborapp"};
     }
 
     private void loadAccount() {
@@ -191,6 +188,7 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
 
             @Override
             public void onSuccess(IAuthenticationResult authenticationResult) {
+                Log.i("token", authenticationResult.getAccessToken());
                 /* Successfully got a token, use it to call a protected resource - MSGraph */
                 Log.d("SingleAccountModeFrag", "Successfully authenticated");
                 Log.d("SingleAccountModeFrag", "ID Token: " + authenticationResult.getAccount().getClaims().get("id_token"));
@@ -201,8 +199,11 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                 mAccount = authenticationResult.getAccount();
                 //updateUI();
 
+                coppelServicesPresenter.requestProfileLogin("", "", "Bearer " + authenticationResult.getAccessToken());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, "Bearer " + authenticationResult.getAccessToken());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, "Bearer " + authenticationResult.getAccessToken());
+
                 /* call graph */
-                callGraphAPI(authenticationResult);
             }
 
             @Override
@@ -220,7 +221,23 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                             return;
                         }
 
-                        mSingleAccountApp.signIn(LoginMicrosoftActivity.this, null, getScopes(), getAuthInteractiveCallback());
+                        //mSingleAccountApp.signIn(LoginMicrosoftActivity.this, null, getScopes(), getAuthInteractiveCallback());
+                        // Crea un nuevo objeto SignInParameters
+                        SignInParameters.SignInParametersBuilder builder = SignInParameters.builder();
+
+                        // Set the activity, login hint, and scopes
+                        builder.withActivity(LoginMicrosoftActivity.this)
+                                .withLoginHint(null) // Optional login hint
+                                .withScopes(Arrays.asList(getScopes())); // Define your list of scopes
+
+                        // Optionally set the prompt and authentication callback
+                        builder.withPrompt(Prompt.LOGIN);
+                        builder.withCallback(getAuthInteractiveCallback());
+                        // Finally build the parameters object
+                        SignInParameters parameters = builder.build();
+
+                        // Use the parameters with your sign-in call
+                        mSingleAccountApp.signIn(parameters);
                     }
 
                     @Override
@@ -248,7 +265,7 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
     }
 
     private void callGraphAPI(final IAuthenticationResult authenticationResult) {
-        MSGraphRequestWrapper.callGraphAPIUsingVolley(
+        /*MSGraphRequestWrapper.callGraphAPIUsingVolley(
                 getContext(),
                 "https://graph.microsoft.com/v1.0/me?$select=employeeId,mail",
                 authenticationResult.getAccessToken(),
@@ -256,7 +273,7 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                     @Override
                     public void onResponse(JSONObject response) {
                         /* Successfully called graph, process data and send to UI */
-                        Log.i("prueba", "Response json : " + response.toString());
+                        /*Log.i("prueba", "Response json : " + response.toString());
 
                         Log.i("prueba", "Numero de empleado : " + response.optString("employeeId", ""));
                         String employeeId = response.optString("employeeId", "");
@@ -275,7 +292,13 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
                         Log.d(TAG, "Error: " + error.toString());
                         //displayError(error);
                     }
-                });
+                });*/
+
+        /*coppelServicesPresenter.requestProfileLogin("90175752", "", "Bearer " + authenticationResult.getAccessToken());
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, "Bearer " + authenticationResult.getAccessToken());
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, "Bearer " + authenticationResult.getAccessToken());*/
+
+
     }
 
     @Override
@@ -284,22 +307,24 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
         LoginResponse loginResponse = new LoginResponse();
 
         ProfileResponse.Response profile = profileResponse.getData().getResponse()[0];
-        loginResponse.getData().getResponse().setToken(profile.getToken());
+        /*loginResponse.getData().getResponse().setToken(profile.getToken());
         loginResponse.getData().getResponse().setToken_user(profile.getToken());
-        loginResponse.getData().getResponse().setCliente(profile.getColaborador());
+        loginResponse.getData().getResponse().setCliente(profile.getColaborador());*/
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profile));
         AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FILIAL, profile.getEsFilial() == 1);
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, profile.getCorreo());
-        //AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
         AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, profile.getToken());
-        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, profile.getToken());
+        //AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, profile.getToken());
+        //AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, profile.getToken());
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE, new Gson().toJson(loginResponse));
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profile.getColaborador());
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR, String.valueOf(profile.getEstado()));
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profile.getCiudad()));
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profile.getGte()));
         AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE, String.valueOf(profile.getSuplente()));
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CENTRO, String.valueOf(profile.getCentro()));
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_REGION, String.valueOf(profile.getRegion()));
+        AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_SECTION, String.valueOf(profile.getSeccion()));
 
         /* Almacenamos la fecha en la que se inicio sesion */
         Date currentTime = Calendar.getInstance().getTime();
@@ -310,16 +335,16 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
         AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE, profile.getEsSuplente() == 1);
         ShareUtil.toSaveMainSection(profile.getSeccionesApp());
 
-        Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
-                .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
-                .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
-                .build();
 
+        Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
+                .putSerializableExtra(BUNLDE_PROFILE_RESPONSE, profileResponse)
+                .build();
         dialogFragmentLoader.close();
         startActivity(intent);
         finish();
 
     }
+
 
     @Override
     public void showError(ServicesError coppelServicesError) {
@@ -397,6 +422,23 @@ public class LoginMicrosoftActivity extends AppCompatActivity implements IServic
             public void onFail(String result) {
             }
         });
+    }
+
+    private void requestNotificationPermission() {
+        // Verifica si el permiso ha sido otorgado
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // El permiso ya está concedido, puedes enviar notificaciones
+            } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+                // Muestra una explicación al usuario y luego solicita el permiso
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            } else {
+                // Solicita el permiso directamente
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                Toast.makeText(this, getString(R.string.default_permission_notification), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

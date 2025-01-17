@@ -195,8 +195,13 @@ public class RefuseReasonFragment extends Fragment implements  View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.detailExpenseTravelData = (DetailExpenseTravelData)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
-        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+        try {
+            this.detailExpenseTravelData = (DetailExpenseTravelData)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
+            coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 

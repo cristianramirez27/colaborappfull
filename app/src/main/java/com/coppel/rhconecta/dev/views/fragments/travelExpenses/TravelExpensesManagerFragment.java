@@ -5,11 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +48,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CONTROLS_
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TravelExpensesManagerFragment extends Fragment implements  View.OnClickListener,IconsMenuRecyclerAdapter.OnItemClick{
+public class TravelExpensesManagerFragment extends Fragment implements View.OnClickListener, IconsMenuRecyclerAdapter.OnItemClick {
 
     public static final String TAG = TravelExpensesManagerFragment.class.getSimpleName();
     private GastosViajeActivity parent;
@@ -58,11 +63,12 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
     private OnEventListener OnEventListener;
 
     private long mLastClickTime = 0;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        OnEventListener = (OnEventListener)getActivity();
+        OnEventListener = (OnEventListener) getActivity();
     }
 
     @Override
@@ -87,6 +93,19 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
 
+        /*requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                Log.i("BackStackCount", "Count: " + fragmentManager.getBackStackEntryCount());
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    fragmentManager.popBackStack(); // Vuelve al fragment anterior
+                } else {
+                    requireActivity().finish(); // Cierra la actividad si no hay más fragments en la pila
+                }
+            }
+        });*/
+
         return view;
     }
 
@@ -94,7 +113,7 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
     @Override
     public void onItemClick(String tag) {
 
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
@@ -136,18 +155,18 @@ public class TravelExpensesManagerFragment extends Fragment implements  View.OnC
     @Override
     public void onClick(View view) {
 
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 1200){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1200) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
         switch (view.getId()) {
             case R.id.btnAuthorize:
-                OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST,null);
+                OnEventListener.onEvent(OPTION_AUTHORIZE_REQUEST, null);
                 break;
 
             case R.id.btnControls:
-                OnEventListener.onEvent(OPTION_CONSULT_CONTROLS,null);
+                OnEventListener.onEvent(OPTION_CONSULT_CONTROLS, null);
                 break;
 
         }

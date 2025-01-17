@@ -83,7 +83,7 @@ public class ImageLoaderUtil {
                 .into(ivImg);
     }
 
-    public static byte[] getBytesFromFileByPath(String path) {
+    /*public static byte[] getBytesFromFileByPath(String path) {
         File file = new File(path);
         int size = (int) file.length();
         byte[] bytes = new byte[size];
@@ -94,16 +94,16 @@ public class ImageLoaderUtil {
             buf.close();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            //e.printStackTrace();
             bytes = null;
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            //e.printStackTrace();
             bytes = null;
         }
 
         return bytes;
-    }
+    }*/
 
 
     public static byte[] extractBytesFromImageView(ImageView imageView) {
@@ -140,7 +140,7 @@ public class ImageLoaderUtil {
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                     bitmap.getHeight(), matrix, true); // rotating bitmap
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return bitmap;
     }
@@ -175,9 +175,9 @@ public class ImageLoaderUtil {
                     .decodeFileDescriptor(fileDescriptor.getFileDescriptor(), null, options);
             fileDescriptor.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return actuallyUsableBitmap;
@@ -195,7 +195,7 @@ public class ImageLoaderUtil {
     }
     */
 
-    public static byte[] getBytesFromFile(String someFileName) {
+    /*public static byte[] getBytesFromFile(String someFileName) {
 
         File file = new File(someFileName);
         byte[] bFile = null;
@@ -211,13 +211,13 @@ public class ImageLoaderUtil {
                     System.out.print((char) bFile[i]);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
 
         return bFile;
-    }
+    }*/
 
 
 }

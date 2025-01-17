@@ -15,6 +15,10 @@ interface FingerprintApiService {
     @POST
     suspend fun haveFingerprints(
             @Header("Authorization") authHeader: String,
+            @Header("X-Coppel-Date-Request") dateRequest: String ,
+            @Header("X-Coppel-Latitude") latitude: String,
+            @Header("X-Coppel-Longitude") longitude: String ,
+            @Header("X-Coppel-TransactionId")transactionId:  String,
             @Url url: String,
             @Body request: HaveFingerprintsRequest
     ): Response<HaveFingerprintsHttpResponse>
@@ -24,6 +28,10 @@ interface FingerprintApiService {
     @POST
     suspend fun getFingerprints(
             @Header("Authorization") authHeader: String,
+            @Header("X-Coppel-Date-Request") dateRequest: String ,
+            @Header("X-Coppel-Latitude") latitude: String,
+            @Header("X-Coppel-Longitude") longitude: String ,
+            @Header("X-Coppel-TransactionId")transactionId:  String,
             @Url url: String,
             @Body request: GetFingerprintsRequest
     ): Response<GetFingerprintsHttpResponse>

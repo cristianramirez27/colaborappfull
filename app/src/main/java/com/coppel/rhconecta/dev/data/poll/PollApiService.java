@@ -16,12 +16,10 @@ import retrofit2.http.Url;
 
 /**
  *
- *
  */
 public interface PollApiService {
 
     /**
-     *
      *
      */
     @Headers("Content-Type: application/json")
@@ -34,7 +32,6 @@ public interface PollApiService {
 
     /**
      *
-     *
      */
     @Headers("Content-Type: application/json")
     @POST
@@ -46,12 +43,15 @@ public interface PollApiService {
 
     /**
      *
-     *
      */
     @Headers("Content-Type: application/json")
     @POST
     Call<GetAvailablePollCountResponse> getAvailablePollCount(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetAvailablePollCountRequest request
     );

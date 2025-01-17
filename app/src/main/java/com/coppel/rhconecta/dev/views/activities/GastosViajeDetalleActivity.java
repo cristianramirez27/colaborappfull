@@ -1,6 +1,9 @@
 package com.coppel.rhconecta.dev.views.activities;
 
 import android.os.Bundle;
+import android.util.Log;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -57,6 +60,14 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
         childFragmentManager = getSupportFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT,data);
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Aquí manejas el evento de retroceso.
+
+                    finish(); // Finaliza la actividad.
+                }
+        });
     }
 
     public void setToolbarTitle(String title) {
@@ -65,8 +76,6 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
 
     public void onEvent(String tag,Object data) {
         switch (tag) {
-
-
             case OPTION_MORE_DETAIL_REQUEST:
                 replaceFragment( DetailRequestComplementFragment.getInstance((ImportsList)data), DetailControlFragment.TAG);
                 break;
@@ -80,9 +89,10 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
                 break;
 
             case OPTION_REFUSE_REQUEST:
-                currentFragment = RefuseReasonFragment.getInstance((DetailExpenseTravelData)data );
-                replaceFragment(currentFragment, RefuseReasonFragment.TAG);
-                break;
+
+                    currentFragment = RefuseReasonFragment.getInstance((DetailExpenseTravelData)data );
+                    replaceFragment(currentFragment, RefuseReasonFragment.TAG);
+                    break;
 
             case OPTION_EDIT_AMOUNTS:
                 replaceFragment(EditImportsFragment.getInstance((ImportsList)data), EditImportsFragment.TAG);
@@ -91,9 +101,15 @@ public class GastosViajeDetalleActivity extends AppCompatActivity  {
     }
 
     public void replaceFragment(Fragment fragment, String tag) {
-        fragmentTransaction = childFragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(tag);
-        fragmentTransaction.replace(R.id.contentFragment, fragment, tag).commit();
+        try {
+            fragmentTransaction = childFragmentManager.beginTransaction();
+            fragmentTransaction.addToBackStack(tag);
+            fragmentTransaction.replace(R.id.contentFragment, fragment, tag).commit();
+        }catch (Exception e){
+            Log.i("prueba",e.toString());
+            Log.i("prueba",e.toString());
+        }
+
     }
 
 

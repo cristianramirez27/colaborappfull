@@ -2,8 +2,8 @@ package com.coppel.rhconecta.dev.business.models;
 
 public class CoppelServicesGetPeriodsHolidaysColaboratorsRequest extends CoppelServicesBaseHolidaysRequest {
 
-    private String num_gerente;
-    private String num_empconsulta;
+    private int num_gerente;
+    private int num_empconsulta;
     private String fec_ini;
     private String fec_fin;
 
@@ -11,7 +11,7 @@ public class CoppelServicesGetPeriodsHolidaysColaboratorsRequest extends CoppelS
     private int num_anio;
     private int tipo_consulta;
 
-    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(int opcion, String num_gerente, String num_empconsulta, String fec_ini, String fec_fin) {
+    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(int opcion, int num_gerente, int num_empconsulta, String fec_ini, String fec_fin) {
         super(opcion);
         this.num_gerente = num_gerente;
         this.num_empconsulta = num_empconsulta;
@@ -22,29 +22,29 @@ public class CoppelServicesGetPeriodsHolidaysColaboratorsRequest extends CoppelS
     public CoppelServicesGetPeriodsHolidaysColaboratorsRequest() {
     }
 
-    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(String num_gerente) {
+    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(int num_gerente) {
         this.num_gerente = num_gerente;
     }
 
-    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(int opcion, String num_gerente) {
+    public CoppelServicesGetPeriodsHolidaysColaboratorsRequest(int opcion, int num_gerente) {
         super( opcion);
         this.num_gerente = num_gerente;
     }
 
 
-    public String getNum_gerente() {
+    public int getNum_gerente() {
         return num_gerente;
     }
 
-    public void setNum_gerente(String num_gerente) {
+    public void setNum_gerente(int num_gerente) {
         this.num_gerente = num_gerente;
     }
 
-    public String getNum_empconsulta() {
+    public int getNum_empconsulta() {
         return num_empconsulta;
     }
 
-    public void setNum_empconsulta(String num_empconsulta) {
+    public void setNum_empconsulta(int num_empconsulta) {
         this.num_empconsulta = num_empconsulta;
     }
 

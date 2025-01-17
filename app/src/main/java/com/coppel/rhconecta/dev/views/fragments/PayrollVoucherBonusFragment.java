@@ -3,6 +3,7 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
@@ -295,9 +296,13 @@ public class PayrollVoucherBonusFragment extends PayrollVoucherDetailFragment im
     }
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+            } else {
+                requestBonusVoucherDetail(bonusDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
+            }
         } else {
             requestBonusVoucherDetail(bonusDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
         }
@@ -312,6 +317,6 @@ public class PayrollVoucherBonusFragment extends PayrollVoucherDetailFragment im
                 TextUtilities.dateFormatter(bonusDate.sfechanomina,
                         AppConstants.DATE_FORMAT_DD_MM_YYYY_MIDDLE,
                         AppConstants.DATE_FORMAT_YYYY_MM_DD_MIDDLE),
-                new CoppelServicesPayrollVoucherDetailRequest.Datos(), parent.getLoginResponse().getToken());
+                new CoppelServicesPayrollVoucherDetailRequest.Datos(), AppUtilities.getAuthHeader(requireActivity()));
     }
 }

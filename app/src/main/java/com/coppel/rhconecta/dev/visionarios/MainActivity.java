@@ -22,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
                         msg = "Error al registrar";
                     }
                 });
+        FirebaseMessaging.getInstance().subscribeToTopic("android")
+                .addOnCompleteListener(task -> {
+                    String msg = "Registrado";
+                    if (!task.isSuccessful()) {
+                        msg = "Error al registrar";
+                    }
+                });
     }
 
 }

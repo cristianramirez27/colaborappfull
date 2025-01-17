@@ -13,6 +13,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
 import static com.coppel.rhconecta.dev.views.fragments.LoanSavingFundMainChildFragment.REQUEST_SAVING;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_SAVINFOUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_TYPE_SAVING_OPTION;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_TOKEN;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.ISelectedOption;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
+import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
@@ -114,7 +116,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         parent.setToolbarTitle(getString(R.string.loan_saving_fund));
         coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
         coppelServicesPresenter.requestLoansSavingFund(parent.getProfileResponse().getColaborador(),
-                parent.getLoginResponse().getToken());
+                AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN));
         childFragmentManager = getChildFragmentManager();
         fragmentTransaction = childFragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(LoanSavingFundMainChildFragment.TAG);
@@ -188,7 +190,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
                     }
 
                 }catch (Exception e){
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
 
 
@@ -240,7 +242,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         switch (view.getId()) {
             case R.id.imgvRefresh:
                 coppelServicesPresenter.requestLoansSavingFund(parent.getProfileResponse().getColaborador(),
-                        parent.getLoginResponse().getToken());
+                        AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN));
                 break;
         }
     }
@@ -253,7 +255,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         /**Actualizamos la informacion */
        // if(requestCode == REQUEST_SAVING && requestCode == RESULT_OK){
             coppelServicesPresenter.requestLoansSavingFund(parent.getProfileResponse().getColaborador(),
-                    parent.getLoginResponse().getToken());
+                    AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN));
         //}
 
     }

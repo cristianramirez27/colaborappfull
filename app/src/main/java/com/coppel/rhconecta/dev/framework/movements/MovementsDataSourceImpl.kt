@@ -28,11 +28,17 @@ class MovementsDataSourceImpl(
         try {
             val authHeader: String = getAuthHeader()
             val request = GetMovementsRequest(getEmployeeNumber())
-            val url = ServicesConstants.GET_MY_MOVEMENTS
+            //val url = ServicesConstants.GET_MY_MOVEMENTS
+            val url =
+                if ((ServicesConstants.GET_MY_MOVEMENTS == null || ServicesConstants.GET_MY_MOVEMENTS.isEmpty())) ServicesConstants.GET_MYMOVEMENTS_LOCAL else ServicesConstants.GET_MY_MOVEMENTS
             retrofitApiCall {
                 movementsApiService.getMovements(
                     url,
                     authHeader,
+                    "2024-03-25T17:38:35.244Z",
+                    "-99.985171",
+                    "20.270460",
+                    "fs9999c7q86c33cdfd5f55",
                     request
                 )
             }.let {

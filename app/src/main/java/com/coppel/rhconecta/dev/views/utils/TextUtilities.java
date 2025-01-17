@@ -51,7 +51,7 @@ public class TextUtilities {
             }
             return capitalizedText.toString().trim();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return "";
         }
     }
@@ -70,10 +70,10 @@ public class TextUtilities {
             if (Arrays.asList(uppercaseWords).contains(word)) {
                 return word.toUpperCase();
             } else {
-                return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+                    return word.substring(0, 1).toUpperCase(Locale.getDefault()) + word.substring(1).toLowerCase(Locale.getDefault());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return "";
         }
     }
@@ -103,7 +103,7 @@ public class TextUtilities {
             }
             return s;
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return number;
         }
     }
@@ -114,7 +114,7 @@ public class TextUtilities {
             stringBuilder.insert(number.length() - 2, '.');
             return stringBuilder.toString();
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return number;
         }
     }
@@ -150,7 +150,7 @@ public class TextUtilities {
             Date tempDate = inSimpleDateFormat.parse(date);
             return outSimpleDateFormat.format(tempDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return date;
         }
     }
@@ -163,7 +163,7 @@ public class TextUtilities {
 
             return String.format("%s de %s",day,months[Integer.parseInt(dateParts[1])-1]);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return "";
         }
     }
@@ -230,7 +230,7 @@ public class TextUtilities {
             mTxtTitle.append(wordTwo);
             // mTxtTitle.setText(sbuilder);
         }catch (Exception e){
-            e.printStackTrace();
+           //e.printStackTrace();
         }
     }
 

@@ -8,9 +8,10 @@ import com.coppel.rhconecta.dev.framework.movements.MovementsDataSourceImpl
 import com.coppel.rhconecta.dev.presentation.fondoahorro.movements.MovementsViewModel
 import com.coppel.rhconecta.dev.usecases.movements.GetMovementsUseCase
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.ext.koin.viewModel
-import org.koin.dsl.module.Module
-import org.koin.dsl.module.module
+import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.core.module.Module
+import org.koin.dsl.module
+
 
 val movementsModule: Module = module {
 

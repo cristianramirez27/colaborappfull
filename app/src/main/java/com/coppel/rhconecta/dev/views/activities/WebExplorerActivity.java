@@ -109,7 +109,7 @@ public class WebExplorerActivity extends AppCompatActivity implements View.OnCli
         // Disable the javascript because can introduce XSS vulnerabilities
         mWebView.getSettings().setJavaScriptEnabled(false);
         url = IntentExtension.getStringExtra(getIntent(), KEY_URL);
-        mWebView.loadUrl(IntentExtension.getStringExtra(getIntent(), KEY_URL));
+        //mWebView.loadUrl(IntentExtension.getStringExtra(getIntent(), KEY_URL));
     }
 
     @Override

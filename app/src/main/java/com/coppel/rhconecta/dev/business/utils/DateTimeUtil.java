@@ -123,7 +123,7 @@ public class DateTimeUtil {
             date = sdf.parse(dateAsString);
 
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return date;
@@ -137,7 +137,7 @@ public class DateTimeUtil {
             date = format.parse(time);
             calendar.setTime(date);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         String curTime = String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));

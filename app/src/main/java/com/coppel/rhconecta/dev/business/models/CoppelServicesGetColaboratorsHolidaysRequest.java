@@ -2,7 +2,7 @@ package com.coppel.rhconecta.dev.business.models;
 
 public class CoppelServicesGetColaboratorsHolidaysRequest extends CoppelServicesBaseHolidaysRequest {
 
-    private String num_gerente;
+    private int num_gerente;
     private int num_centro;
     private String nom_empleado;
     private int clv_estatus;
@@ -10,21 +10,21 @@ public class CoppelServicesGetColaboratorsHolidaysRequest extends CoppelServices
     public CoppelServicesGetColaboratorsHolidaysRequest() {
     }
 
-    public CoppelServicesGetColaboratorsHolidaysRequest(String num_gerente) {
+    public CoppelServicesGetColaboratorsHolidaysRequest(int num_gerente) {
         this.num_gerente = num_gerente;
     }
 
-    public CoppelServicesGetColaboratorsHolidaysRequest(int opcion, String num_gerente) {
+    public CoppelServicesGetColaboratorsHolidaysRequest(int opcion, int num_gerente) {
         super( opcion);
         this.num_gerente = num_gerente;
     }
 
 
-    public String getNum_gerente() {
+    public int getNum_gerente() {
         return num_gerente;
     }
 
-    public void setNum_gerente(String num_gerente) {
+    public void setNum_gerente(int num_gerente) {
         this.num_gerente = num_gerente;
     }
 

@@ -195,9 +195,9 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
     private void getHolidayBonusGeneric(HolidaysType holidaysType, int option, String dateSelected) {
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
-        HolidayRequestData holidayRequestData = new HolidayRequestData(holidaysType, option, numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(holidaysType, option, Integer.parseInt(numEmployer));
         if (dateSelected != null) {
-            holidayRequestData.setNum_empconsulta(dateSelected);
+            holidayRequestData.setNum_empconsulta(Integer.parseInt(dateSelected));
         }
         coppelServicesPresenter.getHolidays(holidayRequestData, token);
     }
@@ -612,7 +612,7 @@ public class ColaboratorHolidaysScheduleFragment extends Fragment implements  Vi
         String numGte = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_GTE);
         String numSuplente = AppUtilities.getStringFromSharedPreferences(getActivity(),SHARED_PREFERENCES_NUM_SUPLENTE);
 
-        HolidayRequestData holidayRequestData = new HolidayRequestData(SEND_HOLIDAY_REQUEST, 3,numEmployer);
+        HolidayRequestData holidayRequestData = new HolidayRequestData(SEND_HOLIDAY_REQUEST, 3,Integer.parseInt(numEmployer));
         holidayRequestData.setNum_gerente(Integer.parseInt(numGte));
         holidayRequestData.setNum_suplente(Integer.parseInt(numSuplente));
         List<HolidayPeriodData> periodsToSend = new ArrayList<>();

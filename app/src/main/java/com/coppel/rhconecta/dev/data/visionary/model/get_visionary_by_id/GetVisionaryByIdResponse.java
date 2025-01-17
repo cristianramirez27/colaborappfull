@@ -47,7 +47,8 @@ public class GetVisionaryByIdResponse {
         /* */
         public int opc_visto;
         /* */
-        public int clv_tipoLog;
+        //public int clv_tipoLog;
+        public int clv_tipolog;
         /* */
         public String des_like;
         /* */
@@ -78,7 +79,7 @@ public class GetVisionaryByIdResponse {
          *
          */
         private Visionary.RateStatus getRateStatus(){
-            switch (clv_tipoLog){
+            switch (clv_tipolog){
                 case 0: return EMPTY;
                 case 5: return LIKED;
                 case 6: return DISLIKED;

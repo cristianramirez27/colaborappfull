@@ -30,7 +30,7 @@ public class ShareUtil {
             context.startActivity(sendIntent);
 
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //Alerts.showToast(this, "No es posible compartir el artículo", Toast.LENGTH_SHORT);
         }
     }

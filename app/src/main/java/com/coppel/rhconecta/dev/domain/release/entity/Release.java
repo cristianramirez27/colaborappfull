@@ -6,23 +6,25 @@ import com.google.gson.Gson;
 
 public class Release {
 
-    private int id;
+    private String id;
     private String header;
     private String headerImage;
     private String title;
     private String content;
     private String image;
+    private String url_pdf;
 
-    public Release(int id, String header, String headerImage, String title, String content, String image) {
+    public Release(String id, String header, String headerImage, String title, String content, String image,String url_pdf) {
         this.id = id;
         this.header = header;
         this.headerImage = headerImage;
         this.title = title;
         this.content = content;
         this.image = image;
+        this.url_pdf = url_pdf;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -44,6 +46,10 @@ public class Release {
 
     public String getImage() {
         return image;
+    }
+
+    public String getUrl_pdf() {
+        return url_pdf;
     }
 
     @NonNull

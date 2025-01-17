@@ -15,6 +15,7 @@ import com.coppel.rhconecta.dev.business.models.ColaboratorRequestsListExpensesR
 import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,11 +75,11 @@ public class ExpensesTravelColaboratorRequestRecyclerAdapter extends RecyclerVie
        // viewHolder.status.setBackgroundColor(Color.parseColor(dataItems.get(i).getDes_color()));
 
         if(!isColaborator){
-            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getNom_estatus().toLowerCase())));
+            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getNom_estatus().toLowerCase(Locale.getDefault()))));
             if(dataItems.get(i).getNom_estatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }else {
-            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase())));
+            viewHolder.status.setText(getFormatedERH(capitalizeText(getContext(),dataItems.get(i).getEstatus().toLowerCase(Locale.getDefault()))));
             if(dataItems.get(i).getEstatus().length() >= 20)
                 viewHolder.status.setTextSize(7);
         }

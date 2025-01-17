@@ -26,7 +26,7 @@ public class InternalDatabase {
         } catch (Exception e) {
 
             //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

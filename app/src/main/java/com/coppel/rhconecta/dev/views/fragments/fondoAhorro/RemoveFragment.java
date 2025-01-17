@@ -64,7 +64,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RemoveFragment extends Fragment implements View.OnClickListener, IServicesContract.View,
-        DialogFragmentWarning.OnOptionClick,DialogFragmentGetDocument.OnButtonClickListener,ICalculatetotal {
+        DialogFragmentWarning.OnOptionClick, DialogFragmentGetDocument.OnButtonClickListener, ICalculatetotal {
 
     public static final String TAG = RemoveFragment.class.getSimpleName();
     private static final float INIT_TOTAL_VALUE = 0;
@@ -153,7 +153,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                     @Override
                     public void onVisibilityChanged(boolean isOpen) {
                         // some code depending on keyboard visiblity status
-                        if(!isOpen)
+                        if (!isOpen)
                             calculate();
                     }
                 });
@@ -191,7 +191,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
                 Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional())));
 
 
-        if(valueAditionaSave.length() >= 12)
+        if (valueAditionaSave.length() >= 12)
             txtValueAditionaSave.setTextSize(11);
 
 
@@ -240,7 +240,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         String numEmployer = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_NUM_COLABORADOR);
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
-                CONSULTA_RETIRO,2,numEmployer);
+                CONSULTA_RETIRO, 2, numEmployer);
         coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData, token);
     }
 
@@ -306,7 +306,7 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         String token = AppUtilities.getStringFromSharedPreferences(getActivity(), SHARED_PREFERENCES_TOKEN);
 
         WithDrawSavingRequestData withDrawSavingRequestData = new WithDrawSavingRequestData(
-                GUARDAR_RETIRO, 3, numEmployer, margenCredito, ahorroAdicional);
+                GUARDAR_RETIRO, 3, numEmployer, margenCredito.toString(), ahorroAdicional.toString());
 
         coppelServicesPresenter.getWithDrawSaving(withDrawSavingRequestData, token);
     }
@@ -569,8 +569,10 @@ public class RemoveFragment extends Fragment implements View.OnClickListener, IS
         BigDecimal total = margin.add(ahorro);
         totalImporte.setText(String.format("%s $%.2f", getString(R.string.totalRemove), total));
 
-        double balanceMargenCredito = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()));
-        double balanceAhorroAdicional = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()));
+        //double balanceMargenCredito = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getMargenCredito()));
+        double balanceMargenCredito = 0.0;
+        //double balanceAhorroAdicional = Double.parseDouble(TextUtilities.insertDecimalPoint(parent.getLoanSavingFundResponse().getData().getResponse().getAhorroAdicional()));
+        double balanceAhorroAdicional = 100;
         if (balanceAhorroAdicional < 0) {
             balanceAhorroAdicional = 0;
         }

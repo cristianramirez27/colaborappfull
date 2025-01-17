@@ -25,22 +25,34 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmList;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_BENEFICIOS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CARTASCONFIG;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COMUNICADOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_HOLIDAYS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LINEA_DE_DENUNCIA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VACANCIES;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VISIONARIOS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_LINKS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.FLAG_ICONS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_WHEATHER;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.TITLE_WHEATHER;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.USER_ACCESS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.YES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_AGUINALDO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_FONDOAHORRO;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_GASOLINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_NOMINA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PENSION;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.ICON_PTU;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LINEA_DE_DENUNCIA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_MY_MOVEMENTS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
@@ -51,10 +63,12 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS_COL;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_HOLIDAYS_GTE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_LETTERS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_NOTICE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_QR_CODE;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_SAVING_FUND;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VACANTES;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_INTERAL_VACANCY;
@@ -148,7 +162,7 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.payroll_voucher), AppConstants.OPTION_PAYROLL_VOUCHER),//17
                 new HomeMenuItem(context.getString(R.string.benefits), AppConstants.OPTION_BENEFITS), //3
                 new HomeMenuItem(context.getString(R.string.loan_saving_fund), OPTION_SAVING_FUND),//9
-                new HomeMenuItem(context.getString(R.string.title_linea_denuncia), OPTION_LINEA_DE_DENUNCIA) ,//NUEVA
+                new HomeMenuItem(context.getString(R.string.title_linea_denuncia), OPTION_LINEA_DE_DENUNCIA),//NUEVA
                 new HomeMenuItem(context.getString(R.string.employment_letters), AppConstants.OPTION_LETTERS),//10
                 new HomeMenuItem(context.getString(R.string.travel_expenses), AppConstants.OPTION_EXPENSES),//11
                 new HomeMenuItem(context.getString(R.string.request_holidays), OPTION_HOLIDAYS),//14
@@ -287,6 +301,17 @@ public class MenuUtilities {
         boolean blockCoCrea = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COCREA).equals(YES);
         boolean blockWheather = AppUtilities.getStringFromSharedPreferences(context, BLOCK_WHEATHER).equals(YES);
         boolean blocklineaDenuncia = AppUtilities.getStringFromSharedPreferences(context, BLOCK_LINEA_DE_DENUNCIA).equals(YES);
+        boolean blockBenefits = AppUtilities.getStringFromSharedPreferences(context, BLOCK_BENEFICIOS).equals(YES);
+        boolean blockLetters = AppUtilities.getStringFromSharedPreferences(context, BLOCK_CARTASCONFIG).equals(YES);
+        boolean blockHolidays = AppUtilities.getStringFromSharedPreferences(context, BLOCK_HOLIDAYS).equals(YES);
+        boolean blockSavings = AppUtilities.getStringFromSharedPreferences(context, BLOCK_SAVINGS).equals(YES);
+        boolean blockTravelExpenses = AppUtilities.getStringFromSharedPreferences(context, BLOCK_TRAVEL_EXPENSES).equals(YES);
+        boolean blockVisionaries = AppUtilities.getStringFromSharedPreferences(context, BLOCK_VISIONARIOS).equals(YES);
+        boolean blockNotices = AppUtilities.getStringFromSharedPreferences(context, BLOCK_COMUNICADOS).equals(YES);
+        boolean blockVacancies = AppUtilities.getStringFromSharedPreferences(context, BLOCK_VACANCIES).equals(YES);
+        boolean flagIcons = AppUtilities.getStringFromSharedPreferences(context, FLAG_ICONS).equals(YES);
+
+
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
@@ -299,18 +324,35 @@ public class MenuUtilities {
                     response.add(item);
             }
         } else {
+            boolean userAccess = !userAccess(numgColaborator, context);
             for (HomeMenuItem item : homeMenuItems) {
-                if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome)
+                if (item.getTAG().equals(OPTION_COLLABORATOR_AT_HOME) && blockStayHome && userAccess)
                     continue;
                 if (item.getTAG().equals(OPTION_QR_CODE) && blockQr)
                     continue;
                 if (item.getTAG().equals(OPTION_COVID_SURVEY) && blockCovidSurvey)
                     continue;
-                if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
+                if (item.getTAG().equals(OPTION_COCREA) && blockCoCrea && userAccess || (item.getTAG().equals(OPTION_COCREA) && !enableCoCrea))
                     continue;
                 if (item.getTAG().equals(OPTION_WHEATHER) && blockWheather)
                     continue;
-                if (item.getTAG().equals(OPTION_LINEA_DE_DENUNCIA) && blocklineaDenuncia)
+                if (item.getTAG().equals(OPTION_LINEA_DE_DENUNCIA) && blocklineaDenuncia && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_BENEFITS) && blockBenefits && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_LETTERS) && blockLetters && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_HOLIDAYS) && blockHolidays && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_SAVING_FUND) && blockSavings && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_EXPENSES) && blockTravelExpenses && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_VISIONARIES) && blockVisionaries && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_NOTICE) && blockNotices && userAccess)
+                    continue;
+                if (item.getTAG().equals(OPTION_VACANTES) && blockVacancies && userAccess)
                     continue;
                 response.add(item);
             }
@@ -548,7 +590,7 @@ public class MenuUtilities {
 
     public static List<HomeMenuItem> getSavingFoundMenu(Context context) {
         List<HomeMenuItem> menuItems;
-        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line,R.string.movements};
+        int[] idRes = {R.string.remove, R.string.add, R.string.additional_saving_double_line, R.string.movements};
         String[] options = {AppConstants.OPTION_REMOVE, AppConstants.OPTION_PAY, AppConstants.OPTION_ADITIONAL_SAVED, AppConstants.OPTION_MY_MOVEMENTS};
         menuItems = buildOptionSubSection(OPTION_SAVING_FUND, options, idRes, context);
         return menuItems;
@@ -591,5 +633,20 @@ public class MenuUtilities {
 
     public static boolean isFilial(Context context) {
         return AppUtilities.getBooleanFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_FILIAL);
+    }
+
+    public static boolean userAccess(String numEmp, Context context) {
+        String userAccess = AppUtilities.getStringFromSharedPreferences(context, USER_ACCESS);
+        //String numerosEnJson = userAccess.get("num").getAsString();
+        String[] numerosArray = userAccess.split(",");
+
+        boolean encontrado = false;
+        for (String numero : numerosArray) {
+            if (numero.equals(numEmp)) {
+                encontrado = true;
+                break;
+            }
+        }
+        return encontrado;
     }
 }

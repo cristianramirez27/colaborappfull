@@ -1,5 +1,6 @@
 package com.coppel.rhconecta.dev;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 
@@ -15,7 +16,7 @@ import com.microsoft.appcenter.crashes.Crashes;
 
 import io.realm.Realm;
 
-public class CoppelApp extends MultiDexApplication {
+public class CoppelApp extends Application {
 
     private static Context contextApp;
 
@@ -34,6 +35,7 @@ public class CoppelApp extends MultiDexApplication {
         AppModuleKt.initKoin(this);
         Realm.setDefaultConfiguration(RealmHelper.configurateRealm(this));
         TextUtilities.adjustFontScale(getApplicationContext(), getResources().getConfiguration());
+
     }
 
     /**
