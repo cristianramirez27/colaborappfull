@@ -41,6 +41,8 @@ public class DateTimeUtil {
             "Domingo"
     };
 
+    private static long timeSurveyCalculator = 2592000000L;
+
     public static DatePickerDialog getMaterialDatePicker(DatePickerDialog.OnDateSetListener callback){
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
@@ -194,6 +196,14 @@ public class DateTimeUtil {
         }catch (Exception e){
             return 0;
         }
+    }
+
+    public static boolean validateTimeElapsedSurvey(Date date, Date current) {
+        long difference = current.getTime() - date.getTime();
+        if(difference > timeSurveyCalculator )
+            return  true;
+        else
+            return false;
     }
 
 }

@@ -3,7 +3,6 @@ package com.coppel.rhconecta.dev.views.activities;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -20,6 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -75,6 +78,7 @@ import com.coppel.rhconecta.dev.presentation.profile_actions.ProfileActionsActiv
 import com.coppel.rhconecta.dev.presentation.releases.ReleasesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionariesActivity;
 import com.coppel.rhconecta.dev.presentation.visionaries.VisionaryType;
+import com.coppel.rhconecta.dev.presentation.calculator.CalculatorActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.resources.db.models.MainSection;
@@ -249,6 +253,18 @@ public class HomeActivity
 
     @Inject
     public ZendeskManager zendeskUtil;
+    private ActivityResultLauncher<Intent> register = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(),new ActivityResultCallback<ActivityResult>(){
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String go = data.getStringExtra("goto");
+                if (go != null){
+                    navigationMenu(go, null);
+                }
+            }
+        }
+    });
 
     //azure
     private ISingleAccountPublicClientApplication mSingleAccountApp;
@@ -325,7 +341,6 @@ public class HomeActivity
     /**
      * Request at service for the availability of the help desk (Zendesk)
      */
-    @Deprecated
     private void requestDataForZendesk() {
         homeActivityViewModel.getPersonalDataForHelpDesk();
     }
@@ -827,6 +842,15 @@ public class HomeActivity
                     }
                     Intent intentNew = new Intent(Intent.ACTION_VIEW, Uri.parse(urlNew));
                     startActivity(intentNew);
+                case OPTION_CALCULATOR:
+                    if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR).equals(YES)) {
+                        showBlockDialog(BLOCK_MESSAGE_CALCULATOR);
+                    } else {
+                        Intent intentCalculator = new Intent(this, CalculatorActivity.class);
+                        IntentExtension.putSerializableExtra(intentCalculator,AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse);
+                        register.launch(intentCalculator);
+                    }
+                    break;
             }
         } else
             showError(new ServicesError(getString(R.string.network_error)));

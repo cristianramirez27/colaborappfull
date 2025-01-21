@@ -124,6 +124,7 @@ public class AppConfig {
     public final static String BLOCK_MESSAGE_COMUNICADOS = "BLOCK_MESSAGE_COMUNICADOS";
     public final static String BLOCK_MESSAGE_ENCUESTAS = "BLOCK_MESSAGE_ENCUESTAS";
     public final static String BLOCK_MESSAGE_COLLAGE = "BLOCK_MESSAGE_COLLAGE";
+    public final static String BLOCK_MESSAGE_CALCULATOR = "BLOCK_MESSAGE_CALCULATOR";
     public final static String BLOCK_MESSAGE_QR = "BLOCK_MESSAGE_QR";
     public final static String BLOCK_MESSAGE_STAYHOME = "BLOCK_MESSAGE_STAYHOME";
     public final static String BLOCK_MESSAGE_COVID_SURVEY = "BLOCK_MESSAGE_COVID_SURVEY";
@@ -153,6 +154,7 @@ public class AppConfig {
     public final static String ENDPOINT_COCREA_STORE = "URL_COCREA_STORE";
 
     public final static String BLOCK_COLLAGE = "BLOCK_COLLAGE";
+    public final static String BLOCK_CALCULATOR = "BLOCK_CALCULATOR";
 
     public final static String TITLE_WHEATHER = "TITLE_WHEATHER";
     public final static String ENDPOINT_WHEATHER = "END_POINT_WEATHER";
@@ -178,6 +180,11 @@ public class AppConfig {
     public final static String ENDPOINT_AES = "AES";
     public final static String FLAG_ICONS = "FLAG_ICONS";
     public final static String USER_ACCESS = "USER_ACCESS";
+    public final static String ENDPOINT_CALCULATOR = "ENDPOINT_CALCULATOR";
+    public final static String ENDPOINT_CALCULATOR_WEEKS = "ENDPOINT_CALCULATOR_WEEKS";
+    public final static String ENDPOINT_CALCULATOR_STEP = "ENDPOINT_CALCULATOR_STEP";
+    public final static String ENDPOINT_CALCULATOR_RATING = "ENDPOINT_CALCULATOR_RATING";
+    public final static String ENDPOINT_CALCULATOR_ESTIMATE = "ENDPOINT_CALCULATOR_ESTIMATE";
 
     /**
      * Se almacenan los endpoints

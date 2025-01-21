@@ -32,6 +32,7 @@ public class AppConstants {
 
     public static final String SHARED_PREFERENCES_LOGIN_RESPONSE = "LOGIN_RESPONSE";
     public static final String SHARED_PREFERENCES_PROFILE_RESPONSE = "PROFILE_RESPONSE";
+    public static final String SHARED_PREFERENCES_SURVEY_SCORE_CALCULATOR = "SURVEY_SCORE_CALCULATOR";
 
     public static final String APP_FOLDER = "ColaborApp";
     public static final String FILEPROVIDER = BuildConfig.APPLICATION_ID + ".fileprovider";
@@ -68,6 +69,7 @@ public class AppConstants {
     public static final String URL_DEFAULT_LINEA_DE_DENUNCIA = "https://coppel.amitaisystem.com";
 
 
+    public static final String OPTION_CALCULATOR = "CALCULATOR";
     public static final String OPTION_NOTIFICATION_EXPENSES_AUTHORIZE = "_NOTIFICATION_EXPENSES_AUTHORIZE";
 
     public static final String OPTION_BONUS = "BONUS";

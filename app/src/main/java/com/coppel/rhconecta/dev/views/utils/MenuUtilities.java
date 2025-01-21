@@ -34,6 +34,7 @@ import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_LI
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_QR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_SAVINGS;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_STAYHOME;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COCREA;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_VACANCIES;
@@ -72,6 +73,7 @@ import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_VISIONARI
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_WHEATHER;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_INTERAL_VACANCY;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALCULATOR;
 
 public class MenuUtilities {
     static Map<String, Integer> sectionsMap = null;
@@ -108,6 +110,7 @@ public class MenuUtilities {
             sectionsMap.put(AppConstants.OPTION_COLLABORATOR_AT_HOME, 18);
             sectionsMap.put(OPTION_QR_CODE, 20);
             sectionsMap.put(OPTION_INTERAL_VACANCY, 21);
+            sectionsMap.put(OPTION_CALCULATOR, 22);
         }
         return sectionsMap;
     }
@@ -172,8 +175,8 @@ public class MenuUtilities {
                 new HomeMenuItem(context.getString(R.string.qrCode), OPTION_QR_CODE),//20
                 new HomeMenuItem(context.getString(R.string.covid_survey_title), OPTION_COVID_SURVEY),//5
                 new HomeMenuItem(title_wheather, OPTION_WHEATHER),//6
-                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES)
-
+                new HomeMenuItem(context.getString(R.string.entry_home_vacantes), OPTION_VACANTES),
+                new HomeMenuItem(context.getString(R.string.title_calculator), OPTION_CALCULATOR)
         ));
 
         List<MainSection> mainSections = RealmHelper.getListSection();
@@ -312,6 +315,7 @@ public class MenuUtilities {
         boolean flagIcons = AppUtilities.getStringFromSharedPreferences(context, FLAG_ICONS).equals(YES);
 
 
+        boolean blockCalculator = AppUtilities.getStringFromSharedPreferences(context, BLOCK_CALCULATOR).equals(YES);
         ArrayList<HomeMenuItem> response = new ArrayList<>();
         if (isSlide) {
             response.add(new HomeMenuItem(context.getString(R.string.title_home), AppConstants.OPTION_HOME));
@@ -353,6 +357,7 @@ public class MenuUtilities {
                 if (item.getTAG().equals(OPTION_NOTICE) && blockNotices && userAccess)
                     continue;
                 if (item.getTAG().equals(OPTION_VACANTES) && blockVacancies && userAccess)
+                if (item.getTAG().equals(OPTION_CALCULATOR) && blockCalculator)
                     continue;
                 response.add(item);
             }
@@ -483,6 +488,8 @@ public class MenuUtilities {
                 break;
             case OPTION_LINEA_DE_DENUNCIA:
                 icon = AppCompatResources.getDrawable(context, R.drawable.ic_linea_denuncia);
+            case OPTION_CALCULATOR:
+                icon = AppCompatResources.getDrawable(context, R.drawable.ic_module_calculadora);
                 break;
         }
         return icon;

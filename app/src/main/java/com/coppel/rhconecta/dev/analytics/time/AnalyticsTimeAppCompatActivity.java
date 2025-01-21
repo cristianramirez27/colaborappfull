@@ -22,13 +22,7 @@ import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.ZendeskStatusCallBack;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 public class AnalyticsTimeAppCompatActivity extends AppCompatActivity {
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     /**
      *

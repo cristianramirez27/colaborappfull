@@ -1,5 +1,7 @@
 package com.coppel.rhconecta.dev.views.utils;
 
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -82,6 +84,17 @@ public class AppUtilities {
             String key
     ) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return SharedPreferencesExtension.getString(sharedPreferences, key, null);
+    }
+
+    /**
+     * sharedPreferences is injected and in this way we avoid having in many classes the instance of context
+     *
+     * @param sharedPreferences
+     * @param key
+     * @return
+     */
+    public static String getStringFromSharedPreferences(SharedPreferences sharedPreferences, String key) {
         return SharedPreferencesExtension.getString(sharedPreferences, key, null);
     }
 
