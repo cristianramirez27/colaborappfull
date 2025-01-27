@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_above="@+id/layoutBtns"
+        android:id="@+id/layoutData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+        <TextView
+            android:id="@+id/TitleAmounts"
+            android:layout_gravity="bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:visibility="visible"
+            style="@style/TextBold20Coppel"
+            android:text="Importes"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorBackgroundCoppelNegro" />
+
+        <LinearLayout
+            android:id="@+id/layoutTitle"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/TitleAmounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1.1"/>
+
+            <TextView
+                android:id="@+id/title3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Colaborador"
+                android:textColor="@color/colorTextGray"
+                style="@style/TextBook14Coppel"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/title4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Gerente"
+                style="@style/TextBook14Coppel"
+                android:textColor="@color/colorTextGray"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/layoutTitle"
+            android:layout_above="@+id/layoutBtns">
+
+            <LinearLayout
+                android:layout_marginTop="4dp"
+                android:id="@+id/headerItinerario"
+                android:layout_width="match_parent"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvImporte"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@+id/layoutTotales"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:id="@+id/layoutTotales"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.1"
+                        android:textColor="@color/colorBackgroundCoppelNegro"
+                        style="@style/TextBook14Coppel"
+                        android:text="Totales"
+                        android:gravity="left"/>
+
+                    <TextView
+                        android:id="@+id/totalColaborador"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/TextBook14Coppel"
+                        android:textColor="@color/colorTextGray"
+                        android:lines="1"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/totalGerente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorBackgroundCoppelNegro"
+                        android:lines="1"
+                        style="@style/TextBook14Coppel"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBtns"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnActionLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_blue_rounded"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnActionRight"
+                android:layout_weight="1"
+                style="@style/ButtonCoppel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_blue_rounded"
+                android:text="@string/accept"
+                android:textAllCaps="false"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

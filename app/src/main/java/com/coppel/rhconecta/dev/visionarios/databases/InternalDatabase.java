@@ -4,11 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.widget.Toast;
 
 public class InternalDatabase {
 
-    private Context context;
+   /* private Context context;
     private String BD_NOMBRE = "visionarios";
     private SQLiteDatabase bd;
 
@@ -26,8 +25,8 @@ public class InternalDatabase {
             this.bd = context.openOrCreateDatabase(this.BD_NOMBRE, this.context.MODE_PRIVATE, null);
         } catch (Exception e) {
 
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
-            e.printStackTrace();
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //e.printStackTrace();
         }
     }
 
@@ -39,7 +38,7 @@ public class InternalDatabase {
             this.bd.execSQL(query);
         } catch (Exception e) {
             success = false;
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
 
         }
 
@@ -56,7 +55,7 @@ public class InternalDatabase {
 
 
         } catch (SQLiteException e) {
-            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
+            //Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT);
             return null;
         } finally {
             //release all your resources
@@ -75,5 +74,5 @@ public class InternalDatabase {
 
     public void setContext(Context context) {
         this.context = context;
-    }
+    }*/
 }

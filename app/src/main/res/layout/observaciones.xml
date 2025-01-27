@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackgroundFragments"
+    android:layout_alignParentTop="true">
+
+    <LinearLayout
+        android:id="@+id/container_notinvasive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="@color/transparent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/txtObservaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:text="Observaciones"
+            android:layout_centerHorizontal="true"
+            android:textSize="15sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorBackgroundCoppelNegro" />
+
+        <TextView
+            android:id="@+id/txtTitleObservacionesColaborador"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:visibility="visible"
+            android:text="Observaciones colaborador"
+            android:layout_centerHorizontal="true"
+            android:textSize="11sp"
+            android:textColor="@color/colorTextGray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:scrollbars="vertical">
+
+            <TextView
+                android:id="@+id/txtObservacionesDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="top"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:scrollbars="vertical"
+                android:text=""
+                android:textColor="@color/colorBackgroundCoppelNegro"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/titleObservationGte"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:layout_marginTop="18dp"
+            android:visibility="gone"
+            android:text="Observaciones Gerente"
+            android:layout_centerHorizontal="true"
+            android:textSize="11sp"
+            android:textColor="@color/colorTextGray" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_gravity="bottom|center_horizontal"
+            android:id="@+id/txtObservacionesGteDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:layout_marginTop="5dp"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+            android:layout_centerHorizontal="true"
+            android:textSize="13sp"
+            android:textColor="@color/colorBackgroundCoppelNegro" />
+
+    </LinearLayout>
+
+</RelativeLayout>

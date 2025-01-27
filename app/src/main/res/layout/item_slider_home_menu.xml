@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctlOptionMenuContainer"
@@ -24,9 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@color/colorSecondBlueCoppel"
-        android:textSize="16sp"
+        style="@style/TextBook14Coppel"
         app:layout_constraintBottom_toBottomOf="@+id/imgvOptionIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline18"
@@ -53,18 +53,18 @@
         app:layout_constraintVertical_bias="0.100000024"
         tools:ignore="SmallSp" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.08" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.2" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

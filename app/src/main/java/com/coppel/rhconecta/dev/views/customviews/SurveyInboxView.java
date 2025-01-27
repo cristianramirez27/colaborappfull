@@ -1,14 +1,14 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.coppel.rhconecta.dev.R;
+
 import butterknife.ButterKnife;
 
 /**
@@ -34,8 +34,8 @@ public class SurveyInboxView extends RelativeLayout {
         String infService = Context.LAYOUT_INFLATER_SERVICE;
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(infService);
         li.inflate(R.layout.survey_inbox, this, true);
-        iconSurvey = ButterKnife.findById(this, R.id.iconoEncuesta);
-        indicatorInbox = ButterKnife.findById(this, R.id.txvCenter);
+        iconSurvey = findViewById(R.id.iconoEncuesta);
+        indicatorInbox = findViewById(R.id.txvCenter);
     }
 
     public void setCountMessages(int numberMessages){

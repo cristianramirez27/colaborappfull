@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class LoginResponse extends CoppelGeneralParameterResponse {
+import java.io.Serializable;
+
+public class LoginResponse extends CoppelGeneralParameterResponse implements Serializable {
 
     private Data data;
 
@@ -12,7 +14,15 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         this.data = data;
     }
 
-    public class Data {
+    public LoginResponse() {
+        this.data = new Data();
+    }
+
+    public class Data implements Serializable {
+
+        public Data() {
+            this.response = new Response();
+        }
 
         private Response response;
 
@@ -25,7 +35,8 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Response {
+
+    public class Response implements Serializable {
         private String app;
         private String cliente;
         private String email;
@@ -35,8 +46,10 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
         private String tarjeta;
         private String tipoCliente;
         private String token;
-        private String errorCode;
+        private int errorCode;
         private String userMessage;
+
+        private String token_user;
 
         public String getApp() {
             return app;
@@ -110,11 +123,11 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
             this.token = token;
         }
 
-        public String getErrorCode() {
+        public int getErrorCode() {
             return errorCode;
         }
 
-        public void setErrorCode(String errorCode) {
+        public void setErrorCode(int errorCode) {
             this.errorCode = errorCode;
         }
 
@@ -124,6 +137,15 @@ public class LoginResponse extends CoppelGeneralParameterResponse {
 
         public void setUserMessage(String userMessage) {
             this.userMessage = userMessage;
+        }
+
+
+        public String getToken_user() {
+            return token_user;
+        }
+
+        public void setToken_user(String token_user) {
+            this.token_user = token_user;
         }
     }
 }

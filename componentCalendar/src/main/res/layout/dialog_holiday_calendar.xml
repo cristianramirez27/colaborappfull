@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:minHeight="480dp"
+    android:elevation="8dp">
+
+    <FrameLayout
+        android:id="@+id/card_back"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/mdtp_date_picker_dialog_v2_back" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/card_front"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:gravity="center">
+
+        <include layout="@layout/mdtp_date_picker_dialog_gral_v2" />
+
+    </FrameLayout>
+
+
+
+
+</RelativeLayout>

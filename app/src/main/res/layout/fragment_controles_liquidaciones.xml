@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewSearch"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="2dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iconSearch"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_centerVertical="true"
+                        android:padding="4dp"
+                        android:src="@drawable/icon_search" />
+
+                    <EditText
+                        android:id="@+id/edtSearch"
+                        android:layout_width="244dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="-2dp"
+                        android:layout_toRightOf="@+id/iconSearch"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/hint_search_name_colaborator"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textColor="@color/colorTextBlueCoppel"
+                        android:textColorHint="@color/colorTextBlueCoppel" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/seleccionCentroLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_bottom_line"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/tituloCentro"
+                    style="@style/TextBook12Coppel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgVideoPreview"
+                    android:gravity="center"
+                    android:text="@string/select_center"
+                    android:textColor="@color/colorTextCoppelNegro" />
+
+                <TextView
+                    android:id="@+id/centro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tituloCentro"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/seleccionEstatusLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_bottom_line"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/tituloEstatus"
+                    style="@style/TextBook12Coppel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgVideoPreview"
+                    android:gravity="center"
+                    android:text="@string/select_status"
+                    android:textColor="@color/colorTextCoppelNegro" />
+
+                <TextView
+                    android:id="@+id/estatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tituloEstatus"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryCoppelAzul"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tituloControles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/title_tracking_request"
+                    android:textColor="@color/colorSecondBlueCoppel"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtNoControls"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="@string/empty_controls"
+                        android:textColor="@color/colorTextGrayDark"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutControles"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+                            android:id="@+id/titulosControles"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvControles"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/transparent" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+                <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                    android:id="@+id/expMonths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txtNoMeses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_months"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layoutMeses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/transparent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvMonths"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

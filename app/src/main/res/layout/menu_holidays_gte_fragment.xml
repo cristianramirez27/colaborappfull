@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                style="@style/TextMedium22Coppel"
+                android:textColor="@color/colorSecondBlueCoppel"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_request_holidays"
+            android:textAllCaps="false"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:maxLines="3"
+            android:paddingLeft="20dp"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:paddingRight="20dp"
+            android:text="@string/btn_text_request_holidays"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAditionals"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_aditional_days"
+            android:textAllCaps="false"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/btn_text_aditional_days"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:maxLines="3"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_calendar_holidays"
+            android:textAllCaps="false"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/btn_text_calendar_holidays"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:maxLines="3"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

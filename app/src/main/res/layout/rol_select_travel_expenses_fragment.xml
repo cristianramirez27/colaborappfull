@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_rol_expenses"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        style="@style/TextMedium22Coppel"
+        android:textColor="@color/colorSecondBlueCoppel"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="50dp"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnColaborator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/colaborator"
+            android:textAllCaps="false"
+            android:visibility="invisible"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ButtonCoppel"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/manager"
+            android:textAllCaps="false"
+            android:visibility="invisible"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

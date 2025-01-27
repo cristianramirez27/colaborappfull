@@ -3,29 +3,32 @@ package com.coppel.rhconecta.dev.views.dialogs;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.coppel.rhconecta.dev.R;
-import com.coppel.rhconecta.dev.views.utils.CameraUtilities;
+import com.otaliastudios.cameraview.BitmapCallback;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
-import com.otaliastudios.cameraview.Facing;
-import com.otaliastudios.cameraview.Flash;
-import com.otaliastudios.cameraview.Gesture;
-import com.otaliastudios.cameraview.GestureAction;
-import com.otaliastudios.cameraview.SessionType;
+import com.otaliastudios.cameraview.PictureResult;
+import com.otaliastudios.cameraview.controls.Audio;
+import com.otaliastudios.cameraview.controls.Facing;
+import com.otaliastudios.cameraview.controls.Flash;
+import com.otaliastudios.cameraview.controls.Mode;
+import com.otaliastudios.cameraview.gesture.Gesture;
+import com.otaliastudios.cameraview.gesture.GestureAction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DialogFragmentCamera extends DialogFragment implements View.OnClickListener, CameraUtils.BitmapCallback {
+public class DialogFragmentCamera extends DialogFragment implements View.OnClickListener /*CameraUtils.decodeBitmap*/ {
 
     public static final String TAG = DialogFragmentCamera.class.getSimpleName();
     private OnCaptureListener onCaptureListener;
@@ -64,7 +67,7 @@ public class DialogFragmentCamera extends DialogFragment implements View.OnClick
     @Override
     public void onPause() {
         super.onPause();
-        cvCamera.stop();
+        cvCamera.close();
     }
 
     @Override
@@ -82,18 +85,31 @@ public class DialogFragmentCamera extends DialogFragment implements View.OnClick
                 imgvFlash.setVisibility(View.GONE);
             }
         }
-        cvCamera.start();
-        cvCamera.setSessionType(SessionType.PICTURE);
+        //cvCamera.start();
+        cvCamera.open();
+        //cvCamera.setSessionType(SessionType.PICTURE);
+        cvCamera.setMode(Mode.PICTURE); // for pictures
         cvCamera.setFacing(Facing.BACK);
+        cvCamera.setAudio(Audio.OFF);
         cvCamera.setPlaySounds(true);
         cvCamera.setFlash(Flash.OFF);
         cvCamera.mapGesture(Gesture.PINCH, GestureAction.ZOOM);
-        cvCamera.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER);
-        cvCamera.addCameraListener(new CameraListener() {
+        //cvCamera.mapGesture(Gesture.TAP, GestureAction.FOCUS_WITH_MARKER);
+        cvCamera.mapGesture(Gesture.TAP, GestureAction.AUTO_FOCUS);
+        /*cvCamera.addCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] jpeg) {
                 super.onPictureTaken(jpeg);
                 CameraUtils.decodeBitmap(jpeg, DialogFragmentCamera.this);
+            }
+        });*/
+        cvCamera.addCameraListener(new CameraListener(){
+            @Override
+            public void onPictureTaken(@NonNull PictureResult result) {
+                super.onPictureTaken(result);
+                // Código cuando se toma una foto
+                result.getData();
+                CameraUtils.decodeBitmap(result.getData(), (BitmapCallback) DialogFragmentCamera.this);
             }
         });
     }
@@ -105,7 +121,8 @@ public class DialogFragmentCamera extends DialogFragment implements View.OnClick
                 toggleFlash();
                 break;
             case R.id.imgvPicture:
-                cvCamera.capturePicture();
+                //cvCamera.capturePicture();
+                cvCamera.takePicture();
                 break;
             case R.id.imgvSwitch:
                 switchCamera();
@@ -140,13 +157,13 @@ public class DialogFragmentCamera extends DialogFragment implements View.OnClick
         }
     }
 
-    @Override
+    /*@Override
     public void onBitmapReady(Bitmap bitmap) {
         if (onCaptureListener != null) {
-            bitmap = CameraUtilities.saveTemporalImage(bitmap);
+            //bitmap = CameraUtilities.saveTemporalImage(bitmap); DEVUELVE EL BITMAP EN NULL
             onCaptureListener.onPictureTaken(bitmap);
         }
-    }
+    }*/
 
     public interface OnCaptureListener {
         void onPictureTaken(Bitmap bitmap);

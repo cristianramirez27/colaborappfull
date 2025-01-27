@@ -2,7 +2,8 @@ package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,6 +22,9 @@ public class TextViewDetail extends ConstraintLayout {
     TextView txvValue;
     @BindView(R.id.viewDivider)
     View viewDivider;
+    @BindView(R.id.guideline73)
+    Guideline guideline73;
+
 
     public TextViewDetail(Context context) {
         super(context);
@@ -40,6 +44,28 @@ public class TextViewDetail extends ConstraintLayout {
     public void setTexts(String startText, String endText) {
         txvTitle.setText(startText);
         txvValue.setText(endText);
+    }
+
+
+    public void setGravityValue(int gravity){
+        txvValue.setGravity(gravity);
+    }
+
+    public void setPaddingValue(){
+        txvValue.setPadding(0,0,140,0);
+    }
+
+
+
+    public void setTextsSize(float startText, float endText) {
+        txvTitle.setTextSize(startText);
+        txvValue.setTextSize(endText);
+    }
+
+
+    public void setSingleLine(boolean isSingleLine) {
+        txvTitle.setSingleLine(isSingleLine);
+        txvValue.setSingleLine(isSingleLine);
     }
 
     public void setStartText(String startText) {
@@ -76,5 +102,9 @@ public class TextViewDetail extends ConstraintLayout {
 
     public void hideDivider() {
         viewDivider.setVisibility(View.GONE);
+    }
+
+    public void setGuideline73(float percent){
+        guideline73.setGuidelinePercent(percent);
     }
 }

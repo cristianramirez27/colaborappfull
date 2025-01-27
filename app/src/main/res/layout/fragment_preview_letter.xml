@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+    <RelativeLayout
+        android:id="@+id/layoutLetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layoutEditLetter"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentTop="true">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/contentLetter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    app:cardElevation="8dp"
+                    app:cardCornerRadius="1dp"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+                    <include layout="@layout/layout_preview_letter"/>
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutEditLetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_above="@+id/layoutBtns"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_field"
+            style="@style/TextBook14Coppel"
+            android:textColor="@color/colorTextCoppelNegro"
+            android:layout_alignParentRight="true"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/editLetter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextBook14Coppel"
+            android:text="@string/edit_letter"
+            android:padding="8dp"
+            android:textColor="@color/colorPrimaryCoppelAzul"
+            android:layout_alignParentRight="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutBtns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSend"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/sendToMail"
+            android:textAllCaps="false"
+            android:layout_marginRight="15dp"
+            android:textColor="@android:color/white"
+            style="@style/ButtonCoppel"
+            android:layout_alignParentBottom="true" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_weight="1"
+            style="@style/ButtonCoppel"
+            android:id="@+id/btnDownload"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/download"
+            android:textAllCaps="false"
+            android:layout_marginLeft="15dp"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

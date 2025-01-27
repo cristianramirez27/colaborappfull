@@ -1,7 +1,5 @@
 package com.coppel.rhconecta.dev.resources.db.models;
 
-import com.coppel.rhconecta.dev.views.utils.AppConstants;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -26,9 +24,9 @@ public class UserPreference extends RealmObject {
     public RealmList<HomeMenuItem> getMenuItems() {
         RealmList<HomeMenuItem> tempList = new RealmList<>();
         for(HomeMenuItem menuItem: menuItems) {
-            if(!menuItem.getTAG().equals(AppConstants.OPTION_BENEFITS)) {
+          //  if(!menuItem.getTAG().equals(AppConstants.OPTION_BENEFITS)) {
                 tempList.add(menuItem);
-            }
+           // }
         }
         return tempList;
     }
@@ -44,4 +42,5 @@ public class UserPreference extends RealmObject {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
 }

@@ -1,36 +1,21 @@
 package com.coppel.rhconecta.dev.business.interactors;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.coppel.rhconecta.dev.BuildConfig;
+import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.Enums.BenefitsType;
+import com.coppel.rhconecta.dev.business.Enums.ExpensesTravelType;
+import com.coppel.rhconecta.dev.business.Enums.HolidaysType;
+import com.coppel.rhconecta.dev.business.Enums.WithDrawSavingType;
 import com.coppel.rhconecta.dev.business.interfaces.IServiceListener;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesRetrofitMethods;
-import com.coppel.rhconecta.dev.business.models.CoppelGeneralParameterResponse;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersConfigRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesLettersSignatureRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesLoanSavingFundRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesLoginRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherDetailRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesPayrollVoucherRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesProfileRequest;
-import com.coppel.rhconecta.dev.business.models.CoppelServicesRecoveryPasswordRequest;
-import com.coppel.rhconecta.dev.business.models.GeneralErrorResponse;
-import com.coppel.rhconecta.dev.business.models.LetterConfigResponse;
-import com.coppel.rhconecta.dev.business.models.LetterSignatureResponse;
-import com.coppel.rhconecta.dev.business.models.LoanSavingFundResponse;
-import com.coppel.rhconecta.dev.business.models.LoginResponse;
-import com.coppel.rhconecta.dev.business.models.ProfileResponse;
-import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherAlimonyResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherBonusResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherDownloadResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherGasResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherPTUResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherRosterResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherSavingFundResponse;
-import com.coppel.rhconecta.dev.business.models.VoucherSendMailResponse;
+import com.coppel.rhconecta.dev.business.models.*;
+import com.coppel.rhconecta.dev.business.utils.JsonManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesGeneralValidations;
@@ -38,28 +23,55 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.business.utils.ServicesUtilities;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.Trace;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.net.SocketTimeoutException;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.getVersionApp;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.GET_PROFILE_LOCAL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.GET_SAVINGS_LOCAL;
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.URL_BASE;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
 public class ServicesInteractor {
 
     private Context context;
     private Retrofit retrofit;
+    private Retrofit retrofitLocal;
     private IServiceListener iServiceListener;
     private IServicesRetrofitMethods iServicesRetrofitMethods;
+    private IServicesRetrofitMethods iServicesRetrofitMethodsLocal;
     private ServicesGeneralValidations servicesGeneralValidations;
     private ServicesUtilities servicesUtilities;
     private String token;
+    private FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+    private FirebaseAnalytics analytics = null;
 
     public ServicesInteractor(Context context) {
+        analytics = FirebaseAnalytics.getInstance(context);
+        crashlytics.setUserId(getStringFromSharedPreferences(context, AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR));
         this.context = context;
         servicesUtilities = new ServicesUtilities();
         retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
+        retrofitLocal = ServicesRetrofitManager.getInstance().getRetrofitAPILocal();
         iServicesRetrofitMethods = retrofit.create(IServicesRetrofitMethods.class);
+        iServicesRetrofitMethodsLocal = retrofitLocal.create(IServicesRetrofitMethods.class);
         servicesGeneralValidations = new ServicesGeneralValidations();
     }
 
@@ -70,14 +82,14 @@ public class ServicesInteractor {
     /**
      * Validates if the data are correct
      *
-     * @param email    User email
-     * @param password User password
-     *
-     * Update 2 Noviembre 2018
+     * @param email               User email
+     * @param password            User password
+     *                            <p>
+     *                            Update 2 Noviembre 2018
      * @param executeInBackground flag to indicate if login is execute in background
      */
-    public void getLoginValidation(String email, String password,boolean executeInBackground) {
-        getLogin(email, password,executeInBackground);
+    public void getLoginValidation(String email, String password, boolean executeInBackground, String reCatchaTocken) {
+        getLogin(email, password, executeInBackground, reCatchaTocken);
     }
 
     /**
@@ -85,29 +97,40 @@ public class ServicesInteractor {
      *
      * @param email    User email
      * @param password User password
-     *
      */
-    private void getLogin(String email, String password, final boolean executeInBackground) {
+    private void getLogin(String email, String password, final boolean executeInBackground, String reCatchaTocken) {
+        crashlytics.log(email);
         final int type = ServicesRequestType.LOGIN;
-        iServicesRetrofitMethods.getLogin(buildLoginRequest(email, password)).enqueue(new Callback<JsonObject>() {
+        Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Login");
+        rastreo.start();
+        iServicesRetrofitMethods.getLogin(ServicesConstants.GET_LOGIN, buildLoginRequest(email, password, reCatchaTocken)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                rastreo.stop();
                 try {
                     LoginResponse loginResponse = (LoginResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LoginResponse.class);
-
                     if (loginResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        crashlytics.setUserId(loginResponse.getData().getResponse().getCliente());
                         getLoginResponse(loginResponse, response.code(), type);
                     } else {
-                        sendGenericError(type, response,executeInBackground);
-                    }
+                        sendGenericError(type, response, executeInBackground);
+                        crashlytics.log(ServicesConstants.GET_LOGIN);
+                        crashlytics.recordException(new Exception(response.body().toString()));
 
+                    }
                 } catch (Exception e) {
-                    sendGenericError(type, response,executeInBackground);
+                    Log.i("prueba", "CATCH GET LOGIN");
+                    crashlytics.log(ServicesConstants.GET_LOGIN);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response, executeInBackground);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                rastreo.stop();
+                crashlytics.log(ServicesConstants.GET_LOGIN);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -151,13 +174,13 @@ public class ServicesInteractor {
      * @param password User password
      * @return CoppelServicesLoginRequest Request model
      */
-    public CoppelServicesLoginRequest buildLoginRequest(String email, String password) {
+    public CoppelServicesLoginRequest buildLoginRequest(String email, String password, String reCatchaTocken) {
         CoppelServicesLoginRequest coppelServicesLoginRequest = new CoppelServicesLoginRequest();
 
         coppelServicesLoginRequest.setEmail(email);
         coppelServicesLoginRequest.setPassword(password);
         coppelServicesLoginRequest.setApp("rhconecta");
-
+        coppelServicesLoginRequest.setVersion(getVersionApp());
         return coppelServicesLoginRequest;
     }
 
@@ -174,7 +197,13 @@ public class ServicesInteractor {
      */
     public void getProfileValidation(String employeeNumber, String employeeEmail, String token) {
         this.token = token;
-        getProfile(employeeNumber, employeeEmail);
+        getProfile(employeeNumber, employeeEmail, 1);
+    }
+
+    public void getProfileValidationLogin(String employeeNumber, String employeeEmail, String token) {
+        this.token = token;
+        getProfile(employeeNumber, employeeEmail, 1);
+        //getProfile(employeeNumber, employeeEmail,3);
     }
 
     /**
@@ -183,27 +212,45 @@ public class ServicesInteractor {
      * @param employeeNumber User Number
      * @param employeeEmail  User email
      */
-    private void getProfile(String employeeNumber, String employeeEmail) {
+    private void getProfile(String employeeNumber, String employeeEmail, int option) {
         final int type = ServicesRequestType.PROFILE;
-        iServicesRetrofitMethods.getProfile(token, buildProfileRequest(employeeNumber, employeeEmail)).enqueue(new Callback<JsonObject>() {
+        Trace rastreo = FirebasePerformance.getInstance().newTrace("Cargar_Perfil");
+        rastreo.start();
+        String url = (ServicesConstants.GET_PROFILE == null || ServicesConstants.GET_PROFILE.isEmpty()) ? GET_PROFILE_LOCAL : ServicesConstants.GET_PROFILE;
+        //iServicesRetrofitMethods.getProfile(ServicesConstants.GET_PROFILE,token, buildProfileRequest(employeeNumber, employeeEmail,option)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getProfile(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildProfileRequest(employeeNumber, employeeEmail, option)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
+                rastreo.stop();
                 try {
                     ProfileResponse profileResponse = (ProfileResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ProfileResponse.class);
                     if (profileResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                        analytics.setUserProperty("CENTRO", profileResponse.getData().getResponse()[0].getCentro());
+                        analytics.setUserProperty("NOM_EMPRESA", profileResponse.getData().getResponse()[0].getNombreEmpresa());
+                        analytics.setUserProperty("ES_FILIAL", (String.valueOf(profileResponse.getData().getResponse()[0].getEsFilial())));
+                        analytics.setUserProperty("PUESTO", (profileResponse.getData().getResponse()[0].getNombrePuesto()));
+
                         getProfileResponse(profileResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log("Ruta:" + url + ", numero_de_empleado:" + employeeNumber + ", email:" + employeeEmail + ", opcion:" + option);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log("Ruta:" + url + ", numero_de_empleado:" + employeeNumber + ", email:" + employeeEmail + ", opcion:" + option);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                rastreo.stop();
+                crashlytics.log("Ruta:" + url + ", numero_de_empleado:" + employeeNumber + ", email:" + employeeEmail + ", opcion:" + option);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
@@ -247,13 +294,109 @@ public class ServicesInteractor {
      * @param employeeEmail  User emai
      * @return CoppelServicesProfileRequest Request model
      */
-    public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail) {
+    public CoppelServicesProfileRequest buildProfileRequest(String employeeNumber, String employeeEmail, int option) {
         CoppelServicesProfileRequest coppelServicesProfileRequest = new CoppelServicesProfileRequest();
-
         coppelServicesProfileRequest.setNum_empleado(employeeNumber);
         coppelServicesProfileRequest.setCorreo(employeeEmail);
+        coppelServicesProfileRequest.setVersion(getVersionApp());
+        //Se agrega parámetro de opcion 09/04/2019
+        coppelServicesProfileRequest.setOpcion(1);
+        String tokenFirebase = AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN);
+
+        if (tokenFirebase != null && !tokenFirebase.isEmpty()) {
+            coppelServicesProfileRequest.setId_firebase(tokenFirebase);
+        }
+
+        String requestAsString = JsonManager.madeJsonFromObject(coppelServicesProfileRequest).toString();
 
         return coppelServicesProfileRequest;
+    }
+
+    /* *******************************************************************************************************************************************************
+     *****************************************************          Cerrar sesión          *************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     * @param token          User token
+     */
+    public void getLogoutValidation(String employeeNumber, String employeeEmail, String token) {
+        this.token = token;
+        logOut(employeeNumber, employeeEmail, 2);
+        //logOut(employeeNumber, employeeEmail,3);
+    }
+
+    /**
+     * Make a request to get profile
+     *
+     * @param employeeNumber User Number
+     * @param employeeEmail  User email
+     */
+    private void logOut(String employeeNumber, String employeeEmail, int option) {
+        final int type = ServicesRequestType.LOGOUT;
+        iServicesRetrofitMethods.logout(ServicesConstants.WS_LOGOUT, token, buildProfileRequest(employeeNumber, employeeEmail, option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    LogoutResponse logoutResponse = (LogoutResponse) servicesUtilities.parseToObjectClass(response.body().toString(), LogoutResponse.class);
+                    if (logoutResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        crashlytics.setUserId("");
+                        getLogoutResponse(logoutResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.WS_LOGOUT);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.WS_LOGOUT);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.WS_LOGOUT);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    /**
+     * Checks that the response code is equal to 200
+     *
+     * @param response Server response
+     * @param code     Code response
+     * @param type     Services Request Type
+     */
+    public void getLogoutResponse(LogoutResponse response, int code, int type) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(type);
+
+        if (response != null && servicesGeneralValidations.verifySuccessCode(code)) {
+            getLogoutSuccess(response, type);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Profile method
+     *
+     * @param response Server response
+     * @param type     Services Request Type
+     */
+    public void getLogoutSuccess(LogoutResponse response, int type) {
+        ServicesResponse<LogoutResponse> servicesResponse = new ServicesResponse<>();
+        servicesResponse.setResponse(response);
+        servicesResponse.setType(type);
+        iServiceListener.onResponse(servicesResponse);
     }
 
     /* *******************************************************************************************************************************************************
@@ -272,6 +415,12 @@ public class ServicesInteractor {
         getPayrollVoucher(employeeNumber, typePetition, token);
     }
 
+
+    public void getPayrollVoucherSelected(String employeeNumber, int typePetition, int typeSelected, String token) {
+        this.token = token;
+        getPayrollVoucher(employeeNumber, typePetition, typeSelected, token);
+    }
+
     /**
      * Make a request to get voucher
      *
@@ -282,29 +431,97 @@ public class ServicesInteractor {
     private void getPayrollVoucher(String employeeNumber, int typePetition, final String token) {
 
         final int type = ServicesRequestType.PAYROLL_VOUCHER;
-        iServicesRetrofitMethods.getPayrollVoucher(token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        String url = (ServicesConstants.GET_VOUCHERS == null || ServicesConstants.GET_VOUCHERS.isEmpty()) ? ServicesConstants.GET_VOUCHERS_LOCAL : ServicesConstants.GET_VOUCHERS;
+        //iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucher(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildPayrollVoucherRequest(employeeNumber, typePetition)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 try {
-                    VoucherResponse voucherResponse = (VoucherResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponse.class);
+                    VoucherResponseGeneric voucherResponse = (VoucherResponseV2) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponseV2.class);
                     if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getPayrollVoucherResponse(voucherResponse, response.code(), type);
                     } else {
                         sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.GET_VOUCHER);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_VOUCHER);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
             }
         });
     }
+
+
+    private void getPayrollVoucher(String employeeNumber, int typePetition, int typeSelected, final String token) {
+        String service = "";
+        switch (typeSelected) {
+            case 1:
+                service = (ServicesConstants.GET_PAYROLL_VOUCHER == null || ServicesConstants.GET_PAYROLL_VOUCHER.isEmpty()) ? ServicesConstants.GET_NOMINA_LOCAL : ServicesConstants.GET_PAYROLL_VOUCHER;
+                //service = ServicesConstants.GET_PAYROLL_VOUCHER;
+                break;
+            case 2:
+                //service = ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                service = (ServicesConstants.GET_SAVING_FUND_VOUCHER == null || ServicesConstants.GET_SAVING_FUND_VOUCHER.isEmpty()) ? ServicesConstants.GET_VOUCHER_SAVINGFUND_LOCAL : ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                break;
+            case 3:
+                service = ServicesConstants.GET_GAS_VOUCHER;
+                break;
+            case 4:
+                service = ServicesConstants.GET_UTILITIES_VOUCHER;
+                break;
+            case 5:
+                service = ServicesConstants.GET_PENSION_VOUCHER;
+                break;
+            case 6:
+                //service = ServicesConstants.GET_BONUS_VOUCHER;
+                service = (ServicesConstants.GET_BONUS_VOUCHER == null || ServicesConstants.GET_BONUS_VOUCHER.isEmpty()) ? ServicesConstants.GET_BONUS_LOCAL : ServicesConstants.GET_BONUS_VOUCHER;
+                break;
+        }
+        final int type = ServicesRequestType.PAYROLL_VOUCHER;
+        iServicesRetrofitMethods.getPayrollVoucher(service, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildPayrollVoucherRequest(employeeNumber, typePetition, typeSelected)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethods.getPayrollVoucher(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherRequest(employeeNumber, typePetition,typeSelected)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    VoucherResponseGeneric voucherResponse = (VoucherResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherResponse.class);
+                    ((VoucherResponse) voucherResponse).setTypeSelected(typeSelected);
+                    if (voucherResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getPayrollVoucherResponse(voucherResponse, response.code(), type);
+                    } else {
+                        sendGenericError(type, response);
+                        crashlytics.log(ServicesConstants.GET_VOUCHER);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_VOUCHER);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
 
     /**
      * Checks that the response code is equal to 200
@@ -313,7 +530,7 @@ public class ServicesInteractor {
      * @param code     Code response
      * @param type     Services Request Type
      */
-    public void getPayrollVoucherResponse(VoucherResponse response, int code, int type) {
+    public void getPayrollVoucherResponse(VoucherResponseGeneric response, int code, int type) {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.PAYROLL_VOUCHER);
 
@@ -330,8 +547,8 @@ public class ServicesInteractor {
      * @param response Server response
      * @param type     Services Request Type
      */
-    public void getPayrollVoucherSuccess(VoucherResponse response, int type) {
-        ServicesResponse<VoucherResponse> servicesResponse = new ServicesResponse<>();
+    public void getPayrollVoucherSuccess(VoucherResponseGeneric response, int type) {
+        ServicesResponse<VoucherResponseGeneric> servicesResponse = new ServicesResponse<>();
         servicesResponse.setResponse(response);
         servicesResponse.setType(type);
         iServiceListener.onResponse(servicesResponse);
@@ -348,7 +565,17 @@ public class ServicesInteractor {
         CoppelServicesPayrollVoucherRequest coppelServicesPayrollVoucherRequest = new CoppelServicesPayrollVoucherRequest();
 
         coppelServicesPayrollVoucherRequest.setNum_empleado(employeeNumber);
-        coppelServicesPayrollVoucherRequest.setSolicitud(typePetition);
+        coppelServicesPayrollVoucherRequest.setOpcion(typePetition);
+
+        return coppelServicesPayrollVoucherRequest;
+    }
+
+    public CoppelServicesPayrollVoucherSelectedRequest buildPayrollVoucherRequest(String employeeNumber, int typePetition, int typeSelected) {
+        CoppelServicesPayrollVoucherSelectedRequest coppelServicesPayrollVoucherRequest = new CoppelServicesPayrollVoucherSelectedRequest();
+
+        coppelServicesPayrollVoucherRequest.setNum_empleado(employeeNumber);
+        coppelServicesPayrollVoucherRequest.setOpcion(typePetition);
+        coppelServicesPayrollVoucherRequest.setTipo_Constancia(typeSelected);
 
         return coppelServicesPayrollVoucherRequest;
     }
@@ -387,8 +614,31 @@ public class ServicesInteractor {
      * @param token          User token
      */
     private void getPayrollVoucherDetail(String employeeNumber, String email, final int typeConstancy, int request, final int shippingOption, String date, CoppelServicesPayrollVoucherDetailRequest.PayrollVoucherDetailGenericData data, String token) {
-
-        iServicesRetrofitMethods.getPayrollVoucherDetail(token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+        String service = "";
+        switch (typeConstancy) {
+            case 1:
+                //service = ServicesConstants.GET_PAYROLL_VOUCHER;
+                service = (ServicesConstants.GET_PAYROLL_VOUCHER == null || ServicesConstants.GET_PAYROLL_VOUCHER.isEmpty()) ? ServicesConstants.GET_NOMINA_LOCAL : ServicesConstants.GET_PAYROLL_VOUCHER;
+                break;
+            case 2:
+                //service = ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                service = (ServicesConstants.GET_SAVING_FUND_VOUCHER == null || ServicesConstants.GET_SAVING_FUND_VOUCHER.isEmpty()) ? ServicesConstants.GET_VOUCHER_SAVINGFUND_LOCAL : ServicesConstants.GET_SAVING_FUND_VOUCHER;
+                break;
+            case 3:
+                service = ServicesConstants.GET_GAS_VOUCHER;
+                break;
+            case 4:
+                service = ServicesConstants.GET_UTILITIES_VOUCHER;
+                break;
+            case 5:
+                service = ServicesConstants.GET_PENSION_VOUCHER;
+                break;
+            case 6:
+                service = ServicesConstants.GET_BONUS_VOUCHER;
+                break;
+        }
+        //iServicesRetrofitMethods.getPayrollVoucherDetail(ServicesConstants.GET_VOUCHER,token, buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getPayrollVoucherDetail(service, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildPayrollVoucherDetailRequest(employeeNumber, email, typeConstancy, request, shippingOption, date, data)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -399,9 +649,13 @@ public class ServicesInteractor {
                             if (voucherRosterResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherRosterDetailResponse(voucherRosterResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 1");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 1");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ROSTER_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -417,9 +671,13 @@ public class ServicesInteractor {
                             if (voucherSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherSavingFundDetailResponse(voucherSavingFundResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 2");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 2");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_SAVINGFUND_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -435,9 +693,13 @@ public class ServicesInteractor {
                             if (voucherGasResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherGasDetailResponse(voucherGasResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 3");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 3");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_GAS_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -453,9 +715,13 @@ public class ServicesInteractor {
                             if (voucherPTUResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherPTUDetailResponse(voucherPTUResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 4");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 4");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -471,9 +737,13 @@ public class ServicesInteractor {
                             if (voucherAlimonyResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherAlimonyDetailResponse(voucherAlimonyResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 5");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 5");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -489,9 +759,13 @@ public class ServicesInteractor {
                             if (voucherBonusResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                                 getPayrollVoucherBonusDetailResponse(voucherBonusResponse, response.code(), ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL);
                             } else {
+                                crashlytics.log(ServicesConstants.GET_VOUCHER + " typeConstancy == 6");
+                                crashlytics.recordException(new Exception(response.body().toString()));
                                 sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
                             }
                         } catch (Exception e) {
+                            crashlytics.log(ServicesConstants.GET_VOUCHER + " tpeConstancy == 6");
+                            crashlytics.recordException(e);
                             sendGenericError(ServicesRequestType.PAYROLL_VOUCHER_BONUS_DETAIL, response);
                         }
                     } else if (shippingOption == 1) {
@@ -504,6 +778,8 @@ public class ServicesInteractor {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_VOUCHER);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.PAYROLL_VOUCHER_DETAIL));
             }
         });
@@ -714,8 +990,9 @@ public class ServicesInteractor {
         coppelServicesPayrollVoucherDetailRequest.setNum_empleado(employeeNumber);
         coppelServicesPayrollVoucherDetailRequest.setCorreo(email);
         coppelServicesPayrollVoucherDetailRequest.setTipo_Constancia(typeConstancy);
-        coppelServicesPayrollVoucherDetailRequest.setSolicitud(request);
-        coppelServicesPayrollVoucherDetailRequest.setOpcionEnvio(shippingOption);
+        //coppelServicesPayrollVoucherDetailRequest.setSolicitud(request);
+        coppelServicesPayrollVoucherDetailRequest.setOpcion(request);
+        coppelServicesPayrollVoucherDetailRequest.setOpcionEnvio(String.valueOf(shippingOption));
         coppelServicesPayrollVoucherDetailRequest.setFecha(date);
         coppelServicesPayrollVoucherDetailRequest.setDatos(data);
 
@@ -735,9 +1012,13 @@ public class ServicesInteractor {
                 setPayrollVoucherToEmailResponse(voucherSendMailResponse, response.code(), servicesRequestType);
             } else {
                 sendGenericError(servicesRequestType, response);
+                crashlytics.log("public void getSendDetail");
+                crashlytics.recordException(new Exception(response.body().toString()));
             }
 
         } catch (Exception e) {
+            crashlytics.log("public void getSendDetail");
+            crashlytics.recordException(e);
             sendGenericError(servicesRequestType, response);
         }
     }
@@ -784,10 +1065,14 @@ public class ServicesInteractor {
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) servicesUtilities.parseToObjectClass(response.body().toString(), VoucherDownloadResponse.class);
                 setPayrollVoucherDownloadResponse(voucherDownloadResponse, response.code(), servicesRequestType);
             } else {
+                crashlytics.log("public void getDownloadVoucher");
+                crashlytics.recordException(new Exception(response.body().toString()));
                 sendGenericError(servicesRequestType, response);
             }
 
         } catch (Exception e) {
+            crashlytics.log("public void getDownloadVoucher");
+            crashlytics.recordException(e);
             sendGenericError(servicesRequestType, response);
         }
     }
@@ -846,7 +1131,8 @@ public class ServicesInteractor {
      */
     private void getLoansSavingFund(String employeeNumber, String token) {
 
-        iServicesRetrofitMethods.getLoansSavingFund(token, buildPayrollVoucherRequest(employeeNumber)).enqueue(new Callback<JsonObject>() {
+        String url = (ServicesConstants.GET_LOANSAVINGFUND == null || ServicesConstants.GET_LOANSAVINGFUND.isEmpty()) ? ServicesConstants.GET_SAVINGS_LOCAL : ServicesConstants.GET_LOANSAVINGFUND;
+        iServicesRetrofitMethods.getLoansSavingFund(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildPayrollVoucherRequest(employeeNumber)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -855,17 +1141,32 @@ public class ServicesInteractor {
                     if (loanSavingFundResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
                         getLoanSavingFundResponse(loanSavingFundResponse, response.code());
                     } else {
+                        crashlytics.log(ServicesConstants.GET_LOANSAVINGFUND);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
                     }
-
                 } catch (Exception e) {
-                    sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                    crashlytics.log(ServicesConstants.GET_LOANSAVINGFUND);
+                    crashlytics.recordException(e);
+                    if (response.body() == null) {
+                        ServicesError servicesError = new ServicesError();
+                        servicesError.setType(ServicesRequestType.TIME_OUT_REQUEST);
+                        iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_login), servicesError));
+                    } else {
+                        sendGenericError(ServicesRequestType.LOAN_SAVINGFUND, response);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND));
+                crashlytics.log(ServicesConstants.GET_LOANSAVINGFUND);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                ServicesError error = servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LOAN_SAVINGFUND);
+                if (t instanceof SocketTimeoutException) {
+                    error.setType(ServicesRequestType.TIME_OUT_REQUEST);
+                }
+                iServiceListener.onError(error);
             }
         });
     }
@@ -922,11 +1223,9 @@ public class ServicesInteractor {
      * @return General Request model
      */
     public CoppelServicesLoanSavingFundRequest buildPayrollVoucherRequest(String employeeNumber) {
-        CoppelServicesLoanSavingFundRequest coppelServicesLoanSavingFundRequest = new CoppelServicesLoanSavingFundRequest();
 
-        coppelServicesLoanSavingFundRequest.setNum_empleado(employeeNumber);
-
-        return coppelServicesLoanSavingFundRequest;
+        //coppelServicesLoanSavingFundRequest.setNum_empleado(employeeNumber);
+        return new CoppelServicesLoanSavingFundRequest(employeeNumber, 1);
     }
 
     /* *******************************************************************************************************************************************************
@@ -936,9 +1235,9 @@ public class ServicesInteractor {
     /**
      * Make a request to get url recover password
      */
-    public void getRecoverPassword() {
+    public void getRecoverPassword(int clave) {
 
-        iServicesRetrofitMethods.getRecoveryPassword(buildRecoveryPasswordRequest()).enqueue(new Callback<JsonObject>() {
+        iServicesRetrofitMethods.getRecoveryPassword(ServicesConstants.GET_RECOVERY_PASSWORD, buildRecoveryPasswordRequest(clave)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
@@ -951,16 +1250,22 @@ public class ServicesInteractor {
                         getRecoveryPasswordResponse(recoveryPasswordResponse, response.code(), type);
 
                     } else {
+                        crashlytics.log(ServicesConstants.GET_RECOVERY_PASSWORD);
+                        crashlytics.recordException(new Exception(response.body().toString()));
                         sendGenericError(type, response);
                     }
 
                 } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_RECOVERY_PASSWORD);
+                    crashlytics.recordException(e);
                     sendGenericError(type, response);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_RECOVERY_PASSWORD);
+                crashlytics.recordException(new Exception(t.getMessage()));
                 iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.RECOVERY_PASSWORD));
             }
         });
@@ -1002,9 +1307,10 @@ public class ServicesInteractor {
      *
      * @return General Request model
      */
-    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest() {
+    public CoppelServicesRecoveryPasswordRequest buildRecoveryPasswordRequest(int clave) {
         CoppelServicesRecoveryPasswordRequest coppelServicesRecoveryPasswordRequest = new CoppelServicesRecoveryPasswordRequest();
-        coppelServicesRecoveryPasswordRequest.setSolicitud(1);
+        coppelServicesRecoveryPasswordRequest.setSolicitud(2);
+        coppelServicesRecoveryPasswordRequest.setClave(clave);
         return coppelServicesRecoveryPasswordRequest;
     }
 
@@ -1015,29 +1321,35 @@ public class ServicesInteractor {
     /**
      * Validates if the data are correct
      *
-     * @param numEmpleado User Number
+     * @param employeeNumber User Number
      */
-    public void getLettersValidateSignatureValidation(int numEmpleado) {
+    /*public void getLettersValidateSignatureValidation(String employeeNumber,String token) {
+        this.token = token;
         final ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
         //String validation = servicesGeneralValidations.validatePassword(password, context);
         String validation = ServicesConstants.SUCCESS;
         if (validation.equals(ServicesConstants.SUCCESS)) {
-            getLettersValidateSignature(numEmpleado);
+            getLettersValidateSignature(employeeNumber);
         } else {
             servicesError.setMessage(validation);
             iServiceListener.onError(servicesError);
         }
+    }*/
+    public void getLettersValidateSignatureValidation(String employeeNumber, String token) {
+        this.token = token;
+        getLettersValidateSignature(employeeNumber);
     }
 
     /**
      * Make a request to get Letters Validate Signature
      *
-     * @param numEmpleado User Number
+     * @param employeeNumber User Number
      */
-    private void getLettersValidateSignature(int numEmpleado) {
-
-        iServicesRetrofitMethods.getLettersValidationSignature("token", buildLettersSignatureRequest(numEmpleado)).enqueue(new Callback<LetterSignatureResponse>() {
+    private void getLettersValidateSignature(String employeeNumber) {
+        String url = (ServicesConstants.GET_LETTERS_VALIDATE_SIGNATURE == null || ServicesConstants.GET_LETTERS_VALIDATE_SIGNATURE.isEmpty()) ? ServicesConstants.GET_LETTER_LOCAL : ServicesConstants.GET_LETTERS_VALIDATE_SIGNATURE;
+        iServicesRetrofitMethods.getLettersValidationSignature(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildLettersSignatureRequest(employeeNumber)).enqueue(new Callback<LetterSignatureResponse>() {
+            //iServicesRetrofitMethodsLocal.getLettersValidationSignature("consultas",token, buildLettersSignatureRequest(employeeNumber)).enqueue(new Callback<LetterSignatureResponse>() {
             @Override
             public void onResponse(Call<LetterSignatureResponse> call, Response<LetterSignatureResponse> response) {
 
@@ -1104,7 +1416,7 @@ public class ServicesInteractor {
      * @param employeeNumber User Number
      * @return General Request model
      */
-    public CoppelServicesLettersSignatureRequest buildLettersSignatureRequest(int employeeNumber) {
+    public CoppelServicesLettersSignatureRequest buildLettersSignatureRequest(String employeeNumber) {
         CoppelServicesLettersSignatureRequest coppelServicesLettersSignatureRequest = new CoppelServicesLettersSignatureRequest();
         coppelServicesLettersSignatureRequest.setNum_empleado(employeeNumber);
         return coppelServicesLettersSignatureRequest;
@@ -1120,7 +1432,7 @@ public class ServicesInteractor {
      * @param numEmpleado User Number
      * @param tipoCarta   Type letter
      */
-    public void getLettersConfigValidation(int numEmpleado, int tipoCarta) {
+   /* public void getLettersConfigValidation(String numEmpleado, int tipoCarta) {
         final ServicesError servicesError = new ServicesError();
         servicesError.setType(ServicesRequestType.LETTERSCONFIG);
         //String validation = servicesGeneralValidations.validatePassword(password, context);
@@ -1131,16 +1443,24 @@ public class ServicesInteractor {
             servicesError.setMessage(validation);
             iServiceListener.onError(servicesError);
         }
+    }*/
+    public void getLettersConfigValidation(String numEmpleado, int tipoCarta, String token) {
+        this.token = token;
+        getLettersConfig(numEmpleado, tipoCarta);
     }
+
 
     /**
      * Make a request to get Letters Validate Signature
      *
      * @param numEmpleado User Number
      */
-    private void getLettersConfig(int numEmpleado, int tipoCarta) {
-
-        iServicesRetrofitMethods.getLettersConfig("token", buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
+    private void getLettersConfig(String numEmpleado, int tipoCarta) {
+        String url = (ServicesConstants.GET_CONFIG == null || ServicesConstants.GET_CONFIG.isEmpty()) ? ServicesConstants.GET_LETTER_LOCAL : ServicesConstants.GET_CONFIG;
+        //retrofitLocal = ServicesRetrofitManager.getInstance().getRetrofitAPILocal("2024-03-25T17:38:35.244Z",token,"-99.985171","20.270460","fs9999c7q86c33cdfd5f55");
+        //iServicesRetrofitMethodsLocal = retrofitLocal.create(IServicesRetrofitMethods.class);
+        iServicesRetrofitMethods.getLettersConfig(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
+            //iServicesRetrofitMethodsLocal.getLettersConfig("consultas", buildLettersConfigRequest(numEmpleado, tipoCarta)).enqueue(new Callback<LetterConfigResponse>() {
             @Override
             public void onResponse(Call<LetterConfigResponse> call, Response<LetterConfigResponse> response) {
                 getLettersConfigResponse(response);
@@ -1186,7 +1506,7 @@ public class ServicesInteractor {
 
                 ServicesResponse<LetterConfigResponse> servicesResponse = new ServicesResponse<>();
                 servicesResponse.setResponse(letterConfigResponse);
-                servicesResponse.setType(ServicesRequestType.LETTERSVALIDATIONSIGNATURE);
+                servicesResponse.setType(ServicesRequestType.LETTERSCONFIG);
                 iServiceListener.onResponse(servicesResponse);
 
             } else {
@@ -1207,12 +1527,2654 @@ public class ServicesInteractor {
      * @param tipoCarta      Type letter
      * @return General Request model
      */
-    public CoppelServicesLettersConfigRequest buildLettersConfigRequest(int employeeNumber, int tipoCarta) {
+    public CoppelServicesLettersConfigRequest buildLettersConfigRequest(String employeeNumber, int tipoCarta) {
         CoppelServicesLettersConfigRequest coppelServicesLettersConfigRequest = new CoppelServicesLettersConfigRequest();
         coppelServicesLettersConfigRequest.setNum_empleado(employeeNumber);
         coppelServicesLettersConfigRequest.setTipo_carta(tipoCarta);
         return coppelServicesLettersConfigRequest;
     }
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Letters Preview          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     * @param tipoCarta   Type letter
+     * @param fields      fields to letter
+     * @param token       user token
+     */
+    public void getLettersPreview(String numEmpleado, int tipoCarta, Map<String, Object> fields, String token) {
+        this.token = token;
+        getLetterPreview(numEmpleado, tipoCarta, fields);
+    }
+
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private void getLetterPreview(String numEmpleado, int tipoCarta, Map<String, Object> fields) {
+        String url = (ServicesConstants.GET_LETTER_PREVIEW == null || ServicesConstants.GET_LETTER_PREVIEW.isEmpty()) ? ServicesConstants.GET_LETTER_LOCAL : ServicesConstants.GET_LETTER_PREVIEW;
+        iServicesRetrofitMethods.getLettersPreview(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildLetterPreviewRequest(numEmpleado, tipoCarta, fields)).enqueue(new Callback<LetterPreviewResponse>() {
+            //iServicesRetrofitMethodsLocal.getLettersPreview("consultas",token,"2024-03-25T17:38:35.244Z","-99.985171","20.270460","fs9999c7q86c33cdfd5f55", buildLetterPreviewRequest(numEmpleado, tipoCarta,fields)).enqueue(new Callback<LetterPreviewResponse>() {
+
+            @Override
+            public void onResponse(Call<LetterPreviewResponse> call, Response<LetterPreviewResponse> response) {
+                getLetterPreviewResponse(response);
+            }
+
+            @Override
+            public void onFailure(Call<LetterPreviewResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.LETTERSCONFIG));
+            }
+        });
+    }
+
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLetterPreviewResponse(Response<LetterPreviewResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERPREVIEW);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLetterPreviewSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+
+    /**
+     * Handles a successful response of the Letters Config method
+     *
+     * @param response Server response
+     */
+    public void getLetterPreviewSuccess(Response<LetterPreviewResponse> response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.LETTERPREVIEW);
+
+        if (response != null && response.body() != null) {
+
+            LetterPreviewResponse letterPreviewResponse = response.body();
+
+            if (letterPreviewResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+
+                ServicesResponse<LetterPreviewResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterPreviewResponse);
+                servicesResponse.setType(ServicesRequestType.LETTERPREVIEW);
+                iServiceListener.onResponse(servicesResponse);
+
+            } else {
+                servicesError.setMessage(letterPreviewResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @param tipoCarta      Type letter
+     * @param fields         fields to letter
+     * @return General Request model
+     */
+    public CoppelServicesLettersPreviewRequest buildLetterPreviewRequest(String employeeNumber, int tipoCarta, Map<String, Object> fields) {
+        CoppelServicesLettersPreviewRequest coppelServicesLettersPreviewRequest = new CoppelServicesLettersPreviewRequest();
+        coppelServicesLettersPreviewRequest.setNum_empleado(employeeNumber);
+        coppelServicesLettersPreviewRequest.setTipo_carta(tipoCarta);
+        coppelServicesLettersPreviewRequest.setDatos(fields);
+        Gson gson = new Gson();
+        String json = gson.toJson(coppelServicesLettersPreviewRequest);
+        return coppelServicesLettersPreviewRequest;
+    }
+
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Letters Generate          ************************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param numEmpleado User Number
+     * @param tipoCarta   Type letter
+     * @param fields      fields to letter
+     * @param token       user token
+     */
+    public <T> void getLettersGenerate(String numEmpleado, int tipoCarta, int opcionEnvio, String correo, Map<String, T> fields, String token) {
+        this.token = token;
+        getLetterGenerate(numEmpleado, tipoCarta, opcionEnvio, correo, fields);
+    }
+
+    /**
+     * Make a request to get Letters Validate Signature
+     *
+     * @param numEmpleado User Number
+     */
+    private <T> void getLetterGenerate(String numEmpleado, int tipoCarta, final int opcionEnvio, String correo, Map<String, T> data) {
+        String url = (ServicesConstants.GET_LETTER_GENERATE == null || ServicesConstants.GET_LETTER_GENERATE.isEmpty()) ? ServicesConstants.GET_LETTER_LOCAL : ServicesConstants.GET_LETTER_GENERATE;
+        iServicesRetrofitMethods.getLettersGenerate(url, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", buildLetterGenerateRequest(numEmpleado, tipoCarta, opcionEnvio, correo, data)).enqueue(new Callback<LetterGenerateResponse>() {
+            //iServicesRetrofitMethodsLocal.getLettersGenerate("consultas",token,"2024-03-25T17:38:35.244Z","-99.985171","20.270460","fs9999c7q86c33cdfd5f55", buildLetterGenerateRequest(numEmpleado, tipoCarta, opcionEnvio, correo,data)).enqueue(new Callback<LetterGenerateResponse>() {
+            @Override
+            public void onResponse(Call<LetterGenerateResponse> call, Response<LetterGenerateResponse> response) {
+                getLetterGenerateResponse(response, opcionEnvio);
+            }
+
+            @Override
+            public void onFailure(Call<LetterGenerateResponse> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t,
+                        opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getLetterGenerateResponse(Response<LetterGenerateResponse> response, int opcionEnvio) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+
+        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+            getLetterGenerateSuccess(response, opcionEnvio);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_letters), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Letters Config method
+     *
+     * @param response Server response
+     */
+    public void getLetterGenerateSuccess(Response<LetterGenerateResponse> response, int opcionEnvio) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+
+        if (response != null && response.body() != null) {
+
+            LetterGenerateResponse letterGenerateResponse = response.body();
+            if (letterGenerateResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<LetterGenerateResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(letterGenerateResponse);
+                servicesResponse.setType(opcionEnvio == ServicesConstants.SHIPPING_OPTION_SEND_EMAIL ?
+                        ServicesRequestType.LETTERGENERATE_SENDMAIL : ServicesRequestType.LETTERGENERATE_DOWNLOADMAIL);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(letterGenerateResponse.getData().getResponse().getUserMessage());
+                iServiceListener.onError(servicesError);
+            }
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_profile));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the letters validation signature request
+     *
+     * @param employeeNumber User Number
+     * @param tipoCarta      Type letter
+     * @param data           fields to letter
+     * @return General Request model
+     */
+    public <T> CoppelServicesLettersGenerateRequest buildLetterGenerateRequest(String employeeNumber, int tipoCarta, int opcionEnvio, String correo, Map<String, T> data) {
+        CoppelServicesLettersGenerateRequest coppelServicesLettersGenerateRequest = new CoppelServicesLettersGenerateRequest();
+        coppelServicesLettersGenerateRequest.setNum_empleado(employeeNumber);
+        coppelServicesLettersGenerateRequest.setTipo_carta(tipoCarta);
+        coppelServicesLettersGenerateRequest.setCorreo(correo);
+        coppelServicesLettersGenerateRequest.setOpcionEnvio(opcionEnvio);
+        coppelServicesLettersGenerateRequest.setDatos(data);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(coppelServicesLettersGenerateRequest);
+
+        return coppelServicesLettersGenerateRequest;
+    }
+
+    /******************************************************/
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Benefits          *****************************************************************
+     *********************************************************************************************************************************************************/
+
+    /**
+     * Validates if the data are correct
+     *
+     * @param benefitsRequestData BenefitsRequestData Number
+     * @param token               User token
+     */
+    public void getBenefits(BenefitsRequestData benefitsRequestData, String token) {
+        this.token = token;
+        String urlBenefits = (ServicesConstants.GET_BENEFITS == null || ServicesConstants.GET_BENEFITS.isEmpty()) ? ServicesConstants.GET_BENEFITS_LOCAL : ServicesConstants.GET_BENEFITS;
+        switch (benefitsRequestData.getSolicitud()) {
+            case 1:
+                getBenefitsStatesRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 2:
+                getBenefitsCitiesRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 3:
+                getBenefitsCategoriesRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 4:
+                getBenefitsDiscountsRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 5:
+                getBenefitsCompanyRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 6:
+                getBenefitsSearchRequest(benefitsRequestData, token, urlBenefits);
+                break;
+            case 7:
+                getBenefitsAdvertisingRequest(benefitsRequestData, token, urlBenefits);
+                break;
+
+            case 8:
+                getBenefitsCategoriesLocationRequest(benefitsRequestData, token, urlBenefits);
+                break;
+        }
+    }
+
+    private void getBenefitsAdvertisingRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsAdvertising(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsAdvertisingRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsAdvertising("consulta", token, (CoppelServicesBenefitsAdvertisingRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsStatesRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsStates(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsStatesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsCitiesRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsCity(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsCityRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsCity("consulta", token, (CoppelServicesBenefitsCityRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    /**
+     * Make a request to get Loans/SavingFund
+     *
+     * @param benefitsRequestData BenefitsRequestData Number
+     * @param token               User token
+     */
+    private void getBenefitsCategoriesRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsCategories(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsCategoriesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsCategories("consulta",token,(CoppelServicesBenefitsCategoriesRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+
+    private void getBenefitsCategoriesLocationRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsCategoriesLocation(ServicesConstants.GET_BENEFITS, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsCategoriesLocationRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsCategoriesLocation("consulta",token,(CoppelServicesBenefitsCategoriesLocationRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsDiscountsRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsDiscounts(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsDiscountsRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsDiscounts("consulta",token,(CoppelServicesBenefitsDiscountsRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse == null) {
+                        BenefitsEmptyResponse benefitsEmptyResponse = (BenefitsEmptyResponse) servicesUtilities.parseToObjectClass(response.body().toString(), BenefitsEmptyResponse.class);
+                        getBenefitsResponse(benefitsEmptyResponse, response.code());
+                    } else if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+
+    private void getBenefitsCompanyRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsCompany(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsCompany("consulta",token,(CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitsBaseResponse benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    //getBenefitsResponse(benefitsRequestData.getBenefits_type());
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    private void getBenefitsSearchRequest(BenefitsRequestData benefitsRequestData, String token, String url) {
+        iServicesRetrofitMethods.getBenefitsSearch(url, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", (CoppelServicesBenefitsSearchRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            //iServicesRetrofitMethodsLocal.getBenefitsCompany("consulta",token,(CoppelServicesBenefitsCompanyRequest) buildBenefitsRequest(benefitsRequestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    BenefitsBaseResponse benefitsBaseResponse;
+                    JsonElement json = new JsonParser().parse(response.body().toString());
+                    JsonArray listCategories = json.getAsJsonObject().getAsJsonObject("data")
+                            .getAsJsonObject("response").getAsJsonArray("Categorias");
+
+                    if (listCategories.size() == 1 && listCategories.get(0).getAsJsonObject().get("cve").getAsInt() == 0) {
+                        benefitsBaseResponse = new Gson().fromJson(json.getAsJsonObject().toString(), BenefitsSearchEmptyResponse.class);
+                    } else {
+                        benefitsBaseResponse = (BenefitsBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getBenefitsResponse(benefitsRequestData.getBenefits_type()));
+                    }
+                    if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getBenefitsResponse(benefitsBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_BENEFITS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.BENEFITS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_BENEFITS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.BENEFITS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_BENEFITS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.BENEFITS));
+            }
+        });
+    }
+
+    /**
+     * Checks whether the server response is successful or error
+     *
+     * @param response Server response
+     */
+    public void getBenefitsResponse(BenefitsBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.BENEFITS);
+
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getBenefitsSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    /**
+     * Handles a successful response of the Loans/SavingFund method
+     *
+     * @param response Server response
+     */
+    public void getBenefitsSuccess(BenefitsBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.BENEFITS);
+
+        if (response != null && response != null) {
+
+            BenefitsBaseResponse benefitsBaseResponse = response;
+            if (benefitsBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<BenefitsBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(benefitsBaseResponse);
+                servicesResponse.setType(ServicesRequestType.BENEFITS);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_generic_service));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    /**
+     * Constructs the model to be sent for the Loans/SavingFund request
+     *
+     * @param benefitsRequestData {BenefitsRequestData} request
+     * @return General Request model
+     */
+    public CoppelServicesBenefitsBaseRequest buildBenefitsRequest(BenefitsRequestData benefitsRequestData) {
+        CoppelServicesBenefitsBaseRequest coppelServicesBenefitsRequest = null;
+
+        int solicitud = benefitsRequestData.getSolicitud();
+
+        switch (benefitsRequestData.getBenefits_type()) {
+
+            case BENEFITS_STATES:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsStatesRequest(solicitud);
+                break;
+            case BENEFITS_CITY:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCityRequest(solicitud, benefitsRequestData.getNum_estado());
+                break;
+            case BENEFITS_CATEGORIES:
+                if (benefitsRequestData.getSolicitud() == 8) {
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesLocationRequest(solicitud,
+                            benefitsRequestData.getLatitud(),
+                            benefitsRequestData.getLongitud());
+                } else {
+                    coppelServicesBenefitsRequest = new CoppelServicesBenefitsCategoriesRequest(solicitud,
+                            benefitsRequestData.getNum_estado(),
+                            benefitsRequestData.getNum_ciudad());
+                }
+
+                break;
+            case BENEFITS_DISCOUNTS:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsDiscountsRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getClave_servicio());
+                break;
+            case BENEFITS_COMPANY:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsCompanyRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getClave_servicio(),
+                        String.valueOf(benefitsRequestData.getIdempresa()));
+                break;
+            case BENEFITS_ADVERTISING:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsAdvertisingRequest(solicitud,
+                        benefitsRequestData.getIdempresa());
+                break;
+
+            case BENEFITS_SEARCH:
+                coppelServicesBenefitsRequest = new CoppelServicesBenefitsSearchRequest(solicitud,
+                        benefitsRequestData.getNum_estado(),
+                        benefitsRequestData.getNum_ciudad(),
+                        benefitsRequestData.getDes_busqueda());
+                break;
+        }
+
+        return coppelServicesBenefitsRequest;
+    }
+
+    public Class getBenefitsResponse(BenefitsType benefitsType) {
+        BenefitsBaseResponse benefitsBaseResponse = null;
+
+        Class clazz = null;
+        switch (benefitsType) {
+
+            case BENEFITS_STATES:
+                benefitsBaseResponse = new BenefitsStatesResponse();
+                clazz = BenefitsStatesResponse.class;
+                break;
+            case BENEFITS_CITY:
+                benefitsBaseResponse = new BenefitsCitiesResponse();
+                clazz = BenefitsCitiesResponse.class;
+
+                break;
+            case BENEFITS_CATEGORIES:
+                benefitsBaseResponse = new BenefitsCategoriesResponse();
+                clazz = BenefitsCategoriesResponse.class;
+
+                break;
+            case BENEFITS_DISCOUNTS:
+                benefitsBaseResponse = new BenefitsDiscountsResponse();
+                clazz = BenefitsDiscountsResponse.class;
+
+                break;
+            case BENEFITS_COMPANY:
+                benefitsBaseResponse = new BenefitsCompaniesResponse();
+                clazz = BenefitsCompaniesResponse.class;
+
+                break;
+            case BENEFITS_ADVERTISING:
+                benefitsBaseResponse = new BenefitsAdvertisingResponse();
+                clazz = BenefitsAdvertisingResponse.class;
+
+                break;
+
+            case BENEFITS_SEARCH:
+                benefitsBaseResponse = new BenefitsSearchResultsResponse();
+                clazz = BenefitsSearchResultsResponse.class;
+                break;
+        }
+
+        return clazz;
+    }
+
+
+    /******************************************************/
+    /* *******************************************************************************************************************************************************
+     ***************************************************        Fondo Ahorro          *****************************************************************
+     *********************************************************************************************************************************************************/
+    public void getFondoAhorro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        this.token = token;
+
+        switch (fondoAhorroData.getWithDrawSavingType()) {
+            case CONSULTA_RETIRO:
+                getConsultaRetiro(fondoAhorroData, token);
+                break;
+            case GUARDAR_RETIRO:
+                getGuardarRetiro(fondoAhorroData, token);
+                break;
+            case CONSULTA_ABONO:
+                getConsultaAbono(fondoAhorroData, token);
+                break;
+            case GUARDAR_ABONO:
+                getGuardarAbono(fondoAhorroData, token);
+                break;
+            case CONSULTA_AHORRO:
+                getConsultaAhorroAdicional(fondoAhorroData, token);
+                break;
+            case GUARDAR_AHORRO:
+                getGuardarAhorro(fondoAhorroData, token);
+                break;
+
+            case CONSULTA_METODOS_PAGO:
+                getConsultaMetodosPago(fondoAhorroData, token);
+                break;
+        }
+    }
+
+
+    private void getConsultaRetiro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultaRetiro(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-03-25T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesConsultaRetiroRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getGuardarRetiro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getGuardarRetiro(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesGuardarRetiroRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getConsultaAhorroAdicional(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultarAhorroAdicional(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesConsultaAhorroAdicionalRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+    private void getGuardarAhorro(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getGuardarAhorro(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesGuardarAhorroRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getConsultaAbono(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultarAbono(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesConsultaAbonoRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    private void getGuardarAbono(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getGuardarAbono(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesGuardarAbonoRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+    private void getConsultaMetodosPago(WithDrawSavingRequestData fondoAhorroData, String token) {
+        iServicesRetrofitMethods.getConsultarMetodo(ServicesConstants.GET_WITHDRAWSAVINGS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (CoppelServicesConsultaMetodoPagoRequest) buildWithDrawRequest(fondoAhorroData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                try {
+                    WithDrawSavingBaseResponse withDrawSavingBaseResponse = (WithDrawSavingBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getWithDrawSavingResponse(fondoAhorroData.getWithDrawSavingType()));
+                    if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getSavingResponse(withDrawSavingBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                        crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.WITHDRAWSAVING, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_WITHDRAWSAVINGS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.WITHDRAWSAVING));
+            }
+        });
+    }
+
+
+    public void getSavingResponse(WithDrawSavingBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getSavingSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+    public void getSavingSuccess(WithDrawSavingBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+
+        if (response != null && response != null) {
+
+            WithDrawSavingBaseResponse withDrawSavingBaseResponse = response;
+            if (withDrawSavingBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<WithDrawSavingBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(withDrawSavingBaseResponse);
+                servicesResponse.setType(ServicesRequestType.WITHDRAWSAVING);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(context.getString(R.string.error_voucher));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public CoppelServicesBaseFondoAhorroRequest buildWithDrawRequest(WithDrawSavingRequestData withDrawSavingRequestData) {
+        CoppelServicesBaseFondoAhorroRequest coppelServicesBaseFondoAhorroRequest = null;
+
+        int solicitud = withDrawSavingRequestData.getOpcion();
+        //int solicitud = 1;
+
+        switch (withDrawSavingRequestData.getWithDrawSavingType()) {
+
+            case CONSULTA_RETIRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaRetiroRequest(withDrawSavingRequestData.getNum_empleado(), solicitud);
+                break;
+            case GUARDAR_RETIRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarRetiroRequest(
+                        withDrawSavingRequestData.getNum_empleado(),
+                        solicitud, withDrawSavingRequestData.getImp_margencredito(),
+                        withDrawSavingRequestData.getImp_ahorroadicional());
+                break;
+            case CONSULTA_ABONO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaAbonoRequest(withDrawSavingRequestData.getNum_empleado(), solicitud);
+                break;
+            case GUARDAR_ABONO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarAbonoRequest(withDrawSavingRequestData.getNum_empleado(), solicitud,
+                        withDrawSavingRequestData.getImp_cuentacorriente(), withDrawSavingRequestData.getImp_ahorroadicional()
+                        , withDrawSavingRequestData.getImp_fondoempleado(), withDrawSavingRequestData.getClv_retiro(), withDrawSavingRequestData.getIdu_traspaso());
+                break;
+            case CONSULTA_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaAhorroAdicionalRequest(withDrawSavingRequestData.getNum_empleado(), solicitud);
+                break;
+            case GUARDAR_AHORRO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesGuardarAhorroRequest(withDrawSavingRequestData.getNum_empleado(), solicitud, withDrawSavingRequestData.getImp_cuotaahorro());
+                break;
+
+            case CONSULTA_METODOS_PAGO:
+                coppelServicesBaseFondoAhorroRequest = new CoppelServicesConsultaMetodoPagoRequest(withDrawSavingRequestData.getNum_empleado(), solicitud, withDrawSavingRequestData.getClv_abonar());
+                break;
+
+        }
+
+        return coppelServicesBaseFondoAhorroRequest;
+    }
+
+    public Class getWithDrawSavingResponse(WithDrawSavingType withDrawSavingType) {
+        Class clazz = null;
+        switch (withDrawSavingType) {
+            case CONSULTA_RETIRO:
+                clazz = RetiroResponse.class;
+                break;
+            case GUARDAR_RETIRO:
+                clazz = GuardarRetiroResponse.class;
+                break;
+            case CONSULTA_ABONO:
+                clazz = ConsultaAbonoResponse.class;
+                break;
+            case GUARDAR_ABONO:
+                clazz = GuardarAbonoResponse.class;
+                break;
+            case CONSULTA_AHORRO:
+                clazz = ConsultaAhorroAdicionalResponse.class;
+                break;
+            case GUARDAR_AHORRO:
+                clazz = GuardarAhorroResponse.class;
+                break;
+
+            case CONSULTA_METODOS_PAGO:
+                clazz = ConsultaMetodosPagoResponse.class;
+                break;
+        }
+
+        return clazz;
+    }
+
+
+    /******************************************************/
+    /* *******************************************************************************************************************************************************
+     ***********************************************          ExpensesTravel          ************************************************************************
+     *********************************************************************************************************************************************************/
+    public void getExpensesTravel(ExpensesTravelRequestData requestData, String token) {
+        this.token = token;
+        String urlColaborator = (ServicesConstants.GET_EXPENSES_TRAVEL_COLABORATOR == null || ServicesConstants.GET_EXPENSES_TRAVEL_COLABORATOR.isEmpty()) ? ServicesConstants.GET_TRAVEL_EXPENSES_COLABORATOR_LOCAL : ServicesConstants.GET_EXPENSES_TRAVEL_COLABORATOR;
+        String urlGte = (ServicesConstants.GET_EXPENSES_TRAVEL_GTE == null || ServicesConstants.GET_EXPENSES_TRAVEL_GTE.isEmpty()) ? ServicesConstants.GET_TRAVEL_EXPENSES_GTE_LOCAL : ServicesConstants.GET_EXPENSES_TRAVEL_GTE;
+        switch (requestData.getExpensesTravelType()) {
+            //opcion 2
+            case CONSULTA_PERMISO_ROL:
+                getRol(requestData, token, urlColaborator);
+                break;
+            //opcion 1
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                getRequestColaborator(requestData, token, urlColaborator);
+                break;
+            //opcion 3
+            case CONSULTA_SOLICITUDES_MESES:
+                getRequestMonths(requestData, token, urlColaborator);
+                break;
+            //opcion 4
+            case CONSULTA_DETALLE_SOLICITUD:
+                getDetailRequestExpense(requestData, token, urlColaborator);
+                break;
+            //opcion 5
+            case CONSULTA_DETALLE_CONTROL:
+                getDetailControlExpense(requestData, token, urlColaborator);
+                break;
+            //opcion 6 gerente
+            case CONSULTA_CENTROS:
+                getCentersExpense(requestData, token, urlGte);
+                break;
+            //opcion 7
+            case CONSULTA_SOLICITUDES_AUTORIZAR:
+                getRequestExpenseToAuthorize(requestData, token, urlGte);
+                break;
+            //opcion 6
+            case CONSULTAR_FILTROS_CONTROLES:
+                getFilterControlsExpense(requestData, token, urlGte);
+                break;
+
+            //opcion 10
+            case CONSULTAR_CONTROLES_GTE:
+                getControlsGteExpenses(requestData, token, urlGte);
+                break;
+            //opcion 10
+            case CONSULTAR_MESES_GTE:
+                getMonthsGteExpenses(requestData, token, urlGte);
+                break;
+            //opcion 8
+            case AUTORIZAR_SOLICITUD:
+                geAuthorizedExpenses(requestData, token,urlGte);
+                break;
+            //opcion 9
+            case RECHAZAR_SOLICITUD:
+                refuseExpenses(requestData, token,urlGte);
+                break;
+
+        }
+    }
+
+
+    private void getRol(ExpensesTravelRequestData requestData, String token, String urlColaborator) {
+        iServicesRetrofitMethods.getRolExpensesTravel(urlColaborator, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (
+                CoppelServicesGetRolExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getRequestColaborator(ExpensesTravelRequestData requestData, String token, String urlColaborator) {
+        iServicesRetrofitMethods.getRequestColaboratorExpensesTravel(urlColaborator, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetColaboratorRequestExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getRequestMonths(ExpensesTravelRequestData requestData, String token, String urlColaborator) {
+        iServicesRetrofitMethods.getMonthsExpensesTravel(urlColaborator, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetMonthsExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getDetailRequestExpense(ExpensesTravelRequestData requestData, String token, String urlColaborator) {
+        iServicesRetrofitMethods.getDetailRequestExpensesTravel(urlColaborator, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesDetailRequestExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getDetailControlExpense(ExpensesTravelRequestData requestData, String token, String urlColaborator) {
+        iServicesRetrofitMethods.getDetailControlExpensesTravel(urlColaborator, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesDetailControlExpensesRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getCentersExpense(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getCentersExpensesTravel(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetCentersRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getRequestExpenseToAuthorize(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getRequestExpensesToAuthorize(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetRequestToAuthorizeRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getFilterControlsExpense(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getFilterControlsExpenses(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetFiltersControlRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void getControlsGteExpenses(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getControlsGteExpenses(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetControlsGteRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getMonthsGteExpenses(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getMonthsGteExpenses(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetControlsGteRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    private void geAuthorizedExpenses(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getAutorizedExpenses(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesAuthorizedV2Request) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void refuseExpenses(ExpensesTravelRequestData requestData, String token, String urlGte) {
+        iServicesRetrofitMethods.getRefuseExpenses(urlGte, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesRefuseRequest) builExpensesTravelRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    Object o = servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    ExpensesTravelBaseResponse expensesTravelBaseResponse = (ExpensesTravelBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getExpensesTravelTypeResponse(requestData.getExpensesTravelType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExpensesTravelResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_EXPENSES_TRAVEL);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+
+    public Class getExpensesTravelTypeResponse(ExpensesTravelType expensesTravelType) {
+        Class clazz = null;
+        switch (expensesTravelType) {
+            case CONSULTA_PERMISO_ROL:
+                clazz = RolExpensesResponse.class;
+                break;
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                clazz = ColaboratorRequestsListExpensesResponse.class;
+                break;
+            case CONSULTA_SOLICITUDES_MESES:
+                clazz = ColaboratorControlsMonthResponse.class;
+                break;
+
+            case CONSULTA_DETALLE_SOLICITUD:
+                clazz = DetailRequestColaboratorResponse.class;
+                break;
+
+            case CONSULTA_DETALLE_CONTROL:
+                clazz = DetailControlColaboratorResponse.class;
+                break;
+
+            case CONSULTA_CENTROS:
+                clazz = CentersResponse.class;
+                break;
+
+            case CONSULTA_SOLICITUDES_AUTORIZAR:
+                clazz = ColaboratorRequestsListExpensesResponse.class;
+                break;
+
+            case CONSULTAR_FILTROS_CONTROLES:
+                clazz = FiltersControlsResponse.class;
+                break;
+
+            case CONSULTAR_CONTROLES_GTE:
+                clazz = ColaboratorRequestsListExpensesResponse.class;
+                break;
+
+            case CONSULTAR_MESES_GTE:
+                clazz = RequestsLiquiGteListExpensesResponse.class;
+                break;
+
+            case AUTORIZAR_SOLICITUD:
+                clazz = AuthorizedResponse.class;
+                break;
+            case RECHAZAR_SOLICITUD:
+                clazz = AuthorizedResponse.class;
+                break;
+
+        }
+
+        return clazz;
+    }
+
+    public void getExpensesTravelResponse(ExpensesTravelBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.WITHDRAWSAVING);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getExpensesTravelSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getExpensesTravelSuccess(ExpensesTravelBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.EXPENSESTRAVEL);
+
+        if (response != null && response != null) {
+
+            ExpensesTravelBaseResponse expensesTravelBaseResponse = response;
+            if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<ExpensesTravelBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(expensesTravelBaseResponse);
+                servicesResponse.setType(ServicesRequestType.EXPENSESTRAVEL);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                ;//TODO Definir mensaje de error
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public CoppelServicesBaseExpensesTravelRequest builExpensesTravelRequest(ExpensesTravelRequestData expensesTravelRequestData) {
+        CoppelServicesBaseExpensesTravelRequest coppelServicesBaseExpensesTravelRequest = null;
+
+        int requestOption = expensesTravelRequestData.getOpcion();
+
+        switch (expensesTravelRequestData.getExpensesTravelType()) {
+
+            case CONSULTA_PERMISO_ROL:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetRolExpensesRequest(expensesTravelRequestData.getNum_empleado(), requestOption);
+                break;
+            case CONSULTA_COLABORADOR_SOLICITUD:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetColaboratorRequestExpensesRequest(expensesTravelRequestData.getNum_empleado(), requestOption);
+                break;
+
+            case CONSULTA_SOLICITUDES_MESES:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetMonthsExpensesRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getClv_mes());
+
+                break;
+
+            case CONSULTA_DETALLE_SOLICITUD:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesDetailRequestExpensesRequest(
+                        //Integer.parseInt(expensesTravelRequestData.getNum_empleado()),
+                        expensesTravelRequestData.getNum_empleado(),
+                        requestOption, expensesTravelRequestData.getClv_solicitud());
+
+                break;
+
+            case CONSULTA_DETALLE_CONTROL:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesDetailControlExpensesRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getClv_control());
+
+                break;
+
+            case CONSULTA_CENTROS:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetCentersRequest(expensesTravelRequestData.getNum_empleado(), requestOption);
+
+                break;
+
+            case CONSULTA_SOLICITUDES_AUTORIZAR:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetRequestToAuthorizeRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getClv_estatus(), expensesTravelRequestData.getNom_empleado(), expensesTravelRequestData.getNum_centro());
+                break;
+
+            case CONSULTAR_FILTROS_CONTROLES:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetFiltersControlRequest(expensesTravelRequestData.getNum_empleado(), requestOption);
+                break;
+
+            case CONSULTAR_CONTROLES_GTE:
+            case CONSULTAR_MESES_GTE:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesGetControlsGteRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getClv_estatus(), expensesTravelRequestData.getNom_empleado(), expensesTravelRequestData.getNum_centro());
+                break;
+
+            case AUTORIZAR_SOLICITUD:
+
+                CoppelServicesAuthorizedRequest request = new CoppelServicesAuthorizedRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getNum_gerente()
+                        , expensesTravelRequestData.getClv_solicitud(), expensesTravelRequestData.getNum_control(), expensesTravelRequestData.getClv_estatus(),
+                        expensesTravelRequestData.getDes_observaciones(), expensesTravelRequestData.getDes_motivoRechazo(), expensesTravelRequestData.getClv_tipo(), expensesTravelRequestData.getCapturaGerente());
+
+
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesAuthorizedV2Request(request, expensesTravelRequestData.getCapturaGerenteFormat());
+                break;
+
+            case RECHAZAR_SOLICITUD:
+                coppelServicesBaseExpensesTravelRequest = new CoppelServicesRefuseRequest(expensesTravelRequestData.getNum_empleado(), requestOption, expensesTravelRequestData.getNum_gerente(),
+                        expensesTravelRequestData.getClv_solicitud(), expensesTravelRequestData.getNum_control(), expensesTravelRequestData.getClv_estatus(),
+                        expensesTravelRequestData.getDes_observaciones(), expensesTravelRequestData.getDes_motivoRechazo(), expensesTravelRequestData.getClv_tipo());
+
+                break;
+        }
+
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseExpensesTravelRequest).toString();
+        return coppelServicesBaseExpensesTravelRequest;
+    }
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Holidays          ************************************************************************
+     *********************************************************************************************************************************************************/
+    public void getHolidays(HolidayRequestData holidayRequestData, String token) {
+        this.token = token;
+        String urlHolidays = (ServicesConstants.GET_ENDPOINT_HOLIDAYS == null || ServicesConstants.GET_ENDPOINT_HOLIDAYS.isEmpty()) ? ServicesConstants.GET_HOLIDAYS_LOCAL : ServicesConstants.GET_ENDPOINT_HOLIDAYS;
+        switch (holidayRequestData.getHolidaysType()) {
+            case CONSULTA_ROL:
+                getRolHolidays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case CONSULTA_VACACIONES:
+                getHolidaysPeriods(holidayRequestData, token, urlHolidays);
+                break;
+
+            case SEND_HOLIDAY_REQUEST:
+                sendHolidaysPeriods(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_PERIOD_DETAIL:
+                getDetailHolidayPeriods(holidayRequestData, token, urlHolidays);
+                break;
+
+            case CANCEL_HOLIDAYS:
+                cancelHolidayPeriods(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_CENTERS:
+                getCenterHoliday(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_COLABORATORS:
+                getColaboratorsHoliday(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+                getColaboratorsPeriodsHoliday(holidayRequestData, token, urlHolidays);
+                break;
+
+            case VALIDATION_ADITIONAL_DAYS:
+                getValidationAditionaDays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                getReasonsAditionaDays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                sendAditionalDays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_CALENDAR_DAYS_PROPOSED:
+                getPeriodsOtherColaboratorsDays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                scheduleHolidaysPeriods(holidayRequestData, token, urlHolidays);
+                break;
+
+            case GET_CALENDAR_HOLIDAY:
+                getCalendarHolidays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case CANCEL_GTE_HOLIDAY:
+                cancelHolidays(holidayRequestData, token, urlHolidays);
+                break;
+
+            case AUTHORIZE_HOLIDAY:
+                authorizeHolidays(holidayRequestData, token, urlHolidays);
+                break;
+            case EDIT_PERIOD_HOLIDAY:
+                editHolidays(holidayRequestData, token, urlHolidays);
+                break;
+            case HOLIDAY_BONUS:
+            case HOLIDAY_BONUS_PERIOD:
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                getHolidayBonus(holidayRequestData, token);
+                break;
+
+        }
+    }
+
+
+    private void getRolHolidays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getRolHolidays(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (
+                CoppelServicesGetRolHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.EXPENSESTRAVEL, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    private void getHolidaysPeriods(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getHolidaysPeriods(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55", (
+                CoppelServicesGetHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void sendHolidaysPeriods(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.sendHolidaysPeriods(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesSendPeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getDetailHolidayPeriods(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getDetailHolidayPeriod(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetDetailPeriodHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void cancelHolidayPeriods(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.cancelHolidayPeriod(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesCancelPeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getCenterHoliday(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getCentersHoliday(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetCentersHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getColaboratorsHoliday(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getColaboratosHoliday(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetColaboratorsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getColaboratorsPeriodsHoliday(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getColaboratosPeriodsHoliday(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetColaboratorsPeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getValidationAditionaDays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.validateAditionalDays(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesValidateAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getReasonsAditionaDays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getReasonsAditionalDays(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesReasonAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void sendAditionalDays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.sendAditionalDays(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesSendAditionalDaysHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void getPeriodsOtherColaboratorsDays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getPeriodsOtherColaborators(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesGetPeriodsHolidaysColaboratorsRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void scheduleHolidaysPeriods(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.scheduleHolidaysPeriods(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesSchedulePeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    private void getCalendarHolidays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.getCalendarHolidays(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesCalendarHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void cancelHolidays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.changeStatus(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesChangeStatusHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void authorizeHolidays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.changeStatus(url, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesChangeStatusHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void editHolidays(HolidayRequestData requestData, String token, String url) {
+        iServicesRetrofitMethods.editHolidays(ServicesConstants.GET_ENDPOINT_HOLIDAYS, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (CoppelServicesSchedulePeriodsHolidaysRequest) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse expensesTravelBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (expensesTravelBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(expensesTravelBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+    private void getHolidayBonus(HolidayRequestData requestData, String token) {
+        String urlHolidayBonus = (ServicesConstants.GET_ENDPOINT_HOLIDAY_BONUS == null || ServicesConstants.GET_ENDPOINT_HOLIDAY_BONUS.isEmpty()) ? ServicesConstants.GET_HOLIDAY_BONUS_LOCAL : ServicesConstants.GET_ENDPOINT_HOLIDAY_BONUS;
+        iServicesRetrofitMethods.getHolidayBonus(urlHolidayBonus, token, "2024-09-30T17:38:35.244Z", "-99.985171", "20.270460", "fs9999c7q86c33cdfd5f55",
+                (HolidayBonusRequestData) builHolidayRequest(requestData)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    HolidaysBaseResponse holidaysBaseResponse = (HolidaysBaseResponse) servicesUtilities.parseToObjectClass(response.body().toString(), getHolidaysTypeResponse(requestData.getHolidaysType()));
+                    if (holidaysBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getHolidayResponse(holidaysBaseResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                    crashlytics.recordException(new Exception(response.body().toString()));
+                    sendGenericError(ServicesRequestType.HOLIDAYS, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_HOLIDAYS);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.HOLIDAYS));
+            }
+        });
+    }
+
+
+    public void getHolidayResponse(HolidaysBaseResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.HOLIDAYS);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getHolidaysSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getHolidaysSuccess(HolidaysBaseResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.HOLIDAYS);
+
+        if (response != null && response != null) {
+
+            HolidaysBaseResponse holidaysBaseResponse = response;
+            if (holidaysBaseResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<HolidaysBaseResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(holidaysBaseResponse);
+                servicesResponse.setType(ServicesRequestType.HOLIDAYS);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                ;//TODO Definir mensaje de error
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public Class getHolidaysTypeResponse(HolidaysType holidaysType) {
+        Class clazz = null;
+        switch (holidaysType) {
+            case CONSULTA_ROL:
+                clazz = HolidayRolCheckResponse.class;
+                break;
+
+            case CONSULTA_VACACIONES:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+
+            case SEND_HOLIDAY_REQUEST:
+                clazz = HolidaySendPeriodsResponse.class;
+                break;
+
+            case GET_PERIOD_DETAIL:
+                clazz = HolidayGetDetailPeriodResponse.class;
+                break;
+
+            case CANCEL_HOLIDAYS:
+                clazz = HolidaysCancelResponse.class;
+                break;
+
+            case GET_CENTERS:
+                clazz = CentersHolidayResponse.class;
+                break;
+
+            case GET_COLABORATORS:
+                clazz = HolidaysColaboratorsResponse.class;
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+
+            case VALIDATION_ADITIONAL_DAYS:
+                clazz = HolidaysValidationAditionalDaysResponse.class;
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                clazz = HolidaysReasonsAditionalDaysResponse.class;
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                clazz = HolidaySendAditionalDaysResponse.class;
+                break;
+
+            case GET_CALENDAR_DAYS_PROPOSED:
+                clazz = HolidaysPeriodsResponse.class;
+                break;
+
+
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                clazz = HolidaySchedulePeriodsResponse.class;
+                break;
+
+            case GET_CALENDAR_HOLIDAY:
+                clazz = HolidaysCalendarPeriodsResponse.class;
+                break;
+
+            case CANCEL_GTE_HOLIDAY:
+                clazz = HolidayChangeStatusResponse.class;
+                break;
+
+            case AUTHORIZE_HOLIDAY:
+                clazz = HolidayChangeStatusResponse.class;
+                break;
+
+            case EDIT_PERIOD_HOLIDAY:
+                clazz = HolidayChangeStatusResponse.class;
+                break;
+            case HOLIDAY_BONUS:
+                clazz = HolidayBonusResponse.class;
+                break;
+            case HOLIDAY_BONUS_PERIOD:
+                clazz = HolidayBonusPeriodResponse.class;
+                break;
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                clazz = HolidayBonusEditPeriodResponse.class;
+                break;
+        }
+
+        return clazz;
+    }
+
+    public CoppelServicesBaseHolidaysRequest builHolidayRequest(HolidayRequestData holidaysRequestData) {
+        CoppelServicesBaseHolidaysRequest coppelServicesBaseHolidaysRequest = null;
+
+        int requestOption = holidaysRequestData.getOpcion();
+
+        switch (holidaysRequestData.getHolidaysType()) {
+
+            case CONSULTA_ROL:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetRolHolidaysRequest(holidaysRequestData.getNum_empleado(), requestOption);
+                break;
+
+            case CONSULTA_VACACIONES:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetHolidaysRequest(holidaysRequestData.getNum_empleado(), requestOption);
+                break;
+
+            case SEND_HOLIDAY_REQUEST:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSendPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(), holidaysRequestData.getNum_suplente(), holidaysRequestData.getPeriodos());
+                break;
+
+            case GET_PERIOD_DETAIL:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetDetailPeriodHolidaysRequest(holidaysRequestData.getNum_empleado(),
+                        holidaysRequestData.getOpcion(), holidaysRequestData.getIdu_folio());
+                break;
+
+
+            case CANCEL_HOLIDAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesCancelPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(), holidaysRequestData.getNum_suplente(), holidaysRequestData.getPeriodsChangeStatus());
+                break;
+
+            case GET_CENTERS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetCentersHolidaysRequest(holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente());
+                break;
+
+            case GET_COLABORATORS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetColaboratorsHolidaysRequest(holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente());
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setNum_centro(holidaysRequestData.getNum_centro());
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setNom_empleado(holidaysRequestData.getNom_empleado());
+                ((CoppelServicesGetColaboratorsHolidaysRequest) coppelServicesBaseHolidaysRequest).setClv_estatus(holidaysRequestData.getClv_estatus());
+                break;
+
+            case GET_PERIODS_COLABORATORS:
+
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetColaboratorsPeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente());
+                break;
+
+
+            case VALIDATION_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesValidateAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(), requestOption);
+                break;
+
+            case GET_REASON_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesReasonAditionalDaysHolidaysRequest(requestOption);
+                break;
+
+            case SEND_ADITIONAL_DAYS:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSendAditionalDaysHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(), holidaysRequestData.getNum_adicionales(), holidaysRequestData.getIdu_motivo(), holidaysRequestData.getDes_otromotivo());
+                break;
+            case GET_CALENDAR_DAYS_PROPOSED:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesGetPeriodsHolidaysColaboratorsRequest(holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente(),
+                        holidaysRequestData.getNum_empconsulta(), holidaysRequestData.getFec_ini(), holidaysRequestData.getFec_fin());
+
+                if (holidaysRequestData.getOpcion() == 18) {
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest) coppelServicesBaseHolidaysRequest).setTipo_consulta(holidaysRequestData.getTipo_consulta());
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest) coppelServicesBaseHolidaysRequest).setNum_mes(holidaysRequestData.getNum_mes());
+                    ((CoppelServicesGetPeriodsHolidaysColaboratorsRequest) coppelServicesBaseHolidaysRequest).setNum_anio(holidaysRequestData.getNum_anio());
+                }
+
+                break;
+            case SCHEDULE_GTE_HOLIDAY_REQUEST:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSchedulePeriodsHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente(),
+                        holidaysRequestData.getDes_observaciones(), holidaysRequestData.getPeriodos());
+                break;
+
+            case GET_CALENDAR_HOLIDAY:
+                coppelServicesBaseHolidaysRequest = new CoppelServicesCalendarHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(), holidaysRequestData.getNum_mes(), holidaysRequestData.getNum_anio(), holidaysRequestData.getNum_centro());
+
+                ((CoppelServicesCalendarHolidaysRequest) coppelServicesBaseHolidaysRequest).setNom_empleado(holidaysRequestData.getNom_empleado());
+                break;
+
+            case CANCEL_GTE_HOLIDAY:
+
+                coppelServicesBaseHolidaysRequest = new CoppelServicesChangeStatusHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getNum_gerente(), holidaysRequestData.getDes_comentario(), holidaysRequestData.getPeriodsChangeStatus());
+                break;
+
+            case AUTHORIZE_HOLIDAY:
+
+                coppelServicesBaseHolidaysRequest = new CoppelServicesChangeStatusHolidaysRequest(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(),
+                        holidaysRequestData.getIdu_autorizo(), holidaysRequestData.getNum_gerente(), holidaysRequestData.getDes_comentario(), holidaysRequestData.getPeriodsChangeStatus());
+                break;
+
+
+            case EDIT_PERIOD_HOLIDAY:
+
+                coppelServicesBaseHolidaysRequest = new CoppelServicesSchedulePeriodsHolidaysRequest((holidaysRequestData.getNum_empleado()), holidaysRequestData.getOpcion(), holidaysRequestData.getNum_gerente(),
+                        holidaysRequestData.getDes_observaciones(), holidaysRequestData.getPeriodos());
+
+                break;
+
+            case HOLIDAY_BONUS:
+            case HOLIDAY_BONUS_PERIOD:
+                coppelServicesBaseHolidaysRequest = new HolidayBonusRequestData(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion());
+                break;
+            case HOLIDAY_BONUS_EDITH_PERIOD:
+                //coppelServicesBaseHolidaysRequest = new HolidayBonusRequestData(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(), String.valueOf(holidaysRequestData.getNum_empconsulta()));
+                coppelServicesBaseHolidaysRequest = new HolidayBonusRequestData(holidaysRequestData.getNum_empleado(), holidaysRequestData.getOpcion(), holidaysRequestData.getFec_ini());
+                break;
+
+        }
+
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseHolidaysRequest).toString();
+        return coppelServicesBaseHolidaysRequest;
+    }
+
+
+    /* *******************************************************************************************************************************************************
+     ***********************************************          Collage          ************************************************************************
+     *********************************************************************************************************************************************************/
+    public void getCollage(String num_empleado, int option, String token) {
+        this.token = token;
+
+        getCollageUrl(num_empleado, option, token);
+
+    }
+
+
+    private void getCollageUrl(String num_empleado, int option, String token) {
+        iServicesRetrofitMethods.getCollageURL(ServicesConstants.GET_ENDPOINT_COLLAGES, token,
+                (CoppelServicesCollageUrlRequest) builCollageRequest(num_empleado, option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    CollageResponse collageResponse = (CollageResponse) servicesUtilities.parseToObjectClass(response.body().toString(), CollageResponse.class);
+                    if (collageResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getCollageResponse(collageResponse, response.code());
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_COLLAGES);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(ServicesRequestType.COLLAGE, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_COLLAGES);
+                    crashlytics.recordException(e);
+                    sendGenericError(ServicesRequestType.COLLAGE, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_COLLAGES);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
+
+    public void getCollageResponse(CollageResponse response, int code) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getCollageSuccess(response);
+        } else {
+            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, code, context.getString(R.string.error_profile), servicesError));
+        }
+    }
+
+
+    public void getCollageSuccess(CollageResponse response) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+
+        if (response != null && response != null) {
+
+            if (response.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<CollageResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(response);
+                servicesResponse.setType(ServicesRequestType.COLLAGE);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+                //TODO Definir mensaje de error
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));//TODO Definir mensaje de error
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+
+    public CoppelServicesBaseCollageRequest builCollageRequest(String num_empleado, int option) {
+        CoppelServicesBaseCollageRequest coppelServicesBaseCollageRequest = null;
+        coppelServicesBaseCollageRequest = new CoppelServicesCollageUrlRequest(num_empleado, option);
+        String re = JsonManager.madeJsonFromObject(coppelServicesBaseCollageRequest).toString();
+        return coppelServicesBaseCollageRequest;
+    }
+
+
+
 
     /* *******************************************************************************************************************************************************
      ***********************************************          General Methods          ************************************************************************
@@ -1224,9 +4186,9 @@ public class ServicesInteractor {
     }
 
     /* Generic Error Service */
-    public void sendGenericError(int type, @NonNull Response<JsonObject> response, boolean ... params) {
+    public void sendGenericError(int type, @NonNull Response<JsonObject> response, boolean... params) {
         boolean executeInBackground = false;
-        if(params != null && params.length > 0){
+        if (params != null && params.length > 0) {
             executeInBackground = params[0];
         }
 
@@ -1240,6 +4202,8 @@ public class ServicesInteractor {
             servicesError.setType(sendTypeTokenResponse(generalErrorResponse.getData().getResponse().getErrorCode(), type));
             iServiceListener.onError(servicesError);
         } catch (Exception e) {
+            crashlytics.log("public void sendGenericError");
+            crashlytics.recordException(e);
             servicesError.setMessage(context.getString(R.string.error_generic_service));
             iServiceListener.onError(servicesError);
         }
@@ -1248,12 +4212,16 @@ public class ServicesInteractor {
     /* Parse code response service to message*/
     public String sendMessageFromCode(int errorCode, String userMessage) {
         String message = "";
-
-        if (errorCode == -33 || errorCode == -99 || errorCode == -5 || errorCode == -1) {
-            message = context.getString(R.string.error_generic_service);
-        } else {
+        if (errorCode == -10 || errorCode == -11 || errorCode == -33 || errorCode == -99) {
             message = userMessage;
+        } else {
+            message = context.getString(R.string.error_generic_service);
         }
+
+        if (errorCode == -6) {
+            message = context.getString(R.string.error_invalid_token);
+        }
+
         return message;
     }
 
@@ -1266,4 +4234,462 @@ public class ServicesInteractor {
         }
     }
 
+    public void validateCode(ValidateCodeRequest validateCodeRequest) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+        iServicesRetrofitMethods.validateCode(url, validateCodeRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    QrCodeResponse validateCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
+                    );
+
+                    if (validateCodeResponse.getEstado() != 0) {
+                        if (validateCodeResponse.getEstado() == 1) {
+                            authCode(validateCodeRequest, validateCodeResponse);
+                        } else {
+                            qrCodeResponseHandler(validateCodeResponse, 1, 1);
+                        }
+                    } else {
+                        qrCodeResponseHandler(null, 2, 1);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
+                    qrCodeResponseHandler(null, 2, 1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                qrCodeResponseHandler(null, 2, 1);
+            }
+        });
+    }
+
+    public void authCode(ValidateCodeRequest validateCodeRequest, QrCodeResponse validateCodeResponse) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+        AuthCodeRequest authCodeRequest = new AuthCodeRequest();
+        authCodeRequest.setOpcion(2);
+        authCodeRequest.setQrcode(validateCodeRequest.getQrcode());
+        authCodeRequest.setStatus(validateCodeResponse.getEstado());
+        authCodeRequest.setEmailemp(validateCodeRequest.getEmailemp());
+        authCodeRequest.setDeviceid(validateCodeRequest.getDeviceid());
+
+        iServicesRetrofitMethods.authCode(url, authCodeRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    QrCodeResponse authCodeResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
+                    );
+
+                    if (authCodeResponse.getEstado() != 0) {
+                        qrCodeResponseHandler(authCodeResponse, 1, 1);
+                    } else {
+                        qrCodeResponseHandler(null, 2, 1);
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
+                    qrCodeResponseHandler(null, 2, 1);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                qrCodeResponseHandler(null, 2, 1);
+            }
+        });
+    }
+
+    public void qrCodeResponseHandler(QrCodeResponse res, int option, int type) {
+        switch (option) {
+            case 1:
+                ServicesResponse<QrCodeResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(res);
+                servicesResponse.setType(type);
+                iServiceListener.onResponse(servicesResponse);
+                break;
+            case 2:
+                ServicesError servicesError = new ServicesError();
+                servicesError.setType(type);
+                iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, 1, "Ocurrió un error con la conexión", servicesError));
+                break;
+        }
+    }
+
+    public void validateDeviceId(ValidateDeviceIdRequest validateDeviceIdRequest) {
+        //String url = "https://qa-apisp.coppel.com:9000/rhconecta/api/v2/qrcode";
+        String url = ServicesConstants.GET_ENDPOINT_QR;
+
+        iServicesRetrofitMethods.validateDeviceId(url, validateDeviceIdRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+
+                    QrCodeResponse validateDeviceIdResponse = (QrCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            QrCodeResponse.class
+                    );
+
+                    if (validateDeviceIdResponse.getEstado() != 0) {
+                        qrCodeResponseHandler(validateDeviceIdResponse, 1, 2);
+                    } else {
+                        if (!validateDeviceIdResponse.getMensaje().equals("")) {
+                            qrCodeResponseHandler(validateDeviceIdResponse, 1, 2);
+                        } else {
+                            qrCodeResponseHandler(null, 2, 2);
+                        }
+                    }
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                    crashlytics.recordException(e);
+                    qrCodeResponseHandler(null, 2, 2);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_QR);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                qrCodeResponseHandler(null, 2, 2);
+            }
+        });
+    }
+
+
+    /**
+     * @param endPointCoppel RemoteFirebase url to get any external url
+     * @param num_empleado
+     * @param option         Key used in the service to classify the request,
+     *                       is also used in front to classify the response
+     * @param token
+     */
+    public void getExternalUrl(String endPointCoppel, String num_empleado, int option, String token) {
+        this.token = token;
+        iServicesRetrofitMethods.getExternalURL(
+                endPointCoppel,
+                token,
+                new ExternalUrlRequest(num_empleado, option)
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ExternalUrlResponse.class);
+                    if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        getExternalUrlResponse(externalUrlResponse, response.code(), option);
+                    } else {
+                        sendGenericError(option, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(endPointCoppel);
+                    crashlytics.recordException(e);
+                    sendGenericError(option, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(endPointCoppel);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, option));
+            }
+        });
+    }
+
+    public void getExternalUrlResponse(ExternalUrlResponse response, int code, int option) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(ServicesRequestType.COLLAGE);
+        if (servicesGeneralValidations.verifySuccessCode(code)) {
+            getExternalUrlSuccess(response, option);
+        } else {
+            iServiceListener.onError(
+                    servicesUtilities.getErrorByStatusCode(
+                            context, code, context.getString(R.string.error_generic_service), servicesError
+                    )
+            );
+        }
+    }
+
+
+    public void getExternalUrlSuccess(ExternalUrlResponse response, int option) {
+        ServicesError servicesError = new ServicesError();
+        servicesError.setType(option);
+
+        if (response != null && response != null) {
+
+            if (response.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                ServicesResponse<ExternalUrlResponse> servicesResponse = new ServicesResponse<>();
+                servicesResponse.setResponse(response);
+                servicesResponse.setType(option);
+                iServiceListener.onResponse(servicesResponse);
+            } else {
+
+
+                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                iServiceListener.onError(servicesError);
+            }
+
+        } else {
+            servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+            iServiceListener.onError(servicesError);
+        }
+    }
+
+    public void getBenefitCode(BenefitCodeRequest benefitCodeRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.BENEFIT_CODE;
+        String urlBenefits = (ServicesConstants.GET_ENDPOINT_BENEFIT_CODE == null || ServicesConstants.GET_ENDPOINT_BENEFIT_CODE.isEmpty()) ? ServicesConstants.GET_BENEFITS_LOCAL : ServicesConstants.GET_ENDPOINT_BENEFIT_CODE;
+        iServicesRetrofitMethods.getBenefitCode(urlBenefits, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", benefitCodeRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    BenefitCodeResponse benefitCodeResponse = (BenefitCodeResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").getAsJsonArray("res").get(0).toString(),
+                            BenefitCodeResponse.class
+                    );
+
+                    if (benefitCodeResponse.getDes_codigo() != null) {
+                        ServicesResponse<BenefitCodeResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(benefitCodeResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getInfoCompany(BenefitCodeRequest infoCompanyRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.BENEFIT_COMPANY;
+        String urlBenefits = (ServicesConstants.GET_ENDPOINT_BENEFIT_CODE == null || ServicesConstants.GET_ENDPOINT_BENEFIT_CODE.isEmpty()) ? ServicesConstants.GET_BENEFITS_LOCAL : ServicesConstants.GET_ENDPOINT_BENEFIT_CODE;
+        iServicesRetrofitMethods.getInfoCompany(urlBenefits, token, "2024-11-21T17:38:35.244Z", "-107.3878548565145", "24.71091049381455", "fs9999c7q86c33cdfd5f55", infoCompanyRequest).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    InfoCompanyResponse infoCompanyResponse = (InfoCompanyResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").getAsJsonArray("res").get(0).toString(),
+                            InfoCompanyResponse.class
+                    );
+
+                    if (infoCompanyResponse.getEmpresa() != null) {
+                        ServicesResponse<InfoCompanyResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(infoCompanyResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                //t.printStackTrace();
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getTokenSSO(TokenSSORequest tokenSSORequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS;
+
+        iServicesRetrofitMethods.getTokenSSO(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                tokenSSORequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            TokenSSOResponse.class
+                    );
+
+                    if (tokenSSOResponse.getToken_user() != null) {
+                        ServicesResponse<TokenSSOResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(tokenSSOResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getTokenBass(TokenSSORequest tokenSSORequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS_BASS;
+
+        iServicesRetrofitMethods.getTokenBASS(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                tokenSSORequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    TokenSSOResponse tokenSSOResponse = (TokenSSOResponse) servicesUtilities.parseToObjectClass(
+                            response.body().getAsJsonObject("data").getAsJsonObject("response").toString(),
+                            TokenSSOResponse.class
+                    );
+
+                    if (tokenSSOResponse.getToken_user() != null) {
+                        ServicesResponse<TokenSSOResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(tokenSSOResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                        crashlytics.recordException(new Exception(response.body().toString()));
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    crashlytics.log(ServicesConstants.GET_ENDPOINT_LOGIN_APPS);
+                    crashlytics.recordException(e);
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                crashlytics.log(ServicesConstants.GET_ENDPOINT_BENEFIT_CODE);
+                crashlytics.recordException(new Exception(t.getMessage()));
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getTokenSSO(CoCreaRequest coCreaRequest, String token) {
+        this.token = token;
+        int type = ServicesRequestType.LOGIN_APPS;
+
+        iServicesRetrofitMethods.getCoCre(
+                ServicesConstants.GET_ENDPOINT_LOGIN_APPS,
+                token,
+                coCreaRequest
+        ).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    CoCreaResponse coCreaResponse = (CoCreaResponse) servicesUtilities.parseToObjectClass(
+                            response.body().toString(),
+                            CoCreaResponse.class
+                    );
+
+                    if (coCreaResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        ServicesResponse<CoCreaResponse> servicesResponse = new ServicesResponse<>();
+                        servicesResponse.setResponse(coCreaResponse);
+                        servicesResponse.setType(type);
+                        iServiceListener.onResponse(servicesResponse);
+                    } else {
+                        sendGenericError(type, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(type, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, type));
+            }
+        });
+    }
+
+    public void getGooglePlayUrl(String num_empleado, int option, String token) {
+        iServicesRetrofitMethods.getCollageURL(ServicesConstants.GET_ENDPOINT_COLLAGES, token,
+                (CoppelServicesCollageUrlRequest) builCollageRequest(num_empleado, option)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                try {
+                    ExternalUrlResponse externalUrlResponse = (ExternalUrlResponse) servicesUtilities.parseToObjectClass(response.body().toString(), ExternalUrlResponse.class);
+                    if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                        ServicesError servicesError = new ServicesError();
+                        servicesError.setType(ServicesRequestType.GOOGLE_PLAY_URL);
+                        if (servicesGeneralValidations.verifySuccessCode(response.code())) {
+                            if (externalUrlResponse.getMeta().getStatus().equals(ServicesConstants.SUCCESS)) {
+                                ServicesResponse<ExternalUrlResponse> servicesResponse = new ServicesResponse<>();
+                                servicesResponse.setResponse(externalUrlResponse);
+                                servicesResponse.setType(ServicesRequestType.GOOGLE_PLAY_URL);
+                                iServiceListener.onResponse(servicesResponse);
+                            } else {
+                                servicesError.setMessage(CoppelApp.getContext().getString(R.string.error_generic_service));
+                                iServiceListener.onError(servicesError);
+                            }
+                        } else {
+                            iServiceListener.onError(servicesUtilities.getErrorByStatusCode(context, response.code(), context.getString(R.string.error_google_play), servicesError));
+                        }
+                    } else {
+                        sendGenericError(ServicesRequestType.COLLAGE, response);
+                    }
+
+                } catch (Exception e) {
+                    sendGenericError(ServicesRequestType.COLLAGE, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                iServiceListener.onError(servicesUtilities.getOnFailureResponse(context, t, ServicesRequestType.EXPENSESTRAVEL));
+            }
+        });
+    }
 }

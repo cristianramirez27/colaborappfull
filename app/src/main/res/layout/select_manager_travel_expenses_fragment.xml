@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvOptions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAuthorize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/authorize_request"
+            android:textAllCaps="false"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:maxLines="3"
+            android:paddingLeft="20dp"
+            android:paddingTop="4dp"
+            android:paddingRight="20dp"
+            android:text="@string/authorize_request_subtitle"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnControls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/active_controls"
+            android:textAllCaps="false"
+            style="@style/ButtonCoppel"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_medium"
+            android:text="@string/active_controls_subtitle"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:maxLines="3"
+            android:textColor="@color/disable_text_color"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

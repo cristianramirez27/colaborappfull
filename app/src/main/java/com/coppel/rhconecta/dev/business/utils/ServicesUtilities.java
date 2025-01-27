@@ -1,12 +1,14 @@
 package com.coppel.rhconecta.dev.business.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.coppel.rhconecta.dev.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 public class ServicesUtilities {
     /**
@@ -29,6 +31,9 @@ public class ServicesUtilities {
             case 404: //Not Found
                 servicesError.setMessage(context.getString(R.string.error_not_found));
                 break;
+            case 408: //Timeout
+                servicesError.setMessage(context.getString(R.string.error_generic_service));
+                break;
             case 500: //Internal Server Error
                 servicesError.setMessage(context.getString(R.string.server_error));
                 break;
@@ -50,12 +55,15 @@ public class ServicesUtilities {
     public ServicesError getOnFailureResponse(Context context, Throwable t, int requestType) {
         ServicesError servicesError = new ServicesError();
         servicesError.setType(requestType);
-
-        if (t instanceof IOException) {
+        Log.i("prueba","getOnFailureResponse");
+        if(t instanceof UnknownHostException){
             servicesError.setMessage(context.getString(R.string.network_error));
+        } else if (t instanceof IOException) {
+            servicesError.setMessage(context.getString(R.string.error_generic_service));
         } else if (t instanceof IllegalStateException) {
             servicesError.setMessage(context.getString(R.string.error_serialization));
         } else {
+            Log.i("prueba","error desconocido: " + t.getMessage());
             servicesError.setMessage(context.getString(R.string.error_unknown));
         }
         return servicesError;
@@ -71,8 +79,11 @@ public class ServicesUtilities {
     public Object parseToObjectClass(String s, Class c) {
         try {
             Gson gson = new Gson();
-            return gson.fromJson(s, c);
+            Object o = gson.fromJson(s, c);
+            return o;
         } catch (JsonParseException e) {
+            return null;
+        }catch (Exception e){
             return null;
         }
     }

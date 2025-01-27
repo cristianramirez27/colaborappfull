@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
     android:background="@color/colorBackgroundFragments"
     tools:context=".views.fragments.PayrollVoucherGasDetailFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ctlContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -20,10 +21,9 @@
             android:id="@+id/txvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lineto_circular_pro_medium"
             android:text="Date"
             android:textColor="@color/colorSecondBlueCoppel"
-            android:textSize="21sp"
+            style="@style/TextBold20Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline86"
             app:layout_constraintTop_toTopOf="@+id/guideline48" />
 
@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline48"
             app:srcCompat="@drawable/ic_download_gray" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvUnits"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline88" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ctlSubtotal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -96,58 +96,58 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline111"
                 app:layout_constraintTop_toBottomOf="@+id/txvdFactor" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline111"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.05" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline112"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.03" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline86"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline87"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline88"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.12" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline110"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.97" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         layout="@layout/view_connection_error"
@@ -156,4 +156,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class ProfileResponse extends CoppelGeneralParameterResponse {
+import java.io.Serializable;
+import java.util.List;
+
+public class ProfileResponse extends CoppelGeneralParameterResponse implements Serializable {
     private Data data;
 
     public Data getData() {
@@ -11,7 +14,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         this.data = data;
     }
 
-    public class Data {
+    public class Data implements Serializable {
 
         private Response[] response;
 
@@ -24,7 +27,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         }
     }
 
-    public class Response {
+    public class Response implements Serializable {
         private String Antiguedad;
         private String Centro;
         private int Ciudad;
@@ -34,6 +37,8 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         private int Erh;
         private int EsBaja;
         private int EsGte;
+        private int EsSuplente;
+        private int Suplente;
         private int Estado;
         private String FechaIngreso;
         private int Gte;
@@ -55,6 +60,7 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         private String apellidom;
         private String apellidop;
         private int TipoNomina;
+        private int EsFilial;
         private String correo;
         private String fechanacimiento;
         private String fotoperfil;
@@ -62,6 +68,17 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
         private String sexo;
         private String errorCode;
         private String userMessage;
+        private List<Section> seccionesApp;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        private String token;
 
         public String getAntiguedad() {
             return Antiguedad;
@@ -357,6 +374,38 @@ public class ProfileResponse extends CoppelGeneralParameterResponse {
 
         public void setUserMessage(String userMessage) {
             this.userMessage = userMessage;
+        }
+
+        public int getEsSuplente() {
+            return EsSuplente;
+        }
+
+        public void setEsSuplente(int esSuplente) {
+            EsSuplente = esSuplente;
+        }
+
+        public int getSuplente() {
+            return Suplente;
+        }
+
+        public void setSuplente(int suplente) {
+            Suplente = suplente;
+        }
+
+        public List<Section> getSeccionesApp() {
+            return seccionesApp;
+        }
+
+        public void setSeccionesApp(List<Section> seccionesApp) {
+            this.seccionesApp = seccionesApp;
+        }
+
+        public int getEsFilial() {
+            return EsFilial;
+        }
+
+        public void setEsFilial(int esFilial) {
+            EsFilial = esFilial;
         }
     }
 }

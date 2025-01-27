@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/layoutContainer"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_above="@+id/layoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:fillViewport="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layoutHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp">
+
+                <androidx.cardview.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="2dp"
+                    card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            android:visibility="visible">
+
+                            <RelativeLayout
+                                android:id="@+id/layoutEstatusContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:visibility="visible">
+
+                                <LinearLayout
+                                    android:id="@+id/layoutEstatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:paddingBottom="8dp"
+                                    android:paddingRight="4dp">
+
+                                    <TextView
+                                        android:id="@+id/estatus"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_gravity="bottom|center_horizontal"
+                                        android:fontFamily="@font/lineto_circular_pro_book"
+                                        android:gravity="left|center_vertical"
+                                        android:text="Autorizado (Modificado por Gerente)"
+                                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                                        android:textSize="13sp"
+                                        android:paddingLeft="4dp"
+                                        android:paddingRight="4dp"
+                                        android:visibility="visible" />
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_gravity="bottom|center_horizontal"
+                                    android:gravity="left|center_vertical"
+                                    android:text="@string/title_date_start"
+                                    android:textColor="@color/colorTextGrayDark"
+                                    style="@style/TextBook12Coppel"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/fechaInicio"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerHorizontal="true"
+                                    style="@style/TextBook12Coppel"
+                                    android:gravity="left|center_vertical"
+                                    android:text="Miércoles, 15-08-2019"
+                                    android:textColor="@color/colorTextGrayDark"
+                                    android:visibility="visible" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="bottom|center_horizontal"
+                                    android:gravity="left|center_vertical"
+                                    android:maxLines="2"
+                                    android:minHeight="20dp"
+                                    android:text="@string/title_date_end"
+                                    style="@style/TextBook12Coppel"
+                                    android:textColor="@color/colorTextGrayDark"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/fechaFin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="bottom|center_horizontal"
+                                    android:gravity="left|center_vertical"
+                                    android:text="Miércoles, 15-08-2019"
+                                    android:textColor="@color/colorTextGrayDark"
+                                    style="@style/TextBook12Coppel"
+                                    android:visibility="visible" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="bottom|center_horizontal"
+                                    android:text="@string/title_holidays_days"
+                                    android:textColor="@color/colorBackgroundCoppelNegro"
+                                    style="@style/TextMedium12Coppel"
+                                    android:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/diasVacaciones"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="bottom|center_horizontal"
+                                    android:gravity="left|center_vertical"
+                                    android:text="3 días"
+                                    android:textColor="@color/colorBackgroundCoppelNegro"
+                                    style="@style/TextMedium12Coppel"
+                                    android:visibility="visible" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/layoutHeader"
+                android:id="@+id/layoutSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/layoutProposedDays"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/proposedDaysMarker"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backgroud_circle_green"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp" />
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/proposedDaysMarker"
+                        android:id="@+id/proposedDays"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="@string/title_holidays"
+                        style="@style/TextBook12Coppel"
+                        android:textColor="@color/colorSecundaryCoppelVerde"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_below="@+id/layoutProposedDays"
+                    android:id="@+id/layoutSplice"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/markerSplice"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backgroud_circle_melon"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp" />
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/markerSplice"
+                        android:id="@+id/textSplice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextBook12Coppel"
+                        android:text="@string/title_splice"
+                        android:textColor="@color/colorMelon"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_below="@+id/layoutSplice"
+                    android:id="@+id/observacionesLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:orientation="vertical">
+
+                    <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                        android:id="@+id/expObservaciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="10dp"/>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/layoutObservaciones"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_marginTop="-3dp"
+                        android:background="@color/colorBackgroundCoppelBlanco"
+                        android:layout_height="wrap_content">
+
+                        <include layout="@layout/observaciones_periodo"/>
+
+                        <View
+                            android:id="@+id/bordeAmarillo"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"
+                            android:background="@drawable/bg_gradient_grey" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_below="@+id/observacionesLayout"
+                    android:id="@+id/layoutOptions"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                            android:layout_centerVertical="true"
+                            android:id="@+id/monthName"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            style="@style/TextBold14Coppel"
+                            android:textColor="@android:color/black"/>
+                    <!--<android:text="Octubre 2019"-->
+
+                    <RelativeLayout
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/iconList"
+                            android:layout_toLeftOf="@id/iconCalendar"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp"
+                            app:srcCompat="@drawable/ic_calendar_list_disable"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                        <ImageView
+                            android:id="@+id/iconCalendar"
+                            android:layout_centerVertical="true"
+                            android:padding="4dp"
+                            android:layout_alignParentRight="true"
+                            app:srcCompat="@drawable/ic_icn_calendar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_below="@+id/layoutOptions"
+                    android:id="@+id/layoutData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:visibility="visible"
+                        android:id="@+id/layoutList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rcvSolicitudes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutCalendar"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+                            android:id="@+id/collapsibleCalendarView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:primaryColor="@color/transparent"
+                            app:textColor="@color/colorPrimaryCoppelAzul"
+                            app:selectedItem_textColor="@android:color/white"
+                            app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
+                            app:todayItem_background="@drawable/circle_white_stroke_background"
+                            app:selectedItem_background="@drawable/circle_green_solid_background"
+                            app:buttonLeft_drawableTintColor="@android:color/white"
+                            app:buttonRight_drawableTintColor="@android:color/white"
+                            app:expandIconColor="@android:color/white"
+                            app:eventColor="@android:color/white" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutButton"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_cancel_holidays_"
+            android:textAllCaps="false"
+            android:layout_marginRight="10dp"
+            style="@style/ButtonCoppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnEdit"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_edit_holidays"
+            android:textAllCaps="false"
+            android:layout_marginLeft="10dp"
+            style="@style/ButtonCoppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

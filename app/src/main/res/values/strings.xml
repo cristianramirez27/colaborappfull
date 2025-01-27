@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">ColaborApp</string>
     <string name="welcome">Bienvenido</string>
     <string name="enrollment_message">
@@ -7,10 +7,13 @@
     </string>
     <string name="go_to_coppel">Ir a coppel.com</string>
     <string name="employee_number">N. de empleado</string>
-    <string name="password">Contraseña</string>
+    <string name="password">Contraseña colaborador digital</string>
     <string name="login">Ingresar</string>
+    <string name="login_microsoft">Iniciar Sesión</string>
+    <string name="login_microsoft_text">Inicia sesión de forma segura</string>
     <string name="forgot_my_password">Olvidé mi contraseña</string>
-    <string name="sign_in">¿Aún no te registras? Crea tu cuenta</string>
+    <string name="sign_in"> Crea tu cuenta</string>
+    <string name="not_yet_sign_in">¿Aún no te registras?</string>
     <string name="title_home">Inicio</string>
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
@@ -22,12 +25,13 @@
     <string name="enterprise">Empresa</string>
     <string name="erh">ERH</string>
     <string name="manager">Gerente</string>
+    <string name="manager_vacation">Gerente</string>
     <string name="admission_date">Fecha de ingreso</string>
     <string name="seniority_date">Fecha de antigüedad</string>
     <string name="rfc">RFC</string>
     <string name="curp">CURP</string>
     <string name="nss">NSS</string>
-    <string name="mail">Correo</string>
+    <string name="mail">Correo colaborador digital</string>
     <string name="email">Correo electrónico</string>
     <string name="collaborator">Colaborador:</string>
     <string name="notices">Comunicados</string>
@@ -44,18 +48,21 @@
     <string name="permissions_needed">Es necesario que acepte los permisos para continuar</string>
     <string name="error_save_image">Ocurrió un error al guardar la imagen</string>
     <string name="select_image">Seleccione una imagen</string>
-    <string name="loan_saving_fund">Préstamos/Fondo de ahorro</string>
+    <string name="loan_saving_fund">Fondo de ahorro</string>
     <string name="loan_margin">Margen de\ncrédito</string>
     <string name="buy_margin">Margen de\ncompra</string>
     <string name="enterprise_fund">Fondo de la\nempresa</string>
     <string name="current_account">Cuenta\ncorriente</string>
-    <string name="additional_saving">Ahorro\nadicional</string>
+    <string name="additional_saving">Ahorro adicional</string>
+    <string name="additional_saving_double_line">Ahorro\nadicional</string>
+
+    <string name="additional_saving_title">Ahorro\nadicional</string>
     <string name="employee_fund">Fondo del\ntrabajador</string>
     <string name="remove">Retirar</string>
     <string name="add">Abonar</string>
     <string name="admin_family_access">Administrar acceso de familiares que pueden comprar con descuento</string>
     <string name="menu_title_message">Mensajes</string>
-    <string name="payroll_voucher">Comprobante de nómina</string>
+    <string name="payroll_voucher">Comprobante de pago</string>
     <string name="employment_letters">Cartas laborales</string>
     <string name="connection_error">Error de conexión</string>
     <string name="press_to_refresh">El contenido no pudo ser cargado, oprime para intentar de nuevo.</string>
@@ -123,46 +130,540 @@
     <string name="enterprise_fund_faer">Fondo Empresa Faer</string>
 
     <!-- Uppercase Words -->
-    <string-array name="uppercase_words">
-        <item>IMSS</item>
-        <item>ISR</item>
-    </string-array>
+    <string name="error_bad_request">Error, la solicitud no cumple con la información requerida para está petición.</string>
 
     <!-- Error -->
-    <string name="error_bad_request">Error, la solicitud no cumple con la información requerida para está petición.</string>
     <string name="error_unauthorized">Error, la solicitud no cuenta con los privilegios necesarios.</string>
     <string name="error_not_found">Error, el recurso solicitado no ha sido encontrado.</string>
     <string name="server_error">Error contactando el servidor, intente de nuevo más tarde.</string>
     <string name="network_error">Error, por favor verifíca tu conexión a internet.</string>
     <string name="error_serialization">Error, la respuestá no tiene un formato adecuado.</string>
     <string name="error_unknown">Ocurrió un error desconocido.</string>
-    <string name="error_generic_service"> Servicio no disponible en este momento, intente más tarde.</string>
+    <string name="error_generic_service">Servicio no disponible en este momento, intente más tarde.</string>
+    <string name="error_invalid_token">La sesión ha caducado.</string>
+    <string name="error_login">No se pudo obtener la información de login.</string>
 
     <!-- Login -->
-    <string name="error_login">No se pudo obtener la información de login.</string>
     <string name="error_account_null">Error, debes iniciar sesión primero.</string>
     <string name="error_password">Por favor ingresa tu contraseña.</string>
     <string name="error_email">Por favor ingresa tu correo.</string>
     <string name="invalid_email">El correo debe incluir un signo @, asegurate de que sea un formato de correo válido.</string>
     <string name="invalid_password">La contraseña debe tener mínimo 8 caracteres y debe incluir una mínuscula, una mayúscula y un número.</string>
-
-    <!-- Recover Password -->
     <string name="error_recover_password">No se pudo obtener la información para recuperar contraseña.</string>
 
-    <!-- Profile -->
+    <!-- Recover Password -->
     <string name="error_profile">No se pudo obtener la información de perfil.</string>
+    <string name="error_google_play">No se pudo obtener la información.</string>
+
+    <!-- Profile -->
     <string name="logout">Cerrar sesión</string>
+    <string name="error_voucher">No se pudo obtener la información del comprobante de nómina.</string>
 
     <!-- Voucher -->
-    <string name="error_voucher">No se pudo obtener la información del comprobante de nómina.</string>
     <string name="error_voucher_send_mail">No se pudo enviar comprobante de nómina.</string>
     <string name="error_voucher_download">No se pudo descargar comprobante de nómina.</string>
-
-    <!-- Letters validation signature -->
     <string name="error_letters">No se pudo obtener la información de cartas laborales.</string>
 
+    <!-- Letters validation signature -->
     <string name="note_beneficiary">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="work_record">Constancia\nlaboral</string>
+
+    <!-- Employment letters-->
+    <string name="visa_passport">Visa o\nPasaporte</string>
+    <string name="bank_credit">Crédito\nbancario</string>
+    <string name="infonavit">Infonavit</string>
+    <string name="kindergarten">Guardería</string>
+    <string name="choose_letter">Selecciona tu carta</string>
+
+    <string name="customize_letter">Personaliza tu carta</string>
+    <string name="choose_letter_indication"> Selecciona el tipo de carta que deseas imprimir</string>
+    <string name="max_letters_print">Ya se excedió el número de impresiones.\nPonte en contacto con tu Encargada Local de Personal</string>
+
+    <string name="title_stamp_letter">Sellar</string>
+    <string name="title_config_letter">¡Atención!</string>
+
+    <string name="question_stamp_letter">¿Necesitas tu carta sellada?</string>
+    <string name="question_config_letter">¿Necesitas que tu carta esté sellada?</string>
+
+    <string name="yes">Sí</string>
+
+    <string name="no">No</string>
+    <string name="sendToMail">Enviar a correo</string>
+    <string name="forgot_field">¿Olvidaste algo?</string>
+
+    <string name="edit_letter">Haz click aquí para editar</string>
+    <string name="choose_child_name">Selecciona el nombre de tu(s) hijo(s)</string>
+    <string name="choose_schedule">Selecciona tu horario laboral</string>
+    <string name="check_data_msg">Si los datos no son correctos, verifica con tu gerente la información de tu hoja de vida</string>
+
+    <string name="start_day">Día inicial</string>
+    <string name="start_day_hint">Días laborables </string>
+
+    <string name="end_day">Día final</string>
+    <string name="start_hour">Entrada</string>
+    <string name="end_hour">Salida</string>
+    <string name="am">am</string>
+    <string name="pm">pm</string>
+    <string name="eating_time">Tiempo para comer</string>
+    <string name="date_start_holiday">Fecha de salida</string>
+    <string name="date_end_holiday">Fecha de regreso</string>
+    <string name="title_choose_holiday">Selecciona el rango de fechas de vacaciones</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="remember_print">Recuerda imprimir tu carta\na color</string>
+
+    <string name="employment_letters_title">Solicitud de carta</string>
+    <string name="employment_letters_sent">Enviado correctamente</string>
+    <string name="employment_letters_download">Carta descargada</string>
+    <string name="letter_download_fail">Descarga de carta no se realizó</string>
+    <string name="send_to_letter">La carta se enviará a </string>
+
+
+    <string name="join_us">Sé parte de nuestro equipo</string>
+
+
+    <string name="hint_search">Busca una categoría</string>
+
+    <string name="are_you_in_culiacan">¿No estás en Culiacán?</string>
+
+    <string name="are_you_in_">¿No estás en</string>
+    <string name="change_city">Cambia de ciudad</string>
+    <string name="discount_sample">30%\nde descuento</string>
+    <string name="file_work_record">Laboral</string>
+
+
+    <string name="file_visa_passport">Visa_Pasaporte</string>
+    <string name="file_bank_credit">Credito_Bancario</string>
+    <string name="file_infonavit">Infonavit</string>
+    <string name="file_imss">AltaUltimo_Movto_IMSS</string>
+    <string name="file_kindergarten">Guarderia</string>
+    <string name="error_empty_search">El campo no puede estar vacío</string>
+
+    <string name="max_hours_job">La Jornada Laboral no debe ser mayor a 48 horas</string>
+    <string name="removeFrom">Retirar de:</string>
+
+    <!--Fondo de ahorro-->
+
+    <string name="addTo">Abonar a:</string>
+    <string name="totalRemove">Total Importe:</string>
+    <string name="btnDoRemove">Realizar retiro</string>
+    <string name="add_amount_monthly">Agrega tu cuota de ahorro mensual</string>
+    <string name="current_amount_monthly">Tu cuota de ahorro actual es:</string>
+    <string name="btnAddAditionalSave">Agregar</string>
+    <string name="btnDoDeposit">Realizar abono</string>
+    <string name="payment_way">Método de pago</string>
+    <string name="acount_title">Cuenta\ncorriente</string>
+
+    <string name="aditional_title">Ahorro\nadicional</string>
+    <string name="worker_title">Fondo del\ntrabajador</string>
+    <string name="want_remove">Quiero disponer</string>
+
+    <string name="want_deposit">Quiero abonar</string>
+    <string name="max_saving">Tu máxima cuota de ahorro es de</string>
+    <string name="new_saving">Tu nueva cuota es de</string>
+    <string name="paymentway_select">Selecciona un método de pago</string>
+    <string name="confirm">Confirmar</string>
+    <string name="colaborator">Colaborador</string>
+    <string name="colaborator_vacation">Colaborador</string>
+
+    <string name="select_rol_expenses">Selecciona el rol con el que deseas acceder.</string>
+    <string name="authorize_request">Autorizar solicitudes</string>
+    <string name="authorize_request_icon">Autorizar\nsolicitudes</string>
+
+    <string name="active_controls">Controles activos y liquidaciones</string>
+
+    <string name="authorize_request_subtitle">Autorizar solicitudes de gastos de viaje y complementos de los colaboradores</string>
+
+
+    <string name="active_controls_subtitle">Consultar controles activos y liquidaciones de los colaboradores</string>
+    <string name="title_request_complements">Solicitudes y complementos:</string>
+
+    <string name="title_tracking_request">Controles en seguimiento:</string>
+    <string name="travel_expenses">Gastos de viaje</string>
+
+    <string name="travel_expenses_manager">Opciones de gerente</string>
+    <string name="title_requests_controls">Mis solicitudes y controles</string>
+    <string name="title_authorize_requests_controls">Autorizar solicitudes</string>
+    <string name="number_colaborator">N. Colaborador:</string>
+    <string name="title_consult_liqui">Consulta de liquidaciones</string>
+    <string name="title_colaborator_control">Control del colaborador</string>
+    <string name="title_request_expenses">Solicitud de gastos</string>
+    <string name="title_complemento_expenses">Solicitud de complemento</string>
+    <string name="title_my_control">Mi control</string>
+    <string name="title_desc_reason">*Descripción del motivo de viaje</string>
+
+    <string name="status_save">Guardada</string>
+
+    <string name="status_pending">Pendiente\nGastos</string>
+    <string name="status_canceled">Cancelada</string>
+    <string name="status_refused">Rechazada</string>
+    <string name="status_active">Activo</string>
+    <string name="status_payment">Liquidó</string>
+    <string name="status_no_payment">No Liquidó</string>
+    <string name="status_dont_deposite">Cancelado No Depositado</string>
+    <string name="title_detail_colaborator_control">Detalles del control</string>
+    <string name="title_detail_colaborator_request">Detalles de solicitud</string>
+    <string name="title_detail_colaborator_complement">Detalles del complemento</string>
+    <string name="hint_search_name_colaborator">Busca por nombre de colaborador</string>
+
+    <string name="select_center">Seleccionar centro</string>
+    <string name="select_status">Seleccionar estatus</string>
+    <string name="title_refuse_request">Rechazar solicitud</string>
+
+    <string name="title_refuse_complement">Rechazar complemento</string>
+    <string name="desc_refuse">Escribe la razón por la que rechaza este gasto de viaje</string>
+    <string name="title_reason_refuse">Motivo de Rechazo</string>
+    <string name="empty_request_complements">No hay solicitudes disponibles</string>
+
+    <string name="empty_controls">No hay controles disponibles</string>
+    <string name="request_holidays">Solicitud de vacaciones</string>
+
+    <!--    Prima Vacacional-->
+    <string name="dilog_title_prima_vacacional">Elige el día de tu prima vacacional</string>
+    <string name="dilog_button_accept_prima_vacacional">Aceptar</string>
+    <string name="dilog_button_cancel_prima_vacacional">Cancelar</string>
+
+    <!--Vacaciones-->
+    <string name="title_holidays">Vacaciones</string>
+    <string name="title_my_holidays">Mis vacaciones</string>
+    <string name="title_period_holidays">Período de vacaciones</string>
+    <string name="title_admin_holidays">Administrar vacaciones</string>
+    <string name="title_dates_selected">Fechas seleccionadas</string>
+    <string name="title_periods_holidays">Períodos de vacaciones</string>
+    <string name="title_holidays_days">Días de vacaciones</string>
+
+    <string name="title_days">días</string>
+    <string name="title_day_availables">Días disponibles por decisión</string>
+
+    <string name="title_days_pending_lastyear">Días pendientes año anterior</string>
+    <string name="title_days_aditionals">Días adicionales pendientes</string>
+    <string name="title_days_aditionals_register">Total días adicionales registrados del año</string>
+    <string name="title_bonus_date">Fecha prima vacacional</string>
+    <string name="title_date_start">Fecha inicio</string>
+
+    <string name="title_date_end">Fecha fin</string>
+    <string name="empty_months">No hay controles disponibles</string>
+
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a lobortis erat. Donec tristique metus id quam eleifend, ut iaculis lectus malesuada. Sed id mi et urna malesuada laoreet ac sit amet justo. Nulla id pulvinar mauris, a malesuada ligula. In metus leo, lacinia vitae ullamcorper ac, egestas id leo. Integer elementum dapibus rhoncus. Sed sit amet leo ultrices, suscipit neque rutrum, luctus dui. Pellentesque luctus sit amet erat in sodales. Donec tristique feugiat velit, sit amet ullamcorper ipsum viverra eget. Aliquam in purus vulputate, auctor quam eu, condimentum magna. Phasellus blandit mi urna, a dignissim nunc vehicula viverra. Fusce feugiat nisl nulla, nec scelerisque odio aliquam sit amet. Maecenas dignissim elit id felis lobortis aliquet. Vestibulum maximus ligula lacus, eleifend tempor ex rutrum at</string>
+
+    <string name="half_day">Medio día</string>
+
+
+    <string name="btn_request_all">Solicitar\ntodas</string>
+
+    <string name="btn_schedule_more">Agendar más\nvacaciones</string>
+    <string name="btn_schedule_holidays">Agendar vacaciones</string>
+    <string name="btn_edit_holidays">Editar\nperíodo</string>
+    <string name="btn_cancel_holidays">Cancelar vacaciones</string>
+    <string name="btn_cancel_holidays_">Cancelar\nvacaciones</string>
+    <string name="btn_refuse_holidays_">Rechazar\nvacaciones</string>
+    <string name="title_total_request_days">Total días solicitados</string>
+    <string name="title_days_to_schedule">Días por agendar</string>
+    <string name="title_eliminate">Eliminar</string>
+    <string name="botton_refuse">Rechazar</string>
+    <string name="botton_accept">Aceptar</string>
+    <string name="botton_accept_2">Autorizar</string>
+    <string name="label_more_information">Más información</string>
+    <string name="label_less_information">Menos información</string>
+
+
+    <string name="msg_holiday_request_deleted">Solicitud eliminada\ncorrectamente</string>
+
+    <string name="btn_canceled_period">Cancelar vacaciones</string>
+
+    <string name="btn_request_holidays">Solicitudes de vacaciones</string>
+
+    <string name="btn_aditional_days">Días adicionales</string>
+    <string name="btn_calendar_holidays">Calendario de vacaciones</string>
+    <string name="btn_text_request_holidays">Solicitudes de los colaboradores</string>
+    <string name="btn_text_aditional_days">Capturar días adicionales a colaboradores</string>
+    <string name="btn_text_calendar_holidays">Lista de vacaciones agendadas a los colaboradores</string>
+    <string name="title_calendar_days_proposed">Días propuestos</string>
+    <string name="title_calendar_proposed">Ver calendario de días propuestos</string>
+    <string name="title_splice">Empalme entre este colaborador y otro(s)</string>
+    <string name="title_splice_colaborators">Empalme entre colaboradores</string>
+    <string name="btn_aditional_days_holidays">Capturar días adicionales</string>
+
+    <string name="hint_reason_aditional_days">Escribe el motivo aquí</string>
+    <string name="hint_observation_days">Ingresa tus observacions aquí</string>
+    <string name="btn_title_authorize">Autorizar</string>
+    <string name="title_reason_aditional_days">Selecciona el motivo</string>
+    <string name="title_control_aditional_days">¿Cuántos días adicionales\nocupa el colaborador?</string>
+
+    <string name="title_add_aditional_days">Agrega o quita días adicionales</string>
+    <string name="title_add_aditional_days_pending">Días adicionales pendientes</string>
+    <string name="btn_title_next">Siguiente</string>
+    <string name="holidays_to_authorized">Vacaciones por autorizar</string>
+
+    <string name="holidays_scheduled">Vacaciones agendadas</string>
+    <string name="title_add_aditional_days_toolbar">Días adicionales</string>
+    <string name="subtitle_observation_authorize">Escribe el motivo por el cual agenda las vacaciones del colaborador</string>
+
+    <string name="title_colaborator_request">Solicitudes del colaborador</string>
+
+    <string name="title_colaborator_calendar_gral">Calendario de colaboradores</string>
+    <string name="title_holidays_colaborator_calendar_gral">Vacaciones del colaborador</string>
+    <string name="title_holidays_colaborator_calendar">Vacaciones colaborador</string>
+    <string name="title_calendar_periods">Marca los días o medios días en el calendario sin días de descanso</string>
+    <string name="title_calendar_periods_2">Marca los días en el calendario sin días de descanso</string>
+    <string name="title_collage">Universidad\nCoppel</string>
+
+    <string name="msg_no_days_available">No cuenta con los días necesarios para esta solicitud</string>
+    <string name="center_colaborators">Colaboradores del centro</string>
+    <string name="number_of_views">%d Vistas</string>
+    <string name="defautl_media_player_error">Ocurrió un error al reproducir el video</string>
+    <string name="send_poll">Enviar encuesta</string>
+    <string name="poll_progress">pregunta %d de %d</string>
+    <string name="poll_sent_success_title">Tu encuesta se envió con éxito</string>
+    <string name="poll_sent_success_content">¡Gracias!</string>
+    <string name="not_poll_available_message">El colaborador no tiene encuestas pendientes</string>
+    <string name="not_available_service">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="default_server_error">
+        Lo sentimos, tenemos un problema en nuestros servidores, intente mas tarde
+    </string>
+    <string name="releases_activity_title">Comunicados</string>
+    <string name="release_detail_activity_title">Comunicado</string>
+    <string name="visionaries_title">Visionarios</string>
+    <string name="visionary_details_activity_title">Visionarios</string>
+    <string name="poll_activity_title">Encuesta</string>
+    <string name="not_available_releases">No hay comunicados que mostrar</string>
+    <string name="not_available_visionaries">No hay videos que mostrar</string>
+    <string name="not_available_poll_title">Alerta</string>
+    <string name="not_available_poll_content">No hay encuestas nuevas</string>
+    <string name="not_available_poll_action">Aceptar</string>
+    <string name="releases_failure_default_title">Alerta</string>
+    <string name="releases_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="releases_failure_default_action">Aceptar</string>
+    <string name="visionaries_failure_default_title">Alerta</string>
+    <string name="visionaries_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="visionaries_failure_default_action">Aceptar</string>
+
+    <string name="profile_actions_failure_default_title">Alerta</string>
+    <string name="profile_actions_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="profile_actions_failure_default_action">Aceptar</string>
+
+    <string name="fingerprint_failure_default_title">Alerta</string>
+    <string name="fingerprint_failure_default_content">Servicio no disponible en este momento, intente más tarde</string>
+    <string name="fingerprint_failure_default_action">Aceptar</string>
+
+    <string name="release_detail_activity_header">Comunicado</string>
+    <string name="poll_activity_failure_title">Alerta</string>
+    <string name="poll_activity_failure_action">Aceptar</string>
+    <string name="collaborator_at_home">Videos</string>
+    <string name="title_cocrea">CoCrea</string>
+    <string name="title_wheather">Clima organizacional</string>
+    <string name="collaborator_at_home_title">Videos</string>
+    <string name="visionary_at_home_details_activity_title">Videos</string>
+    <string name="qrCode">Lectura de QR</string>
+    <string name="str_error_conexion">Ocurrió un error con la conexión</string>
+    <string name="str_cancel_scan">Cancelaste el escaneo</string>
+    <string name="str_scan_title">Escanear QR</string>
+    <string name="str_error_permisos">No se le otorgaron los permisos requeridos a la aplicación.</string>
+    <string name="str_error_phone_number">Numero de telefono invalido.</string>
+    <string name="str_error_unknown_device">No se pudo identificar el dispositivo.</string>
+    <string name="home_fragment_failure_title">Alerta</string>
+    <string name="home_fragment_failure_action">Aceptar</string>
+    <string name="covid_survey_title">COVID-19 GC</string>
+    <string name="str_sub_qrcode">Apunta al código para escanear.</string>
+    <string name="str_benefit_code_title">El código generado es:</string>
+    <string name="str_code_benefit_loading">Cargando...</string>
+    <string name="str_btn_advertising">Publicidad de\nla empresa</string>
+    <string name="str_btn_generate_code">Generar\nCódigo</string>
+    <string name="str_copied_code">Código Copiado</string>
+    <string name="visionaries_updated_label">Actualizado</string>
+    <string name="default_notification_channel_id">Canal de notificaciones Coppel</string>
+    <string name="default_notification_channel_name">Canal de notificaciones Coppel</string>
+    <string name="default_notification_channel_description">Notificaciones generales Coppel</string>
+    <!--<string name="default_permission_notification">Para activar las notificaciones, habilítelo en la configuración.</string>-->
+   <string name="default_permission_notification">Si no aceptaste el permiso notifiaciones, habilítalo en la configuración.</string>
+   <string name="video_decoder_failure">No se pudo recuperar el video por el siguiente motivo: %s</string>
+   <string name="default_video_decoder_failure">No se pudo recuperar el video.</string>
+   <string name="app_center_id">ed0f9a3a-2f9c-41f2-b963-017fef1b8972</string>
+   <string name="visionary_rate_title_like">¿Por qué te gustó el video?</string>
+   <string name="visionary_rate_action">Enviar</string>
+   <string name="visionary_rate_action_option_not_selected">Selecciona una opción</string>
+   <string name="update_visionary_process_status_done">Gracias por tu retroalimentación</string>
+   <string name="go_to_profile_label"><u>Ver perfil</u></string>
+   <string name="user_profile_label">Mis datos</string>
+   <string name="fingerprint_label">Huellas adicionales</string>
+   <string name="profile_actions_activity_title">Perfil</string>
+   <string name="profile_details_activity_title">Mis datos</string>
+   <string name="fingerprint_title">Huellas Adicionales</string>
+   <string name="invalid_url_link">No se puede abrir este enlace</string>
+   <string name="invalid_data_loaded">No es posible mostrar información de este elemento</string>
+   <string name="alert">Alerta</string>
+   <string name="letters_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
+   <string name="voucher_download_message"><![CDATA[Puedes ver tu archivo descargado en la carpeta de Descargas > ColaborApp]]></string>
+   <string-array name="uppercase_words">
+       <item>IMSS</item>
+       <item>ISR</item>
+   </string-array>
+   <string name="label_dialog_city">Selecciona la ciudad</string>
+   <string name="label_title_code">Tu código es</string>
+   <string name="withdrawal_in_process">Retiro en proceso</string>
+   <string name="insufficient_balance">No cuenta con saldo disponible</string>
+   <string name="entry_home_vacantes">Oportunidades Internas</string>
+   <string name="title_linea_denuncia">Línea de denuncia</string>
+   <string name="movements">Mis Movimientos</string>
+   <string name="last_movements">Tus últimos movimientos</string>
+   <string name="folio">Folio:</string>
+   <string name="date_movement">Fecha de movimiento:</string>
+   <string name="detail_movement_title">Detalle del Movimiento</string>
+   <string name="sivings_withdrawal_blocking_message">En este momento no puedes disponer de tu Ahorro Adicional debido a que está en proceso tu préstamo especial.</string>
+
+   <!--    Zendesk-->
+    <string name="logout_with_chat_active">Tienes un chat activo en Mesa de Ayuda, finaliza la conversación para cerrar tú sesión.</string>
+
+    <!-- Root Validate-->
+    <string name="root_message">Eres usuario Root no puedes acceder a la app</string>
+
+    <!-- Login Microsoft-->
+
+    -    Calculator-->
+    <string name="title_calculator">Calculadora para el retiro</string>
+    <!--    Welcome Calculator-->
+    <string name="title_welcome_calculator">Te damos la bienvenida</string>
+    <string name="subtitle_welcome_calculator">Con esta calculadora podrás estimar el ahorro con el que contarás en el
+        momento de tu retiro, logrado gracias al esfuerzo que en conjunto con grupo Coppel realizaste.
+    </string>
+    <string name="title_checkbox_welcome_calculator">He leído y acepto el <a href="">Aviso de privacidad.</a></string>
+
+    <string name="button_welcome_calculator">Comenzar</string>
+    <!--    Privacy Calculator-->
+    <string name="title_privacy_calculator">Aviso de privacidad</string>
+    <string name="text_privacy_calculator2">De conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (en lo sucesivo, la “Ley” o la “LFPDPPP”), el Reglamento de la Ley (el “Reglamento”) y los Lineamientos del Aviso de Privacidad (los “Lineamientos”), entre otras disposiciones aplicables y vigentes en los Estados Unidos Mexicanos (“México”), ponemos a disposición del titular de datos personales el siguiente:\n\nAVISO DE PRIVACIDAD (INTEGRAL) DESTINADO PARA CANDIDATOS Y COLABORADORES COPPEL\nI. Identidad y domicilio del responsable del tratamiento de los datos personales.\nEn su carácter de Titular, le informamos los términos y condiciones bajo las cuales Coppel, S.A. de C.V. (en lo sucesivo “Coppel” o el “Responsable”) llevará a cabo el tratamiento de los datos personales que usted nos proporcione y se encuentren bajo nuestro control y ámbito de decisión razonable, así como la forma y los medios bajo los cuales podrá ejercer sus derechos a la privacidad, a ejercer control sobre sus datos personales y a la protección de los mismos, en apego a la Ley, el Reglamento, los Lineamientos y demás disposiciones aplicables.\n\nDe la misma forma le informamos que durante el tratamiento de los datos personales que usted nos proporcione estableceremos las medidas necesarias para cumplir con los principios de licitud, calidad, consentimiento, información, finalidad, lealtad, proporcionalidad y responsabilidad que marca la Ley y el Reglamento.\n\nEl domicilio de Coppel, para todos los efectos aplicables al presente Aviso de Privacidad y demás cuestiones relacionadas con el mismo, se encuentra ubicado en República No. 2855 Poniente Colonia Recursos Hidráulicos, Código Postal 80105, en la ciudad de Culiacán, Sinaloa.\n\nII. Datos personales que serán sometidos a tratamiento.\nLos datos personales que usted libre y voluntariamente proporcione a Coppel por cualquier medio que pongamos a su disposición, o que lleguen a nosotros a través de medios de acceso público, o por cualquier otra fuente lícita (en lo sucesivo y en su conjunto “Datos Personales”) considerando en todo momento los intereses que le asisten en términos de la Ley y el Reglamento, podrán incluir:\n\nDatos Personales Generales: Nombre, domicilio, dirección de correo electrónico, fecha y lugar de nacimiento, nacionalidad, números telefónicos fijos y/o móviles, estado civil,identificación oficial, formación profesional y académica, datos académicos, datos laborales, datos migratorios, geolocalización, y datos de la misma naturaleza y exclusivamente bajo esta categoría.\nDatos Financieros y/o Patrimoniales: Registro Federal de Contribuyentes, Clave Única de Registro de Población, información relacionada con cuentas y/o transacciones bancarias, relaciones patrimoniales, ingresos brutos y/o netos, y datos de la misma naturaleza y exclusivamente bajo esta categoría.\nDatos Sensibles: Datos biométricos consistentes en imagen facial, huellas dactilares y firma autógrafa digital; Datos sobre su estado de salud consistentes en historial médico, evaluaciones médicas, psicológicas y toxicológicas, grabación de voz y video, resultados de exámenes de conocimiento, pruebas de valores y honestidad.\nComo parte del proceso de alta de colaboradores y/o de la relación jurídica existente o pasada, Coppel podrá solicitarle y/o conservará copias de la documentación en donde consten o relacionada con los Datos Personales, misma que será igualmente resguardada con las medidas de seguridad técnicas, administrativas y físicas necesarias para proteger sus Datos Personales.\n\nDatos personales de terceros.\nPara cumplir con las obligaciones legalmente adquiridas con usted, Coppel tratará datos personales de identificación y de contacto de terceros que nos serán proporcionados por usted, en calidad de referencias personales, por lo que usted se obliga a informar a dichos terceros sobre el tratamiento de sus datos personales y el contenido de este Aviso de Privacidad.\n\nIII. Finalidades para el tratamiento de sus Datos Personales.\nLos Datos Personales que tratamos conforme este Aviso de Privacidad serán utilizados únicamente para cumplir con las siguientes:\n\n(a) Finalidades Primarias o Finalidades Necesarias: Son aquellas que dan origen o que son necesarias para la consecución y cumplimiento de una relación jurídica (potencial, presente o pasada) entre usted y Coppel, es decir, para: (i) verificar, confirmar y validar la identidad del Titular, así como de las referencias señale; (ii) La evaluación y análisis del perfil del Titular, que puede incluir pruebas psicológicas, psicométricas, de honestidad y confianza, entre otras, a efecto de determinar si cuenta con las aptitudes necesarias para ocupar una plaza vacante en la plantilla laboral dentro Coppel S.A de C.V o de sus empresas filiales y/o subsidiarias; (iii) Solicitar referencias personales o laborales de los Titulares; (iv) Integración y actualización de los expedientes de los Titulares; (v) Remitir su expediente a la empresa filial y/o subsidiaria de la plaza vacante a ocupar; (vi) Llevar a cabo su registro en plataformas digitales que le provean de servicios complementarios; (vii) La actualización, almacenamiento y administración de los Datos Personales y/o Datos Personales Sensibles de los Titulares, (viii) dar cumplimiento a lo previsto en los contratos individuales o colectivos de trabajo, que en su caso sean celebrados; (ix) atención de requerimientos emitidos por cualquier autoridad competente; (x) elaboración de análisis y estadísticas para usos internos; (xi) brindarle acceso a nuestras instalaciones y evitar posibles riesgos dentro de las mismas; (xii) el cumplimiento de obligaciones que deriven de la relación jurídica entre Coppel y usted.\n\nIV. Transferencia de Datos Personales\nCoppel podrá revelar o transferir sus Datos Personales por requerimiento de la autoridad competente o en cualquier otro de los supuestos establecidos en los Artículos 10 y 37 de la LFPDPPP, para lo cual no se requiere el consentimiento del Titular de dichos datos personales conforme a la Ley y su Reglamento. En general, Coppel podrá revelar o transferir sus Datos Personales sin su consentimiento, en todos los casos de excepción previstos en la legislación aplicable.\n\nEn este sentido, Coppel podrá llevar a cabo la transferencia de sus Datos Personales a cualesquier sociedad controladora, controlada, subsidiaria y/o afiliada que opere bajo los mismos estándares, procesos y/o políticas internas bajo los que opera Coppel.\n\nLos terceros y las entidades receptoras de Datos Personales, asumen las mismas obligaciones y/o responsabilidades de Coppel, de conformidad con lo descrito en el presente Aviso de Privacidad.\n\nLos Datos Personales que usted proporcione a Coppel podrán compilarse y fijarse en una base de datos propiedad exclusiva de Coppel, la cual tendrá un tratamiento limitado al cumplimiento de las finalidades previstas en el presente Aviso de Privacidad.\n\nV. Oficina de Datos Personales de Coppel\nEl departamento responsable del tratamiento de los Datos Personales en Coppel es nuestra Oficina de Datos Personales con domicilio en República No. 2855 Poniente Colonia Recursos Hidráulicos, Código Postal 80105, en la ciudad de Culiacán, Sinaloa , con dirección de correo electrónico datospersonales@coppel.com.\n\nVI. Ejercicio de Derechos ARCO y Revocación del Consentimiento.\nUsted tiene derecho a (i) conocer qué Datos Personales tenemos de usted, para qué los utilizamos y las condiciones del uso que les damos (Acceso); (ii) solicitar la corrección de su información personal en caso de que esté desactualizada, sea inexacta o incompleta (Rectificación); (ii) solicitar la eliminación de sus Datos Personales de nuestros registros o bases de datos cuando considere que la misma no está siendo utilizada adecuadamente (Cancelación); y (ii) oponerse al uso de sus Datos Personales para finalidades secundarias (Oposición). Estos derechos se conocen como derechos ARCO.\n\nEl Titular podrá ejercer en cualquier momento los derechos anteriormente citados, así como revocar el consentimiento otorgado a Coppel, presentando la respectiva solicitud de ejercicio de derechos ARCO (i) a través de nuestra página de Internet www.coppel.com, en la sección identificada como “Aviso de Privacidad”, dando click en el hipervínculo de “Derechos Arco”, y siguiendo el proceso que al efecto se establece y adjuntado los documentos que sean necesarios para su ejercicio, así como los que considere pertinentes para fundamentar su petición.\n\nTambién tiene derecho a revocar el consentimiento para el tratamiento de sus datos personales, mismo que podrá ser ejercido en cualquier momento, sin que se le atribuyan efectos retroactivos, siguiendo el procedimiento antes mencionado y adjuntando los documentos que sean necesarios. No obstante lo anterior, Coppel tendrá el derecho de tratar los datos personales señalados en el presente Aviso de Privacidad, hasta en tanto sean necesarios para cumplir con una obligación legalmente contraída por el Titular.\n\nDichas solicitudes serán atendidas por nuestra Oficina de Datos Personales.\n\nLa solicitud de ejercicio de derechos ARCO deberá contener:\n\nEl nombre completo del Titular;\nCopia de los documentos que acrediten la identidad del Titular de los datos personales (Identificación oficial vigente / Pasaporte vigente) por ambos lados;\nEn caso de que el Titular comparezca por medio de representante legal, éste último deberá también exhibir, por la misma vía, los documentos que acrediten la representación legal (i.e. carta poder simple firmada por el Titular, el apoderado y dos testigos, acompañada de una copia de las identificaciones del apoderado y los dos testigos);\nDescripción clara y precisa de los Datos Personales respecto de los que se busca ejercer alguno de los derechos ARCO;\nCualquier otro elemento o documento que facilite la localización de los Datos Personales;\nIndicar las modificaciones a realizarse y/o las limitaciones al uso de los Datos Personales, y aportar la documentación que sustente su petición.\nLas solicitudes de ejercicio de derechos ARCO que se presenten conforme a esta sección, serán atendidas en un plazo no mayor a 20 (veinte) días hábiles contados a partir de la fecha en que se recibió la solicitud. Si su solicitud resulta procedente, se hará efectiva dentro de los 15 (quince) días hábiles siguientes a la fecha en que el Responsable comunique la respuesta.\n\nEn caso de que la información proporcionada en su solicitud resulte errónea o insuficiente, o no se acompañen los documentos necesarios para acreditar su identidad o la representación legal, Coppel, dentro de los 5 (cinco) días hábiles siguientes a la recepción de su solicitud, requerirá que se subsanen las deficiencias para poder dar trámite a la misma. Este requerimiento deberá ser atendido por usted dentro de los 10 (diez) días hábiles siguientes a su recepción, de lo contrario su solicitud se tendrá por no presentada. En caso de que el Titular atienda el requerimiento de información, el plazo para que el Responsable dé respuesta a la solicitud empezará a correr al día siguiente de que el Titular haya atendido el requerimiento.\n\nSi transcurrido el término que señala la Ley y el Reglamento Coppel no diera respuesta a su solicitud, usted podrá iniciar el procedimiento de protección de derechos ARCO ante el Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI), cuyo domicilio se encuentra ubicado en Insurgentes Sur No. 3211 Col. Insurgentes Cuicuilco, Delegación Coyoacán, C.P. 04530, Distrito Federal, lo anterior de conformidad con los requerimientos que le sean informados por dicho Instituto en su debida oportunidad. Para consultar mayor información al respecto podrá visitar el sitio web del mismo en http://inicio.inai.org.mx.\n\nVII. Medidas de Seguridad y Control\nCoppel tiene implementadas medidas de seguridad administrativas, técnicas y físicas, derivadas de las mejores prácticas internacionales en cuanto a calidad y seguridad en el interés de proteger sus Datos Personales contra daño, pérdida, alteración, destrucción, uso, acceso o tratamiento no autorizado, mismas que igualmente exigimos sean cumplidas por nuestros socios y aliados comerciales, aun tratándose de servicios que prestan las empresas controladoras, controladas, subsidiarias y/o afiliadas de Coppel.\n\nVIII. Modificaciones al Aviso de Privacidad\nCoppel se reserva el derecho de efectuar en cualquier momento modificaciones al presente aviso de privacidad, ya sea por actualizarse alguno de los supuestos establecidos en la Ley y que atiendan a algún cambio sustancial en Coppel, o bien derivado de cualquier modificación que afecte características de los datos personales recabados, así como las finalidades previstas en este Aviso de Privacidad.\n\nEn caso de que exista algún cambio sustancial en este Aviso de Privacidad, se le comunicará mediante cualquiera de los siguientes medios: a) página de Internet de Coppel (Coppel.com); b) en forma escrita; c) llamada telefónica; d) medios electrónicos; o e) por cualquier medio óptico, sonoro, visual u otro que la tecnología permita ahora o en lo futuro.\n\nÚltima actualización 12 de marzo de 2021.\n\n</string>
+    <string name="text_privacy_calculator">Los resultados que se mostrarán en la aplicación denominada “ColaborApp” (la “Herramienta”) son únicamente estimaciones realizadas conforme a los datos proporcionados por el colaborador que se encuentre activo como empleado (el “Colaborador”) en la empresa con quien tenga celebrado un Contrato Individual de Trabajo, entidad que reconoce como único y exclusivo patrón (en lo particular y de acuerdo al caso concreto de cada Colaborador, la “Empresa”) y los saldos con los que cuente el Colaborador en su Fondo de Ahorro, Caja de Ahorro, semanas cotizadas en el IMSS y saldos de su cuenta individual de Afore.\n\nEn esta Herramienta se utilizan los saldos a la fecha de corte del Fondo de Ahorro y Caja de Ahorro (Aportaciones Adicionales, AER I y AER I, de acuerdo al caso concreto de cada Colaborador). No obstante, dichos saldos son y serán considerados solo como una referencia del historial de ahorro de cada Colaborador, pero no deberán ser considerados como elementos para un reclamo futuro de saldos en la Caja de Ahorro ni en el Fondo de Ahorro, pues los mismos son saldos proyectados con la información de cada Colaborador; por lo que la información que se mencione en esta Herramienta no genera obligaciones de pago ni vinculación alguna para la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro. Si el Colaborador necesita conocer el saldo de su ahorro actual y correcto, deberá consultar su
+    Estado de Cuenta.\n\nAsí mismo la proyección de los saldos futuros de Fondo y Caja de Ahorro no compromete en nada a la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro, dado que es simplemente una proyección de saldos, tomando como base el historial de ahorro de cada Colaborador y el ahorro adicional que decida realizar en el futuro, por lo que dicha proyección podrá sufrir variaciones considerando, entre otros factores, los préstamos que solicite, compras de productos realizados y del resultado de las inversiones que se realicen de los saldos ahorrados.\n\nLa finalidad de esta Herramienta no es proporcionar ningún tipo de asesoramiento para su ahorro ni en materia legal, fiscal, u de otra clase; pues su función únicamente es comunicar y fomentar la cultura del ahorro para el retiro de cada Colaborador. La Herramienta solo funciona como una calculadora financiera que realiza proyecciones o especulaciones, pero no genera ni asegura una ganancia futura por sí sola al caso concreto. Por lo que, los contenidos de esta herramienta tienen únicamente finalidad informativa y bajo ninguna circunstancia deben usarse ni considerarse como una proyección cierta y en dinero.\n\nAl uso de la presente Herramienta, cada Colaborador expresamente reconoce que ha leído, entendido, acepta y reconoce que la función de la Herramienta es única y exclusivamente informativa, por lo tanto, no es ni deberá interpretarse como un beneficio, derecho adquirido o cantidad cierta y en dinero, derivado de su naturaleza especulativa.\n\nEn consecuencia, cada Colaborador que use la Herramienta entiende que las cantidades aquí señaladas no son información vinculante y libera a la Empresa de cualquier responsabilidad en este sentido, no reservándome acción o derecho alguno que ejercer en su contra en materia laboral, de seguridad social, fiscal ni alguna otra que ejercer en contra de dicha persona ni en contra de sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro.\n\nEl colaborador puede utilizar esta herramienta para modelar el requerimiento de ahorro voluntario y asi generar la meta para obtener la mejor combinación de ahorro total en el momento de retiro. Tener un buen saldo al retiro permite tomar decisión sobre su pensión.\n\nSe recomienda su uso al menos una vez al año para valorar el avance de ahorro y los ajustes que se deban hacer a las metas planteadas</string>
+    <string name="button_privacy_calculator">Regresar</string>
+    <!--    Information Dialog Calculator-->
+    <string name="title_information_dialog_calculator">Necesitarás tener a la mano la siguiente información</string>
+    <string name="text_information_dialog_calculator"> <![CDATA[  <font color=#00599c>1.-</font> Semanas cotizadas en el IMSS.]]></string>
+    <string name="text2_information_dialog_calculator"> <![CDATA[ Si no cuentas con tu reporte puedes obtenerlo <a href="https://serviciosdigitales.imss.gob.mx/semanascotizadas-web/usuarios/IngresoAsegurado">aquí</a>, ingresando los siguientes datos.<br><br>
+        %s, tus datos son:<br>
+        - CURP: <font color=#00599c><b>%s</b></font><br>
+        - NSS: <font color=#00599c> <b>%s</b></font> ]]></string>
+    <string name="text_information_dialog_calculator_2"> <![CDATA[ Si no cuentas con tu reporte puedes obtenerlo <a href="https://serviciosdigitales.imss.gob.mx/semanascotizadas-web/usuarios/IngresoAsegurado">aquí</a>, ingresando los siguientes datos.<br><br>
+        %s, tus datos son:<br>
+        - CURP: <font color=#00599c>%s</font><br>
+        - NSS: <font color=#00599c>%s</font> ]]></string>
+    <string name="text3_information_dialog_calculator"><![CDATA[  <font color=#00599c>2.-</font> El estado de cuenta de tu Afore.]]></string>
+    <string name="text4_information_dialog_calculator">Lo recibes trimestralmente en tu correo electrónico o en tu domicilio.</string>
+    <string name="button_information_dialog_calculator">Entendido</string>
+    <string name="text_age_information_calculator">Edad:</string>
+    <string name="text_years_information_calculator">Antigüedad en la empresa:</string>
+    <string name="text_salary_information_calculator">Salario base mensual:</string>
+    <string name="text_period_information_calculator">Mensualmente\n aportas a tu ahorro:</string>
+    <string name="title_dashboard_calculator">Información actual al</string>
+    <string name="title_dashboard_calculator2">Datos para tu cálculo</string>
+    <string name="text_dashboard_calculator">Tus datos son:</string>
+    <string name="text_dashboard_saving">Tus ahorros acumulados a la fecha, son:</string>
+    <string name="text_dashboard_total">Total:</string>
+    <string name="text_dashboard_currency">MXN</string>
+    <string name="text_dashboard_info_help">Prestación que otorgan las empresas que integran Grupo Coppel y empresas filiales a los colaboradores. Consiste en aportaciones del Colaborador y de la Empresa en partes iguales.</string>
+    <string name="text_dashboard_complete_info_help"><![CDATA[  Prestación que otorgan las empresas que integran Grupo Coppel y empresas filiales a los colaboradores. Consiste en aportaciones del Colaborador y de la Empresa en partes iguales.<br><br>Capital: Monto que Coppel y tu aportaron.<br><br>Intereses: Ganancias sobre el capital aportado.<br><br>Esta ganancia se da gracias a las inversiones realizadas sobre tu aportación y crece conforme más tiempo las tengas invertidas.]]></string>
+    <string name="text_dashboard_info_help2">Mecanismo voluntario de ahorro y préstamo establecido por colaboradores de empresas que integran Grupo Coppel y empresas filiales.</string>
+    <string name="text_dashboard_info_help3">Aportaciones Especiales para el Retiro I (AER 10 Y AER 25).</string>
+    <string name="text_complete_dashboard_info_help3">Aportaciones Especiales para el Retiro (AER 10 o AER 2-25, el que te corresponda)</string>
+    <string name="text_dashboard_info_help4">Aportaciones Especiales para el Retiro II (a partir de los 60 años de edad).</string>
+    <string name="text_complete_dashboard_info_help4">Aportaciones Especiales para el Retiro 60 (a partir de los 60 años de edad).</string>
+    <string name="text_dashboard_info_help5">Beneficio al retiro que consta de un número de meses de sueldo acumulables por año trabajado.(Antigüedad debe ser mayor a 5 años ininterrumpidos y sueldo igual o mayor a 40 UMAs)</string>
+    <string name="text_dashboard_help_infonavit">En caso de tener un crédito Infonavit, el cálculo no tomará en cuenta dicho saldo.</string>
+    <string name="title_dashboard_help">¿Tienes dudas?</string>
+    <string name="text_dashboard_help">Contáctanos a: ejemplo@coppel.com</string>
+    <string name="text_dashboard_information">Ingresa los siguientes datos:</string>
+    <string name="text_dashboard_information_week_imss">Semanas cotizadas IMSS</string>
+    <string name="text_dashboard_information_label"><u>Localiza tus datos</u></string>
+    <string name="text_dashboard_information_description">El número de semanas es un aproximado, para una mejor estimación de tu ahorro, actualiza las semanas mostradas en tu reporte.</string>
+    <string name="text_dashboard_information_afore">Saldo Afore</string>
+    <string name="text_dashboard_information_voluntary_afore">Saldo ahorro voluntario Afore</string>
+    <string name="question_dashboard_information_infonavit">¿Tienes un crédito Infonavit vigente?</string>
+    <string name="checkbox_dashboard_information_yes">Sí</string>
+    <string name="checkbox_dashboard_information_no">No</string>
+    <string name="text_dashboard_information_infonavit">Saldo Infonavit</string>
+    <string name="text_dashboard_button">Continuar</string>
+    <string name="text_hit_dashboard_information">Ingresa tu saldo sin decimales</string>
+    <string name="text_hit_imss_dashboard_information">Ingresa tus semanas cotizadas</string>
+    <string name="amount_example_dashboard_information"> <b>$2,189</b> MXN</string>
+    <!--     Help Dialogs-->
+    <string name="title_dialog_help_information">Localiza tus datos</string>
+    <string name="subtitle_dialog_help_imss">Localiza dentro de tu reporte tu número de semanas cotizadas IMSS.</string>
+    <string name="subtitle_dialog_help_afore">Localiza dentro de tu Estado de cuenta tu saldo Afore.</string>
+    <string name="subtitle_dialog_help_voluntary_afore">Localiza dentro de tu Estado de cuenta tu saldo de ahorro voluntario Afore.</string>
+    <string name="subtitle_dialog_help_infonavit">Localiza dentro de tu Estado de cuenta tu saldo Infonavit.</string>
+    <string name="title_dashboard_calculation">Personaliza tu cálculo</string>
+    <string name="text_dashboard_calculation_end_age">65</string>
+    <string name="text_dashboard_calculation_start_age">60</string>
+    <string name="text_dashboard_calculation_title">Elige la edad en la que deseas jubilarte:</string>
+    <string name="text_dashboard_calculation_age">Edad: %d años </string>
+    <string name="text_dashboard_calculation_age_help">Elige una edad entre 60 y 65 años.</string>
+    <string name="title_dashboard_calculation_card2">Elige el porcentaje de tu sueldo de\nahorro adicional y ve los beneficios.</string>
+    <string name="title_dashboard_calculation_card2_help">Porcentaje de tu sueldo que deseas ahorrar voluntariamente de forma mensual. Máximo 30% de tu sueldo.</string>
+    <string name="label_dashboard_calculation_card2">Equivalente en pesos</string>
+    <string name="foot_dashboard_calculation_card2">Este porcentaje puede ser el que ya ahorras o el que quisieras ahorrar en el futuro. No se hará ningún cambio, es únicamente para fines de la simulación.</string>
+    <string name="text_dashboard_calculation_button">Calcular</string>
+    <string name="title_dashboard_calculation_dialog">Información importante</string>
+    <string name="text_dashboard_calculation_dialog">Los resultados que se mostrarán son únicamente proyecciones considerando la situación actual, el resultado final puede variar al momento del retiro.</string>
+    <string name="link_dashboard_calculation_dialog"><a href="">Conoce más al respecto</a></string>
+    <string name="title_more_calculation_dialog">Más información</string>
+    <string name="text_more_calculation_dialog">Los resultados que se mostrarán en la aplicación denominada “ColaborApp” (la “Herramienta”) son únicamente estimaciones realizadas conforme a los datos proporcionados por el colaborador que se encuentre activo como empleado (el “Colaborador”) en la empresa con quien tenga celebrado un Contrato Individual de Trabajo, entidad que reconoce como único y exclusivo patrón (en lo particular y de acuerdo al caso concreto de cada Colaborador, la “Empresa”) y los saldos con los que cuente el Colaborador en su Fondo de Ahorro, Caja de Ahorro, semanas cotizadas en el IMSS y saldos de su cuenta individual de Afore.\n\nEn esta Herramienta se utilizan los saldos a la fecha de corte del Fondo de Ahorro y Caja de Ahorro (Aportaciones Adicionales, AER 10, AER 2-25 y AER 60, según corresponda y de acuerdo al caso concreto de cada Colaborador). No obstante, dichos saldos son y serán considerados solo como una referencia del historial de ahorro de cada Colaborador, pero no deberán ser considerados como elementos para un reclamo futuro de saldos en la Caja de Ahorro ni en el Fondo de Ahorro, pues los mismos son saldos proyectados con la información de cada Colaborador; por lo que la información que se mencione en esta Herramienta no genera obligaciones de pago ni vinculación alguna para la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro. Si el Colaborador necesita conocer el saldo de su ahorro actual y correcto, deberá consultar su Estado de Cuenta.\n\nAsí mismo la proyección de los saldos futuros de Fondo y Caja de Ahorro no compromete en nada a la Empresa, sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro, dado que es simplemente una proyección de saldos, tomando como base el historial de ahorro de cada Colaborador y el ahorro adicional que decida realizar en el futuro, por lo que dicha proyección podrá sufrir variaciones considerando, entre otros factores, los préstamos que solicite, compras de productos realizados y del resultado de las inversiones que se realicen de los saldos ahorrados.\n\nLa finalidad de esta Herramienta no es proporcionar ningún tipo de asesoramiento para su ahorro ni en materia legal, fiscal, u de otra clase; pues su función únicamente es comunicar y fomentar la cultura del ahorro para el retiro de cada Colaborador. La Herramienta solo funciona como una calculadora financiera que realiza proyecciones o especulaciones, pero no genera ni asegura una ganancia futura por sí sola al caso concreto. Por lo que, los contenidos de esta herramienta tienen únicamente finalidad informativa y bajo ninguna circunstancia deben usarse ni considerarse como una proyección cierta y en dinero.\n\nAl uso de la presente Herramienta, cada Colaborador expresamente reconoce que ha leído, entendido, acepta y reconoce que la función de la Herramienta es única y exclusivamente informativa, por lo tanto, no es ni deberá interpretarse como un beneficio, derecho adquirido o cantidad cierta y en dinero, derivado de su naturaleza especulativa.\n\nEn consecuencia, cada Colaborador que use la Herramienta entiende que las cantidades aquí señaladas no son información vinculante y libera a la Empresa de cualquier responsabilidad en este sentido, no reservándome acción o derecho alguno que ejercer en su contra en materia laboral, de seguridad social, fiscal ni alguna otra que ejercer en contra de dicha persona ni en contra de sus socios, accionistas, clientes, socios comerciales, representantes, proveedores, empresas, subsidiarias, administrador de la Caja de Ahorro ni de quien represente sus intereses en el presente o en el futuro.\n\nEl colaborador puede utilizar esta herramienta para modelar el requerimiento de ahorro voluntario y asi generar la meta para obtener la mejor combinación de ahorro total en el momento de retiro. Tener un buen saldo al retiro permite tomar decisión sobre su pensión.\n\nSe recomienda su uso al menos una vez al año para valorar el avance de ahorro y los ajustes que se deban hacer a las metas planteadas.</string>
+
+    <string name="text_bottom_sheet_accept_button">Aplicar</string>
+    <string name="text_bottom_sheet_cancel_button">Cancelar</string>
+    <string name="text_bottom_dialog_known_button">Entendido</string>
+
+    <string name="title_retirement_dashboard">Tus datos al retiro son:</string>
+    <string name="age_label_retirement_dashboard">Edad:</string>
+    <string name="antiquity_label_retirement_dashboard">Antigüedad en la empresa:</string>
+    <string name="weeks_imss_label_retirement_dashboard">Semanas cotizadas IMSS:</string>
+
+    <string name="title_saving_dashboard">Tus ahorros acumulados son:</string>
+    <string name="content_saving_dashboard">Este saldo lo recibirás en una sola exhibición por parte de Coppel con el cual podrás seguir ganando intereses y dividirlo en pagos mensuales, por lo que te recomendamos acercarte a una institución financiera.</string>
+    <string name="title_information_salary">Si eliges recibirlo a través de una institución financiera, tus pagos mensuales pueden ser aproximadamente de:</string>
+    <string name="label_information_salary">de tu sueldo al\nmomento del retiro.</string>
+    <string name="title_information_salary2">Adicionalmente, el gobierno o Afore con base a la ley que te corresponda, te aportarán el equivalente a:</string>
+    <string name="label_information_salary2">de tu sueldo al\nmomento del retiro.</string>
+
+    <string name="title_information_optional_item">¿Quieres incrementar tu ingreso al retiro?</string>
+    <string name="title_information_optional_item2">¿Quieres empezar a ahorrar?</string>
+    <string name="content_information_optional_item">¡Puedes hacer ahorro adicional!\nVe cuanto aumenta tu ingreso.</string>
+    <string name="content_information_optional_item2">Recuerda que cuanto antes lo\nhagas, tu ahorro crecerá más.</string>
+
+    <string name="title_complete_dashboard">¡Tu cálculo está listo!</string>
+
+    <string name="text_action_item"><u>Recalcular</u></string>
+    <string name="text_action_item2"><u>Cambiar cuota de ahorro</u></string>
+    <string name="text_dashboard_complete_button">Finalizar</string>
+    <!--    Score Dialog-->
+    <string name="title_dialog_score">Califica tu experiencia</string>
+    <string name="question_dialog_score">¿Cómo calificarías tu experiencia al usar la calculadora?</string>
+    <string name="question_comment_dialog_score">¿Qué te gustó de la calculadora?</string>
+    <string name="question_comment2_dialog_score">¿Qué cambiarías de la calculadora?</string>
+    <string name="text_hit_dialog_score">Escríbenos un comentario</string>
+    <string name="button_dialog_score">Enviar</string>
+
+    <string-array name="headers_calculator_complete">
+        <item>Fondo de Ahorro</item>
+        <item>Caja de Ahorro</item>
+        <item>Beneficio al retiro</item>
+    </string-array>
+    <string-array name="subtitles_headers_calculator_complete">
+        <item>Capital</item>
+        <item>Intereses</item>
+    </string-array>
+    <string-array name="information_items_calculator_complete">
+        <item>Edad:</item>
+        <item>Antigüedad en la empresa:</item>
+        <item>Semanas cotizadas IMSS:</item>
+    </string-array>
+    <string-array name="savings_bank_items_calculator_complete">
+        <item>Aportaciones ordinarias</item>
+        <item>Aportaciones adicionales</item>
+        <item>AER</item>
+        <item>AER 60</item>
+    </string-array>
+
 </resources>

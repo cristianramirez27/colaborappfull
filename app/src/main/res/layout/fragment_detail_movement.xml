@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movement"
+            type="com.coppel.rhconecta.dev.views.fragments.fondoAhorro.movements.model.Movement" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".views.fragments.fondoAhorro.movements.MovementsFragment">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/lateral_margin"
+            android:layout_marginTop="@dimen/lateral_margin"
+            android:translationZ="@dimen/traslation_z"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="@dimen/card_elevation">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="false"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_ticket" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_regular"
+                android:paddingHorizontal="@dimen/lateral_margin">
+
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/separation_component"
+                    android:background="@drawable/ic_line_ticket"
+                    android:layerType="software"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/glCenterHorizontal" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAmount"
+                    style="@style/TextBold30Coppel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@{movement.amount}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="$5,000.50" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvConcept"
+                    style="@style/TextMedium14Coppel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@{movement.concept}"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@id/glCenterHorizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAmount"
+                    app:layout_constraintVertical_bias="0.25"
+                    tools:text="APORTACION ADICIONAL FDO TRABAJADOR" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/separation_component"
+                    android:layout_marginBottom="@dimen/margin_doble"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/glCenterHorizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvLabelMoveDate"
+                        style="@style/TextMedium14Coppel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingTop="@dimen/separation_component"
+                        android:text="@string/date_movement"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvMoveDate"
+                        style="@style/TextMedium14Coppel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingTop="@dimen/separation_component"
+                        android:text="@{movement.date}"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="04/05/2021" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvLabelFolio"
+                        style="@style/TextMedium14Coppel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingTop="@dimen/separation_component"
+                        android:text="@string/folio"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLabelMoveDate" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFolio"
+                        style="@style/TextMedium14Coppel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:paddingTop="@dimen/separation_component"
+                        android:text="@{movement.invoice}"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMoveDate"
+                        tools:text="112123" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/glCenterHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</layout>

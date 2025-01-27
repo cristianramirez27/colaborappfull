@@ -1,15 +1,19 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
 
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +32,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherAlimonyBeneficiaryAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -48,7 +52,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implements IServicesContract.View, PayrollVoucherAlimonyBeneficiaryAdapter.OnVoucherAlimonyBeneficiaryClickListener,
-        PayrollVoucherAlimonyBeneficiaryAdapter.OnActionClickListener, DialogFragmentWarning.OnOptionClick, DialogFragmentGetVoucher.OnButtonClickListener {
+        PayrollVoucherAlimonyBeneficiaryAdapter.OnActionClickListener, DialogFragmentWarning.OnOptionClick, DialogFragmentGetDocument.OnButtonClickListener {
 
     public static final String TAG = PayrollVoucherAlimonyBeneficiaryFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -58,7 +62,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     private DialogFragmentLoader dialogFragmentLoader;
     private PayrollVoucherAlimonyBeneficiaryAdapter payrollVoucherAlimonyBeneficiaryAdapter;
     private VoucherResponse.FechasPensione beneficiaryDateToGet;
-    private DialogFragmentGetVoucher dialogFragmentGetVoucher;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private int beneficiaryDateRequested;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -69,6 +73,8 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     private File pdf;
     @BindView(R.id.rcvAlimonyBeneficiary)
     RecyclerView rcvAlimonyBeneficiary;
+
+    private boolean GO_BACK;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -137,23 +143,26 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.alimony).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.alimony).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
-                    showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOADED);
+                    showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
                 } else {
                     showWarningDialog(getString(R.string.error_save_file));
                 }
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SENT);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SENT);
                 break;
         }
     }
 
     @Override
-    public void showError(ServicesError coppelServicesError) {
+    public void showError(final ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DETAIL:
                 VoucherResponse.FechasPensione beneficiaryDate = beneficiaryDates.get(beneficiaryDateRequested);
@@ -162,14 +171,30 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 payrollVoucherAlimonyBeneficiaryAdapter.notifyDataSetChanged();
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_DOWNLOAD_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOAD_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOAD_FAIL);
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_ALIMONY_SENDMAIL_DETAIL:
-                showGetVoucherDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
+                showGetVoucherDialog(DialogFragmentGetDocument.VOUCHER_SEND_FAIL);
                 break;
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
+                break;
+
+            case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
+
+                GO_BACK = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(PayrollVoucherAlimonyBeneficiaryFragment.this);
+                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    }
+                }, 1500);
+
                 break;
         }
     }
@@ -194,7 +219,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     @Override
     public void onMailClick(VoucherResponse.FechasPensione beneficiaryDate) {
         beneficiaryDateToGet = beneficiaryDate;
-        showGetVoucherDialog(DialogFragmentGetVoucher.SEND_TO);
+        showGetVoucherDialog(DialogFragmentGetDocument.SEND_TO);
     }
 
     @Override
@@ -207,9 +232,9 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     public void onSend(String email) {
         if (email != null && !email.isEmpty()) {
             requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, email, ServicesConstants.SHIPPING_OPTION_SEND_EMAIL);
-            dialogFragmentGetVoucher.close();
+            dialogFragmentGetDocument.close();
         } else {
-            dialogFragmentGetVoucher.setWarningMessage(getString(R.string.error_email));
+            dialogFragmentGetDocument.setWarningMessage(getString(R.string.error_email));
         }
     }
 
@@ -225,7 +250,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
             //AppUtilities.sharePDF(parent, pdf);
         }
         SHARE_PDF = false;
-        dialogFragmentGetVoucher.close();
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -237,7 +262,9 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
+        } else if(GO_BACK) {
+         getActivity().onBackPressed();
+         } else if (WARNING_PERMISSIONS) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
                 AppUtilities.openAppSettings(parent);
@@ -255,19 +282,23 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
     }
 
     private void showGetVoucherDialog(int type) {
-        dialogFragmentGetVoucher = new DialogFragmentGetVoucher();
-        dialogFragmentGetVoucher.setType(type, parent);
-        if (type == DialogFragmentGetVoucher.SEND_TO) {
-            dialogFragmentGetVoucher.setPreloadedText(parent.getProfileResponse().getCorreo());
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(type, parent);
+        if (type == DialogFragmentGetDocument.SEND_TO) {
+            dialogFragmentGetDocument.setPreloadedText(parent.getProfileResponse().getCorreo());
         }
-        dialogFragmentGetVoucher.setOnButtonClickListener(this);
-        dialogFragmentGetVoucher.show(parent.getSupportFragmentManager(), DialogFragmentGetVoucher.TAG);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+            } else {
+                requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
+            }
         } else {
             requestAlimonyBeneficiaryDetail(beneficiaryDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
         }
@@ -282,6 +313,7 @@ public class PayrollVoucherAlimonyBeneficiaryFragment extends Fragment implement
                 email, ServicesConstants.CONSTANCE_TYPE_ALIMONY, 2,
                 shippingType, TextUtilities.dateFormatter(beneficiaryDate.sfechanomina,
                         AppConstants.DATE_FORMAT_DD_MM_YYYY_MIDDLE, AppConstants.DATE_FORMAT_YYYY_MM_DD_MIDDLE),
-                data, parent.getLoginResponse().getToken());
+                data, AppUtilities.getAuthHeader(requireContext()));
     }
+
 }

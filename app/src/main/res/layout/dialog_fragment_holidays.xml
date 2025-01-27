@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_blue_light_rounded">
+
+        <ImageView
+            android:id="@+id/imgvAction"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/ic_warning" />
+
+        <LinearLayout
+            android:layout_below="@+id/imgvAction"
+            android:id="@+id/layoutContent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:id="@+id/txvAction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                style="@style/TextBook14Coppel"                android:gravity="center"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txvMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txvAction"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:padding="2dp"
+                android:textColor="@android:color/white"
+                style="@style/TextBook14Coppel"
+                android:visibility="visible"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_below="@+id/layoutContent"
+            android:id="@+id/btnActionAccept"
+            android:layout_width="149dp"
+            android:layout_marginLeft="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            style="@style/ButtonCoppel"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/background_white_rounded"
+            android:text="@string/accept"
+            android:textAllCaps="false"
+            android:textColor="@color/colorSecondBlueCoppel"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline94"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline95"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline97"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.48" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_blue_light_rounded"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline70"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgvClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_close_white" />
+
+        <TextView
+            android:id="@+id/txvSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            style="@style/TextBold20Coppel"
+            android:text="@string/send"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            style="@style/TextBook14Coppel"
+            android:gravity="center"
+            android:text="@string/send_to"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txvSend" />
+
+        <com.coppel.rhconecta.dev.views.customviews.EditTextEmail
+            android:id="@+id/editTextEmail"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSendAccept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/background_white_rounded"
+            android:text="@string/accept"
+            android:textAllCaps="false"
+            android:textColor="@color/colorSecondBlueCoppel"
+            style="@style/ButtonCoppel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline93"
+            app:layout_constraintStart_toStartOf="@+id/guideline92"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline92"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline93"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctlReady"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_blue_light_rounded"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline70"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctlSendTo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_blue_light_rounded"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline70"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline49"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

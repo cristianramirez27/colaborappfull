@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+    <TextView
+        android:id="@+id/titleLetters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_choose_holiday"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        style="@style/TextBold20Coppel"
+        android:textColor="@color/colorSecondBlueCoppel"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_below="@+id/titleLetters"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="1dp"
+        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+
+            <LinearLayout
+                android:id="@+id/schedulelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/dateStartHolidayLayout"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/dateStartHolidayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            style="@style/TextMedium12Coppel"
+                            android:text="@string/date_start_holiday"
+                            android:textColor="@color/colorScheduler"/>
+
+                        <TextView
+                            android:id="@+id/dateStartHoliday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dateStartHolidayLabel"
+                            android:gravity="center"
+                            android:layout_marginTop="6dp"
+                            style="@style/TextBook14Coppel"
+                            android:hint="@string/start_day_hint"
+                            android:textColor="@color/colorTextCoppelNegro"/>
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/ic_down_arrow_blue"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/dateEndHolidayLayout"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/background_bottom_line"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/dateEndHolidayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgVideoPreview"
+                            android:gravity="center"
+                            android:text="@string/date_end_holiday"
+                            style="@style/TextMedium12Coppel"
+                            android:textColor="@color/colorScheduler"/>
+
+                        <TextView
+                            android:id="@+id/dateEndHoliday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dateEndHolidayLabel"
+                            android:gravity="center"
+                            android:layout_marginTop="6dp"
+                            android:hint="@string/start_hour"
+                            style="@style/TextBook14Coppel"
+                            android:textColor="@color/colorTextCoppelNegro"/>
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:srcCompat="@drawable/ic_down_arrow_blue"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_blue_rounded"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        style="@style/ButtonCoppel"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

@@ -1,8 +1,8 @@
 package com.coppel.rhconecta.dev.views.customviews;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:minHeight="480dp"
+    android:elevation="8dp">
+
+    <FrameLayout
+        android:id="@+id/card_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_reason_aditional" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/card_front"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <include layout="@layout/layout_control_aditional_days" />
+
+    </FrameLayout>
+
+</RelativeLayout>

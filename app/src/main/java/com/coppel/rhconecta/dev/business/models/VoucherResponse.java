@@ -2,8 +2,18 @@ package com.coppel.rhconecta.dev.business.models;
 
 import java.util.List;
 
-public class VoucherResponse extends CoppelGeneralParameterResponse {
+public class VoucherResponse extends VoucherResponseGeneric {
     private Data data;
+
+    int typeSelected;
+
+    public int getTypeSelected() {
+        return typeSelected;
+    }
+
+    public void setTypeSelected(int typeSelected) {
+        this.typeSelected = typeSelected;
+    }
 
     public Data getData() {
         return data;

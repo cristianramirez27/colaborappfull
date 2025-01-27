@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/layoutContainer"
+    android:visibility="invisible"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <RelativeLayout
+        android:id="@+id/scrollContainer"
+        android:layout_above="@+id/layoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:fillViewport="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layoutHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte
+                    android:id="@+id/headerHoliday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/layoutHeader"
+                android:id="@+id/layoutSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:id="@+id/layoutShowCalendar"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iconCalendar"
+                        android:layout_centerVertical="true"
+                        android:padding="6dp"
+                        app:srcCompat="@drawable/ic_icn_calendar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/iconCalendar"
+                        android:id="@+id/showCalendar"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="@string/title_calendar_proposed"
+                        android:textColor="@color/colorSecondBlueCoppel"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_below="@+id/layoutShowCalendar"
+                    android:id="@+id/layoutSplice"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:paddingLeft="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/markerSplice"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backgroud_circle_melon"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp" />
+
+                    <TextView
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/markerSplice"
+                        android:id="@+id/textSplice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        android:text="@string/title_splice"
+                        android:textColor="@color/colorMelon"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutSolicitudesContainer"
+                    android:layout_below="@+id/layoutSplice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:id="@+id/layoutBtn"
+        android:visibility="visible"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:background="@android:color/white">
+
+        <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+            android:id="@+id/totalSolicitados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+
+        <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+            android:id="@+id/diasPorAgendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSchedule"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_blue_rounded"
+                android:text="@string/btn_schedule_holidays"
+                android:textAllCaps="false"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_confirm"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonRefuse"
+                android:layout_weight=".5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_red_rounder"
+                android:text="@string/botton_refuse"
+                android:textAllCaps="false"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorBackgroundCoppelBlanco" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAccept"
+                android:layout_weight=".5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_green_rounded"
+                android:text="@string/botton_accept_2"
+                android:textAllCaps="false"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                style="@style/ButtonCoppel"
+                android:textColor="@color/colorBackgroundCoppelBlanco" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

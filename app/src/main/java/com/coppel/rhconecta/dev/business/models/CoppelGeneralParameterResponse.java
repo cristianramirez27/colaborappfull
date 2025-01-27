@@ -1,6 +1,8 @@
 package com.coppel.rhconecta.dev.business.models;
 
-public class CoppelGeneralParameterResponse {
+import java.io.Serializable;
+
+public class CoppelGeneralParameterResponse implements Serializable{
 
     private Meta meta;
 
@@ -12,7 +14,7 @@ public class CoppelGeneralParameterResponse {
         this.meta = meta;
     }
 
-    public class Meta {
+    public class Meta implements Serializable{
 
         private String status;
 

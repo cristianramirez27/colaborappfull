@@ -4,8 +4,8 @@ public class CoppelServicesPayrollVoucherDetailRequest {
     private String num_empleado;
     private String correo;
     private int tipo_Constancia;
-    private int solicitud;
-    private int opcionEnvio;
+    private int opcion;
+    private String opcionEnvio;
     private String fecha;
     private PayrollVoucherDetailGenericData datos;
 
@@ -33,19 +33,19 @@ public class CoppelServicesPayrollVoucherDetailRequest {
         this.tipo_Constancia = tipo_Constancia;
     }
 
-    public int getSolicitud() {
-        return solicitud;
+    public int getOpcion() {
+        return opcion;
     }
 
-    public void setSolicitud(int solicitud) {
-        this.solicitud = solicitud;
+    public void setOpcion(int opcion) {
+        this.opcion = opcion;
     }
 
-    public int getOpcionEnvio() {
+    public String getOpcionEnvio() {
         return opcionEnvio;
     }
 
-    public void setOpcionEnvio(int opcionEnvio) {
+    public void setOpcionEnvio(String opcionEnvio) {
         this.opcionEnvio = opcionEnvio;
     }
 

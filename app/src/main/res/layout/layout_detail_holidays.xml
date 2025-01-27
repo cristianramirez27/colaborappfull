@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.coppel.rhconecta.dev.views.customviews.TextViewExpandableRightArrowHeader
+        android:id="@+id/titleDetail"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_below="@+id/titleDetail"
+        android:orientation="vertical"
+        android:id="@+id/layoutDetail"
+        android:visibility="gone"
+        android:layout_marginTop="-10dp"
+        android:background="@color/colorBackgroundCoppelBlanco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:background="@color/colorBackgroundCoppelBlanco"
+            tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+            <LinearLayout
+                android:id="@+id/layoutData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:layout_marginBottom="-6dp"
+                android:orientation="vertical">
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/diasDecision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/diasPendientesAnterior"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/diasAdicionalesPendientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/diasAdicionalesRegistrados"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/bordeAmarillo"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bg_gradient_grey" />
+
+    </LinearLayout>
+    <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+            android:layout_below="@id/layoutDetail"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/fechaPrimaVacacional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_edit_blue"
+                android:id="@+id/imageView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="24dp" android:layout_marginTop="12dp"/>
+    </com.coppel.rhconecta.dev.views.customviews.TextViewDetail>
+
+
+</RelativeLayout>

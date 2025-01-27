@@ -5,9 +5,14 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryBlueCoppel</item>
-        <item name="colorAccent">@color/colorYellowCoppel</item>
+        <item name="colorAccent">@color/colorPrimaryCoppelAzul</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_left_arrow_black</item>
+        <item name="colorSurface">@color/colorPrimaryCoppelAzul</item>
+    </style>
+
+    <style name="AppTheme.ReleaseDetail">
+        <item name="colorAccent">@color/colorPrimaryBlueCoppel</item>
     </style>
 
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
@@ -16,12 +21,132 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Transparent" parent="Theme.AppCompat">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17sp</item>
         <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
+    <style name="AlertDialogCopper" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMinor">75%</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 
+    <style name="TextBook10Coppel">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook13Coppel">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook14Coppel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBook17Coppel">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+    <style name="TextBold12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold14Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold18Coppel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold26Coppel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextBold20Coppel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+    <style name="TextMedium14Coppel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium15Coppel">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium16Coppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium22Coppel">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium20Coppel">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium26Coppel">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium12Coppel">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextMedium18Coppel">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="ButtonCoppel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+    </style>
+
+    <style name="TextBook16CoppelBlue">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+        <item name="android:textColor">@color/colorPrimaryCoppelAzul</item>
+    </style>
+
+    <style name="TextBold14CoppelBlack">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextBold30Coppel">
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
     <!-- Visionarios -->
 
@@ -40,5 +165,194 @@
         <!--<item name="gravity">center_vertical|center_horizontal</item>-->
     <!--</style>-->
 
+    <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorBackgroundDialogDateTime</item>
+        <item name="colorControlActivated">#6fcf97</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MyRaidoButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="colorAccent">#6dc310</item>
+        <item name="android:textColorPrimaryDisableOnly">#61000000</item>
+        <item name="android:colorControlNormal">#61000000</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
+
+    <style name="CheckboxStyle" parent="AppTheme">
+        <item name="colorAccent">#6dc310</item>
+        <item name="android:textColorSecondary">#61000000</item>
+    </style>
+
+    <style name="MainTabText">
+        <item name="android:textColor">@color/colorTextCoppelNegro</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/gray_checkbox_disable</item>
+        <item name="colorControlActivated">#6dc310</item>
+    </style>
+
+
+    <style name="MyCheckBoxBlue" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/gray_checkbox_disable</item>
+        <item name="colorControlActivated">@color/colorBackgroundDialogDateTime</item>
+    </style>
+
+    <style name="HorizontalProgressBar" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimaryCoppelAzul</item>
+    </style>
+
+    <style name="TextViewPrimaVacacional">
+        <item name="android:background">@color/colorPrimaryBlueCoppel</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+    <style name="TextViewPrimaVacacional20Medium" parent="TextViewPrimaVacacional">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextViewPrimaVacacional14Book" parent="TextViewPrimaVacacional">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_book</item>
+    </style>
+
+    <style name="zendeskTheme" parent="ZendeskSdkTheme.Light">
+        <item name="colorPrimary">@color/colorPrimaryCoppelAzul</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlueCoppel</item>
+        <item name="colorAccent">@color/colorYellowCoppel</item>
+        <item name="colorControlNormal">@android:color/black</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="TextBold20CoppelCalculator" parent="TextBold20Coppel">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextMedium12CoppelCalculator">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+        <item name="android:textColor">@color/colorLabelCreateAccount</item>
+    </style>
+    <style name="TextMedium13CoppelCalculator" parent="TextMedium14Coppel">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextMedium14CoppelCalculator" parent="TextMedium14Coppel">
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextMedium16CoppelCalculator" parent="TextMedium16Coppel">
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextMedium18CoppelCalculator">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_color_header_gte</item>
+        <item name="android:fontFamily">@font/lineto_circular_pro_medium</item>
+    </style>
+    <style name="TextBook12CoppelCalculator" parent="TextBook12Coppel">
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextBook14CoppelCalculator" parent="TextBook14Coppel">
+        <item name="android:textColor">@color/text_color_header_gte</item>
+    </style>
+    <style name="TextBook16CoppelCalculator" parent="TextBook16Coppel">
+        <item name="android:textColor">@color/colorTextCode</item>
+    </style>
+    <style name="TextMedium20CoppelCalculator" parent="TextMedium20Coppel">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="TextBold22CoppelCalculator" parent="TextBold20Coppel">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+    <style name="TextBold36CoppelCalculator" parent="TextBold26Coppel">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">36dp</item>
+    </style>
+
+    <style name="ButtonCoppelCalculator" parent="ButtonCoppel">
+        <item name="android:background">@drawable/backgroud_rounder_blue_calulator</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AlertCalculatorDialogCopper" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowMinWidthMinor">95%</item>
+        <item name="android:backgroundDimAmount">1.0</item>
+    </style>
+    <style name="AlertHelpCalculatorDialogCopper" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimAmount">1.0</item>
+        <item name="android:windowMinWidthMinor">95%</item>
+    </style>
+
+    <style name="EdithTextCoppelCalculator" parent="TextBook14Coppel">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:hint">@string/text_hit_dashboard_information</item>
+        <item name="android:background">@drawable/background_white_rounded_calculator</item>
+    </style>
+    <style name="EdithCommentTextCoppelCalculator" parent="TextBook14Coppel">
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:lines">3</item>
+        <item name="android:background">@drawable/background_white_rounded_calculator</item>
+        <item name="android:textColorHint">@color/text_color_header_gte</item>
+        <item name="android:hint">@string/text_hit_dialog_score</item>
+    </style>
+
+
+    <style name="Widget.App.Tooltip" parent="Widget.Material3.Tooltip">
+        <item name="android:textAppearance">@style/TextAppearance.App.Tooltip</item>
+        <item name="backgroundTint">@color/colorTextCode</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.SmallComponent</item>
+    </style>
+
+    <style name="TextAppearance.App.Tooltip" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="numberPicker" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:background">@color/background_calculator</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:solidColor">@color/background_calculator</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+    <style name="CustomRatingBarStyle" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/custom_raiting_star_bar</item>
+    </style>
+
+    <style name="MyMaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlueCoppel</item>
+        <item name="colorAccent">@color/colorPrimaryCoppelAzul</item>
+        <item name="colorControlNormal">@android:color/black</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_left_arrow_black</item>
+        <item name="android:colorBackground">@android:color/white</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryBlueCoppel</item>
+        <item name="colorSecondaryVariant">@color/colorTextCode</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorOnSecondary">@color/colorTextCode</item>
+    </style>
 
 </resources>

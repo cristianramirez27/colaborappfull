@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+    <TextView
+        android:id="@+id/titleLetters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_schedule"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        style="@style/TextBold20Coppel"
+        android:textColor="@color/colorSecondBlueCoppel"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnNext"
+        android:layout_below="@+id/titleLetters"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp"
+        app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+        app:cardCornerRadius="1dp"
+        app:cardElevation="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="24dp">
+
+            <ScrollView
+                android:id="@+id/scrollContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:id="@+id/schedulelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingBottom="24dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="6dp">
+
+                        <RelativeLayout
+                            android:id="@+id/startDayLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
+                            <TextView
+                                android:id="@+id/startDayLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                android:text="@string/start_day"
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
+
+                            <TextView
+                                android:id="@+id/startDay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/startDayLabel"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:hint="@string/start_day_hint"
+                                style="@style/TextBook14Coppel"
+                                android:textColor="@color/colorTextCoppelNegro"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/endDayLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
+                            <TextView
+                                android:id="@+id/endDayLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                android:text="@string/end_day"
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
+
+                            <TextView
+                                android:id="@+id/endDay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/endDayLabel"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                style="@style/TextBook14Coppel"
+                                android:hint="@string/start_day_hint"
+                                android:textColor="@color/colorTextCoppelNegro"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/startHourLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
+                            <TextView
+                                android:id="@+id/startHourLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                style="@style/TextMedium12Coppel"
+                                android:text="@string/start_hour"
+                                android:textColor="@color/colorScheduler"/>
+
+                            <TextView
+                                    android:id="@+id/starHour"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/startHourLabel"
+                                    android:layout_marginTop="6dp"
+                                    android:gravity="center"
+                                    android:hint="@string/start_hour"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:orientation="horizontal">
+
+                            <RadioGroup
+                                android:id="@+id/rdgStartHour"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/rdbAmStart"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:checked="true"
+                                    android:gravity="right|center_vertical"
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/am"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
+                                    android:theme="@style/MyRaidoButton" />
+
+                                <RadioButton
+                                    android:id="@+id/rdbPmStart"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_weight="1"
+                                    android:gravity="right|center_vertical"
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/pm"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
+                                    android:theme="@style/MyRaidoButton" />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/endHourLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
+                            <TextView
+                                android:id="@+id/endHourLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                android:text="@string/end_hour"
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
+
+                            <TextView
+                                android:id="@+id/endHour"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/endHourLabel"
+                                android:hint="@string/end_hour"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                style="@style/TextBook14Coppel"
+                                android:textColor="@color/colorTextCoppelNegro"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:orientation="horizontal">
+
+                            <RadioGroup
+                                android:id="@+id/rdgEndHour"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/rdbAmEnd"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:checked="true"
+                                    android:gravity="right|center_vertical"
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/am"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
+                                    android:theme="@style/MyRaidoButton" />
+
+                                <RadioButton
+                                    android:id="@+id/rdbPmEnd"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_weight="1"
+                                    android:gravity="right|center_vertical"
+                                    android:layoutDirection="rtl"
+                                    android:text="@string/pm"
+                                    style="@style/TextBook14Coppel"
+                                    android:textColor="@color/colorTextCoppelNegro"
+                                    android:theme="@style/MyRaidoButton" />
+
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="4dp">
+
+                        <RelativeLayout
+                            android:id="@+id/eatingTimeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_bottom_line"
+                            android:clickable="true">
+
+                            <TextView
+                                android:id="@+id/eatingTimeLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/imgVideoPreview"
+                                android:gravity="center"
+                                android:text="@string/eating_time"
+                                style="@style/TextMedium12Coppel"
+                                android:textColor="@color/colorScheduler"/>
+
+                            <TextView
+                                android:id="@+id/eatingTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/eatingTimeLabel"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:hint="@string/eating_time"
+                                style="@style/TextBook14Coppel"
+                                android:textColor="@color/colorTextCoppelNegro"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <RelativeLayout
+                            android:id="@+id/containerMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="4dp"
+                            android:background="@drawable/background_gray_rounder"
+                            android:padding="18dp">
+
+                        <TextView
+                                android:id="@+id/labelEncabezado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
+                                style="@style/TextBook12Coppel"
+                                android:text="@string/check_data_msg"
+                                android:textColor="@color/colorTextCoppelNegro"
+                                android:textSize="14sp" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/background_blue_rounded"
+        android:fontFamily="@font/lineto_circular_pro_book"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        style="@style/ButtonCoppel"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

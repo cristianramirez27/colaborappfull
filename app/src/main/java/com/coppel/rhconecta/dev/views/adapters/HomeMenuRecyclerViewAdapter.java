@@ -3,9 +3,10 @@ package com.coppel.rhconecta.dev.views.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRecyclerViewAdapter.ViewHolder> implements View.OnTouchListener,
         View.OnLongClickListener {
@@ -42,6 +44,12 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
         shake = AnimationUtils.loadAnimation(context, R.anim.anim_shake);
     }
 
+
+    public void setCustomMenuUpdate(List<HomeMenuItem> customMenu){
+
+        this.customMenu = customMenu;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -56,6 +64,13 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
         viewHolder.ctlContainer.getLayoutParams().height = itemSize;
         viewHolder.imgvIcon.setImageDrawable(MenuUtilities.getIconByTag(customMenu.get(i).getTAG(), context));
         viewHolder.txvName.setText(customMenu.get(i).getName());
+        if(customMenu.get(i).getNotifications() > 0){
+            viewHolder.txvNotifications.setText(customMenu.get(i).getNotifications()+"");
+            viewHolder.txvNotifications.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.txvNotifications.setText("");
+            viewHolder.txvNotifications.setVisibility(View.INVISIBLE);
+        }
         viewHolder.itemView.setOnLongClickListener(this);
         viewHolder.itemView.setOnTouchListener(this);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -131,4 +146,23 @@ public class HomeMenuRecyclerViewAdapter extends RecyclerView.Adapter<HomeMenuRe
     public void setOnItemClick(OnItemClick onItemClick) {
         this.onItemClick = onItemClick;
     }
+
+    public  void setNotification(String TAG,int notifications){
+        Realm realm = Realm.getDefaultInstance();
+         List<HomeMenuItem> customMenuTmp= this.getCustomMenu();
+        if (!realm.isInTransaction()) realm.beginTransaction();
+        for (int i =0;i<customMenuTmp.size();i++){
+            try {
+                if(customMenuTmp.get(i).getTAG().equals(TAG)){ // agrega notificaciones a comunicados o videos
+                    customMenuTmp.get(i).setNotifications(notifications);
+                }
+            }catch (Exception e){ /* PASS */ }
+        }
+
+        realm.commitTransaction();
+        this.customMenu=customMenuTmp;
+        this.notifyDataSetChanged();
+
+    }
+
 }

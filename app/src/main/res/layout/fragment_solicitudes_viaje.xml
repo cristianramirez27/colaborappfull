@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layoutSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tituloSolicitudes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_request_complements"
+                    android:textColor="@color/colorSecondBlueCoppel"
+                    style="@style/TextMedium18Coppel"/>
+
+                <TextView
+                    android:layout_below="@+id/tituloSolicitudes"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoSolicitudes"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextMedium18Coppel"
+                    android:text="@string/empty_request_complements"
+                    android:textColor="@color/colorTextGrayDark"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutSolicitudesContainer"
+                    android:layout_below="@+id/tituloSolicitudes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+                        android:id="@+id/titulosSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutControles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tituloControles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_tracking_request"
+                    android:textColor="@color/colorSecondBlueCoppel"
+                    style="@style/TextMedium18Coppel"/>
+
+                <TextView
+                    android:layout_below="@+id/tituloControles"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoControles"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextMedium18Coppel"
+                    android:text="@string/empty_controls"
+                    android:textColor="@color/colorTextGrayDark"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutControlesContainer"
+                    android:layout_below="@+id/tituloControles"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList
+                        android:id="@+id/titulosControles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvControles"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/transparent"
+                android:orientation="vertical">
+
+                <com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle
+                    android:id="@+id/expMonths"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoMeses"
+                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_months"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/layoutMeses"
+                    android:layout_marginTop="12dp"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/transparent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvMonths"
+                        android:background="@color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

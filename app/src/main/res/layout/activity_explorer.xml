@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfdfb">
+
+    <include
+        android:id="@+id/toolbarWeb"
+        layout="@layout/toolbar_web" />
+
+    <RelativeLayout
+        android:layout_below="@+id/toolbarWeb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layoutBtns"/>
+
+        <RelativeLayout
+            android:id="@+id/layoutBtns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:minHeight="60dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/background_top_line">
+
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/wv_left_icon"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:background="@color/transparent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:text="Back"
+                android:enabled="false" />
+            <ImageView
+                android:id="@+id/btn_forward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/btn_back"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:src="@mipmap/wv_righ_icon"
+                android:background="@color/transparent"
+                android:text="Forward"
+                android:enabled="false" />
+
+
+
+            <ImageView
+                android:id="@+id/btn_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_medium"
+                android:src="@mipmap/wv_share_icon"
+                android:background="@color/transparent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:text="Forward"
+                android:enabled="false" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

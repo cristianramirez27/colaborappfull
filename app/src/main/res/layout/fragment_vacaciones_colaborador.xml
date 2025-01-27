@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layoutContainer"
+    android:visibility="invisible"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:fillViewport="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/layoutHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.coppel.rhconecta.dev.views.customviews.TextViewDetail
+                    android:id="@+id/vacacionesAgendadas"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="30dp"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="-10dp"
+                    android:layout_height="wrap_content"/>
+
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaborator
+                   android:id="@+id/headerHoliday"
+                    android:layout_below="@+id/vacacionesAgendadas"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@+id/layoutHeader"
+                android:id="@+id/layoutSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_above="@+id/layoutBtn"
+                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tituloSolicitudes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_periods_holidays"
+                    style="@style/TextMedium20Coppel"
+                    android:textColor="@color/colorSecondBlueCoppel"
+                     />
+
+                <TextView
+                    android:layout_below="@+id/tituloSolicitudes"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/txtNoSolicitudes"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lineto_circular_pro_medium"
+                    android:text="@string/empty_request_complements"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:id="@+id/layoutSolicitudesContainer"
+                    android:layout_below="@+id/tituloSolicitudes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:id="@+id/layoutBtn"
+                android:visibility="visible"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSchedule"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_blue_rounded"
+                    android:text="Agendar vacaciones"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/colorBackgroundCoppelBlanco"
+                    style="@style/ButtonCoppel" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -40,9 +40,9 @@
         android:layout_marginRight="4dp"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
+        style="@style/TextBook14Coppel"
         android:text="Tu encuesta se envió con éxito"
-        android:textColor="@color/colorSecundaryCoppelBlanco"
-        android:textSize="15sp" />
+        android:textColor="@color/colorSecundaryCoppelBlanco"/>
 
     <TextView
         android:id="@+id/text_dialog2"
@@ -56,11 +56,10 @@
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:text="¡Gracias!"
-        android:textColor="@color/colorPrimaryCoppelAmarillo"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        style="@style/TextBold20Coppel"
+        android:textColor="@color/colorPrimaryCoppelAmarillo"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

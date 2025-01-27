@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:id="@+id/cardview"
+    app:cardElevation="2dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="1dp"
+    android:layout_marginLeft="1dp"
+    card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nameEmployer"
+            android:layout_marginLeft="4dp"
+            android:padding="2dp"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="Jorge Luna"
+            android:textSize="13sp"
+            android:textColor="@color/colorBackgroundCoppelNegro" />
+
+        <LinearLayout
+            android:id="@+id/container_notinvasive"
+            android:layout_width="match_parent"
+            android:padding="2dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@color/transparent"
+            android:minHeight="60dp"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="1.1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/numSolicitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_alignParentLeft="true"
+                    android:visibility="visible"
+                    android:text=""
+                    android:textSize="11sp"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+
+                <TextView
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/txtMessage"
+                    android:layout_below="@+id/numSolicitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_alignParentLeft="true"
+                    android:visibility="visible"
+                    android:textSize="9sp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/itinerario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:visibility="visible"
+                    android:layout_marginRight="4dp"
+                    android:text="CLCN GDLJ "
+                    android:maxLines="2"
+                    android:textSize="11sp"
+                    android:textColor="@color/colorTextGrayDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/fechaInicio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:text="01/02/2017"
+                    android:textColor="@color/colorTextGrayDark"
+                    android:textSize="9.5sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/fechaFin"
+                    android:layout_below="@+id/fechaInicio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:visibility="visible"
+                    android:text="08/02/2017"
+                    android:textSize="9.5sp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorTextGrayDark" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="1.1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:padding="3dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="9sp"
+                    android:background="@drawable/backgroud_rounder_yellow"
+                    android:textColor="@color/colorBackgroundCoppelNegro" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

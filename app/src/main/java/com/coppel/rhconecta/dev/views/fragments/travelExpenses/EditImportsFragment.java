@@ -1,0 +1,301 @@
+package com.coppel.rhconecta.dev.views.fragments.travelExpenses;
+
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.coppel.rhconecta.dev.R;
+import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
+import com.coppel.rhconecta.dev.business.interfaces.ITotalAmounts;
+import com.coppel.rhconecta.dev.business.models.AuthorizedRequestColaboratorSingleton;
+import com.coppel.rhconecta.dev.business.models.DetailRequest;
+import com.coppel.rhconecta.dev.business.models.ImportsList;
+import com.coppel.rhconecta.dev.business.models.RolExpensesResponse;
+import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.ServicesError;
+import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
+import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.views.activities.GastosViajeDetalleActivity;
+import com.coppel.rhconecta.dev.views.adapters.EditableAmountsRecyclerAdapter;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class EditImportsFragment extends Fragment implements  View.OnClickListener, IServicesContract.View, ITotalAmounts {
+
+    public static final String TAG = EditImportsFragment.class.getSimpleName();
+    private GastosViajeDetalleActivity parent;
+    @BindView(R.id.rcvImporte)
+    RecyclerView rcvImporte;
+    @BindView(R.id.btnActionLeft)
+    Button btnActionLeft;
+    @BindView(R.id.btnActionRight)
+    Button btnActionRight;
+    @BindView(R.id.totalColaborador)
+    TextView totalColaborador;
+    @BindView(R.id.totalGerente)
+    TextView totalGerente;
+
+    private DialogFragmentLoader dialogFragmentLoader;
+    private CoppelServicesPresenter coppelServicesPresenter;
+    private ImportsList importsLists;
+    private List<DetailRequest> importsListsFilter;
+    private EditableAmountsRecyclerAdapter editableAmountsRecyclerAdapter;
+
+    private HashMap<Integer,Double> mapAmounts;
+
+    private long mLastClickTime = 0;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    public static EditImportsFragment getInstance(ImportsList detail){
+        EditImportsFragment fragment = new EditImportsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL,detail);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.importsLists = (ImportsList)getArguments().getSerializable(BUNDLE_DATA_DETAIL_EXPENSE_TRAVEL);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.edit_amounts_fragment, container, false);
+        ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
+        parent = (GastosViajeDetalleActivity) getActivity();
+        parent.setToolbarTitle(importsLists.getType() == 1 ?   getString(R.string.title_detail_colaborator_complement )
+                :  getString(R.string.title_detail_colaborator_request));
+
+        initValues();
+
+
+        if( AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador().isEmpty()){
+            for(DetailRequest amountCurrent : importsListsFilter){
+                AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador().add(amountCurrent);
+            }
+        }
+
+
+
+        //editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),this.importsListsFilter,this);
+        List<DetailRequest> values =  AuthorizedRequestColaboratorSingleton.getInstance().getDatosColaborador();
+        editableAmountsRecyclerAdapter = new EditableAmountsRecyclerAdapter(getActivity(),importsListsFilter,values ,this);
+        rcvImporte.setHasFixedSize(true);
+        rcvImporte.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvImporte.setAdapter(editableAmountsRecyclerAdapter);
+
+        setTotalColaborator(values);
+
+        coppelServicesPresenter = new CoppelServicesPresenter(this, parent);
+        btnActionLeft.setOnClickListener(this);
+        btnActionRight.setOnClickListener(this);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        KeyboardVisibilityEvent.setEventListener(
+                getActivity(),
+                new KeyboardVisibilityEventListener() {
+                    @Override
+                    public void onVisibilityChanged(boolean isOpen) {
+                        // some code depending on keyboard visiblity status
+                        if(!isOpen)
+                            calculateTotalGte();
+                    }
+                });
+
+        return view;
+    }
+
+    private void  initValues(){
+        this.importsListsFilter = new ArrayList<>();
+        this.mapAmounts = new HashMap<>();
+        for(DetailRequest detailRequest : this.importsLists.getImportes()){
+            if(detailRequest.getIdu_tipoGasto() != -1) {
+                this.importsListsFilter.add(detailRequest);
+                String value = detailRequest.getImp_total().replace(",","");
+                mapAmounts.put(detailRequest.getIdu_tipoGasto(),Double.parseDouble(value));
+            }
+        }
+        calculateTotalGte();
+    }
+
+    private void  calculateTotalGte(){
+        double total = 0;
+        for(Integer key : mapAmounts.keySet()){
+            total+= mapAmounts.get(key);
+        }
+        setTotalGte(total);
+    }
+
+    private double  getTotalGte(){
+        double total = 0;
+        for(Integer key : mapAmounts.keySet()){
+            total+= mapAmounts.get(key);
+        }
+
+        return total;
+    }
+
+    private void saveNewAmounts(){
+        List<DetailRequest> newAmounts = new ArrayList<>();
+
+        for(Integer key : mapAmounts.keySet()){
+            newAmounts.add(new DetailRequest(key,"",String.valueOf(mapAmounts.get(key))));
+        }
+
+        newAmounts.add(new DetailRequest(-1,"",String.valueOf(getTotalGte())));
+        //Actualizamos la lista de importes  para autorizar con los nuevos valores
+        AuthorizedRequestColaboratorSingleton.getInstance().getCoppelServicesAuthorizedRequest().setCapturaGerente(newAmounts);
+
+        getActivity().finish();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                parent.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1200){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        switch (view.getId()) {
+            case R.id.btnActionLeft:
+
+                getActivity().finish();
+
+                break;
+
+            case R.id.btnActionRight:
+
+                saveNewAmounts();
+
+
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+    }
+
+
+    @Override
+    public void showResponse(ServicesResponse response) {
+        switch (response.getType()) {
+
+            case ServicesRequestType.EXPENSESTRAVEL:
+                if(response.getResponse() instanceof RolExpensesResponse){
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void showError(ServicesError coppelServicesError) {
+
+    }
+
+    @Override
+    public void showProgress() {
+        dialogFragmentLoader = new DialogFragmentLoader();
+        dialogFragmentLoader.show(parent.getSupportFragmentManager(), DialogFragmentLoader.TAG);
+    }
+
+
+    @Override
+    public void setTotalColaborator( List<DetailRequest> values ) {
+        double total = 0;
+        for(DetailRequest detailRequest : values){
+            if(detailRequest.getIdu_tipoGasto() != -1) {
+                String totalParcial = detailRequest.getImp_total().replace(",","");
+                total += Double.parseDouble(totalParcial);
+
+            }
+        }
+
+        totalColaborador.setText( String.format("%s",TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf(total)))));
+               /* TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf())));*/
+    }
+
+    @Override
+    public void setTotalGte(double total) {
+
+        totalGerente.setText( String.format("%s",TextUtilities.getNumberInCurrencyFormat(
+                Double.parseDouble(String.valueOf(total)))));
+               /* );*/
+    }
+
+    @Override
+    public void setValueGte(int id, double total) {
+        mapAmounts.put(id,total);
+    }
+
+    @Override
+    public void hideProgress() {
+        if(dialogFragmentLoader != null) dialogFragmentLoader.close();
+    }
+
+
+}

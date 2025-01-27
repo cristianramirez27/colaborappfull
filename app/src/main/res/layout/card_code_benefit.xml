@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="18dp"
+    android:layout_marginBottom="18dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:background="@color/show_code_color"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:padding="50px">
+            <TextView
+                android:id="@+id/code_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_benefit_code_title"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/mdtp_white"
+                android:paddingBottom="10dp"
+                />
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_code_benefit_loading"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                android:layout_alignBottom="@id/code_title"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/mdtp_light_gray"
+                android:background="@color/mdtp_white"
+                android:fontFamily="@font/fira_mono"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icCloseCode"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_close_blue"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:elevation="6dp"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btns"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBackCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_btns"
+                android:background="@color/colorSecondBlueCoppel"
+                android:fontFamily="@font/lineto_circular_pro_medium"
+                android:text="Regresar"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="2"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>

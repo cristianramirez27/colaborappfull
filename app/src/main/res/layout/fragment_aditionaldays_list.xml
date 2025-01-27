@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundFragments"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewSearch"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="2dp"
+                app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iconSearch"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_centerVertical="true"
+                        android:padding="4dp"
+                        android:src="@drawable/icon_search" />
+
+                    <EditText
+                        android:id="@+id/edtSearch"
+                        style="@style/TextBook14Coppel"
+                        android:layout_width="244dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="-2dp"
+                        android:layout_toRightOf="@+id/iconSearch"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/hint_search_name_colaborator"
+                        android:imeOptions="actionSearch"
+                        android:inputType="textVisiblePassword"
+                        android:lines="1"
+                        android:longClickable="false"
+                        android:textColor="@color/colorTextBlueCoppel"
+                        android:textColorHint="@color/colorTextBlueCoppel" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/seleccionCentroLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_bottom_line"
+                android:clickable="true">
+
+                <TextView
+                    android:id="@+id/tituloCentro"
+                    style="@style/TextBook12Coppel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgVideoPreview"
+                    android:gravity="center"
+                    android:text="@string/select_center"
+                    android:textColor="@color/colorTextCoppelNegro" />
+
+                <TextView
+                    android:id="@+id/centro"
+                    style="@style/TextBook14Coppel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tituloCentro"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorPrimaryCoppelAzul" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tituloControles"
+                style="@style/TextMedium18Coppel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/center_colaborators"
+                android:textColor="@color/colorBackgroundCoppelNegro" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvSolicitudes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@color/transparent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:paddingBottom="20dp">
+
+        <RelativeLayout
+            android:layout_below="@+id/layoutHeader"
+            android:id="@+id/layoutSolicitudes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/transparent"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_below="@+id/layoutOptions"
+                android:id="@+id/layoutData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layoutCalendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    android:orientation="vertical">
+
+                    <noman.weekcalendar.WeekCalendar
+                        android:id="@+id/weekCalendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        android:background="@color/background_calendar_splice"
+                        app:numOfPages="150"
+                        app:dayNameLength="threeLetters"
+                        app:todaysDateBgColor="#ffffff"
+                        app:todaysDateTextColor="#000000"/>
+
+                    <!--   <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+                            android:id="@+id/collapsibleCalendarView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:primaryColor="@color/background_calendar_splice"
+                            app:textColor="@color/colorPrimaryCoppelAzul"
+                            app:selectedItem_textColor="@android:color/white"
+                            app:todayItem_textColor="@color/colorPrimaryCoppelAzul"
+                            app:todayItem_background="@drawable/circle_white_stroke_background"
+                            app:selectedItem_background="@drawable/circle_green_solid_background"
+                            app:buttonLeft_drawableTintColor="@android:color/white"
+                            app:buttonRight_drawableTintColor="@android:color/white"
+                            app:expandIconColor="@android:color/white"
+                            app:eventColor="@android:color/white">
+                        </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>-->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_below="@+id/layoutCalendar"
+                    android:visibility="visible"
+                    android:id="@+id/layoutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lineto_circular_pro_medium"
+                        style="@style/TextBold14Coppel"
+                        android:textColor="@color/colorTextCoppelNegro"
+                        android:textSize="13sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvSolicitudes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

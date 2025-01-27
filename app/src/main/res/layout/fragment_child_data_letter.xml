@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:fillViewport="true"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_above="@id/btnNext"
+            android:id="@+id/layoutContent"
+            android:layout_marginBottom="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/titleLetters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_child_name"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                style="@style/TextBold20Coppel"
+                android:textColor="@color/colorSecondBlueCoppel"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/titleLetters">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    app:cardElevation="8dp"
+                    app:cardCornerRadius="1dp"
+                    app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="20dp">
+
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/containerChilds"
+                            android:layout_alignParentTop="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rcvChilds"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"/>
+
+                                <RelativeLayout
+                                        android:id="@+id/containerMessage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/rcvChilds"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="30dp"
+                                        android:padding="16dp"
+                                        android:background="@drawable/background_gray_rounder">
+
+                                    <TextView
+                                            android:id="@+id/labelEncabezado"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_below="@+id/imgVideoPreview"
+                                            android:gravity="center"
+                                            android:padding="2dp"
+                                            style="@style/TextBook12Coppel"
+                                            android:text="@string/check_data_msg"
+                                            android:textColor="@color/colorTextCoppelNegro"/>
+
+                                </RelativeLayout>
+
+                            </RelativeLayout>
+
+                        </androidx.core.widget.NestedScrollView>
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/background_blue_rounded"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:text="@string/next"
+            style="@style/ButtonCoppel"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,174 @@
+package com.coppel.rhconecta.dev.data.release;
+
+import android.content.Context;
+
+import com.coppel.rhconecta.dev.CoppelApp;
+import com.coppel.rhconecta.dev.business.Enums.AccessOption;
+import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
+import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
+import com.coppel.rhconecta.dev.data.release.model.get_release_by_id.GetReleaseByIdRequest;
+import com.coppel.rhconecta.dev.data.release.model.get_release_by_id.GetReleaseByIdResponse;
+import com.coppel.rhconecta.dev.data.release.model.get_releases_previews.GetReleasesPreviewsRequest;
+import com.coppel.rhconecta.dev.data.release.model.get_releases_previews.GetReleasesPreviewsResponse;
+import com.coppel.rhconecta.dev.domain.common.Either;
+import com.coppel.rhconecta.dev.domain.common.UseCase;
+import com.coppel.rhconecta.dev.domain.common.failure.Failure;
+import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.domain.release.ReleaseRepository;
+import com.coppel.rhconecta.dev.domain.release.entity.Release;
+import com.coppel.rhconecta.dev.domain.release.entity.ReleasePreview;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.coppel.rhconecta.dev.business.utils.ServicesConstants.GET_HOME_LOCAL;
+import static com.coppel.rhconecta.dev.views.utils.AppUtilities.getStringFromSharedPreferences;
+
+/**
+ *
+ */
+public class ReleaseRepositoryImpl implements ReleaseRepository {
+
+    /* */
+    private final ReleaseApiService apiService;
+    /* */
+    private final Context context;
+
+    /**
+     *
+     */
+    @Inject
+    public ReleaseRepositoryImpl() {
+        Retrofit retrofit = ServicesRetrofitManager.getInstance().getRetrofitAPI();
+        apiService = retrofit.create(ReleaseApiService.class);
+        context = CoppelApp.getContext();
+    }
+
+    private void saveToCrashLitics(String Url, String eMessage) {
+        FirebaseCrashlytics.getInstance().log(Url);
+        Exception e = new Exception(eMessage);
+        FirebaseCrashlytics.getInstance().recordException(e);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void getReleasesPreviews(
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, List<ReleasePreview>>> callback
+    ) {
+        String employeeNum = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        );
+        int clvOption = 1;
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
+
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        GetReleasesPreviewsRequest request = new
+                GetReleasesPreviewsRequest(employeeNum, clvOption, accessOptionValue);
+        String url = (ServicesConstants.GET_COMUNICADOS == null || ServicesConstants.GET_COMUNICADOS.isEmpty()) ? ServicesConstants.GET_COMUNICADOS_LOCAL : ServicesConstants.GET_COMUNICADOS;
+        apiService.getReleasesPreviews(
+                authHeader,
+                "2024-03-25T17:38:35.244Z",
+                "-99.985171",
+                "20.270460",
+                "fs9999c7q86c33cdfd5f55",
+                url,
+                request
+        ).enqueue(new Callback<GetReleasesPreviewsResponse>() {
+
+            @Override
+            public void onResponse(Call<GetReleasesPreviewsResponse> call, Response<GetReleasesPreviewsResponse> response) {
+                GetReleasesPreviewsResponse body = response.body();
+                List<GetReleasesPreviewsResponse.ReleasePreviewServer> releasePreviewsServer = body.data.response;
+                ArrayList<ReleasePreview> releasePreviews = new ArrayList<>();
+                for (GetReleasesPreviewsResponse.ReleasePreviewServer releasePreviewServer : releasePreviewsServer)
+                    releasePreviews.add(releasePreviewServer.toReleasePreview());
+                Either<Failure, List<ReleasePreview>> result =
+                        new Either<Failure, List<ReleasePreview>>().new Right(releasePreviews);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetReleasesPreviewsResponse> call, Throwable t) {
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS, t.getMessage());
+                Failure failure = new ServerFailure();
+                Either<Failure, List<ReleasePreview>> result = new Either<Failure, List<ReleasePreview>>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void getReleaseById(
+            int releaseId,
+            AccessOption accessOption,
+            UseCase.OnResultFunction<Either<Failure, Release>> callback
+    ) {
+        String employeeNum = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        );
+        int clvOption = 2;
+        Integer accessOptionValue = null;
+        if (accessOption != null)
+            accessOptionValue = accessOption.toInteger();
+
+        String authHeader = getStringFromSharedPreferences(
+                context,
+                AppConstants.SHARED_PREFERENCES_TOKEN
+        );
+        GetReleaseByIdRequest request = new
+                GetReleaseByIdRequest(employeeNum, clvOption, Integer.toString(releaseId), accessOptionValue);
+        String url = (ServicesConstants.GET_COMUNICADOS == null || ServicesConstants.GET_COMUNICADOS.isEmpty()) ? ServicesConstants.GET_COMUNICADOS_LOCAL : ServicesConstants.GET_COMUNICADOS;
+
+        apiService.getReleaseById(
+                authHeader,
+                "2024-03-25T17:38:35.244Z",
+                "-99.985171",
+                "20.270460",
+                "fs9999c7q86c33cdfd5f55",
+                url,
+                request
+        ).enqueue(new Callback<GetReleaseByIdResponse>() {
+
+            @Override
+            public void onResponse(Call<GetReleaseByIdResponse> call, Response<GetReleaseByIdResponse> response) {
+                GetReleaseByIdResponse body = response.body();
+                Release release = body.data.response.toRelease();
+                Either<Failure, Release> result = new Either<Failure, Release>().new Right(release);
+                callback.onResult(result);
+            }
+
+            @Override
+            public void onFailure(Call<GetReleaseByIdResponse> call, Throwable t) {
+                saveToCrashLitics(ServicesConstants.GET_COMUNICADOS, t.getMessage());
+                Failure failure = new ServerFailure();
+                Either<Failure, Release> result = new Either<Failure, Release>().new Left(failure);
+                callback.onResult(result);
+            }
+
+        });
+    }
+
+}

@@ -1,0 +1,226 @@
+package com.coppel.rhconecta.dev.presentation.profile_actions
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import com.coppel.rhconecta.dev.CoppelApp
+import com.coppel.rhconecta.dev.R
+import com.coppel.rhconecta.dev.analytics.time.AnalyticsTimeAppCompatActivity
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig
+import com.coppel.rhconecta.dev.business.models.ProfileResponse
+import com.coppel.rhconecta.dev.databinding.ActivityProfileActionsBinding
+import com.coppel.rhconecta.dev.domain.common.failure.Failure
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder
+import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog
+import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension
+import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment
+import com.coppel.rhconecta.dev.presentation.poll_toolbar.PollToolbarFragment.ToolbarFragmentCommunication
+import com.coppel.rhconecta.dev.presentation.profile_actions.fingerprint.FingerprintActivity
+import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity
+import com.coppel.rhconecta.dev.resources.db.RealmHelper
+import com.coppel.rhconecta.dev.views.utils.AppConstants
+import com.coppel.rhconecta.dev.views.utils.AppUtilities
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities
+import org.koin.android.viewmodel.ext.android.viewModel
+
+/** */
+class ProfileActionsActivity : AnalyticsTimeAppCompatActivity(),
+    ToolbarFragmentCommunication {
+
+    /* */
+    private val binding: ActivityProfileActionsBinding
+            by lazy { ActivityProfileActionsBinding.inflate(layoutInflater) }
+
+    /* */
+    private val profileActionsViewModel: ProfileActionsViewModel by viewModel()
+
+    /* */
+    private lateinit var profileResponse: ProfileResponse.Response
+
+    lateinit var pollToolbarFragment: PollToolbarFragment
+
+
+    /** */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        initValues()
+        setupViews()
+        val numgColaborator = AppUtilities.getStringFromSharedPreferences(
+            CoppelApp.getContext(),
+            AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR
+        )
+        val userAccess = MenuUtilities.userAccess(numgColaborator, this)
+        if (AppUtilities.getStringFromSharedPreferences(this, AppConfig.BLOCK_HUELLASAD) == AppConfig.NO  || userAccess)
+            execute()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setProfileImage()
+    }
+
+    /** */
+    private fun initValues() {
+        profileResponse = IntentExtension.getSerializableExtra(
+            intent,
+            AppConstants.BUNLDE_PROFILE_RESPONSE
+        ) as ProfileResponse.Response
+    }
+
+    /** */
+    private fun setupViews() {
+        setupToolbar()
+        setupUserInformation()
+        setupActions()
+    }
+
+    /** */
+    private fun execute() {
+        profileActionsViewModel.haveFingerprintsAsLiveData().observe(this) {
+            when (it) {
+                ProcessStatus.LOADING, null ->
+                    showProgressBar()
+
+                ProcessStatus.FAILURE ->
+                    manageHaveFingerprintFailure(profileActionsViewModel.failure!!)
+
+                ProcessStatus.COMPLETED -> {
+                    val sections = MenuUtilities.getSubSection()
+                    if (AppUtilities.getBooleanFromSharedPreferences(
+                            this,
+                            AppConstants.SHARED_PREFERENCES_FILIAL
+                        )
+                    )
+                        manageHaveFingerprintDone(
+                            MenuUtilities.findSubItem(
+                                sections,
+                                MenuUtilities.getSectionsMap()[AppConstants.OPTION_PROFILE]
+                                    ?: -1,
+                                1
+                            ) && profileActionsViewModel.haveFingerprints
+                        )
+                    else
+                        manageHaveFingerprintDone(profileActionsViewModel.haveFingerprints)
+                }
+            }
+        }
+    }
+
+    /** */
+    private fun showProgressBar() {
+        binding.pbLoader.visibility = View.VISIBLE
+    }
+
+    /** */
+    private fun hideProgressBar() {
+        binding.pbLoader.visibility = View.GONE
+    }
+
+    /** */
+    private fun manageHaveFingerprintFailure(failure: Failure) {
+        hideProgressBar()
+        SingleActionDialog(
+            this,
+            getString(R.string.profile_actions_failure_default_title),
+            getString(R.string.profile_actions_failure_default_content),
+            getString(R.string.profile_actions_failure_default_action),
+            null
+        ).show()
+    }
+
+    /** */
+    private fun manageHaveFingerprintDone(haveFingerprints: Boolean) {
+        hideProgressBar()
+        binding.flFingerprints.visibility = if (haveFingerprints)
+            View.VISIBLE
+        else View.GONE
+    }
+
+    /** */
+    private fun setupToolbar() {
+        pollToolbarFragment =
+            supportFragmentManager.findFragmentById(R.id.toolbar_fragment) as PollToolbarFragment
+        setSupportActionBar(pollToolbarFragment.toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        pollToolbarFragment.tvTitleToolbar.setText(R.string.profile_actions_activity_title)
+    }
+
+    /** */
+    private fun setupUserInformation() {
+        setProfileImage()
+        binding.apply {
+            tvUserName.text = profileResponse.nombre
+            tvUserNumber.text = profileResponse.colaborador
+        }
+    }
+
+    /** */
+    private fun setupActions() {
+        binding.apply {
+            flUserProfile.setOnClickListener(::onUserProfileClickListener)
+            flFingerprints.setOnClickListener(::onFingerprintsClickListener)
+        }
+    }
+
+    /** */
+    private fun onUserProfileClickListener(view: View) {
+        val intent = IntentBuilder(Intent(this, ProfileDetailsActivity::class.java))
+            .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+            .build()
+        startActivity(intent)
+    }
+
+    /** */
+    private fun onFingerprintsClickListener(view: View) {
+        val intent = Intent(this, FingerprintActivity::class.java)
+        startActivity(intent)
+    }
+
+    /** */
+    private fun setProfileImage() {
+        val userPreferences = RealmHelper.getUserPreferences(profileResponse.correo)
+        AppUtilities.setProfileImage(
+            this,
+            profileResponse.correo,
+            profileResponse.fotoperfil,
+            binding.ivUserImage
+        )
+
+        // Log.i("prueba","foto perfil: " + profileResponse.fotoperfil)
+
+        //Log.i("prueba","userPreferences.image: " + userPreferences.image)
+        /*binding.apply {
+            Glide.with(root)
+                    .load(userPreferences.image)
+                    .circleCrop()
+                    .into(ivUserImage)
+        }*/
+    }
+
+    /** */
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
+
+    fun userAccess(numEmp: String, context: Context?): Boolean {
+        val userAccess = AppUtilities.getStringFromSharedPreferences(context, AppConfig.USER_ACCESS)
+        //String numerosEnJson = userAccess.get("num").getAsString();
+        val numerosArray = userAccess.split(",".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+
+        var encontrado = false
+        for (numero in numerosArray) {
+            if (numero == numEmp) {
+                encontrado = true
+                break
+            }
+        }
+        return encontrado
+    }
+
+}

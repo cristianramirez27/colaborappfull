@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@android:color/transparent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/background_dialog_white_rounded"
+        android:layout_marginRight="20dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="6dp"
+            android:layout_margin="2dp"
+            app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="10dp"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvFields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:paddingBottom="10dp"
+                    android:scrollbarFadeDuration="1"
+                    android:fadeScrollbars="true"
+                    android:scrollbars="vertical"
+                    android:layout_above="@+id/layoutBtns"
+                    android:scrollbarSize="0.5dp"/>
+
+                <LinearLayout
+                    android:id="@+id/layoutBtns"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnActionLeft"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_blue_rounded"
+                        android:text="@string/cancel"
+                        android:textAllCaps="false"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        style="@style/ButtonCoppel" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnActionRight"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_blue_rounded"
+                        android:text="@string/accept"
+                        android:textAllCaps="false"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorBackgroundCoppelBlanco"
+                        style="@style/ButtonCoppel" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"/>
+
+</LinearLayout>

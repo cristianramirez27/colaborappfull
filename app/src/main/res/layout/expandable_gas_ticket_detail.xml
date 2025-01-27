@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctlContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,9 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        style="@style/TextMedium14Coppel"
         app:layout_constraintStart_toEndOf="@+id/imgvArrow"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,9 +29,8 @@
         android:id="@+id/txvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        style="@style/TextMedium14Coppel"
         app:layout_constraintEnd_toStartOf="@+id/txvAmount"
         app:layout_constraintStart_toEndOf="@+id/txvTicketNumber"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,13 +39,12 @@
         android:id="@+id/txvAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lineto_circular_pro_book"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
+        style="@style/TextBold18Coppel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ctlTicketDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -110,7 +107,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txvdDate" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:id="@+id/divider"
@@ -122,11 +119,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txvTicketNumber" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline78"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

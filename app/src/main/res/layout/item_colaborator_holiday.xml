@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:id="@+id/cardview"
+    app:cardElevation="8dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="1dp"
+    android:layout_marginLeft="1dp"
+    android:minHeight="54dp"
+    card_view:cardBackgroundColor="@color/colorBackgroundCoppelBlanco"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:layout_gravity="center"
+            android:layout_centerVertical="true">
+
+        <View
+                android:id="@+id/markerSplice"
+                android:layout_centerVertical="true"
+                android:background="@drawable/backgroud_circle_melon"
+                android:layout_alignParentLeft="true"
+                android:visibility="gone"
+                android:layout_marginLeft="8dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp"/>
+
+        <com.coppel.rhconecta.dev.views.customviews.CircleImageView
+                android:id="@+id/imgColaborador"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/markerSplice"
+                android:padding="0dp"
+                app:srcCompat="@drawable/ic_account_white"
+                android:backgroundTint="@color/colorGrisDeshabilitado"
+                android:background="@drawable/bg_circle_shadow"/>
+
+        <TextView
+                android:id="@+id/nameElement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBackgroundCoppelNegro"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:text="Nombre"
+                android:layout_marginLeft="11dp"
+                android:layout_toEndOf="@+id/imgColaborador"
+                style="@style/TextBold14Coppel"
+                android:layout_marginBottom="4dp" android:layout_alignBottom="@+id/imgColaborador"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:paddingBottom="3dp"
+                android:textStyle="bold"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_alignStart="@+id/nameElement"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/status"
+                style="@style/TextMedium12Coppel"
+                android:layout_below="@+id/nameElement"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

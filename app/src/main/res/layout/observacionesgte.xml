@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:background="@color/colorBackgroundFragments">
+
+    <LinearLayout
+        android:id="@+id/container_notinvasive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tituloControles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lineto_circular_pro_book"
+            android:text="Observaciones del gerente (Obligatorio)"
+            android:textColor="@color/colorSecondBlueCoppel"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/observationGte"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_gray_rounded"
+            android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZÁÉÍÓÚ0123456789,.:;\n "
+            android:focusable="true"
+            android:gravity="top"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:longClickable="false"
+            android:padding="8dp"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

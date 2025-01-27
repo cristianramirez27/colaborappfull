@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,14 +7,15 @@
     android:layout_above="@+id/ctlLogout"
     android:fillViewport="true"
     android:overScrollMode="never"
+    android:background="@android:color/white"
     android:scrollbars="none"
     tools:context=".views.fragments.ProfileFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -85,10 +85,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/lineto_circular_pro_bold"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
-                android:textSize="26sp"
+                android:textStyle=""
+                style="@style/TextBold26Coppel"
                 app:layout_constraintEnd_toStartOf="@+id/guideline30"
                 app:layout_constraintStart_toStartOf="@+id/guideline24"
                 app:layout_constraintTop_toTopOf="@+id/guideline29" />
@@ -97,69 +97,107 @@
                 android:id="@+id/txvCollaboratorNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:text="@string/collaborator"
                 android:textColor="@android:color/white"
-                android:textSize="14sp"
+                style="@style/TextBook14Coppel"
                 app:layout_constraintStart_toStartOf="@+id/guideline24"
                 app:layout_constraintTop_toBottomOf="@+id/txvName" />
 
             <TextView
                 android:id="@+id/txvCollaboratorNumberValue"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextBook14Coppel"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/lineto_circular_pro_book"
                 android:maxLines="1"
                 android:textColor="@color/colorYellowCoppel"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline30"
                 app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumber"
                 app:layout_constraintTop_toBottomOf="@+id/txvName" />
 
-            <android.support.constraint.Guideline
+<!--            <EditText-->
+<!--                android:id="@+id/editCollaboratorNumberValue"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:fontFamily="@font/lineto_circular_pro_book"-->
+<!--                android:maxLines="1"-->
+<!--                android:textColor="@color/colorYellowCoppel"-->
+<!--                android:textSize="14sp"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumber"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/guidelineEdit"-->
+<!--                android:visibility="gone"-->
+<!--                android:maxLength="8"-->
+<!--                android:inputType="number"/>-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/btnEditNumberCollaborator"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/guidelineEdit"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/txvName"-->
+<!--                app:srcCompat="@drawable/ic_checked_true_green"-->
+<!--                android:visibility="gone"/>-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/numberImgEdit"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/txvCollaboratorNumberValue"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/txvCollaboratorNumberValue"-->
+<!--                app:srcCompat="@drawable/ic_edit_mode" />-->
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.06" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.2" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.08" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="66dp" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.95" />
 
-            <android.support.constraint.Guideline
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline56"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
-        </android.support.constraint.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.80" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/view5"
@@ -176,10 +214,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/center"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toTopOf="@+id/guideline23" />
 
@@ -188,10 +225,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            style="@style/TextBook17Coppel"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvCenter" />
@@ -201,10 +237,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/position"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvCenterValue" />
 
@@ -213,10 +248,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            style="@style/TextBook17Coppel"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -227,22 +261,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/enterprise"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvPositionValue" />
 
         <TextView
             android:id="@+id/txvEnterpriseValue"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="22dp"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
+            style="@style/TextBook17Coppel"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -253,10 +285,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/erh"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvEnterpriseValue" />
 
@@ -265,10 +296,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
+            style="@style/TextBook17Coppel"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -279,10 +309,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/manager"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvErhValue" />
 
@@ -291,10 +320,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
+            style="@style/TextBook17Coppel"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -305,10 +333,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/admission_date"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view5" />
 
@@ -317,10 +344,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            style="@style/TextBook17Coppel"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -331,10 +357,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/seniority_date"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvAdmissionDateValue" />
 
@@ -343,10 +368,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
+            style="@style/TextBook17Coppel"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -367,11 +391,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/rfc"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -380,10 +403,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            style="@style/TextBook17Coppel"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -394,11 +416,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/curp"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvRfcValue" />
 
@@ -407,10 +428,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
+            style="@style/TextBook17Coppel"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -421,11 +441,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/nss"
             android:textAllCaps="true"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/txvCurpValue" />
 
@@ -434,10 +453,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
             android:maxLines="1"
             android:textColor="@android:color/black"
-            android:textSize="17sp"
+            style="@style/TextBook17Coppel"
             app:layout_constraintEnd_toStartOf="@+id/guideline31"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
@@ -458,50 +476,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/lineto_circular_pro_bold"
             android:text="@string/email"
             android:textColor="@color/colorTextGray"
-            android:textSize="14sp"
+            style="@style/TextBold16Coppel"
             app:layout_constraintStart_toStartOf="@+id/guideline27"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
 
         <TextView
-            android:id="@+id/txvEmailValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/lineto_circular_pro_book"
-            android:maxLines="1"
-            android:textColor="@android:color/black"
-            android:textSize="17sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline31"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline27"
-            app:layout_constraintTop_toBottomOf="@+id/txvEmail" />
+                android:id="@+id/txvEmailValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                style="@style/TextBook17Coppel"
+                app:layout_constraintEnd_toStartOf="@+id/guideline31"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline27"
+                app:layout_constraintTop_toBottomOf="@+id/txvEmail"/>
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.20" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline27"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

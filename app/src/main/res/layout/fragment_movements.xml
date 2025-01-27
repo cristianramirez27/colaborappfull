@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".views.fragments.fondoAhorro.movements.MovementsFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvInformation"
+                style="@style/TextBook16CoppelBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/half_lateral_margin"
+                android:layout_marginTop="@dimen/margin_general"
+                android:text="@string/last_movements"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMovements"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_general"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvInformation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:itemCount="12"
+                tools:listitem="@layout/item_movements" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/pbLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/flLoadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_transparency_seven"
+            android:visibility="gone" />
+    </FrameLayout>
+</layout>

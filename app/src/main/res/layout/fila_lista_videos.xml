@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/comunicadoFila"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,67 +18,99 @@
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_image_grey_300_24dp" />
 
-    <TextView
-        android:id="@+id/labelTitulo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llHeaderContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgVideoPreview"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginTop="8dp"
-        android:text="Episodio #1"
-        android:textColor="@color/colorPrimaryCoppelAzul"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:layout_marginHorizontal="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgVideoPreview"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/labelEncabezado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imgVideoPreview"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="8dp"
-        android:text="                        Descubre la nueva mentalidad Coppel"
-        android:textColor="@color/colorTextCoppelNegro"
-        android:textSize="15sp" />
+        <ImageView
+            android:id="@+id/ivWatchedIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="9dp"
+            app:srcCompat="@drawable/ic_punto_rojo" />
+
+        <TextView
+            android:id="@+id/labelTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            tools:text="Episodio #1"
+            android:layout_marginEnd="9dp"
+            style="@style/TextBold16Coppel"
+            android:textColor="@color/colorPrimaryCoppelAzul"/>
+
+        <TextView
+            android:id="@+id/labelActualizado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundbackgroud"
+            android:paddingVertical="4dp"
+            android:paddingHorizontal="16dp"
+            android:text="@string/visionaries_updated_label"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#6dc30e"
+            style="@style/TextBook10Coppel"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:targetApi="lollipop"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/labelFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/labelTitulo"
-        android:layout_marginLeft="18dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="16dp"
-        android:text="12 MAYO 2018"
-        android:textColor="@color/colorTextCoppelNegro"
-        android:textSize="11sp" />
+        android:layout_marginStart="18dp"
+        android:textColor="@color/colorSecundaryCoppelGris"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/labelVisitas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/labelVisitas"
+        tools:ignore="SmallSp"
+        style="@style/TextBook12Coppel"
+        tools:text="01-01-2020" />
 
     <TextView
         android:id="@+id/labelVisitas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/labelTitulo"
-        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="18dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/roundbackgroud"
-        android:paddingBottom="2dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:paddingTop="2dp"
-        android:text="4.2 M Visitas"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="16dp"
+        tools:text="8 Vistas"
         android:textColor="@color/colorTextCoppelNegro"
-        android:textSize="11sp" />
+        style="@style/TextBook12Coppel"
+        app:layout_constraintTop_toBottomOf="@id/llHeaderContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SmallSp" />
 
     <View
         android:id="@+id/divisor"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/labelVisitas"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorBackgroundCoppelGris2" />
+        android:layout_marginTop="12dp"
+        android:background="@color/colorBackgroundCoppelGris2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelVisitas"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

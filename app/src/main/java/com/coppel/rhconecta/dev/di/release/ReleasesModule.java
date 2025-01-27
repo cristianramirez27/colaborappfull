@@ -1,0 +1,25 @@
+package com.coppel.rhconecta.dev.di.release;
+
+import com.coppel.rhconecta.dev.data.release.ReleaseRepositoryImpl;
+import com.coppel.rhconecta.dev.domain.release.ReleaseRepository;
+
+import dagger.Module;
+import dagger.Provides;
+
+/**
+ *
+ *
+ */
+@Module
+public class ReleasesModule {
+
+    /**
+     *
+     * @return
+     */
+    @Provides
+    ReleaseRepository provideReleaseRepository() {
+        return new ReleaseRepositoryImpl();
+    }
+
+}

@@ -3,13 +3,15 @@ package com.coppel.rhconecta.dev.views.fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +30,8 @@ import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
-import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTURecyclerAdapter;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherPTUV2RecyclerAdapter;
-import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetVoucher;
+import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
@@ -47,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PayrollVoucherPTUFragment extends Fragment implements IServicesContract.View, PayrollVoucherPTUV2RecyclerAdapter.OnVoucherPTUClickListener,
-        PayrollVoucherPTUV2RecyclerAdapter.OnActionClickListener, DialogFragmentGetVoucher.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
+        PayrollVoucherPTUV2RecyclerAdapter.OnActionClickListener, DialogFragmentGetDocument.OnButtonClickListener, DialogFragmentWarning.OnOptionClick {
 
     public static final String TAG = PayrollVoucherPTUFragment.class.getSimpleName();
     private HomeActivity parent;
@@ -56,7 +57,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     private List<VoucherResponse.FechasUtilidade> ptuDates;
     private PayrollVoucherPTUV2RecyclerAdapter payrollVoucherPTURecyclerAdapter;
     private VoucherResponse.FechasUtilidade ptuDateToGet;
-    private DialogFragmentGetVoucher dialogFragmentGetVoucher;
+    private DialogFragmentGetDocument dialogFragmentGetDocument;
     private DialogFragmentWarning dialogFragmentWarning;
     private int ptuDateRequested;
     private String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -64,6 +65,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     private boolean WARNING_PERMISSIONS;
     private boolean SHARE_PDF;
     private boolean EXPIRED_SESSION;
+    private boolean GO_BACK;
     private File pdf;
     @BindView(R.id.rcvPayroll)
     RecyclerView rcvPayroll;
@@ -139,23 +141,26 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_DOWNLOAD_DETAIL:
                 VoucherDownloadResponse voucherDownloadResponse = (VoucherDownloadResponse) response.getResponse();
-                pdf = AppUtilities.savePDFFile(getString(R.string.ptu).replace(" ", "_"),
-                        voucherDownloadResponse.getData().getResponse().getPdf());
+                pdf = AppUtilities.savePDFFile(
+                        requireContext(),
+                        getString(R.string.ptu).replace(" ", "_"),
+                        voucherDownloadResponse.getData().getResponse().getPdf()
+                );
                 if (pdf != null) {
                     SHARE_PDF = true;
-                    showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOADED);
+                    showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOADED);
                 } else {
                     showWarningDialog(getString(R.string.error_save_file));
                 }
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_SENDMAIL_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_SENT);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_SENT);
                 break;
         }
     }
 
     @Override
-    public void showError(ServicesError coppelServicesError) {
+    public void showError(final ServicesError coppelServicesError) {
         switch (coppelServicesError.getType()) {
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_DETAIL:
                 VoucherResponse.FechasUtilidade ptuDate = ptuDates.get(ptuDateRequested);
@@ -164,11 +169,28 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
                 payrollVoucherPTURecyclerAdapter.notifyDataSetChanged();
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_DOWNLOAD_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_DOWNLOAD_FAIL);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_DOWNLOAD_FAIL);
                 break;
             case ServicesRequestType.PAYROLL_VOUCHER_PTU_SENDMAIL_DETAIL:
-                showGetVoucherReadyDialog(DialogFragmentGetVoucher.VOUCHER_SEND_FAIL);
+                showGetVoucherReadyDialog(DialogFragmentGetDocument.VOUCHER_SEND_FAIL);
                 break;
+
+            case ServicesRequestType.PAYROLL_VOUCHER_DETAIL:
+
+                GO_BACK = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragmentWarning = new DialogFragmentWarning();
+                        dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), coppelServicesError.getMessage(), getString(R.string.accept));
+                        dialogFragmentWarning.setOnOptionClick(PayrollVoucherPTUFragment.this);
+                        dialogFragmentWarning.show(getActivity().getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                        dialogFragmentLoader.close();
+                    }
+                }, 1500);
+
+                break;
+
             case ServicesRequestType.INVALID_TOKEN:
                 EXPIRED_SESSION = true;
                 showWarningDialog(getString(R.string.expired_session));
@@ -196,7 +218,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     @Override
     public void onMailClick(VoucherResponse.FechasUtilidade ptuDate) {
         ptuDateToGet = ptuDate;
-        showGetVoucherReadyDialog(DialogFragmentGetVoucher.SEND_TO);
+        showGetVoucherReadyDialog(DialogFragmentGetDocument.SEND_TO);
     }
 
     @Override
@@ -209,9 +231,9 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     public void onSend(String email) {
         if (email != null && !email.isEmpty()) {
             requestPTUVoucherDetail(ptuDateToGet, email, ServicesConstants.SHIPPING_OPTION_SEND_EMAIL);
-            dialogFragmentGetVoucher.close();
+            dialogFragmentGetDocument.close();
         } else {
-            dialogFragmentGetVoucher.setWarningMessage(getString(R.string.error_email));
+            dialogFragmentGetDocument.setWarningMessage(getString(R.string.error_email));
         }
     }
 
@@ -227,7 +249,7 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
             //AppUtilities.sharePDF(parent, pdf);
         }
         SHARE_PDF = false;
-        dialogFragmentGetVoucher.close();
+        dialogFragmentGetDocument.close();
     }
 
     @Override
@@ -239,7 +261,10 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     public void onRightOptionClick() {
         if (EXPIRED_SESSION) {
             AppUtilities.closeApp(parent);
-        } else if (WARNING_PERMISSIONS) {
+        }else if(GO_BACK) {
+            getActivity().onBackPressed();
+
+        }else if (WARNING_PERMISSIONS) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[0]) &&
                     !ActivityCompat.shouldShowRequestPermissionRationale(parent, permissions[1])) {
                 AppUtilities.openAppSettings(parent);
@@ -257,19 +282,23 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
     }
 
     private void showGetVoucherReadyDialog(int type) {
-        dialogFragmentGetVoucher = new DialogFragmentGetVoucher();
-        dialogFragmentGetVoucher.setType(type, parent);
-        if (type == DialogFragmentGetVoucher.SEND_TO) {
-            dialogFragmentGetVoucher.setPreloadedText(parent.getProfileResponse().getCorreo());
+        dialogFragmentGetDocument = new DialogFragmentGetDocument();
+        dialogFragmentGetDocument.setType(type, parent);
+        if (type == DialogFragmentGetDocument.SEND_TO) {
+            dialogFragmentGetDocument.setPreloadedText(parent.getProfileResponse().getCorreo());
         }
-        dialogFragmentGetVoucher.setOnButtonClickListener(this);
-        dialogFragmentGetVoucher.show(parent.getSupportFragmentManager(), DialogFragmentGetVoucher.TAG);
+        dialogFragmentGetDocument.setOnButtonClickListener(this);
+        dialogFragmentGetDocument.show(parent.getSupportFragmentManager(), DialogFragmentGetDocument.TAG);
     }
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(parent, permissions[0]) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(parent, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, PERMISSIONS_REQUEST_CODE);
+            } else {
+                requestPTUVoucherDetail(ptuDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
+            }
         } else {
             requestPTUVoucherDetail(ptuDateToGet, parent.getProfileResponse().getCorreo(), ServicesConstants.SHIPPING_OPTION_DOWNLOAD_PDF);
         }
@@ -286,6 +315,6 @@ public class PayrollVoucherPTUFragment extends Fragment implements IServicesCont
                         AppConstants.DATE_FORMAT_DD_MM_YYYY_MIDDLE,
                         AppConstants.DATE_FORMAT_YYYY_MM_DD_MIDDLE),
                 new CoppelServicesPayrollVoucherDetailRequest.Datos(),
-                parent.getLoginResponse().getToken());
+                AppUtilities.getAuthHeader(requireContext()));
     }
 }

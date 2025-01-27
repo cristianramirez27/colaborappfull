@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ctlContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/txvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/lineto_circular_pro_medium"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:gravity="center_vertical|end"
+        android:text="fdsfsdfsdfsdfsdfsdf"
+        android:layout_marginBottom="3dp"
+        style="@style/TextMedium16Coppel"
+        app:layout_constraintBottom_toBottomOf="@+id/txvValue"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txvValue"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="0dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/lineto_circular_pro_bold"
+        android:gravity="bottom|end"
+        android:text="53455"
+        android:maxLines="1"
+        style="@style/TextMedium16Coppel"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline72"
+        app:layout_constraintStart_toEndOf="@+id/guideline72"
+        app:layout_constraintStart_toStartOf="@+id/guideline73"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        app:layout_constraintStart_toEndOf="@+id/guideline72"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgvArrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/ic_down_arrow_blue" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorBackgroundGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline73"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.56" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline72"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.89" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

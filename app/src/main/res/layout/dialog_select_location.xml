@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="310dp"
+        android:layout_height="290dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/background_blue_light_rounded"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingRight="8dp">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextBold20Coppel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="¿Dónde estás?"
+            android:textColor="@android:color/white" />
+
+        <RelativeLayout
+            android:id="@+id/layoutState"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/background_line_bottom"
+            android:clickable="true">
+
+            <EditText
+                android:id="@+id/state"
+                style="@style/TextBook14Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:clickable="false"
+                android:duplicateParentState="true"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:hint="Selecciona el estado"
+                android:longClickable="false"
+                android:paddingLeft="8dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textColorHint="@color/hint_text_color" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="false"
+                android:duplicateParentState="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_down_arrow_white_2" />
+
+            <View
+                android:id="@+id/viewState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/stateError"
+            style="@style/TextBook14Coppel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutState"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:text="El campo no puede estar vacío"
+            android:textColor="@android:color/white"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/layoutCity"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/stateError"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/background_line_bottom"
+            android:clickable="true">
+
+            <EditText
+                android:id="@+id/city"
+                style="@style/TextBook14Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:duplicateParentState="true"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:longClickable="false"
+                android:hint="@string/label_dialog_city"
+                android:paddingLeft="8dp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBackgroundCoppelBlanco"
+                android:textColorHint="@color/hint_text_color" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:duplicateParentState="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_down_arrow_white_2" />
+
+            <View
+                android:id="@+id/viewCity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/cityError"
+            style="@style/TextBook14Coppel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutCity"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
+            android:text="El campo no puede estar vacío"
+            android:textColor="@android:color/white"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cityError"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLeftOption"
+                style="@style/ButtonCoppel"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_white_rounded"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/colorSecondBlueCoppel" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnRightOption"
+                style="@style/ButtonCoppel"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/background_white_rounded"
+                android:text="@string/accept"
+                android:textAllCaps="false"
+                android:textColor="@color/colorSecondBlueCoppel" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

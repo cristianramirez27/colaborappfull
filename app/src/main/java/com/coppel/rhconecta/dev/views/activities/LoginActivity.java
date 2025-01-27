@@ -1,29 +1,40 @@
 package com.coppel.rhconecta.dev.views.activities;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.setEndpointConfig;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.coppel.rhconecta.dev.BuildConfig;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.interfaces.IServicesContract;
 import com.coppel.rhconecta.dev.business.models.LoginResponse;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
 import com.coppel.rhconecta.dev.business.models.RecoveryPasswordResponse;
 import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
+import com.coppel.rhconecta.dev.business.utils.CustomCallBack;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.business.utils.ShareUtil;
+import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.customviews.EditTextEmail;
 import com.coppel.rhconecta.dev.views.customviews.EditTextPassword;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
@@ -31,7 +42,15 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.fragments.EnrollmentFragment;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.gson.Gson;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +74,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogIn;
     @BindView(R.id.txvSignIn)
     TextView txvSignIn;
+    @BindView(R.id.txvJoin)
+    TextView txvJoin;
+
+
+    @BindView(R.id.mainContainer)
+    RelativeLayout mainContainer;
+
+    @BindView(R.id.flLoginFragmentContainer)
+    FrameLayout flLoginFragmentContainer;
+
+    //VISIONARIOS
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
+    private  boolean finishApp = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +102,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         cedtPassword.setOnEditorActionListener(this);
         btnLogIn.setOnClickListener(this);
         txvSignIn.setOnClickListener(this);
+        txvJoin.setOnClickListener(this);
         txvForgotPassword.setOnClickListener(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        if (BuildConfig.DEBUG) {
+            cedtEmail.setText(BuildConfig.DEBUG_USR);
+            cedtPassword.setText(BuildConfig.DEBUG_PS);
+        }
+
+        //VISIONARIOS
+        initRemoteConfig();
     }
 
+
     private void login() {
-        if (validateFields(cedtEmail.getText(), cedtPassword.getText())) {
-            coppelServicesPresenter.requestLogin(cedtEmail.getText(), cedtPassword.getText(),false);
-        }
+
+        //this.onDestroyCap();
     }
 
     private boolean validateFields(String email, String password) {
@@ -98,9 +142,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void addFragment(Fragment fragment, String TAG) {
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(TAG);
         fragmentTransaction.add(R.id.flLoginFragmentContainer, fragment, TAG).commit();
+        flLoginFragmentContainer.setVisibility(View.VISIBLE);
+        mainContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -113,8 +160,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 addFragment(new EnrollmentFragment(), EnrollmentFragment.TAG);
                 break;
             case R.id.txvForgotPassword:
-                coppelServicesPresenter.requestRecoveryPassword();
+                coppelServicesPresenter.requestRecoveryPassword(18);
                 break;
+
+            case R.id.txvJoin:
+                coppelServicesPresenter.requestRecoveryPassword(24);
+                break;
+
         }
     }
 
@@ -123,16 +175,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (response.getType()) {
             case ServicesRequestType.LOGIN:
                 loginResponse = (LoginResponse) response.getResponse();
-                coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
-                break;
+                if(loginResponse.getData().getResponse().getErrorCode() == -10){
+                    finishApp = true;
+                    showMessageUser(loginResponse.getData().getResponse().getUserMessage());
+                }else {
+                    coppelServicesPresenter.requestProfile(loginResponse.getData().getResponse().getCliente(), cedtEmail.getText(), loginResponse.getData().getResponse().getToken());
+                }
+                 break;
             case ServicesRequestType.PROFILE:
                 ProfileResponse profileResponse = (ProfileResponse) response.getResponse();
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, gson.toJson(loginResponse));
-                intent.putExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, gson.toJson(profileResponse));
+                Intent intent = new IntentBuilder(new Intent(this, HomeActivity.class))
+                        .putSerializableExtra(AppConstants.BUNDLE_LOGIN_RESPONSE, loginResponse)
+                        .putSerializableExtra(AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse)
+                        .build();
+
+                ProfileResponse.Response profile = profileResponse.getData().getResponse()[0];
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(),AppConstants.SHARED_PREFERENCES_PROFILE_RESPONSE, new Gson().toJson(profile));
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_FILIAL, profile.getEsFilial() == 1);
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_EMAIL, cedtEmail.getText());
                 AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_PASS, cedtPassword.getText());
                 AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_LOGGED_IN, true);
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN, loginResponse.getData().getResponse().getToken());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_TOKEN_USER, loginResponse.getData().getResponse().getToken_user());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LOGIN_RESPONSE, new Gson().toJson(loginResponse));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_COLABORADOR, profile.getColaborador());
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_STATE_COLABORADOR,String.valueOf( profile.getEstado()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_CITY_COLABORADOR, String.valueOf(profile.getCiudad()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_GTE, String.valueOf(profile.getGte()));
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_NUM_SUPLENTE, String.valueOf(profile.getSuplente()));
+
+                /* Almacenamos la fecha en la que se inicio sesion */
+                Date currentTime = Calendar.getInstance().getTime();
+                AppUtilities.saveStringInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_LAST_SSO_LOGIN, new Gson().toJson(currentTime));
+
+                /*Almacenamos si es Gerente*/
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_GTE, profile.getEsGte() == 1);
+                AppUtilities.saveBooleanInSharedPreferences(getApplicationContext(), AppConstants.SHARED_PREFERENCES_IS_SUPLENTE, profile.getEsSuplente() == 1);
+                ShareUtil.toSaveMainSection(profile.getSeccionesApp());
+
                 cedtEmail.setText("");
                 cedtPassword.setText("");
                 dialogFragmentLoader.close();
@@ -158,6 +238,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialogFragmentWarning.setOnOptionClick(LoginActivity.this);
                 dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
                 dialogFragmentLoader.close();
+
+                hideProgress();
             }
         }, 1500);
     }
@@ -178,7 +260,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onRightOptionClick() {
+
         dialogFragmentWarning.close();
+
+        if(finishApp){
+            finishApp = false;
+            finish();
+        }
     }
 
     @Override
@@ -187,4 +275,85 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             login();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(flLoginFragmentContainer.getVisibility() == View.GONE)
+            finish();
+        else {
+            flLoginFragmentContainer.setVisibility(View.GONE);
+            mainContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void showMessageUser(String msg){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialogFragmentWarning = new DialogFragmentWarning();
+                dialogFragmentWarning.setSinlgeOptionData(getString(R.string.attention), msg, getString(R.string.accept));
+                dialogFragmentWarning.setOnOptionClick(LoginActivity.this);
+                dialogFragmentWarning.show(getSupportFragmentManager(), DialogFragmentWarning.TAG);
+                dialogFragmentLoader.close();
+            }
+        }, 1500);
+    }
+
+    //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS
+    private void initRemoteConfig(){
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                //.setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(TimeUnit.HOURS.toSeconds(12))
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                fetchEndpoints();
+            }
+        });
+
+    }
+
+
+    private void fetchEndpoints() {
+        long cacheExpiration = 0;
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // After config data is successfully fetched, it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Boolean>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Boolean> task) {
+                                    if (task.isSuccessful()) {
+                                        setEndpoints();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+        // [END fetch_config_with_callback]
+    }
+
+    private void setEndpoints(){
+        setEndpointConfig(mFirebaseRemoteConfig, new CustomCallBack() {
+            @Override
+            public void onComplete(String result) {
+            }
+
+            @Override
+            public void onFail(String result) {
+            }
+        });
+    }
+
+    //VISIONARIOS SE AGREGO LA OBTENCION EN LOGIN PARA LA OBTENCIONB DEL ENDPOINT DE LOGIN DE VISIONARIOS
+
 }

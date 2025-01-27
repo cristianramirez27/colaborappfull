@@ -16,6 +16,23 @@ public class ServicesRequestType {
     public static final int PAYROLL_VOUCHER_ALIMONY_DETAIL = 12;
     public static final int LOAN_SAVINGFUND = 13;
 
+    public static final int BENEFITS = 14;
+
+    public static final int WITHDRAWSAVING = 15;
+
+    public static final int LOGOUT= 16;
+
+    public static final int EXPENSESTRAVEL = 17;
+    public static final int HOLIDAYS = 18;
+
+    public static final int COLLAGE = 19;
+    public static final int COVID_SURVEY = 39;
+    public static final int LOGIN_APPS = 40;
+    public static final int LOGIN_APPS_BASS = 41;
+    public static final int VACANCIES = 53;
+    public static final int GOOGLE_PLAY_URL = 54;
+
+
     public static final int PAYROLL_VOUCHER_ROSTER_SENDMAIL_DETAIL = 14;
     public static final int PAYROLL_VOUCHER_ROSTER_DOWNLOAD_DETAIL = 15;
 
@@ -37,4 +54,14 @@ public class ServicesRequestType {
     public static final int RECOVERY_PASSWORD = 26;
 
     public static final int INVALID_TOKEN = 27;
+
+    /*Employments letters*/
+    public static final int LETTERPREVIEW= 28;
+    public static final int LETTERGENERATE_SENDMAIL= 29;
+    public static final int LETTERGENERATE_DOWNLOADMAIL= 30;
+
+    public static final int BENEFIT_CODE = 31;
+    public static final int BENEFIT_COMPANY = 32;
+    public static final int TIME_OUT_REQUEST = 33;
+
 }

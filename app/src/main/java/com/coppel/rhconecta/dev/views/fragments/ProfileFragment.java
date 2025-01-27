@@ -1,6 +1,5 @@
 package com.coppel.rhconecta.dev.views.fragments;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,10 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.ProfileResponse;
+import com.coppel.rhconecta.dev.presentation.profile_actions.profile_details.ProfileDetailsActivity;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -32,6 +33,7 @@ import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentCamera;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 import com.coppel.rhconecta.dev.views.utils.CameraUtilities;
+import com.coppel.rhconecta.dev.views.utils.TextUtilities;
 
 import java.util.Arrays;
 
@@ -49,7 +51,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
     private final int CAMERA_PERMISSIONS_REQUEST_CODE = 10;
     private final int STORAGE_PERMISSIONS_REQUEST_CODE = 15;
     private final int PICK_IMAGE = 20;
-    private HomeActivity parent;
+    private ProfileDetailsActivity parent;
     private DialogFragmentCamera dialogFragmentCamera;
     private DialogFragmentWarning dialogFragmentWarning;
     private boolean WARNING_PERMISSIONS;
@@ -95,6 +97,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
     @BindView(R.id.imgvGallery)
     ImageView imgvGallery;
 
+//    @BindView(R.id.numberImgEdit)
+//    ImageView numberImgEdit;
+//    @BindView(R.id.editCollaboratorNumberValue)
+//    EditText editCollaboratorNumberValue;
+//    @BindView(R.id.btnEditNumberCollaborator)
+//    ImageView btnEditNumberCollaborator;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,16 +111,60 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        parent = (HomeActivity) getActivity();
-        parent.setToolbarTitle(getString(R.string.profile));
+        parent = (ProfileDetailsActivity) getActivity();
         profileResponse = parent.getProfileResponse();
         userPreferences = RealmHelper.getUserPreferences(profileResponse.getCorreo());
         imgvEdit.setOnClickListener(this);
         imgvCamera.setOnClickListener(this);
         imgvGallery.setOnClickListener(this);
+
+//        numberImgEdit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                txvCollaboratorNumberValue.setVisibility(View.GONE);
+//                numberImgEdit.setVisibility(View.GONE);
+//                editCollaboratorNumberValue.setVisibility(View.VISIBLE);
+//                btnEditNumberCollaborator.setVisibility(View.VISIBLE);
+//                if(editCollaboratorNumberValue.requestFocus()) {
+//                    int pos = editCollaboratorNumberValue.getText().length();
+//                    editCollaboratorNumberValue.setSelection(pos);
+//                    InputMethodManager imm = (InputMethodManager) parent.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(editCollaboratorNumberValue, InputMethodManager.SHOW_IMPLICIT);
+//                }
+//            }
+//        });
+
+//        btnEditNumberCollaborator.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                editColab();
+//            }
+//        });
+
+//        editCollaboratorNumberValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    editColab();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
         initProfile();
         return view;
     }
+
+//    private  void editColab(){
+//        String newNumber = editCollaboratorNumberValue.getText().toString();
+//        if (parent.editColaborador(newNumber)) {
+//            txvCollaboratorNumberValue.setVisibility(View.VISIBLE);
+//            numberImgEdit.setVisibility(View.VISIBLE);
+//            editCollaboratorNumberValue.setVisibility(View.GONE);
+//            btnEditNumberCollaborator.setVisibility(View.GONE);
+//            initProfile();
+//        }
+//    }
 
     private void initProfile() {
         if (userPreferences != null && userPreferences.getImage() != null && userPreferences.getImage().length > 0) {
@@ -119,8 +172,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         } else {
             AppUtilities.loadServiceProfileImage(parent, profileResponse.getFotoperfil(), imgvProfile);
         }
-        txvName.setText(profileResponse.getNombreColaborador());
+        txvName.setText(TextUtilities.capitalizeText(getActivity(),profileResponse.getNombreColaborador()));
         txvCollaboratorNumberValue.setText(profileResponse.getColaborador());
+//        editCollaboratorNumberValue.setText(profileResponse.getColaborador());
         txvCenterValue.setText(profileResponse.getCentro() + " - " + profileResponse.getNombreCentro());
         txvPositionValue.setText(profileResponse.getPuesto() + " - " + profileResponse.getNombrePuesto());
         txvEnterpriseValue.setText(profileResponse.getNombreEmpresa());
@@ -128,7 +182,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         /**Se oculta la etiqueta de ERH en caso de que no se obtenga valor en dicho atributo*/
         if(profileResponse.getNombreErh() != null && !profileResponse.getNombreErh().isEmpty()){
             txvErh.setVisibility(View.VISIBLE);
-            txvErhValue.setText(profileResponse.getNombreErh());
+            //txvErhValue.setText(profileResponse.getNombreErh());
+            txvErhValue.setText(String.format("%s - %s",String.valueOf(profileResponse.getErh()), profileResponse.getNombreErh()));
             txvErhValue.setVisibility(View.VISIBLE);
         }else {
             txvErh.setVisibility(View.GONE);
@@ -224,14 +279,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
             case PICK_IMAGE:
                 if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
                     try {
-                        Bitmap selectedImage = CameraUtilities.saveTemporalImage(MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData()));
+
+                        Bitmap selectedImage =  MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData());
+                        //Bitmap selectedImage = CameraUtilities.saveTemporalImage(MediaStore.Images.Media.getBitmap(parent.getContentResolver(), data.getData())); DEVUELVE EL BITMAP EN NULL
+
                         if (RealmHelper.updateProfileImage(profileResponse.getCorreo(), selectedImage)) {
                             AppUtilities.setProfileImage(parent, profileResponse.getCorreo(), profileResponse.getFotoperfil(), imgvProfile);
                         } else {
                             showErrorSavingImageDialog();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         showErrorSavingImageDialog();
                     }
                 }
@@ -244,11 +302,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, D
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case CAMERA_PERMISSIONS_REQUEST_CODE:
-                if (AppUtilities.validatePermissions(permissions.length, grantResults)) {
+                //if (AppUtilities.validatePermissions(permissions.length, grantResults)) {
                     openCamera();
-                } else {
-                    showErrorPermissionDialog();
-                }
+                //} else {
+                  //  showErrorPermissionDialog();
+                //}
                 break;
             case STORAGE_PERMISSIONS_REQUEST_CODE:
                 if (AppUtilities.validatePermissions(permissions.length, grantResults)) {

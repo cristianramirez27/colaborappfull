@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,44 +16,44 @@
         app:layout_constraintStart_toStartOf="@+id/guideline82"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/ctlContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/extHeader">
-
-        <LinearLayout
-            android:id="@+id/linDetail"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ctlContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline85"
-            app:layout_constraintStart_toStartOf="@+id/guideline84"
-            app:layout_constraintTop_toBottomOf="parent" />
+            android:background="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/extHeader"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline84"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
+        <LinearLayout
+                android:id="@+id/linDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline85"
+                app:layout_constraintStart_toStartOf="@+id/guideline84"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="4dp"/>
 
-        <android.support.constraint.Guideline
-            android:id="@+id/guideline85"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.95" />
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline84"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05"/>
 
-    </android.support.constraint.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline85"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
         layout="@layout/view_connection_error"
@@ -64,18 +65,18 @@
         app:layout_constraintStart_toStartOf="@+id/guideline82"
         app:layout_constraintTop_toBottomOf="@+id/extHeader" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline82"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.05" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline83"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

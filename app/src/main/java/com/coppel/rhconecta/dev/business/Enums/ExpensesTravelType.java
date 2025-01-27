@@ -1,0 +1,25 @@
+package com.coppel.rhconecta.dev.business.Enums;
+
+import java.io.Serializable;
+
+/**
+ * Created by flima on 31/03/2017.
+ */
+
+public enum ExpensesTravelType implements Serializable {
+    CONSULTA_PERMISO_ROL,
+    CONSULTA_COLABORADOR_SOLICITUD,
+    CONSULTA_SOLICITUDES_MESES,
+    CONSULTA_DETALLE_GASTO,
+    CONSULTA_DETALLE_SOLICITUD,
+    CONSULTA_DETALLE_CONTROL,
+    CONSULTA_CENTROS,
+    CONSULTA_SOLICITUDES_AUTORIZAR,
+    CONSULTAR_FILTROS_CONTROLES,
+    CONSULTAR_CONTROLES_GTE,
+    CONSULTAR_MESES_GTE,
+    AUTORIZAR_SOLICITUD,
+    RECHAZAR_SOLICITUD
+
+
+}

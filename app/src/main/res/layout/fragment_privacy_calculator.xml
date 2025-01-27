@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:background="@color/background_calculator"
+                                                       tools:context=".presentation.calculator.privacy.PrivacyCalculatorFragment">
+
+    <TextView
+            style="@style/TextBold20CoppelCalculator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_privacy_calculator" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/title_privacy_calculator" android:id="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+            android:text="@string/text_privacy_calculator2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/text_privacy_sides_calculator"
+            android:layout_marginEnd="@dimen/text_privacy_sides_calculator"
+            app:layout_constraintBottom_toTopOf="@+id/button4"
+            android:layout_marginTop="@dimen/text_privacy_top_calculator"
+            android:layout_marginBottom="@dimen/text_privacy_top_calculator"/>
+    <Button
+            android:text="@string/button_privacy_calculator"
+            style="@style/ButtonCoppelCalculator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/button4"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="24dp"
+            android:layout_marginEnd="@dimen/button_sides_calculator" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/button_sides_calculator" app:layout_constraintHorizontal_bias="1.0"
+    />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

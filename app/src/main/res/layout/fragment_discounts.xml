@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.PayrollVoucherFragment">
+
+    <RelativeLayout
+        android:id="@+id/layoutChangeCity"
+        android:layout_below="@+id/cardViewSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:gravity="left">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Educación"
+            android:padding="4dp"
+            style="@style/TextBold20Coppel"
+            android:textColor="@color/colorSecondBlueCoppel"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:text="Obtén descuentos en las mejores escuelas de Culiacán"
+            android:padding="4dp"
+            android:maxLines="2"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorTextGrayDark"
+            style="@style/TextBook14Coppel"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvDiscounts"
+        android:layout_marginTop="30dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_below="@+id/layoutChangeCity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/layoutContainer"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:background="@color/colorBackgroundFragments"
+    tools:context=".views.fragments.LoanSavingFundMainChildFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContainer"
+        android:layout_above="@+id/layoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:fillViewport="true"
+        android:background="@color/transparent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layoutHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.coppel.rhconecta.dev.views.customviews.HeaderHolidaysColaboratorGte
+                    android:id="@+id/headerHoliday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:id="@+id/layoutBtn"
+        android:visibility="visible"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAditionalDays"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_blue_rounded"
+            android:text="@string/btn_aditional_days_holidays"
+            android:textAllCaps="false"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            style="@style/ButtonCoppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

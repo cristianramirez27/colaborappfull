@@ -1,6 +1,7 @@
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -33,8 +34,16 @@ proguard/
 # Android Studio captures folder
 captures/
 
+#NDK
+obj/
+.externalNativeBuild/
+.cxx/
+output.json
+
+
 # Intellij
 *.iml
+.idea/
 .idea/libraries/
 .idea/workspace.xml
 .idea/tasks.xml
@@ -56,3 +65,26 @@ captures/
 
 # Keystore files
 *.jks
+
+#Mac
+.DS_Store
+
+# Windows thumbnail db
+Thumbs.db
+
+# Keystore files
+*.jks
+*.keystore
+
+# Android Profiling
+*.hprof
+
+#Mac
+.DS_Store
+
+# Windows thumbnail db
+Thumbs.db
+
+/*/release/
+/*/debug/
+.idea

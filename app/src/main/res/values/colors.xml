@@ -9,16 +9,30 @@
     <color name="colorBackgroundSplash">#026bb5</color>
     <color name="colorYellowCoppel">#fddd2e</color>
     <color name="colorTextTranslucent">#61ffffff</color>
+    <color name="colorGreen">#6dc310</color>
     <color name="colorRedLight">#eb5757</color>
     <color name="colorBackgroundDialogs">#98000000</color>
     <color name="colorBackgroundFragments">#f6f7f9</color>
     <color name="colorTextGray">#969696</color>
+    <color name="colorTextGrayScheduler">#999999</color>
     <color name="colorTextGrayDark">#5f6062</color>
-    <color name="colorBackgroundGray">#e6e8ef</color>
+    <color name="colorTextGrayCompany">#666666</color>
+    <color name="colorBackgroundGray">#33a3a3a3</color>
     <color name="colorSavingHeaderText">#5f6062</color>
     <color name="colorRed">#b00020</color>
     <color name="colorOrange">#fd7700</color>
     <color name="colorBackgroundFavorites">#f2f1f1</color>
+    <color name="colorMelon">#ff8256</color>
+    <color name="colorLabelCreateAccount">#199dd5</color>
+
+
+    <color name="blueBottonCoppel">#0065b2</color>
+    <color name="colorBordeGrisToolbar">#4C002028</color>
+    <color name="colorBordeTransparentToolbar">#00FFFFFF</color>
+
+
+    <color name="colorGrisDeshabilitado">#c3c0c4</color>
+    <color name="disable">#e4e4e4</color>
 
     <color name="transparentIndicatorSelected">#80FFFFFF</color>
     <color name="transparentIndicator">#B3FFFFFF</color>
@@ -40,5 +54,50 @@
     <color name="colorTextCoppelNegro">#4F4F4F</color>
     <color name="colorBackgroundCoppelGris2">#E0E0E0</color>
     <color name="colorBackgroundCoppelNegro">#000000</color>
+    <color name="colorBackgroundCoppelNegro2">#1e1f1f</color>
+    <color name="colorBackgroundDivider">#d4d4d4</color>
+    <color name="colorScheduler">#199dd5</color>
+
+
+    <color name="colorBackgroundDialogDateTime">#0a9dd5</color>
+    <color name="colorDaySelect">#6fcf97</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="colorTextBlueCoppel">#0065b2</color>
+    <color name="colorTextCode">#00599c</color>
+    <color name="colorBackgroundCode">#f8f8f8</color>
+
+    <color name="black_transparency_seven">#85000000</color>
+
+    <color name="hint_text_color">#e9edf2</color>
+    <color name="disable_text_color">#9b9b9b</color>
+    <color name="colorBackgroundVerdeClaro">#daffdf</color>
+    <color name="colorBackgroundRosaClaro">#fdf3dc</color>
+
+    <color name="red_text">#cc1515</color>
+    <color name="background_calendar_splice">#ededed</color>
+    <color name="gray_checkbox_disable">#61000000</color>
+    <color name="holder_unselected_text_color">#5f6062</color>
+    <color name="dark_holiday">#000000</color>
+
+    <color name="text_color_header_gte">#333333</color>
+
+    <color name="show_code_color">#4ec5fc</color>
+
+    <color name="colorCoppelAmarillo">#fddd2e</color>
+    <color name="mdtp_white">#ffffff</color>
+    <color name="mdtp_red">#009688</color>
+    <color name="colorButtonHolidayCancel">#EB5655</color>
+
+    <color name="text_color_question_calculator">#1e1e1e</color>
+    <color name="colorCheckCalculator">#6835b5</color>
+    <color name="colorBlueCalculator">#00599c</color>
+    <color name="colorGrayCalculator">#efefef</color>
+    <color name="yellow_calculator">#fedb31</color>
+    <color name="gray_calculator">#d5d5d6</color>
+    <color name="gray_divider_calculator">#dbdbdb</color>
+    <color name="gray_header">#838383</color>
+    <color name="background_calculator">#fafafa</color>
+    <color name="colorBlackCalculator">#323e48</color>
 
 </resources>

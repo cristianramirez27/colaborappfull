@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_dialog_white_rounded"
+    android:scrollbars="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog_yellow_rounded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scrollview"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.coppel.rhconecta.dev.views.customviews.TicketView
+            android:id="@+id/ticketView"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ticketBackgroundBeforeDivider="@color/colorPrimaryCoppelAzul"
+            app:ticketCornerRadius="8dp"
+            app:ticketCornerType="rounded"
+            app:ticketDividerPadding="0dp"
+            app:ticketDividerPositionPercent="0.35"
+            app:ticketElevation="14dp"
+            app:ticketOrientation="horizontal"
+            app:ticketScallopPositionPercent="50"
+            app:ticketScallopRadius="10dp"
+            app:ticketShowBorder="false"
+            app:ticketShowDivider="false" />
+
+        <TextView
+            android:id="@+id/text_label"
+            style="@style/TextBook12Coppel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Descuento Variable"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/ticketView"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/ticketView"
+            app:layout_constraintTop_toBottomOf="@+id/percent_benefit" />
+
+        <TextView
+            android:id="@+id/percent_benefit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:textColor="@color/colorPrimaryCoppelAmarillo"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/text_label"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/ticketView"
+            app:layout_constraintTop_toTopOf="@+id/ticketView"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.36" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="24dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder_discount"
+            app:layout_constraintBottom_toBottomOf="@+id/ticketView"
+            app:layout_constraintEnd_toEndOf="@+id/ticketView"
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/ticketView" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/TextBook12Coppel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:text="@string/label_title_code"
+            android:textColor="@color/colorLabelCreateAccount"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/textViewCode"
+            app:layout_constraintEnd_toEndOf="@+id/ticketView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/ticketView" />
+
+        <TextView
+            android:id="@+id/textViewCode"
+            style="@style/TextMedium26Coppel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackgroundCode"
+            android:textColor="@color/colorTextCode"
+            android:textIsSelectable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ticketView"
+            app:layout_constraintEnd_toEndOf="@+id/ticketView"
+            app:layout_constraintStart_toStartOf="@+id/ticketView"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/ticketView"
+            tools:layout_editor_absoluteX="172dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@+id/headerDialog"
+        android:minHeight="200dp"
+        android:scrollbars="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btnAdvertising"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerDialog">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:id="@+id/company"
+                style="@style/TextBold16Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorTextGrayCompany" />
+
+            <TextView
+                android:id="@+id/txtDiscountQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/company"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/lineto_circular_pro_bold"
+                android:gravity="center"
+                android:maxLines="2"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="30sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDiscountQuantity"
+                android:fontFamily="@font/lineto_circular_pro_bold"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtDescription"
+                style="@style/TextBook16Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDiscount"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorTextGrayDark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtInformation"
+                style="@style/TextBook14Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtDescription"
+                android:layout_marginTop="4dp"
+                android:gravity="left"
+                android:text="Más información:"
+                android:textColor="@color/colorTextGrayDark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtNote"
+                style="@style/TextBook14Coppel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtInformation"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
+                android:scrollbars="vertical"
+                android:textColor="@color/colorTextGrayDark" />
+
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtNote"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="left"
+                android:scrollbars="vertical"
+                android:textColor="@color/colorTextGrayDark"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtAddress"
+                android:autoLink="phone"
+                android:fontFamily="@font/lineto_circular_pro_book"
+                android:gravity="left"
+                android:scrollbars="vertical"
+                android:textColor="@color/colorTextGrayDark"
+                android:textColorLink="@color/colorPrimaryCoppelAzul"
+                android:textSize="13sp" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCode"
+        style="@style/ButtonCoppel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/btnAdvertising"
+        android:layout_alignBottom="@id/btnCode"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@id/btnAdvertising"
+        android:background="@color/colorSecondBlueCoppel"
+        android:text="Generar Codigo"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBackgroundCoppelBlanco"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAdvertising"
+        style="@style/ButtonCoppel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollview"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorSecondBlueCoppel"
+        android:text="Publicidad de la empresa"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBackgroundCoppelBlanco"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btnCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/TextMedium14Coppel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnAdvertising"
+        android:background="@drawable/background_dialog_white_rounded_button"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:text="@string/label_more_information"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

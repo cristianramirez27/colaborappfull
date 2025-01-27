@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardViewBenefits"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="@color/colorBackgroundCoppelBlanco">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageBenefits"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:src="@drawable/placeholder_category"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
+
+        <View
+            android:id="@+id/shadowImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shadow_images"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/are_you_in_culiacan"
+            android:padding="4dp"
+            android:layout_above="@+id/description"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            style="@style/TextBold16Coppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="4dp"
+            android:maxLines="3"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="16dp"
+            android:layout_centerVertical="true"
+            style="@style/TextBook14Coppel"
+            android:textColor="@color/colorBackgroundCoppelBlanco"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+
