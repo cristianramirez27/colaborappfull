@@ -5,5 +5,6 @@ data class InformationEmployee(
     var antiquity: String,
     var salary: Int,
     var mothSaving: String,
-    var total: String
+    var total: String,
+    var fechaCorte: String
 )

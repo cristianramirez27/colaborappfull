@@ -57,7 +57,7 @@ class FirstStepFragment : Fragment() {
     private val simpleDateFormat by lazy { SimpleDateFormat("dd/MM/yyyy") }
     private val listTitles = arrayListOf(
         "Aportaciones ordinarias",
-        "Aportaciones addicionales",
+        "Aportaciones adicionales",
         "AER",
         "AER 60",
         "Fondo de Ahorro",
@@ -179,6 +179,7 @@ class FirstStepFragment : Fragment() {
                                 textSalary.text = "${formatInteger("${it.salary}")} MXN"
                                 textMothSaving.text = it.mothSaving
                                 textTotal.text = formatInteger(it.total)
+                                textViewDate.text = it.fechaCorte
                                 calculatorFragmentCommunication.saveInfo("salary", it.salary)
                             }
                             dialogProgress.dismiss()

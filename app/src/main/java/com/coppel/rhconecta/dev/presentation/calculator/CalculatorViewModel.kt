@@ -129,16 +129,31 @@ class CalculatorViewModel @Inject constructor(
                         labelAntiquity,
                         info.imp_salariomensual.parseSaveInt(),
                         info.imp_aportemensual.parseSaveInt().formatInteger(),
-                        "$total"
+                        "$total",
+                        info.fechaCorte
                     )
                 )
             })
         }
     }
 
-    private fun calculateYear(date: String): Int {
-        return Calendar.getInstance().get(Calendar.YEAR) - date.subSequence(date.length - 4, date.length).toString()
-            .toInt()
+    private fun calculateYear(dates: String): Int {
+        val date = simpleDateFormat.parse(dates)
+        val currentDate = Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val calendarCurrent = Calendar.getInstance()
+        calendarCurrent.time = currentDate
+        var month = calendarCurrent.get(Calendar.MONTH) - calendar.get(Calendar.MONTH)
+        var year = calendarCurrent.get(Calendar.YEAR) - calendar.get(Calendar.YEAR)
+        if (calendar.get(Calendar.DAY_OF_MONTH) > calendarCurrent.get(Calendar.DAY_OF_MONTH)) {
+            month -= 1
+        }
+
+        if (month < 0) {
+            year -= 1
+        }
+        return year
     }
 }
 
