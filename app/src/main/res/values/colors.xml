@@ -89,5 +89,15 @@
     <color name="mdtp_red">#009688</color>
     <color name="colorButtonHolidayCancel">#EB5655</color>
 
+    <color name="text_color_question_calculator">#1e1e1e</color>
+    <color name="colorCheckCalculator">#6835b5</color>
+    <color name="colorBlueCalculator">#00599c</color>
+    <color name="colorGrayCalculator">#efefef</color>
+    <color name="yellow_calculator">#fedb31</color>
+    <color name="gray_calculator">#d5d5d6</color>
+    <color name="gray_divider_calculator">#dbdbdb</color>
+    <color name="gray_header">#838383</color>
+    <color name="background_calculator">#fafafa</color>
+    <color name="colorBlackCalculator">#323e48</color>
 
 </resources>

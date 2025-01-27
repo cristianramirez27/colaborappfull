@@ -86,7 +86,10 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             AnalyticsApiService apiService = getAnalyticsApiService();
             if (apiService != null) {
                 apiService
-                        .sendTimeByAnalyticsFlow(authHeader, url, request)
+                        .sendTimeByAnalyticsFlow(authHeader,"2025-01-27T17:38:35.244Z",
+                                "-99.985171",
+                                "20.270460",
+                                "fs9999c7q86c33cdfd5f55", url, request)
                         .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
             }
         }
@@ -175,7 +178,10 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
             AnalyticsApiService apiService = getAnalyticsApiService();
             if (apiService != null) {
                 try {
-                    apiService.sendVisitSection(authHeader, url, request)
+                    apiService.sendVisitSection(authHeader,"2025-01-27T17:38:35.244Z",
+                                    "-99.985171",
+                                    "20.270460",
+                                    "fs9999c7q86c33cdfd5f55", url, request)
                             .enqueue(new Callback<SendVisitSectionResponse>() {
                                 @Override
                                 public void onResponse(Call<SendVisitSectionResponse> call, Response<SendVisitSectionResponse> response) {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorTextCode"
+            app:layout_constraintStart_toStartOf="parent" android:id="@+id/constraintLayout3">
+
+        <TextView
+                android:text="@string/text_bottom_sheet_cancel_button"
+                android:layout_width="wrap_content"
+                style="@style/TextBook16Coppel"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" android:id="@+id/textView57"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingBottom="@dimen/buttons_bottom_sheet_top_calculator"
+                android:paddingTop="@dimen/buttons_bottom_sheet_top_calculator"
+                android:paddingLeft="@dimen/buttons_bottom_sheet_sides_calculator"
+                android:paddingRight="@dimen/buttons_bottom_sheet_sides_calculator"/>
+        <TextView
+                android:text="@string/text_bottom_sheet_accept_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView58"
+                style="@style/TextBook16Coppel"
+                android:textColor="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingBottom="@dimen/buttons_bottom_sheet_top_calculator"
+                android:paddingTop="@dimen/buttons_bottom_sheet_top_calculator"
+                android:paddingRight="@dimen/buttons_bottom_sheet_sides_calculator"
+                android:paddingLeft="@dimen/buttons_bottom_sheet_sides_calculator"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <NumberPicker android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:theme="@style/numberPicker"
+                  android:descendantFocusability="blocksDescendants"
+                  app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                  app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/number_picker"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

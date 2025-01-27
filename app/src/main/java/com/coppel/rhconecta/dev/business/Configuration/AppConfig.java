@@ -110,6 +110,9 @@ public class AppConfig {
     public final static String BLOCK_MY_MOVEMENTS = "BLOCK_MYMOVEMENTS";
     public final static String BLOCK_MYMOVEMENTS_MESSAGE = "BLOCK_MYMOVEMENTS_MESSAGE";
 
+    public final static String BLOCK_MESSAGE_CALCULATOR = "BLOCK_MESSAGE_CALCULATOR";
+    public final static String BLOCK_CALCULATOR = "BLOCK_CALCULATOR";
+
     public final static String YES = "YES";
     public final static String NO = "NO";
 
@@ -178,6 +181,11 @@ public class AppConfig {
     public final static String ENDPOINT_AES = "AES";
     public final static String FLAG_ICONS = "FLAG_ICONS";
     public final static String USER_ACCESS = "USER_ACCESS";
+    public final static String ENDPOINT_CALCULATOR = "ENDPOINT_CALCULATOR";
+    public final static String ENDPOINT_CALCULATOR_WEEKS = "ENDPOINT_CALCULATOR_WEEKS";
+    public final static String ENDPOINT_CALCULATOR_STEP = "ENDPOINT_CALCULATOR_STEP";
+    public final static String ENDPOINT_CALCULATOR_RATING = "ENDPOINT_CALCULATOR_RATING";
+    public final static String ENDPOINT_CALCULATOR_ESTIMATE = "ENDPOINT_CALCULATOR_ESTIMATE";
 
     /**
      * Se almacenan los endpoints
@@ -212,6 +220,13 @@ public class AppConfig {
 
             String huellasAdicionales = mFirebaseRemoteConfig.getString(ENDPOINT_ADDITIONALS);
             String vacanciesEndPoint = mFirebaseRemoteConfig.getString(ENDPOINT_VACANCIES);
+
+            String calculator_endpoint = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR);
+            String calculator_endpoint_week = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_WEEKS);
+            String calculator_endpoint_step = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_STEP);
+            String calculator_endpoint_rating = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_RATING);
+            String calculator_endpoint_estimate = mFirebaseRemoteConfig.getString(ENDPOINT_CALCULATOR_ESTIMATE);
+
 
             String url_coCrea = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA);
             String url_coCreaSite = mFirebaseRemoteConfig.getString(ENDPOINT_COCREA_STORE);
@@ -288,6 +303,13 @@ public class AppConfig {
             //VISIONARIOS
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), VISIONARIOS_URL, visionarios_url);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), APLICACION_KEY, aplicacion_key);
+
+            //CALCULATOR
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(),ENDPOINT_CALCULATOR, calculator_endpoint);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_WEEKS, calculator_endpoint_week);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_STEP, calculator_endpoint_step);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_RATING, calculator_endpoint_rating);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_CALCULATOR_ESTIMATE, calculator_endpoint_estimate);
 
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), ENDPOINT_LINEA_DE_DENUNCIA, url_lineaDenuncia);
 
@@ -394,6 +416,8 @@ public class AppConfig {
             String block_lineaDenuncia = mFirebaseRemoteConfig.getString(BLOCK_LINEA_DE_DENUNCIA);
             String block_sectionTime = mFirebaseRemoteConfig.getString(BLOCK_SECTION_TIME );
             String block_huellasAd = mFirebaseRemoteConfig.getString(BLOCK_HUELLASAD );
+            String block_calculator = mFirebaseRemoteConfig.getString(BLOCK_CALCULATOR);
+            String block_calculator_message = mFirebaseRemoteConfig.getString(BLOCK_MESSAGE_CALCULATOR);
 
 
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_PROFILE, block_message_profile);
@@ -477,6 +501,8 @@ public class AppConfig {
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_LINEA_DE_DENUNCIA, block_lineaDenuncia);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_SECTION_TIME, block_sectionTime);
             AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_HUELLASAD, block_huellasAd);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR, block_calculator);
+            AppUtilities.saveStringInSharedPreferences(getApplicationContext(), BLOCK_MESSAGE_CALCULATOR, block_calculator_message);
             callBack.onComplete("Ok");
         } catch (Exception e) {
             callBack.onFail(e.getMessage());

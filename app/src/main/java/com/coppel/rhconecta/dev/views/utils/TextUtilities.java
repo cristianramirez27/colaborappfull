@@ -8,10 +8,17 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import com.coppel.rhconecta.dev.R;
+import com.skydoves.balloon.ArrowPositionRules;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -237,4 +244,49 @@ public class TextUtilities {
     public static String[] getMonths() {
         return months;
     }
+
+    public static Balloon getBallon (Context context, int label) {
+        return new Balloon.Builder(context)
+                .setTextResource(label)
+                .setArrowSize(10)
+                .setWidthRatio(1.0f)
+                .setTextIsHtml(true)
+                .setTextGravity(Gravity.START)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                .setArrowPosition(0.5f)
+                .setPadding(8)
+                .setMarginRight(24)
+                .setMarginLeft(24)
+                .setTextSize(16f)
+                .setCornerRadius(8f)
+                .setTextTypeface(R.font.lineto_circular_pro_medium)
+                .setTextColorResource(R.color.mdtp_white)
+                .setBackgroundColorResource(R.color.colorBlueLight)
+                .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                .build();
+    }
+    public static Balloon getBallon (Context context, int label, LifecycleOwner lifecycleOwner) {
+        return new Balloon.Builder(context)
+                .setTextResource(label)
+                .setArrowSize(10)
+                .setWidthRatio(1.0f)
+                .setTextIsHtml(true)
+                .setTextGravity(Gravity.START)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                .setArrowPosition(0.5f)
+                .setPadding(8)
+                .setMarginRight(24)
+                .setMarginLeft(24)
+                .setTextSize(16f)
+                .setLifecycleOwner(lifecycleOwner)
+                .setCornerRadius(8f)
+                .setTextTypeface(R.font.lineto_circular_pro_medium)
+                .setTextColorResource(R.color.mdtp_white)
+                .setBackgroundColorResource(R.color.colorBlueLight)
+                .setBalloonAnimation(BalloonAnimation.ELASTIC)
+                .build();
+    }
+
 }

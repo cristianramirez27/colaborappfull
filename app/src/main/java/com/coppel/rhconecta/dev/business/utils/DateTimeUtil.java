@@ -41,7 +41,9 @@ public class DateTimeUtil {
             "Domingo"
     };
 
-    public static DatePickerDialog getMaterialDatePicker(DatePickerDialog.OnDateSetListener callback){
+    private static long timeSurveyCalculator = 2592000000L;
+
+    public static DatePickerDialog getMaterialDatePicker(DatePickerDialog.OnDateSetListener callback) {
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 callback,
@@ -58,7 +60,7 @@ public class DateTimeUtil {
     }
 
 
-    public static DatePickerHolidayDialog getMaterialDatePicker(DatePickerHolidayDialog.OnDateSetListener callback){
+    public static DatePickerHolidayDialog getMaterialDatePicker(DatePickerHolidayDialog.OnDateSetListener callback) {
         Calendar now = Calendar.getInstance();
         DatePickerHolidayDialog dpd = DatePickerHolidayDialog.newInstance(
                 callback,
@@ -74,25 +76,24 @@ public class DateTimeUtil {
         return dpd;
     }
 
-    public static String formatDate(int dayOfMonth, int monthOfYear, int year){
+    public static String formatDate(int dayOfMonth, int monthOfYear, int year) {
 
-        String day ="";
-        String month ="";
+        String day = "";
+        String month = "";
         int iMonth = ++monthOfYear;
-        if(dayOfMonth < 10){
-            day = String.format("0%s",dayOfMonth);
-        }
-        else{
-            day= String.format("%s",dayOfMonth);
-        }
-
-        if( iMonth < 10){
-            month = String.format("0%s",iMonth);
-        }else{
-            month= String.format("%s",iMonth);
+        if (dayOfMonth < 10) {
+            day = String.format("0%s", dayOfMonth);
+        } else {
+            day = String.format("%s", dayOfMonth);
         }
 
-        String date = String.format("%s/%s/%s",day,month, year);
+        if (iMonth < 10) {
+            month = String.format("0%s", iMonth);
+        } else {
+            month = String.format("%s", iMonth);
+        }
+
+        String date = String.format("%s/%s/%s", day, month, year);
 
         return date;
 
@@ -122,7 +123,7 @@ public class DateTimeUtil {
 
             date = sdf.parse(dateAsString);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             //e.printStackTrace();
         }
 
@@ -156,29 +157,29 @@ public class DateTimeUtil {
         return dateAsString;
     }
 
-    public static int getNumberDays(String startDay,String endDay){
+    public static int getNumberDays(String startDay, String endDay) {
         int dayStart = 0;
         int dayEnd = 0;
-        for(int i = 0 ; i <  days.length ; i++){
-            if(days[i].compareToIgnoreCase(startDay) == 0){
+        for (int i = 0; i < days.length; i++) {
+            if (days[i].compareToIgnoreCase(startDay) == 0) {
                 dayStart = i;
             }
 
-            if(days[i].compareToIgnoreCase(endDay) == 0){
+            if (days[i].compareToIgnoreCase(endDay) == 0) {
                 dayEnd = i;
             }
 
         }
 
 
-        return  (dayEnd - dayStart)+ 1;
+        return (dayEnd - dayStart) + 1;
 
     }
 
-    public static int getHoursCount(String startTime,String endTime){
+    public static int getHoursCount(String startTime, String endTime) {
 
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa",Locale.ENGLISH);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
             Date date1 = simpleDateFormat.parse(startTime);
             Date date2 = simpleDateFormat.parse(endTime);
 
@@ -191,9 +192,17 @@ public class DateTimeUtil {
 
             return hours;
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
+    }
+
+    public static boolean validateTimeElapsedSurvey(Date date, Date current) {
+        long difference = current.getTime() - date.getTime();
+        if (difference > timeSurveyCalculator)
+            return true;
+        else
+            return false;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.coppel.rhconecta.dev.views.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -66,6 +71,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
 import com.coppel.rhconecta.dev.di.analytics.DaggerAnalyticsComponent;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
+import com.coppel.rhconecta.dev.presentation.calculator.CalculatorActivity;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.presentation.common.extension.IntentExtension;
 import com.coppel.rhconecta.dev.presentation.common.view_model.ProcessStatus;
@@ -122,9 +128,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 
 import static com.coppel.rhconecta.dev.CoppelApp.getContext;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_ENCUESTAS;
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_CALCULATOR;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COLLAGE;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_COVID_SURVEY;
 import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.BLOCK_MESSAGE_ENCUESTAS;
@@ -148,6 +156,7 @@ import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.LOGIN_
 import static com.coppel.rhconecta.dev.business.utils.ServicesRequestType.VACANCIES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.BUNDLE_OPTION_TRAVEL_EXPENSES;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_BENEFITS;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_CALCULATOR;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COCREA;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLABORATOR_AT_HOME;
 import static com.coppel.rhconecta.dev.views.utils.AppConstants.OPTION_COLLAGE;
@@ -250,6 +259,18 @@ public class HomeActivity
     @Inject
     public ZendeskManager zendeskUtil;
 
+    private ActivityResultLauncher<Intent> register = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(),new ActivityResultCallback<ActivityResult>(){
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                String go = data.getStringExtra("goto");
+                if (go != null){
+                    navigationMenu(go, null);
+                }
+            }
+        }
+    });
     //azure
     private ISingleAccountPublicClientApplication mSingleAccountApp;
 
@@ -827,6 +848,15 @@ public class HomeActivity
                     }
                     Intent intentNew = new Intent(Intent.ACTION_VIEW, Uri.parse(urlNew));
                     startActivity(intentNew);
+                case OPTION_CALCULATOR:
+                    if (AppUtilities.getStringFromSharedPreferences(getApplicationContext(), BLOCK_CALCULATOR).equals(YES)) {
+                        showBlockDialog(BLOCK_MESSAGE_CALCULATOR);
+                    } else {
+                        Intent intentCalculator = new Intent(this, CalculatorActivity.class);
+                        IntentExtension.putSerializableExtra(intentCalculator,AppConstants.BUNLDE_PROFILE_RESPONSE, profileResponse);
+                        register.launch(intentCalculator);
+                    }
+                    break;
             }
         } else
             showError(new ServicesError(getString(R.string.network_error)));
