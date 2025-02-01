@@ -51,6 +51,7 @@ import com.coppel.rhconecta.dev.business.utils.MyLocation;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.BenefitsActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -144,6 +145,7 @@ public class BenefitsFragment
     private List<BenefitsStatesResponse.States> statesAvailables;
     private List<BenefitsCitiesResponse.City> citiesAvailables;
     private Geocoder geocoder;
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
 
     @Override
     public void onAttach(Context context) {
@@ -185,6 +187,7 @@ public class BenefitsFragment
 
         imgvRefresh.setOnClickListener(this);
         geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        analyticsRepositoryImpl.sendVisitFlow(23, 0);
         return view;
     }
 

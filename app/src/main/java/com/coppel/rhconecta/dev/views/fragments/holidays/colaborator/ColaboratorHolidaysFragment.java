@@ -7,10 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -166,7 +169,6 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
         holidayRequestRecyclerAdapter = new HolidayRequestRecyclerAdapter(holidayPeriodList, IScheduleOptions,false,true);
         holidayRequestRecyclerAdapter.setOnRequestSelectedClickListener(this);
         rcvSolicitudes.setAdapter(holidayRequestRecyclerAdapter);
-
         IScheduleOptions.setActionEliminatedOption(new Command() {
             @Override
             public void execute(Object... params) {
@@ -174,6 +176,20 @@ public class ColaboratorHolidaysFragment extends Fragment implements  View.OnCli
                 showAlertDialogDeletePeriods( holidayRequestRecyclerAdapter.getDataItemsSelected());
             }
         });
+
+        /*requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Verifica la pila de fragments
+                if (getChildFragmentManager().getBackStackEntryCount() == 1) {
+                    // Si no hay fragments en la pila, cierra la Activity
+                    requireActivity().finish();
+                } else if(getChildFragmentManager().getBackStackEntryCount() > 1){
+                    // Si hay fragments en la pila, regresa al fragment anterior
+                    getChildFragmentManager().popBackStack();
+                }
+            }
+        });*/
 
 
         return view;

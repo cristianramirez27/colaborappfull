@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -98,6 +100,19 @@ public class HolidaysMenuGteFragment extends Fragment implements  View.OnClickLi
         iconsMenuRecyclerAdapter = new IconsMenuRecyclerAdapter(250,parent, menuItems,true);
         iconsMenuRecyclerAdapter.setOnItemClick(this);
         rcvOptions.setAdapter(iconsMenuRecyclerAdapter);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Verifica la pila de fragments
+                if (getChildFragmentManager().getBackStackEntryCount() == 0) {
+                    // Si no hay fragments en la pila, cierra la Activity
+                    requireActivity().finish();
+                } else {
+                    // Si hay fragments en la pila, regresa al fragment anterior
+                    getChildFragmentManager().popBackStack();
+                }
+            }
+        });
 
         return view;
     }

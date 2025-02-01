@@ -18,6 +18,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestOptions;
 import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.business.models.BenefitsCategoriesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.squareup.picasso.Picasso;
 
@@ -50,6 +51,7 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final BenefitsCategoriesResponse.Category currentItem = categories.get(i);
+        AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
         viewHolder.name.setText(currentItem.getNombre());
         viewHolder.description.setText(currentItem.getDescripcion());
        // Picasso.with(getContext()).load(currentItem.getLogo()).placeholder(R.drawable.placeholder_category ).into(viewHolder.imageBenefits);
@@ -88,6 +90,7 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
             @Override
             public void onClick(View v) {
                 onBenefitsCategoryClickListener.onCategoryClick(currentItem);
+                sendVisitCategory(currentItem);
             }
         });
     }
@@ -136,6 +139,45 @@ public class BenefitsRecyclerAdapter extends RecyclerView.Adapter<BenefitsRecycl
 
     public interface OnBenefitsCategoryClickListener {
         void onCategoryClick(BenefitsCategoriesResponse.Category category);
+    }
+
+    public void sendVisitCategory(BenefitsCategoriesResponse.Category currentItem){
+        AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
+        switch (currentItem.getCve()){
+            case 1 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 20);
+                break;
+            case 2 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 21);
+                break;
+            case 3 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 22);
+                break;
+            case 4 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 23);
+                break;
+            case 5 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 24);
+                break;
+            case 6 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 31);
+                break;
+            case 7 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 25);
+                break;
+            case 8 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 26);
+                break;
+            case 11:
+                analyticsRepositoryImpl.sendVisitFlow(23, 27);
+                break;
+            case 12 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 28);
+                break;
+            case 14 :
+                analyticsRepositoryImpl.sendVisitFlow(23, 29);
+                break;
+        }
     }
 
 }

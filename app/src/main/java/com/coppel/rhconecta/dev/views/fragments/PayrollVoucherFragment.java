@@ -32,6 +32,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.PayrollVoucherRecyclerAdapter;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentGetDocument;
@@ -78,6 +79,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
 
     private ISurveyNotification ISurveyNotification;
     private boolean GO_BACK;
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
 
     @Override
     public void onAttach(Context context) {
@@ -110,6 +112,7 @@ public class PayrollVoucherFragment extends Fragment implements IServicesContrac
         payrollVoucherRecyclerAdapter.setOnPayrollVoucherClickListener(this);
         payrollVoucherRecyclerAdapter.setOnActionClickListener(this);
         rcvPayroll.setAdapter(payrollVoucherRecyclerAdapter);
+        //analyticsRepositoryImpl.sendVisitFlow(21, 8);
         return view;
     }
 

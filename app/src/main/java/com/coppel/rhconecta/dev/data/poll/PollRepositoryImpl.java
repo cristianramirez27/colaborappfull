@@ -58,7 +58,10 @@ public class PollRepositoryImpl implements PollRepository {
         String authHeader = basicUserInformationFacade.getAuthHeader();
         GetPollRequest request = new GetPollRequest(employeeNum, clvOption);
         apiService
-                .getPoll(authHeader, ServicesConstants.GET_ENCUESTAS, request)
+                .getPoll(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-99.985171",
+                        "20.270460",
+                        "fs9999c7q86c33cdfd5f55", ServicesConstants.GET_ENCUESTAS, request)
                 .enqueue(getCallbackGetPollResponse(callback));
     }
 
@@ -112,7 +115,10 @@ public class PollRepositoryImpl implements PollRepository {
             answersServer.add(SendPollRequest.AnswerServer.fromQuestion(question));
         SendPollRequest request = new SendPollRequest(employeeNum, answersServer, clvOption);
         apiService
-                .sendPoll(authHeader, ServicesConstants.GET_ENCUESTAS, request)
+                .sendPoll(authHeader, "2024-03-25T17:38:35.244Z",
+                        "-99.985171",
+                        "20.270460",
+                        "fs9999c7q86c33cdfd5f55", ServicesConstants.GET_ENCUESTAS, request)
                 .enqueue(getCallbackSendPollResponse(callback));
 
     }

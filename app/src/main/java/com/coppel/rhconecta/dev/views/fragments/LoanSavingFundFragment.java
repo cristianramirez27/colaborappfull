@@ -41,6 +41,7 @@ import com.coppel.rhconecta.dev.business.presenters.CoppelServicesPresenter;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.views.activities.FondoAhorroActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -104,6 +105,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
     private boolean firstTime = true;
     private final String[] key_block = {BLOCK_FUND_WITHDRAW, BLOCK_FUND_PAY, BLOCK_FUND_ADDITIONALS, BLOCK_MY_MOVEMENTS};
     private final String[] msg_block = {BLOCK_FUND_WITHDRAW_MESSAGE, BLOCK_FUND_PAY_MESSAGE, BLOCK_FUND_ADDITIONALS_MESSAGE, BLOCK_MYMOVEMENTS_MESSAGE};
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -127,6 +129,7 @@ public class LoanSavingFundFragment extends Fragment implements IServicesContrac
         if(getActivity() instanceof  HomeActivity){
             ((HomeActivity) getActivity()).forceHideProgress();
         }
+        analyticsRepositoryImpl.sendVisitFlow(9, 0);
 
         return view;
     }

@@ -1,5 +1,8 @@
 package com.coppel.rhconecta.dev.views.utils;
 
+import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ZENDESK_CONFIG;
+import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -30,7 +33,6 @@ import com.coppel.rhconecta.dev.R;
 import com.coppel.rhconecta.dev.presentation.common.extension.SharedPreferencesExtension;
 import com.coppel.rhconecta.dev.resources.db.RealmHelper;
 import com.coppel.rhconecta.dev.resources.db.models.UserPreference;
-import com.coppel.rhconecta.dev.views.activities.LoginActivity;
 import com.coppel.rhconecta.dev.views.activities.LoginMicrosoftActivity;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
 import com.google.gson.JsonObject;
@@ -39,13 +41,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static com.coppel.rhconecta.dev.business.Configuration.AppConfig.ENDPOINT_ZENDESK_CONFIG;
-import static com.coppel.rhconecta.dev.views.utils.AppConstants.SHARED_PREFERENCES_FIREBASE_TOKEN;
 
 /**
  *

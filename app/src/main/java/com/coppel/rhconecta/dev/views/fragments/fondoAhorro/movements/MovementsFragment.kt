@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.coppel.rhconecta.dev.R
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl
 import com.coppel.rhconecta.dev.databinding.FragmentMovementsBinding
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog
 import com.coppel.rhconecta.dev.presentation.fondoahorro.movements.MovementsViewModel
@@ -31,6 +32,8 @@ class MovementsFragment : Fragment(), DialogFragmentGetDocument.OnButtonClickLis
     private lateinit var movementsAdapter: MovementsAdapter
     private lateinit var binding: FragmentMovementsBinding
     private lateinit var listener: OnMovementsFragmentListener
+    private var analyticsRepositoryImpl: AnalyticsRepositoryImpl = AnalyticsRepositoryImpl()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +71,7 @@ class MovementsFragment : Fragment(), DialogFragmentGetDocument.OnButtonClickLis
 
         movementsViewModel.events.observe(viewLifecycleOwner, Observer(this::validateEvents))
         movementsViewModel.onGetAllMovements()
+        analyticsRepositoryImpl.sendVisitFlow(9, 32)
     }
 
     override fun onAttach(context: Context) {

@@ -25,10 +25,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.coppel.rhconecta.dev.R;
@@ -107,6 +109,7 @@ public class HomeMainFragment
     };
 
     private IntentFilter filter = new IntentFilter(AppConstants.INTENT_NOTIFICATION_ACTON);
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      *
@@ -122,11 +125,20 @@ public class HomeMainFragment
         ButterKnife.bind(this, view);
         parent = (HomeActivity) getActivity();
         profileResponse = parent.getProfileResponse();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         // Poll icon
         initMenu();
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
         ISurveyNotification.getSurveyIcon().setCountMessages(0);
         ISurveyNotification.getSurveyIcon().setOnClickListener(this::onSurveyIconClickListener);
+        // Configura el listener para el gesto de "pull to refresh"
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Aquí colocas la lógica para actualizar tus datos
+                refreshData();
+            }
+        });
         return view;
     }
 
@@ -357,6 +369,7 @@ public class HomeMainFragment
         ISurveyNotification.getSurveyIcon().setCountMessages(countMessages);
     }
 
+
     /**
      *
      */
@@ -410,6 +423,22 @@ public class HomeMainFragment
             }
 
         };
+    }
+
+    private void refreshData() {
+        // Simula una operación de red o base de datos
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        // Actualiza tus datos aquí
+                        execute();
+                        // Detén la animación de refresco
+                        swipeRefreshLayout.setRefreshing(false);
+
+                        // Muestra un mensaje de que los datos han sido actualizados
+                        // Toast.makeText(getContext(), "Datos actualizados", Toast.LENGTH_SHORT).show();
+                    }
+                }, 2000); // Simula un retardo de 2 segundos
     }
 
     @Override

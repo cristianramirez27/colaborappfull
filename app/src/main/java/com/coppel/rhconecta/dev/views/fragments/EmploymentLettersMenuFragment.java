@@ -28,6 +28,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.presentation.common.builder.IntentBuilder;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.ConfigLetterActivity;
@@ -108,6 +109,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
     private LetterConfigResponse letterConfigResponse;
     private final String[] key_block = {BLOCK_LETTER_PROOF, BLOCK_LETTER_VISA, BLOCK_LETTER_CREDIT, BLOCK_LETTER_IMSS, BLOCK_LETTER_INFONAVIT, BLOCK_LETTER_KINDER};
     private final String[] msg_block = {BLOCK_LETTER_PROOF_MEESAGE, BLOCK_LETTER_VISA_MEESAGE, BLOCK_LETTER_CREDIT_MESSAGE, BLOCK_LETTER_IMSS_MESSAGE, BLOCK_LETTER_INFONAVIT_MESSAGE, BLOCK_LETTER_KINDER_MESSAGE};
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
 
     @Override
     public void onAttach(Context context) {
@@ -137,6 +139,7 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
 
 
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
+        analyticsRepositoryImpl.sendVisitFlow(22, 0);
         return view;
     }
 
@@ -174,26 +177,32 @@ public class EmploymentLettersMenuFragment extends Fragment implements IServices
             case AppConstants.OPTION_WORK_RECORD:
                 typeLetter = TYPE_WORK_RECORD;
                 key = 0;
+                analyticsRepositoryImpl.sendVisitFlow(22, 14);
                 break;
             case AppConstants.OPTION_VISA_PASSPORT:
                 typeLetter = TYPE_VISA_PASSPORT;
                 key = 1;
+                analyticsRepositoryImpl.sendVisitFlow(22, 15);
                 break;
             case AppConstants.OPTION_BANK_CREDIT:
                 typeLetter = TYPE_BANK_CREDIT;
                 key = 2;
+                analyticsRepositoryImpl.sendVisitFlow(22, 16);
                 break;
             case AppConstants.OPTION_IMSS:
                 typeLetter = TYPE_IMSS;
                 key = 3;
+                analyticsRepositoryImpl.sendVisitFlow(22, 17);
                 break;
             case AppConstants.OPTION_INFONAVIT:
                 typeLetter = TYPE_INFONAVIT;
                 key = 4;
+                analyticsRepositoryImpl.sendVisitFlow(22, 18);
                 break;
             case AppConstants.OPTION_KINDERGARTEN:
                 typeLetter = TYPE_KINDERGARTEN;
                 key = 5;
+                analyticsRepositoryImpl.sendVisitFlow(22, 19);
                 break;
         }
 

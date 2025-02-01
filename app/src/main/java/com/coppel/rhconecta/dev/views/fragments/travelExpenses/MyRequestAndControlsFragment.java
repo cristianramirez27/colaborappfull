@@ -31,6 +31,7 @@ import com.coppel.rhconecta.dev.business.utils.NavigationUtil;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.views.activities.GastosViajeActivity;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
 import com.coppel.rhconecta.dev.views.adapters.ExpensesTravelColaboratorControlsRecyclerAdapter;
@@ -41,6 +42,7 @@ import com.coppel.rhconecta.dev.views.customviews.ExpandableSimpleTitle;
 import com.coppel.rhconecta.dev.views.customviews.HeaderTitlesList;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentLoader;
 import com.coppel.rhconecta.dev.views.dialogs.DialogFragmentWarning;
+import com.coppel.rhconecta.dev.views.utils.AppConstants;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
 
 import java.util.ArrayList;
@@ -113,6 +115,8 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
     private ExpensesTravelColaboratorMonthsRecyclerAdapter expensesTravelColaboratorMonthsRecyclerAdapter;
 
     private long mLastClickTime = 0;
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -183,6 +187,12 @@ public class MyRequestAndControlsFragment extends Fragment implements  View.OnCl
         if(getActivity() instanceof  HomeActivity){
             ((HomeActivity) getActivity()).forceHideProgress();
         }
+
+        if (!AppUtilities.getBooleanFromSharedPreferences(getContext(), AppConstants.SHARED_PREFERENCES_IS_GTE)) {
+            analyticsRepositoryImpl.sendVisitFlow(11, 6);
+        }
+
+
 
         return view;
     }

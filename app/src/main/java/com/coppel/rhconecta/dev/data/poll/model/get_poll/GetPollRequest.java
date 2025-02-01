@@ -5,15 +5,15 @@ public class GetPollRequest {
     /* */
     public String num_empleado;
     /* */
-    public int opcion;
+    public int clv_opcion;
 
     /**
      *
      *
      */
-    public GetPollRequest(String num_empleado, int opcion) {
+    public GetPollRequest(String num_empleado, int clv_opcion) {
         this.num_empleado = num_empleado;
-        this.opcion = opcion;
+        this.clv_opcion = clv_opcion;
     }
 
 }

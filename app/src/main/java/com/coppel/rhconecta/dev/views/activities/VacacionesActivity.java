@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -100,6 +101,16 @@ public class VacacionesActivity extends AnalyticsTimeAppCompatActivity implement
         fragmentTransaction = childFragmentManager.beginTransaction();
         onEvent(TAG_FRAGMENT, data);
         zendeskInbox.setOnClickListener(view -> clickZendesk());
+        this.getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (childFragmentManager.getBackStackEntryCount() == 1) {
+                    finish(); // Cierra la actividad si no hay más fragments en la pila
+                } else if (childFragmentManager.getBackStackEntryCount() > 1)  {
+                    childFragmentManager.popBackStack();
+                }
+            }
+        });
     }
 
     @Override
@@ -313,4 +324,10 @@ public class VacacionesActivity extends AnalyticsTimeAppCompatActivity implement
     public void zendeskErrorMessage(@NonNull String message) {
         showWarningDialog(message);
     }
+
+    /*@Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }*/
 }

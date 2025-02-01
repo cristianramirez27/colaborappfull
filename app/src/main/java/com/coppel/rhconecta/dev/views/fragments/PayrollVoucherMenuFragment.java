@@ -24,6 +24,7 @@ import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesError;
 import com.coppel.rhconecta.dev.business.utils.ServicesRequestType;
 import com.coppel.rhconecta.dev.business.utils.ServicesResponse;
+import com.coppel.rhconecta.dev.data.analytics.AnalyticsRepositoryImpl;
 import com.coppel.rhconecta.dev.presentation.common.dialog.SingleActionDialog;
 import com.coppel.rhconecta.dev.resources.db.models.HomeMenuItem;
 import com.coppel.rhconecta.dev.views.activities.HomeActivity;
@@ -88,6 +89,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
     ConstraintLayout ctlConnectionError;
     @BindView(R.id.imgvRefresh)
     ImageView imgvRefresh;
+    AnalyticsRepositoryImpl analyticsRepositoryImpl = new AnalyticsRepositoryImpl();
 
     private ISurveyNotification ISurveyNotification;
     private final String[] key_block = {BLOCK_VOUCHER_PAYROLL, BLOCK_VOUCHER_FUND, BLOCK_VOUCHER_GAS, BLOCK_VOUCHER_PTU, BLOCK_VOUCHER_ALLOWANCE, BLOCK_VOUCHER_BONUS};
@@ -123,6 +125,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
         imgvRefresh.setOnClickListener(this);
 
         ISurveyNotification.getSurveyIcon().setVisibility(View.VISIBLE);
+        analyticsRepositoryImpl.sendVisitFlow(21, 0);
         return view;
     }
 
@@ -144,10 +147,11 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
                 typeSelected = CONSTANCE_TYPE_PAYROLL;
                 break;
             case AppConstants.OPTION_BONUS:
-                typeSelected =  CONSTANCE_TYPE_BONUS ;
+                typeSelected =  CONSTANCE_TYPE_BONUS;
                 break;
             case AppConstants.OPTION_SAVING_FUND:
                 typeSelected =  CONSTANCE_TYPE_SAVING_FUND;
+                analyticsRepositoryImpl.sendVisitFlow(21, 10);
                 break;
             case AppConstants.OPTION_GAS:
                 typeSelected =  CONSTANCE_TYPE_GAS;
@@ -157,6 +161,7 @@ public class PayrollVoucherMenuFragment extends Fragment implements IServicesCon
                 break;
             case AppConstants.OPTION_ALIMONY:
                 typeSelected =  CONSTANCE_TYPE_ALIMONY;
+                analyticsRepositoryImpl.sendVisitFlow(21, 13);
                 break;
         }
         int key = typeSelected - 1;

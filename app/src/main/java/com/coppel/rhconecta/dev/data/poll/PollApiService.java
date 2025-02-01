@@ -26,6 +26,10 @@ public interface PollApiService {
     @POST
     Call<GetPollResponse> getPoll(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body GetPollRequest request
     );
@@ -37,6 +41,10 @@ public interface PollApiService {
     @POST
     Call<SendPollResponse> sendPoll(
             @Header("Authorization") String authHeader,
+            @Header("X-Coppel-Date-Request") String dateRequest,
+            @Header("X-Coppel-Latitude") String latitude,
+            @Header("X-Coppel-Longitude") String longitude,
+            @Header("X-Coppel-TransactionId") String transactionId,
             @Url String url,
             @Body SendPollRequest request
     );

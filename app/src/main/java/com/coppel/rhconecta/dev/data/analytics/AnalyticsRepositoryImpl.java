@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.coppel.rhconecta.dev.CoppelApp;
 import com.coppel.rhconecta.dev.analytics.AnalyticsFlow;
+import com.coppel.rhconecta.dev.business.Configuration.AppConfig;
 import com.coppel.rhconecta.dev.business.utils.ServicesConstants;
 import com.coppel.rhconecta.dev.business.utils.ServicesRetrofitManager;
 import com.coppel.rhconecta.dev.data.analytics.model.send_time_by_analytics_flow.SendTimeByAnalyticsFlowRequest;
@@ -22,7 +23,10 @@ import com.coppel.rhconecta.dev.domain.common.UseCase;
 import com.coppel.rhconecta.dev.domain.common.failure.Failure;
 import com.coppel.rhconecta.dev.domain.common.failure.ServerFailure;
 import com.coppel.rhconecta.dev.views.utils.AppUtilities;
+import com.coppel.rhconecta.dev.views.utils.MenuUtilities;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -69,8 +73,8 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
         long employeeNum = 00000000;
         try {
             employeeNum = basicUserInformationFacade.getEmployeeNum();
-        }catch (Exception e){
-            saveToCrashLitics("sendTimeByAnalyticsFlow",e);
+        } catch (Exception e) {
+            saveToCrashLitics("sendTimeByAnalyticsFlow", e);
         }
 
 
@@ -81,22 +85,24 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
         );
 
         String authHeader = basicUserInformationFacade.getAuthHeader();
-        if(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)){
-            String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
-            AnalyticsApiService apiService = getAnalyticsApiService();
-            if (apiService != null) {
-                apiService
-                        .sendTimeByAnalyticsFlow(authHeader,"2025-01-27T17:38:35.244Z",
-                                "-99.985171",
-                                "20.270460",
-                                "fs9999c7q86c33cdfd5f55", url, request)
-                        .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+        boolean userAccess = MenuUtilities.userAccess(String.valueOf(employeeNum), CoppelApp.getContext());
+        if (Objects.equals(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME), NO) || userAccess) {
+            //if (AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)) {
+                String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
+                AnalyticsApiService apiService = getAnalyticsApiService();
+                if (apiService != null) {
+                    apiService
+                            .sendTimeByAnalyticsFlow(authHeader, "2025-01-27T17:38:35.244Z",
+                                    "-99.985171",
+                                    "20.270460",
+                                    "fs9999c7q86c33cdfd5f55", url, request)
+                            .enqueue(createSendTimeByAnalyticsFlowCallback(callback));
+                }
             }
-        }
 
     }
 
-    private void saveToCrashLitics(String someInfo , Exception e){
+    private void saveToCrashLitics(String someInfo, Exception e) {
         /*
             try {
 
@@ -174,11 +180,13 @@ public class AnalyticsRepositoryImpl implements AnalyticsRepository {
                 new SendVisitSectionRequest(employeeNum, clvSistema, clvAcceso);
         String authHeader = basicUserInformationFacade.getAuthHeader();
         String url = ServicesConstants.GET_ENDPOINT_SECTION_TIME;
-        if(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)){
+        boolean userAccess = MenuUtilities.userAccess(String.valueOf(employeeNum), CoppelApp.getContext());
+        if (Objects.equals(AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME), NO) || userAccess) {
+        //if (AppUtilities.getStringFromSharedPreferences(CoppelApp.getContext(), BLOCK_SECTION_TIME).equals(NO)) {
             AnalyticsApiService apiService = getAnalyticsApiService();
             if (apiService != null) {
                 try {
-                    apiService.sendVisitSection(authHeader,"2025-01-27T17:38:35.244Z",
+                    apiService.sendVisitSection(authHeader, "2025-01-27T17:38:35.244Z",
                                     "-99.985171",
                                     "20.270460",
                                     "fs9999c7q86c33cdfd5f55", url, request)

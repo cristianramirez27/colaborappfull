@@ -1,83 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     tools:context=".presentation.home.HomeMainFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <LinearLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorBackgroundCoppelBlanco"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="@color/colorBackgroundCoppelBlanco"
+                android:orientation="vertical">
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/vpBanner"
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:focusableInTouchMode="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content">
 
-                <com.github.vivchar.viewpagerindicator.ViewPagerIndicator
-                    android:id="@+id/tabIndicator"
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/vpBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:focusableInTouchMode="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.github.vivchar.viewpagerindicator.ViewPagerIndicator
+                        android:id="@+id/tabIndicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        app:delimiterSize="8dp"
+                        app:itemScale="1.5"
+                        app:itemSelectedTint="@color/transparentIndicatorSelected"
+                        app:itemSize="10dp"
+                        app:itemTint="@color/transparentIndicator"
+                        app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <TextView
+                    android:id="@+id/txvFavorites"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextBook14Coppel"
+                    android:text="@string/my_favorites"
+                    android:textColor="@color/colorSecondBlueCoppel"
+                    android:layout_marginStart="@dimen/lateral_margin"
+                    android:layout_marginTop="@dimen/half_vertical_margin" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    app:delimiterSize="8dp"
-                    app:itemScale="1.5"
-                    app:itemSelectedTint="@color/transparentIndicatorSelected"
-                    app:itemSize="10dp"
-                    app:itemTint="@color/transparentIndicator"
-                    app:layout_constraintBottom_toBottomOf="@+id/vpBanner"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:focusableInTouchMode="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:layout_marginTop="@dimen/half_vertical_margin"/>
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/txvFavorites"
+            <ProgressBar
+                android:id="@+id/pbLoader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextBook14Coppel"
-                android:text="@string/my_favorites"
-                android:textColor="@color/colorSecondBlueCoppel"
-                android:layout_marginStart="@dimen/lateral_margin"
-                android:layout_marginTop="@dimen/half_vertical_margin" />
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                android:layout_marginTop="@dimen/half_vertical_margin"/>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:id="@+id/pbLoader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</androidx.core.widget.NestedScrollView>
-
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
